@@ -56,21 +56,37 @@ async function newPage({ width = 390, height = 760, ua = UA.android, reducedMoti
   return { ctx, page };
 }
 
+// Visible buttons, links and expanders under 44 px (the smaller of width and
+// height). Source links inside a line of text ("ที่มา: ปภ. · …") fall under
+// WCAG's inline-text exception, so only their padded height is checked.
+async function smallControls(page) {
+  return page.$$eval('button, a[href], summary, [role="button"]:not(.item)', (els) => els
+    .filter((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden')
+    .map((e) => {
+      const r = e.getBoundingClientRect();
+      const size = e.closest('.src') ? r.height : Math.min(r.width, r.height);
+      return { size, name: (e.id || e.textContent.trim()).slice(0, 16) };
+    })
+    .filter((c) => c.size < 44)
+    .map((c) => `${c.name}: ${c.size.toFixed(0)} px`));
+}
+
 async function shot(page, name) {
   if (!SCREENS) return;
   await page.waitForTimeout(450); // let sheets finish sliding in
   await page.screenshot({ path: path.join(SCREENS, `${name}.png`) });
 }
 
-async function playRound(page, mode, { wrongAt = -1, decoy = true, screensPrefix = '' } = {}) {
+// `screens` names the screenshots to take during the round (docs/screens/*.png).
+async function playRound(page, mode, { wrongAt = -1, decoy = true, screens = null } = {}) {
   await page.click(`.mode-btn.mode-${mode}`);
   if (await page.$('#howto-go')) {
-    if (screensPrefix) await shot(page, `${screensPrefix}howto`);
+    if (screens) await shot(page, screens.howto);
     await page.click('#howto-go');
   }
   await page.waitForFunction(() => window.__brm?.state.round?.running);
   await page.waitForTimeout(300);
-  if (screensPrefix) await shot(page, `${screensPrefix}room`);
+  if (screens) await shot(page, screens.room);
   const info = await page.evaluate(() => {
     const s = window.__brm.state;
     return {
@@ -95,7 +111,7 @@ async function playRound(page, mode, { wrongAt = -1, decoy = true, screensPrefix
     await go(t.room);
     await page.click(`.item[data-pid="${t.pid}"] .hit`, { force: true });
     await page.waitForSelector('.choice');
-    if (screensPrefix && i === 0) await shot(page, `${screensPrefix}choice`);
+    if (screens && i === 0) await shot(page, screens.choice);
     const pick = await page.evaluate(([pid, wrong]) => {
       const s = window.__brm.state;
       const p = s.house.targets.find((x) => x.pid === pid);
@@ -105,8 +121,8 @@ async function playRound(page, mode, { wrongAt = -1, decoy = true, screensPrefix
     }, [t.pid, i === wrongAt]);
     await page.click(`.choice >> nth=${pick}`);
     await page.waitForSelector('#fb-next');
-    if (screensPrefix && i === 0) await shot(page, `${screensPrefix}tip`);
-    if (screensPrefix && i === wrongAt) await shot(page, `${screensPrefix}learn`);
+    if (screens && i === 0) await shot(page, screens.tip);
+    if (screens && i === wrongAt) await shot(page, screens.learn);
     await page.click('#fb-next');
     i++;
   }
@@ -129,7 +145,10 @@ try {
     check('start screen transfer < 500 KB (uncompressed)', bytes < 500 * 1024, `${(bytes / 1024).toFixed(0)} KB`);
     await shot(page, '01-start');
     check('default mode badge shown', await page.isVisible('.mode-btn.is-default .mode-badge'));
-    await playRound(page, 'prepare', { wrongAt: 1, screensPrefix: '0' });
+    await playRound(page, 'prepare', {
+      wrongAt: 1,
+      screens: { howto: '02-howto', room: '03-room', choice: '04a-choice', tip: '04b-tip-correct', learn: '04c-tip-learned' },
+    });
     await shot(page, '05-result');
     const card = await page.evaluate(() => document.querySelector('#card-img').naturalWidth);
     check('result card is 1080 px wide', card === 1080, String(card));
@@ -157,8 +176,14 @@ try {
     }));
     const min = Math.min(...sizes);
     check('tap targets >= 44 px on 375x548', min >= 44, `${min.toFixed(1)} px`);
+    const smallGame = await smallControls(page);
+    check('game controls >= 44 px on 375x548', !smallGame.length, smallGame.join(', '));
     await shot(page, '07-return-small');
-    await page.evaluate(() => window.__brm.state.round.pause());
+    await page.evaluate(() => window.__brm.state.round.finish('time'));
+    await page.waitForSelector('#screen-result.active', { timeout: 15000 });
+    await page.waitForSelector('.lesson details');
+    const smallResult = await smallControls(page);
+    check('result controls >= 44 px on 375x548', !smallResult.length, smallResult.join(', '));
     check('no page errors (iPhone SE size)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
@@ -203,7 +228,16 @@ try {
       return i.naturalWidth === 1080 && i.naturalHeight === 1920;
     }));
     await shot(page, '09-checklist');
+    const smallSheets = await smallControls(page);
     await page.click('#cl-close');
+    for (const what of ['help', 'about']) {
+      await page.click(`[data-open="${what}"]`);
+      await page.waitForSelector('#sheet-title');
+      smallSheets.push(...await smallControls(page));
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.querySelector('#sheet-title'));
+    }
+    check('checklist, help and about controls >= 44 px', !smallSheets.length, smallSheets.join(', '));
     await page.click('#btn-lang');
     check('English toggle', (await page.textContent('.mode-btn.mode-prepare .mode-name')).includes('Before'));
     await shot(page, '10-english');

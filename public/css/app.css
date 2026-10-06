@@ -474,6 +474,8 @@ a { color: var(--sky-dark); }
 .why summary::-webkit-details-marker { display: none; }
 .why p { margin: 10px 2px 4px; font-size: 16px; }
 .why .src { font-size: 13px; color: var(--ink-2); }
+/* source links are inline text; pad them to a 44 px tall tap area without moving the text */
+.src a { display: inline-block; padding: 12px 3px; margin: -12px -3px; }
 
 /* ---------- result ---------- */
 
@@ -507,7 +509,7 @@ a { color: var(--sky-dark); }
 .lesson .tag { font-size: 13px; color: var(--ink-2); }
 .lesson .tip { margin: 2px 0 0; font-size: 15px; }
 .lesson details { margin-top: 4px; }
-.lesson summary { min-height: 40px; display: inline-flex; align-items: center; color: var(--sky-dark); font-weight: 600; font-size: 14px; cursor: pointer; }
+.lesson summary { min-height: 44px; min-width: 44px; padding-right: 10px; display: inline-flex; align-items: center; color: var(--sky-dark); font-weight: 600; font-size: 14px; cursor: pointer; }
 .lesson details p { margin: 4px 0; font-size: 15px; }
 .help-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .help-list a {
@@ -619,14 +621,16 @@ a { color: var(--sky-dark); }
 .sources { padding-left: 18px; font-size: 14px; }
 .sources ul { padding-left: 16px; margin: 2px 0 8px; }
 .sources a { word-break: break-word; }
+.sources ul a { display: block; min-height: 44px; padding: 10px 0; }
+.sources ul a .tag { display: inline-block; margin-left: 5px; }
 .sources .tag { color: var(--ink-2); font-size: 12px; }
 
 /* short screens (iPhone SE, in-app browsers with big toolbars): give the house more room */
 @media (max-height: 640px) {
   .hud { padding: 5px 8px; gap: 8px; }
-  .hud-btn { height: 40px; }
+  .hud-btn { height: 44px; }
   .gauge { height: 26px; }
   .tabs { padding: 0 8px 5px; gap: 4px; }
-  .tab { min-height: 40px; font-size: 14px; padding: 2px 6px; }
+  .tab { min-height: 44px; font-size: 14px; padding: 2px 6px; }
   .tab .count { min-width: 20px; height: 20px; font-size: 12px; }
 }

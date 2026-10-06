@@ -829,7 +829,7 @@ function openAbout() {
     byAgency.get(s.agency).push(s);
   }
   const srcHtml = [...byAgency.entries()].map(([agency, list]) => `
-    <li><b>${esc(agency)}</b><ul>${list.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>${s.date ? ` <span class="tag">(${esc(s.date)})</span>` : ''}</li>`).join('')}</ul></li>`).join('');
+    <li><b>${esc(agency)}</b><ul>${list.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}${s.date ? `<span class="tag">(${esc(s.date)})</span>` : ''}</a></li>`).join('')}</ul></li>`).join('');
   openSheet(`
     <h2 id="sheet-title">${esc(t('aboutTitle'))}</h2>
     <p>${th

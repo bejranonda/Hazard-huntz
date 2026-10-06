@@ -76,8 +76,22 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-- Start screen: **142 KB** compressed (HTML + CSS + JS + content JSON + fonts).
-- First game screen: **152 KB** (adds the first room and the sprites).
+- Start screen: **144 KB** compressed (HTML + CSS + JS + content JSON + fonts).
+- First game screen: **154 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 
 Rooms are fetched while the player is still on the start screen. The service worker precaches about 37 files for offline play after the page has loaded.
+
+## Live-site checks (search and AI search)
+
+Run these against https://baanrodmai.autobahn.bot after any change to the build, `strings.json → seo` or `_headers`. They were last run on 6 Oct 2026 and passed, except where noted.
+
+| Check | How | Expected |
+|---|---|---|
+| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/checklist/prepare` | 200, right content type |
+| Event endpoint | `curl -X POST -H 'Content-Type: application/json' --data '{"e":[]}' …/api/e` | 204 |
+| Canonical and JSON-LD | View source of `/` and `/learn` | `rel="canonical"` with the live address; one `application/ld+json` block that parses |
+| `/learn` is complete | Count `<article` in the page | 40, and 9 ⚠️ flags |
+| Only the custom domain is indexable | `curl -sI` the `*.pages.dev` address and the custom domain | `x-robots-tag: noindex` on `*.pages.dev` only |
+| Phone-sized load | Headless Chromium, 390×760, touch | No console errors; the footer link to `/learn` is ≥ 44 px |
+| Rich Results Test, Search Console, Bing | Owner, in the web tools | Not done yet ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) |

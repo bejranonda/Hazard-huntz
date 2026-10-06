@@ -33,6 +33,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
+| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Todo |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Todo |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Todo |
@@ -51,7 +52,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L1. Create the Cloudflare Pages project
 
-- **Who:** Owner · **Status:** Mostly done (6 Oct 2026). **Live** at https://baanrodmai.autobahn.bot after Analytics Engine was enabled on the account (the first deploy failed without it); `/`, `/learn`, `/llms.txt`, `/sitemap.xml`, `/c/p7` return 200 and `/api/e` returns 204. The project `baanrodmai` was created through the API and connected to `bejranonda/Hazard-huntz`, with the build settings below, the `EVENTS` binding and fail open. The site address comes from `config.json → siteUrl`. **Left for the owner:** step 3, Web Analytics (the API token has no permission for it).
+- **Who:** Owner · **Status:** Mostly done (6 Oct 2026). **Live** at https://baanrodmai.autobahn.bot after Analytics Engine was enabled on the account (the first deploy failed without it); `/`, `/learn`, `/llms.txt`, `/sitemap.xml`, `/c/p7` return 200 and `/api/e` returns 204. The project `baanrodmai` was created through the API and connected to `bejranonda/Hazard-huntz`, with the build settings below, the `EVENTS` binding and fail open. The site address comes from `config.json → siteUrl`. **Left for the owner:** step 3, Web Analytics (the API token has no permission for it), and checking that a push to `main` starts a build (the first two deploys were started through the API).
 - **Steps:**
   1. Connect this repository.
   2. Leave the root directory empty, set the build command to `node tools/build.mjs`, and the output to `public`.
@@ -111,6 +112,17 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Who:** Owner · **Status:** Todo
 - **Steps:** follow [04-launch-kit.md](04-launch-kit.md): 20–30 people first, then *Prepare first*, then *Return*.
 - **Done when:** the launch-day checklist in the launch kit is complete.
+
+### L8. Search consoles and AI-search check
+
+- **Who:** Owner + AI · **Status:** Todo · **Issues:** #30, #32
+- **Steps:**
+  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`.
+  2. Run `/` and `/learn` through Google's Rich Results Test and fix anything it reports in the JSON-LD (`tools/build.mjs`).
+  3. Paste a challenge link and `/learn` into the Facebook Sharing Debugger and a LINE chat.
+  4. After about two weeks, search the game's Thai name and "เตรียมบ้านก่อนน้ำท่วม" in Google and Bing, and ask two AI assistants about it. Record what appears.
+  5. Record the result in [KNOWN_ISSUES #32](KNOWN_ISSUES.md#32-search-and-ai-search-results-cant-be-guaranteed), and adjust the `/learn` headings and `seo` copy if the Thai queries find nothing.
+- **Done when:** both consoles accept the sitemap, the Rich Results Test shows no errors, and the findings are written down.
 
 ## Next (v1.1, AI-ready)
 

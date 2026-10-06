@@ -29,6 +29,8 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ### Changed
 
+- **Docs brought in line with the live site:** README (status, SEO section, deploy notes), HANDOFF, AGENTS, ROADMAP (new L8), KNOWN_ISSUES (#12 partly checked, new #30–#32, fixed F8–F9), KNOWLEDGE (§16, Cloudflare observations), GUIDELINES (SEO rules, rules 20–25), APPROACH (§13), the code map, the launch checklist and the test checklist (live-site checks).
+- **`.env.example`** now lists all the token permissions, and `.gitignore` lets `.env.example` be committed.
 - **`tests/smoke.mjs` hides `navigator.share`** in its pages. Desktop Chrome on Windows has Web Share, so the share step opened the OS dialog and timed out (on untouched `HEAD` too). Every platform now tests the same in-page share sheet.
 - **Playwright install notes** now match the lock file (`playwright-core` 1.63.0), with `CHROME_PATH=/opt/pw-browsers/chromium` for Claude Code cloud sessions.
 - **The `carrier-vector-1988` game branch** was reset to `master` at the owner's request, so it no longer carries the game commits. The docs describe the outcome.

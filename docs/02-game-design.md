@@ -233,8 +233,9 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)
 │   ├── og/  share/  icons/ pre-rendered images (npm run images)
 │   ├── c/  checklist/      generated link-preview pages (npm run build)
+│   ├── learn.html llms.txt sitemap.xml robots.txt   generated SEO / AI-search files (npm run build)
 │   ├── sw.js               generated service worker (offline)
-│   ├── _headers _routes.json manifest.webmanifest robots.txt
+│   ├── _headers _routes.json manifest.webmanifest
 ├── functions/api/e.js      Pages Function: anonymous event counter → Analytics Engine
 ├── tools/                  build.mjs (validate + generate), render-images.mjs, sw.template.js, probe.mjs, check-docs.mjs
 ├── tests/                  run.mjs (rules), smoke.mjs (browser)

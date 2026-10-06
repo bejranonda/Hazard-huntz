@@ -14,16 +14,18 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (6 Oct 2026): v1.0.0 is ready to deploy but not yet live.**
+> **Status (6 Oct 2026): v1.0.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
 > - The code is finished and every automated check passes: 12 rule tests and 24 headless-browser checks.
-> - Before launch it still needs a domain, a forecast-app link, a review of 9 safety items flagged ⚠️, and a pass on real phones.
+> - It is deployed on Cloudflare Pages and set up for search and AI search (see [SEO and AI search](#seo-and-ai-search)).
+> - Before launch it still needs a forecast-app link, a review of 9 safety items flagged ⚠️, and a pass on real phones.
 > - Start with **[HANDOFF.md](HANDOFF.md)**.
 
 ## Highlights
 
 - **Plain HTML, CSS and JavaScript with SVG art.** No framework and no build dependencies. It runs on the **free Cloudflare Pages plan**.
-- **Light:** 142 KB compressed to the start screen and 152 KB to the first game screen (the limit is 500 KB).
+- **Light:** 144 KB compressed to the start screen and 154 KB to the first game screen (the limit is 500 KB).
+- **Findable by search engines and AI assistants.** The game draws itself with JavaScript, so the build also writes plain-HTML pages and files that crawlers can read ([details below](#seo-and-ai-search)).
 - **Plays offline after the first visit,** thanks to a service worker.
 - **Works inside the LINE, Facebook and TikTok in-app browsers.** Where an app blocks sharing or downloads, the game falls back to another way.
 - **All content is editable JSON** in `public/content/`. The build checks it before anything is published.
@@ -46,9 +48,23 @@ npm run check:docs                      # after editing docs: every relative lin
 
 Node 18 or later is required. Cloudflare builds with Node 22, pinned in `.node-version`. Browser checks use `playwright-core` 1.63.0. Install its browser with `npx playwright@1.63.0 install chromium`, or point `CHROME_PATH` at any recent Chromium.
 
+## SEO and AI search
+
+Most AI crawlers and link-preview bots don't run JavaScript, so a game that renders in the browser looks empty to them. `node tools/build.mjs` therefore also writes, from the same JSON the game uses:
+
+| Output | For |
+|---|---|
+| [`/learn`](https://baanrodmai.autobahn.bot/learn) | Every lesson (correct action, tip, reason, sources, ⚠️ where partly verified), both checklists and the helplines, in Thai with English. Plain HTML, no script. |
+| `/llms.txt` | A Markdown summary for AI assistants ([llmstxt.org](https://llmstxt.org)) |
+| `/sitemap.xml`, `/robots.txt` | Crawler discovery. Search and AI crawlers are welcome; only `/api/` is closed. |
+| `<link rel="canonical">` and JSON-LD | `WebSite` + `VideoGame` on `/`, and `Article` with source citations on `/learn`. The share-preview pages point their canonical at `/`. |
+| `X-Robots-Tag: noindex` on `*.pages.dev` | Only the custom domain is indexed |
+
+The Thai copy for these pages is in `public/content/strings.json → seo`. Bump `seo.updated` when lessons change. The rules and the reasons are in [APPROACH_AND_METHOD §13](docs/APPROACH_AND_METHOD.md#13-making-the-game-findable-seo-and-ai-search).
+
 ## Deploy (Cloudflare Pages, about 5 minutes)
 
-Connect this repository under **Workers & Pages → Create → Pages → Connect to Git** and use these settings:
+The live site was set up this way on 6 Oct 2026: project `baanrodmai`, address https://baanrodmai.autobahn.bot. The setup is recorded in [docs/03-deploy.md](docs/03-deploy.md#the-live-setup). To repeat it elsewhere, connect this repository under **Workers & Pages → Create → Pages → Connect to Git** and use these settings:
 
 | Setting | Value |
 |---|---|
@@ -56,9 +72,9 @@ Connect this repository under **Workers & Pages → Create → Pages → Connect
 | Root directory | *(leave empty: the repository root)* |
 | Build command | `node tools/build.mjs` |
 | Build output directory | `public` |
-| Environment variable | `SITE_URL` = `https://<project>.pages.dev` or your own domain |
+| Site address | `config.json → siteUrl`. Because `wrangler.toml` manages the project, a dashboard `SITE_URL` is cleared on the next build. |
 
-The full steps are in [docs/03-deploy.md](docs/03-deploy.md). They cover Wrangler direct upload, Web Analytics, the Analytics Engine binding, "Fail open", and baking your domain into the images.
+You also need **Analytics Engine** enabled once on the Cloudflare account (Workers → Analytics Engine → create the dataset `baanrodmai_events` with binding `EVENTS`). Without it the deploy fails at the Functions step. The full steps are in [docs/03-deploy.md](docs/03-deploy.md). They cover Wrangler direct upload, Web Analytics, the Analytics Engine binding, "Fail open", and baking your domain into the images.
 
 ## Documents
 
@@ -77,7 +93,7 @@ The full steps are in [docs/03-deploy.md](docs/03-deploy.md). They cover Wrangle
 |---|---|---|
 | 1 | [Safety content table](docs/01-safety-content.md) | 40 items, each with the wrong action, the correct action, a Thai tip (≤ 80 characters) and its official source. Anything not fully verified is flagged. |
 | 2 | [Game design and wireframes](docs/02-game-design.md) | Rules, both modes, scoring, mascot, sharing, accessibility, the version 2 structure, and a code map |
-| 3 | [Deploy to Cloudflare Pages](docs/03-deploy.md) | Git and Wrangler steps, the free-plan budget, and why link previews are pre-rendered |
+| 3 | [Deploy to Cloudflare Pages](docs/03-deploy.md) | The live setup, Git and Wrangler steps, the free-plan budget, search setup, and why link previews are pre-rendered |
 | 4 | [Launch kit](docs/04-launch-kit.md) | Thai post copy (Facebook, LINE, TikTok), outreach, the Prepare → Return switch, and the seasonal relaunch |
 | 5 | [Metrics plan](docs/05-metrics.md) | Event dictionary and Analytics Engine SQL for every metric |
 | 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix covering 8 browser and app combinations |

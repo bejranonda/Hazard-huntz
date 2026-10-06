@@ -29,7 +29,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - Nothing flashes, and `prefers-reduced-motion` is respected.
    - Every control is reachable by keyboard and readable by a screen reader.
 5. **Fast:**
-   - The start screen stays **under 500 KB** compressed. It is 142 KB today.
+   - The start screen stays **under 500 KB** compressed. It is 144 KB today.
    - No frameworks and no runtime npm packages.
 6. **Works where people share it.** It must work in the LINE, Facebook and TikTok in-app browsers on Android and iOS, in iOS Safari and in Android Chrome. Every feature that a platform may lack has a fallback (see [KNOWLEDGE §11](KNOWLEDGE.md#11-browser-and-in-app-facts)).
 7. **The disclaimer and help numbers are always there.**
@@ -164,7 +164,14 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - Sheets trap focus and close with Esc.
   - Motion goes through CSS animations that the reduced-motion query turns off.
 - **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/c/*.html`, `public/checklist/*.html`, the SEO files `public/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` (edit `tools/build.mjs` or `strings.json → seo`), and the `<!--OG:START-->` block in `index.html`, which also holds the canonical link and JSON-LD.
-- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 142 KB.
+- **Search and AI search.**
+  - The lessons on `/learn` and `/llms.txt` come from the content JSON. Never hand-write lesson text elsewhere.
+  - Bump `strings.json → seo.updated` (YYYY-MM-DD) whenever lessons or sources change.
+  - Keep every crawl page script-free, and every link or button on it at least 44 px tall.
+  - Add structured data only for things that exist on the page. No `FAQPage`, `HowTo`, ratings or reviews unless the page really has them.
+  - Share-preview pages (`/c/*`, `/checklist/*`) keep a canonical link to `/` and stay out of the sitemap.
+  - Keep `/api/` the only path `robots.txt` closes, and leave Cloudflare's AI-bot blocking off for this host.
+- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 144 KB.
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 
 ## 6. Testing
@@ -175,6 +182,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 | UI, CSS or sharing changes | `npm run smoke` (24 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
+| Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |
 | Any doc change | `npm run check:docs`: every relative link and heading anchor must resolve |
 
 Rules:
@@ -197,7 +205,7 @@ Rules:
 - **Commit messages:** `feat:`, `fix:`, `content:`, `docs:`, `test:`, `chore:`. Say *what* and *why*. Content commits name the item ids.
 - **Generated files.** Commit them as `node tools/build.mjs` produced them. Cloudflare rebuilds them on every deploy, so they only need to be valid ([KNOWN_ISSUES #27](KNOWN_ISSUES.md#27-the-build-rewrites-tracked-files)).
 - **Images are the exception.** Cloudflare can't render them, so commit `public/og/`, `public/share/` and `public/icons/` re-rendered with the real `SITE_URL`.
-- **Secrets:** never commit any. Keep `.dev.vars`, API tokens and account ids out of git; `.gitignore` covers the usual files. The game itself needs no secrets.
+- **Secrets:** never commit any. The Cloudflare API token lives in `.env` (git-ignored); `.env.example` shows the format and the permissions it needs. Keep `.dev.vars`, API tokens and account ids out of git; `.gitignore` covers the usual files. The game itself needs no secrets.
 - **Versions.** Use semantic versions in `package.json`, with a matching `CHANGELOG.md` entry and a `vX.Y.Z` tag on `main` after the deploy is checked.
 - **Release checklist:**
   1. `node tools/build.mjs` passes with no unexpected warnings.
@@ -238,6 +246,12 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 17. **Prefer additive git operations.** A history rewrite was first denied, and the visible result was reached with a removal commit. Rewrites happen only on the owner's explicit request (see §7).
 18. **Check every statement in the docs against the code or a source while writing it.** First drafts got a test's coverage, two safety summaries and the Playwright version wrong.
 19. **Run `npm run check:docs` after editing docs.** Renaming a heading silently breaks the anchors that point to it.
+20. **`min-height` does nothing on an inline link.** Give link-styled anchors `display: inline-block` (`a.link`), or they measure under 44 px.
+21. **Hide `navigator.share` in the smoke test.** Desktop Chrome has it, so the real share dialog opens instead of the in-page sheet.
+22. **The site address lives in `config.json → siteUrl`.** `wrangler.toml` manages the Pages project, so a dashboard `SITE_URL` is cleared on the next build. If the domain changes, edit the config and re-render the images.
+23. **Enable Analytics Engine once per Cloudflare account** before the first deploy. Without it the files upload but the deploy fails and the site stays down.
+24. **Retest before debugging a fresh deploy.** The custom domain answered 522 for under a minute after the first successful deploy.
+25. **Load the Cloudflare token from `.env` and never print it.**
 
 ## 9. Working with AI assistants
 

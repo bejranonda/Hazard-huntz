@@ -23,6 +23,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 13. [Safety domain knowledge](#13-safety-domain-knowledge)
 14. [Audience and virality research](#14-audience-and-virality-research)
 15. [From research to features](#15-from-research-to-features)
+16. [Search and AI-search facts](#16-search-and-ai-search-facts)
 
 ---
 
@@ -257,13 +258,15 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - too few playable items
 - placeholder URLs
 
-**2. Site URL.** The first of these that is set: `SITE_URL` env → `config.siteUrl` (if not a placeholder) → `CF_PAGES_URL` → `https://[DOMAIN]`.
+**2. Site URL.** The first of these that is set: `SITE_URL` env → `config.siteUrl` (if not a placeholder) → `CF_PAGES_URL` → `https://[DOMAIN]`. On Cloudflare the `SITE_URL` variable doesn't exist (see §10), so the live value is `config.siteUrl` = `https://baanrodmai.autobahn.bot`.
 
-**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. It then writes 22 challenge pages (`c/{p,r}{0..10}.html`, *without* `og:url`) and 2 checklist pages.
+**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 22 challenge pages (`c/{p,r}{0..10}.html`, *without* `og:url`) and 2 checklist pages.
+
+**3b. SEO and AI-search files.** It writes `learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
 
 **4. Service worker.** It fills `tools/sw.template.js` with the precache list (37 files) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **142 KB**, or **152 KB** including the first room and the sprites.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **144 KB**, or **154 KB** including the first room and the sprites.
 
 **6. `--docs`.** Regenerates the table, flags and references in `docs/01-safety-content.md` from `items.json` and `sources.json`.
 
@@ -359,7 +362,21 @@ Checked on 6 Oct 2026 against Cloudflare's docs.
 | Web Analytics | One-click from the dashboard, which injects the beacon into the HTML. Blocked by ad blockers. No query strings, no custom events. Unsampled for 7 days. | [Pages how-to](https://developers.cloudflare.com/pages/how-to/web-analytics/), [FAQ](https://developers.cloudflare.com/web-analytics/faq/) |
 | Unknown paths | With no top-level `404.html`, Pages serves `/` (SPA behaviour) | [serving pages](https://developers.cloudflare.com/pages/configuration/serving-pages/) |
 
+Seen on the live account, 6 Oct 2026 (observed, not from the docs):
+
+| Observation | Consequence |
+|---|---|
+| The Pages API refused a token without **Cloudflare Pages → Edit** ("Authentication error", code 10000), while listing zones worked | Check the token with `wrangler pages project list` first |
+| Creating a Git-connected project failed with code 8000012 ("linked to a repository that no longer exists") until the repository was visible to the Cloudflare GitHub app | Make the repository public or grant the app access before creating the project |
+| With `wrangler.toml` present, the build log said "Build environment variables: (none found)" and the project's `env_vars` came back empty | A dashboard or API `SITE_URL` is cleared. Keep the address in `config.json`. |
+| The first deploy uploaded all 100 files, then failed with "You need to enable Analytics Engine" | Create the dataset once in Workers → Analytics Engine. The site stays down (522) until a deploy succeeds. |
+| The first successful deploy still returned 522 on the custom domain for under a minute | Retest before debugging |
+| A push to `main` did not start a build | Deploys were started with `POST …/pages/projects/baanrodmai/deployments`. Check the GitHub app's access. |
+| `_headers` accepts `https://:project.pages.dev/*` rules | Used to set `X-Robots-Tag: noindex` on `*.pages.dev`; confirmed on the live `baanrodmai.pages.dev` |
+
 ## 11. Browser and in-app facts
+
+- **Desktop Chrome has Web Share.** Windows and macOS Chrome define `navigator.share`, which opens the OS dialog instead of the game's share sheet. The smoke test removes it so every platform exercises the same code (`tests/smoke.mjs → newPage`).
 
 | Fact | Consequence in the game | Source |
 |---|---|---|
@@ -516,8 +533,39 @@ Social listening by Wisesight / Zocial Eye, 16–26 Sep 2026 ([Marketeer](https:
 | Identity and social currency drive sharing | Flattering rank titles that never shame (*บ้านนี้เตรียมพร้อม*, *เซียนกู้บ้าน*) |
 | People tag family on their own (สาดไปสมาชิก) | Challenge links that rebuild the exact house: "ท้าเพื่อนเล่นบ้านนี้", "ส่งให้คนที่บ้าน" |
 | Practical value spreads; long documents don't | Every tap teaches one action with a tip of 80 characters or fewer; every result lists all the lessons and the help numbers |
-| 78% mobile, 74% Android, in-app browsers dominate | 142 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
+| 78% mobile, 74% Android, in-app browsers dominate | 144 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
 | Coping humour works; suffering-as-content backfires | Humour only at the situation (mud, the rope that isn't a snake, the gecko's faces). No real photos, no AI flood images, no people in danger. |
 | Political anger is high | No politicians, agencies blamed, party colours, royal or religious references |
 | Quiet edits cost trust | "UPDATE:" labels for content changes, and dated sources in the About sheet |
 | People worry about fake news | Every tip links to its agency source in the game ("ทำไม?" → ที่มา) |
+
+---
+
+## 16. Search and AI-search facts
+
+What the build does for search, why, and how sure we are. Facts about *this site* were checked on the live address on 6 Oct 2026; statements about how search engines and AI assistants behave are marked.
+
+**The problem.** The game renders in the browser with JavaScript. Link-preview bots (LINE, Facebook, X) don't run it, and neither do most AI crawlers **[unverified: crawler behaviour changes and wasn't tested here]**. The start page's static HTML therefore holds only a title, a description and a `<noscript>` line.
+
+**What was added** (all generated by `tools/build.mjs` from the content JSON):
+
+| File or tag | Where it comes from | Notes |
+|---|---|---|
+| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 40 articles (one per enabled item, ordered by mode then room), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 9 partly verified items carry "⚠️ under review". About 50 KB, 17 KB gzipped. No script. |
+| `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
+| `/sitemap.xml` | `/`, `/learn`, with `seo.updated` as `lastmod` | The `/c/*` and `/checklist/*` share pages are left out on purpose: they are copies of the app shell. |
+| `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
+| `<link rel="canonical">` | the OG block | `/` → `/`, `/learn` → `/learn`; the 24 share pages → `/`. |
+| JSON-LD on `/` | `og` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English, about flood safety). |
+| JSON-LD on `/learn` | `sources.json` | `Article` with a `citation` list of the 51 sources actually used. |
+| `X-Robots-Tag: noindex` | `_headers` | On `*.pages.dev` addresses only. Confirmed present on `baanrodmai.pages.dev` and absent on the custom domain. |
+| GitHub About | `gh repo edit` | Thai + English description, homepage, 20 topics. |
+
+**Choices and why**
+
+- **One subdomain, named after the game** (`baanrodmai.autobahn.bot`). A brand-matching host name helps people and assistants connect the name to the address, and it fits on the 1200×630 previews with room to spare. It matches the zone's other subdomains (`mutelu`, `simgov2569`). A shorter alias could redirect to it later.
+- **Content for crawlers comes from the same JSON as the game,** so it can't contradict it. `seo.updated` is the one value to bump by hand.
+- **Thai first, English alongside.** Players search in Thai script; the English text helps assistants answering in English.
+- **No invented structured data.** There is no `FAQPage`, `HowTo`, rating or review markup, because there are no such questions, steps or reviews to mark up.
+
+**Not verified yet:** whether Google or Bing index the pages, how they rank, and whether AI assistants cite `/learn`. Indexing takes days to weeks. See [ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check) and [KNOWN_ISSUES #32](KNOWN_ISSUES.md#32-search-and-ai-search-results-cant-be-guaranteed).

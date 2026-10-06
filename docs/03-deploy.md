@@ -6,7 +6,7 @@ The game is a static site in `public/`, plus one tiny Pages Function (`functions
 
 | Placeholder | Where | What to put |
 |---|---|---|
-| `[DOMAIN]` | `public/content/config.json → siteUrl`, **or** the `SITE_URL` environment variable (preferred) | e.g. `https://baanrodmai.pages.dev` or your custom domain. Used in share links, link-preview tags and the images. |
+| `[DOMAIN]` | `public/content/config.json → siteUrl` (**set to `https://baanrodmai.autobahn.bot`**), or the `SITE_URL` environment variable when the project is *not* managed by `wrangler.toml` | e.g. `https://baanrodmai.pages.dev` or your custom domain. Used in share links, link-preview tags, the SEO files and the images. |
 | `[FORECAST_APP_URL]` | `public/content/config.json → forecastAppUrl` | Your water-level forecast app. The "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until this is a real `https://` link. |
 
 Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends the right mode automatically; if the call fails or times out, `rainWarningActive` is used.
@@ -21,6 +21,8 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
 | Site address | `config.json → siteUrl`. Because `wrangler.toml` manages the project, a `SITE_URL` set in the dashboard or API is cleared on the next build, so the address lives in `config.json`. |
 | Bindings | `EVENTS` → `baanrodmai_events` (from `wrangler.toml`; needs Analytics Engine enabled once on the account), fail open |
 | API token (`.env`, never committed) | Needs **Account → Cloudflare Pages → Edit** and **Zone → DNS → Edit** on `autobahn.bot`. Add **Account Analytics → Read** for the metrics SQL. |
+| Account prerequisite | **Analytics Engine enabled once**: Workers → Analytics Engine → *Create dataset* `baanrodmai_events`, binding `EVENTS`. Without it the build and file upload succeed but the deploy fails with "You need to enable Analytics Engine" and the site stays down (522). |
+| Not yet done | Web Analytics (dashboard), search-console submission, and a check that pushes to `main` start a build |
 
 Search and AI search:
 

@@ -10,10 +10,10 @@ This file is for any AI coding assistant working on this repository. Claude Code
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (6 Oct 2026):** v1.0.0. The code is complete and passes every automated check, but it is **not deployed and not tested on real phones**.
-  - The remaining launch work needs the owner: a domain, the forecast-app link, a safety review and a phone test.
+- **State (6 Oct 2026):** v1.0.0. The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+  - The remaining launch work needs the owner: the forecast-app link, Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
-- **Branches:** `main` is production. Once the Cloudflare project exists, every push to `main` deploys.
+- **Branches:** `main` is production. Pushes to `main` should deploy; the first two deploys were started through the API, so check that a push triggers a build.
 
 ## 2. Read in this order
 
@@ -70,9 +70,11 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
   - humour aimed only at the situation
 - **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous.
 - **Tap targets:** every one is at least 44 px. The smoke test measures items and controls.
-- **Weight:** the start screen stays under 500 KB compressed (142 KB today).
+- **Weight:** the start screen stays under 500 KB compressed (144 KB today).
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
 - **Text location:** player-facing text belongs in `public/content/*.json`, not in JS.
+- **Search and AI search:** `/learn`, `/llms.txt`, `/sitemap.xml`, `/robots.txt`, the canonical link and the JSON-LD are all generated from the content JSON. Don't hand-write lesson text anywhere else, or it will drift from `items.json`.
+- **Cloudflare token:** it is in `.env` (git-ignored). Load it with `set -a; . ./.env; set +a` and never print it. `wrangler.toml` manages the Pages project, so the site address comes from `config.json → siteUrl`, not a dashboard variable.
 - **Generated files** are never edited by hand: `public/sw.js`, `public/c/*.html`, `public/checklist/*.html`, the SEO files (`public/learn.html`, `robots.txt`, `sitemap.xml`, `llms.txt`), and the OG block in `index.html`. Bump `strings.json → seo.updated` when the lessons change.
 - **Changes that reshuffle houses.** Adding, removing or disabling items, or moving slots, changes today's house and old challenge links. Say so in the commit, and ship such changes around midnight Bangkok time.
 - **Correcting published advice** requires an "UPDATE:" post. Note it for the owner.

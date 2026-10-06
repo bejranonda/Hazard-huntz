@@ -16,7 +16,7 @@ What the research says about Thai audiences:
 
 | Phase | When | Game setting | Focus |
 |---|---|---|---|
-| 0. Soft launch | Day −1 → 0 | `rainWarningActive: true` | Real-phone QA ([06-test-checklist.md](06-test-checklist.md)). Set `SITE_URL`, render images, check previews in LINE and Facebook. Send to 20–30 friends and fix the copy. |
+| 0. Soft launch | Day −1 → 0 | `rainWarningActive: true` | Real-phone QA ([06-test-checklist.md](06-test-checklist.md)). Check the domain and images (done 6 Oct 2026), check previews in LINE and Facebook. Send to 20–30 friends and fix the copy. |
 | 1. Prepare first | Now → the next rain wave | `rainWarningActive: true` (Prepare is the default) | Posts lead with ก่อนน้ำมา. Push the *เตรียมบ้านก่อนน้ำมา 10 ข้อ* image. Run a daily "บ้านวันนี้" challenge. |
 | 2. Return as water recedes | When ปภ. reports water receding in most affected provinces, or your forecast shows 3+ dry days | Set `rainWarningActive: false` (Return is the default). Both modes stay available. | Lead with หลังน้ำลด. Push *ก่อนกลับเข้าบ้าน 10 ข้อ*. Target shelters, evacuees and volunteers cleaning houses. |
 | 3. Sustain | 2–6 weeks | Daily house | A weekly "บ้านแห่งสัปดาห์" challenge. Share what players learned, e.g. "73% เลือกเรียกช่างไฟ" from the [metrics](05-metrics.md). Thank volunteers. |
@@ -142,7 +142,8 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 
 ## 6. Launch-day checklist
 
-- [ ] `SITE_URL` set; domain live; `npm run images` re-rendered with the domain and committed
+- [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
+- [ ] Sitemap submitted in Google Search Console and Bing Webmaster Tools; `/learn` JSON-LD passes the Rich Results Test
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on

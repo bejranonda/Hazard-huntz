@@ -26,8 +26,9 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
 | 11 | [Thai copy needs a second native reader](#11-thai-copy-needs-a-second-native-reader) | Owner | Medium |
-| 12 | [Analytics SQL and the Fail-open default are unchecked on a live account](#12-analytics-sql-and-the-fail-open-default-are-unchecked-on-a-live-account) | Owner | Low |
+| 12 | [Analytics SQL and the Fail-open default are unchecked on a live account](#12-analytics-sql-and-the-fail-open-default-are-unchecked-on-a-live-account) | Owner (partly checked) | Low |
 | 13 | [`forecastStatusUrl` needs CORS and a fast answer](#13-forecaststatusurl-needs-cors-and-a-fast-answer) | Owner | Low |
+| 30 | [Web Analytics, search consoles and push-to-deploy are not done or checked](#30-web-analytics-search-consoles-and-push-to-deploy-are-not-done-or-checked) | Owner | Medium |
 | 14 | [Bathroom, bedroom and garage are not drawn](#14-bathroom-bedroom-and-garage-are-not-drawn) | Not built | — |
 | 15 | [Version 2, the combined Prepare → Return run](#15-version-2-the-combined-prepare--return-run) | Not built | — |
 | 16 | [No offline play inside iOS in-app browsers](#16-no-offline-play-inside-ios-in-app-browsers) | Platform | — |
@@ -44,6 +45,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 | 27 | [The build rewrites tracked files](#27-the-build-rewrites-tracked-files) | By design | — |
 | 28 | [Images are PNG, about 145 KB per preview and 400 KB per checklist](#28-images-are-png-about-145-kb-per-preview-and-400-kb-per-checklist) | By design | — |
 | 29 | [Rendering images needs a matching Chromium](#29-rendering-images-needs-a-matching-chromium) | By design | — |
+| 31 | [`/learn` repeats the lessons, and `seo.updated` is bumped by hand](#31-learn-repeats-the-lessons-and-seoupdated-is-bumped-by-hand) | By design | — |
+| 32 | [Search and AI-search results can't be guaranteed](#32-search-and-ai-search-results-cant-be-guaranteed) | Platform | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -208,6 +211,8 @@ All Thai copy was written in one pass and checked against the guidelines: the to
 - **SQL.** The queries in [05-metrics.md](05-metrics.md) stick to the documented subset (`SUM(_sample_interval)`, `GROUP BY`, `toStartOfInterval`). They have not been run against a real Analytics Engine dataset. Analytics Engine bindings don't work in local development.
 - **Fail open.** Cloudflare's current docs don't say whether **Fail open** is the default for Pages Functions. Check it under Settings → Runtime after the first deploy.
 
+**Checked on 6 Oct 2026:** Analytics Engine is enabled, the dataset `baanrodmai_events` is bound as `EVENTS`, **Fail open** is set on the project, and `POST /api/e` returns 204 on the live site. **Still unchecked:** the SQL in [05-metrics.md](05-metrics.md) against real data, because no player events have been written yet.
+
 ### 13. `forecastStatusUrl` needs CORS and a fast answer
 
 **Status:** Owner · **Severity:** Low
@@ -220,6 +225,16 @@ If `config.json → forecastStatusUrl` is set, the start screen fetches it from 
 Otherwise the manual `rainWarningActive` flag is used. Nothing breaks, but the automation silently does nothing.
 
 ---
+
+### 30. Web Analytics, search consoles and push-to-deploy are not done or checked
+
+**Status:** Owner · **Severity:** Medium
+
+Three launch steps are still open on the Cloudflare and search side:
+
+- **Web Analytics** isn't enabled. It's a dashboard switch the API token can't reach (Pages project → Metrics → Web Analytics → Enable).
+- **The sitemap hasn't been submitted** to Google Search Console or Bing Webmaster Tools, and the JSON-LD hasn't been through the Rich Results Test ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)).
+- **Push-to-deploy is unverified.** A push to `main` didn't start a build, so the first two deploys were started through the API. The likely cause is that the Cloudflare GitHub app can't see this repository **[unverified]**.
 
 ## Not built
 
@@ -373,7 +388,8 @@ Penalties (−4 s for a wrong answer, −2 s for the first tap on each decoy) mo
 
 `node tools/build.mjs` rewrites these files:
 
-- `public/index.html` (its Open Graph block)
+- `public/index.html` (its Open Graph block, canonical link and JSON-LD)
+- `public/learn.html`, `public/llms.txt`, `public/sitemap.xml`, `public/robots.txt`
 - `public/c/*.html`
 - `public/checklist/*.html`
 - `public/sw.js`
@@ -399,6 +415,23 @@ Converting the previews to JPEG at about quality 85 would roughly halve them, if
 
 A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; any recent Chromium works for these scripts.
 
+### 31. `/learn` repeats the lessons, and `seo.updated` is bumped by hand
+
+**Status:** By design
+
+`/learn` and `/llms.txt` repeat every lesson so that crawlers without JavaScript can read them. They are generated from the same JSON as the game, so the text can't drift, and a build that changes a lesson changes them too. Two things are not automatic:
+
+- `strings.json → seo.updated` (the page's "last updated" date, and the sitemap's `lastmod`) is a value someone sets when lessons change. It is not derived from git.
+- The English text on `/learn` is the English already in `items.json`; the page's own headings and labels are in `seo.en` and `seo.th`.
+
+### 32. Search and AI-search results can't be guaranteed
+
+**Status:** Platform
+
+The build does what can be done from this side: crawlable pages, canonical links, structured data, a sitemap, `robots.txt` and `llms.txt` ([KNOWLEDGE §16](KNOWLEDGE.md#16-search-and-ai-search-facts)). Whether Google or Bing index and rank them, and whether AI assistants cite `/learn`, isn't in our control and hasn't been measured. `llms.txt` is an informal proposal, and no major search engine is confirmed to use it **[unverified]**. A brand-new subdomain also starts with no authority.
+
+Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) and write the result here.
+
 ---
 
 ## Fixed
@@ -419,6 +452,8 @@ A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; an
 | F5 (was #7) | Share images showed `#บ้านรอดไหม` instead of the web address, because no `SITE_URL` was set when they were rendered | Re-rendered with `SITE_URL=https://baanrodmai.autobahn.bot npm run images` (33 images plus icons). Checked by eye: `og/default.png`, `og/p7.png` and `share/checklist-prepare.png` show the full address. Re-render whenever the domain changes. |
 | F6 | The new `/learn` footer link measured **41 px**: `min-height` does nothing on an inline `<a>` | `a.link { display: inline-block }`. Caught by the smoke check "checklist, help and about controls >= 44 px". |
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
+| F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
+| F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
 
 ### During development (before the first commit)
 

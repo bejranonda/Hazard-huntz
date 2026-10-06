@@ -149,6 +149,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 - **No build dependencies.** The build uses only Node built-ins, and Cloudflare runs it as-is with Node 22 (`.node-version`).
 - **Validation is the safety net.** A typo in the JSON fails the Cloudflare build, and the previous version stays live. Non-developers can therefore edit on GitHub safely.
 - **Offline is an extra, not a requirement.** The service worker caches the game after the first visit. iOS in-app browsers don't run service workers, and the game doesn't need them.
+- **Enable the account first.** Analytics Engine has to be switched on once per Cloudflare account. Until then the files upload but the deploy fails and the site stays down, which looks like a hosting error (522).
 - **Analytics never block anything.** Events are batched and sent with `sendBeacon` when the page is hidden. They are anonymous counts written to Analytics Engine, and can be sampled if the game goes viral. Cookieless Web Analytics adds page views.
 
 ## 9. Testing
@@ -181,7 +182,7 @@ The loop that should run every season:
 
 1. **Measure:** read the metrics in [05-metrics.md](05-metrics.md): completion, share rate, the challenge funnel, which lessons get missed most.
 2. **Decide:** the most-missed items need clearer art or wording, not easier answers. Channels that bring players back get the outreach effort.
-3. **Change the content:** edit the JSON with sources ([GUIDELINES §2](GUIDELINES.md#2-safety-content)), run the checks, and ship structural edits around midnight.
+3. **Change the content:** edit the JSON with sources ([GUIDELINES §2](GUIDELINES.md#2-safety-content)), bump `seo.updated`, run the checks, and ship structural edits around midnight.
 4. **Say so:** post "UPDATE:" for any change to safety advice, and share aggregate results ("7 ใน 10 คนเลือกเรียกช่างไฟ"), never individual ones.
 
 The concrete next tasks are in [ROADMAP.md](ROADMAP.md), and what this first iteration taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md).
@@ -203,3 +204,17 @@ The game was built in `bejranonda/carrier-vector-1988/baanrodmai/`, then moved t
 4. **Check a fresh clone** (build with a clean `git status`, tests, smoke test) before pushing.
 5. **Clean up the old repository additively,** with a commit that removes the folder. Rewrite or delete its branch only if the owner asks. In this case the owner did ask, and the branch was force-pushed back to `master` with `--force-with-lease`.
 6. **Write the move down only once it is verified:** commit ids, `git ls-remote`, the GitHub file listing.
+
+## 13. Making the game findable (SEO and AI search)
+
+The brief for going live was: put the app on a suitable subdomain of `autobahn.bot`, and think about search and AI search. This is how that was approached and what was checked.
+
+1. **Find the real problem before choosing tactics.** The game is a JavaScript app, and link-preview bots don't run JavaScript. Fetching the live start page showed what a crawler sees: a title, a description and one `<noscript>` line. Everything the game teaches was invisible. That decided the plan: put the substance into plain HTML.
+2. **Reuse the content, don't rewrite it.** Safety advice is the one thing in this project that must not drift. `/learn`, `/llms.txt` and the JSON-LD are generated from the same JSON as the game, so a corrected tip corrects every surface, and `seo.updated` is the single value to bump.
+3. **Be honest about uncertainty on the page.** The 9 partly verified items appear on `/learn` with "⚠️ under review", the same flag the game's docs use. Crawlers and assistants shouldn't see more certainty than a reviewer would give.
+4. **Add only what is true.** There is no FAQ, HowTo, rating or review markup, because the page has none of those. `llms.txt` is included knowing it is an informal proposal that no major engine is confirmed to use ([KNOWLEDGE §16](KNOWLEDGE.md#16-search-and-ai-search-facts)); it costs nothing.
+5. **Choose the address on evidence.** `baanrodmai.autobahn.bot` was weighed against a shorter name. Length wasn't the problem: the name matches the game, follows the zone's other subdomains, and rendered fully on the 1200×630 previews and the checklist image. Those images were re-rendered and looked at, not assumed. The one existing name that would have been shorter (`flood`) was already in use by another service, so it was left alone.
+6. **Keep the duplicates out of the index.** The 24 share pages are copies of the app shell, so they canonicalise to `/` and stay out of the sitemap, and `*.pages.dev` gets `noindex` so only the custom domain competes.
+7. **Test the part you can measure; say what you can't.** The build, tests and a phone-sized browser run were checked on the live site. Indexing, ranking and AI citation can't be measured on day one, so they became a roadmap task with a date ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) and a known issue (#32).
+8. **Run the existing guard rails on new work.** The new footer link failed the 44 px check at 41 px, and a smoke-test hang on Windows Chrome was reproduced on untouched `HEAD` before anyone blamed the new code. Both are in [LESSONS D7, D8](LESSONS_LEARNED.md#d-testing-and-verification).
+9. **Deployment surfaced two account-level prerequisites** (a repository Cloudflare could see, and Analytics Engine enabled) that no code change could fix. They are recorded as lessons ([F6, F7](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox)) and in [03-deploy.md](03-deploy.md#the-live-setup), so the next deploy starts with them.

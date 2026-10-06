@@ -51,7 +51,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L1. Create the Cloudflare Pages project
 
-- **Who:** Owner · **Status:** Mostly done (6 Oct 2026). The project `baanrodmai` was created through the API and connected to `bejranonda/Hazard-huntz`, with the build settings below, `SITE_URL`, the `EVENTS` binding and fail open. **Left for the owner:** step 3, Web Analytics (the API token has no permission for it).
+- **Who:** Owner · **Status:** Mostly done (6 Oct 2026). **Live** at https://baanrodmai.autobahn.bot after Analytics Engine was enabled on the account (the first deploy failed without it); `/`, `/learn`, `/llms.txt`, `/sitemap.xml`, `/c/p7` return 200 and `/api/e` returns 204. The project `baanrodmai` was created through the API and connected to `bejranonda/Hazard-huntz`, with the build settings below, the `EVENTS` binding and fail open. The site address comes from `config.json → siteUrl`. **Left for the owner:** step 3, Web Analytics (the API token has no permission for it).
 - **Steps:**
   1. Connect this repository.
   2. Leave the root directory empty, set the build command to `node tools/build.mjs`, and the output to `public`.

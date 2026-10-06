@@ -18,7 +18,8 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
 | Address | `https://baanrodmai.autobahn.bot`. DNS: a proxied `CNAME baanrodmai → baanrodmai.pages.dev` in the `autobahn.bot` zone. |
 | Pages project | `baanrodmai`, Git integration with `bejranonda/Hazard-huntz`, production branch `main`, previews for every branch |
 | Build | `node tools/build.mjs` → `public`, root directory empty |
-| Variables and bindings | `SITE_URL=https://baanrodmai.autobahn.bot` (production), `EVENTS` → `baanrodmai_events`, fail open |
+| Site address | `config.json → siteUrl`. Because `wrangler.toml` manages the project, a `SITE_URL` set in the dashboard or API is cleared on the next build, so the address lives in `config.json`. |
+| Bindings | `EVENTS` → `baanrodmai_events` (from `wrangler.toml`; needs Analytics Engine enabled once on the account), fail open |
 | API token (`.env`, never committed) | Needs **Account → Cloudflare Pages → Edit** and **Zone → DNS → Edit** on `autobahn.bot`. Add **Account Analytics → Read** for the metrics SQL. |
 
 Search and AI search:

@@ -147,7 +147,7 @@ The content checks already run on every Cloudflare build, and a failing build ke
 
 **Status:** Owner · **Severity:** High: a launch blocker
 
-- **`[DOMAIN]`: fixed on 6 Oct 2026.** `config.json → siteUrl` and the Pages variable `SITE_URL` are both `https://baanrodmai.autobahn.bot`, and the build prints `site https://baanrodmai.autobahn.bot`. If the domain ever changes, change both and re-render the images.
+- **`[DOMAIN]`: fixed on 6 Oct 2026.** `config.json → siteUrl` is `https://baanrodmai.autobahn.bot`, and the build prints `site https://baanrodmai.autobahn.bot`. A dashboard `SITE_URL` does not survive, because `wrangler.toml` manages the project. If the domain ever changes, edit `config.json` and re-render the images.
   - Without either, the build falls back to `CF_PAGES_URL`. That is the address of one particular deployment (`https://<hash>.<project>.pages.dev`), so link-preview tags would point at an old deployment.
   - In-game share links use the address the player is on, so they keep working either way.
 - **`[FORECAST_APP_URL]`:** the "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until `config.json → forecastAppUrl` is a real `https://` address. The build warns about this on every run.

@@ -288,6 +288,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* creating the Git-connected Pages project through the API failed with code 8000012 ("linked to a repository that no longer exists") while the repository was private and the Cloudflare GitHub app could not see it. It worked once the owner made the repository public. Before that, the API token also lacked **Cloudflare Pages → Edit**.
 - *Do this:* check the token with `wrangler pages project list` first. If creating the project fails with 8000012, ask the owner to give the Cloudflare GitHub app access to the repository. Don't fall back to direct upload, because a project can't switch between the two later.
+- *Also:* the first deploy failed at the Function step with "You need to enable Analytics Engine" (the static files had uploaded fine). Creating the dataset `baanrodmai_events` with binding `EVENTS` in Workers → Analytics Engine fixed it. Right after the first successful deploy the domain still answered 522 for under a minute; retest before debugging.
 - *Encoded in:* [03-deploy.md](03-deploy.md#the-live-setup).
 
 **F7. On the owner's Windows machine the token lives in `.env`.**

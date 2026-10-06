@@ -5,7 +5,7 @@
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
 | **Version** | 1.0.0 |
 | **Date** | 6 Oct 2026 |
-| **State** | Code complete and tested in headless browsers. **Not deployed yet. Not yet tested on real phones.** |
+| **State** | Code complete and tested in headless browsers. **Live at https://baanrodmai.autobahn.bot** (6 Oct 2026). **Not yet tested on real phones.** |
 | **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first, then N1–N4 |
 | **For AI assistants** | Start with [AGENTS.md](AGENTS.md); lessons are in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
 
@@ -39,7 +39,7 @@ Details are in sections 2 and 8.
 
 Work through these in order. Each links to the details.
 
-- [ ] **Create the Cloudflare Pages project** from this repository: root directory empty, build command `node tools/build.mjs`, output `public`. See [docs/03-deploy.md](docs/03-deploy.md).
+- [x] **Create the Cloudflare Pages project** (done 6 Oct 2026; only Web Analytics is left to switch on) from this repository: root directory empty, build command `node tools/build.mjs`, output `public`. See [docs/03-deploy.md](docs/03-deploy.md).
 - [ ] **Set `SITE_URL`** in the Pages project (for example `https://baanrodmai.pages.dev` or your own domain) and redeploy. ([KNOWN_ISSUES #6](docs/KNOWN_ISSUES.md#6-placeholders-domain-and-forecast_app_url-are-unset))
 - [x] **Re-render the images with the domain** and commit them. Done on 6 Oct 2026 for `https://baanrodmai.autobahn.bot` ([Fixed F5](docs/KNOWN_ISSUES.md#after-v100-going-live-6-oct-2026)).
 

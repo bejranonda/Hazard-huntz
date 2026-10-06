@@ -19,6 +19,7 @@
     "test": "node tests/run.mjs",
     "smoke": "node tests/smoke.mjs",
     "probe": "node tools/probe.mjs",
+    "check:docs": "node tools/check-docs.mjs",
     "dev": "npx wrangler@latest pages dev public",
     "deploy": "node tools/build.mjs && npx wrangler@latest pages deploy public --project-name=baanrodmai"
   },

@@ -175,6 +175,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 | UI, CSS or sharing changes | `npm run smoke` (24 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
+| Any doc change | `npm run check:docs`: every relative link and heading anchor must resolve |
 
 Rules:
 
@@ -208,6 +209,11 @@ Rules:
   7. If the previews changed, re-scrape them in Facebook's Sharing Debugger and check LINE with `?v=<n>`.
   8. If safety content changed, publish an "UPDATE:" post.
 - **Rollback:** Cloudflare → the Pages project → Deployments → pick an earlier one → *Rollback*.
+- **Prefer additive history.**
+  - Fix mistakes with new commits (reverts, removal commits), not resets.
+  - Force-push only when the owner explicitly asks, with `--force-with-lease=<branch>:<expected sha>`, and check the result with `git ls-remote`.
+  - Branch deletion is done by the owner in the GitHub UI.
+- **Before pushing,** check that a fresh clone builds with a clean `git status` and passes `npm test`.
 
 ## 8. Rules that come from bugs we already hit
 
@@ -226,12 +232,18 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 11. **Draw share cards with `svgdraw.js`**, not by drawing an SVG `<img>` on a canvas.
 12. **Count tip length in both languages.** English overflowed 80 characters first.
 13. **Keep Functions on `/api/*` only** (`_routes.json`), so static pages never use up the free Functions quota.
-14. **Match Chromium to `playwright-core`, or set `CHROME_PATH`.**
+14. **Match Chromium to `playwright-core`, or set `CHROME_PATH`.** The lock file pins 1.63.0. In Claude Code cloud sessions, use `CHROME_PATH=/opt/pw-browsers/chromium`.
 15. **Screenshot names come from the test.** `--screens` used to write names the docs didn't use; the test now names them, so don't rename files by hand.
+16. **Describe an action in the docs only after it has succeeded and been checked.** The handoff once said a branch "was reset" before the reset ran, and the reset was then blocked.
+17. **Prefer additive git operations.** A history rewrite was first denied, and the visible result was reached with a removal commit. Rewrites happen only on the owner's explicit request (see §7).
+18. **Check every statement in the docs against the code or a source while writing it.** First drafts got a test's coverage, two safety summaries and the Playwright version wrong.
+19. **Run `npm run check:docs` after editing docs.** Renaming a heading silently breaks the anchors that point to it.
 
 ## 9. Working with AI assistants
 
-- **Give the assistant the context first.** Point it at [HANDOFF.md](../HANDOFF.md), this file and [KNOWN_ISSUES.md](KNOWN_ISSUES.md) before it changes anything. `CLAUDE.md` at the root does this automatically for Claude Code.
+- **Give the assistant the context first.** [AGENTS.md](../AGENTS.md) is the entry point: read order, commands, definition of done and sandbox notes. `CLAUDE.md` imports it for Claude Code.
+- **Pick work from [ROADMAP.md](ROADMAP.md),** and update the task's status, [CHANGELOG.md](../CHANGELOG.md) and [KNOWN_ISSUES.md](KNOWN_ISSUES.md) in the same commit.
+- **Record new lessons** in [LESSONS_LEARNED.md](LESSONS_LEARNED.md). Turn each into a rule here when it should never happen again.
 - **Don't let it make up safety facts.** Ask for the source first. Treat every claim without a source in `sources.json` as `unverified`.
 - **Ask for real test output.** The build, `npm test` and, for UI work, `npm run smoke` should be run and their output reported, not summarised from memory.
 - **Keep changes small.** One change per commit, written in the style of the code around it, without unrelated rewrites.

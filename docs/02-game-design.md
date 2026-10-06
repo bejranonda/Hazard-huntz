@@ -236,9 +236,9 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── sw.js               generated service worker (offline)
 │   ├── _headers _routes.json manifest.webmanifest robots.txt
 ├── functions/api/e.js      Pages Function: anonymous event counter → Analytics Engine
-├── tools/                  build.mjs (validate + generate), render-images.mjs, sw.template.js
+├── tools/                  build.mjs (validate + generate), render-images.mjs, sw.template.js, probe.mjs, check-docs.mjs
 ├── tests/                  run.mjs (rules), smoke.mjs (browser)
 ├── docs/                   this documentation + screens/
-├── HANDOFF.md  CHANGELOG.md  README.md  LICENSE
+├── HANDOFF.md  CHANGELOG.md  README.md  LICENSE  AGENTS.md  CLAUDE.md
 └── wrangler.toml  package.json  .node-version
 ```

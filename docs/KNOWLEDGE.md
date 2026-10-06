@@ -4,6 +4,8 @@ A reference for anyone maintaining บ้านรอดไหม?. It covers ev
 
 Facts are as of **6 Oct 2026**. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
+What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
+
 **Contents**
 
 1. [Domain summary](#1-domain-summary)

@@ -2,6 +2,8 @@
 
 This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.0.0 (6 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
+The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = #1, N2 = #5, N3 = #4, N4 = #2).
+
 | Status | Meaning |
 |---|---|
 | **Open** | A real defect or gap. It should be fixed. |
@@ -120,7 +122,7 @@ What a headless test **cannot** show:
 
 The content checks already run on every Cloudflare build, and a failing build keeps the previous version live, so broken content cannot go live. Code changes, however, are only unit-tested when someone runs `npm test`.
 
-**Fix:** add a GitHub Actions workflow that runs `node tools/build.mjs && npm test` on pull requests. Optionally also run `npx playwright@1.56 install chromium && npm run smoke`.
+**Fix:** add a GitHub Actions workflow that runs `node tools/build.mjs && npm test` on pull requests. Optionally also run `npx playwright@1.63.0 install --with-deps chromium && npm run smoke`. ROADMAP card N3 has the steps.
 
 ### 5. Some UI text is hard-coded in `main.js`, and one event is unused
 
@@ -401,8 +403,8 @@ Converting the previews to JPEG at about quality 85 would roughly halve them, if
 
 `npm run images` and `npm run smoke` use `playwright-core`, which brings no browser of its own.
 
-- Either install one with `npx playwright@<same version> install chromium`,
-- or point `CHROME_PATH` at an existing Chrome or Chromium.
+- `package-lock.json` pins **1.63.0**, which expects its own Chromium build (1243). Install it with `npx playwright@1.63.0 install chromium`,
+- or point `CHROME_PATH` at an existing Chrome or Chromium. Claude Code cloud sessions ship Chromium 141 at `/opt/pw-browsers/chromium`, and every check passes with it.
 
 A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; any recent Chromium works for these scripts.
 

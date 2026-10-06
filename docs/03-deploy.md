@@ -38,7 +38,7 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
    - **Custom domains → Set up a domain** (optional), then update `SITE_URL` and redeploy.
 6. **Bake your domain into the images.** On your computer: `npm install && SITE_URL=https://your.domain npm run images`. Commit the updated `public/og`, `public/share` and `public/icons`.
    - The images show `#บ้านรอดไหม` until you do this.
-   - Rendering needs Chromium (`npx playwright install chromium`, or set `CHROME_PATH`).
+   - Rendering needs Chromium (`npx playwright@1.63.0 install chromium`, matching `package-lock.json`, or set `CHROME_PATH`).
 
 From now on:
 

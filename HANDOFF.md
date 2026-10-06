@@ -6,6 +6,8 @@
 | **Version** | 1.0.0 |
 | **Date** | 6 Oct 2026 |
 | **State** | Code complete and tested in headless browsers. **Not deployed yet. Not yet tested on real phones.** |
+| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first, then N1–N4 |
+| **For AI assistants** | Start with [AGENTS.md](AGENTS.md); lessons are in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
 
 ## 1. In one minute
 
@@ -31,7 +33,7 @@
 
 Details are in sections 2 and 8.
 
-**Where it came from.** It was built on 6 Oct 2026 in a feature branch of `bejranonda/carrier-vector-1988`, in the folder `baanrodmai/`. The same day it moved here to the repository root, keeping its two original commits. That branch was never merged and had no pull request. A follow-up commit there removed the `baanrodmai/` folder, so the branch now matches `master`. The two original commits stay in that branch's history until the branch is deleted.
+**Where it came from.** It was built on 6 Oct 2026 in a feature branch of `bejranonda/carrier-vector-1988`, in the folder `baanrodmai/`. The same day it moved here to the repository root, keeping its two original commits. That branch was never merged and had no pull request. It has since been pointed back at `master` (`7a9c196`), so `carrier-vector-1988` no longer contains any game code or game commits.
 
 ## 2. Before launch: what only you can do
 
@@ -58,7 +60,7 @@ Work through these in order. Each links to the details.
 
 ## 3. How to run it
 
-Requirements: Node 18 or later (Cloudflare uses 22). For `npm run images` and `npm run smoke`, you also need Chromium. Either set `CHROME_PATH` or run `npx playwright@1.56 install chromium`.
+Requirements: Node 18 or later (Cloudflare uses 22). For `npm run images` and `npm run smoke`, you also need Chromium. `package-lock.json` pins `playwright-core` 1.63.0. Either run `npx playwright@1.63.0 install chromium`, or set `CHROME_PATH` to an existing Chrome or Chromium (in Claude Code cloud sessions: `/opt/pw-browsers/chromium`).
 
 ```bash
 node tools/build.mjs                    # validate content + generate pages and the service worker
@@ -69,6 +71,7 @@ npm run smoke                           # 24 browser checks; add  -- --screens d
 npm run images                          # re-render previews, checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
 npm run docs                            # regenerate the safety table in docs/01 from items.json
+npm run check:docs                      # check every relative link and anchor in the Markdown
 ```
 
 ## 4. How it fits together
@@ -104,6 +107,9 @@ Rules, formulas and the content model are in [docs/KNOWLEDGE.md](docs/KNOWLEDGE.
 | See what's broken or limited | [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) |
 | Post about the game | [docs/04-launch-kit.md](docs/04-launch-kit.md) |
 | Read the numbers | [docs/05-metrics.md](docs/05-metrics.md) |
+| Know what to do next | [docs/ROADMAP.md](docs/ROADMAP.md) |
+| Avoid past mistakes | [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
+| Brief an AI assistant | [AGENTS.md](AGENTS.md) (Claude Code loads it through [CLAUDE.md](CLAUDE.md)) |
 
 ## 6. Operating the live game
 
@@ -142,7 +148,9 @@ The full list, with measurements, is in [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES
 
 ## 8. Suggested next steps
 
-1. **Launch** (section 2): the domain, images, forecast link, ⚠️ review, real-phone matrix and soft launch.
+All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each with steps, the person needed and a "done when". In short:
+
+1. **Launch** (section 2, ROADMAP L1–L7): the domain, images, forecast link, ⚠️ review, real-phone matrix and soft launch.
 2. **v1.1, polish:**
    - Fix the overlapping tap areas by moving slots, and add a unit test that fails above about 10% overlap ([#1](docs/KNOWN_ISSUES.md#1-neighbouring-tap-areas-can-overlap)).
    - Move the hard-coded texts into `strings.json` ([#5](docs/KNOWN_ISSUES.md#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused)).
@@ -150,6 +158,14 @@ The full list, with measurements, is in [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES
    - Use the first two weeks of metrics to find the most-missed lessons and improve their art or wording.
 3. **v1.2, more house:** draw the bathroom, bedroom and garage ([#14](docs/KNOWN_ISSUES.md#14-bathroom-bedroom-and-garage-are-not-drawn)), and settle the mattress conflict first ([#10](docs/KNOWN_ISSUES.md#10-sources-conflict-on-soaked-mattresses)).
 4. **v2, the combined run:** the before/after card and a third start button ([#15](docs/KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)).
+
+**Lessons in brief** (full list in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md)):
+
+- **Measure the whole requirement.** The 44 px rule passed for items but failed for four other controls until every control was measured.
+- **Headless tests aren't phones.** Real in-app browsers are still unverified.
+- **Agency sites block bots.** Their wording came from PRD reposts and news, so a person must do the final check.
+- **Some content edits reshuffle houses.** Adding, removing or moving items changes today's house and old challenge links, so ship those at midnight.
+- **Write down an action only after it succeeded,** and prefer additive git operations. History rewrites happen only on the owner's explicit request.
 
 ## 9. What changed in this handoff (6 Oct 2026)
 
@@ -169,9 +185,15 @@ The full list, with measurements, is in [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES
 - **Added documents:** this file, [CHANGELOG.md](CHANGELOG.md), [docs/KNOWLEDGE.md](docs/KNOWLEDGE.md), [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md), [docs/GUIDELINES.md](docs/GUIDELINES.md), [docs/APPROACH_AND_METHOD.md](docs/APPROACH_AND_METHOD.md) and [CLAUDE.md](CLAUDE.md).
 - **Cleaned up `carrier-vector-1988`.**
   - There was no pull request for the game, so there was nothing to close.
-  - On its branch `ccr-b279fcc9-aqphnj`, commit `8c08c06` removes `baanrodmai/`, which leaves the branch identical to `master`.
-  - The two game commits remain in that branch's history. To drop them too, delete the branch on GitHub (Branches → 🗑).
+  - A removal commit (`8c08c06`) came first. Then, at the owner's request, the branch `ccr-b279fcc9-aqphnj` was force-pushed back to `master` (`7a9c196`), so it is no longer ahead and holds no game commits.
+  - Deleting the branch needs the GitHub UI, because the session's git proxy refuses branch deletion. This is optional.
   - That repository's own pull requests (#1 and #2, the flight-sim releases) were not touched.
+- **Added guidance for AI assistants** (same day, later):
+  - [AGENTS.md](AGENTS.md), which [CLAUDE.md](CLAUDE.md) imports
+  - [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md)
+  - [docs/ROADMAP.md](docs/ROADMAP.md)
+  - `npm run check:docs`, a link and anchor checker
+  - corrected Playwright install notes (1.63.0, or `CHROME_PATH`)
 
 ## 10. Access, accounts and secrets
 

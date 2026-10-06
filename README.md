@@ -41,9 +41,10 @@ node tools/build.mjs                    # validate content, generate preview pag
 npx wrangler@latest pages dev public    # http://localhost:8788
 npm test                                # game-rule tests (no browser)
 npm install && npm run smoke            # browser checks (needs Chromium; set CHROME_PATH if needed)
+npm run check:docs                      # after editing docs: every relative link and anchor resolves
 ```
 
-Node 18 or later is required. Cloudflare builds with Node 22, pinned in `.node-version`.
+Node 18 or later is required. Cloudflare builds with Node 22, pinned in `.node-version`. Browser checks use `playwright-core` 1.63.0. Install its browser with `npx playwright@1.63.0 install chromium`, or point `CHROME_PATH` at any recent Chromium.
 
 ## Deploy (Cloudflare Pages, about 5 minutes)
 
@@ -66,6 +67,8 @@ The full steps are in [docs/03-deploy.md](docs/03-deploy.md). They cover Wrangle
 | Document | What's inside |
 |---|---|
 | [HANDOFF.md](HANDOFF.md) | Current state, what the owner must decide before launch, how to run and operate it, and next steps |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | What to do next: launch tasks and v1.1+ work as task cards with steps and "done when" |
+| [AGENTS.md](AGENTS.md) | For AI assistants: read order, commands, definition of done, how the owner works, sandbox notes. Claude Code loads it through [CLAUDE.md](CLAUDE.md). |
 | [CHANGELOG.md](CHANGELOG.md) | What changed, release by release |
 
 **Project deliverables**
@@ -87,6 +90,7 @@ The full steps are in [docs/03-deploy.md](docs/03-deploy.md). They cover Wrangle
 | [Known issues](docs/KNOWN_ISSUES.md) | Open issues, platform limits and deliberate trade-offs, with measurements |
 | [Guidelines](docs/GUIDELINES.md) | Rules for editing safety content, writing Thai copy, changing code, testing and releasing |
 | [Approach and method](docs/APPROACH_AND_METHOD.md) | How the project was researched, designed, built and verified, and why |
+| [Lessons learned](docs/LESSONS_LEARNED.md) | What went wrong or right while building it, and the rule each lesson became |
 
 ## แก้เนื้อหาเอง (สำหรับทีมที่ไม่ได้เขียนโค้ด)
 
@@ -116,14 +120,15 @@ public/            static site (Cloudflare Pages output directory)
   og/ share/       pre-rendered link previews, checklists, sample cards
   c/ checklist/    generated link-preview pages
 functions/api/e.js anonymous event counter → Workers Analytics Engine
-tools/             build.mjs (validate + generate), render-images.mjs, sw.template.js
+tools/             build.mjs (validate + generate), render-images.mjs, sw.template.js, probe.mjs, check-docs.mjs
 tests/             run.mjs (rules), smoke.mjs (headless browser)
 docs/              everything above + screens/
+AGENTS.md CLAUDE.md  guidance for AI assistants
 ```
 
 ## History
 
-The game was first built on a feature branch of `bejranonda/carrier-vector-1988`, in its `baanrodmai/` folder. On 6 Oct 2026 it moved here, to the repository root, with its first two commits kept. That branch was never merged, and a later commit removed the game from it, so `carrier-vector-1988` holds only the flight sim again.
+The game was first built on a feature branch of `bejranonda/carrier-vector-1988`, in its `baanrodmai/` folder. On 6 Oct 2026 it moved here, to the repository root, with its first two commits kept. That branch was never merged, and it has since been reset to `master`, so `carrier-vector-1988` holds only the flight sim again.
 
 ## Credits and license
 

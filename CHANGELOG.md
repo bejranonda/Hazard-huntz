@@ -2,6 +2,26 @@
 
 This project uses [semantic versioning](https://semver.org/). Each release is tagged `vX.Y.Z` on `main` once its Cloudflare deploy has been checked.
 
+## [Unreleased]
+
+### Added
+
+- **Guidance for AI assistants:**
+  - [AGENTS.md](AGENTS.md): read order, commands, definition of done, how the owner works, sandbox notes. [CLAUDE.md](CLAUDE.md) now imports it.
+  - [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md): 35 lessons in six areas, each with where it is enforced.
+  - [docs/ROADMAP.md](docs/ROADMAP.md): launch, v1.1, later and recurring work as task cards.
+- **`npm run check:docs`** (`tools/check-docs.mjs`): checks every relative link and heading anchor in the Markdown.
+- **New rules** in [GUIDELINES §8](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), 16–19:
+  - write down an action only after it succeeded
+  - prefer additive git
+  - check doc claims against the code
+  - run the link checker
+
+### Changed
+
+- **Playwright install notes** now match the lock file (`playwright-core` 1.63.0), with `CHROME_PATH=/opt/pw-browsers/chromium` for Claude Code cloud sessions.
+- **The `carrier-vector-1988` game branch** was reset to `master` at the owner's request, so it no longer carries the game commits. The docs describe the outcome.
+
 ## [1.0.0] — 2026-10-06
 
 The first release candidate. It is complete and tested in headless browsers, but **not yet deployed or tested on real phones** (see [HANDOFF.md](HANDOFF.md)).

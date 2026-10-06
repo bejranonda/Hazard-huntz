@@ -63,7 +63,8 @@ Two working rules followed from those principles:
 | 7. Platform | A build that validates and generates; the service worker; a single Pages Function for counts | `tools/`, `functions/` |
 | 8. Verification | Unit tests, headless smoke tests with in-app user agents, probes and screenshot review. Bugs found this way were fixed and turned into rules. | `tests/`, [GUIDELINES §8](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
 | 9. Documents | Deploy steps, launch kit, metrics and test checklist, written against the built code | `docs/03`–`06` |
-| 10. Handoff | Moved to this repository; every control re-measured; four tap-size problems fixed; maintainer documents written | This file, [HANDOFF.md](../HANDOFF.md), [KNOWN_ISSUES.md](KNOWN_ISSUES.md) |
+| 10. Handoff | Moved to this repository (§12); every control re-measured; four tap-size problems fixed; maintainer documents written | This file, [HANDOFF.md](../HANDOFF.md), [KNOWN_ISSUES.md](KNOWN_ISSUES.md) |
+| 11. Guidance for AI | What was learned and what comes next, written down for the next assistant | [AGENTS.md](../AGENTS.md), [LESSONS_LEARNED.md](LESSONS_LEARNED.md), [ROADMAP.md](ROADMAP.md) |
 
 The brief allowed up to three questions. None were asked: every gap had a reasonable default, so the work used one and wrote it down. The two values only the owner has became the placeholders `[DOMAIN]` and `[FORECAST_APP_URL]`. Judgement calls, such as which rooms the first version should include, are written down in [02-game-design.md](02-game-design.md) and in this file.
 
@@ -182,3 +183,23 @@ The loop that should run every season:
 2. **Decide:** the most-missed items need clearer art or wording, not easier answers. Channels that bring players back get the outreach effort.
 3. **Change the content:** edit the JSON with sources ([GUIDELINES §2](GUIDELINES.md#2-safety-content)), run the checks, and ship structural edits around midnight.
 4. **Say so:** post "UPDATE:" for any change to safety advice, and share aggregate results ("7 ใน 10 คนเลือกเรียกช่างไฟ"), never individual ones.
+
+The concrete next tasks are in [ROADMAP.md](ROADMAP.md), and what this first iteration taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md).
+
+## 12. Moving the project between repositories
+
+The game was built in `bejranonda/carrier-vector-1988/baanrodmai/`, then moved to the root of this repository on 6 Oct 2026. The method below keeps the history and can be reused.
+
+1. **Re-root each commit.** For each commit that touched the folder, oldest first, take the folder's tree. Recreate the commit with the same author, committer, dates and raw message, with the previous recreated commit as its parent:
+
+   ```bash
+   tree=$(git rev-parse "$c:baanrodmai")
+   git cat-file commit "$c" | sed '1,/^$/d' > msg.txt     # the raw message
+   GIT_AUTHOR_NAME=… GIT_AUTHOR_DATE="$(git log -1 --format=%ad --date=raw $c)" … \
+     git commit-tree "$tree" ${parent:+-p "$parent"} -F msg.txt
+   ```
+2. **Import the commits.** Point a temporary branch at the last recreated commit, `git fetch` it into the new repository, set `main` to it, and remove the temporary branch.
+3. **Commit the new work on top** in separate commits: here, the accessibility fixes, then the docs.
+4. **Check a fresh clone** (build with a clean `git status`, tests, smoke test) before pushing.
+5. **Clean up the old repository additively,** with a commit that removes the folder. Rewrite or delete its branch only if the owner asks. In this case the owner did ask, and the branch was force-pushed back to `master` with `--force-with-lease`.
+6. **Write the move down only once it is verified:** commit ids, `git ls-remote`, the GitHub file listing.

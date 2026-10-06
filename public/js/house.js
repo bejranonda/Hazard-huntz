@@ -46,7 +46,9 @@ export function generateHouse(content, mode, houseKey, opts = {}) {
     if (chosen.filter((c) => c.room === item.room).length >= cap) return false;
     if (!freeSlotsFor(item).length) return false;
     const slotId = rng.pick(freeSlotsFor(item));
-    free.set(item.room, free.get(item.room).filter((s) => s !== slotId));
+    const slot = slotById.get(slotId);
+    const toDrop = new Set([slotId, ...(slot?.excludes || [])]);
+    free.set(item.room, free.get(item.room).filter((s) => !toDrop.has(s)));
     chosen.push(item);
     assigned.set(item.id, slotId);
     if (item.group) usedGroups.add(item.group);
@@ -107,7 +109,9 @@ export function generateHouse(content, mode, houseKey, opts = {}) {
     const slots = freeSlotsFor(d);
     if (!slots.length) continue;
     const slotId = rng.pick(slots);
-    free.set(d.room, free.get(d.room).filter((s) => s !== slotId));
+    const slot = slotById.get(slotId);
+    const toDrop = new Set([slotId, ...(slot?.excludes || [])]);
+    free.set(d.room, free.get(d.room).filter((s) => !toDrop.has(s)));
     place(d, 'decoy', slotId);
     decoys++;
   }

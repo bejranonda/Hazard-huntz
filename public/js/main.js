@@ -41,6 +41,22 @@ const state = {
 };
 let heroGecko = null;
 let gameGecko = null;
+let hintTimer = null;
+
+function resetHintTimer() {
+  clearTimeout(hintTimer);
+  $('#stage')?.classList.remove('show-hints');
+  if (state.round && state.round.running && !sheetOpen()) {
+    hintTimer = setTimeout(() => {
+      $('#stage')?.classList.add('show-hints');
+    }, 3500);
+  }
+}
+
+function clearHintTimer() {
+  clearTimeout(hintTimer);
+  $('#stage')?.classList.remove('show-hints');
+}
 
 // ------------------------------------------------------------------ boot
 
@@ -245,6 +261,7 @@ async function startRound() {
     prevBtn: $('#nav-prev'),
     nextBtn: $('#nav-next'),
     onTap: onItemTap,
+    onRoomChange: () => resetHintTimer(),
   });
   try {
     await state.scene.mount(house);
@@ -266,6 +283,7 @@ async function startRound() {
   $('#gauge').classList.remove('low');
   say(pickLine(mode === 'prepare' ? 'geckoStartPrepare' : 'geckoStartReturn'), 3200);
   round.start();
+  resetHintTimer();
   track('round_start', { mode, label: run.kind });
   loop();
 }
@@ -308,6 +326,7 @@ function stagePoint(p) {
 function onItemTap(p) {
   const r = state.round;
   if (!r || r.ended || !r.running || sheetOpen()) return;
+  clearHintTimer();
   unlockAudio();
   if (p.kind === 'decoy') {
     const pt = stagePoint(p);
@@ -357,7 +376,10 @@ function openChoices(p) {
         <p class="sub">${esc(L(ctx))}</p>
       </div>
     </div>
-    <p class="sub"><b>${esc(t('whatToDo'))}</b></p>
+    <div class="choice-intro">
+      <p class="sub"><b>${esc(t('whatToDo'))}</b></p>
+      <span class="paused-pill" aria-label="${esc(t('timePausedTag'))}">${esc(t('timePausedTag'))}</span>
+    </div>
     <div class="choices">
       ${choices.map((c, i) => `
         <button class="choice" type="button" data-i="${i}">
@@ -436,12 +458,13 @@ function onChoice(p, choice, variant, choices) {
     <div class="tip-card ${res.correct ? 'ok' : 'learn'}">
       <span class="label">${esc(t('tipLabel'))}</span>
       <p class="tip">${esc(tip)}</p>
+      ${why ? `<p class="why-text">💡 ${esc(why)}</p>` : ''}
     </div>
+    ${srcIds && srcIds.length ? `
     <details class="why">
-      <summary>${esc(t('why'))} ▾</summary>
-      <p>${esc(why)}</p>
+      <summary>${esc(t('source'))} ▾</summary>
       ${sourcesLine(srcIds)}
-    </details>
+    </details>` : ''}
     <button class="btn" type="button" id="fb-next" autofocus>${esc(t(res.correct ? 'continue' : 'gotIt'))}</button>`;
   $('#fb-next').focus({ preventScroll: true });
   $('#fb-next').addEventListener('click', () => closeSheet());
@@ -453,6 +476,7 @@ function resumeGame() {
   r.resume();
   r.checkAllResolved();
   checkRoomCleared();
+  resetHintTimer();
 }
 
 function checkRoomCleared() {
@@ -466,6 +490,7 @@ function checkRoomCleared() {
 }
 
 function pauseGame(showSheet) {
+  clearHintTimer();
   const r = state.round;
   if (!r || r.ended || sheetOpen()) return;
   r.pause();
@@ -506,6 +531,7 @@ function onWet() {
 }
 
 async function onRoundEnd(result) {
+  clearHintTimer();
   cancelAnimationFrame(state.raf);
   updateHud();
   state.scene.revealMissed(state.house.targets, state.round.records);
@@ -585,6 +611,7 @@ async function showResult(result) {
   $('#result').innerHTML = `
     <div class="card-wrap">
       <img class="card-preview" id="card-img" alt="${esc(t(headlineKey, { score: result.score10 }))} · ${esc(rank)}">
+      <p class="card-sub-hint">👆 ${esc(t('cardTapHint'))}</p>
     </div>
     <h1 id="result-title" class="sr-only">${esc(t(headlineKey, { score: result.score10 }))}</h1>
     <div class="stats">
@@ -690,6 +717,7 @@ function openShareSheet({ text, url, blob, file, mode, filename, imgSrc }) {
   openSheet(`
     <h2 id="sheet-title">${esc(t('shareTitle'))}</h2>
     ${imgSrc ? `<img class="card-preview" src="${esc(imgSrc)}" alt="">` : ''}
+    ${app === 'line' ? `<p class="line-guide">💬 ${esc(t('lineGuideText'))}</p>` : ''}
     <div class="share-grid">
       ${nativeOk ? `<button class="share-btn" data-ch="native"><span class="ico ico-native">⇪</span>${esc(t('shareNative'))}</button>` : ''}
       <button class="share-btn" data-ch="line"><span class="ico ico-line">L</span>${esc(t('shareLine'))}</button>

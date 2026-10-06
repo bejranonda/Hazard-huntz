@@ -16,15 +16,15 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 
 | # | Issue | Status | Severity |
 |---|---|---|---|
-| 1 | [Neighbouring tap areas can overlap](#1-neighbouring-tap-areas-can-overlap) | Open | Medium |
+| 1 | [Neighbouring tap areas can overlap](#1-neighbouring-tap-areas-can-overlap) | Fixed | Medium |
 | 2 | [Item tap areas are 38–43 px on 320 px-wide phones](#2-item-tap-areas-are-3843-px-on-320-px-wide-phones) | Open | Low |
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
 | 4 | [No CI on GitHub](#4-no-ci-on-github) | Open | Low |
 | 5 | [Some UI text is hard-coded in `main.js`, and one event is unused](#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused) | Open | Low |
-| 33 | [Interactive targets lack visual affordance (Pixel-hunting risk)](#33-interactive-targets-lack-visual-affordance-pixel-hunting-risk) | Open | Medium |
-| 34 | [LINE in-app browser blocks direct image downloads](#34-line-in-app-browser-blocks-direct-image-downloads) | Open | Medium |
-| 35 | [Timer anxiety in older players during the first 5 seconds](#35-timer-anxiety-in-older-players-during-the-first-5-seconds) | Open | Low |
-| 36 | [Hidden "ทำไม?" explanation is frequently skipped by players](#36-hidden-ทำไม-explanation-is-frequently-skipped-by-players) | Open | Low |
+| 33 | [Interactive targets lack visual affordance (Pixel-hunting risk)](#33-interactive-targets-lack-visual-affordance-pixel-hunting-risk) | Fixed | Medium |
+| 34 | [LINE in-app browser blocks direct image downloads](#34-line-in-app-browser-blocks-direct-image-downloads) | Fixed | Medium |
+| 35 | [Timer anxiety in older players during the first 5 seconds](#35-timer-anxiety-in-older-players-during-the-first-5-seconds) | Fixed | Low |
+| 36 | [Hidden "ทำไม?" explanation is frequently skipped by players](#36-hidden-ทำไม-explanation-is-frequently-skipped-by-players) | Fixed | Low |
 | 6 | [Placeholders `[DOMAIN]` and `[FORECAST_APP_URL]` are unset](#6-placeholders-domain-and-forecast_app_url-are-unset) | Owner (domain fixed) | **High (launch blocker)** |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
@@ -60,32 +60,11 @@ Fixed issues are listed [at the end](#fixed).
 
 ### 1. Neighbouring tap areas can overlap
 
-**Status:** Open · **Severity:** Medium
+**Status:** Fixed in v1.1.0 ([F10](#fixed)) · **Severity:** Medium
 
-Every item's tap area is grown to at least `MIN_HIT` = 64 scene units so that it stays at or above 44 px (`public/js/house.js`). Some slots in `rooms.json` are close enough that two grown areas overlap. In the overlap, the item drawn later gets the tap. Items are drawn left to right, so the right-hand item wins.
+Every item's tap area is grown to at least `MIN_HIT` = 64 scene units so that it stays at or above 44 px (`public/js/house.js`). Some slots in `rooms.json` were originally close enough that grown areas overlapped (in 32% of houses, worst 45%).
 
-**Measured** with `npm run probe` over 1,460 houses (daily houses from 1 Oct 2026 for two years, both modes):
-
-- **32%** of houses have at least one overlapping pair.
-- The worst case covers **45%** of the smaller item's area.
-
-| Room | Slot pair | Houses affected | Worst overlap |
-|---|---|---|---|
-| front | `fr-pot` + `fr-door` | 148 | 6% |
-| front | `fr-shoes` + `fr-floor-d` | 119 | **45%** |
-| front | `fr-floor-d` + `fr-car` | 97 | 16% |
-| front | `fr-door` + `fr-floor-b` | 71 | **33%** |
-| kitchen | `kt-counter-sm` + `kt-sink` | 65 | 12% |
-| living | `lv-tv` + `lv-wall` | 47 | 1% |
-| front | `fr-pole` + `fr-floor-a` | 10 | 17% |
-
-**Effect:** a tap near the edge of one item can open the neighbouring item. Neither is lost: the player answers the other one first. If the neighbour is a decoy, it costs 2 seconds once. It's annoying, not breaking.
-
-**Fix, in order of preference:**
-
-1. **Move the slots apart** in `rooms.json`, for `fr-shoes`/`fr-floor-d` and `fr-door`/`fr-floor-b` first, and check the art still makes sense.
-2. **Or** add an "excludes" list per slot, so `generateHouse()` never fills both slots of a conflicting pair.
-3. **Then** add a unit test that fails when any two placements in a room overlap by more than about 10%. The loop in `tools/probe.mjs` can be reused.
+**Fix:** Resolved in v1.1.0 using a slot exclusion graph (`slot.excludes` in `rooms.json` checked during item and decoy placement in `house.js`). `npm run probe` over 1,460 houses (both modes, 2 years) confirms **0 (0%) overlaps**, worst 0%.
 
 ### 2. Item tap areas are 38–43 px on 320 px-wide phones
 
@@ -148,35 +127,27 @@ The content checks already run on every Cloudflare build, and a failing build ke
 
 ### 33. Interactive targets lack visual affordance (Pixel-hunting risk)
 
-**Status:** Open · **Severity:** Medium
+**Status:** Fixed in v1.1.0 ([F11](#fixed)) · **Severity:** Medium
 
-In the room scenes, actionable targets and static background art share identical SVG rendering styles. On touchscreen devices without mouse hover states, first-time players and older adults cannot readily distinguish which items are interactable, leading to random exploratory tapping across the stage.
-
-**Fix:** Add a subtle visual cue (e.g. a soft breathing pulse or delayed shimmer animation) on pending targets after 4–5 seconds of inactivity. See [IMP-02 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+Resolved by adding a 3.5s contextual idle hint timer in `main.js` that triggers a soft breathing ring (`.show-hints`) on unhandled items, plus hover micro-interactions and reduced-motion fallback. See [IMP-02 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
 
 ### 34. LINE in-app browser blocks direct image downloads
 
-**Status:** Open · **Severity:** Medium
+**Status:** Fixed in v1.1.0 ([F12](#fixed)) · **Severity:** Medium
 
-LINE's internal Webview sandbox disables direct HTML5 canvas downloads. The fallback displays the card with *"กดค้างที่รูป แล้วเลือก 'บันทึกรูปภาพ'"*, but elderly users frequently miss this instruction or struggle with the long-press interaction.
-
-**Fix:** Add an animated finger guide for the long-press gesture and provide an explicit "Open in external browser" (Chrome/Safari) CTA. See [IMP-03 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+Resolved by displaying explicit card tap/hold guidance on the result screen, a dedicated `.line-guide` helper banner in the share sheet, and a direct external browser launcher. See [IMP-03 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
 
 ### 35. Timer anxiety in older players during the first 5 seconds
 
-**Status:** Open · **Severity:** Low
+**Status:** Fixed in v1.1.0 ([F13](#fixed)) · **Severity:** Low
 
-The water-gauge timer and dynamic rising water create immediate urgency. While the timer purposefully pauses during question reading, players aged 55+ often experience initial anxiety before realizing they have unlimited time to read.
-
-**Fix:** Add a reassuring micro-copy note in the How-to dialog (*"ไม่ต้องตกใจ เวลาจะหยุดเดินเมื่อแตะของ"*) and consider an untimed practice mode. See [IMP-04 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+Resolved by adding reassuring How-to micro-copy explaining that time pauses on tap, and adding a prominent `⏸️ พักเวลาอยู่` badge inside the choice sheet. See [IMP-04 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
 
 ### 36. Hidden "ทำไม?" explanation is frequently skipped by players
 
-**Status:** Open · **Severity:** Low
+**Status:** Fixed in v1.1.0 ([F14](#fixed)) · **Severity:** Low
 
-The educational rationale is placed inside a collapsed `<details class="why">` component. Because the yellow "ไปต่อ" button is visually dominant, >75% of players tap through without expanding the explanation.
-
-**Fix:** Surface the primary one-sentence rationale directly under the tip card, reserving the accordion for official agency citations. See [IMP-05 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+Resolved by surfacing the causal 1-sentence `why` explanation directly inside the tip card (💡), reserving the `<details>` accordion strictly for authoritative agency citations. See [IMP-05 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
 
 ---
 
@@ -490,6 +461,16 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.1.0, during the 3-loop optimization cycle (7 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F10 (was #1) | Neighbouring tap areas overlapped in 32% of houses (worst 45%) | Implemented `slot.excludes` graph in `rooms.json` and checked during target/decoy placement in `house.js`. `npm run probe` over 1,460 houses now reports **0 (0%) overlaps**, worst 0%. |
+| F11 (was #33) | Actionable targets lacked visual affordance (Pixel-hunting risk) | Added a 3.5s contextual idle hint timer in `main.js` that fades in a soft breathing dashed ring (`.show-hints`) on unhandled items, with hover micro-interactions on desktop and reduced-motion support. |
+| F12 (was #34) | LINE in-app browser blocks direct canvas image downloads | Added explicit card tap/hold instructions below the preview card, a dedicated `.line-guide` helper banner in the share sheet, and direct external browser launcher. |
+| F13 (was #35) | Timer anxiety in older players during countdown | Added clear reassurance micro-copy in How-to dialogs explaining the clock stops upon tapping, and added a prominent `⏸️ พักเวลาอยู่` badge inside the choice sheet. |
+| F14 (was #36) | Educational rationale ("ทำไม?") was hidden inside `<details>` and skipped | Surfaced the causal 1-sentence `why` explanation directly inside the tip card (💡), reserving the `<details>` accordion strictly for authoritative agency citations. |
 
 ### During development (before the first commit)
 

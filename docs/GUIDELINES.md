@@ -255,6 +255,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 26. **Interactive elements need visual affordance on touchscreens.** Because touchscreens have no cursor hover, interactive SVG objects should have subtle visual hints (such as a breathing shimmer on pending targets) to avoid random tapping ("pixel hunting").
 27. **Reassure players against timer anxiety.** Explain prominently in how-to dialogs that timer countdowns pause during question reading, avoiding unnecessary panic for older adults.
 28. **In-app browser sharing must guide around download restrictions.** In LINE and Facebook webviews where programmatic canvas downloads fail, pair long-press guidance with a direct "Open in external browser" option.
+29. **Slot exclusions prevent neighbouring tap collisions.** Instead of fragile manual coordinate balancing that cascades across room layouts, declare conflicting slot IDs in `slot.excludes` within `rooms.json` so `generateHouse()` in `house.js` never places two items in overlapping hitboxes in the same house.
 
 ## 9. Working with AI assistants
 

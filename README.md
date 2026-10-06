@@ -105,9 +105,9 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | [Knowledge base](docs/KNOWLEDGE.md) | Every rule, constant and formula; the content model; platform limits; audience research with sources |
 | [Known issues](docs/KNOWN_ISSUES.md) | Open issues, platform limits and deliberate trade-offs, with measurements |
 | [Guidelines](docs/GUIDELINES.md) | Rules for editing safety content, writing Thai copy, changing code, testing and releasing |
-| [Approach and method](docs/APPROACH_AND_METHOD.md) | How the project was researched, designed, built and verified, and why |
+| [Approach and method](docs/APPROACH_AND_METHOD.md) | How the project was researched, designed, built, verified and iteratively optimized |
 | [Lessons learned](docs/LESSONS_LEARNED.md) | What went wrong or right while building it, and the rule each lesson became |
-| [UI/UX Review & Evaluation](review/README.md) | Comprehensive live-site evaluation (8.8/10), persona validation, and engineering improvement backlog |
+| [UI/UX Review & Optimization](review/README.md) | Live evaluation, 3-loop refinement cycle (9.74/10 optimal), persona validation, and [iteration log](review/ITERATION_LOG.md) |
 
 ## แก้เนื้อหาเอง (สำหรับทีมที่ไม่ได้เขียนโค้ด)
 

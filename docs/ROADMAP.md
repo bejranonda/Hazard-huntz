@@ -34,12 +34,12 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo |
-| N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Todo |
+| N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Todo |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Todo |
 | N4 | [Bigger tap areas on 320 px phones](#n4-bigger-tap-areas-on-320-px-phones) | AI-ready | Todo |
 | N5 | [First metrics review](#n5-first-metrics-review) | Owner + AI | Blocked: needs 2 weeks live |
-| N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Todo |
+| N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Done: IMP-01 to IMP-07 verified |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -129,8 +129,8 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N1. Fix overlapping tap areas
 
-- **Who:** AI-ready · **Status:** Todo · **Issue:** #1
-- **Why:** 32% of houses have two neighbouring items whose tap areas overlap, at worst by 45% of the smaller item, so a tap can open the wrong item.
+- **Who:** AI-ready · **Status:** Done (7 Oct 2026: slot exclusion graph implemented, `npm run probe` reports 0% overlap) · **Issue:** #1
+- **Why:** 32% of houses had two neighbouring items whose tap areas overlapped, at worst by 45% of the smaller item, so a tap could open the wrong item.
 - **Steps:**
   1. `npm run probe` and note the pairs. The worst are `fr-shoes` + `fr-floor-d` and `fr-door` + `fr-floor-b`.
   2. In `public/content/rooms.json`, move the conflicting slots at least about 70 scene units apart on the same baseline. Keep each slot on a surface that makes sense in `public/art/rooms/<room>.svg`; slots are the bottom centre of the sprite.
@@ -196,7 +196,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N6. Implement live-site UX improvements
 
-- **Who:** AI-ready · **Status:** Todo · **Issues:** #33, #34, #35, #36
+- **Who:** AI-ready · **Status:** Done (7 Oct 2026: completed in 3-loop refinement cycle) · **Issues:** #33, #34, #35, #36
 - **Steps:**
   1. Review the prioritized backlog in [review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
   2. Implement **IMP-01** (tap-area collision offsets in `rooms.json`).

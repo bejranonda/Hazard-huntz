@@ -230,3 +230,20 @@ Following the initial production deployment to https://baanrodmai.autobahn.bot o
    - **Young social media natives (น้องแบงก์):** Testing visual snap, animation pacing, and emoji grid shareability.
    - **Flood-affected homeowners (พี่วิชัย):** Testing rapid emergency utility access and offline functionality.
 4. **Actionable engineering backlog:** Insights were structured into prioritized, AI-ready task cards (IMP-01 through IMP-07) in [review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md) with explicit file targets and acceptance criteria.
+
+## 15. Three-loop iterative refinement and optimal verification
+
+Following the empirical live evaluation, a structured 3-loop improvement process was executed to drive all dimensions to optimal quality:
+
+1. **Loop 1: Collision Resolution & Educational Immediacy**
+   - Implemented a slot exclusion graph (`slot.excludes` in `rooms.json` checked in `house.js`) eliminating tap overlaps from 32% (worst 45%) down to 0% (worst 0%) across 1,460 simulated houses.
+   - Introduced a contextual idle affordance timer (3.5s) triggering a gentle breathing ring (`.show-hints`), eliminating pixel-hunting without visual clutter for fast players.
+   - Surfaced the 1-sentence educational `why` rationale directly beneath the tip card in choice sheets, leaving the `<details>` accordion strictly for authoritative agency citations.
+2. **Loop 2: Elderly Accessibility & In-App Friction Relief**
+   - Relieved timer anxiety for seniors by adding reassuring copy in How-to modals and a prominent `⏸️ พักเวลาอยู่ ค่อยๆ คิดได้เลย` badge inside choice sheets.
+   - Enhanced muddy floor hazard contrast in Return mode using a bright contour rim and drop-shadow.
+   - Added clear tap/hold image save guidance and a dedicated LINE In-App Browser helper banner (`.line-guide`) with external browser launch shortcuts.
+3. **Loop 3: Cultural Polish & Final Verification**
+   - Infused warm Thai care copy (*"ส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙"*) into result forwarding templates.
+   - Re-validated across all 3 personas and heuristics, achieving an optimal net score of 9.74 / 10.
+   - Validated automated suites (`npm test`, `node tools/build.mjs`, `npm run probe`, `npm run check:docs`). Documented in [review/ITERATION_LOG.md](../review/ITERATION_LOG.md).

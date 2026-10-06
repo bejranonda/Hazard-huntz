@@ -34,18 +34,21 @@
     "howtoPrepare": [
       "แตะของที่เสี่ยงโดนน้ำ หรือยังไม่ได้เตรียม",
       "เลือกวิธีที่ถูก: ยกขึ้นสูง แพ็ก ปิด หรือปล่อยไว้",
-      "ของที่อยู่ต่ำโดนน้ำก่อน ของสำคัญทำก่อนน้ำเข้าบ้านได้โบนัส ⭐"
+      "ของที่อยู่ต่ำโดนน้ำก่อน ของสำคัญทำก่อนน้ำเข้าบ้านได้โบนัส ⭐",
+      "ไม่ต้องกังวลเรื่องเวลา: เมื่อแตะของ นาฬิกาจะหยุดทันที ค่อยๆ อ่านได้เลย 💡"
     ],
     "howtoReturn": [
       "แตะจุดที่ดูอันตรายในบ้าน",
       "เลือกวิธีที่ปลอดภัยที่สุด",
-      "หาให้ครบก่อนหมดเวลา อันตรายบางอย่างซ่อนอยู่"
+      "หาให้ครบก่อนหมดเวลา อันตรายบางอย่างซ่อนอยู่",
+      "ไม่ต้องตกใจ: เวลาจะหยุดเดินทุกครั้งที่แตะตรวจจุดอันตราย ค่อยๆ พิจารณาได้เลย 💡"
     ],
     "howtoSwipe": "ปัดซ้าย-ขวา หรือแตะชื่อห้อง เพื่อไปห้องอื่น",
     "startBtn": "เริ่มเลย!",
     "seconds": "{s} วิ",
     "scoreHud": "{done}/{total}",
     "whatToDo": "จะทำยังไงดี?",
+    "timePausedTag": "⏸️ พักเวลาอยู่ ค่อยๆ คิดได้เลย",
     "correctTitles": [
       "ถูกต้อง!",
       "เยี่ยมเลย!",
@@ -136,9 +139,11 @@
     "shareSave": "บันทึกรูป",
     "copied": "คัดลอกแล้ว ไปวางในแชตได้เลย!",
     "saveHint": "กดค้างที่รูป แล้วเลือก 'บันทึกรูปภาพ'",
+    "cardTapHint": "แตะรูปค้างไว้เพื่อเซฟรูป ส่งต่อให้ครอบครัวทาง LINE",
+    "lineGuideText": "สำหรับผู้ใช้ LINE: แตะรูปด้านบนค้างไว้เพื่อบันทึกรูป หรือกดปุ่มเปิดเบราว์เซอร์หลักด้านล่าง",
     "openExternal": "เปิดในเบราว์เซอร์ เพื่อแชร์รูปได้ง่ายขึ้น",
-    "shareTextPrepare": "เตรียมบ้านทัน {score}/10 🏠\nได้ฉายา “{rank}”\n{grid}\nบ้านรอดไหม? เกม 60 วิ ฝึกเตรียมบ้านก่อนน้ำมา\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
-    "shareTextReturn": "ตรวจบ้านผ่าน {score}/10 ⚡\nได้ฉายา “{rank}”\n{grid}\nบ้านรอดไหม? เกม 60 วิ หาจุดอันตรายหลังน้ำลด\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
+    "shareTextPrepare": "เตรียมบ้านทัน {score}/10 🏠\nได้ฉายา “{rank}”\n{grid}\nส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
+    "shareTextReturn": "ตรวจบ้านผ่าน {score}/10 ⚡\nได้ฉายา “{rank}”\n{grid}\nส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยหลังน้ำลด 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
     "shareTextChecklist": "{title}\nเก็บไว้ ส่งต่อให้คนที่บ้านด้วยนะ 💛\nเล่นเกมฝึกจริง 60 วิ 👉 {url}",
     "checklistTitle": "เช็กลิสต์ส่งต่อให้คนที่บ้าน",
     "checklistTabPrepare": "ก่อนน้ำมา",
@@ -212,18 +217,21 @@
     "howtoPrepare": [
       "Tap things at risk from the water or not ready yet",
       "Pick the right move: lift, pack, switch off or leave it",
-      "Low things flood first. Critical items done before water gets in earn a ⭐ bonus"
+      "Low things flood first. Critical items done before water gets in earn a ⭐ bonus",
+      "No rush: the timer pauses whenever you tap an item so you can read calmly 💡"
     ],
     "howtoReturn": [
       "Tap anything that looks dangerous",
       "Choose the safest action",
-      "Find them all before time runs out; some are well hidden"
+      "Find them all before time runs out; some are well hidden",
+      "No pressure: time pauses whenever you inspect a hazard, so take your time 💡"
     ],
     "howtoSwipe": "Swipe left/right or tap a room name to move around",
     "startBtn": "Let's go!",
     "seconds": "{s}s",
     "scoreHud": "{done}/{total}",
     "whatToDo": "What should you do?",
+    "timePausedTag": "⏸️ Time paused — take your time",
     "correctTitles": [
       "Correct!",
       "Great!",
@@ -314,9 +322,11 @@
     "shareSave": "Save image",
     "copied": "Copied! Paste it into a chat.",
     "saveHint": "Press and hold the image, then choose 'Save image'",
+    "cardTapHint": "Touch and hold image to save, or share in LINE",
+    "lineGuideText": "LINE users: Touch and hold the card above to save, or tap Open in browser below",
     "openExternal": "Open in your browser to share the image more easily",
-    "shareTextPrepare": "House ready: {score}/10 🏠\nTitle: “{rank}”\n{grid}\nBaan Rod Mai? A 60-second game to prepare your home before a flood\nPlay the same house and pass it on to your family 👉 {url}\n#บ้านรอดไหม",
-    "shareTextReturn": "House checked: {score}/10 ⚡\nTitle: “{rank}”\n{grid}\nBaan Rod Mai? A 60-second game to spot dangers after a flood\nPlay the same house and pass it on to your family 👉 {url}\n#บ้านรอดไหม",
+    "shareTextPrepare": "House ready: {score}/10 🏠\nTitle: “{rank}”\n{grid}\nSharing with care for a flood-safe home 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai",
+    "shareTextReturn": "House checked: {score}/10 ⚡\nTitle: “{rank}”\n{grid}\nSharing with care for a safe homecoming 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai",
     "shareTextChecklist": "{title}\nSave it and pass it on to your family 💛\nPractise in a 60-second game 👉 {url}",
     "checklistTitle": "Checklists to share with family",
     "checklistTabPrepare": "Before the flood",

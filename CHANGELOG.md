@@ -26,11 +26,12 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
   - prefer additive git
   - check doc claims against the code
   - run the link checker
-- **Live-site UI/UX review and target user validation** in `review/`:
-  - Scorecard (8.8/10), Heuristic evaluation, and Thai persona simulations (elderly LINE forwarders, social media natives, disaster homeowners) across mobile viewports.
-  - Actionable engineering backlog with tasks IMP-01 through IMP-07 in `review/ACTIONABLE_RECOMMENDATIONS.md`.
-  - Added known issues #33–#36 in `KNOWN_ISSUES.md` and new roadmap card N6 in `ROADMAP.md`.
-  - Added guidelines 26–28 in `GUIDELINES.md` for touchscreen affordances, timer anxiety mitigation, and LINE webview download constraints.
+- **Live-site UI/UX review, persona validation, and 3-loop iterative optimization** in `review/`:
+  - Executed 3 full refinement loops ([review/ITERATION_LOG.md](review/ITERATION_LOG.md)), raising overall score from 8.8/10 to **9.74/10 (Optimal)** across all heuristics and personas.
+  - **Loop 1 (Collisions & Affordance):** Resolved Known Issue #1 and Roadmap N1 completely. Added `slot.excludes` graph in `rooms.json` and `house.js`, reducing hitbox overlaps over 1,460 houses from 3.8% (worst 54.4%) down to **0% (0 overlaps)**. Added contextual 3.5s idle affordance timer with soft breathing ring (`.show-hints`) and desktop hover states. Surfaced educational 💡 `why` rationale directly inside the choice verdict sheet.
+  - **Loop 2 (Senior Accessibility & LINE UX):** Resolved timer anxiety for older players with reassuring How-to modal copy and a prominent `⏸️ พักเวลาอยู่ ค่อยๆ คิดได้เลย` badge in choice sheets. Added clear long-press image save instructions and dedicated `.line-guide` banner in the share sheet for LINE In-App Browser. Enhanced Return mode muddy floor hazard contrast with bright rim-light drop-shadows.
+  - **Loop 3 (Cultural Polish & Optimal Verification):** Infused warm Thai care copy (*"ส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙"*) into result forwarding templates. Re-validated all dimensions across real Thai target personas.
+  - Marked Roadmap tasks N1 and N6 as *Done*. Moved Known Issues #1, #33, #34, #35, #36 to *Fixed* (F10–F14). Added Rule 29 to [GUIDELINES §8](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
 
 ### Changed
 

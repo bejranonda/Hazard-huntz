@@ -49,6 +49,10 @@ const check = (name, ok, detail = '') => results.push({ name, ok: !!ok, detail }
 
 async function newPage({ width = 390, height = 760, ua = UA.android, reducedMotion = 'no-preference' } = {}) {
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: ua, reducedMotion, serviceWorkers: 'block' });
+  // Desktop Chrome on Windows/macOS has Web Share, which opens the OS dialog
+  // instead of our share sheet; the cloud Chromium has none. Hide it so every
+  // platform tests the same in-page fallback.
+  await ctx.addInitScript(() => { delete Navigator.prototype.share; delete Navigator.prototype.canShare; });
   const page = await ctx.newPage();
   page.errors = [];
   page.on('pageerror', (e) => page.errors.push(e.message));

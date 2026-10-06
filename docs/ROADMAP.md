@@ -26,8 +26,8 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 | Id | Task | Who | Status |
 |---|---|---|---|
-| L1 | [Create the Cloudflare Pages project](#l1-create-the-cloudflare-pages-project) | Owner | Todo |
-| L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Blocked: needs the domain |
+| L1 | [Create the Cloudflare Pages project](#l1-create-the-cloudflare-pages-project) | Owner | Mostly done: Web Analytics left |
+| L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Blocked: needs the URL |
 | L4 | [Review the 9 flagged (⚠️) safety items](#l4-review-the-9-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
@@ -51,7 +51,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L1. Create the Cloudflare Pages project
 
-- **Who:** Owner · **Status:** Todo
+- **Who:** Owner · **Status:** Mostly done (6 Oct 2026). The project `baanrodmai` was created through the API and connected to `bejranonda/Hazard-huntz`, with the build settings below, `SITE_URL`, the `EVENTS` binding and fail open. **Left for the owner:** step 3, Web Analytics (the API token has no permission for it).
 - **Steps:**
   1. Connect this repository.
   2. Leave the root directory empty, set the build command to `node tools/build.mjs`, and the output to `public`.
@@ -64,7 +64,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L2. Set the domain and re-render the images
 
-- **Who:** Owner + AI · **Status:** Blocked (needs the domain) · **Issues:** #6, #7
+- **Who:** Owner + AI · **Status:** Done (6 Oct 2026): domain `https://baanrodmai.autobahn.bot` (proxied CNAME to `baanrodmai.pages.dev`), `config.json → siteUrl` set, images re-rendered. **Left:** the Facebook Sharing Debugger check once the site is live. · **Issues:** #6, #7
 - **Steps:**
   1. The owner sets `SITE_URL` in the Pages project.
   2. An assistant runs `CHROME_PATH=… SITE_URL=https://<domain> npm run images` and checks `public/og/`, `public/share/` and `public/icons/`. Optionally it also sets `config.json → siteUrl`.

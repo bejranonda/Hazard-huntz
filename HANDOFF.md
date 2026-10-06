@@ -41,7 +41,7 @@ Work through these in order. Each links to the details.
 
 - [ ] **Create the Cloudflare Pages project** from this repository: root directory empty, build command `node tools/build.mjs`, output `public`. See [docs/03-deploy.md](docs/03-deploy.md).
 - [ ] **Set `SITE_URL`** in the Pages project (for example `https://baanrodmai.pages.dev` or your own domain) and redeploy. ([KNOWN_ISSUES #6](docs/KNOWN_ISSUES.md#6-placeholders-domain-and-forecast_app_url-are-unset))
-- [ ] **Re-render the images with the domain** and commit them. ([#7](docs/KNOWN_ISSUES.md#7-share-images-show-บ้านรอดไหม-instead-of-the-web-address))
+- [x] **Re-render the images with the domain** and commit them. Done on 6 Oct 2026 for `https://baanrodmai.autobahn.bot` ([Fixed F5](docs/KNOWN_ISSUES.md#after-v100-going-live-6-oct-2026)).
 
   ```bash
   npm install

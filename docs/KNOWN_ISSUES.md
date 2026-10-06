@@ -21,8 +21,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
 | 4 | [No CI on GitHub](#4-no-ci-on-github) | Open | Low |
 | 5 | [Some UI text is hard-coded in `main.js`, and one event is unused](#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused) | Open | Low |
-| 6 | [Placeholders `[DOMAIN]` and `[FORECAST_APP_URL]` are unset](#6-placeholders-domain-and-forecast_app_url-are-unset) | Owner | **High (launch blocker)** |
-| 7 | [Share images show `#บ้านรอดไหม` instead of the web address](#7-share-images-show-บ้านรอดไหม-instead-of-the-web-address) | Owner | Medium |
+| 6 | [Placeholders `[DOMAIN]` and `[FORECAST_APP_URL]` are unset](#6-placeholders-domain-and-forecast_app_url-are-unset) | Owner (domain fixed) | **High (launch blocker)** |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
@@ -148,18 +147,10 @@ The content checks already run on every Cloudflare build, and a failing build ke
 
 **Status:** Owner · **Severity:** High: a launch blocker
 
-- **`[DOMAIN]`:** set the `SITE_URL` environment variable in the Pages project (preferred), or `config.json → siteUrl`.
-  - Without it, the build falls back to `CF_PAGES_URL`. That is the address of one particular deployment (`https://<hash>.<project>.pages.dev`), so link-preview tags would point at an old deployment.
+- **`[DOMAIN]`: fixed on 6 Oct 2026.** `config.json → siteUrl` and the Pages variable `SITE_URL` are both `https://baanrodmai.autobahn.bot`, and the build prints `site https://baanrodmai.autobahn.bot`. If the domain ever changes, change both and re-render the images.
+  - Without either, the build falls back to `CF_PAGES_URL`. That is the address of one particular deployment (`https://<hash>.<project>.pages.dev`), so link-preview tags would point at an old deployment.
   - In-game share links use the address the player is on, so they keep working either way.
 - **`[FORECAST_APP_URL]`:** the "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until `config.json → forecastAppUrl` is a real `https://` address. The build warns about this on every run.
-
-### 7. Share images show `#บ้านรอดไหม` instead of the web address
-
-**Status:** Owner · **Severity:** Medium
-
-The link-preview images (`public/og/`), checklists and sample cards (`public/share/`) are PNGs rendered ahead of time. They print the site address only if `SITE_URL` was set when they were rendered. Cloudflare does not re-render them, because rendering needs a browser.
-
-**Fix:** once the domain is known, run `npm install && SITE_URL=https://your.domain npm run images` and commit the results.
 
 ### 8. 9 safety items are only partially verified
 
@@ -420,6 +411,14 @@ A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; an
 | F2 | The "ทำไม?" expander in the result lessons was **35×40 px** | Now at least 44×44 px |
 | F3 | Source links were **26 px** tall in the lessons, 38 px in the tip card and **21 px** in the About list | The inline links are padded to a 44 px tall tap area without moving the text. The About list became full-width 44 px rows, with the date inside the link. |
 | F4 | `npm run smoke -- --screens` saved five screenshots under names the docs didn't use | The test now writes the documented names. A new smoke check covers F1–F3, measuring every visible control on the game, result, checklist, help and about screens. |
+
+### After v1.0.0: going live (6 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F5 (was #7) | Share images showed `#บ้านรอดไหม` instead of the web address, because no `SITE_URL` was set when they were rendered | Re-rendered with `SITE_URL=https://baanrodmai.autobahn.bot npm run images` (33 images plus icons). Checked by eye: `og/default.png`, `og/p7.png` and `share/checklist-prepare.png` show the full address. Re-render whenever the domain changes. |
+| F6 | The new `/learn` footer link measured **41 px**: `min-height` does nothing on an inline `<a>` | `a.link { display: inline-block }`. Caught by the smoke check "checklist, help and about controls >= 44 px". |
+| F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 
 ### During development (before the first commit)
 

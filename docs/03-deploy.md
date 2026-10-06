@@ -11,6 +11,23 @@ The game is a static site in `public/`, plus one tiny Pages Function (`functions
 
 Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends the right mode automatically; if the call fails or times out, `rainWarningActive` is used.
 
+## The live setup
+
+| | |
+|---|---|
+| Address | `https://baanrodmai.autobahn.bot`. DNS: a proxied `CNAME baanrodmai → baanrodmai.pages.dev` in the `autobahn.bot` zone. |
+| Pages project | `baanrodmai`, Git integration with `bejranonda/Hazard-huntz`, production branch `main`, previews for every branch |
+| Build | `node tools/build.mjs` → `public`, root directory empty |
+| Variables and bindings | `SITE_URL=https://baanrodmai.autobahn.bot` (production), `EVENTS` → `baanrodmai_events`, fail open |
+| API token (`.env`, never committed) | Needs **Account → Cloudflare Pages → Edit** and **Zone → DNS → Edit** on `autobahn.bot`. Add **Account Analytics → Read** for the metrics SQL. |
+
+Search and AI search:
+
+- `node tools/build.mjs` writes `/learn` (every lesson as plain HTML), `/robots.txt`, `/sitemap.xml` and `/llms.txt`, plus the canonical link and JSON-LD in each page's OG block.
+- `_headers` adds `X-Robots-Tag: noindex` on `*.pages.dev`, so only the custom domain is indexed.
+- After the first deploy, submit `https://baanrodmai.autobahn.bot/sitemap.xml` in Google Search Console and Bing Webmaster Tools. Bing's index also feeds Copilot and other AI search tools.
+- Leave Cloudflare's "Block AI bots" and managed robots.txt **off** for this hostname. The game is public safety content and should be readable by AI assistants.
+
 ## Option A: Git integration (recommended: every content edit deploys itself)
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**.

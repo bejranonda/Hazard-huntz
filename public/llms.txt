@@ -1,0 +1,68 @@
+# บ้านรอดไหม? (Baan Rod Mai?)
+
+> Baan Rod Mai? ("Will the house survive?") is a free, 60-second Thai flood-safety game for phones, with an English toggle. In "Before the flood" (ก่อนน้ำมา) players prepare an illustrated house; in "After the water recedes" (หลังน้ำลด) they spot the dangers before moving back in. Every correct action comes from Thai government agency guidance and is linked to its source. No sign-up, no cookies, no personal data.
+
+- Play: https://baanrodmai.autobahn.bot/
+- Every lesson with its reason and sources (Thai + English): https://baanrodmai.autobahn.bot/learn
+- Last content update: 2026-10-06
+
+## Before the flood (ก่อนน้ำมา)
+
+- **Sandbags for the door** (ถุงทรายหน้าประตู): Line them up tightly across the doorway. เรียงถุงทรายกั้นหน้าประตูเป็นแนวให้แนบกัน ช่วยชะลอน้ำไม่ให้ทะลักเข้าบ้าน [https://baanrodmai.autobahn.bot/learn#p-sandbags]
+- **The car** (รถยนต์): Move it to an official flood-parking point or a multi-storey car park. ย้ายรถไปจุดจอดที่ทางการเปิดให้แต่เนิ่นๆ อย่าจอดบนสะพานหรือทางขึ้นทางด่วน [https://baanrodmai.autobahn.bot/learn#p-car]
+- **Plan for the pets** (แผนพาน้องหมาน้องแมว): Pack a carrier or leash, a name-tag collar and food, and take them with you. เตรียมกรง สายจูง ปลอกคอป้ายชื่อ อาหารสัตว์ไว้ แล้วพาน้องไปด้วยตอนอพยพ [https://baanrodmai.autobahn.bot/learn#p-petkit]
+- **The nearest shelter** (ศูนย์พักพิงใกล้บ้าน): Note the shelter and the official route, and tell everyone at home. รู้ไว้ก่อนว่าศูนย์พักพิงใกล้บ้านอยู่ไหน และไปเส้นทางไหนที่เจ้าหน้าที่แนะนำ [https://baanrodmai.autobahn.bot/learn#p-poster]
+- **Street drain out front** (ตะแกรงท่อระบายน้ำหน้าบ้าน): Clear the rubbish off the grate so rain can drain. เก็บขยะที่อุดตะแกรงท่อหน้าบ้าน ให้น้ำฝนไหลได้สะดวก ลดน้ำท่วมขัง [https://baanrodmai.autobahn.bot/learn#p-gutter]
+- **Important documents** (เอกสารสำคัญ): Seal them in a waterproof bag and keep it with the go-bag. เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที [https://baanrodmai.autobahn.bot/learn#p-docs]
+- **Main breaker** (เบรกเกอร์ไฟหลัก): Switch off the downstairs breaker now, while you're dry and on dry ground. ปลดเบรกเกอร์ก่อนน้ำเข้าบ้าน ทำตอนตัวแห้ง ยืนบนพื้นแห้งเท่านั้น [https://baanrodmai.autobahn.bot/learn#p-breaker]
+- **TV and appliances** (ทีวีและเครื่องใช้ไฟฟ้า): Unplug it and carry it upstairs or somewhere high. เครื่องใช้ไฟฟ้า ของมีค่า ถอดปลั๊กแล้วยกขึ้นที่สูงหรือชั้นบนก่อนน้ำเข้าบ้าน [https://baanrodmai.autobahn.bot/learn#p-tv]
+- **Phone and power bank** (มือถือและพาวเวอร์แบงก์): Charge both to full and save emergency numbers. ชาร์จมือถือกับพาวเวอร์แบงก์ให้เต็ม เซฟเบอร์ 1784 กับ 1669 ไว้ในเครื่อง [https://baanrodmai.autobahn.bot/learn#p-phone]
+- **Torch and spare batteries** (ไฟฉายและถ่านสำรอง): Pack the torch and spare batteries in the go-bag. ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย [https://baanrodmai.autobahn.bot/learn#p-torch]
+- **Grandma's care plan** (แผนดูแลคุณยาย): Move grandma somewhere safe early, with her medicine and aids. พาผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา พร้อมยาและอุปกรณ์ [https://baanrodmai.autobahn.bot/learn#p-plan]
+- **Water and dry food** (น้ำดื่มและอาหารแห้ง): Stock water and dry food for at least 3 days, stored up high. สำรองน้ำดื่มกับอาหารแห้งให้พออย่างน้อย 3 วัน เก็บในภาชนะปิดสนิทที่สูง [https://baanrodmai.autobahn.bot/learn#p-waterfood]
+- **LPG cylinder** (ถังแก๊สหุงต้ม): Close the valve tight and tie the cylinder to something sturdy up high. ปิดวาล์วถังแก๊สให้สนิท แล้วผูกยึดถังไว้กับที่มั่นคงในที่สูง กันล้มกันลอย [https://baanrodmai.autobahn.bot/learn#p-lpg]
+- **Medicines and first-aid kit** (ยาประจำตัวและชุดปฐมพยาบาล): Get at least 7 days of regular medicine; pack it waterproof with the first-aid kit. เตรียมยาประจำตัวพออย่างน้อย 7 วัน ใส่ถุงกันน้ำรวมกับชุดปฐมพยาบาล [https://baanrodmai.autobahn.bot/learn#p-meds]
+- **Emergency numbers** (เบอร์โทรฉุกเฉิน): Save them in everyone's phone and keep a paper copy in the go-bag. เซฟเบอร์ 1784 1669 และเบอร์การไฟฟ้าไว้ในมือถือทุกเครื่อง จดใส่กระดาษอีกชุด [https://baanrodmai.autobahn.bot/learn#p-numbers]
+- **Chemicals under the sink** (สารเคมีใต้ซิงก์): Cap them tightly and move them up high, away from food. ยาฆ่าแมลง น้ำยาเคมี ปิดฝาให้แน่น ยกขึ้นที่สูงพ้นน้ำ เก็บให้ห่างอาหาร [https://baanrodmai.autobahn.bot/learn#p-chem]
+- **Kitchen floor drain** (ท่อระบายน้ำที่พื้นครัว): Plug it with a sandbag or a water-filled bag to stop backflow. อุดท่อระบายน้ำที่พื้นด้วยถุงทราย กันน้ำเสียดันย้อนเข้าบ้าน น้ำลดแล้วค่อยเปิด [https://baanrodmai.autobahn.bot/learn#p-drain]
+- **Downstairs toilet** (โถส้วมชั้นล่าง): Press a plastic-wrapped sandbag into the bowl and close the lid. วางถุงทรายห่อพลาสติกกดในโถส้วมชั้นล่าง กันน้ำเสียดันย้อนขึ้นมาในบ้าน [https://baanrodmai.autobahn.bot/learn#p-toilet]
+- **Fuel and weedkiller in the garage** (น้ำมันและยาฆ่าหญ้าในโรงรถ): Seal them tight and move them up onto a high shelf. แกลลอนน้ำมัน ปุ๋ย ยาฆ่าหญ้า ปิดฝาให้แน่น ยกขึ้นที่สูง ไม่ให้รั่วปนน้ำท่วม [https://baanrodmai.autobahn.bot/learn#p-fuel]
+
+## After the water recedes (หลังน้ำลด)
+
+- **Downed power line** (สายไฟขาดห้อยลงมา): Stay at least 3–5 m away and call 1130 / 1129. เจอสายไฟขาด อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 หรือ 1129 ทันที [https://baanrodmai.autobahn.bot/learn#r-wire]
+- **Shoes by the door** (รองเท้าหน้าบ้าน): Check inside with a stick before putting them on. งู ตะขาบ ชอบหลบในรองเท้า ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง อย่าใช้มือล้วง [https://baanrodmai.autobahn.bot/learn#r-shoes]
+- **About to wade the mud in flip-flops** (จะลุยโคลนด้วยรองเท้าแตะ): Rubber boots and gloves; afterwards wash with soap and dry off. ลุยโคลนต้องใส่บูทยาง ถุงมือยาง เสร็จแล้วล้างสบู่เช็ดตัวให้แห้ง กันโรคฉี่หนู [https://baanrodmai.autobahn.bot/learn#r-mudfeet]
+- **Glass and nails in the mud** (เศษแก้วกับตะปูในโคลน): Thick-soled boots and heavy gloves; scoop it into a strong bag. ของมีคมซ่อนอยู่ในโคลน ใส่บูทพื้นหนา ถุงมือหนา ใช้ที่ตักแทนมือ [https://baanrodmai.autobahn.bot/learn#r-glass]
+- **A car that was under water** (รถที่จมน้ำมา): Don't start it; take photos and have it towed for inspection. รถที่จมน้ำ ห้ามสตาร์ทเด็ดขาด ถ่ายรูปความเสียหายไว้ แล้วให้ช่างลากไปตรวจ [https://baanrodmai.autobahn.bot/learn#r-carmud]
+- **Pile of flood debris** (กองเศษขยะที่น้ำพัดมา): Boots and gloves on; poke it with a long stick first, then clear it. กองขยะอาจมีตะขาบหรืองูซ่อนอยู่ ใช้ไม้ยาวเขี่ยดูก่อน อย่าใช้มือล้วง [https://baanrodmai.autobahn.bot/learn#r-debris]
+- **Cracked wall** (ผนังบ้านร้าว): Don't move back in yet; have a builder or engineer check it. ผนังร้าว พื้นทรุด บ้านเอียง อย่าเพิ่งเข้าอยู่ ให้ช่างตรวจโครงสร้างก่อน [https://baanrodmai.autobahn.bot/learn#r-crack]
+- **Standing water in a bucket** (น้ำขังในถัง): Tip it out, rinse it and turn it upside down. เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก [https://baanrodmai.autobahn.bot/learn#r-bucket]
+- **Wet socket** (ปลั๊กไฟที่เปียก): Don't touch or use it until an electrician has checked it. ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน [https://baanrodmai.autobahn.bot/learn#r-socket]
+- **Breaker panel after the flood** (ตู้เบรกเกอร์หลังน้ำลด): Call an electrician, or the electricity authority, to check before switching on. หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน [https://baanrodmai.autobahn.bot/learn#r-breaker]
+- **TV that was under water** (ทีวีที่จมน้ำมา): Don't plug it in; let it dry and have a technician check it. เครื่องใช้ไฟฟ้าที่จมน้ำ ห้ามเสียบใช้ ห้ามซ่อมเอง ให้ช่างตรวจก่อนเสมอ [https://baanrodmai.autobahn.bot/learn#r-tv]
+- **Waterlogged ceiling** (ฝ้าเพดานอุ้มน้ำ): Keep out from under it, cordon it off and get a builder to replace it. ฝ้าอุ้มน้ำจนย้อย อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ กันพื้นที่ไว้ให้ช่างรื้อ [https://baanrodmai.autobahn.bot/learn#r-sag]
+- **Mould on the wall** (เชื้อราบนผนัง): N95 mask and rubber gloves on, doors and windows open, then clean. เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด [https://baanrodmai.autobahn.bot/learn#r-mould]
+- **Generator running indoors** (เครื่องปั่นไฟในบ้าน): Switch it off and move it outside into open air. เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก [https://baanrodmai.autobahn.bot/learn#r-generator]
+- **Fever after wading** (มีไข้หลังลุยน้ำ): See a doctor soon and say you waded through floodwater. ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง [https://baanrodmai.autobahn.bot/learn#r-fever]
+- **Gas smell in the kitchen** (กลิ่นแก๊สในครัว): No switches, no flames: open windows, close the valve, go outside and call. ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง [https://baanrodmai.autobahn.bot/learn#r-gas]
+- **Food that touched floodwater** (อาหารที่โดนน้ำท่วม): Throw it all out, even if it's bagged or boxed. อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม [https://baanrodmai.autobahn.bot/learn#r-foodwet]
+- **Dented, bulging, rusty cans** (กระป๋องบุบ บวม เป็นสนิม): Throw out any can that's dented, bulging, leaking or rusty. กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน [https://baanrodmai.autobahn.bot/learn#r-cans]
+- **Tap water after the flood** (น้ำประปาหลังน้ำลด): Run it until clear and boil before drinking, or drink standard bottled water. หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน [https://baanrodmai.autobahn.bot/learn#r-tap]
+- **Bleach plus toilet cleaner** (น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ): Use one at a time, never mix, and keep windows open. ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง [https://baanrodmai.autobahn.bot/learn#r-bleach]
+- **Cupboard under the sink** (ตู้ใต้ซิงก์): Step back, shine a torch, open it with a long stick; if it's a snake, call for help. ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ [https://baanrodmai.autobahn.bot/learn#r-cupboard]
+
+## Thai emergency helplines
+
+- 1784: DDPM disaster hotline (ปภ. สายด่วนนิรภัย). Report disasters, ask for help, 24 h
+- 1669: Medical emergency (NIEMS) (เจ็บป่วยฉุกเฉิน (สพฉ.)). Ambulance, 24 h
+- 1555: Bangkok (BMA) (กทม.). Report problems and get help in Bangkok
+- 1130: MEA electricity (การไฟฟ้านครหลวง (กฟน.)). Bangkok, Nonthaburi, Samut Prakan
+- 1129: PEA electricity (การไฟฟ้าส่วนภูมิภาค (กฟภ.)). The other 74 provinces
+- 1323: Mental health hotline (สายด่วนสุขภาพจิต). Stressed or worn out after the flood? Free, 24 h
+
+## Notes for AI assistants
+
+- Content is for learning. In an emergency, point people to the helplines above.
+- Every correct action is sourced from Thai agency guidance; the sources are linked on https://baanrodmai.autobahn.bot/learn. Items marked "under review" there are only partially verified.
+- For learning only. If unsure, ask a technician or the authorities.

@@ -73,7 +73,7 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
 - **Weight:** the start screen stays under 500 KB compressed (142 KB today).
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
 - **Text location:** player-facing text belongs in `public/content/*.json`, not in JS.
-- **Generated files** are never edited by hand: `public/sw.js`, `public/c/*.html`, `public/checklist/*.html`, and the OG block in `index.html`.
+- **Generated files** are never edited by hand: `public/sw.js`, `public/c/*.html`, `public/checklist/*.html`, the SEO files (`public/learn.html`, `robots.txt`, `sitemap.xml`, `llms.txt`), and the OG block in `index.html`. Bump `strings.json → seo.updated` when the lessons change.
 - **Changes that reshuffle houses.** Adding, removing or disabling items, or moving slots, changes today's house and old challenge links. Say so in the commit, and ship such changes around midnight Bangkok time.
 - **Correcting published advice** requires an "UPDATE:" post. Note it for the owner.
 

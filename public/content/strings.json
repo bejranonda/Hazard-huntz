@@ -16,6 +16,7 @@
     "roomsSoon": "ห้องน้ำ · ห้องนอน · โรงรถ เปิดให้เล่นเร็วๆ นี้",
     "disclaimer": "เนื้อหาเพื่อการเรียนรู้ หากไม่แน่ใจให้ติดต่อช่างหรือเจ้าหน้าที่",
     "aboutLink": "ที่มาของข้อมูล · ความเป็นส่วนตัว",
+    "learnLink": "อ่านสรุปวิธีรับมือน้ำท่วมทุกข้อ",
     "loading": "กำลังเตรียมบ้าน…",
     "sound": "เปิด/ปิดเสียง",
     "pause": "พักเกม",
@@ -193,6 +194,7 @@
     "roomsSoon": "Bathroom · Bedroom · Garage coming soon",
     "disclaimer": "For learning only. If unsure, ask a technician or the authorities.",
     "aboutLink": "Sources · Privacy",
+    "learnLink": "Read every flood-safety lesson",
     "loading": "Getting the house ready…",
     "sound": "Sound on/off",
     "pause": "Pause",
@@ -375,5 +377,35 @@
     "defaultLine1": "เกม 60 วิ เตรียมบ้านก่อนน้ำมา\nตรวจบ้านหลังน้ำลด",
     "defaultLine2": "รู้วิธีจริง จากหน่วยงานรัฐ",
     "defaultPill": "เล่นฟรี ไม่ต้องสมัคร"
+  },
+  "seo": {
+    "_readme": "ข้อความสำหรับหน้าสรุปความรู้ /learn, /llms.txt และข้อมูลโครงสร้าง (JSON-LD) ที่ tools/build.mjs สร้างให้ ไม่แสดงในเกม {n} = จำนวนข้อ updated = วันที่แก้เนื้อหาล่าสุด (YYYY-MM-DD) แก้เมื่อแก้ items.json",
+    "updated": "2026-10-06",
+    "th": {
+      "learnTitle": "วิธีเตรียมบ้านรับน้ำท่วม และสิ่งที่ต้องเช็กหลังน้ำลด {n} ข้อ · บ้านรอดไหม?",
+      "learnDesc": "สรุปทุกบทเรียนจากเกมบ้านรอดไหม? ควรทำอะไรก่อนน้ำมา ต้องระวังอะไรก่อนกลับเข้าบ้านหลังน้ำลด อ้างอิงคำแนะนำจากหน่วยงานรัฐ พร้อมเบอร์ช่วยเหลือ",
+      "learnH1": "เตรียมบ้านก่อนน้ำมา ตรวจบ้านหลังน้ำลด",
+      "learnIntro": "สรุปทุกข้อที่สอนในเกมบ้านรอดไหม? แต่ละข้อบอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน อ่านแล้วลองเล่นจริง 60 วินาที แล้วส่งต่อให้คนที่บ้าน",
+      "playCta": "เล่นเกม 60 วิ ฟรี",
+      "sectionPrepare": "ก่อนน้ำมา: เตรียมบ้านให้ทัน",
+      "sectionReturn": "หลังน้ำลด: หาจุดอันตรายก่อนกลับเข้าบ้าน",
+      "doThis": "ควรทำ",
+      "ifWet": "ถ้าน้ำเข้าบ้านแล้ว",
+      "why": "ทำไม",
+      "sources": "ที่มา",
+      "partialNote": "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน",
+      "checklists": "เช็กลิสต์ส่งต่อ",
+      "helplines": "เบอร์ช่วยเหลือ",
+      "updated": "ปรับปรุงล่าสุด",
+      "back": "กลับไปเล่นเกม"
+    },
+    "en": {
+      "learnIntro": "Every lesson from the Baan Rod Mai? flood-safety game: what to do before a flood and what to check before moving back in, each with its Thai agency source.",
+      "sectionPrepare": "Before the flood",
+      "sectionReturn": "After the water recedes",
+      "doThis": "Do this",
+      "ifWet": "If water is already inside",
+      "llmsSummary": "Baan Rod Mai? (\"Will the house survive?\") is a free, 60-second Thai flood-safety game for phones, with an English toggle. In \"Before the flood\" (ก่อนน้ำมา) players prepare an illustrated house; in \"After the water recedes\" (หลังน้ำลด) they spot the dangers before moving back in. Every correct action comes from Thai government agency guidance and is linked to its source. No sign-up, no cookies, no personal data."
+    }
   }
 }

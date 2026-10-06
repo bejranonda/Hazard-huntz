@@ -163,7 +163,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - SVG items use `role="button"`, `tabindex="0"` and an `aria-label`, and Enter and Space work on them.
   - Sheets trap focus and close with Esc.
   - Motion goes through CSS animations that the reduced-motion query turns off.
-- **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/c/*.html`, `public/checklist/*.html`, and the `<!--OG:START-->` block in `index.html`.
+- **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/c/*.html`, `public/checklist/*.html`, the SEO files `public/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` (edit `tools/build.mjs` or `strings.json → seo`), and the `<!--OG:START-->` block in `index.html`, which also holds the canonical link and JSON-LD.
 - **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 142 KB.
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 

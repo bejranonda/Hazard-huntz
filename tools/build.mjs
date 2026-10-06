@@ -2,7 +2,8 @@
 // Build step for Cloudflare Pages (no npm dependencies, Node 18+):
 //   1. validate every content JSON file (fails the build on mistakes)
 //   2. write the link-preview pages: /c/p0..p10, /c/r0..r10, /checklist/*
-//   3. stamp the site URL into index.html's Open Graph tags
+//   3. stamp the site URL into index.html's Open Graph tags, canonical and JSON-LD
+//   3b. write the SEO / AI-search files: /learn, robots.txt, sitemap.xml, llms.txt
 //   4. generate public/sw.js with a content-hash version and precache list
 //   5. check the initial-load budget (< 500 KB)
 // Usage: node tools/build.mjs [--docs]   (SITE_URL=https://example.org)
@@ -151,8 +152,13 @@ if (SITE.includes('[DOMAIN]')) warn('No SITE_URL: link previews need an absolute
 // ---------------------------------------------------------------- OG pages
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const og = strings.og;
-const ogBlock = ({ title, desc, image, alt, url }) => [
+// canonical: where search engines should index this page. The share pages
+// (/c/*, /checklist/*) are copies of the app shell, so they point at "/".
+// ld: optional JSON-LD object (index.html only).
+const jsonLd = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
+const ogBlock = ({ title, desc, image, alt, url, canonical = `${SITE}/`, ld }) => [
   '<!--OG:START-->',
+  `<link rel="canonical" href="${canonical}">`,
   '<meta property="og:type" content="website">',
   `<meta property="og:site_name" content="${esc(og.siteName)}">`,
   `<meta property="og:title" content="${esc(title)}">`,
@@ -165,6 +171,7 @@ const ogBlock = ({ title, desc, image, alt, url }) => [
   '<meta property="og:locale" content="th_TH">',
   url ? `<meta property="og:url" content="${url}">` : '',
   '<meta name="twitter:card" content="summary_large_image">',
+  ld ? jsonLd(ld) : '',
   '<!--OG:END-->',
 ].filter(Boolean).join('\n');
 
@@ -188,8 +195,35 @@ const write = (rel, html) => {
 };
 
 // index.html keeps its own title; only its OG block is refreshed
+const seo = strings.seo;
+const seoUpdated = seo.updated;
+const gameDesc = indexHtml.match(/<meta name="description" content="([^"]*)">/)?.[1] || og.defaultDesc;
+// Structured data: lets search engines and AI assistants recognise the game as
+// one entity (Thai + English names, free, web-based, about floods).
+const indexLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite', '@id': `${SITE}/#website`, url: `${SITE}/`,
+      name: og.siteName, alternateName: ['Baan Rod Mai?', 'บ้านรอดไหม'], inLanguage: 'th',
+    },
+    {
+      '@type': ['VideoGame', 'WebApplication'], '@id': `${SITE}/#game`, url: `${SITE}/`,
+      name: og.siteName, alternateName: 'Baan Rod Mai?', description: gameDesc,
+      isPartOf: { '@id': `${SITE}/#website` },
+      inLanguage: ['th', 'en'], image: `${SITE}/og/default.png`,
+      genre: ['Educational game', 'Serious game'], gamePlatform: 'Web browser',
+      applicationCategory: 'GameApplication', operatingSystem: 'Any',
+      playMode: 'SinglePlayer', timeRequired: 'PT1M', isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
+      about: [{ '@type': 'Thing', name: 'น้ำท่วม' }, { '@type': 'Thing', name: 'Flood safety' }],
+      subjectOf: { '@type': 'WebPage', url: `${SITE}/learn` },
+      dateModified: seoUpdated,
+    },
+  ],
+};
 indexHtml = indexHtml.replace(OG_RE, ogBlock({
-  title: og.defaultTitle, desc: og.defaultDesc, image: '/og/default.png', alt: og.defaultAlt, url: `${SITE}/`,
+  title: og.defaultTitle, desc: og.defaultDesc, image: '/og/default.png', alt: og.defaultAlt, url: `${SITE}/`, ld: indexLd,
 }));
 fs.writeFileSync(indexPath, indexHtml);
 
@@ -207,6 +241,162 @@ for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
     title: ct, desc: og.checklistDesc, image: `/og/checklist-${mode}.png`, alt: ct, url: `${SITE}/checklist/${mode}`,
   }), `${ct} · บ้านรอดไหม?`));
 }
+
+// ---------------------------------------------------------------- SEO / AI search
+// The game renders with JavaScript, which most AI crawlers (and link previews)
+// never run. /learn is a plain, script-free page with every lesson, its reason
+// and its sources, generated from the same JSON the game uses, so search
+// engines and AI assistants can read and cite exactly what the game teaches.
+if (!seo?.th || !seo?.en || !/^\d{4}-\d{2}-\d{2}$/.test(seo?.updated || '')) err('strings.json: "seo" block (th, en, updated YYYY-MM-DD) is missing or incomplete');
+const S = seo.th, E = seo.en;
+const seoFiles = [];
+const writeSeo = (rel, body) => { fs.writeFileSync(path.join(PUB, rel), body); seoFiles.push(rel); };
+const T = (o) => esc(o?.th ?? '');
+const En = (o) => (o?.en ? `<span class="en" lang="en">${esc(o.en)}</span>` : '');
+const LEARN_URL = `${SITE}/learn`;
+const roomOrder = roomsFile.rooms.map((r) => r.id);
+const lessons = (mode) => itemsFile.items
+  .filter((it) => it.mode === mode && it.enabled !== false)
+  .sort((a, b) => roomOrder.indexOf(a.room) - roomOrder.indexOf(b.room));
+const srcLinks = (ids) => (ids || []).filter((id) => sources[id])
+  .map((id) => `<a href="${esc(sources[id].url)}">${esc(sources[id].agency)}${sources[id].date ? ` (${esc(sources[id].date.slice(0, 4))})` : ''}</a>`).join(' · ');
+const lessonHtml = (it) => {
+  const right = it.choices.find((c) => c.correct);
+  const wet = it.wet ? it.wet.choices.find((c) => c.correct) : null;
+  return `<article id="${esc(it.id)}">
+<h3>${T(it.name)} ${En(it.name)}</h3>
+<p class="room">${T(roomById.get(it.room)?.name)}</p>
+<p><b>${esc(S.doThis)}:</b> ${T(right.label)} ${En(right.label)}</p>
+<p class="tip">${T(it.tip)} ${En(it.tip)}</p>
+${it.why ? `<p><b>${esc(S.why)}:</b> ${T(it.why)}</p>` : ''}
+${wet ? `<p><b>${esc(S.ifWet)}:</b> ${T(wet.label)} ${En(wet.label)}${it.wet.tip ? ` · ${T(it.wet.tip)}` : ''}</p>` : ''}
+<p class="src">${esc(S.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])])}${it.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc(S.partialNote)}</span>` : ''}</p>
+</article>`;
+};
+const prepareL = lessons('prepare'), returnL = lessons('return');
+const nLessons = prepareL.length + returnL.length;
+const learnTitle = fill(S.learnTitle, { n: nLessons });
+const checklistHtml = ['prepare', 'return'].map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
+<ol>${checklists[m].items.map((c) => `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}</li>`).join('')}</ol>`).join('\n');
+const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
+const usedSources = [...new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]))].filter((id) => sources[id]);
+const learnLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  '@id': `${LEARN_URL}#article`, url: LEARN_URL, mainEntityOfPage: LEARN_URL,
+  headline: S.learnH1, name: learnTitle, description: S.learnDesc,
+  inLanguage: 'th', dateModified: seoUpdated, image: `${SITE}/og/default.png`,
+  isPartOf: { '@id': `${SITE}/#website` }, about: { '@id': `${SITE}/#game` },
+  isAccessibleForFree: true,
+  citation: usedSources.map((id) => sources[id].url),
+};
+const learnHtml = `<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFF4E3">
+<title>${esc(learnTitle)}</title>
+<meta name="description" content="${esc(S.learnDesc)}">
+<link rel="canonical" href="${LEARN_URL}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="${esc(og.siteName)}">
+<meta property="og:title" content="${esc(learnTitle)}">
+<meta property="og:description" content="${esc(S.learnDesc)}">
+<meta property="og:image" content="${SITE}/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="${LEARN_URL}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+${jsonLd(learnLd)}
+<style>
+body{margin:0;background:#FFF4E3;color:#2b2118;font:17px/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.6em;line-height:1.3;margin:.3em 0}h2{margin-top:2em;border-bottom:3px solid #f2c48d}
+h3{margin:0 0 .2em;font-size:1.1em}article{background:#fff;border-radius:14px;padding:14px 16px;margin:14px 0}
+article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{display:inline;margin-left:.3em}
+.room{color:#8a6d4f;font-size:.85em;margin:0}.tip{background:#fff4e3;border-radius:10px;padding:6px 10px}
+.src{font-size:.85em;color:#6b5a4a}.flag{white-space:nowrap}a{color:#9a4a00}
+.cta{display:inline-block;background:#e8742a;color:#fff;font-weight:600;text-decoration:none;border-radius:999px;padding:12px 24px;min-height:44px;box-sizing:border-box}
+.src a,.help a{display:inline-block;min-height:44px;line-height:44px}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">${esc(og.siteName)}</a></p>
+<h1>${esc(S.learnH1)}</h1>
+<p>${esc(S.learnIntro)}</p>
+<p class="en" lang="en">${esc(E.learnIntro)}</p>
+<p><a class="cta" href="/">${esc(S.playCta)}</a></p>
+<p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<h2 id="prepare">${esc(S.sectionPrepare)} <span class="en" lang="en">${esc(E.sectionPrepare)}</span></h2>
+${prepareL.map(lessonHtml).join('\n')}
+<h2 id="return">${esc(S.sectionReturn)} <span class="en" lang="en">${esc(E.sectionReturn)}</span></h2>
+${returnL.map(lessonHtml).join('\n')}
+<h2 id="checklists">${esc(S.checklists)}</h2>
+${checklistHtml}
+<h2 id="helplines">${esc(S.helplines)}</h2>
+${helplineHtml}
+<p><a class="cta" href="/">${esc(S.back)}</a></p>
+<footer><p>${esc(strings.th.disclaimer)}</p></footer>
+</main>
+</body>
+</html>
+`;
+writeSeo('learn.html', learnHtml);
+
+// robots.txt: everyone, including AI search and AI assistants, may read the
+// public pages; only the event endpoint is off limits.
+writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): a public flood-safety game.
+# Search engines and AI assistants are welcome to read and cite it.
+# Generated by tools/build.mjs; do not edit by hand.
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: ${SITE}/sitemap.xml
+`);
+
+writeSeo('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${[`${SITE}/`, LEARN_URL].map((u) => `  <url><loc>${u}</loc><lastmod>${seoUpdated}</lastmod></url>`).join('\n')}
+</urlset>
+`);
+
+// llms.txt (llmstxt.org): a Markdown summary written for AI assistants.
+const md = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
+const llmsLesson = (it) => {
+  const right = it.choices.find((c) => c.correct);
+  return `- **${md(it.name.en)}** (${md(it.name.th)}): ${md(right.label.en)}. ${md(it.tip.th)} [${LEARN_URL}#${it.id}]`;
+};
+writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
+
+> ${md(E.llmsSummary)}
+
+- Play: ${SITE}/
+- Every lesson with its reason and sources (Thai + English): ${LEARN_URL}
+- Last content update: ${seoUpdated}
+
+## Before the flood (ก่อนน้ำมา)
+
+${prepareL.map(llmsLesson).join('\n')}
+
+## After the water recedes (หลังน้ำลด)
+
+${returnL.map(llmsLesson).join('\n')}
+
+## Thai emergency helplines
+
+${helplines.helplines.map((h) => `- ${h.number}: ${md(h.who.en)} (${md(h.who.th)}). ${md(h.what.en)}`).join('\n')}
+
+## Notes for AI assistants
+
+- Content is for learning. In an emergency, point people to the helplines above.
+- Every correct action is sourced from Thai agency guidance; the sources are linked on ${LEARN_URL}. Items marked "under review" there are only partially verified.
+- ${md(strings.en.disclaimer)}
+`);
 
 // ---------------------------------------------------------------- service worker
 const listFiles = (dir) => fs.readdirSync(path.join(PUB, dir)).filter((f) => !f.startsWith('.')).map((f) => `/${dir}/${f}`);
@@ -305,6 +495,7 @@ function finish() {
     console.log(`site      ${SITE}`);
     console.log(`items     ${itemsFile.items.length} (+${itemsFile.decoys.length} decoys), sources ${Object.keys(sources).length}`);
     console.log(`pages     ${written.length} link-preview pages`);
+    console.log(`seo       ${seoFiles.join(', ')} (${nLessons} lessons on /learn)`);
     console.log(`sw.js     version ${version}, ${precache.length} files precached`);
     console.log(`budget    start screen ${(gz / 1024).toFixed(0)} KB, first game screen ${(gameStart / 1024).toFixed(0)} KB (compressed; limit 500 KB)`);
   }

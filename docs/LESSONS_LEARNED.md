@@ -183,6 +183,18 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* in a fresh clone, `node tools/build.mjs` must leave `git status` clean, and the tests must pass.
 - *Encoded in:* [GUIDELINES §7](GUIDELINES.md#7-git-and-releases).
 
+**D7. `min-height` does nothing on an inline link.**
+
+- *What happened:* the new `/learn` footer link reused the `.link` class (`min-height: 44px`) but measured 41 px. An `<a>` is inline, and the existing `.link` elements were all buttons.
+- *Do this:* give link-styled anchors `display: inline-block`, and let the smoke test measure them.
+- *Encoded in:* `public/css/app.css → a.link`, `tests/smoke.mjs → smallControls`.
+
+**D8. Desktop browsers have Web Share too.**
+
+- *What happened:* desktop Chrome on Windows has `navigator.share`, so the smoke test's Share tap opened the OS dialog and the in-page sheet never appeared. The cloud Chromium has no Web Share, so the problem never showed there.
+- *Do this:* before calling a test failure a regression, run the same test on untouched `HEAD`. Remove platform APIs that change the code path the test asserts on.
+- *Encoded in:* `tests/smoke.mjs → newPage()`.
+
 ## E. Process, documentation and git
 
 **E1. Describe an action only after it has succeeded.**
@@ -271,6 +283,18 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
   - Otherwise stop and tell the owner what is needed.
   - Retry the denied action only after the owner explicitly asks for that outcome (see E2).
 - *Encoded in:* [CLAUDE.md](../CLAUDE.md), [AGENTS.md §7](../AGENTS.md#7-environment-notes).
+
+**F6. Cloudflare Pages must be able to see the repository.**
+
+- *What happened:* creating the Git-connected Pages project through the API failed with code 8000012 ("linked to a repository that no longer exists") while the repository was private and the Cloudflare GitHub app could not see it. It worked once the owner made the repository public. Before that, the API token also lacked **Cloudflare Pages → Edit**.
+- *Do this:* check the token with `wrangler pages project list` first. If creating the project fails with 8000012, ask the owner to give the Cloudflare GitHub app access to the repository. Don't fall back to direct upload, because a project can't switch between the two later.
+- *Encoded in:* [03-deploy.md](03-deploy.md#the-live-setup).
+
+**F7. On the owner's Windows machine the token lives in `.env`.**
+
+- *What happened:* wrangler read `CLOUDFLARE_API_TOKEN` from `.env` by itself, but plain `curl` calls had no token and failed with "Invalid format for Authorization header".
+- *Do this:* load it with `set -a; . ./.env; set +a` in the same shell command, and never print it. `.env` is git-ignored.
+- *Encoded in:* this lesson.
 
 **F5. Ignore the "repository moved" notice.**
 

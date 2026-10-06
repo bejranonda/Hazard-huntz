@@ -142,6 +142,11 @@ function renderStart(defaultMode) {
     fl.hidden = false;
   }
 
+  const vEl = $('#app-version');
+  if (vEl && content()?.config?.version) {
+    vEl.textContent = `v${content().config.version}`;
+  }
+
   const banner = $('#challenge-banner');
   if (state.challenge) {
     const c = state.challenge;
@@ -869,7 +874,7 @@ function openAbout() {
     : 'No sign-up, no personal data, no cookies. Scores stay on your device. We only count plays and shares anonymously (Cloudflare Web Analytics is cookieless), in line with Thailand\'s PDPA.'}</p>
     <h3>${th ? 'ที่มาของข้อมูล' : 'Sources'}</h3>
     <ul class="sources">${srcHtml}</ul>
-    <p class="note">${th ? 'ภาพวาดและน้องจกออกแบบขึ้นใหม่สำหรับเกมนี้ · ฟอนต์ Kanit (SIL Open Font License)' : 'Original illustrations and mascot · Kanit font (SIL Open Font License)'}</p>
+    <p class="note">${th ? 'ภาพวาดและน้องจกออกแบบขึ้นใหม่สำหรับเกมนี้ · ฟอนต์ Kanit (SIL Open Font License)' : 'Original illustrations and mascot · Kanit font (SIL Open Font License)'} · <span class="tag">v${esc(C.config.version || '1.0')}</span></p>
     <p class="note">${esc(t('disclaimer'))}</p>
     <button class="btn secondary small" type="button" id="about-close">${esc(t('close'))}</button>`);
   $('#about-close').addEventListener('click', () => closeSheet());

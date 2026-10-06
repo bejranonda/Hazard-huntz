@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
-| **Version** | 1.1.0 |
+| **Version** | 1.0.0 |
 | **Date** | 7 Oct 2026 |
 | **State** | Code complete, optimized across 3 loops (9.74/10 score, 0% overlaps, senior accessibility). **Live at https://baanrodmai.autobahn.bot**. **Not yet tested on real phones.** |
 | **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first (L1 Web Analytics, L8 search consoles), then N2–N4 |

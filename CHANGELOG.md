@@ -1,0 +1,53 @@
+# Changelog
+
+This project uses [semantic versioning](https://semver.org/). Each release is tagged `vX.Y.Z` on `main` once its Cloudflare deploy has been checked.
+
+## [1.0.0] — 2026-10-06
+
+The first release candidate. It is complete and tested in headless browsers, but **not yet deployed or tested on real phones** (see [HANDOFF.md](HANDOFF.md)).
+
+### Added
+
+- **Two modes in one illustrated house:** ก่อนน้ำมา (60 s, rising water) and หลังน้ำลด (50 s, daylight bar), across three rooms (หน้าบ้าน, ห้องนั่งเล่น, ครัว).
+- **Safety content:**
+  - 40 items: 19 Prepare and 21 Return, of which 38 are playable now.
+  - 15 decoys, from 54 dated sources.
+  - 31 items fully verified and 9 flagged ⚠️ partial, each with a written reason.
+  - The help numbers 1784, 1669, 1555, 1130, 1129 and 1323.
+- **Rules:**
+  - Low items flood first, judged by the sprite's centre.
+  - The breaker's correct answer changes once the floor is wet.
+  - +50 bonus for critical items handled before water enters.
+  - A wrong answer costs 4 s; each decoy costs 2 s the first time.
+  - The clock pauses while the player reads.
+  - Scores are out of 10, with flattering rank titles.
+- **Replay:**
+  - a daily house that is the same for everyone (Bangkok date)
+  - a streak
+  - random practice houses
+  - challenge links (`/c/p8?h=…`) that rebuild a friend's exact house
+- **น้องจก,** the gecko mascot: five faces, a rain hood and a torch, and short lines of dialogue. Sounds are synthesised with Web Audio, and Android also gets haptics.
+- **Sharing:**
+  - a 1080×1350 result card and two 1080×1920 checklists
+  - native share with a file, then LINE / Facebook / X / copy / save as fallbacks
+  - long-press saving and an "open in browser" link inside in-app browsers
+  - 25 pre-rendered link-preview pages and images
+- **Offline play** after the first visit, through a service worker that refreshes content from the network first.
+- **Anonymous metrics:** events go through `POST /api/e` to Workers Analytics Engine, alongside Cloudflare Web Analytics. There are no cookies and no personal data.
+- **Build:** content validation that fails the deploy on mistakes, link-preview generation, a service-worker version from a content hash, and a 500 KB budget check (142 KB used).
+- **Tests:** 12 rule tests and 24 headless-browser checks, with Android, iPhone, LINE and Facebook user agents, offline mode and reduced motion.
+- **Documents:** the safety table, game design and wireframes, deploy steps, the Thai launch kit, the metrics plan, the test checklist, the handoff, the knowledge base, known issues, guidelines, and approach and method.
+- **Tools:** `npm run probe` measures tap-area overlaps and flood timings.
+
+### Fixed before release (found during the handoff review)
+
+- **Tab and HUD sizes:** on screens 640 px tall or shorter, the HUD buttons and room tabs were 40 px. They are 44 px again.
+- **"ทำไม?" expander:** in the result lessons it was 35×40 px. It is now at least 44×44 px.
+- **Source links:**
+  - In the lessons and the tip card they are padded to a 44 px tap height without moving the text.
+  - The About list now uses full-width rows of at least 44 px.
+- **Screenshot names:** `npm run smoke -- --screens` now writes the screenshot names the docs use.
+
+### Changed
+
+- **Moved repository.** The game moved from the `baanrodmai/` folder of a `bejranonda/carrier-vector-1988` feature branch to the root of this repository. Its first two commits were kept, and the Cloudflare "Root directory" setting is now empty. The original branch was never merged and no longer carries the game.

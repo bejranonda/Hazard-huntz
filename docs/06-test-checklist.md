@@ -3,16 +3,18 @@
 ## Automated (run before every release)
 
 ```bash
-cd baanrodmai
 node tools/build.mjs     # validates all content JSON; fails on any error
 npm test                 # 12 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset
-npm run smoke            # 21 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright install chromium`)
+npm run smoke            # 24 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright install chromium`)
 ```
 
 The smoke test covers:
 
 - Android Chrome: a full Prepare round with a decoy, a wrong answer and the result card.
-- An iPhone-SE-sized screen: tap targets ≥ 44 px (measured 48 px).
+- An iPhone-SE-sized screen (375×548):
+  - item tap areas ≥ 44 px (measured 47.5 px)
+  - every button, link and expander ≥ 44 px on the game and result screens
+  - the same check on the checklist, help and about sheets
 - LINE in-app user agent: long-press hint, no download button, open-in-browser link.
 - Facebook in-app user agent: the challenge link `/c/r9?h=20261007&fbclid=…` rebuilds the same house, and its preview page has its own image.
 - Checklist deep link (1080×1920 image) and the English toggle.
@@ -32,7 +34,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 5 | Sound starts after the first tap; the 🔊 toggle works | | | | | | | | |
 | 6 | Vibration on correct/wrong (Android only) | n/a | | n/a | | n/a | | n/a | |
 | 7 | Swiping between rooms snaps; tabs and ‹ › arrows work | | | | | | | | |
-| 8 | Every target is easy to tap with a thumb; no mis-taps on neighbours | | | | | | | | |
+| 8 | Every target is easy to tap with a thumb; no mis-taps on neighbours² | | | | | | | | |
 | 9 | Tapping a target pauses the timer; closing the sheet resumes it | | | | | | | | |
 | 10 | Prepare: water rises; low items get wet first; "น้ำเข้าบ้านแล้ว" line at about 27 s; breaker answer changes | | | | | | | | |
 | 11 | Wrong answer: −4 s, gentle text, orange "!" badge (not red) | | | | | | | | |
@@ -59,6 +61,8 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 32 | iOS "Reduce Motion" / Android "Remove animations": no bouncing, still playable | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
+
+² About a third of houses have two neighbouring items whose tap areas overlap ([KNOWN_ISSUES #1](KNOWN_ISSUES.md#1-neighbouring-tap-areas-can-overlap)). If a tap opens the wrong item, note the room, the two items and the phone.
 
 ## Content and preview checks after each content change
 

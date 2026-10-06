@@ -112,7 +112,9 @@
 
 ## Accessibility
 
-- Tap areas are at least 64 scene units, which the smoke test measures at **≥ 48 px** even on an iPhone-SE-sized screen. Buttons are at least 44 px.
+- **Tap areas:** at least 64 scene units. That measures **47.5 px** on a 375×548 screen (iPhone SE in Safari) and 48.7 px at 360×560.
+- **Controls:** every button, link and expander is at least 44 px. The smoke test checks this on the game, result, checklist, help and about screens.
+- **Exception:** phones only 320 px wide get 38–43 px item tap areas (see [KNOWN_ISSUES.md](KNOWN_ISSUES.md)).
 - Results use **colour and shape**: blue ✓ correct, orange ! learned, grey ~/? missed. There is no red/green pairing anywhere.
 - Every target is a focusable SVG `role="button"` with a Thai or English label, operable with Enter or Space. Sheets trap focus and support Esc. Text is 15–19 px with Thai-friendly line height.
 - No flashing effects. Rain streaks drift slowly and stop under reduced motion.
@@ -211,7 +213,7 @@ The share assets, rendered by the same canvas code as the game:
 ## Code map
 
 ```
-baanrodmai/
+Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 ├── public/                 ← what Cloudflare Pages serves (build output dir)
 │   ├── index.html          start screen markup (works before JS runs)
 │   ├── css/app.css
@@ -236,5 +238,7 @@ baanrodmai/
 ├── functions/api/e.js      Pages Function: anonymous event counter → Analytics Engine
 ├── tools/                  build.mjs (validate + generate), render-images.mjs, sw.template.js
 ├── tests/                  run.mjs (rules), smoke.mjs (browser)
-└── docs/                   this documentation + screens/
+├── docs/                   this documentation + screens/
+├── HANDOFF.md  CHANGELOG.md  README.md  LICENSE
+└── wrangler.toml  package.json  .node-version
 ```

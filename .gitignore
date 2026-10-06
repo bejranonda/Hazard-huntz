@@ -1,0 +1,21 @@
+# Dependencies (only playwright-core, for image rendering and browser tests)
+node_modules/
+
+# Cloudflare / Wrangler local state and secrets
+.wrangler/
+.dev.vars
+.env
+.env.*
+
+# Logs and OS / editor files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Scratch output from ad-hoc test runs (docs/screens/ is committed on purpose)
+test-output/
+playtest-output/

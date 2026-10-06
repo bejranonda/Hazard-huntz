@@ -14,19 +14,19 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
 ## Option A: Git integration (recommended: every content edit deploys itself)
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**.
-2. Pick the repository **bejranonda/carrier-vector-1988** and the branch to publish (e.g. `master` after merging, or `ccr-b279fcc9-aqphnj` to preview).
+2. Pick the repository **bejranonda/Hazard-huntz**, with `main` as the production branch. Other branches get their own preview URLs.
 3. Build settings:
 
    | Setting | Value |
    |---|---|
    | Framework preset | None |
-   | **Root directory (advanced)** | `baanrodmai` |
+   | Root directory (advanced) | *(leave empty: the game is at the repository root)* |
    | Build command | `node tools/build.mjs` |
    | Build output directory | `public` |
    | Environment variable | `SITE_URL` = `https://<project>.pages.dev` (or your domain) |
 
-   - Node 22 is pinned by `baanrodmai/.node-version`.
-   - `wrangler.toml` in the root directory is read automatically. It sets the output directory and the Analytics Engine binding.
+   - Node 22 is pinned by `.node-version`.
+   - `wrangler.toml` at the repository root is read automatically. It sets the output directory and the Analytics Engine binding.
    - When `wrangler.toml` is present, those fields are managed from the file, not the dashboard.
 4. **Save and Deploy.**
    - The build validates every content file. A typo in a JSON file fails the build, and **the previous version stays live**.
@@ -36,20 +36,19 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
    - **Settings → Bindings:** check that `EVENTS` (Analytics Engine, dataset `baanrodmai_events`) is listed. Add it here if you removed it from `wrangler.toml`.
    - **Settings → Runtime → Fail open.** If the free Functions quota (100,000 requests/day, shared with Workers) is ever used up, the site keeps serving and only the event counter stops.
    - **Custom domains → Set up a domain** (optional), then update `SITE_URL` and redeploy.
-6. **Bake your domain into the images.** On your computer: `cd baanrodmai && npm install && SITE_URL=https://your.domain npm run images`. Commit the updated `public/og`, `public/share` and `public/icons`.
+6. **Bake your domain into the images.** On your computer: `npm install && SITE_URL=https://your.domain npm run images`. Commit the updated `public/og`, `public/share` and `public/icons`.
    - The images show `#บ้านรอดไหม` until you do this.
    - Rendering needs Chromium (`npx playwright install chromium`, or set `CHROME_PATH`).
 
 From now on:
 
-- **Editing content** (fixing a tip, switching the default mode): edit the JSON in `baanrodmai/public/content/` on GitHub and commit. Cloudflare rebuilds and publishes in about a minute.
+- **Editing content** (fixing a tip, switching the default mode): edit the JSON in `public/content/` on GitHub and commit. Cloudflare rebuilds and publishes in about a minute.
 - **Switching the recommended mode:** set `"rainWarningActive": false` in `config.json` when the water recedes, and back to `true` before the next rain wave.
 - **Rollback:** Pages → Deployments → pick an earlier one → *Rollback*.
 
 ## Option B: Wrangler direct upload (from your computer)
 
 ```bash
-cd baanrodmai
 npm install                                   # playwright-core, only for images/tests
 npx wrangler@latest login
 npx wrangler@latest pages project create baanrodmai --production-branch=main
@@ -57,7 +56,7 @@ SITE_URL=https://baanrodmai.pages.dev node tools/build.mjs
 npx wrangler@latest pages deploy public --project-name=baanrodmai
 ```
 
-- Run the deploy **from the `baanrodmai/` folder**. Wrangler uploads `functions/` only when it is next to where the command runs, and reads `wrangler.toml` from there.
+- Run the deploy **from the repository root**. Wrangler uploads `functions/` only when it is next to where the command runs, and reads `wrangler.toml` from there.
 - Dashboard drag-and-drop uploads do **not** include Functions. Use Wrangler or Git.
 - A project created with direct upload cannot later be switched to Git integration, and vice versa. Pick one.
 - `npm run deploy` runs the build and the deploy in one go.
@@ -65,7 +64,6 @@ npx wrangler@latest pages deploy public --project-name=baanrodmai
 ## Local preview
 
 ```bash
-cd baanrodmai
 node tools/build.mjs
 npx wrangler@latest pages dev public    # serves the site + /api/e on http://localhost:8788
 npm test                                # game-rule unit tests (no browser)

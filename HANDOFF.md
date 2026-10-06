@@ -31,7 +31,7 @@
 
 Details are in sections 2 and 8.
 
-**Where it came from.** It was built on 6 Oct 2026 in a feature branch of `bejranonda/carrier-vector-1988`, in the folder `baanrodmai/`. The same day it moved here to the repository root, keeping its two original commits. That branch was never merged and had no pull request. It has been reset to `master`, so the old repository no longer contains any game code.
+**Where it came from.** It was built on 6 Oct 2026 in a feature branch of `bejranonda/carrier-vector-1988`, in the folder `baanrodmai/`. The same day it moved here to the repository root, keeping its two original commits. That branch was never merged and had no pull request. A follow-up commit there removed the `baanrodmai/` folder, so the branch now matches `master`. The two original commits stay in that branch's history until the branch is deleted.
 
 ## 2. Before launch: what only you can do
 
@@ -167,7 +167,11 @@ The full list, with measurements, is in [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES
   - `npm run probe` for tap-area overlaps and flood timings
   - refreshed screenshots
 - **Added documents:** this file, [CHANGELOG.md](CHANGELOG.md), [docs/KNOWLEDGE.md](docs/KNOWLEDGE.md), [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md), [docs/GUIDELINES.md](docs/GUIDELINES.md), [docs/APPROACH_AND_METHOD.md](docs/APPROACH_AND_METHOD.md) and [CLAUDE.md](CLAUDE.md).
-- **Cleaned up `carrier-vector-1988`.** There was no pull request for the game. Its branch `ccr-b279fcc9-aqphnj` was reset to `master`, so the game code is no longer in that repository. That repository's own pull requests (#1 and #2, the flight-sim releases) were not touched.
+- **Cleaned up `carrier-vector-1988`.**
+  - There was no pull request for the game, so there was nothing to close.
+  - On its branch `ccr-b279fcc9-aqphnj`, commit `8c08c06` removes `baanrodmai/`, which leaves the branch identical to `master`.
+  - The two game commits remain in that branch's history. To drop them too, delete the branch on GitHub (Branches → 🗑).
+  - That repository's own pull requests (#1 and #2, the flight-sim releases) were not touched.
 
 ## 10. Access, accounts and secrets
 

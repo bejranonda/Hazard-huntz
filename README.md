@@ -123,7 +123,7 @@ docs/              everything above + screens/
 
 ## History
 
-The game was first built on a feature branch of `bejranonda/carrier-vector-1988`, in its `baanrodmai/` folder. On 6 Oct 2026 it moved here, to the repository root, with its first two commits kept. That branch was never merged, and the game code has since been removed from that repository.
+The game was first built on a feature branch of `bejranonda/carrier-vector-1988`, in its `baanrodmai/` folder. On 6 Oct 2026 it moved here, to the repository root, with its first two commits kept. That branch was never merged, and a later commit removed the game from it, so `carrier-vector-1988` holds only the flight sim again.
 
 ## Credits and license
 

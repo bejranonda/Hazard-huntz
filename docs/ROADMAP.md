@@ -39,6 +39,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Todo |
 | N4 | [Bigger tap areas on 320 px phones](#n4-bigger-tap-areas-on-320-px-phones) | AI-ready | Todo |
 | N5 | [First metrics review](#n5-first-metrics-review) | Owner + AI | Blocked: needs 2 weeks live |
+| N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Todo |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -192,6 +193,22 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. Report: completion per mode, share rate, the challenge funnel, help clicks, and score trends.
   3. Propose content changes for the most-missed lessons. Change the art or wording, never make the answers easier.
 - **Done when:** a short report is written, and every content change it proposes is posted with "UPDATE:".
+
+### N6. Implement live-site UX improvements
+
+- **Who:** AI-ready · **Status:** Todo · **Issues:** #33, #34, #35, #36
+- **Steps:**
+  1. Review the prioritized backlog in [review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+  2. Implement **IMP-01** (tap-area collision offsets in `rooms.json`).
+  3. Implement **IMP-02** (subtle visual breathing pulse/shimmer on pending interactive targets in `app.css` and `scene.js` to mitigate pixel hunting).
+  4. Implement **IMP-03** (animated hold-to-save guide and open-in-external-browser CTA for LINE in-app webviews in `share.js` and `app.css`).
+  5. Implement **IMP-04** (timer anxiety relief copy in `strings.json` and how-to dialog).
+  6. Implement **IMP-05** (surface primary educational rationale directly in feedback sheet rather than behind `<details>` in `main.js`).
+  7. Run `npm test`, `npm run probe`, and `npm run smoke`.
+- **Done when:**
+  - Tasks IMP-01 through IMP-05 are implemented and verified.
+  - Smoke tests and probe checks pass with 0 regressions.
+  - Issues #33–#36 are updated in `KNOWN_ISSUES.md`.
 
 ## Later
 

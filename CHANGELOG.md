@@ -26,6 +26,11 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
   - prefer additive git
   - check doc claims against the code
   - run the link checker
+- **Live-site UI/UX review and target user validation** in `review/`:
+  - Scorecard (8.8/10), Heuristic evaluation, and Thai persona simulations (elderly LINE forwarders, social media natives, disaster homeowners) across mobile viewports.
+  - Actionable engineering backlog with tasks IMP-01 through IMP-07 in `review/ACTIONABLE_RECOMMENDATIONS.md`.
+  - Added known issues #33–#36 in `KNOWN_ISSUES.md` and new roadmap card N6 in `ROADMAP.md`.
+  - Added guidelines 26–28 in `GUIDELINES.md` for touchscreen affordances, timer anxiety mitigation, and LINE webview download constraints.
 
 ### Changed
 

@@ -107,6 +107,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | [Guidelines](docs/GUIDELINES.md) | Rules for editing safety content, writing Thai copy, changing code, testing and releasing |
 | [Approach and method](docs/APPROACH_AND_METHOD.md) | How the project was researched, designed, built and verified, and why |
 | [Lessons learned](docs/LESSONS_LEARNED.md) | What went wrong or right while building it, and the rule each lesson became |
+| [UI/UX Review & Evaluation](review/README.md) | Comprehensive live-site evaluation (8.8/10), persona validation, and engineering improvement backlog |
 
 ## แก้เนื้อหาเอง (สำหรับทีมที่ไม่ได้เขียนโค้ด)
 

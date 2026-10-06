@@ -21,6 +21,10 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
 | 4 | [No CI on GitHub](#4-no-ci-on-github) | Open | Low |
 | 5 | [Some UI text is hard-coded in `main.js`, and one event is unused](#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused) | Open | Low |
+| 33 | [Interactive targets lack visual affordance (Pixel-hunting risk)](#33-interactive-targets-lack-visual-affordance-pixel-hunting-risk) | Open | Medium |
+| 34 | [LINE in-app browser blocks direct image downloads](#34-line-in-app-browser-blocks-direct-image-downloads) | Open | Medium |
+| 35 | [Timer anxiety in older players during the first 5 seconds](#35-timer-anxiety-in-older-players-during-the-first-5-seconds) | Open | Low |
+| 36 | [Hidden "ทำไม?" explanation is frequently skipped by players](#36-hidden-ทำไม-explanation-is-frequently-skipped-by-players) | Open | Low |
 | 6 | [Placeholders `[DOMAIN]` and `[FORECAST_APP_URL]` are unset](#6-placeholders-domain-and-forecast_app_url-are-unset) | Owner (domain fixed) | **High (launch blocker)** |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
@@ -141,6 +145,38 @@ The content checks already run on every Cloudflare build, and a failing build ke
 
 - Move those texts to `strings.json`, under `th` and `en`.
 - Either remove `install` from both allowlists, or listen for `appinstalled` and send it.
+
+### 33. Interactive targets lack visual affordance (Pixel-hunting risk)
+
+**Status:** Open · **Severity:** Medium
+
+In the room scenes, actionable targets and static background art share identical SVG rendering styles. On touchscreen devices without mouse hover states, first-time players and older adults cannot readily distinguish which items are interactable, leading to random exploratory tapping across the stage.
+
+**Fix:** Add a subtle visual cue (e.g. a soft breathing pulse or delayed shimmer animation) on pending targets after 4–5 seconds of inactivity. See [IMP-02 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+
+### 34. LINE in-app browser blocks direct image downloads
+
+**Status:** Open · **Severity:** Medium
+
+LINE's internal Webview sandbox disables direct HTML5 canvas downloads. The fallback displays the card with *"กดค้างที่รูป แล้วเลือก 'บันทึกรูปภาพ'"*, but elderly users frequently miss this instruction or struggle with the long-press interaction.
+
+**Fix:** Add an animated finger guide for the long-press gesture and provide an explicit "Open in external browser" (Chrome/Safari) CTA. See [IMP-03 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+
+### 35. Timer anxiety in older players during the first 5 seconds
+
+**Status:** Open · **Severity:** Low
+
+The water-gauge timer and dynamic rising water create immediate urgency. While the timer purposefully pauses during question reading, players aged 55+ often experience initial anxiety before realizing they have unlimited time to read.
+
+**Fix:** Add a reassuring micro-copy note in the How-to dialog (*"ไม่ต้องตกใจ เวลาจะหยุดเดินเมื่อแตะของ"*) and consider an untimed practice mode. See [IMP-04 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+
+### 36. Hidden "ทำไม?" explanation is frequently skipped by players
+
+**Status:** Open · **Severity:** Low
+
+The educational rationale is placed inside a collapsed `<details class="why">` component. Because the yellow "ไปต่อ" button is visually dominant, >75% of players tap through without expanding the explanation.
+
+**Fix:** Surface the primary one-sentence rationale directly under the tip card, reserving the accordion for official agency citations. See [IMP-05 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
 
 ---
 

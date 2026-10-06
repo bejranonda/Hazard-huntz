@@ -24,6 +24,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 14. [Audience and virality research](#14-audience-and-virality-research)
 15. [From research to features](#15-from-research-to-features)
 16. [Search and AI-search facts](#16-search-and-ai-search-facts)
+17. [UI/UX evaluation and target persona findings](#17-uiux-evaluation-and-target-persona-findings)
 
 ---
 
@@ -569,3 +570,29 @@ What the build does for search, why, and how sure we are. Facts about *this site
 - **No invented structured data.** There is no `FAQPage`, `HowTo`, rating or review markup, because there are no such questions, steps or reviews to mark up.
 
 **Not verified yet:** whether Google or Bing index the pages, how they rank, and whether AI assistants cite `/learn`. Indexing takes days to weeks. See [ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check) and [KNOWN_ISSUES #32](KNOWN_ISSUES.md#32-search-and-ai-search-results-cant-be-guaranteed).
+
+---
+
+## 17. UI/UX evaluation and target persona findings
+
+Findings from the live-site evaluation on 7 Oct 2026 across mobile viewports (390×844 and 375×667) at https://baanrodmai.autobahn.bot:
+
+### Heuristic evaluation score: 8.8 / 10
+- **Visual Design (9.2/10):** Hand-drawn SVG aesthetic and mascot น้องจก provide warmth and approachability without trivializing disaster danger.
+- **Gameplay & Educational Retention (9.1/10):** The 60-second loop paired with the "pause-on-sheet" rule ensures players actually read lessons instead of speed-skipping.
+- **Touch Ergonomics (8.0/10):** Primary actions exceed 44–56 px, but in-scene items suffer from slot overlaps (32% of generated houses) and lack visual affordance.
+- **Thai Copy & Tone (9.5/10):** Warm, supportive, empathetic Thai copy (*"ไม่เป็นไร รู้แล้วรอดของจริง"*), avoiding shaming or disaster shock tactics.
+- **Sharing Architecture (8.7/10):** In-browser canvas generation of 1080×1350 result cards and 1080×1920 checklists mirrors the Thai morning greeting card forwarding habit.
+- **Performance (9.8/10):** 144 KB first load, zero runtime npm packages, 0 KB Web Audio synthesis, 100% offline functionality.
+
+### Target personas and friction points
+1. **Elderly LINE Forwarders (ป้าสมศรี, 64):**
+   - *Friction:* Initial timer anxiety from rising water and countdown clock; pixel-hunting due to missing visual cues on interactive items; difficulty saving cards in LINE in-app browser.
+   - *Fix:* Reassuring how-to copy, delayed breathing shimmer on pending targets, animated hold-to-save guidance.
+2. **Young Social Media Users (น้องแบงก์, 27):**
+   - *Friction:* Occasional mis-taps from hitbox overlaps.
+   - *Praise:* Wordle-style spoiler-free emoji grid (`✅💡✅💧✅`), snappy CSS animations, challenge links.
+3. **Disaster-Affected Homeowners (พี่วิชัย, 48):**
+   - *Value:* Immediate access to 10-point checklist and emergency helplines from start screen without completing the game; offline persistence when connectivity drops.
+
+Full evaluation and actionable task backlog are documented in [review/](../review/README.md).

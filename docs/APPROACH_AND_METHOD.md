@@ -218,3 +218,15 @@ The brief for going live was: put the app on a suitable subdomain of `autobahn.b
 7. **Test the part you can measure; say what you can't.** The build, tests and a phone-sized browser run were checked on the live site. Indexing, ranking and AI citation can't be measured on day one, so they became a roadmap task with a date ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) and a known issue (#32).
 8. **Run the existing guard rails on new work.** The new footer link failed the 44 px check at 41 px, and a smoke-test hang on Windows Chrome was reproduced on untouched `HEAD` before anyone blamed the new code. Both are in [LESSONS D7, D8](LESSONS_LEARNED.md#d-testing-and-verification).
 9. **Deployment surfaced two account-level prerequisites** (a repository Cloudflare could see, and Analytics Engine enabled) that no code change could fix. They are recorded as lessons ([F6, F7](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox)) and in [03-deploy.md](03-deploy.md#the-live-setup), so the next deploy starts with them.
+
+## 14. Post-deploy live site review and empirical persona validation
+
+Following the initial production deployment to https://baanrodmai.autobahn.bot on 6 Oct 2026, an empirical evaluation was conducted on 7 Oct 2026 to validate real-world usability:
+
+1. **Inspection on the live origin:** Testing directly on the live domain ensured that Cloudflare asset delivery, Web Audio unlocked behaviors, and service worker caching matched real player conditions.
+2. **Multi-device mobile viewport testing:** The game loop was validated at 390×844 and 375×667 viewports, testing tap accuracy, HUD responsiveness, and dialog ergonomics.
+3. **Target persona simulations:** Rather than evaluating generic web metrics, the game was tested against three core Thai user journeys:
+   - **Elderly LINE group forwarders (ป้าสมศรี):** Testing readability, panic-inducing timer pressure, and in-app Webview card saving.
+   - **Young social media natives (น้องแบงก์):** Testing visual snap, animation pacing, and emoji grid shareability.
+   - **Flood-affected homeowners (พี่วิชัย):** Testing rapid emergency utility access and offline functionality.
+4. **Actionable engineering backlog:** Insights were structured into prioritized, AI-ready task cards (IMP-01 through IMP-07) in [review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md) with explicit file targets and acceptance criteria.

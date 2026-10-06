@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 600" data-room="kitchen">
+  <defs>
+    <pattern id="kt-tile" width="18" height="18" patternUnits="userSpaceOnUse">
+      <rect width="18" height="18" fill="#FFFFFF"/>
+      <path d="M0 0.5H18M0.5 0V18" stroke="#CFE5D8" stroke-width="1.4"/>
+    </pattern>
+    <pattern id="kt-floor" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="40" height="40" fill="#F1DEC2"/>
+      <rect width="20" height="20" fill="#EBD3B1"/><rect x="20" y="20" width="20" height="20" fill="#EBD3B1"/>
+    </pattern>
+    <linearGradient id="kt-rain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9DB2C4"/><stop offset="1" stop-color="#CFDAE3"/>
+    </linearGradient>
+    <linearGradient id="kt-sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FD2F2"/><stop offset="1" stop-color="#E2F5FC"/>
+    </linearGradient>
+    <clipPath id="kt-glass"><rect x="146" y="116" width="80" height="108" rx="3"/></clipPath>
+  </defs>
+
+  <g class="bg" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="0" y="0" width="360" height="42" fill="#EEF5F0"/>
+    <rect x="0" y="38" width="360" height="6" fill="#D5E6DB"/>
+    <rect x="0" y="44" width="360" height="412" fill="#DCF1E4"/>
+    <circle cx="300" cy="96" r="22" fill="#FFFFFF" stroke="#4A3426" stroke-width="2.2"/>
+    <path d="M300 82V96L310 102" fill="none" stroke="#4A3426" stroke-width="2.4"/>
+
+    <!-- backsplash -->
+    <rect x="98" y="246" width="262" height="78" fill="url(#kt-tile)"/>
+
+    <!-- window above the sink -->
+    <rect x="138" y="108" width="96" height="124" rx="6" fill="#FFFFFF" stroke="#4A3426" stroke-width="2.4"/>
+    <g clip-path="url(#kt-glass)">
+      <g class="sky-rain">
+        <rect x="146" y="116" width="80" height="108" fill="url(#kt-rain)"/>
+        <path d="M144 150 Q156 132 172 142 Q186 124 204 138 Q220 132 230 150 Z" fill="#7F95A9"/>
+        <path d="M158 164l-6 16M178 158l-6 16M198 166l-6 16M218 160l-6 16M168 194l-6 16M190 198l-6 16M212 192l-6 16" stroke="#EEF3F7" stroke-width="2.2" class="rain"/>
+      </g>
+      <g class="sky-sun">
+        <rect x="146" y="116" width="80" height="108" fill="url(#kt-sun)"/>
+        <circle cx="206" cy="140" r="12" fill="#FFD447"/>
+        <path d="M146 224 V196 Q166 180 186 194 Q204 182 226 192 V224 Z" fill="#8CC45E"/>
+      </g>
+    </g>
+    <path d="M186 116V224" stroke="#FFFFFF" stroke-width="5"/>
+    <path d="M134 104 H238 V122 Q229 114 220 122 Q211 114 202 122 Q193 114 186 122 Q179 114 170 122 Q161 114 152 122 Q143 114 134 122 Z" fill="#FF9F6E" stroke="#4A3426" stroke-width="2.2"/>
+
+    <!-- fridge -->
+    <rect x="10" y="162" width="84" height="292" rx="10" fill="#F2F5F6" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="78" y="166" width="12" height="284" rx="5" fill="#E1E7EA"/>
+    <path d="M12 246H92" stroke="#4A3426" stroke-width="2.2"/>
+    <rect x="72" y="190" width="7" height="36" rx="3.5" fill="#C9D2D6" stroke="#4A3426" stroke-width="1.6"/>
+    <rect x="72" y="262" width="7" height="64" rx="3.5" fill="#C9D2D6" stroke="#4A3426" stroke-width="1.6"/>
+    <circle cx="26" cy="200" r="5" fill="#FF7A59"/><circle cx="40" cy="214" r="4" fill="#FFC83D"/>
+    <rect x="16" y="452" width="10" height="5" fill="#6B4A35"/><rect x="78" y="452" width="10" height="5" fill="#6B4A35"/>
+
+    <!-- shelf above the stove -->
+    <rect x="252" y="194" width="100" height="8" rx="3" fill="#B5774A" stroke="#4A3426" stroke-width="2"/>
+    <path d="M266 202V214M338 202V214" stroke="#8B5A36" stroke-width="3"/>
+    <path d="M272 214 V238 M272 238 a8 8 0 1 0 0.1 0" fill="#C9D2D6" stroke="#4A3426" stroke-width="2"/>
+    <path d="M300 214 V226 M290 226 H310 L306 244 H294 Z" fill="#FFC83D" stroke="#4A3426" stroke-width="2"/>
+
+    <!-- counter -->
+    <rect x="102" y="332" width="250" height="124" fill="#6FB7B0" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="96" y="320" width="262" height="13" rx="3" fill="#F7F1E6" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="109" y="342" width="34" height="106" rx="4" fill="#7CC4BD" stroke="#4F9A93" stroke-width="1.6"/>
+    <rect x="149" y="342" width="32" height="106" rx="4" fill="#7CC4BD" stroke="#4F9A93" stroke-width="1.6"/>
+    <rect x="185" y="342" width="32" height="106" rx="4" fill="#7CC4BD" stroke="#4F9A93" stroke-width="1.6"/>
+    <rect x="223" y="342" width="58" height="106" rx="4" fill="#7CC4BD" stroke="#4F9A93" stroke-width="1.6"/>
+    <rect x="287" y="342" width="58" height="106" rx="4" fill="#7CC4BD" stroke="#4F9A93" stroke-width="1.6"/>
+    <path d="M137 384v12M155 384v12M211 384v12M229 384v12M339 384v12" stroke="#4A3426" stroke-width="3"/>
+    <rect x="102" y="450" width="250" height="6" fill="#4F9A93"/>
+
+    <!-- sink and tap -->
+    <rect x="146" y="320" width="76" height="7" rx="3" fill="#B9C4CA" stroke="#4A3426" stroke-width="2"/>
+    <path d="M190 320 V298 Q190 290 198 290 H206 V296" fill="none" stroke="#4A3426" stroke-width="7"/>
+    <path d="M190 320 V298 Q190 290 198 290 H206 V296" fill="none" stroke="#C9D2D6" stroke-width="3.6"/>
+    <rect x="182" y="312" width="16" height="7" rx="3" fill="#C9D2D6" stroke="#4A3426" stroke-width="1.8"/>
+
+    <!-- gas stove and pot -->
+    <rect x="282" y="306" width="64" height="15" rx="4" fill="#4A4F55" stroke="#4A3426" stroke-width="2.2"/>
+    <ellipse cx="298" cy="306" rx="10" ry="3" fill="#2E3236"/><ellipse cx="330" cy="306" rx="10" ry="3" fill="#2E3236"/>
+    <circle cx="292" cy="314" r="2.6" fill="#FFC83D"/><circle cx="336" cy="314" r="2.6" fill="#FFC83D"/>
+    <rect x="313" y="285" width="32" height="19" rx="4" fill="#FF7A59" stroke="#4A3426" stroke-width="2.2"/>
+    <path d="M309 285 H349" stroke="#4A3426" stroke-width="3"/>
+    <path d="M346 321 Q356 340 350 360" fill="none" stroke="#5B5F64" stroke-width="3.4"/>
+
+    <!-- floor -->
+    <rect x="0" y="456" width="360" height="144" fill="url(#kt-floor)"/>
+    <rect x="0" y="456" width="360" height="8" fill="#D9C2A0" opacity=".8"/>
+    <rect x="138" y="532" width="34" height="16" rx="8" fill="#B9C4CA" stroke="#4A3426" stroke-width="2"/>
+    <path d="M146 540H164M150 536V544M155 536V544M160 536V544" stroke="#7D878D" stroke-width="1.6"/>
+    <rect x="30" y="566" width="58" height="12" rx="6" fill="#FF9F6E" stroke="#4A3426" stroke-width="1.8" opacity=".9"/>
+  </g>
+
+  <g class="mud" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="0" y="356" width="360" height="100" fill="#7A5A3C" opacity=".16"/>
+    <path d="M0 356 Q30 350 60 357 T120 355 T180 354 T240 358 T300 353 T360 356" fill="none" stroke="#7A5A3C" stroke-width="5" opacity=".55"/>
+    <path d="M0 468 Q50 460 100 468 Q150 476 200 466 Q260 456 310 468 Q340 474 360 464 V600 H0 Z" fill="#8E6B4B" opacity=".82"/>
+    <ellipse cx="250" cy="512" rx="46" ry="9" fill="#A88A6B"/>
+    <ellipse cx="242" cy="510" rx="18" ry="3" fill="#C9B497" opacity=".8"/>
+    <ellipse cx="90" cy="586" rx="50" ry="9" fill="#A88A6B"/>
+    <path d="M60 500 l10 -6 l4 8 Z M300 580 l12 -4 l-2 9 Z" fill="#6E8F3E"/>
+    <circle cx="40" cy="300" r="6" fill="#6E5137" opacity=".25"/><circle cx="62" cy="380" r="8" fill="#6E5137" opacity=".25"/>
+  </g>
+
+  <g class="items"/>
+  <g class="water"/>
+</svg>

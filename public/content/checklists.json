@@ -1,0 +1,139 @@
+{
+  "_readme": "เช็กลิสต์ 10 ข้อ สำหรับรูปส่งต่อในกลุ่มไลน์ครอบครัว แต่ละข้อควรสั้นไม่เกิน 2 บรรทัด (ประมาณ 45 ตัวอักษร) icon = อีโมจิในหน้าเว็บ, sprite = รูปประกอบในรูปภาพ (ชื่อจาก art/sprites.svg)",
+  "prepare": {
+    "title": {
+      "th": "เตรียมบ้านก่อนน้ำมา 10 ข้อ",
+      "en": "10 things to do before the flood"
+    },
+    "items": [
+      {
+        "icon": "📄",
+        "th": "เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน",
+        "en": "Seal key documents in a waterproof bag in your go-bag",
+        "sprite": "docs"
+      },
+      {
+        "icon": "💧",
+        "th": "น้ำดื่ม อาหารแห้ง พออย่างน้อย 3 วัน",
+        "en": "Water and dry food for at least 3 days",
+        "sprite": "waterfood"
+      },
+      {
+        "icon": "💊",
+        "th": "ยาประจำตัวพออย่างน้อย 7 วัน และชุดปฐมพยาบาล",
+        "en": "At least 7 days of regular medicine, plus first aid",
+        "sprite": "meds"
+      },
+      {
+        "icon": "🔦",
+        "th": "ไฟฉาย ถ่านสำรอง ชาร์จมือถือกับพาวเวอร์แบงก์ให้เต็ม",
+        "en": "Torch, spare batteries, phone and power bank charged",
+        "sprite": "torch"
+      },
+      {
+        "icon": "📺",
+        "th": "ยกเครื่องใช้ไฟฟ้า ของมีค่า สารเคมี ขึ้นที่สูงหรือชั้นบน",
+        "en": "Lift appliances, valuables and chemicals up high",
+        "sprite": "tv"
+      },
+      {
+        "icon": "⚡",
+        "th": "ปลดเบรกเกอร์ชั้นล่างตอนตัวแห้ง ปิดวาล์วแก๊ส ผูกถังไว้ที่สูง",
+        "en": "Breaker off while dry; gas valve shut, cylinder tied up high",
+        "sprite": "breaker-off"
+      },
+      {
+        "icon": "🧱",
+        "th": "ถุงทรายกั้นประตู อุดโถส้วมและท่อระบายน้ำชั้นล่าง",
+        "en": "Sandbag the doors; plug downstairs toilets and drains",
+        "sprite": "sandbags-done"
+      },
+      {
+        "icon": "🚗",
+        "th": "ย้ายรถไปจุดจอดที่ทางการเปิดให้ ไม่จอดบนสะพาน",
+        "en": "Move the car to official parking, never onto bridges",
+        "sprite": "car"
+      },
+      {
+        "icon": "👵",
+        "th": "พาผู้สูงอายุ ผู้ป่วยติดเตียง สัตว์เลี้ยง ไปที่ปลอดภัยก่อน",
+        "en": "Get older people, bedridden relatives and pets out early",
+        "sprite": "plan"
+      },
+      {
+        "icon": "☎️",
+        "th": "รู้ที่ตั้งศูนย์พักพิงใกล้บ้าน เซฟเบอร์ 1784 และ 1669",
+        "en": "Know your nearest shelter; save 1784 and 1669",
+        "sprite": "poster"
+      }
+    ]
+  },
+  "return": {
+    "title": {
+      "th": "ก่อนกลับเข้าบ้าน 10 ข้อ",
+      "en": "10 checks before going back in"
+    },
+    "items": [
+      {
+        "icon": "🏚️",
+        "th": "ดูโครงสร้างก่อนเข้า ผนังร้าว พื้นทรุด ฝ้าย้อย ให้ช่างตรวจ",
+        "en": "Check the structure first: cracks, sinking floors, sagging ceilings",
+        "sprite": "crack"
+      },
+      {
+        "icon": "🥾",
+        "th": "ใส่บูทยาง ถุงมือยาง ทุกครั้งที่ลุยน้ำหรือโคลน",
+        "en": "Rubber boots and gloves whenever you wade water or mud",
+        "sprite": "bootsclean"
+      },
+      {
+        "icon": "🔌",
+        "th": "ห้ามแตะปลั๊ก สวิตช์ ตู้ไฟที่เปียก เรียกช่างไฟตรวจก่อน",
+        "en": "Don't touch wet sockets, switches or the breaker; call an electrician",
+        "sprite": "socketwet"
+      },
+      {
+        "icon": "📺",
+        "th": "เครื่องใช้ไฟฟ้าจมน้ำห้ามเสียบ รถจมน้ำห้ามสตาร์ท",
+        "en": "Don't plug in flooded appliances or start a flooded car",
+        "sprite": "tvmud"
+      },
+      {
+        "icon": "⚠️",
+        "th": "เจอสายไฟขาด อยู่ห่าง 3–5 เมตร แจ้ง 1130 หรือ 1129",
+        "en": "Downed line: stay 3–5 m away and call 1130 or 1129",
+        "sprite": "wire"
+      },
+      {
+        "icon": "🔥",
+        "th": "ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ออกไปโทรแจ้ง",
+        "en": "Smell gas: no switches or flames, open windows, leave and call",
+        "sprite": "lpgsmell"
+      },
+      {
+        "icon": "🐍",
+        "th": "ใช้ไม้เขี่ยดูรองเท้า ตู้ กองขยะ ก่อน ระวังงู ตะขาบ",
+        "en": "Check shoes, cupboards and debris with a stick for snakes",
+        "sprite": "shoesnake"
+      },
+      {
+        "icon": "🥫",
+        "th": "อาหารโดนน้ำ กระป๋องบุบ ทิ้งไป น้ำประปาต้มก่อนดื่ม",
+        "en": "Bin flood-touched food and damaged cans; boil tap water",
+        "sprite": "cans"
+      },
+      {
+        "icon": "🧴",
+        "th": "ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ ห้ามใช้เครื่องปั่นไฟในบ้าน",
+        "en": "Never mix bleach and toilet cleaner; no generators indoors",
+        "sprite": "bleach"
+      },
+      {
+        "icon": "🤒",
+        "th": "มีไข้หลังลุยน้ำ รีบหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง",
+        "en": "Fever after wading? See a doctor; don't self-medicate",
+        "sprite": "thermo"
+      }
+    ]
+  }
+}

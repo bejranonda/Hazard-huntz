@@ -1,0 +1,607 @@
+{
+  "_readme": "แก้ข้อความได้เลย: name = ชื่อสิ่งของ, context = บรรยายสถานการณ์, choices = ตัวเลือก (correct: true คือคำตอบที่ถูก), tip = เคล็ดลับไม่เกิน 80 ตัวอักษร, why = คำอธิบายเมื่อกด 'ทำไม?', sources = รหัสใน sources.json. ห้องที่เล่นได้กำหนดใน rooms.json. kind = ประเภทการกระทำ (ใช้เลือกไอคอน): up pack off leave place call gear check toss boil move clear",
+  "items": [
+    {
+      "id": "p-docs", "mode": "prepare", "room": "living", "critical": true,
+      "sprite": "docs", "doneSprite": "docs-done", "size": [58, 46], "slots": ["table", "seat", "floor"],
+      "name": { "th": "เอกสารสำคัญ", "en": "Important documents" },
+      "context": { "th": "บัตรประชาชน ทะเบียนบ้าน โฉนด วางรวมกันอยู่ตรงนี้", "en": "ID card, house registration and land deed are all lying here" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "ใส่ถุงกันน้ำ แล้วเก็บรวมกับกระเป๋าฉุกเฉิน", "en": "Seal them in a waterproof bag and keep it with the go-bag" } },
+        { "kind": "up", "label": { "th": "วางไว้บนตู้สูงๆ ไม่ต้องห่อ", "en": "Put them on top of a tall cabinet, unwrapped" }, "feedback": { "th": "ที่สูงช่วยได้ แต่ถ้าต้องอพยพกะทันหัน เอกสารจะไม่ได้ติดตัวไปด้วย ใส่ถุงกันน้ำแล้วเก็บรวมกับกระเป๋าฉุกเฉินชัวร์กว่า", "en": "Height helps, but if you have to leave in a hurry they stay behind. Seal them and keep them in the go-bag." } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ เสียก็ไปทำใหม่ได้", "en": "Leave them, you can get new ones" }, "feedback": { "th": "ทำใหม่ได้ก็จริง แต่ยุ่งยากและเสียเวลามาก ตอนอพยพหรือขอความช่วยเหลือก็ต้องใช้ ห่อกันน้ำไว้ก่อนดีกว่า", "en": "You can replace them, but it's slow and painful, and you'll need them to get help. Waterproof them now." } }
+      ],
+      "tip": { "th": "เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที", "en": "Seal key documents in a waterproof bag and keep them in your go-bag." },
+      "why": { "th": "ปภ. แนะให้เก็บเอกสารสำคัญไว้ในถุงพลาสติกหรือซองกันน้ำ และใส่ไว้ในถุงยังชีพ ถ้าต้องอพยพ เอกสารเหล่านี้ใช้ยืนยันตัวตนและติดต่อขอความช่วยเหลือได้ทันที", "en": "DDPM advises keeping important documents in plastic or waterproof pouches inside the emergency bag. If you evacuate, they prove who you are and help you get assistance." },
+      "sources": ["ddpm-noru", "ddpm-6kit", "ddpm-amarin"], "verify": "verified"
+    },
+    {
+      "id": "p-breaker", "mode": "prepare", "room": "living", "critical": true, "pair": "r-breaker",
+      "sprite": "breaker", "doneSprite": "breaker-off", "size": [42, 56], "slots": ["breaker"],
+      "name": { "th": "เบรกเกอร์ไฟหลัก", "en": "Main breaker" },
+      "context": { "th": "น้ำยังไม่เข้าบ้าน พื้นแห้ง มือเราก็แห้ง", "en": "Water isn't inside yet. The floor and your hands are dry." },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ปลดเบรกเกอร์ชั้นล่างตอนนี้ ตอนตัวยังแห้ง ยืนบนพื้นแห้ง", "en": "Switch off the downstairs breaker now, while you're dry and on dry ground" } },
+        { "kind": "leave", "label": { "th": "เปิดไว้ก่อน น้ำมาแล้วค่อยปิด", "en": "Leave it on, switch off when the water arrives" }, "feedback": { "th": "รอให้น้ำเข้าก่อนจะเสี่ยงมาก ตอนนั้นพื้นเปียก ตัวเปียก แตะสวิตช์ไม่ได้แล้ว ปลดตอนที่ยังแห้งปลอดภัยที่สุด", "en": "Waiting is risky: once the floor is wet you mustn't touch switches. Switching off while dry is safest." } },
+        { "kind": "off", "label": { "th": "ถอดแค่ปลั๊กทีวี ไฟที่เหลือเปิดไว้", "en": "Just unplug the TV and leave the rest on" }, "feedback": { "th": "ปลั๊กและสายไฟที่อยู่ต่ำยังมีไฟวิ่งอยู่ ถ้าน้ำท่วมถึงอาจเกิดไฟรั่ว ปลดเบรกเกอร์ชั้นล่างไว้ปลอดภัยกว่า", "en": "Low sockets and wires are still live; floodwater can make them leak current. Switch off downstairs." } }
+      ],
+      "tip": { "th": "ปลดเบรกเกอร์ก่อนน้ำเข้าบ้าน ทำตอนตัวแห้ง ยืนบนพื้นแห้งเท่านั้น", "en": "Switch off the breaker before water gets in, only while dry and on dry ground." },
+      "why": { "th": "ปภ. และการไฟฟ้าแนะให้ตัดไฟชั้นล่างเมื่อน้ำกำลังจะท่วมบ้าน กฟน. แนะให้ยืนบนที่แห้งและสวมรองเท้ายางขณะปลดเบรกเกอร์ ถ้าบ้านชั้นเดียว กฟภ. แนะให้งดใช้ไฟฟ้าไปเลย", "en": "DDPM and the electricity authorities say to cut downstairs power as flooding approaches. MEA says stand on dry ground in rubber shoes while doing it; for single-storey homes PEA says stop using power entirely." },
+      "sources": ["ddpm-south", "ddpm-mea", "pea-943", "mea-2022"], "verify": "verified",
+      "verifyNote": "The 'only while dry, on dry ground' condition combines MEA (stand on dry ground, rubber shoes) and PEA (never operate switches while wet).",
+      "wet": {
+        "context": { "th": "น้ำเข้าบ้านแล้ว พื้นเปียก ขาเราแช่น้ำอยู่", "en": "Water is inside now and you're standing in it" },
+        "choices": [
+          { "kind": "call", "correct": true, "label": { "th": "อย่าแตะ! ออกไปที่แห้ง แล้วโทรแจ้งการไฟฟ้า 1130 / 1129", "en": "Don't touch it! Get to dry ground and call 1130 / 1129" } },
+          { "kind": "off", "label": { "th": "รีบปลดเบรกเกอร์ตอนนี้เลย", "en": "Quickly switch it off now" }, "feedback": { "th": "ขณะตัวเปียกหรือยืนแช่น้ำ ห้ามเปิด–ปิดสวิตช์ไฟเด็ดขาด เสี่ยงไฟดูด ออกไปที่แห้งแล้วให้การไฟฟ้าช่วยตัดไฟ", "en": "Never operate switches while wet or standing in water. Get out to dry ground and let the utility cut the power." } },
+          { "kind": "off", "label": { "th": "ใช้ไม้แห้งเขี่ยเบรกเกอร์ลง", "en": "Flip it down with a dry stick" }, "feedback": { "th": "ยืนแช่น้ำอยู่ ยังไงก็เสี่ยง ไม่ต้องเสี่ยงเอง โทรแจ้งการไฟฟ้าให้ช่วยดีกว่า", "en": "You're standing in water; it's still risky. Don't gamble, call the electricity authority." } }
+        ],
+        "tip": { "th": "ตัวเปียกหรือยืนแช่น้ำ ห้ามแตะสวิตช์ ออกไปที่แห้งแล้วโทร 1130 หรือ 1129", "en": "Wet or in water? Don't touch switches. Get to dry ground and call 1130/1129." },
+        "why": { "th": "กฟภ. เตือนว่าขณะตัวเปียกหรือยืนแช่น้ำ ห้ามเปิด–ปิดสวิตช์ไฟฟ้าเด็ดขาด ให้ออกไปอยู่ที่แห้ง แล้วติดต่อการไฟฟ้า: กฟน. 1130 (กรุงเทพฯ นนทบุรี สมุทรปราการ) หรือ กฟภ. 1129 (จังหวัดอื่น) ให้เจ้าหน้าที่หรือช่างไฟมาช่วยตัดไฟ", "en": "PEA warns never to operate switches while wet or standing in water. Get to dry ground and call MEA 1130 (Bangkok, Nonthaburi, Samut Prakan) or PEA 1129 (other provinces) so staff or an electrician can cut the power." },
+        "sources": ["pea-1372", "pea-943", "mea-1130", "pea-service"]
+      }
+    },
+    {
+      "id": "p-tv", "mode": "prepare", "room": "living", "pair": "r-tv",
+      "sprite": "tv", "doneAnim": "lift", "size": [84, 62], "slots": ["tv"],
+      "name": { "th": "ทีวีและเครื่องใช้ไฟฟ้า", "en": "TV and appliances" },
+      "context": { "th": "ทีวีตั้งอยู่บนตู้เตี้ย ปลั๊กยังเสียบอยู่", "en": "The TV sits on a low stand, still plugged in" },
+      "choices": [
+        { "kind": "up", "correct": true, "label": { "th": "ถอดปลั๊ก แล้วยกขึ้นชั้นบนหรือที่สูงพ้นน้ำ", "en": "Unplug it and carry it upstairs or somewhere high" } },
+        { "kind": "pack", "label": { "th": "เอาพลาสติกคลุมไว้ที่เดิม", "en": "Wrap it in plastic where it is" }, "feedback": { "th": "พลาสติกกันน้ำท่วมไม่อยู่ ถ้าน้ำสูงกว่าตู้ก็เสียหายอยู่ดี ถอดปลั๊กแล้วยกขึ้นที่สูงดีกว่า", "en": "Plastic won't stop floodwater. If it rises above the stand, the TV is gone. Unplug and lift it." } },
+        { "kind": "leave", "label": { "th": "เปิดดูข่าวไปก่อน น้ำมาค่อยยก", "en": "Keep watching the news, lift it later" }, "feedback": { "th": "น้ำมาเร็วกว่าที่คิด และพอน้ำเข้าบ้านแล้วไม่ควรไปยุ่งกับปลั๊กไฟ ทำตอนนี้ปลอดภัยกว่า", "en": "Water comes faster than you think, and once it's in you shouldn't touch plugs. Do it now." } }
+      ],
+      "tip": { "th": "เครื่องใช้ไฟฟ้า ของมีค่า ถอดปลั๊กแล้วยกขึ้นที่สูงหรือชั้นบนก่อนน้ำเข้าบ้าน", "en": "Unplug appliances and lift them and valuables upstairs before the water arrives." },
+      "why": { "th": "ปภ. แนะให้ขนย้ายสิ่งของขึ้นที่สูง โดยเฉพาะเครื่องใช้ไฟฟ้าและของมีค่าให้พ้นระดับน้ำท่วม กฟภ. ให้ขนย้ายก่อนน้ำเข้าบ้าน และงดเสียบปลั๊กหรือใช้เครื่องใช้ไฟฟ้าในบริเวณที่น้ำท่วมถึง", "en": "DDPM says move belongings, especially appliances and valuables, above the flood level. PEA says do it before water enters, and don't plug in or use appliances where water can reach." },
+      "sources": ["ddpm-noru", "pea-943", "ddpm-mea"], "verify": "verified"
+    },
+    {
+      "id": "p-phone", "mode": "prepare", "room": "living",
+      "sprite": "phone", "doneSprite": "phone-done", "size": [52, 38], "slots": ["table", "seat"],
+      "name": { "th": "มือถือและพาวเวอร์แบงก์", "en": "Phone and power bank" },
+      "context": { "th": "แบตเหลือ 15% พาวเวอร์แบงก์ก็ยังไม่ได้ชาร์จ", "en": "Battery at 15%, and the power bank is flat" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "ชาร์จให้เต็มทั้งคู่ แล้วเซฟเบอร์ฉุกเฉินไว้ในเครื่อง", "en": "Charge both to full and save emergency numbers" } },
+        { "kind": "leave", "label": { "th": "เดี๋ยวค่อยชาร์จตอนไฟใกล้ดับ", "en": "Charge later, just before the power goes" }, "feedback": { "th": "ในพื้นที่น้ำท่วมสูง การไฟฟ้าอาจต้องตัดไฟเพื่อความปลอดภัย ชาร์จไว้ตั้งแต่ตอนนี้ มือถือคือช่องทางขอความช่วยเหลือ", "en": "In deep flooding the utility may cut power for safety. Charge now: your phone is how you call for help." } },
+        { "kind": "leave", "label": { "th": "ไถฟีดรอข่าวไปก่อน", "en": "Scroll your feed while you wait" }, "feedback": { "th": "เล่นได้ แต่ระวังแบตหมดตอนสำคัญ ชาร์จให้เต็มก่อน และติดตามข่าวจากหน่วยงานทางการเป็นหลัก", "en": "Fine, but don't run the battery down when it matters. Charge first and follow official updates." } }
+      ],
+      "tip": { "th": "ชาร์จมือถือกับพาวเวอร์แบงก์ให้เต็ม เซฟเบอร์ 1784 กับ 1669 ไว้ในเครื่อง", "en": "Charge your phone and power bank fully; save 1784 and 1669 in your contacts." },
+      "why": { "th": "ปภ. ให้ใส่โทรศัพท์มือถือ ที่ชาร์จ และแบตสำรองไว้ในของจำเป็นยามฉุกเฉิน ช่วงน้ำท่วมสูง การไฟฟ้าอาจต้องตัดไฟชั่วคราวเพื่อป้องกันอันตราย มือถือที่มีแบตจึงเป็นช่องทางขอความช่วยเหลือ", "en": "DDPM lists a phone, charger and power bank among emergency essentials. In deep floods the utility may cut power temporarily, so a charged phone is your lifeline." },
+      "sources": ["ddpm-6kit", "ddpm-amarin", "mea-gov"], "verify": "partial",
+      "verifyNote": "Phone + power bank are on DDPM kit lists; 'charge fully' and 'save numbers' are practical inferences, not official wording."
+    },
+    {
+      "id": "p-torch", "mode": "prepare", "room": "living",
+      "sprite": "torch", "doneAnim": "lift", "size": [52, 30], "slots": ["table", "seat", "floor"],
+      "name": { "th": "ไฟฉายและถ่านสำรอง", "en": "Torch and spare batteries" },
+      "context": { "th": "ไฟฉายกับถ่านวางอยู่ ยังไม่ได้ใส่กระเป๋าฉุกเฉิน", "en": "The torch and batteries aren't in the go-bag yet" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "ใส่ไฟฉายกับถ่านสำรองลงกระเป๋าฉุกเฉิน", "en": "Pack the torch and spare batteries in the go-bag" } },
+        { "kind": "leave", "label": { "th": "ไม่ต้อง ใช้ไฟฉายมือถือเอา", "en": "No need, use the phone's light" }, "feedback": { "th": "ไฟฉายมือถือกินแบตมาก ควรเก็บแบตไว้โทรขอความช่วยเหลือ ไฟฉายกับถ่านสำรองใช้ได้นานกว่า", "en": "The phone light drains the battery you need for calls. A real torch with spares lasts longer." } },
+        { "kind": "leave", "label": { "th": "ไว้ในลิ้นชัก ไฟดับค่อยหา", "en": "Leave it in a drawer, find it when the lights go out" }, "feedback": { "th": "ไฟดับมืดๆ จะหาของยากมาก เก็บรวมไว้ในกระเป๋าฉุกเฉินหยิบง่ายกว่า", "en": "Finding things in the dark is hard. Keep it in the go-bag." } }
+      ],
+      "tip": { "th": "ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย", "en": "Keep a torch and spare batteries in the go-bag, ready for a power cut." },
+      "why": { "th": "ไฟฉายพร้อมถ่านสำรองเป็นหนึ่งใน 6 สิ่งจำเป็นในถุงยังชีพที่ ปภ. แนะนำ ใช้ส่องทางตอนไฟดับ และช่วยเก็บแบตมือถือไว้โทรขอความช่วยเหลือ", "en": "A torch with spare batteries is one of DDPM's six emergency-bag essentials. It lights the way in a power cut and saves your phone battery for calls." },
+      "sources": ["ddpm-6kit", "ddpm-amarin"], "verify": "verified"
+    },
+    {
+      "id": "p-plan", "mode": "prepare", "room": "living",
+      "sprite": "plan", "size": [54, 60], "slots": ["board"],
+      "name": { "th": "แผนดูแลคุณยาย", "en": "Grandma's care plan" },
+      "context": { "th": "คุณยายเดินไม่สะดวก ต้องกินยาทุกวัน", "en": "Grandma walks with difficulty and takes daily medicine" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "พาคุณยายไปที่ปลอดภัยแต่เนิ่นๆ พร้อมยาและอุปกรณ์", "en": "Move grandma somewhere safe early, with her medicine and aids" } },
+        { "kind": "leave", "label": { "th": "รอดูก่อน น้ำเข้าบ้านค่อยย้าย", "en": "Wait and see; move her if water comes in" }, "feedback": { "th": "พอน้ำมาแล้ว การย้ายผู้สูงอายุหรือผู้ป่วยติดเตียงจะยากและเสี่ยงกว่ามาก ย้ายตั้งแต่ตอนนี้ปลอดภัยกว่า", "en": "Moving an older or bedridden person is much harder and riskier once water arrives. Do it now." } },
+        { "kind": "leave", "label": { "th": "ให้คุณยายเฝ้าบ้าน ลูกหลานไปย้ายรถก่อน", "en": "Leave grandma minding the house while you move the car" }, "feedback": { "th": "ผู้สูงอายุควรได้รับความช่วยเหลือก่อน อย่าปล่อยไว้ลำพัง พาไปที่ปลอดภัยพร้อมยาประจำตัวก่อน แล้วค่อยจัดการของอื่น", "en": "Older people come first; don't leave her alone. Get her and her medicine to safety, then do the rest." } }
+      ],
+      "tip": { "th": "พาผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา พร้อมยาและอุปกรณ์", "en": "Move older and bedridden family members to safety early, with medicine and aids." },
+      "why": { "th": "ปภ. ให้ช่วยเหลือเด็กและผู้สูงอายุก่อนเมื่อต้องอพยพ กรมอนามัยแนะให้เตรียมยาที่ใช้ประจำและอุปกรณ์ช่วยพยุงตัวให้พร้อม ผู้ป่วยติดเตียงที่ต้องใช้ไฟฟ้า กฟภ. ให้ย้ายไปที่ปลอดภัย เวลาโทรขอความช่วยเหลือ บอกเจ้าหน้าที่ด้วยว่ามีผู้สูงอายุหรือผู้ป่วยติดเตียง", "en": "DDPM says help children and older people first when evacuating. The Department of Health says keep regular medicine and mobility aids ready. PEA says move bedridden patients who rely on electricity to safety. When calling for help, tell responders an older or bedridden person is there." },
+      "sources": ["ddpm-noru", "anamai-elderly", "pea-1372", "prd-flood"], "verify": "verified"
+    },
+    {
+      "id": "p-sandbags", "mode": "prepare", "room": "front",
+      "sprite": "sandbags", "doneSprite": "sandbags-done", "size": [84, 40], "slots": ["door"],
+      "name": { "th": "ถุงทรายหน้าประตู", "en": "Sandbags for the door" },
+      "context": { "th": "ถุงทรายกองไว้ข้างบันได ยังไม่ได้เรียงกั้นประตู", "en": "Sandbags are piled by the step, not lined up yet" },
+      "choices": [
+        { "kind": "place", "correct": true, "label": { "th": "เรียงถุงทรายกั้นหน้าประตูให้แนบชิดกัน", "en": "Line them up tightly across the doorway" } },
+        { "kind": "leave", "label": { "th": "กองไว้แบบนี้ก็พอ น้ำคงไม่สูง", "en": "Leave the pile, the water won't get that high" }, "feedback": { "th": "ถุงทรายที่กองไว้เฉยๆ กันน้ำไม่ได้ ต้องเรียงเป็นแนวกั้นประตูให้แนบชิดกันไม่มีช่อง", "en": "A pile doesn't stop water. Line them up across the door with no gaps." } },
+        { "kind": "place", "label": { "th": "วางไว้หลังประตูด้านในบ้าน", "en": "Stack them inside, behind the door" }, "feedback": { "th": "ถุงทรายควรกั้นตรงที่น้ำจะเข้ามา คือหน้าประตูด้านนอก เรียงให้แนบกันดีกว่า", "en": "Sandbags go where the water comes in, across the outside of the door." } }
+      ],
+      "tip": { "th": "เรียงถุงทรายกั้นหน้าประตูเป็นแนวให้แนบกัน ช่วยชะลอน้ำไม่ให้ทะลักเข้าบ้าน", "en": "Line sandbags tightly across the door to slow water getting in." },
+      "why": { "th": "ปภ. แนะให้นำกระสอบทรายมาวางเป็นแนวคันกั้นน้ำรอบบ้าน กรมประชาสัมพันธ์แนะให้ใช้กระสอบทรายหรือวัสดุกันน้ำอุดบริเวณประตูและหน้าต่าง", "en": "DDPM advises lining sandbags into a barrier around the house; the Government PR Department says use sandbags or waterproof material to seal doors and windows." },
+      "sources": ["ddpm-noru", "prd-flood"], "verify": "verified",
+      "verifyNote": "How full to fill the bags varies by source (½ in a US guide, ⅓ from a BMA district engineer, unconfirmed), so the game gives no fill ratio."
+    },
+    {
+      "id": "p-car", "mode": "prepare", "room": "front", "pair": "r-carmud",
+      "sprite": "car", "doneAnim": "away", "size": [156, 82], "slots": ["car"],
+      "name": { "th": "รถยนต์", "en": "The car" },
+      "context": { "th": "รถจอดหน้าบ้าน พื้นตรงนี้ต่ำ น้ำจะมาถึงก่อน", "en": "It's parked out front, where the ground is lowest" },
+      "choices": [
+        { "kind": "move", "correct": true, "label": { "th": "ย้ายไปจอดที่จุดจอดรถที่ทางการเปิดให้ หรืออาคารจอดรถที่สูง", "en": "Move it to an official flood-parking point or a multi-storey car park" } },
+        { "kind": "move", "label": { "th": "ขับขึ้นไปจอดบนสะพานใกล้บ้าน สูงดี", "en": "Park it on the bridge nearby, it's high" }, "feedback": { "th": "จอดบนสะพานหรือทางขึ้นลงทางด่วนจะกีดขวางการจราจร รถพยาบาลและรถกู้ภัยผ่านลำบาก ไปจอดในจุดที่ทางการจัดไว้ดีกว่า", "en": "Cars on bridges and expressway ramps block traffic, including ambulances. Use an official parking point." } },
+        { "kind": "leave", "label": { "th": "จอดที่เดิม เอาผ้าคลุมรถคลุมไว้", "en": "Leave it there with a car cover" }, "feedback": { "th": "ผ้าคลุมรถกันน้ำท่วมไม่ได้ ย้ายรถไปที่สูงที่ทางการเปิดให้จอดแต่เนิ่นๆ", "en": "A cover won't keep floodwater out. Move it early to official high-ground parking." } }
+      ],
+      "tip": { "th": "ย้ายรถไปจุดจอดที่ทางการเปิดให้แต่เนิ่นๆ อย่าจอดบนสะพานหรือทางขึ้นทางด่วน", "en": "Move the car early to official flood parking, never onto bridges or ramps." },
+      "why": { "th": "ปภ. แนะให้เคลื่อนย้ายพาหนะไปยังพื้นที่ปลอดภัย ช่วงน้ำท่วมมักมีอาคารจอดรถเปิดให้จอดฟรี ติดตามประกาศในพื้นที่ (กรุงเทพฯ ดูได้ที่ BMA Flood Support) ส่วนการจอดบนสะพานหรือทางขึ้นลงทางด่วน ตำรวจเคยขอความร่วมมือเพราะกีดขวางการลำเลียงผู้ป่วย", "en": "DDPM says move vehicles to safe ground. During floods, car parks often open for free: check local announcements (Bangkok: BMA Flood Support). Police have asked people not to park on bridges or expressway ramps because it blocks patient transport." },
+      "sources": ["ddpm-south", "bma-floodsupport", "police-2011"], "verify": "partial",
+      "verifyNote": "The bridge/expressway warning comes from a 2011 Metropolitan Police request; no 2024–2026 restatement was found."
+    },
+    {
+      "id": "p-petkit", "mode": "prepare", "room": "front",
+      "sprite": "petkit", "doneAnim": "lift", "size": [64, 48], "slots": ["floor"],
+      "name": { "th": "แผนพาน้องหมาน้องแมว", "en": "Plan for the pets" },
+      "context": { "th": "กรง สายจูง ชามอาหารของน้องๆ ยังไม่ได้เตรียม", "en": "The pets' carrier, leash and food aren't ready" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "เตรียมกรงหรือสายจูง ปลอกคอป้ายชื่อ อาหาร แล้วพาน้องไปด้วย", "en": "Pack a carrier or leash, a name-tag collar and food, and take them with you" } },
+        { "kind": "leave", "label": { "th": "ล่ามไว้หน้าบ้าน เดี๋ยวกลับมารับ", "en": "Tie them up outside and come back later" }, "feedback": { "th": "สัตว์ที่ถูกล่ามไว้หนีน้ำไม่ได้ ปภ. แนะให้อพยพสัตว์เลี้ยงไปอยู่ในที่ปลอดภัยด้วยกัน", "en": "A tied-up pet can't escape rising water. DDPM says evacuate pets to safety with you." } },
+        { "kind": "leave", "label": { "th": "ปล่อยให้น้องหาที่หลบเอง", "en": "Let them find their own shelter" }, "feedback": { "th": "น้องอาจหลงหรือติดอยู่ในที่อันตราย พาไปด้วยพร้อมกรงและอาหารปลอดภัยกว่า", "en": "They can get lost or trapped. Take them with you, carrier and food included." } }
+      ],
+      "tip": { "th": "เตรียมกรง สายจูง ปลอกคอป้ายชื่อ อาหารสัตว์ไว้ แล้วพาน้องไปด้วยตอนอพยพ", "en": "Ready a carrier, leash, name-tag collar and food; take your pets when you go." },
+      "why": { "th": "ปภ. แนะให้อพยพสัตว์เลี้ยงไปอยู่ในพื้นที่ปลอดภัย กรมอนามัยระบุว่าศูนย์พักพิงรับสุนัขและแมวได้ แต่ควรได้รับวัคซีนพิษสุนัขบ้า ใส่กรงหรือสายจูงตลอดเวลาที่อยู่ในพื้นที่ส่วนรวม และมีปลอกคอกับป้ายชื่อชัดเจน", "en": "DDPM says evacuate pets to safety. The Department of Health says shelters can take dogs and cats, which should be rabies-vaccinated, kept in a carrier or on a leash in shared areas, and wear a collar with a clear name tag." },
+      "sources": ["ddpm-noru", "anamai-pets", "dlt-car"], "verify": "verified"
+    },
+    {
+      "id": "p-poster", "mode": "prepare", "room": "front",
+      "sprite": "poster", "size": [46, 58], "slots": ["board"],
+      "name": { "th": "ศูนย์พักพิงใกล้บ้าน", "en": "The nearest shelter" },
+      "context": { "th": "ประกาศชุมชนบอกที่ตั้งศูนย์พักพิงกับเส้นทางไป", "en": "A community notice shows the shelter and how to get there" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "จำที่ตั้งกับเส้นทางที่เจ้าหน้าที่แนะนำไว้ แล้วบอกทุกคนในบ้าน", "en": "Note the shelter and the official route, and tell everyone at home" } },
+        { "kind": "leave", "label": { "th": "ไม่ต้องจำ ถึงเวลาค่อยถามเอา", "en": "No need, just ask when it happens" }, "feedback": { "th": "ตอนน้ำมาแล้ว ถนนบางเส้นอาจไปไม่ได้ สัญญาณมือถืออาจไม่ดี รู้ไว้ก่อนออกเดินทางได้ทันที", "en": "Once it floods some roads close and signal drops. Knowing in advance means you can just go." } },
+        { "kind": "move", "label": { "th": "ไปทางลัดที่น้ำท่วม จะได้ถึงไวๆ", "en": "Take the flooded shortcut, it's quicker" }, "feedback": { "th": "อย่าเดินหรือขับรถลุยน้ำไหลเชี่ยว น้ำแค่ไม่กี่นิ้วก็ทำให้ล้มได้ ใช้เส้นทางที่เจ้าหน้าที่กำหนดปลอดภัยกว่า", "en": "Don't walk or drive through moving water; a few inches can knock you over. Use the official route." } }
+      ],
+      "tip": { "th": "รู้ไว้ก่อนว่าศูนย์พักพิงใกล้บ้านอยู่ไหน และไปเส้นทางไหนที่เจ้าหน้าที่แนะนำ", "en": "Know where your nearest shelter is and the route officials recommend." },
+      "why": { "th": "กรมประชาสัมพันธ์แนะให้เดินทางตามเส้นทางที่เจ้าหน้าที่กำหนดไปยังศูนย์พักพิง ปภ. ให้อพยพไปตามเส้นทางที่ปลอดภัย กรุงเทพฯ ดูศูนย์พักพิงได้ที่ BMA Flood Support ต่างจังหวัดติดตามประกาศของจังหวัด อำเภอ หรือท้องถิ่น และสายด่วน ปภ. 1784", "en": "The Government PR Department says follow the officially designated route to shelters; DDPM says evacuate by safe routes. Bangkok shelters are listed on BMA Flood Support; elsewhere follow provincial and local announcements, or call DDPM 1784." },
+      "sources": ["prd-flood", "ddpm-noru", "bma-floodsupport", "ddpm-1784"], "verify": "verified"
+    },
+    {
+      "id": "p-gutter", "mode": "prepare", "room": "front",
+      "sprite": "clogdrain", "doneSprite": "clogdrain-done", "size": [58, 26], "slots": ["drain-out"],
+      "name": { "th": "ตะแกรงท่อระบายน้ำหน้าบ้าน", "en": "Street drain out front" },
+      "context": { "th": "มีถุงพลาสติกกับใบไม้อุดตะแกรงท่ออยู่", "en": "Plastic bags and leaves are blocking the grate" },
+      "choices": [
+        { "kind": "clear", "correct": true, "label": { "th": "เก็บขยะออกจากตะแกรง ให้น้ำฝนไหลลงท่อได้สะดวก", "en": "Clear the rubbish off the grate so rain can drain" } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ ไม่ใช่หน้าที่เรา", "en": "Leave it, it's not our job" }, "feedback": { "th": "ท่ออุดทำให้น้ำฝนระบายไม่ทันและท่วมขังหน้าบ้าน ช่วยกันเก็บขยะออกคนละนิดก็ช่วยได้เยอะ", "en": "A blocked drain floods the street. A minute of clearing from each home helps a lot." } },
+        { "kind": "clear", "label": { "th": "กวาดขยะลงท่อไปเลย จะได้หายไป", "en": "Sweep the rubbish down into the drain" }, "feedback": { "th": "ขยะที่ลงไปในท่อทำให้อุดตันหนักขึ้น เก็บใส่ถุงไปทิ้งดีกว่า", "en": "Rubbish in the pipe makes the blockage worse. Bag it and bin it." } }
+      ],
+      "tip": { "th": "เก็บขยะที่อุดตะแกรงท่อหน้าบ้าน ให้น้ำฝนไหลได้สะดวก ลดน้ำท่วมขัง", "en": "Clear rubbish from street drains so rainwater can flow away." },
+      "why": { "th": "ปภ. แนะให้ป้องกันน้ำท่วมบ้านด้วยการกำจัดขยะไม่ให้อุดตันท่อน้ำและทางระบายน้ำ รวมถึงสิ่งกีดขวางทางน้ำ เพื่อให้น้ำไหลผ่านได้สะดวก", "en": "DDPM advises preventing house flooding by keeping rubbish out of pipes, drains and waterways so water can flow freely." },
+      "sources": ["ddpm-noru"], "verify": "verified"
+    },
+    {
+      "id": "p-waterfood", "mode": "prepare", "room": "kitchen", "pair": "r-foodwet",
+      "sprite": "waterfood", "doneAnim": "lift", "size": [66, 50], "slots": ["floor", "counter"],
+      "name": { "th": "น้ำดื่มและอาหารแห้ง", "en": "Water and dry food" },
+      "context": { "th": "ที่บ้านมี 4 คน แต่น้ำดื่มเหลือแพ็กเดียว", "en": "Four people at home and only one pack of water" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "สำรองน้ำดื่มและอาหารแห้งให้พออย่างน้อย 3 วัน เก็บไว้ที่สูง", "en": "Stock water and dry food for at least 3 days, stored up high" } },
+        { "kind": "leave", "label": { "th": "น้ำมาค่อยออกไปซื้อเพิ่ม", "en": "Buy more once the water comes" }, "feedback": { "th": "ตอนน้ำมาแล้วร้านอาจปิด ของอาจขาด และออกไปข้างนอกก็เสี่ยง ซื้อตุนไว้ตอนนี้ดีกว่า", "en": "Shops may close and stock may run out, and going out gets risky. Stock up now." } },
+        { "kind": "pack", "label": { "th": "ตุนของสดไว้เยอะๆ", "en": "Stock up on lots of fresh food" }, "feedback": { "th": "ถ้าไฟดับ ของสดเสียเร็ว เลือกอาหารแห้ง อาหารกระป๋องที่เก็บได้นาน กับน้ำดื่มบรรจุขวดดีกว่า", "en": "Fresh food spoils fast in a power cut. Pick dry or canned food that keeps, plus bottled water." } }
+      ],
+      "tip": { "th": "สำรองน้ำดื่มกับอาหารแห้งให้พออย่างน้อย 3 วัน เก็บในภาชนะปิดสนิทที่สูง", "en": "Keep at least 3 days of water and dry food, sealed and stored up high." },
+      "why": { "th": "ปภ. แนะให้เตรียมน้ำดื่มและอาหารแห้งที่เก็บได้นาน ให้พอใช้ชีวิตช่วงเกิดภัยอย่างน้อย 3–5 วัน กรมอนามัยแนะให้เก็บในภาชนะปิดสนิท กรมประชาสัมพันธ์คิดน้ำดื่มไว้อย่างน้อยคนละ 3 ลิตรต่อวัน", "en": "DDPM says keep long-life water and food for at least 3–5 days. The Department of Health says store it in sealed containers; the Government PR Department suggests at least 3 litres of drinking water per person per day." },
+      "sources": ["ddpm-noru", "ddpm-6kit", "anamai-stock", "prd-72h"], "verify": "verified"
+    },
+    {
+      "id": "p-lpg", "mode": "prepare", "room": "kitchen", "pair": "r-gas",
+      "sprite": "lpg", "doneSprite": "lpg-off", "size": [46, 70], "slots": ["lpg"],
+      "name": { "th": "ถังแก๊สหุงต้ม", "en": "LPG cylinder" },
+      "context": { "th": "ถังแก๊สตั้งบนพื้นข้างเคาน์เตอร์ วาล์วยังเปิดอยู่", "en": "It's on the floor by the counter, valve still open" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ปิดวาล์วถังให้สนิท แล้วผูกยึดถังไว้กับที่มั่นคงในที่สูง", "en": "Close the valve tight and tie the cylinder to something sturdy up high" } },
+        { "kind": "leave", "label": { "th": "เปิดไว้ จะได้ทำกับข้าวต่อ", "en": "Leave it open so you can keep cooking" }, "feedback": { "th": "ถ้าน้ำท่วมถึง ถังอาจล้มหรือลอย สายแก๊สหลุดจนแก๊สรั่วได้ ปิดวาล์วไว้ก่อนปลอดภัยกว่า", "en": "Floodwater can tip or float the cylinder and pull the hose off. Close it now." } },
+        { "kind": "off", "label": { "th": "ปิดแค่ปุ่มเตาก็พอ", "en": "Just turn off the stove knob" }, "feedback": { "th": "ปิดที่เตาอย่างเดียวไม่พอ ต้องปิดวาล์วที่หัวถังให้สนิทด้วย", "en": "The stove knob isn't enough; close the valve on the cylinder itself." } }
+      ],
+      "tip": { "th": "ปิดวาล์วถังแก๊สให้สนิท แล้วผูกยึดถังไว้กับที่มั่นคงในที่สูง กันล้มกันลอย", "en": "Close the gas valve tight and tie the cylinder up high so it can't tip or float." },
+      "why": { "th": "กรมประชาสัมพันธ์แนะให้ปิดวาล์วถังแก๊สให้แน่นหนา และผูกยึดถังแก๊สไว้กับโครงสร้างบ้านที่มั่นคงในที่สูง ไม่ให้ถังล้มหรือลอยไปกับน้ำจนแก๊สรั่ว", "en": "The Government PR Department advises closing the cylinder valve tightly and tying the cylinder to a sturdy part of the house up high, so it can't tip or float away and leak." },
+      "sources": ["prd-flood"], "verify": "verified"
+    },
+    {
+      "id": "p-meds", "mode": "prepare", "room": "kitchen", "critical": true,
+      "sprite": "meds", "doneAnim": "lift", "size": [52, 42], "slots": ["counter", "counter-sm", "floor"],
+      "name": { "th": "ยาประจำตัวและชุดปฐมพยาบาล", "en": "Medicines and first-aid kit" },
+      "context": { "th": "ยาความดันของพ่อเหลืออีกไม่กี่เม็ด", "en": "Dad's blood-pressure pills are nearly gone" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "เตรียมยาประจำตัวให้พออย่างน้อย 7 วัน ใส่ถุงกันน้ำพร้อมชุดปฐมพยาบาล", "en": "Get at least 7 days of regular medicine; pack it waterproof with the first-aid kit" } },
+        { "kind": "leave", "label": { "th": "หมดแล้วค่อยไปซื้อที่ร้านยา", "en": "Buy more when they run out" }, "feedback": { "th": "ช่วงน้ำท่วม ร้านยาและโรงพยาบาลอาจไปลำบาก เตรียมยาประจำตัวให้พอไว้ก่อน", "en": "Pharmacies and hospitals can be hard to reach in a flood. Get enough medicine now." } },
+        { "kind": "leave", "label": { "th": "วางไว้บนโต๊ะ เดี๋ยวค่อยหยิบ", "en": "Leave them on the table to grab later" }, "feedback": { "th": "ตอนวุ่นๆ อาจลืมหยิบ ใส่ถุงกันน้ำรวมกับกระเป๋าฉุกเฉินไว้เลย จะได้ติดตัวไปด้วย", "en": "In the rush you may forget. Pack them waterproof in the go-bag now." } }
+      ],
+      "tip": { "th": "เตรียมยาประจำตัวพออย่างน้อย 7 วัน ใส่ถุงกันน้ำรวมกับชุดปฐมพยาบาล", "en": "Pack at least 7 days of regular medicine, waterproofed, with a first-aid kit." },
+      "why": { "th": "ชุดปฐมพยาบาลและยารักษาโรคประจำตัวเป็นหนึ่งใน 6 สิ่งจำเป็นในถุงยังชีพของ ปภ. กระทรวงสาธารณสุขแนะให้ผู้มีโรคประจำตัวเตรียมยาไว้อย่างน้อย 7 วัน", "en": "A first-aid kit and regular medicines are among DDPM's six emergency-bag essentials. The Ministry of Public Health advises people with chronic conditions to keep at least 7 days of medicine." },
+      "sources": ["ddpm-6kit", "moph-7days", "anamai-elderly"], "verify": "partial",
+      "verifyNote": "The 7-day figure comes from a 2013 Ministry of Public Health statement (news report); DDPM gives no day count for medicine."
+    },
+    {
+      "id": "p-numbers", "mode": "prepare", "room": "kitchen",
+      "sprite": "numbers", "size": [38, 44], "slots": ["fridge-note"],
+      "name": { "th": "เบอร์โทรฉุกเฉิน", "en": "Emergency numbers" },
+      "context": { "th": "จดไว้บนตู้เย็น แต่ยังไม่มีใครเซฟในมือถือ", "en": "Written on the fridge, but nobody has saved them" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "เซฟเบอร์ในมือถือทุกคน และจดใส่กระดาษเก็บในกระเป๋าฉุกเฉิน", "en": "Save them in everyone's phone and keep a paper copy in the go-bag" } },
+        { "kind": "leave", "label": { "th": "ไม่ต้อง ถึงเวลาค่อยเสิร์ชเอา", "en": "No need, search online when it happens" }, "feedback": { "th": "ตอนฉุกเฉินเน็ตอาจหลุด แบตอาจน้อย มีเบอร์ไว้ในเครื่องและบนกระดาษ โทรได้ทันที", "en": "In an emergency the internet may drop and battery may be low. Have the numbers ready." } },
+        { "kind": "pack", "label": { "th": "เซฟไว้ในมือถือแม่เครื่องเดียวพอ", "en": "Save them in Mum's phone only" }, "feedback": { "th": "ถ้าเครื่องนั้นแบตหมดหรือเปียกน้ำ จะไม่มีใครรู้เบอร์เลย เซฟให้ทุกคนและจดใส่กระดาษด้วย", "en": "If that phone dies or gets wet, nobody has the numbers. Save them for everyone, plus paper." } }
+      ],
+      "tip": { "th": "เซฟเบอร์ 1784 1669 และเบอร์การไฟฟ้าไว้ในมือถือทุกเครื่อง จดใส่กระดาษอีกชุด", "en": "Save 1784, 1669 and your electricity hotline on every phone, plus on paper." },
+      "why": { "th": "สายด่วนนิรภัย ปภ. 1784 รับแจ้งตลอด 24 ชั่วโมง เจ็บป่วยฉุกเฉินโทร 1669 เรื่องไฟฟ้า กฟน. 1130 (กรุงเทพฯ นนทบุรี สมุทรปราการ) และ กฟภ. 1129 (จังหวัดอื่น) ในกรุงเทพฯ ติดต่อ กทม. ได้ที่ 1555", "en": "DDPM's 1784 safety hotline runs 24 hours; medical emergencies are 1669. For electricity: MEA 1130 (Bangkok, Nonthaburi, Samut Prakan) and PEA 1129 (other provinces). In Bangkok, the BMA is on 1555." },
+      "sources": ["ddpm-1784", "niems-1669", "mea-1130", "pea-service", "bma-1555"], "verify": "partial",
+      "verifyNote": "All five numbers verified (1555 via PRD, 1 Oct 2026). 'Save them in every phone' is a practical inference, not official wording."
+    },
+    {
+      "id": "p-chem", "mode": "prepare", "room": "kitchen",
+      "sprite": "chem", "doneAnim": "lift", "size": [64, 60], "slots": ["cupboard"],
+      "name": { "th": "สารเคมีใต้ซิงก์", "en": "Chemicals under the sink" },
+      "context": { "th": "ยาฆ่าแมลง น้ำยาล้างห้องน้ำ เก็บอยู่ในตู้ล่างสุด", "en": "Insect spray and toilet cleaner are in the bottom cupboard" },
+      "choices": [
+        { "kind": "up", "correct": true, "label": { "th": "ปิดฝาให้แน่น แล้วยกขึ้นที่สูงพ้นน้ำ ห่างจากอาหาร", "en": "Cap them tightly and move them up high, away from food" } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ ฝาปิดอยู่แล้ว", "en": "Leave them, the caps are on" }, "feedback": { "th": "ถ้าน้ำท่วมถึง ขวดอาจล้ม ลอย หรือรั่ว สารเคมีจะปนไปกับน้ำที่ทุกคนต้องเดินลุย ยกขึ้นที่สูงไว้ก่อน", "en": "Floodwater can tip, float or crack bottles, mixing chemicals into water everyone wades through. Move them up." } },
+        { "kind": "toss", "label": { "th": "เทน้ำยาทิ้งลงท่อให้หมด", "en": "Pour them all down the drain" }, "feedback": { "th": "ห้ามเทสารเคมีลงท่อหรือแหล่งน้ำ เป็นอันตรายต่อคนและสิ่งแวดล้อม ปิดฝาให้แน่นแล้วเก็บไว้ที่สูงดีกว่า", "en": "Never pour chemicals into drains or waterways. Cap them and store them high instead." } }
+      ],
+      "tip": { "th": "ยาฆ่าแมลง น้ำยาเคมี ปิดฝาให้แน่น ยกขึ้นที่สูงพ้นน้ำ เก็บให้ห่างอาหาร", "en": "Cap pesticides and chemicals tightly and store them high, away from food." },
+      "why": { "th": "เมื่อน้ำท่วมถึง ภาชนะสารเคมีอาจรั่วหรือลอยไปกับน้ำ กรมควบคุมโรคเตือนให้ระวังภาชนะสารเคมีที่น้ำท่วมถึง และห้ามเทสารเคมีลงท่อหรือแหล่งน้ำ การปิดฝาแน่นแล้วยกขึ้นที่สูงก่อนน้ำมาจึงช่วยลดการปนเปื้อน", "en": "Chemical containers can leak or float off in floodwater. The Department of Disease Control warns about flooded chemical containers and says never pour chemicals into drains. Capping and lifting them first reduces contamination." },
+      "sources": ["ddc-manual"], "verify": "partial",
+      "verifyNote": "No official Thai source found that says 'store chemicals high before a flood'; the advice is inferred from DDC's after-flood chemical guidance. Please confirm with an agency."
+    },
+    {
+      "id": "p-drain", "mode": "prepare", "room": "kitchen",
+      "sprite": "drain", "doneSprite": "drain-done", "size": [58, 26], "slots": ["drain"],
+      "name": { "th": "ท่อระบายน้ำที่พื้นครัว", "en": "Kitchen floor drain" },
+      "context": { "th": "ช่องระบายน้ำที่พื้นต่อลงท่อด้านนอก", "en": "The floor drain connects to the sewer outside" },
+      "choices": [
+        { "kind": "place", "correct": true, "label": { "th": "อุดด้วยถุงทรายหรือถุงพลาสติกใส่น้ำ กันน้ำเสียดันย้อนขึ้นมา", "en": "Plug it with a sandbag or a water-filled bag to stop backflow" } },
+        { "kind": "leave", "label": { "th": "เปิดไว้ น้ำในบ้านจะได้ไหลออก", "en": "Leave it open so water can drain out" }, "feedback": { "th": "ตอนน้ำข้างนอกสูง น้ำเสียจะดันย้อนกลับขึ้นมาทางท่อแทน อุดไว้ก่อน แล้วเปิดคืนเมื่อน้ำลด", "en": "When water outside is high, sewage pushes back up the pipe. Plug it, and unplug once the water drops." } },
+        { "kind": "toss", "label": { "th": "เทน้ำยาล้างท่อลงไปเยอะๆ", "en": "Pour plenty of drain cleaner in" }, "feedback": { "th": "น้ำยาไม่ช่วยกันน้ำย้อน แถมเป็นสารเคมีที่อาจปนไปกับน้ำท่วม อุดปิดท่อไว้ดีกว่า", "en": "Cleaner won't stop backflow and just adds chemicals to floodwater. Plug the drain instead." } }
+      ],
+      "tip": { "th": "อุดท่อระบายน้ำที่พื้นด้วยถุงทราย กันน้ำเสียดันย้อนเข้าบ้าน น้ำลดแล้วค่อยเปิด", "en": "Plug floor drains with a sandbag to stop sewage backflow; unplug after." },
+      "why": { "th": "กรมประชาสัมพันธ์แนะให้อุดปิดชักโครกหรือท่อน้ำทิ้งในห้องน้ำชั้นล่าง ไม่ให้น้ำเสียและสิ่งปฏิกูลดันย้อนกลับเข้ามาในบ้าน ถุงทรายหรือถุงพลาสติกใส่น้ำเป็นวิธีอุดที่ทำเองได้ง่าย อย่าลืมเอาออกเมื่อน้ำลด", "en": "The Government PR Department advises plugging downstairs toilets and drains so sewage can't push back into the house. A sandbag or water-filled bag is an easy plug; remove it once the water drops." },
+      "sources": ["prd-flood"], "verify": "partial",
+      "verifyNote": "Official wording says 'plug toilets/drains'; the sandbag or water-bag method itself is common practice, not official wording."
+    },
+    {
+      "id": "p-toilet", "mode": "prepare", "room": "bathroom",
+      "sprite": "toilet", "size": [60, 70], "slots": ["toilet"],
+      "name": { "th": "โถส้วมชั้นล่าง", "en": "Downstairs toilet" },
+      "context": { "th": "ถ้าน้ำข้างนอกสูง น้ำเสียอาจดันย้อนขึ้นจากโถ", "en": "High water outside can push sewage up through the bowl" },
+      "choices": [
+        { "kind": "place", "correct": true, "label": { "th": "วางถุงทรายห่อพลาสติกกดทับในโถ แล้วปิดฝา", "en": "Press a plastic-wrapped sandbag into the bowl and close the lid" } },
+        { "kind": "leave", "label": { "th": "ปิดฝาชักโครกไว้เฉยๆ ก็พอ", "en": "Just close the lid" }, "feedback": { "th": "ฝาชักโครกกันแรงดันน้ำเสียไม่อยู่ ต้องมีของหนักกดทับหรืออุดไว้", "en": "The lid can't hold back sewage pressure; something heavy has to plug it." } },
+        { "kind": "leave", "label": { "th": "กดชักโครกบ่อยๆ น้ำจะได้ไม่ย้อน", "en": "Keep flushing so it won't back up" }, "feedback": { "th": "ยิ่งกดยิ่งไม่ช่วย เพราะท่อด้านนอกเต็มแล้ว อุดโถไว้ด้วยถุงทรายดีกว่า", "en": "Flushing won't help when the outside pipes are full. Plug the bowl with a sandbag." } }
+      ],
+      "tip": { "th": "วางถุงทรายห่อพลาสติกกดในโถส้วมชั้นล่าง กันน้ำเสียดันย้อนขึ้นมาในบ้าน", "en": "Press a plastic-wrapped sandbag into the downstairs toilet to stop backflow." },
+      "why": { "th": "กรมประชาสัมพันธ์แนะให้อุดปิดชักโครกหรือท่อน้ำทิ้งในห้องน้ำชั้นล่าง เพื่อป้องกันไม่ให้น้ำเสียและสิ่งปฏิกูลดันย้อนกลับเข้ามาในตัวบ้าน", "en": "The Government PR Department advises plugging downstairs toilets and drains to stop sewage pushing back into the house." },
+      "sources": ["prd-flood"], "verify": "partial",
+      "verifyNote": "Official wording: 'plug the toilet'. Using a sandbag in the bowl is the widely shared method, not official wording."
+    },
+    {
+      "id": "p-fuel", "mode": "prepare", "room": "garage",
+      "sprite": "fuel", "size": [64, 56], "slots": ["floor"],
+      "name": { "th": "น้ำมันและยาฆ่าหญ้าในโรงรถ", "en": "Fuel and weedkiller in the garage" },
+      "context": { "th": "แกลลอนน้ำมัน ปุ๋ย ยาฆ่าหญ้า วางอยู่บนพื้น", "en": "Fuel cans, fertiliser and weedkiller sit on the floor" },
+      "choices": [
+        { "kind": "up", "correct": true, "label": { "th": "ปิดฝาให้แน่น แล้วยกขึ้นชั้นที่สูงพ้นน้ำ", "en": "Seal them tight and move them up onto a high shelf" } },
+        { "kind": "leave", "label": { "th": "วางไว้บนพื้นตามเดิม", "en": "Leave them on the floor" }, "feedback": { "th": "น้ำมันและสารเคมีที่รั่วจะลอยไปกับน้ำท่วม ทั้งติดไฟง่ายและเป็นพิษ ยกขึ้นที่สูงไว้ก่อน", "en": "Leaking fuel and chemicals spread in floodwater; they're flammable and toxic. Lift them." } },
+        { "kind": "toss", "label": { "th": "เทน้ำมันที่เหลือทิ้งลงท่อ", "en": "Pour the leftover fuel down the drain" }, "feedback": { "th": "ห้ามเทน้ำมันหรือสารเคมีลงท่อ ปิดฝาแน่นแล้วเก็บไว้ที่สูงดีกว่า", "en": "Never pour fuel or chemicals down drains. Seal and store high." } }
+      ],
+      "tip": { "th": "แกลลอนน้ำมัน ปุ๋ย ยาฆ่าหญ้า ปิดฝาให้แน่น ยกขึ้นที่สูง ไม่ให้รั่วปนน้ำท่วม", "en": "Seal fuel, fertiliser and weedkiller and store them high, out of floodwater." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าน้ำท่วมอาจพาน้ำมันหรือแก๊สมาด้วย ให้ระวังภาชนะสารเคมีที่น้ำท่วมถึง และห้ามเทสารเคมีลงท่อหรือแหล่งน้ำ การเก็บให้มิดชิดบนที่สูงก่อนน้ำมาช่วยลดการปนเปื้อน", "en": "The Department of Disease Control warns floodwater can carry fuel or gas, urges care with flooded chemical containers, and says never pour chemicals into drains. Storing them sealed and high beforehand limits contamination." },
+      "sources": ["ddc-manual"], "verify": "partial",
+      "verifyNote": "Same gap as p-chem: 'store high before flooding' is inferred, not official wording. Garage room not in the MVP."
+    },
+    {
+      "id": "r-wire", "mode": "return", "room": "front",
+      "sprite": "wire", "doneSprite": "wire-done", "size": [98, 112], "slots": ["pole"],
+      "name": { "th": "สายไฟขาดห้อยลงมา", "en": "Downed power line" },
+      "context": { "th": "สายไฟจากเสาขาดลงมาแตะพื้นที่ยังเปียก", "en": "A line from the pole is lying on wet ground" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 / 1129", "en": "Stay at least 3–5 m away and call 1130 / 1129" } },
+        { "kind": "clear", "label": { "th": "ใช้ไม้แห้งเขี่ยสายออกจากทางเดิน", "en": "Push it off the path with a dry stick" }, "feedback": { "th": "สายไฟที่ขาดอาจมีไฟรั่วลงพื้นรอบๆ เป็นวงกว้าง ไม่ต้องเสี่ยงเอง อยู่ห่างๆ แล้วให้การไฟฟ้ามาจัดการ", "en": "A downed line can energise the ground around it. Don't risk it; keep away and let the utility handle it." } },
+        { "kind": "leave", "label": { "th": "เดินอ้อมผ่านไปเร็วๆ", "en": "Walk quickly around it" }, "feedback": { "th": "พื้นเปียกรอบสายไฟอาจมีไฟรั่ว อยู่ห่างอย่างน้อย 3–5 เมตร แล้วแจ้งการไฟฟ้าทันที", "en": "Wet ground near the line may carry current. Keep 3–5 m away and report it now." } }
+      ],
+      "tip": { "th": "เจอสายไฟขาด อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 หรือ 1129 ทันที", "en": "See a downed line? Stay 3–5 m away and call 1130 or 1129 right away." },
+      "why": { "th": "กฟภ. เตือนว่าเมื่อเห็นสายไฟห้อยลงมาหรือขาด หรือเสาไฟล้มเอียง ต้องอยู่ห่างอย่างน้อย 3–5 เมตร เพราะไฟอาจรั่วลงพื้นบริเวณนั้น กรมควบคุมโรคระบุว่าไฟรั่วกระจายได้เป็นวงกว้างไม่ต่ำกว่า 3 เมตร แจ้ง กฟภ. 1129 หรือ กฟน. 1130", "en": "PEA says keep at least 3–5 m from hanging or broken lines and leaning poles because current can leak into the ground. The Department of Disease Control says leaks can spread at least 3 m. Report to PEA 1129 or MEA 1130." },
+      "sources": ["pea-1348", "ddc-45196", "mea-1130"], "verify": "verified"
+    },
+    {
+      "id": "r-shoes", "mode": "return", "room": "front",
+      "sprite": "shoesnake", "doneAnim": "none", "size": [56, 40], "slots": ["shoes"],
+      "name": { "th": "รองเท้าหน้าบ้าน", "en": "Shoes by the door" },
+      "context": { "th": "รองเท้าที่ทิ้งไว้ช่วงน้ำท่วม เหมือนมีอะไรขยับอยู่ข้างใน", "en": "Something seems to be moving inside these shoes" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง", "en": "Check inside with a stick before putting them on" } },
+        { "kind": "leave", "label": { "th": "รีบใส่แล้วเดินเลย ไม่เสียเวลา", "en": "Pull them on and go" }, "feedback": { "th": "งู ตะขาบ แมงป่อง ชอบหนีน้ำมาหลบในรองเท้าและเสื้อผ้า ตรวจดูก่อนสวมทุกครั้ง", "en": "Snakes, centipedes and scorpions hide in shoes and clothes after floods. Always check first." } },
+        { "kind": "check", "label": { "th": "ล้วงมือเข้าไปคลำดู", "en": "Feel inside with your hand" }, "feedback": { "th": "อย่าใช้มือเปล่า ใช้ไม้เขี่ยดูดีกว่า ถ้าเจอสัตว์มีพิษให้ถอยห่าง แล้วแจ้งเจ้าหน้าที่", "en": "Never use bare hands; use a stick. If you find something venomous, back off and call for help." } }
+      ],
+      "tip": { "th": "งู ตะขาบ ชอบหลบในรองเท้า ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง อย่าใช้มือล้วง", "en": "Snakes and centipedes hide in shoes. Check with a stick first, never bare hands." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่างู ตะขาบ แมงป่อง อาจหนีน้ำมาหลบซ่อนตามบ้านและมุมมืด ให้สำรวจเสื้อผ้าและรองเท้าก่อนสวมใส่ทุกครั้ง ใช้แท่งไม้เขี่ยดู อย่าใช้มือเปล่าสัมผัส ถ้าถูกกัด ให้ขยับส่วนที่ถูกกัดให้น้อยที่สุด ห้ามขันชะเนาะ แล้วรีบไปโรงพยาบาลหรือโทร 1669", "en": "The Department of Disease Control warns snakes, centipedes and scorpions shelter in homes and dark corners after floods. Check clothes and shoes before wearing them, use a stick, never bare hands. If bitten, keep the limb still, no tourniquet, and get to hospital or call 1669." },
+      "sources": ["ddc-45196", "ddc-manual", "ddc-rainy", "moph-snakebite"], "verify": "verified"
+    },
+    {
+      "id": "r-mudfeet", "mode": "return", "room": "front",
+      "sprite": "flipflops", "doneAnim": "none", "size": [58, 30], "slots": ["floor"],
+      "name": { "th": "จะลุยโคลนด้วยรองเท้าแตะ", "en": "About to wade the mud in flip-flops" },
+      "context": { "th": "โคลนหน้าบ้านยังไม่แห้ง มีแค่รองเท้าแตะวางอยู่", "en": "The mud is still wet and there are only flip-flops" },
+      "choices": [
+        { "kind": "gear", "correct": true, "label": { "th": "ใส่บูทยางกับถุงมือยาง ลุยเสร็จล้างสบู่แล้วเช็ดตัวให้แห้ง", "en": "Rubber boots and gloves; afterwards wash with soap and dry off" } },
+        { "kind": "leave", "label": { "th": "เดินเท้าเปล่า คล่องตัวดี", "en": "Go barefoot, it's easier" }, "feedback": { "th": "เชื้อโรคฉี่หนูเข้าทางแผลหรือผิวที่แช่น้ำนานๆ ได้ ใส่บูทยางและถุงมือยางทุกครั้งที่ลุยน้ำหรือโคลน", "en": "Leptospirosis enters through cuts or skin softened by water. Wear boots and gloves in mud." } },
+        { "kind": "gear", "label": { "th": "ใส่รองเท้าแตะก็พอ เดี๋ยวค่อยล้างเท้า", "en": "Flip-flops are fine, wash your feet later" }, "feedback": { "th": "รองเท้าแตะกันโคลนและของมีคมไม่ได้ ใส่บูทยาง แล้วล้างตัวด้วยสบู่ทันทีหลังลุยเสร็จ", "en": "Flip-flops don't keep out mud or sharp debris. Wear boots, then wash with soap straight after." } }
+      ],
+      "tip": { "th": "ลุยโคลนต้องใส่บูทยาง ถุงมือยาง เสร็จแล้วล้างสบู่เช็ดตัวให้แห้ง กันโรคฉี่หนู", "en": "Boots and gloves in mud, then wash with soap and dry off to avoid leptospirosis." },
+      "why": { "th": "กรมควบคุมโรคระบุว่าเชื้อโรคฉี่หนู (เลปโตสไปโรสิส) เข้าสู่ร่างกายทางบาดแผล รอยขีดข่วน ตา จมูก ปาก หรือผิวหนังที่แช่น้ำนานๆ ถ้าจำเป็นต้องลุยน้ำให้สวมรองเท้าบูทและถุงมือยาง ปิดแผลด้วยพลาสเตอร์กันน้ำ แล้วรีบล้างตัวด้วยน้ำสะอาดกับสบู่และเช็ดให้แห้งทันที", "en": "The Department of Disease Control says leptospirosis enters through cuts, scratches, eyes, nose, mouth or water-softened skin. If you must wade, wear boots and rubber gloves, cover wounds with waterproof plasters, then wash with soap and dry off at once." },
+      "sources": ["ddc-lepto", "ddc-59806", "ddc-odpc6"], "verify": "verified"
+    },
+    {
+      "id": "r-glass", "mode": "return", "room": "front",
+      "sprite": "glass", "doneAnim": "none", "size": [66, 30], "slots": ["floor"],
+      "name": { "th": "เศษแก้วกับตะปูในโคลน", "en": "Glass and nails in the mud" },
+      "context": { "th": "มีอะไรแวววาวจมอยู่ในโคลน", "en": "Something glints in the mud" },
+      "choices": [
+        { "kind": "gear", "correct": true, "label": { "th": "ใส่บูทพื้นหนา ถุงมือหนา แล้วใช้ที่ตักเก็บใส่ถุงหนาๆ", "en": "Thick-soled boots and heavy gloves; scoop it into a strong bag" } },
+        { "kind": "clear", "label": { "th": "ใช้มือเปล่าหยิบออกทีละชิ้น", "en": "Pick it out by hand" }, "feedback": { "th": "ของมีคมบาดมือง่าย แผลที่โดนโคลนติดเชื้อได้ ใส่ถุงมือหนาและใช้อุปกรณ์ตักแทนมือ", "en": "Sharp bits cut easily and muddy wounds get infected. Wear thick gloves and use a scoop." } },
+        { "kind": "leave", "label": { "th": "กวาดรวมไว้เป็นกองตรงทางเดิน", "en": "Sweep it into a pile on the path" }, "feedback": { "th": "กองไว้ตรงทางเดิน คนอื่นอาจเหยียบโดน เก็บใส่ถุงหนาแล้วนำไปทิ้งให้เรียบร้อย", "en": "Someone could step on it. Bag it in something thick and get rid of it properly." } }
+      ],
+      "tip": { "th": "ของมีคมซ่อนอยู่ในโคลน ใส่บูทพื้นหนา ถุงมือหนา ใช้ที่ตักแทนมือ", "en": "Sharp debris hides in mud: thick-soled boots, heavy gloves, a scoop, not hands." },
+      "why": { "th": "กรมควบคุมโรคเตือนให้ระวังบาดแผลจากของมีคมและเศษแก้วที่อาจติดเชื้อแทรกซ้อน ให้เก็บกวาดวัตถุแหลมคม ตะปู ในบ้านและทางเดิน ใช้รองเท้าบูทยางที่พื้นแข็งแรงพอกันการแทงทะลุ ถ้าโดนบาด ล้างแผลให้สะอาดแล้วปิดด้วยพลาสเตอร์กันน้ำ", "en": "The Department of Disease Control warns that cuts from glass and sharp objects can get infected. Clear nails and sharp debris from floors and paths, wear boots with puncture-proof soles, and clean and cover any cut with a waterproof plaster." },
+      "sources": ["ddc-odpc11", "ddc-odpc6", "ddc-manual", "ddc-56084"], "verify": "verified"
+    },
+    {
+      "id": "r-carmud", "mode": "return", "room": "front",
+      "sprite": "car-mud", "doneAnim": "none", "size": [156, 82], "slots": ["car"],
+      "name": { "th": "รถที่จมน้ำมา", "en": "A car that was under water" },
+      "context": { "th": "น้ำเคยท่วมถึงกลางประตูรถ ตอนนี้น้ำลดแล้ว", "en": "The water came halfway up the doors; now it's gone" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "ห้ามสตาร์ท ถ่ายรูปไว้ แล้วให้ศูนย์หรืออู่ลากไปตรวจ", "en": "Don't start it; take photos and have it towed for inspection" } },
+        { "kind": "leave", "label": { "th": "ลองสตาร์ทดูว่ายังติดไหม", "en": "Try starting it" }, "feedback": { "th": "ถ้ามีน้ำเข้าเครื่องยนต์ การสตาร์ทอาจทำให้เครื่องพังหนักและระบบไฟลัดวงจร ห้ามสตาร์ท ให้ช่างตรวจก่อน", "en": "If water got into the engine, starting it can wreck it and short the electrics. Leave it for a mechanic." } },
+        { "kind": "leave", "label": { "th": "ติดเครื่องเปิดแอร์ไล่ความชื้นสักพัก", "en": "Run the engine with the AC on to dry it out" }, "feedback": { "th": "เปิดแอร์ก็ต้องสตาร์ทรถ ซึ่งเสี่ยงเครื่องพัง ให้ช่างตรวจและแจ้งประกันก่อน", "en": "The AC means starting the engine, the very thing to avoid. Get it checked and call your insurer." } }
+      ],
+      "tip": { "th": "รถที่จมน้ำ ห้ามสตาร์ทเด็ดขาด ถ่ายรูปความเสียหายไว้ แล้วให้ช่างลากไปตรวจ", "en": "Never start a flooded car. Photograph the damage and have it towed for checks." },
+      "why": { "th": "กรมการขนส่งทางบกเตือนว่าห้ามสตาร์ทรถที่จมน้ำเด็ดขาด เพราะน้ำอาจเข้าระบบไฟฟ้าจนลัดวงจร ทำให้เครื่องยนต์เสียหายหนักขึ้น เมื่อน้ำลดให้ยกรถเข้าศูนย์หรืออู่ตรวจละเอียด คปภ. แนะให้ถ่ายรูปรถทั้งภายนอก ภายใน ห้องเครื่อง และรอยคราบน้ำไว้ใช้เคลมประกัน ในกรุงเทพฯ ตำรวจจราจรมีรถยกช่วยฟรี โทร 1197", "en": "The Department of Land Transport says never start a car that was under water: water in the electrics can short-circuit and wreck the engine. Once the water drops, have it lifted to a service centre for a full check. The insurance regulator (OIC) says photograph the outside, inside, engine bay and water marks for your claim. In Bangkok, traffic police tow flooded cars for free on 1197." },
+      "sources": ["dlt-car", "oic-photo", "police-tow"], "verify": "verified"
+    },
+    {
+      "id": "r-debris", "mode": "return", "room": "front",
+      "sprite": "debris", "doneAnim": "none", "size": [88, 54], "slots": ["floor-big"],
+      "name": { "th": "กองเศษขยะที่น้ำพัดมา", "en": "Pile of flood debris" },
+      "context": { "th": "กองกิ่งไม้กับขยะ มีอะไรสีส้มๆ ซ่อนอยู่", "en": "Branches and rubbish, with something orange hiding inside" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "ใส่บูทกับถุงมือ ใช้ไม้ยาวเขี่ยดูก่อน แล้วค่อยเก็บ", "en": "Boots and gloves on; poke it with a long stick first, then clear it" } },
+        { "kind": "clear", "label": { "th": "ล้วงมือลงไปหยิบขยะออก", "en": "Reach in and pull the rubbish out" }, "feedback": { "th": "ตะขาบ แมงป่อง หรืองู อาจซ่อนอยู่ในกองขยะ อย่าใช้มือเปล่า ใช้ไม้เขี่ยดูก่อน", "en": "Centipedes, scorpions or snakes may be in there. Don't use bare hands; check with a stick." } },
+        { "kind": "toss", "label": { "th": "จุดไฟเผากองขยะทิ้งไปเลย", "en": "Burn the pile" }, "feedback": { "th": "การเผาขยะทำให้เกิดควันพิษ และในกองอาจมีภาชนะสารเคมี แยกขยะใส่ถุงให้หน่วยงานท้องถิ่นมาเก็บดีกว่า", "en": "Burning makes toxic smoke and there may be chemical containers inside. Bag it for the local council to collect." } }
+      ],
+      "tip": { "th": "กองขยะอาจมีตะขาบหรืองูซ่อนอยู่ ใช้ไม้ยาวเขี่ยดูก่อน อย่าใช้มือล้วง", "en": "Debris piles can hide centipedes or snakes. Check with a long stick, not hands." },
+      "why": { "th": "กรมควบคุมโรคระบุว่าตะกอนน้ำท่วม ถุงขยะ หรือซอกหลืบต่างๆ อาจเป็นที่ซ่อนของสัตว์มีพิษ ให้ใช้แท่งไม้เขี่ยตรวจดู อย่าใช้มือเปล่า เตรียมไฟฉายไว้ส่องมุมมืด และห้ามเผาสารเคมี", "en": "The Department of Disease Control says flood sediment, rubbish bags and crevices can hide venomous animals. Check with a stick, never bare hands, use a torch for dark corners, and never burn chemicals." },
+      "sources": ["ddc-manual", "ddc-snake"], "verify": "verified"
+    },
+    {
+      "id": "r-crack", "mode": "return", "room": "front",
+      "sprite": "crack", "doneAnim": "none", "size": [56, 60], "slots": ["wall"],
+      "name": { "th": "ผนังบ้านร้าว", "en": "Cracked wall" },
+      "context": { "th": "มีรอยร้าวยาวที่ผนังบ้านหลังน้ำลด", "en": "A long crack has appeared since the flood" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "อย่าเพิ่งเข้าไปอยู่ ให้ช่างหรือวิศวกรตรวจโครงสร้างก่อน", "en": "Don't move back in yet; have a builder or engineer check it" } },
+        { "kind": "leave", "label": { "th": "เอาปูนโป๊ปิดรอยร้าว แล้วเข้าอยู่ได้เลย", "en": "Fill it with plaster and move back in" }, "feedback": { "th": "ปิดรอยร้าวได้ไม่ได้แปลว่าโครงสร้างแข็งแรง ให้ผู้เชี่ยวชาญตรวจก่อน", "en": "Covering a crack doesn't make the structure sound. Get it checked first." } },
+        { "kind": "leave", "label": { "th": "ไม่เป็นไร บ้านเก่าก็ร้าวแบบนี้", "en": "It's fine, old houses crack" }, "feedback": { "th": "รอยร้าวหลังน้ำท่วมอาจเป็นสัญญาณว่าโครงสร้างทรุด ก่อนเข้าบ้านต้องตรวจความมั่นคงก่อน", "en": "New cracks after a flood can mean subsidence. Check the structure before going in." } }
+      ],
+      "tip": { "th": "ผนังร้าว พื้นทรุด บ้านเอียง อย่าเพิ่งเข้าอยู่ ให้ช่างตรวจโครงสร้างก่อน", "en": "Cracked walls, sunken floors or a lean? Don't move in until it's been checked." },
+      "why": { "th": "กรมอนามัยแนะว่าก่อนเข้าบ้านต้องสำรวจว่าโครงสร้างบ้านมั่นคงแข็งแรง คู่มือซ่อมบ้านหลังน้ำลดของกรมโยธาธิการและผังเมืองระบุว่า ถ้าผนังร้าวกว้างและยาวเห็นได้ชัด หรือร้าวทะลุอีกด้าน คานร้าว หรือฐานรากทรุดเอียง ควรรีบปรึกษาวิศวกร", "en": "The Department of Health says check the structure is sound before going back in. The Department of Public Works and Town & Country Planning's post-flood repair manual says wide, long or through-wall cracks, cracked beams or a sinking, tilting foundation need an engineer." },
+      "sources": ["anamai-mould", "dpt-manual"], "verify": "verified",
+      "verifyNote": "DPT manual read from a third-party copy (dpt.go.th unreachable). DPT has run free inspections (hotline 1531 reported in Dec 2025; not used in game copy)."
+    },
+    {
+      "id": "r-bucket", "mode": "return", "room": "front",
+      "sprite": "bucket", "doneAnim": "none", "size": [50, 42], "slots": ["floor"],
+      "name": { "th": "น้ำขังในถัง", "en": "Standing water in a bucket" },
+      "context": { "th": "น้ำฝนขังอยู่หลายวัน มีลูกน้ำดุ๊กดิ๊ก", "en": "Rainwater sitting for days, with wrigglers in it" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "เทน้ำทิ้ง ล้างแล้วคว่ำไว้", "en": "Tip it out, rinse it and turn it upside down" } },
+        { "kind": "leave", "label": { "th": "เก็บไว้รดน้ำต้นไม้", "en": "Keep it for watering plants" }, "feedback": { "th": "น้ำขังเป็นที่วางไข่ของยุงลาย พาหะไข้เลือดออก ช่วงน้ำท่วมเสี่ยงสูงขึ้น เทน้ำทิ้งแล้วคว่ำไว้", "en": "Standing water breeds dengue mosquitoes, and floods raise the risk. Tip it out." } },
+        { "kind": "leave", "label": { "th": "ปิดฝาไว้ครึ่งเดียวพอ", "en": "Half-cover it" }, "feedback": { "th": "ยุงยังเข้าไปวางไข่ได้ ถ้าจะเก็บน้ำไว้ต้องปิดฝาให้มิดชิด ไม่งั้นเททิ้งแล้วคว่ำไว้", "en": "Mosquitoes still get in. Seal it completely or tip it out." } }
+      ],
+      "tip": { "th": "เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก", "en": "Tip out standing water and turn containers over so mosquitoes can't breed." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าน้ำท่วมขังทำให้มีโอกาสพบผู้ป่วยไข้เลือดออกต่อเนื่อง ให้ปิดฝาภาชนะเก็บน้ำให้มิดชิด ล้างคว่ำภาชนะใส่น้ำ และสำรวจน้ำขังตามเศษขยะ ไม่ให้ยุงลายวางไข่", "en": "The Department of Disease Control warns flooding keeps dengue cases coming. Cover stored water tightly, rinse and upturn containers, and check rubbish for standing water so Aedes mosquitoes can't breed." },
+      "sources": ["ddc-rainy", "ddc-dengue"], "verify": "verified"
+    },
+    {
+      "id": "r-socket", "mode": "return", "room": "living",
+      "sprite": "socketwet", "doneSprite": "socketwet-done", "size": [34, 42], "slots": ["socket"],
+      "name": { "th": "ปลั๊กไฟที่เปียก", "en": "Wet socket" },
+      "context": { "th": "ปลั๊กอยู่ใต้ระดับที่น้ำเคยท่วม ยังมีคราบชื้น", "en": "It was below the water line and is still damp" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้", "en": "Don't touch or use it until an electrician has checked it" } },
+        { "kind": "leave", "label": { "th": "เอาไดร์เป่าผมเป่าให้แห้ง แล้วเสียบใช้เลย", "en": "Dry it with a hairdryer, then use it" }, "feedback": { "th": "ผิวนอกแห้งไม่ได้แปลว่าข้างในแห้ง แถมต้องเสียบไดร์อีกจุดถึงจะเป่าได้ เสี่ยงไฟดูด ให้ช่างไฟตรวจก่อน", "en": "Dry on the outside isn't dry inside, and the hairdryer needs another socket. Let an electrician check." } },
+        { "kind": "leave", "label": { "th": "ลองเสียบพัดลมดูว่ายังใช้ได้ไหม", "en": "Plug in a fan to test it" }, "feedback": { "th": "ปลั๊กที่น้ำท่วมถึง ห้ามใช้จนกว่าผู้เชี่ยวชาญจะตรวจ ไม่ต้องลองเอง", "en": "A flooded socket stays off-limits until an expert checks it. Don't test it yourself." } }
+      ],
+      "tip": { "th": "ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน", "en": "A socket that was under water: don't touch or use it until it's been checked." },
+      "why": { "th": "กฟน. เตือนว่าห้ามใช้ปลั๊กไฟ เครื่องใช้ไฟฟ้า และสวิตช์ที่น้ำท่วมถึงโดยเด็ดขาด จนกว่าจะได้รับการตรวจสอบจากผู้เชี่ยวชาญ กรมควบคุมโรคย้ำว่าห้ามสัมผัสปลั๊กไฟหรือสายไฟที่เปียกน้ำ", "en": "MEA warns never to use sockets, appliances or switches that were flooded until an expert has checked them. The Department of Disease Control says don't touch wet sockets or wires." },
+      "sources": ["mea-2022", "mea-gov", "ddc-59806"], "verify": "verified"
+    },
+    {
+      "id": "r-breaker", "mode": "return", "room": "living",
+      "sprite": "breakerwet", "doneAnim": "none", "size": [42, 56], "slots": ["breaker"],
+      "name": { "th": "ตู้เบรกเกอร์หลังน้ำลด", "en": "Breaker panel after the flood" },
+      "context": { "th": "พื้นยังเปียก ตู้ไฟมีคราบน้ำ อยากมีไฟใช้ไวๆ", "en": "The floor is still wet, the panel is damp, you want power back" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "เรียกช่างไฟ หรือแจ้งการไฟฟ้าให้ตรวจระบบก่อนเปิดไฟ", "en": "Call an electrician, or the electricity authority, to check before switching on" } },
+        { "kind": "off", "label": { "th": "ตัดเบรกเกอร์เองตอนนี้เลย", "en": "Flip the breaker yourself now" }, "feedback": { "th": "ตอนพื้นยังเปียก ห้ามเปิด–ปิดสวิตช์ไฟเอง ให้ช่างไฟที่มีความรู้มาตรวจระบบก่อนดีกว่า", "en": "With the floor still wet, don't operate switches yourself. Let a qualified electrician check the system." } },
+        { "kind": "leave", "label": { "th": "เสียบปลั๊กลองดูว่าไฟมาไหม", "en": "Plug something in to see if there's power" }, "feedback": { "th": "ยังไม่รู้ว่าระบบไฟปลอดภัยหรือเปล่า อย่าลองเอง เรียกช่างไฟมาตรวจก่อน", "en": "You don't know if the system is safe yet. Don't test it; call an electrician." } }
+      ],
+      "tip": { "th": "หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน", "en": "After a flood, don't touch the breaker on a wet floor. Get an electrician first." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าไม่ควรเข้าไปตรวจสอบหรือเปิด–ปิดระบบไฟฟ้าด้วยตนเอง กฟภ. ห้ามยืนแช่น้ำขณะตรวจอุปกรณ์ไฟฟ้า และให้ช่างไฟฟ้าที่มีความรู้ความชำนาญตรวจก่อนกลับมาใช้ไฟ ติดต่อ กฟน. 1130 หรือ กฟภ. 1129 ได้ตลอด 24 ชั่วโมง", "en": "The Department of Disease Control says don't inspect or switch the electrical system yourself. PEA says never stand in water while checking equipment and have a skilled electrician check before reconnecting. MEA 1130 and PEA 1129 are open 24 hours." },
+      "sources": ["ddc-59806", "pea-1415", "mea-gov"], "verify": "verified"
+    },
+    {
+      "id": "r-tv", "mode": "return", "room": "living",
+      "sprite": "tvmud", "doneAnim": "none", "size": [84, 62], "slots": ["tv"],
+      "name": { "th": "ทีวีที่จมน้ำมา", "en": "TV that was under water" },
+      "context": { "th": "ทีวีมีคราบโคลนครึ่งจอ ปลั๊กวางอยู่ข้างๆ", "en": "Mud halfway up the screen, plug lying beside it" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "ห้ามเสียบใช้ ผึ่งให้แห้ง แล้วให้ช่างตรวจก่อน", "en": "Don't plug it in; let it dry and have a technician check it" } },
+        { "kind": "leave", "label": { "th": "เช็ดให้แห้งแล้วเสียบปลั๊กดูเลย", "en": "Wipe it dry and plug it in" }, "feedback": { "th": "น้ำอาจค้างอยู่ข้างในเครื่อง เสียบใช้ทันทีเสี่ยงไฟดูดและไฟช็อต ให้ช่างตรวจก่อน", "en": "Water can be trapped inside. Plugging in now risks shocks and shorts. Get it checked." } },
+        { "kind": "leave", "label": { "th": "แกะเครื่องซ่อมเองตามคลิป", "en": "Open it up and fix it from a video" }, "feedback": { "th": "เครื่องใช้ไฟฟ้าที่เปียกน้ำ ห้ามซ่อมเอง ให้ช่างไฟฟ้าที่มีความรู้ตรวจให้", "en": "Don't repair water-damaged appliances yourself; leave it to a qualified technician." } }
+      ],
+      "tip": { "th": "เครื่องใช้ไฟฟ้าที่จมน้ำ ห้ามเสียบใช้ ห้ามซ่อมเอง ให้ช่างตรวจก่อนเสมอ", "en": "Flooded appliances: don't plug in, don't self-repair. A technician checks first." },
+      "why": { "th": "กฟภ. แนะว่าเครื่องใช้ไฟฟ้าที่ถูกน้ำท่วม ห้ามใช้งานทันที ห้ามนำกลับมาใช้และห้ามซ่อมเอง ควรเรียกช่างไฟฟ้าที่มีความรู้ความชำนาญช่วยตรวจสอบก่อน", "en": "PEA says don't use flooded appliances straight away, don't reuse or repair them yourself, and have a skilled electrician check them first." },
+      "sources": ["pea-1384", "pea-1415"], "verify": "verified"
+    },
+    {
+      "id": "r-sag", "mode": "return", "room": "living",
+      "sprite": "sag", "doneSprite": "sag-done", "size": [112, 50], "slots": ["ceiling"],
+      "name": { "th": "ฝ้าเพดานอุ้มน้ำ", "en": "Waterlogged ceiling" },
+      "context": { "th": "ฝ้ายิปซัมอุ้มน้ำจนย้อยลงมา มีน้ำหยด", "en": "The gypsum board is soaked, sagging and dripping" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "อย่ายืนใต้ฝ้า กันบริเวณไว้ แล้วให้ช่างมารื้อเปลี่ยน", "en": "Keep out from under it, cordon it off and get a builder to replace it" } },
+        { "kind": "clear", "label": { "th": "เอาไม้แทงให้น้ำไหลออก", "en": "Poke it with a stick to drain it" }, "feedback": { "th": "ฝ้าที่อุ้มน้ำหนักมาก อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ ให้ช่างจัดการ", "en": "A soaked board is heavy and can drop in one piece. Stay out from under it." } },
+        { "kind": "leave", "label": { "th": "เปิดพัดลมเพดานช่วยเป่าให้แห้ง", "en": "Turn on the ceiling fan to dry it" }, "feedback": { "th": "ระบบไฟยังไม่ได้ตรวจ และฝ้าอาจหล่นได้ อย่าเพิ่งเปิดไฟ ให้ช่างตรวจก่อน", "en": "The wiring hasn't been checked and the board could fall. Leave the power off for now." } }
+      ],
+      "tip": { "th": "ฝ้าอุ้มน้ำจนย้อย อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ กันพื้นที่ไว้ให้ช่างรื้อ", "en": "A sagging wet ceiling can fall in one piece. Keep clear; a builder removes it." },
+      "why": { "th": "คู่มือของกรมโยธาธิการและผังเมืองระบุว่าฝ้ายิปซัมไม่ทนน้ำเลย ฝ้าที่โดนน้ำท่วมส่วนใหญ่ต้องเลาะออกแล้วเปลี่ยนใหม่เพราะจะเปื่อยยุ่ย ฝ้าที่อุ้มน้ำจึงทั้งหนักและอ่อนตัว อย่ายืนข้างใต้ และอย่าเพิ่งเปิดไฟในห้องนั้นจนกว่าช่างจะตรวจ", "en": "The Department of Public Works and Town & Country Planning's manual says gypsum board can't take water: flooded ceilings usually have to be stripped out and replaced because they turn soft. A soaked board is heavy and weak, so stay out from under it and keep the lights off until it's checked." },
+      "sources": ["dpt-manual", "ddc-59806"], "verify": "partial",
+      "verifyNote": "DPT confirms flooded gypsum must be removed/replaced; 'it can fall, don't stand under it' is an inference, not official wording."
+    },
+    {
+      "id": "r-mould", "mode": "return", "room": "living",
+      "sprite": "mould", "doneAnim": "none", "size": [66, 54], "slots": ["wall"],
+      "name": { "th": "เชื้อราบนผนัง", "en": "Mould on the wall" },
+      "context": { "th": "ผนังชื้นจนขึ้นราเป็นดวงๆ", "en": "Damp walls are covered in mould spots" },
+      "choices": [
+        { "kind": "gear", "correct": true, "label": { "th": "ใส่หน้ากาก N95 ถุงมือยาง เปิดประตูหน้าต่าง แล้วค่อยเช็ด", "en": "N95 mask and rubber gloves on, doors and windows open, then clean" } },
+        { "kind": "leave", "label": { "th": "ปิดห้องเปิดแอร์ ให้แห้งไวๆ", "en": "Shut the room and run the AC" }, "feedback": { "th": "ระหว่างกำจัดเชื้อรา ห้ามเปิดพัดลมหรือแอร์ เพราะสปอร์จะฟุ้งไปทั่วบ้าน เปิดประตูหน้าต่างให้อากาศถ่ายเทแทน", "en": "Don't run fans or AC while removing mould; spores spread. Open doors and windows instead." } },
+        { "kind": "clear", "label": { "th": "เอาผ้าแห้งเช็ดออกด้วยมือเปล่า", "en": "Wipe it off dry with bare hands" }, "feedback": { "th": "เช็ดแห้งทำให้สปอร์ฟุ้ง ใส่หน้ากาก N95 ถุงมือยาง แล้วเช็ดด้วยผ้าชุบน้ำผสมผงซักฟอก", "en": "Dry wiping spreads spores. Wear an N95 and gloves, and use a damp cloth with detergent." } }
+      ],
+      "tip": { "th": "เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด", "en": "Mould: N95 mask, rubber gloves, windows open, and no fans while you clean." },
+      "why": { "th": "กรมควบคุมโรคระบุว่าเชื้อรากระตุ้นภูมิแพ้และหอบหืดได้ ให้สวมหน้ากากชนิด N95 อย่าเช็ดแบบแห้งหรือเปิดพัดลมเป่า กรมอนามัยแนะให้เปิดประตูหน้าต่างให้อากาศถ่ายเท และห้ามเปิดพัดลมหรือแอร์ขณะกำจัดเชื้อรา คนที่เป็นหอบหืด ภูมิแพ้ เด็ก และผู้สูงอายุ ไม่ควรเป็นคนลงมือทำความสะอาด", "en": "The Department of Disease Control says mould triggers allergies and asthma: wear an N95, don't dry-wipe or blow fans at it. The Department of Health says open doors and windows and keep fans and AC off while removing mould. People with asthma or allergies, children and older people shouldn't do the cleaning." },
+      "sources": ["ddc-manual", "anamai-mould"], "verify": "verified"
+    },
+    {
+      "id": "r-generator", "mode": "return", "room": "living",
+      "sprite": "generator", "doneAnim": "away", "size": [74, 56], "slots": ["floor-big"],
+      "name": { "th": "เครื่องปั่นไฟในบ้าน", "en": "Generator running indoors" },
+      "context": { "th": "ไฟยังไม่มา เลยติดเครื่องปั่นไฟไว้ในห้อง", "en": "No power yet, so someone started it in the room" },
+      "choices": [
+        { "kind": "move", "correct": true, "label": { "th": "ปิดเครื่อง แล้วย้ายไปตั้งนอกบ้านในที่โล่ง อากาศถ่ายเทดี", "en": "Switch it off and move it outside into open air" } },
+        { "kind": "leave", "label": { "th": "แง้มหน้าต่างนิดหน่อยก็พอ", "en": "Just open a window a crack" }, "feedback": { "th": "ไอเสียมีก๊าซคาร์บอนมอนอกไซด์ที่ไม่มีสี ไม่มีกลิ่น แง้มหน้าต่างไม่พอ ต้องย้ายเครื่องออกไปที่โล่ง", "en": "Exhaust contains colourless, odourless carbon monoxide. A cracked window isn't enough; move it out." } },
+        { "kind": "move", "label": { "th": "ย้ายไปในโรงรถแล้วปิดประตูกันขโมย", "en": "Move it into the garage and shut the door" }, "feedback": { "th": "โรงรถที่ปิดทึบเป็นที่อับอากาศ ก๊าซพิษสะสมได้ ห้ามใช้เครื่องปั่นไฟในที่อากาศถ่ายเทไม่ดี", "en": "A closed garage is a confined space where fumes build up. Never run it where air can't flow." } }
+      ],
+      "tip": { "th": "เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก", "en": "Never run a generator indoors or in closed spaces: its fumes are silent poison." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าไม่ควรใช้ปั๊มน้ำหรือเครื่องปั่นไฟที่ใช้น้ำมันในพื้นที่ระบายอากาศไม่ดีหรืออับอากาศ เพราะเกิดก๊าซพิษเป็นอันตรายต่อคนใกล้เคียง ก๊าซคาร์บอนมอนอกไซด์ไม่มีสี ไม่มีกลิ่น จึงอันตรายโดยไม่รู้ตัว", "en": "The Department of Disease Control warns against running fuel-powered pumps or generators in poorly ventilated or enclosed spaces because of toxic gas. Carbon monoxide has no colour or smell, so it harms people without warning." },
+      "sources": ["ddc-manual"], "verify": "verified"
+    },
+    {
+      "id": "r-fever", "mode": "return", "room": "living",
+      "sprite": "thermo", "doneAnim": "none", "size": [46, 46], "slots": ["table"],
+      "name": { "th": "มีไข้หลังลุยน้ำ", "en": "Fever after wading" },
+      "context": { "th": "ลุยน้ำมาเมื่อสัปดาห์ก่อน วันนี้ไข้ขึ้น ปวดน่อง", "en": "You waded last week; today you have a fever and sore calves" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "รีบไปหาหมอ แล้วบอกว่าเคยลุยน้ำหรือโคลนมา", "en": "See a doctor soon and say you waded through floodwater" } },
+        { "kind": "leave", "label": { "th": "ซื้อยาแก้ปวดกินเอง เดี๋ยวก็หาย", "en": "Buy painkillers and sit it out" }, "feedback": { "th": "อย่าซื้อยากินเอง ไข้หลังลุยน้ำอาจเป็นโรคฉี่หนูหรือไข้เลือดออก ต้องให้หมอตรวจ และยาแก้ปวดบางกลุ่มอันตรายถ้าเป็นไข้เลือดออก", "en": "Don't self-medicate. A post-flood fever may be leptospirosis or dengue, and some painkillers are dangerous with dengue." } },
+        { "kind": "leave", "label": { "th": "นอนพักรอดูอาการสักอาทิตย์", "en": "Rest and wait a week" }, "feedback": { "th": "โรคฉี่หนูอันตรายถ้ารักษาช้า มีไข้สูงหลังลุยน้ำ ควรรีบพบแพทย์ทันที", "en": "Leptospirosis is dangerous when treated late. A high fever after wading means see a doctor now." } }
+      ],
+      "tip": { "th": "ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง", "en": "Fever and sore calves after wading? See a doctor; don't self-medicate." },
+      "why": { "th": "กรมควบคุมโรคระบุว่าโรคฉี่หนูมีระยะฟักตัว 2–30 วัน ส่วนใหญ่ราว 1–2 สัปดาห์ อาการคือไข้สูงเฉียบพลัน ปวดศีรษะ ปวดกล้ามเนื้อโดยเฉพาะน่อง และตาแดง ห้ามซื้อยากินเอง ให้รีบพบแพทย์และแจ้งประวัติการลุยน้ำ ส่วนไข้เลือดออก ห้ามใช้ยาแก้ปวดกลุ่ม NSAIDs เช่น แอสไพริน ไอบูโพรเฟน", "en": "The Department of Disease Control says leptospirosis shows up 2–30 days after exposure, usually 1–2 weeks: sudden high fever, headache, muscle pain especially in the calves, red eyes. Don't self-medicate; see a doctor and mention wading. With dengue, NSAIDs like aspirin and ibuprofen must be avoided." },
+      "sources": ["ddc-lepto", "ddc-59806", "ddc-dengue"], "verify": "verified"
+    },
+    {
+      "id": "r-gas", "mode": "return", "room": "kitchen",
+      "sprite": "lpgsmell", "doneSprite": "lpg-off", "size": [46, 70], "slots": ["lpg"],
+      "name": { "th": "กลิ่นแก๊สในครัว", "en": "Gas smell in the kitchen" },
+      "context": { "th": "เปิดประตูเข้าครัวแล้วได้กลิ่นแก๊สฉุนๆ", "en": "You smell gas as you walk into the kitchen" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้งข้างนอก", "en": "No switches, no flames: open windows, close the valve, go outside and call" } },
+        { "kind": "leave", "label": { "th": "เปิดไฟดูว่ารั่วตรงไหน", "en": "Switch on the light to find the leak" }, "feedback": { "th": "การกดสวิตช์ไฟอาจเกิดประกายไฟจนแก๊สติดไฟได้ ห้ามเปิด–ปิดสวิตช์ใดๆ ในบริเวณนั้น", "en": "Flicking a switch can spark and ignite the gas. Don't touch any switches near a leak." } },
+        { "kind": "leave", "label": { "th": "เปิดพัดลมช่วยไล่แก๊สออกไป", "en": "Turn on a fan to blow the gas out" }, "feedback": { "th": "พัดลมเป็นอุปกรณ์ไฟฟ้า เปิดแล้วอาจเกิดประกายไฟ ปภ. ห้ามใช้พัดลมไล่แก๊ส ให้เปิดประตูหน้าต่างแทน", "en": "A fan is electrical and can spark. DDPM says never use one on a gas leak; open doors and windows instead." } }
+      ],
+      "tip": { "th": "ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง", "en": "Smell gas? No switches or flames. Open windows, shut the valve, leave and call." },
+      "why": { "th": "ปภ. แนะว่าเมื่อแก๊สรั่ว ให้ปิดวาล์วถังแก๊สและเตา เปิดประตูหน้าต่างทุกบาน ห้ามเปิด–ปิดอุปกรณ์ไฟฟ้าทุกชนิดหรือทำอะไรที่เกิดประกายไฟ และห้ามใช้พัดลมไล่แก๊ส กรมควบคุมโรคย้ำว่าตอนกลับเข้าบ้านหลังน้ำลดให้ใช้ไฟฉายแบบใช้ถ่าน เพราะน้ำท่วมอาจพาแก๊สหรือน้ำมันมาด้วย ออกไปให้พ้นบริเวณก่อนแล้วค่อยโทรขอความช่วยเหลือ", "en": "DDPM says if gas leaks, close the cylinder and stove valves, open every door and window, don't switch any electrical device on or off or make sparks, and never use a fan. The Department of Disease Control adds: use a battery torch when re-entering, as floodwater can carry gas or fuel. Get clear of the area before you call for help." },
+      "sources": ["ddpm-gas", "ddc-manual"], "verify": "verified",
+      "verifyNote": "DDPM wording via a Thai PBS report (2022); DOEB pages were unreachable. Fire/rescue 199 is cited only by news, so it is not used in game copy."
+    },
+    {
+      "id": "r-foodwet", "mode": "return", "room": "kitchen",
+      "sprite": "foodwet", "doneAnim": "away", "size": [60, 44], "slots": ["counter", "floor"],
+      "name": { "th": "อาหารที่โดนน้ำท่วม", "en": "Food that touched floodwater" },
+      "context": { "th": "ถุงขนมปังกับข้าวสารมีคราบน้ำโคลน", "en": "The bread and rice bags have muddy water stains" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "ทิ้งทั้งหมด แม้จะอยู่ในถุงหรือกล่อง", "en": "Throw it all out, even if it's bagged or boxed" } },
+        { "kind": "clear", "label": { "th": "ล้างน้ำให้สะอาดแล้วกินต่อได้", "en": "Rinse it and eat it" }, "feedback": { "th": "น้ำท่วมสกปรกและมีเชื้อโรค อาหารที่สัมผัสน้ำท่วม แม้บรรจุภัณฑ์เปียกหรือเสียหาย ก็ไม่ควรกิน", "en": "Floodwater is dirty and full of germs. Don't eat food it touched, even in wet or damaged packaging." } },
+        { "kind": "leave", "label": { "th": "ตากแดดให้แห้งแล้วเก็บไว้", "en": "Dry it in the sun and keep it" }, "feedback": { "th": "ตากแดดไม่ได้ทำให้เชื้อโรคจากน้ำท่วมหมดไป ทิ้งไปอย่าเสียดาย", "en": "Sun-drying doesn't remove floodwater germs. Let it go." } }
+      ],
+      "tip": { "th": "อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม", "en": "Food that touched floodwater goes in the bin, even if it was bagged or boxed." },
+      "why": { "th": "กรมควบคุมโรคย้ำว่าไม่ควรกินอาหารที่สัมผัสน้ำท่วม แม้อยู่ในบรรจุภัณฑ์ที่เปียกหรือเสียหาย กรมอนามัยแนะให้สำรวจข้าวสาร อาหารแห้ง และอาหารที่เก็บไว้ ถ้าถูกน้ำท่วมให้ทิ้งไป เพราะน้ำท่วมสกปรก มีเชื้อโรค และให้กินอาหารปรุงสุกใหม่ตามหลัก สุก ร้อน สะอาด", "en": "The Department of Disease Control says don't eat food that touched floodwater, even in wet or damaged packaging. The Department of Health says throw out flood-damaged rice and dry food because floodwater carries germs, and eat freshly cooked food: cooked, hot, clean." },
+      "sources": ["ddc-59984", "anamai-kitchen"], "verify": "verified"
+    },
+    {
+      "id": "r-cans", "mode": "return", "room": "kitchen",
+      "sprite": "cans", "doneAnim": "away", "size": [60, 44], "slots": ["counter", "floor"],
+      "name": { "th": "กระป๋องบุบ บวม เป็นสนิม", "en": "Dented, bulging, rusty cans" },
+      "context": { "th": "ปลากระป๋องในตู้ บางกระป๋องบุบ บางกระป๋องโป่ง", "en": "Some cans in the cupboard are dented, one is bulging" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "ทิ้งกระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม", "en": "Throw out any can that's dented, bulging, leaking or rusty" } },
+        { "kind": "leave", "label": { "th": "เคาะให้กลับเป็นรูปเดิมแล้วเก็บไว้", "en": "Tap the dent out and keep it" }, "feedback": { "th": "กระป๋องบุบหรือโป่งพองอาจมีรอยรั่วหรือเชื้อโรคข้างใน อย. ระบุว่าไม่ควรบริโภค", "en": "Dented or swollen cans may leak or harbour bacteria. The Thai FDA says don't eat them." } },
+        { "kind": "boil", "label": { "th": "อุ่นทั้งกระป๋องให้ร้อนก่อนกิน", "en": "Heat it in the can before eating" }, "feedback": { "th": "ห้ามอุ่นอาหารทั้งกระป๋อง และกระป๋องที่บุบ บวม หรือเป็นสนิม ไม่ควรกินเลย ทิ้งไปดีกว่า", "en": "Never heat food in the can, and don't eat from damaged cans at all." } }
+      ],
+      "tip": { "th": "กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน", "en": "Dented, bulging, leaking or rusty cans: throw them out, don't eat them." },
+      "why": { "th": "อย. ระบุว่ากระป๋องที่บุบ โป่งพอง หรือเป็นสนิม เป็นอาหารกระป๋องที่ไม่ควรบริโภค กรมอนามัยแนะให้ดูว่ากระป๋องปิดสนิท ไม่ปูดบวม ไม่เป็นสนิม ดูวันหมดอายุ และห้ามอุ่นอาหารทั้งกระป๋อง", "en": "The Thai FDA lists dented, bulging or rusty cans as unsafe to eat. The Department of Health says check cans are sealed, not swollen or rusty, within date, and never heat food in the can." },
+      "sources": ["fda-cans", "anamai-cans"], "verify": "verified"
+    },
+    {
+      "id": "r-tap", "mode": "return", "room": "kitchen",
+      "sprite": "tapwater", "doneAnim": "away", "size": [32, 42], "slots": ["sink"],
+      "name": { "th": "น้ำประปาหลังน้ำลด", "en": "Tap water after the flood" },
+      "context": { "th": "น้ำจากก๊อกดูขุ่นๆ หลังน้ำท่วมบ้าน", "en": "The tap water looks cloudy after the flood" },
+      "choices": [
+        { "kind": "boil", "correct": true, "label": { "th": "เปิดน้ำทิ้งจนใส แล้วต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน", "en": "Run it until clear and boil before drinking, or drink standard bottled water" } },
+        { "kind": "leave", "label": { "th": "ดื่มจากก๊อกได้เลย น้ำประปาสะอาดอยู่แล้ว", "en": "Drink straight from the tap" }, "feedback": { "th": "น้ำประปาจากระบบได้มาตรฐาน แต่ท่อและถังพักน้ำในบ้านที่น้ำท่วมถึงอาจปนเปื้อน ต้มให้เดือดก่อน หรือดื่มน้ำขวดไปก่อน", "en": "The mains supply is safe, but flooded pipes and tanks at home may not be. Boil it or drink bottled water." } },
+        { "kind": "clear", "label": { "th": "กรองด้วยผ้าขาวบางแล้วดื่มได้", "en": "Strain it through a cloth and drink" }, "feedback": { "th": "ผ้ากรองได้แค่ตะกอน เชื้อโรคยังอยู่ ต้มให้เดือดก่อนดื่มดีกว่า", "en": "A cloth only catches sediment, not germs. Boil it first." } }
+      ],
+      "tip": { "th": "หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน", "en": "After a flood, run taps clear and boil before drinking, or use bottled water." },
+      "why": { "th": "กรมอนามัยแนะว่าน้ำประปาควรต้มให้เดือดก่อนบริโภค และเลือกน้ำบรรจุขวดที่ได้มาตรฐาน น้ำที่สงสัยว่าปนเปื้อน ห้ามดื่มหรือใช้ปรุงอาหาร การประปาฯ ยืนยันว่าน้ำจากระบบได้มาตรฐาน แต่ระบบประปาในบ้านที่ถูกน้ำท่วมควรตรวจซ่อมก่อนใช้ และล้างถังพักน้ำ", "en": "The Department of Health says boil tap water before drinking and choose standard bottled water; don't drink or cook with water you suspect is contaminated. The waterworks say the mains supply stays safe, but flooded household plumbing should be checked and tanks cleaned before use." },
+      "sources": ["anamai-water", "mwa-safe", "pwa-repair", "mwa-tank"], "verify": "verified"
+    },
+    {
+      "id": "r-bleach", "mode": "return", "room": "kitchen",
+      "sprite": "bleach", "doneAnim": "none", "size": [62, 54], "slots": ["counter", "floor"],
+      "name": { "th": "น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ", "en": "Bleach plus toilet cleaner" },
+      "context": { "th": "อยากล้างคราบโคลนให้หายไว เลยจะผสมสองขวดนี้", "en": "You're tempted to mix them to shift the mud faster" },
+      "choices": [
+        { "kind": "leave", "correct": true, "label": { "th": "ใช้ทีละอย่าง ห้ามผสมกัน เปิดประตูหน้าต่างระหว่างใช้", "en": "Use one at a time, never mix, and keep windows open" } },
+        { "kind": "toss", "label": { "th": "ผสมกันในถัง จะได้แรงๆ", "en": "Mix them in a bucket for extra power" }, "feedback": { "th": "น้ำยาฟอกขาวผสมน้ำยาล้างห้องน้ำที่มีกรด จะเกิดก๊าซคลอรีนที่เป็นพิษสูง ห้ามผสมกันเด็ดขาด", "en": "Bleach plus acid toilet cleaner releases highly toxic chlorine gas. Never mix them." } },
+        { "kind": "toss", "label": { "th": "ผสมในห้องน้ำแล้วปิดประตู กลิ่นจะได้ไม่ฟุ้ง", "en": "Mix them in the bathroom with the door shut" }, "feedback": { "th": "ห้ามผสม และยิ่งในห้องปิดยิ่งอันตราย ก๊าซพิษสะสมได้ ใช้ทีละอย่างและเปิดให้อากาศถ่ายเท", "en": "Never mix, and a closed room makes it worse as gas builds up. One at a time, with ventilation." } }
+      ],
+      "tip": { "th": "ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง", "en": "Never mix bleach with toilet cleaner: toxic gas. One at a time, windows open." },
+      "why": { "th": "อย. เตือนว่าผลิตภัณฑ์ซักผ้าขาวที่มีโซเดียมไฮโปคลอไรต์ เมื่อผสมกับผลิตภัณฑ์ล้างห้องน้ำที่มีกรดไฮโดรคลอริก จะเกิดก๊าซคลอรีนซึ่งเป็นพิษสูง กรมควบคุมโรคย้ำว่าห้ามเทหรือผสมสารเคมีหลายชนิดรวมกัน และให้เปิดประตูหน้าต่างเพิ่มการระบายอากาศ", "en": "The Thai FDA warns that bleach (sodium hypochlorite) mixed with acidic toilet cleaner (hydrochloric acid) produces highly toxic chlorine gas. The Department of Disease Control says never pour or mix chemicals together and keep doors and windows open." },
+      "sources": ["fda-bleach", "ddc-manual"], "verify": "verified"
+    },
+    {
+      "id": "r-cupboard", "mode": "return", "room": "kitchen",
+      "sprite": "cupsnake", "doneAnim": "none", "size": [64, 60], "slots": ["cupboard"],
+      "name": { "th": "ตู้ใต้ซิงก์", "en": "Cupboard under the sink" },
+      "context": { "th": "ประตูตู้แง้มอยู่ ข้างในมืดๆ มีหางอะไรโผล่มา", "en": "The door is ajar and something's tail pokes out of the dark" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "ถอยห่าง ส่องไฟฉาย ใช้ไม้ยาวเปิดดู ถ้าเป็นงูให้แจ้งเจ้าหน้าที่", "en": "Step back, shine a torch, open it with a long stick; if it's a snake, call for help" } },
+        { "kind": "clear", "label": { "th": "ล้วงมือเข้าไปหยิบของออกมาเลย", "en": "Reach in and grab things out" }, "feedback": { "th": "มุมมืดในตู้คือที่หลบของงูและตะขาบหลังน้ำท่วม อย่าใช้มือเปล่า ส่องไฟและใช้ไม้เขี่ยดูก่อน", "en": "Dark cupboards are where snakes and centipedes hide after floods. Use a torch and a stick, not hands." } },
+        { "kind": "leave", "label": { "th": "จับหางดึงออกมาดูว่าเป็นตัวอะไร", "en": "Grab the tail and pull it out" }, "feedback": { "th": "อย่าจับหรือไล่จับสัตว์มีพิษเอง ถอยห่างแล้วแจ้งเจ้าหน้าที่หรือหน่วยกู้ภัยในพื้นที่", "en": "Never handle a possibly venomous animal. Back off and call local responders." } }
+      ],
+      "tip": { "th": "ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ", "en": "Dark cupboards can hide snakes. Use a torch and a long stick, never your hand." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าสัตว์มีพิษอาจหนีน้ำมาหลบตามบ้านและมุมมืด ให้สอดส่องมุมอับเป็นประจำ ใช้แท่งไม้เขี่ยดู อย่าใช้มือเปล่า และควรมีไฟฉายกับไม้ไว้ส่องและเคาะให้มีเสียง", "en": "The Department of Disease Control warns venomous animals shelter in homes and dark corners after floods. Check hidden spots, use a stick rather than bare hands, and carry a torch and a stick to light and tap ahead." },
+      "sources": ["ddc-45196", "ddc-manual", "ddc-snake"], "verify": "verified",
+      "verifyNote": "DDC names dark corners and hidden spots rather than cupboards specifically."
+    }
+  ],
+  "decoys": [
+    { "id": "d-plant", "mode": "prepare", "room": "front", "sprite": "plant", "size": [42, 54], "slots": ["pot"], "name": { "th": "กระถางต้นไม้", "en": "Potted plant" }, "note": { "th": "ต้นไม้อยู่นอกบ้านได้ ไม่ต้องห่วง เก็บแรงไว้จัดการของสำคัญก่อน", "en": "Plants can stay outside. Save your energy for what matters." } },
+    { "id": "d-broom", "mode": "prepare", "room": "front", "sprite": "broom", "size": [46, 72], "slots": ["floor"], "name": { "th": "ไม้กวาดกับถัง", "en": "Broom and bucket" }, "note": { "th": "ไม้กวาดกับถังโดนน้ำก็ไม่เสียหาย เก็บไว้ใช้ตอนน้ำลดได้เลย", "en": "A broom and bucket survive a soaking. You'll want them later." } },
+    { "id": "d-upboxes", "mode": "prepare", "room": "front", "sprite": "upboxes", "size": [62, 40], "slots": ["upper"], "name": { "th": "กล่องของบนชั้นสอง", "en": "Boxes upstairs" }, "note": { "th": "ยกขึ้นชั้นบนแล้ว ปลอดภัย! แบบนี้แหละที่ต้องทำ", "en": "Already moved upstairs. That's exactly the idea!" } },
+    { "id": "d-books", "mode": "prepare", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้นสูง", "en": "Books on the high shelf" }, "note": { "th": "อยู่สูงพ้นน้ำแล้ว ไม่ต้องย้าย", "en": "Already up high, out of reach of the water." } },
+    { "id": "d-clock", "mode": "prepare", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวนผนัง", "en": "Wall clock" }, "note": { "th": "แขวนอยู่สูง น้ำไม่ถึงหรอก", "en": "It's high on the wall; the water won't get there." } },
+    { "id": "d-dishes", "mode": "prepare", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["high"], "name": { "th": "จานชามบนชั้นสูง", "en": "Dishes on the high shelf" }, "note": { "th": "อยู่บนชั้นสูงแล้ว ปลอดภัย", "en": "Already safe on the top shelf." } },
+    { "id": "d-ricebox", "mode": "prepare", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": { "th": "ถังข้าวสารบนตู้เย็น", "en": "Rice tub on the fridge" }, "note": { "th": "ข้าวสารอยู่ในถังปิดฝา วางไว้ที่สูง แบบนี้ดีแล้ว", "en": "Sealed and stored up high. Nicely done." } },
+    { "id": "d-rope", "mode": "return", "room": "front", "sprite": "rope", "size": [54, 28], "slots": ["floor"], "name": { "th": "เชือกขด", "en": "Coiled rope" }, "note": { "th": "เชือกจ้า ไม่ใช่งู 😅 แต่ระวังไว้ก่อนก็ดีแล้ว", "en": "It's a rope, not a snake 😅 Being careful is still good." } },
+    { "id": "d-bootsclean", "mode": "return", "room": "front", "sprite": "bootsclean", "size": [52, 44], "slots": ["floor"], "name": { "th": "บูทยางที่ล้างแล้ว", "en": "Clean rubber boots" }, "note": { "th": "บูทยางพร้อมใช้ ใส่ก่อนลุยโคลนนะ", "en": "Clean boots, ready to go. Wear them for the mud." } },
+    { "id": "d-broom-r", "mode": "return", "room": "front", "sprite": "broom", "size": [46, 72], "slots": ["floor"], "name": { "th": "ไม้กวาดกับถัง", "en": "Broom and bucket" }, "note": { "th": "อุปกรณ์ทำความสะอาด พร้อมลุยแล้ว", "en": "Cleaning kit, ready to go." } },
+    { "id": "d-laundry", "mode": "return", "room": "living", "sprite": "laundry", "size": [74, 58], "slots": ["floor-big"], "name": { "th": "ผ้าที่ตากไว้", "en": "Laundry drying" }, "note": { "th": "ตากผ้าให้แห้งสนิท ช่วยลดเชื้อราได้ ดีแล้ว", "en": "Drying things out properly helps stop mould. Good." } },
+    { "id": "d-winopen", "mode": "return", "room": "living", "sprite": "winopen", "size": [104, 172], "slots": ["window"], "name": { "th": "หน้าต่างที่เปิดไว้", "en": "Open window" }, "note": { "th": "เปิดหน้าต่างให้อากาศถ่ายเท ถูกต้องแล้ว", "en": "Letting fresh air through is exactly right." } },
+    { "id": "d-trashbag", "mode": "return", "room": "living", "sprite": "trashbag", "size": [48, 48], "slots": ["floor"], "name": { "th": "ถุงขยะที่มัดปากแล้ว", "en": "Tied rubbish bag" }, "note": { "th": "มัดปากถุงแน่น รอส่งให้รถเก็บขยะ ถูกต้อง", "en": "Tied tight and waiting for collection. Correct." } },
+    { "id": "d-waternew", "mode": "return", "room": "kitchen", "sprite": "waternew", "size": [54, 42], "slots": ["counter", "floor"], "name": { "th": "น้ำดื่มแพ็กใหม่", "en": "New pack of bottled water" }, "note": { "th": "น้ำดื่มบรรจุขวดใหม่ ปิดสนิท ดื่มได้", "en": "New, sealed bottled water. Safe to drink." } },
+    { "id": "d-soap", "mode": "return", "room": "kitchen", "sprite": "soap", "size": [32, 44], "slots": ["counter-sm", "counter"], "name": { "th": "สบู่ล้างมือ", "en": "Hand soap" }, "note": { "th": "ล้างมือด้วยสบู่ก่อนกินข้าวทุกครั้ง ดีมาก", "en": "Washing hands with soap before eating: great." } }
+  ]
+}

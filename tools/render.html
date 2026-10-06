@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>render</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<p style="font-family:Kanit">บ้านรอดไหม? 0123456789 abc</p>
+<script type="module">
+import { loadCardAssets, drawResultCard, drawChecklist, drawOG } from '/js/cards.js';
+import { geckoSVG } from '/js/mascot.js';
+import { parseSvg, drawSvgInto } from '/js/svgdraw.js';
+
+const get = (f) => fetch(`/content/${f}.json`).then((r) => r.json());
+
+function icon(size, { maskable = false } = {}) {
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#FFE6B0';
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = '#CFEAFB';
+  ctx.beginPath();
+  ctx.arc(size / 2, size * 1.05, size * 0.62, 0, Math.PI * 2);
+  ctx.fill();
+  const pad = maskable ? size * 0.2 : size * 0.08;
+  const el = parseSvg(geckoSVG({ face: 'happy' })).documentElement;
+  drawSvgInto(ctx, el, pad, pad, size - pad * 2, size - pad * 2, el.ownerDocument);
+  return c.toDataURL('image/png');
+}
+
+window.renderAll = async (site) => {
+  const [strings, checklists, helplines] = await Promise.all([get('strings'), get('checklists'), get('helplines')]);
+  const assets = await loadCardAssets();
+  const og = strings.og;
+  const th = strings.th;
+  const url = site || '#บ้านรอดไหม';
+  const out = {};
+  const canvas = () => document.createElement('canvas');
+
+  let c = canvas();
+  drawOG(c, { kind: 'default', mode: 'prepare', line1: og.defaultLine1, line2: og.defaultLine2, line3: og.defaultPill, url }, assets);
+  out['og/default.png'] = c.toDataURL('image/png');
+
+  for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
+    for (let s = 0; s <= 10; s++) {
+      c = canvas();
+      drawOG(c, {
+        kind: 'challenge', mode, score: s, scoreText: `${s}/10`,
+        line1: mode === 'prepare' ? og.challengeLinePrepare : og.challengeLineReturn,
+        line2: og.challengePill, url,
+      }, assets);
+      out[`og/${m}${s}.png`] = c.toDataURL('image/png');
+    }
+    const cap = mode === 'prepare' ? 'Prepare' : 'Return';
+    c = canvas();
+    drawOG(c, { kind: 'checklist', mode, line1: checklists[mode].title.th, line2: og.checklistLine2, line3: og.checklistPill, url }, assets);
+    out[`og/checklist-${mode}.png`] = c.toDataURL('image/png');
+
+    const main = helplines.helplines.filter((h) => h.main).map((h) => h.number);
+    c = canvas();
+    drawChecklist(c, {
+      mode,
+      title: checklists[mode].title.th,
+      subtitle: 'เก็บไว้ แล้วส่งต่อให้คนที่บ้าน',
+      items: checklists[mode].items.map((it) => ({ text: it.th, sprite: it.sprite })),
+      helpLabel: 'เบอร์ช่วยเหลือ โทรฟรี',
+      helpNumbers: main.join('  ·  '),
+      url,
+      forward: 'ส่งต่อด้วยความห่วงใย ♥',
+      footer: th.cardFooter,
+    }, assets);
+    out[`share/checklist-${mode}.png`] = c.toDataURL('image/png');
+  }
+
+  // a sample result card for the docs
+  c = canvas();
+  drawResultCard(c, {
+    mode: 'prepare', tier: 2, modeLabel: th.modePrepare, headline: 'เตรียมบ้านทัน', scoreText: '8/10',
+    rankTitle: th.rankPrepare[2], grid: ['correct', 'correct', 'learned', 'correct', 'correct', 'correct'],
+    cta: th.cardChallenge, url, footer: th.cardFooter, houseLabel: 'บ้านวันที่ 7 ต.ค. 69',
+  }, assets);
+  out['share/sample-result-prepare.png'] = c.toDataURL('image/png');
+  c = canvas();
+  drawResultCard(c, {
+    mode: 'return', tier: 2, modeLabel: th.modeReturn, headline: 'ตรวจบ้านผ่าน', scoreText: '9/10',
+    rankTitle: th.rankReturn[2], grid: ['correct', 'correct', 'correct', 'correct', 'learned', 'correct', 'correct'],
+    cta: th.cardChallenge, url, footer: th.cardFooter, houseLabel: 'บ้านวันที่ 7 ต.ค. 69',
+  }, assets);
+  out['share/sample-result-return.png'] = c.toDataURL('image/png');
+
+  out['icons/icon-180.png'] = icon(180);
+  out['icons/icon-192.png'] = icon(192);
+  out['icons/icon-512.png'] = icon(512);
+  out['icons/icon-maskable-512.png'] = icon(512, { maskable: true });
+  return out;
+};
+window.ready = true;
+</script>
+</body>
+</html>

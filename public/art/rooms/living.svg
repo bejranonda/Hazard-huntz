@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 600" data-room="living">
+  <defs>
+    <pattern id="lv-wp" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#FCE7C8"/>
+      <circle cx="12" cy="12" r="1.7" fill="#F2D2A4"/>
+    </pattern>
+    <linearGradient id="lv-rain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9DB2C4"/><stop offset="1" stop-color="#CFDAE3"/>
+    </linearGradient>
+    <linearGradient id="lv-sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FD2F2"/><stop offset="1" stop-color="#E2F5FC"/>
+    </linearGradient>
+    <clipPath id="lv-glass"><rect x="252" y="108" width="88" height="156" rx="3"/></clipPath>
+  </defs>
+
+  <g class="bg" stroke-linejoin="round" stroke-linecap="round">
+    <!-- ceiling (gypsum board) -->
+    <rect x="0" y="0" width="360" height="42" fill="#F4EEE5"/>
+    <path d="M120 0V40M240 0V40" stroke="#E4DACB" stroke-width="1.6"/>
+    <rect x="0" y="38" width="360" height="6" fill="#E3D6C5"/>
+
+    <!-- wall -->
+    <rect x="0" y="44" width="360" height="400" fill="url(#lv-wp)"/>
+    <rect x="0" y="440" width="360" height="16" fill="#E7C497"/>
+    <path d="M0 440H360" stroke="#D5AB78" stroke-width="2"/>
+    <path d="M180 44V62" stroke="#8A6A50" stroke-width="2"/>
+    <path d="M161 82 Q180 54 199 82 Z" fill="#FFD36B" stroke="#4A3426" stroke-width="2.4"/>
+    <circle cx="180" cy="84" r="5" fill="#FFF4C2" stroke="#4A3426" stroke-width="1.6"/>
+
+    <!-- floor -->
+    <rect x="0" y="456" width="360" height="144" fill="#E1A86A"/>
+    <rect x="0" y="456" width="360" height="10" fill="#D29858" opacity=".7"/>
+    <path d="M0 480H360M0 510H360M0 546H360M0 588H360" stroke="#C98C50" stroke-width="2"/>
+    <path d="M70 456V480M210 456V480M320 456V480M30 480V510M150 480V510M270 480V510M100 510V546M230 510V546M350 510V546M40 546V588M170 546V588M300 546V588" stroke="#C98C50" stroke-width="2"/>
+
+    <!-- front door, water comes in here first -->
+    <rect x="8" y="226" width="76" height="230" rx="3" fill="#8B5A36" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="15" y="233" width="62" height="223" rx="2" fill="#B5774A" stroke="#4A3426" stroke-width="2"/>
+    <rect x="23" y="245" width="46" height="76" rx="4" fill="#C68A5A" stroke="#9A633C" stroke-width="1.6"/>
+    <rect x="23" y="333" width="46" height="106" rx="4" fill="#C68A5A" stroke="#9A633C" stroke-width="1.6"/>
+    <circle cx="67" cy="350" r="4.5" fill="#FFC83D" stroke="#4A3426" stroke-width="1.8"/>
+    <rect x="12" y="462" width="70" height="12" rx="4" fill="#6FB7B0" stroke="#4A3426" stroke-width="1.8"/>
+
+    <!-- wall socket next to the TV stand -->
+    <rect x="86" y="418" width="20" height="24" rx="4" fill="#FFFFFF" stroke="#4A3426" stroke-width="1.8"/>
+    <circle cx="93" cy="430" r="1.8" fill="#4A3426"/><circle cx="99" cy="430" r="1.8" fill="#4A3426"/>
+
+    <!-- window with the weather outside -->
+    <rect x="228" y="88" width="132" height="6" rx="3" fill="#8B5A36"/>
+    <rect x="244" y="100" width="104" height="172" rx="6" fill="#FFFFFF" stroke="#4A3426" stroke-width="2.4"/>
+    <g clip-path="url(#lv-glass)">
+      <g class="sky-rain">
+        <rect x="252" y="108" width="88" height="156" fill="url(#lv-rain)"/>
+        <path d="M250 150 Q262 132 280 142 Q292 124 312 138 Q332 130 344 150 Z" fill="#7F95A9"/>
+        <path d="M262 168l-6 16M282 160l-6 16M302 170l-6 16M322 162l-6 16M272 200l-6 16M292 196l-6 16M312 206l-6 16M332 198l-6 16M268 232l-6 16M300 236l-6 16M326 230l-6 16" stroke="#EEF3F7" stroke-width="2.2" class="rain"/>
+      </g>
+      <g class="sky-sun">
+        <rect x="252" y="108" width="88" height="156" fill="url(#lv-sun)"/>
+        <circle cx="318" cy="136" r="14" fill="#FFD447"/>
+        <path d="M262 160 Q270 150 282 156 Q290 146 302 154 Q306 164 296 166 H266 Q258 166 262 160 Z" fill="#FFFFFF"/>
+        <path d="M252 264 V230 Q270 214 290 228 Q310 210 340 226 V264 Z" fill="#8CC45E"/>
+      </g>
+    </g>
+    <path d="M296 108V264M252 186H340" stroke="#FFFFFF" stroke-width="5"/>
+    <rect x="238" y="268" width="116" height="9" rx="3" fill="#FFFFFF" stroke="#4A3426" stroke-width="2"/>
+    <path d="M232 92 H262 Q252 150 262 210 Q254 250 258 290 H236 Q240 240 232 200 Z" fill="#FF9F6E" stroke="#4A3426" stroke-width="2.2"/>
+    <path d="M356 92 H332 Q342 150 332 210 Q340 250 336 290 H360 V92 Z" fill="#FF9F6E" stroke="#4A3426" stroke-width="2.2"/>
+
+    <!-- high shelf (things up here stay dry) -->
+    <rect x="112" y="166" width="124" height="9" rx="3" fill="#B5774A" stroke="#4A3426" stroke-width="2.2"/>
+    <path d="M126 175 L126 188 L138 175 M222 175 L222 188 L210 175" fill="#B5774A" stroke="#4A3426" stroke-width="2"/>
+
+    <!-- family photo -->
+    <rect x="138" y="198" width="44" height="34" rx="3" fill="#FFFFFF" stroke="#4A3426" stroke-width="2"/>
+    <rect x="143" y="203" width="34" height="24" rx="2" fill="#BFE6F5"/>
+    <circle cx="154" cy="214" r="5" fill="#F2B58A"/><circle cx="167" cy="212" r="6" fill="#F2B58A"/>
+    <path d="M147 227 Q154 218 160 227 M160 227 Q167 217 174 227" fill="#FF9F6E"/>
+
+    <!-- TV stand / low cabinet -->
+    <rect x="106" y="404" width="138" height="9" rx="3" fill="#A86D43" stroke="#4A3426" stroke-width="2.2"/>
+    <rect x="110" y="413" width="130" height="38" fill="#C68A5A" stroke="#4A3426" stroke-width="2.2"/>
+    <rect x="117" y="419" width="54" height="26" rx="3" fill="#D69E68" stroke="#9A633C" stroke-width="1.6"/>
+    <rect x="179" y="419" width="54" height="26" rx="3" fill="#D69E68" stroke="#9A633C" stroke-width="1.6"/>
+    <circle cx="144" cy="432" r="3" fill="#FFC83D" stroke="#4A3426" stroke-width="1.4"/>
+    <circle cx="206" cy="432" r="3" fill="#FFC83D" stroke="#4A3426" stroke-width="1.4"/>
+    <rect x="114" y="451" width="10" height="6" fill="#8B5A36"/><rect x="226" y="451" width="10" height="6" fill="#8B5A36"/>
+
+    <!-- sofa -->
+    <rect x="248" y="322" width="112" height="66" rx="16" fill="#4FA3A5" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="262" y="334" width="40" height="36" rx="9" fill="#FFC83D" stroke="#4A3426" stroke-width="2"/>
+    <rect x="308" y="336" width="40" height="34" rx="9" fill="#FF9F6E" stroke="#4A3426" stroke-width="2"/>
+    <rect x="242" y="376" width="120" height="42" rx="11" fill="#62B8B8" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="236" y="352" width="24" height="84" rx="11" fill="#4FA3A5" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="246" y="418" width="114" height="26" fill="#3F8C8E" stroke="#4A3426" stroke-width="2.2"/>
+    <rect x="252" y="444" width="8" height="12" fill="#6B4A35"/><rect x="346" y="444" width="8" height="12" fill="#6B4A35"/>
+
+    <!-- rug and coffee table -->
+    <ellipse cx="190" cy="548" rx="152" ry="38" fill="#F3C77D" stroke="#E0A955" stroke-width="2"/>
+    <ellipse cx="190" cy="548" rx="120" ry="26" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="10 8" opacity=".7"/>
+    <rect x="124" y="494" width="134" height="12" rx="5" fill="#9A633C" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="134" y="506" width="9" height="40" fill="#8B5A36" stroke="#4A3426" stroke-width="2"/>
+    <rect x="240" y="506" width="9" height="40" fill="#8B5A36" stroke="#4A3426" stroke-width="2"/>
+    <path d="M143 528H240" stroke="#8B5A36" stroke-width="4"/>
+  </g>
+
+  <!-- after the flood: high-water mark, muddy floor, stains -->
+  <g class="mud" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="0" y="352" width="360" height="104" fill="#7A5A3C" opacity=".16"/>
+    <path d="M0 352 Q30 346 60 353 T120 352 T180 350 T240 354 T300 350 T360 353" fill="none" stroke="#7A5A3C" stroke-width="5" opacity=".55"/>
+    <path d="M0 470 Q40 462 90 470 Q140 478 190 468 Q250 458 300 470 Q330 476 360 466 V600 H0 Z" fill="#8E6B4B" opacity=".82"/>
+    <ellipse cx="96" cy="528" rx="44" ry="9" fill="#A88A6B"/>
+    <ellipse cx="88" cy="526" rx="18" ry="3" fill="#C9B497" opacity=".8"/>
+    <ellipse cx="280" cy="560" rx="52" ry="10" fill="#A88A6B"/>
+    <ellipse cx="270" cy="557" rx="20" ry="3" fill="#C9B497" opacity=".8"/>
+    <path d="M30 500 l10 -6 l4 8 Z M200 578 l12 -4 l-2 9 Z M330 520 l9 -7 l3 9 Z" fill="#6E8F3E"/>
+    <path d="M150 586 h22" stroke="#5E4532" stroke-width="3"/>
+    <path d="M262 400 q8 10 20 4 M300 408 q10 6 18 -2" fill="none" stroke="#6E5137" stroke-width="3" opacity=".6"/>
+  </g>
+
+  <g class="items"/>
+  <g class="water"/>
+</svg>

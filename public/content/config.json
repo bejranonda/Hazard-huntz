@@ -1,0 +1,34 @@
+{
+  "_readme": "rainWarningActive: true = ช่วงที่มีเตือนฝน/น้ำกำลังมา หน้าแรกจะแนะนำโหมด 'ก่อนน้ำมา' ก่อน, false = แนะนำ 'หลังน้ำลด'. แก้ forecastAppUrl และ siteUrl ก่อนเปิดตัว",
+  "rainWarningActive": true,
+  "forecastAppUrl": "[FORECAST_APP_URL]",
+  "forecastStatusUrl": null,
+  "siteUrl": "https://[DOMAIN]",
+  "houseVersion": 1,
+  "round": {
+    "targetsMin": 5,
+    "targetsMax": 7,
+    "decoysMin": 3,
+    "decoysMax": 4,
+    "pointsCorrect": 100,
+    "pointsBonus": 50,
+    "wrongPenaltySec": 4,
+    "decoyPenaltySec": 2,
+    "rankThresholds": [5, 8],
+    "prepare": {
+      "seconds": 60,
+      "water": [[0, 612], [0.25, 580], [0.45, 470], [0.7, 390], [1, 300]],
+      "floorWetY": 470
+    },
+    "return": {
+      "seconds": 50
+    }
+  },
+  "analytics": {
+    "endpoint": "/api/e",
+    "sampleRate": 1
+  },
+  "features": {
+    "comboRun": false
+  }
+}

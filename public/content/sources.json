@@ -1,0 +1,374 @@
+{
+  "_readme": "Official sources behind every tip. 'kind': official = the agency's own page/document; government = another government channel (e.g. PRD) relaying the agency; secondary = a news article that quotes the agency. Checked 2026-10-06.",
+  "sources": {
+    "ddpm-noru": {
+      "agency": "ปภ.",
+      "title": "ปภ. แนะข้อปฏิบัติเตรียมรับมือ (พายุโนรู) — เก็บเอกสารในถุงกันน้ำ ขนของขึ้นที่สูง วางกระสอบทราย ช่วยเด็กและคนชราก่อน อพยพสัตว์เลี้ยง กำจัดขยะอุดท่อ",
+      "url": "https://www.bangkokbiznews.com/health/social/1029444",
+      "date": "2022-09-28",
+      "kind": "secondary"
+    },
+    "ddpm-6kit": {
+      "agency": "ปภ.",
+      "title": "ปภ. แนะเตรียม 'ถุงยังชีพฉุกเฉิน' 6 สิ่งต้องมี",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1183355",
+      "kind": "secondary"
+    },
+    "ddpm-amarin": {
+      "agency": "ปภ.",
+      "title": "ปภ. แนะเตรียมของจำเป็น: อุปกรณ์ชาร์จไฟและแบตสำรอง ไฟฉาย เอกสารในถุงกันน้ำ อาหารและยาอย่างน้อย 3–4 วัน",
+      "url": "https://www.amarintv.com/news/social/510554",
+      "date": "2025-04-01",
+      "kind": "secondary"
+    },
+    "ddpm-south": {
+      "agency": "ปภ.",
+      "title": "ปภ. แนะประชาชนพื้นที่ภาคใต้รับมือป้องกันน้ำท่วมอย่างปลอดภัย — สับคัทเอาท์ตัดไฟ อพยพสัตว์เลี้ยง ย้ายพาหนะไปที่ปลอดภัย",
+      "url": "https://www.thansettakij.com/news/general-news/613204",
+      "date": "2024-11-29",
+      "kind": "secondary"
+    },
+    "ddpm-mea": {
+      "agency": "ปภ. + กฟน.",
+      "title": "ปภ. - MEA แนะวิธีเอาตัวรอดอย่างปลอดภัยในฤดูฝน — งดเสียบปลั๊กในบริเวณน้ำท่วม ปลดเบรกเกอร์",
+      "url": "https://mgronline.com/qol/detail/9680000065431",
+      "date": "2025-07-11",
+      "kind": "secondary"
+    },
+    "ddpm-1784": {
+      "agency": "ปภ.",
+      "title": "สายด่วนนิรภัย 1784 (ฟรี ตลอด 24 ชั่วโมง)",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1237412",
+      "kind": "secondary"
+    },
+    "prd-flood": {
+      "agency": "กรมประชาสัมพันธ์",
+      "title": "รับมือน้ำท่วมอย่างตั้งสติ — กระสอบทรายที่ประตู อุดชักโครก/ท่อน้ำทิ้งชั้นล่าง ปิดวาล์วและผูกยึดถังแก๊ส เส้นทางไปศูนย์พักพิง",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/31/iid/534015",
+      "date": "2026-08-22",
+      "kind": "government"
+    },
+    "prd-72h": {
+      "agency": "กรมประชาสัมพันธ์",
+      "title": "เช็กลิสต์ถุงยังชีพ เพื่อการเอาตัวรอดใน 72 ชั่วโมงแรก (น้ำดื่มอย่างน้อย 3 ลิตร/คน/วัน)",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/35/iid/533126",
+      "date": "2026-08-19",
+      "kind": "government"
+    },
+    "pea-943": {
+      "agency": "กฟภ.",
+      "title": "PEA แนะนำการใช้ไฟฟ้า ในกรณีที่มีน้ำท่วมหรือน้ำท่วมขัง",
+      "url": "https://www.pea.co.th/news/corporate-news/943",
+      "date": "2025-05-29",
+      "kind": "official"
+    },
+    "pea-1372": {
+      "agency": "กฟภ.",
+      "title": "PEA แจ้งดับไฟบางพื้นที่เนื่องจากน้ำท่วมสูง — ขณะตัวเปียกหรือยืนแช่น้ำ ห้ามเปิด–ปิดสวิตช์ไฟฟ้า",
+      "url": "https://www.pea.co.th/news/corporate-news/1372",
+      "date": "2025-11-22",
+      "kind": "official"
+    },
+    "pea-1348": {
+      "agency": "กฟภ.",
+      "title": "PEA แนะนำพบคนถูกไฟฟ้าดูดต้องทำอย่างไร — สายไฟขาดให้อยู่ห่างอย่างน้อย 3–5 เมตร แจ้ง 1129",
+      "url": "https://www.pea.co.th/news/corporate-news/1348",
+      "date": "2025-11-15",
+      "kind": "official"
+    },
+    "pea-1384": {
+      "agency": "กฟภ.",
+      "title": "PEA เตือนความปลอดภัยไฟฟ้าช่วงน้ำท่วม — ห้ามนำเครื่องใช้ไฟฟ้าที่เปียกน้ำกลับมาใช้ และห้ามซ่อมเอง",
+      "url": "https://www.pea.co.th/news/corporate-news/1384",
+      "date": "2025-11-24",
+      "kind": "official"
+    },
+    "pea-1415": {
+      "agency": "กฟภ.",
+      "title": "PEA แนะนำประชาชนเตรียมตัวเข้าบ้านหลังน้ำลด",
+      "url": "https://www.pea.co.th/news/corporate-news/1415",
+      "date": "2025-11-27",
+      "kind": "official"
+    },
+    "pea-service": {
+      "agency": "กฟภ.",
+      "title": "ธุรกิจและบริการของ PEA — 74 จังหวัด ยกเว้นกรุงเทพฯ นนทบุรี สมุทรปราการ; PEA Contact Center 1129",
+      "url": "https://www.pea.co.th/about-pea/pea-service",
+      "kind": "official"
+    },
+    "mea-1130": {
+      "agency": "กฟน.",
+      "title": "MEA Call Center 1130 ตลอด 24 ชั่วโมง (กรุงเทพฯ นนทบุรี สมุทรปราการ)",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/33/iid/545235",
+      "date": "2026-09-27",
+      "kind": "government"
+    },
+    "mea-gov": {
+      "agency": "กฟน.",
+      "title": "ให้ช่างผู้ชำนาญตรวจระบบไฟฟ้า เครื่องใช้ไฟฟ้า ปลั๊ก สวิตช์ ที่เคยถูกน้ำท่วมก่อนนำกลับมาใช้",
+      "url": "https://www.amarintv.com/news/politic/558914",
+      "date": "2026-09-29",
+      "kind": "secondary"
+    },
+    "mea-2022": {
+      "agency": "กฟน.",
+      "title": "กฟน. แนะก่อนน้ำท่วม ปลดเมนเบรกเกอร์ ยืนที่แห้งและสวมรองเท้ายาง; ห้ามใช้ปลั๊ก/สวิตช์ที่น้ำท่วมถึงจนกว่าผู้เชี่ยวชาญตรวจ",
+      "url": "https://www.dailynews.co.th/news/1481017/",
+      "date": "2022-09-17",
+      "kind": "secondary"
+    },
+    "ddc-manual": {
+      "agency": "กรมควบคุมโรค",
+      "title": "คู่มือความปลอดภัยในการดูแลบ้านหลังน้ำลด (กองโรคจากการประกอบอาชีพและสิ่งแวดล้อม)",
+      "url": "https://ddc.moph.go.th/uploads/publish/1761920260602112057.pdf",
+      "date": "2025-11",
+      "kind": "official"
+    },
+    "ddc-lepto": {
+      "agency": "กรมควบคุมโรค",
+      "title": "โรคเลปโตสไปโรสิส (Leptospirosis) — กองระบาดวิทยา",
+      "url": "https://ddc.moph.go.th/uploads/ckeditor2//files/แจ้งเตือนโรค Leptospirosis 9.9.2024.pdf",
+      "date": "2024-09-06",
+      "kind": "official"
+    },
+    "ddc-59806": {
+      "agency": "กรมควบคุมโรค",
+      "title": "ฝนตกหนัก น้ำเพิ่มสูง กรมควบคุมโรค แนะป้องกัน 'ไข้ฉี่หนู – เมลิออยโดสิส' และห้ามเปิด–ปิดระบบไฟฟ้าด้วยตนเอง",
+      "url": "https://ddc.moph.go.th/brc/news.php?news=59806&deptcode=brc",
+      "date": "2026-08-24",
+      "kind": "official"
+    },
+    "ddc-45196": {
+      "agency": "กรมควบคุมโรค",
+      "title": "เตือนพื้นที่น้ำท่วม ระวังสัตว์มีพิษกัดต่อย ไฟฟ้าช็อต — สำรวจเสื้อผ้าและรองเท้าก่อนสวมใส่",
+      "url": "https://ddc.moph.go.th/brc/news.php?deptcode=&news=45196",
+      "date": "2024-08-06",
+      "kind": "official"
+    },
+    "ddc-snake": {
+      "agency": "กรมควบคุมโรค",
+      "title": "ป้องกันงูพิษ (อินโฟกราฟิก กองป้องกันการบาดเจ็บ) — ไฟฉาย ไม้ รองเท้าหุ้มส้น",
+      "url": "https://www.ddc.moph.go.th/dip/journal_detail.php?publish=15881&deptcode=dip",
+      "date": "2024-07-16",
+      "kind": "official"
+    },
+    "ddc-rainy": {
+      "agency": "กรมควบคุมโรค",
+      "title": "ประกาศเตือนป้องกันโรคและภัยสุขภาพช่วงฤดูฝน — งูพิษกัดรีบไปโรงพยาบาล ห้ามขันชะเนาะ; ล้างคว่ำภาชนะกันยุงลาย",
+      "url": "https://ddc.moph.go.th/brc/news.php?news=18659&deptcode=brc&news_views=1",
+      "date": "2021-05-22",
+      "kind": "official"
+    },
+    "ddc-dengue": {
+      "agency": "กรมควบคุมโรค",
+      "title": "สถานการณ์โรคไข้เลือดออก — ห้ามใช้ยากลุ่ม NSAIDs เช่น แอสไพริน ไอบูโพรเฟน",
+      "url": "https://ddc.moph.go.th/uploads/ckeditor2//files/แจ้งเตือนโรคไข้เลือดออก_edit2024.09.06.pdf",
+      "date": "2024-09-06",
+      "kind": "official"
+    },
+    "ddc-59984": {
+      "agency": "กรมควบคุมโรค",
+      "title": "น้ำลดไม่ได้แปลว่าความเสี่ยงลดลงทันที — ไม่กินอาหารที่สัมผัสน้ำท่วม",
+      "url": "https://www.ddc.moph.go.th/brc/news.php?news=59984&deptcode=brc&news_views=175",
+      "date": "2026-09-03",
+      "kind": "official"
+    },
+    "ddc-56084": {
+      "agency": "กรมควบคุมโรค",
+      "title": "เตือนโรคและภัยสุขภาพที่มากับน้ำท่วม — ล้างแผลให้สะอาด ปิดแผลด้วยพลาสเตอร์กันน้ำ",
+      "url": "https://www.ddc.moph.go.th/brc/news.php?news=56084&deptcode=brc&news_views=1281",
+      "date": "2025-10-09",
+      "kind": "official"
+    },
+    "ddc-odpc11": {
+      "agency": "กรมควบคุมโรค",
+      "title": "สคร.11 — ระวังบาดแผลจากของมีคม เศษแก้ว ที่อาจติดเชื้อแทรกซ้อน",
+      "url": "https://www.ddc.moph.go.th/odpc11/news.php?news=56610&deptcode=odpc11&news_views=165",
+      "date": "2025-11-04",
+      "kind": "official"
+    },
+    "ddc-odpc6": {
+      "agency": "กรมควบคุมโรค",
+      "title": "สคร.6 — ทำความสะอาดร่างกายและเช็ดให้แห้ง เก็บกวาดวัตถุแหลมคม ตะปู",
+      "url": "https://www.ddc.moph.go.th/odpc6/news.php?news=55330&deptcode=odpc6&news_views=1018",
+      "date": "2025-09-03",
+      "kind": "official"
+    },
+    "anamai-water": {
+      "agency": "กรมอนามัย",
+      "title": "น้ำท่วม–น้ำลด เรื่อง 'น้ำ' อย่ามองข้าม — น้ำประปาควรต้มให้เดือดก่อนบริโภค เลือกน้ำบรรจุขวดที่ได้มาตรฐาน",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/33/iid/545269",
+      "date": "2026-09-27",
+      "kind": "government"
+    },
+    "anamai-kitchen": {
+      "agency": "กรมอนามัย",
+      "title": "ล้างครัว หลังน้ำลด (อินโฟกราฟิก) — อาหารที่ถูกน้ำท่วมให้ทิ้ง",
+      "url": "https://multimedia.anamai.moph.go.th/infographics/info742_flood_16/",
+      "kind": "official",
+      "note": "หน้าเว็บตอบกลับ 503 ระหว่างตรวจ ยืนยันจากข้อความดัชนีค้นหา"
+    },
+    "anamai-cans": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัย แนะผู้ประสบภัยน้ำท่วม กินอาหารสะอาด — กระป๋องไม่ปูดบวม ไม่เป็นสนิม",
+      "url": "https://mgronline.com/qol/detail/9640000086929",
+      "date": "2021-09-02",
+      "kind": "secondary"
+    },
+    "anamai-mould": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัย แนะกำจัดเชื้อราหลังน้ำลด — เปิดประตูหน้าต่าง ห้ามเปิดพัดลม/แอร์ขณะทำความสะอาด สำรวจโครงสร้างก่อนเข้าบ้าน",
+      "url": "https://mgronline.com/qol/detail/9650000103126",
+      "date": "2022-10-28",
+      "kind": "secondary"
+    },
+    "anamai-stock": {
+      "agency": "กรมอนามัย",
+      "title": "สำรองอาหารแห้ง/อาหารกระป๋อง อย่างน้อย 3–5 วัน เก็บในภาชนะปิดสนิท",
+      "url": "https://www.thansettakij.com/health-wellness/health/644224",
+      "date": "2025-11-17",
+      "kind": "secondary"
+    },
+    "anamai-elderly": {
+      "agency": "กรมอนามัย",
+      "title": "10 วิธีดูแลผู้สูงอายุ 'ติดบ้าน ติดเตียง' ในช่วงน้ำท่วม — เตรียมยาที่ใช้ประจำและอุปกรณ์ช่วยพยุงตัว",
+      "url": "https://multimedia.anamai.moph.go.th/infographics/info854_flood_59/",
+      "kind": "official",
+      "note": "หน้าเว็บตอบกลับ 503 ระหว่างตรวจ ยืนยันจากข้อความดัชนีค้นหา"
+    },
+    "moph-7days": {
+      "agency": "กระทรวงสาธารณสุข",
+      "title": "ผู้มีโรคประจำตัวเตรียมยาไว้อย่างน้อย 7 วัน เตรียมน้ำและอาหารอย่างน้อย 3 วัน",
+      "url": "https://mgronline.com/qol/detail/9560000121611",
+      "date": "2013-09-26",
+      "kind": "secondary"
+    },
+    "fda-bleach": {
+      "agency": "อย.",
+      "title": "อย. เตือน อย่านำน้ำยาซักผ้าขาวผสมน้ำยาล้างห้องน้ำ ทำให้เกิดก๊าซพิษ",
+      "url": "https://hazard.fda.moph.go.th/our-service/detergent/",
+      "date": "2023-03-28",
+      "kind": "official"
+    },
+    "fda-cans": {
+      "agency": "อย.",
+      "title": "4 เรื่องน่ารู้ของอาหารกระป๋อง — กระป๋องบุบ โป่งพอง เป็นสนิม ไม่ควรบริโภค",
+      "url": "https://dis.fda.moph.go.th/darabank/motion-05",
+      "date": "2020-03-09",
+      "kind": "official"
+    },
+    "mwa-safe": {
+      "agency": "กปน.",
+      "title": "น้ำประปาของ กปน. ยังคงสะอาด ปลอดภัย ได้มาตรฐาน WHO ในทุกสถานการณ์",
+      "url": "https://www.mwa.co.th/mwa-flood-3-10-2/",
+      "date": "2026-10-04",
+      "kind": "official"
+    },
+    "mwa-tank": {
+      "agency": "กปน.",
+      "title": "น้ำลดแล้ว มาล้างบ่อพักน้ำกันเถอะ",
+      "url": "https://www.mwa.co.th/wp-content/uploads/2022/12/cleantank.pdf",
+      "kind": "official"
+    },
+    "pwa-repair": {
+      "agency": "กปภ.",
+      "title": "หลังน้ำลด ตรวจสอบความเสียหายของระบบประปาภายในบ้านและซ่อมแซมก่อนใช้น้ำ",
+      "url": "https://www.pwa.co.th/news/view/76258",
+      "date": "2019-09-03",
+      "kind": "official"
+    },
+    "police-2011": {
+      "agency": "สำนักงานตำรวจแห่งชาติ (บช.น.)",
+      "title": "ขอความร่วมมือไม่นำรถมาจอดทางขึ้นลงทางด่วนและบนสะพาน เพราะกีดขวางการลำเลียงผู้ป่วย",
+      "url": "https://mgronline.com/crime/detail/9540000135203",
+      "date": "2011-10-23",
+      "kind": "secondary"
+    },
+    "bma-floodsupport": {
+      "agency": "กทม.",
+      "title": "BMA Flood Support — ศูนย์พักพิง จุดจอดรถ รถรับ-ส่ง แยกตาม 50 เขต",
+      "url": "https://floodsupport.bangkok.go.th/",
+      "kind": "official"
+    },
+    "niems-1669": {
+      "agency": "สพฉ.",
+      "title": "เจ็บป่วยฉุกเฉิน โทร 1669 (ระบุในประกาศรับมือน้ำท่วมของกรมประชาสัมพันธ์)",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/31/iid/534015",
+      "kind": "government"
+    },
+    "moph-snakebite": {
+      "agency": "กระทรวงสาธารณสุข",
+      "title": "ถูกงูกัด ห้ามกรีด ดูด หรือพอกยา รีบไปโรงพยาบาลหรือโทร 1669",
+      "url": "https://www.thaipbs.or.th/news/content/280457",
+      "date": "2019-05-29",
+      "kind": "secondary"
+    },
+    "dlt-car": {
+      "agency": "กรมการขนส่งทางบก",
+      "title": "ห่วงใยผู้ประสบภัยน้ำท่วม — ห้ามสตาร์ทรถที่จมน้ำเด็ดขาด น้ำลดแล้วยกรถเข้าศูนย์/อู่ตรวจละเอียด เคลื่อนย้ายสัตว์เลี้ยงและพาหนะขึ้นที่สูง",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/33/iid/545262",
+      "date": "2026-09-27",
+      "kind": "government"
+    },
+    "oic-photo": {
+      "agency": "คปภ.",
+      "title": "ถ่ายภาพรถทั้งภายนอก ภายใน ห้องเครื่อง และรอยคราบน้ำ เป็นหลักฐานเคลมประกัน",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/33/iid/545410",
+      "date": "2026-09-27",
+      "kind": "government"
+    },
+    "police-tow": {
+      "agency": "กองบังคับการตำรวจจราจร",
+      "title": "รถจมน้ำ อย่าฝืนขับ! รถยกช่วยเหลือฟรี สายด่วนจราจร 1197",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/33/iid/545362",
+      "date": "2026-09-27",
+      "kind": "government"
+    },
+    "dpt-manual": {
+      "agency": "กรมโยธาธิการและผังเมือง",
+      "title": "เตรียมบ้านให้พร้อมอยู่ คู่มือตรวจสอบและซ่อมแซมบ้านหลังน้ำลด",
+      "url": "https://data.yotathai.org/d/aa44yb.pdf",
+      "kind": "official",
+      "note": "เอกสารทางการ อ่านจากสำเนาบนเว็บไซต์ภายนอก เพราะ dpt.go.th เข้าไม่ได้ระหว่างตรวจ"
+    },
+    "ddpm-gas": {
+      "agency": "ปภ.",
+      "title": "วิธีป้องกัน-รับมือ ถังก๊าซรั่ว — ปิดวาล์ว เปิดประตูหน้าต่าง ห้ามเปิด-ปิดอุปกรณ์ไฟฟ้า ห้ามใช้พัดลม",
+      "url": "https://www.thaipbs.or.th/news/content/318924",
+      "date": "2022-08-30",
+      "kind": "secondary"
+    },
+    "anamai-pets": {
+      "agency": "กรมอนามัย",
+      "title": "สุขอนามัยของสัตว์เลี้ยงในศูนย์พักพิงช่วงน้ำท่วม — วัคซีนพิษสุนัขบ้า กรง/สายจูง ปลอกคอและป้ายชื่อ",
+      "url": "https://anamai.moph.go.th/th/news-anamai/45265",
+      "date": "2026-10-06",
+      "kind": "official"
+    },
+    "bma-1555": {
+      "agency": "กทม.",
+      "title": "แจ้งเหตุผ่าน Traffy Fondue หรือ สายด่วน กทม. 1555",
+      "url": "https://www.prd.go.th/th/content/category/detail/id/33/iid/546911",
+      "date": "2026-10-01",
+      "kind": "government"
+    },
+    "dmh-1323": {
+      "agency": "กรมสุขภาพจิต",
+      "title": "1323 สายด่วนสุขภาพจิต ปรึกษาฟรีตลอด 24 ชั่วโมง",
+      "url": "https://dmh.go.th/",
+      "kind": "official"
+    },
+    "thaiwater": {
+      "agency": "สสน.",
+      "title": "คลังข้อมูลน้ำแห่งชาติ ThaiWater — ระดับน้ำ ฝน เรดาร์",
+      "url": "https://www.thaiwater.net/",
+      "kind": "official"
+    },
+    "tmd-warn": {
+      "agency": "กรมอุตุนิยมวิทยา",
+      "title": "ประกาศเตือนภัยลักษณะอากาศ (สายด่วน 1182)",
+      "url": "https://www.tmd.go.th/warning-and-events/warning-storm",
+      "kind": "official"
+    }
+  }
+}

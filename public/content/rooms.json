@@ -1,0 +1,66 @@
+{
+  "_readme": "ห้องในบ้าน: enabled = เปิดให้เล่น (ต้องมีไฟล์ภาพ art), slots = ตำแหน่งที่วางของได้ (x,y = จุดกึ่งกลางด้านล่างของภาพ, หน่วยเดียวกับ viewBox 360x600), tags = ชนิดของจุดวาง ต้องตรงกับ slots ของสิ่งของใน items.json",
+  "rooms": [
+    {
+      "id": "front", "order": 1, "enabled": true, "art": "/art/rooms/front.svg",
+      "name": { "th": "หน้าบ้าน", "en": "Front yard" },
+      "slots": [
+        { "id": "fr-door", "x": 148, "y": 480, "tags": ["door"] },
+        { "id": "fr-car", "x": 270, "y": 594, "tags": ["car"] },
+        { "id": "fr-pole", "x": 56, "y": 536, "tags": ["pole"] },
+        { "id": "fr-shoes", "x": 214, "y": 460, "tags": ["shoes"] },
+        { "id": "fr-board", "x": 214, "y": 394, "tags": ["board"] },
+        { "id": "fr-wall", "x": 300, "y": 458, "tags": ["wall"] },
+        { "id": "fr-drain", "x": 152, "y": 596, "tags": ["drain-out"] },
+        { "id": "fr-floor-a", "x": 60, "y": 596, "tags": ["floor", "floor-big"] },
+        { "id": "fr-floor-b", "x": 150, "y": 540, "tags": ["floor"] },
+        { "id": "fr-floor-d", "x": 232, "y": 504, "tags": ["floor"] },
+        { "id": "fr-pot", "x": 78, "y": 484, "tags": ["pot"] },
+        { "id": "fr-upper", "x": 168, "y": 274, "tags": ["upper"] }
+      ]
+    },
+    {
+      "id": "living", "order": 2, "enabled": true, "art": "/art/rooms/living.svg",
+      "name": { "th": "ห้องนั่งเล่น", "en": "Living room" },
+      "slots": [
+        { "id": "lv-breaker", "x": 108, "y": 292, "tags": ["breaker"] },
+        { "id": "lv-tv", "x": 175, "y": 405, "tags": ["tv"] },
+        { "id": "lv-socket", "x": 96, "y": 446, "tags": ["socket"] },
+        { "id": "lv-table-a", "x": 160, "y": 495, "tags": ["table"] },
+        { "id": "lv-table-b", "x": 224, "y": 495, "tags": ["table"] },
+        { "id": "lv-sofa", "x": 300, "y": 379, "tags": ["seat"] },
+        { "id": "lv-floor-a", "x": 56, "y": 592, "tags": ["floor", "floor-big"] },
+        { "id": "lv-floor-b", "x": 312, "y": 594, "tags": ["floor", "floor-big"] },
+        { "id": "lv-floor-c", "x": 190, "y": 596, "tags": ["floor"] },
+        { "id": "lv-floor-d", "x": 302, "y": 492, "tags": ["floor"] },
+        { "id": "lv-shelf-a", "x": 142, "y": 167, "tags": ["high"] },
+        { "id": "lv-shelf-b", "x": 206, "y": 167, "tags": ["high"] },
+        { "id": "lv-wall-high", "x": 44, "y": 222, "tags": ["wall-high"] },
+        { "id": "lv-ceiling", "x": 100, "y": 94, "tags": ["ceiling"] },
+        { "id": "lv-wall", "x": 196, "y": 338, "tags": ["wall", "board"] },
+        { "id": "lv-window", "x": 296, "y": 272, "tags": ["window"] }
+      ]
+    },
+    {
+      "id": "kitchen", "order": 3, "enabled": true, "art": "/art/rooms/kitchen.svg",
+      "name": { "th": "ครัว", "en": "Kitchen" },
+      "slots": [
+        { "id": "kt-lpg", "x": 318, "y": 558, "tags": ["lpg"] },
+        { "id": "kt-fridge-note", "x": 44, "y": 344, "tags": ["fridge-note"] },
+        { "id": "kt-fridge-top", "x": 52, "y": 163, "tags": ["high"] },
+        { "id": "kt-shelf", "x": 302, "y": 195, "tags": ["high"] },
+        { "id": "kt-counter-sm", "x": 116, "y": 321, "tags": ["counter-sm"] },
+        { "id": "kt-counter", "x": 252, "y": 321, "tags": ["counter"] },
+        { "id": "kt-sink", "x": 172, "y": 325, "tags": ["sink"] },
+        { "id": "kt-cupboard", "x": 183, "y": 452, "tags": ["cupboard"] },
+        { "id": "kt-drain", "x": 155, "y": 551, "tags": ["drain"] },
+        { "id": "kt-floor-a", "x": 66, "y": 594, "tags": ["floor"] },
+        { "id": "kt-floor-b", "x": 236, "y": 597, "tags": ["floor"] },
+        { "id": "kt-floor-c", "x": 232, "y": 522, "tags": ["floor"] }
+      ]
+    },
+    { "id": "bathroom", "order": 4, "enabled": false, "art": null, "name": { "th": "ห้องน้ำ", "en": "Bathroom" }, "slots": [] },
+    { "id": "bedroom", "order": 5, "enabled": false, "art": null, "name": { "th": "ห้องนอน", "en": "Bedroom" }, "slots": [] },
+    { "id": "garage", "order": 6, "enabled": false, "art": null, "name": { "th": "โรงรถ", "en": "Garage" }, "slots": [] }
+  ]
+}

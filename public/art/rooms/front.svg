@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 600" data-room="front">
+  <defs>
+    <linearGradient id="fr-rain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FA6BA"/><stop offset="1" stop-color="#D3DEE7"/>
+    </linearGradient>
+    <linearGradient id="fr-sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7FCBF0"/><stop offset="1" stop-color="#E4F6FD"/>
+    </linearGradient>
+  </defs>
+
+  <g class="bg" stroke-linejoin="round" stroke-linecap="round">
+    <!-- sky: rain clouds before, sunshine after -->
+    <g class="sky-rain">
+      <rect width="360" height="460" fill="url(#fr-rain)"/>
+      <path d="M-10 70 Q10 30 50 44 Q70 10 112 26 Q140 4 176 28 Q210 14 230 44 Q270 30 290 58 Q330 50 370 76 V0 H-10 Z" fill="#6F879C"/>
+      <path d="M40 100l-8 20M90 92l-8 20M300 96l-8 20M340 120l-8 20M66 140l-8 20M318 160l-8 20M20 190l-8 20M346 214l-8 20" stroke="#EEF3F7" stroke-width="2.4" class="rain"/>
+    </g>
+    <g class="sky-sun">
+      <rect width="360" height="460" fill="url(#fr-sun)"/>
+      <circle cx="318" cy="44" r="22" fill="#FFD447"/>
+      <path d="M318 10V2M318 86V78M284 44H276M360 44H352M294 20L288 14M342 68L348 74M294 68L288 74M342 20L348 14" stroke="#FFD447" stroke-width="3.4"/>
+      <path d="M30 70 Q40 56 58 62 Q68 48 86 58 Q92 72 80 74 H38 Q26 74 30 70 Z" fill="#FFFFFF"/>
+    </g>
+
+    <!-- ground -->
+    <rect x="0" y="456" width="360" height="144" fill="#D9D2C5"/>
+    <rect x="0" y="456" width="100" height="26" fill="#8CC45E"/>
+    <path d="M0 482 H100" stroke="#6FA647" stroke-width="2"/>
+    <path d="M196 456 V600 M0 528 H196 M196 528 H360" stroke="#C4BCAD" stroke-width="2"/>
+    <rect x="126" y="579" width="52" height="15" rx="3" fill="#8E8984" stroke="#4A3426" stroke-width="1.8"/>
+    <path d="M134 579V594M142 579V594M150 579V594M158 579V594M166 579V594" stroke="#5E5A55" stroke-width="2"/>
+    <path d="M52 470 q8 -16 16 0 q8 -18 16 0 q8 -14 14 0 Z" fill="#6FA647" stroke="#4A3426" stroke-width="1.8"/>
+    <!-- neighbours far away -->
+    <path d="M0 300 H40 V262 L60 246 L80 262 V300 Z" fill="#C9C3D6" opacity=".7"/>
+
+    <!-- electricity pole and wires -->
+    <rect x="20" y="40" width="12" height="436" rx="3" fill="#B9B4AE" stroke="#4A3426" stroke-width="2.2"/>
+    <rect x="2" y="68" width="48" height="8" rx="2" fill="#8E8984" stroke="#4A3426" stroke-width="1.8"/>
+    <circle cx="8" cy="64" r="3.4" fill="#E7E2DA" stroke="#4A3426" stroke-width="1.4"/>
+    <circle cx="44" cy="64" r="3.4" fill="#E7E2DA" stroke="#4A3426" stroke-width="1.4"/>
+    <path d="M44 64 Q90 118 112 168 M8 64 Q-20 90 -10 110" fill="none" stroke="#3D3D3D" stroke-width="1.8"/>
+
+    <!-- house: two storeys, so "move it upstairs" is visible -->
+    <rect x="96" y="150" width="264" height="306" fill="#F6D6A6" stroke="#4A3426" stroke-width="2.4"/>
+    <path d="M80 154 L226 76 L376 154 Z" fill="#D9654B" stroke="#4A3426" stroke-width="2.4"/>
+    <path d="M118 140 L226 84 L338 140" fill="none" stroke="#C2553E" stroke-width="3"/>
+    <circle cx="226" cy="122" r="12" fill="#BFE6F5" stroke="#4A3426" stroke-width="2.2"/>
+    <path d="M226 110V134M214 122H238" stroke="#FFFFFF" stroke-width="2.6"/>
+    <rect x="96" y="154" width="264" height="9" fill="#E8C08A"/>
+    <rect x="132" y="186" width="72" height="72" rx="4" fill="#BFE6F5" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="252" y="186" width="72" height="72" rx="4" fill="#BFE6F5" stroke="#4A3426" stroke-width="2.4"/>
+    <path d="M168 186V258M132 222H204M288 186V258M252 222H324" stroke="#FFFFFF" stroke-width="4"/>
+    <rect x="96" y="276" width="264" height="12" fill="#E8C08A" stroke="#4A3426" stroke-width="2"/>
+    <path d="M132 276V260M156 276V260M180 276V260M204 276V260M252 276V260M276 276V260M300 276V260M324 276V260M126 260H210M246 260H330" stroke="#8B5A36" stroke-width="3"/>
+
+    <!-- front door, awning, steps -->
+    <path d="M108 300 H190 L182 314 H116 Z" fill="#FF9F6E" stroke="#4A3426" stroke-width="2.2"/>
+    <rect x="118" y="316" width="62" height="140" rx="2" fill="#2F8F8A" stroke="#4A3426" stroke-width="2.4"/>
+    <rect x="130" y="330" width="38" height="30" rx="3" fill="#BFE6F5" stroke="#4A3426" stroke-width="1.8"/>
+    <circle cx="170" cy="394" r="4" fill="#FFC83D" stroke="#4A3426" stroke-width="1.6"/>
+    <rect x="106" y="456" width="86" height="10" rx="2" fill="#D8CFC2" stroke="#4A3426" stroke-width="2"/>
+    <rect x="100" y="466" width="98" height="10" rx="2" fill="#CBC1B2" stroke="#4A3426" stroke-width="2"/>
+
+    <!-- window with grille -->
+    <rect x="246" y="318" width="94" height="76" rx="3" fill="#BFE6F5" stroke="#4A3426" stroke-width="2.4"/>
+    <path d="M262 318V394M278 318V394M294 318V394M310 318V394M326 318V394M246 356H340" stroke="#6B5446" stroke-width="2"/>
+    <rect x="240" y="394" width="106" height="7" rx="2" fill="#FFFFFF" stroke="#4A3426" stroke-width="1.8"/>
+
+  </g>
+
+  <g class="mud" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="96" y="372" width="264" height="84" fill="#7A5A3C" opacity=".18"/>
+    <path d="M96 372 Q130 366 160 373 T220 371 T280 374 T360 371" fill="none" stroke="#7A5A3C" stroke-width="5" opacity=".55"/>
+    <path d="M0 462 Q50 454 100 464 Q160 474 220 462 Q290 452 360 462 V600 H0 Z" fill="#8E6B4B" opacity=".85"/>
+    <ellipse cx="120" cy="560" rx="50" ry="10" fill="#A88A6B"/>
+    <ellipse cx="110" cy="557" rx="20" ry="3" fill="#C9B497" opacity=".8"/>
+    <ellipse cx="300" cy="512" rx="40" ry="8" fill="#A88A6B"/>
+    <path d="M40 520 l12 -6 l3 9 Z M240 590 l12 -4 l-2 9 Z M180 500 l10 -7 l4 8 Z" fill="#6E8F3E"/>
+    <path d="M150 596 l30 -8 M60 540 l24 6" stroke="#5E4532" stroke-width="3"/>
+  </g>
+
+  <g class="items"/>
+  <g class="water"/>
+</svg>

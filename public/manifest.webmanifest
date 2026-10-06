@@ -1,0 +1,18 @@
+{
+  "name": "บ้านรอดไหม? เกม 60 วิ สู้น้ำท่วม",
+  "short_name": "บ้านรอดไหม?",
+  "description": "เตรียมบ้านก่อนน้ำมา ตรวจบ้านหลังน้ำลด เกมสั้นจากคำแนะนำของหน่วยงานรัฐ",
+  "lang": "th",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF4E3",
+  "theme_color": "#FFF4E3",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

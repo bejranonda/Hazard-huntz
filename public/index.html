@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FFF4E3">
+<title>บ้านรอดไหม? เกม 60 วิ เตรียมบ้านก่อนน้ำมา ตรวจบ้านหลังน้ำลด</title>
+<meta name="description" content="เกมสั้น 60 วินาที ฝึกเตรียมบ้านก่อนน้ำท่วม และหาจุดอันตรายก่อนกลับเข้าบ้านหลังน้ำลด อ้างอิงคำแนะนำจากหน่วยงานรัฐ เล่นฟรี ไม่ต้องสมัคร">
+<!--OG:START-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="บ้านรอดไหม?">
+<meta property="og:title" content="บ้านรอดไหม? เกม 60 วิ เตรียมบ้านสู้น้ำท่วม">
+<meta property="og:description" content="เตรียมบ้านก่อนน้ำมา ตรวจบ้านหลังน้ำลด เล่นจบในนาทีเดียว รู้วิธีจริงจากหน่วยงานรัฐ ส่งต่อให้คนที่บ้าน">
+<meta property="og:image" content="https://[DOMAIN]/og/default.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="น้องจกจิ้งจกใส่บูทยาง ชวนเล่นเกมบ้านรอดไหม?">
+<meta property="og:locale" content="th_TH">
+<meta property="og:url" content="https://[DOMAIN]/">
+<meta name="twitter:card" content="summary_large_image">
+<!--OG:END-->
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="preload" href="/fonts/kanit-thai-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/kanit-thai-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/app.css">
+<script type="module" src="/js/main.js"></script>
+</head>
+<body class="lang-th">
+<div id="app" class="app">
+
+  <!-- ============ START ============ -->
+  <section id="screen-start" class="screen active" aria-labelledby="logo-title">
+    <div class="topbar">
+      <button class="chip" id="btn-lang" type="button" aria-label="Switch language / เปลี่ยนภาษา">EN</button>
+      <button class="chip" id="btn-sound" type="button" aria-pressed="true" data-i18n-aria="sound">🔊</button>
+    </div>
+
+    <header class="hero">
+      <h1 id="logo-title" class="logo"><span class="logo-a">บ้าน</span><span class="logo-b">รอดไหม?</span></h1>
+      <p class="tagline" data-i18n="tagline">เกม 60 วิ ช่วยให้บ้านรอดจากน้ำท่วม</p>
+      <div class="hero-mascot">
+        <div class="bubble bubble-hero" id="hero-bubble" data-i18n="heroPrepare">ฝนจะมาอีกระลอก มาเตรียมบ้านกัน!</div>
+        <div class="gecko-host gecko-big" id="hero-gecko"></div>
+      </div>
+    </header>
+
+    <div id="challenge-banner" class="challenge" hidden></div>
+
+    <div class="modes" id="modes">
+      <button class="mode-btn mode-prepare" type="button" data-mode="prepare">
+        <span class="mode-icon" aria-hidden="true">🏠</span>
+        <span class="mode-text">
+          <span class="mode-name" data-i18n="modePrepare">ก่อนน้ำมา</span>
+          <span class="mode-desc" data-i18n="modePrepareDesc">เตรียมบ้านให้ทัน ก่อนน้ำขึ้นถึง</span>
+        </span>
+        <span class="mode-badge" data-i18n="recommended" hidden>แนะนำช่วงนี้</span>
+      </button>
+      <button class="mode-btn mode-return" type="button" data-mode="return">
+        <span class="mode-icon" aria-hidden="true">🧹</span>
+        <span class="mode-text">
+          <span class="mode-name" data-i18n="modeReturn">หลังน้ำลด</span>
+          <span class="mode-desc" data-i18n="modeReturnDesc">หาจุดอันตราย ก่อนกลับเข้าบ้าน</span>
+        </span>
+        <span class="mode-badge" data-i18n="recommended" hidden>แนะนำช่วงนี้</span>
+      </button>
+    </div>
+
+    <p class="daily" id="daily-line"></p>
+
+    <nav class="quick" aria-label="ลิงก์ที่เป็นประโยชน์">
+      <button class="quick-btn" type="button" data-open="checklist"><span aria-hidden="true">📋</span><span data-i18n="checklists">เช็กลิสต์ 10 ข้อ</span></button>
+      <button class="quick-btn" type="button" data-open="help"><span aria-hidden="true">☎️</span><span data-i18n="helplines">เบอร์ช่วยเหลือ</span></button>
+      <a class="quick-btn" id="forecast-link-start" href="#" target="_blank" rel="noopener" hidden><span aria-hidden="true">🌧️</span><span data-i18n="forecastShort">เช็กระดับน้ำ</span></a>
+    </nav>
+
+    <p class="rooms-soon" data-i18n="roomsSoon">ห้องน้ำ · ห้องนอน · โรงรถ เปิดให้เล่นเร็วๆ นี้</p>
+
+    <footer class="footer">
+      <p data-i18n="disclaimer">เนื้อหาเพื่อการเรียนรู้ หากไม่แน่ใจให้ติดต่อช่างหรือเจ้าหน้าที่</p>
+      <button class="link" type="button" data-open="about" data-i18n="aboutLink">ที่มาของข้อมูล · ความเป็นส่วนตัว</button>
+    </footer>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="screen-game" class="screen" aria-label="เกม">
+    <div class="hud">
+      <button class="hud-btn" id="btn-pause" type="button" data-i18n-aria="pause">❚❚</button>
+      <div class="gauge" id="gauge" role="timer" aria-live="off">
+        <div class="gauge-fill" id="gauge-fill"></div>
+        <span class="gauge-label" id="gauge-label">60</span>
+      </div>
+      <div class="hud-score" id="hud-score" aria-live="polite">0/0</div>
+    </div>
+    <div class="tabs" id="room-tabs" role="tablist"></div>
+    <div class="stage" id="stage">
+      <div class="rooms" id="rooms"></div>
+      <button class="nav-arrow prev" id="nav-prev" type="button" aria-label="ห้องก่อนหน้า">‹</button>
+      <button class="nav-arrow next" id="nav-next" type="button" aria-label="ห้องถัดไป">›</button>
+      <div class="gecko-dock">
+        <div class="bubble bubble-game" id="game-bubble" hidden></div>
+        <div class="gecko-host gecko-small" id="game-gecko"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="screen-result" class="screen scroll" aria-labelledby="result-title">
+    <div class="result" id="result"></div>
+  </section>
+
+  <!-- shared bottom sheet for choices, tips, share, checklists, help, about -->
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <div class="loading" id="loading" hidden><div class="spinner" aria-hidden="true"></div><span data-i18n="loading">กำลังเตรียมบ้าน…</span></div>
+</div>
+<noscript><p style="padding:24px;font-family:sans-serif">เกมนี้ต้องเปิด JavaScript · This game needs JavaScript.</p></noscript>
+</body>
+</html>

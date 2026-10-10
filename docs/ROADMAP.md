@@ -36,7 +36,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
-| N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Doing: `checks` job green; `smoke` job not yet green on GitHub |
+| N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
 | N4 | [Bigger tap areas on 320 px phones](#n4-bigger-tap-areas-on-320-px-phones) | AI-ready | Todo |
 | N5 | [First metrics review](#n5-first-metrics-review) | Owner + AI | Blocked: needs 2 weeks live |
 | N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Done: IMP-01 to IMP-07 verified |
@@ -164,7 +164,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N3. Add CI on GitHub
 
-- **Who:** AI-ready · **Status:** Doing (10 Oct 2026). The workflow is live and its `checks` job is green. The `smoke` job failed once (beacon check, fixed) and its second run was still not finished when last looked at; find out why (the log is unavailable until the job ends) · **Issue:** #4 (now F15)
+- **Who:** AI-ready · **Status:** Done (10 Oct 2026). Run 1 caught a timing-dependent test (fixed); run 2 (`90de49d`) passed both jobs on GitHub · **Issue:** #4 (now F15)
 - **Steps:**
   1. Add `.github/workflows/ci.yml`, run on pushes and pull requests:
      - Node 22 (`actions/setup-node` with `node-version-file: .node-version`)

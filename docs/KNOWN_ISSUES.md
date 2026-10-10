@@ -19,8 +19,6 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 | 1 | [Neighbouring tap areas can overlap](#1-neighbouring-tap-areas-can-overlap) | Fixed | Medium |
 | 2 | [Item tap areas are 38–43 px on 320 px-wide phones](#2-item-tap-areas-are-3843-px-on-320-px-wide-phones) | Open | Low |
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 4 | [No CI on GitHub](#4-no-ci-on-github) | Open | Low |
-| 5 | [Some UI text is hard-coded in `main.js`, and one event is unused](#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused) | Open | Low |
 | 33 | [Interactive targets lack visual affordance (Pixel-hunting risk)](#33-interactive-targets-lack-visual-affordance-pixel-hunting-risk) | Fixed | Medium |
 | 34 | [LINE in-app browser blocks direct image downloads](#34-line-in-app-browser-blocks-direct-image-downloads) | Fixed | Medium |
 | 35 | [Timer anxiety in older players during the first 5 seconds](#35-timer-anxiety-in-older-players-during-the-first-5-seconds) | Fixed | Low |
@@ -100,30 +98,6 @@ What a headless test **cannot** show:
 - audio on iOS when the silent switch is on
 
 **To do:** run the 32-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
-
-### 4. No CI on GitHub
-
-**Status:** Open · **Severity:** Low
-
-The content checks already run on every Cloudflare build, and a failing build keeps the previous version live, so broken content cannot go live. Code changes, however, are only unit-tested when someone runs `npm test`.
-
-**Fix:** add a GitHub Actions workflow that runs `node tools/build.mjs && npm test` on pull requests. Optionally also run `npx playwright@1.63.0 install --with-deps chromium && npm run smoke`. ROADMAP card N3 has the steps.
-
-### 5. Some UI text is hard-coded in `main.js`, and one event is unused
-
-**Status:** Open · **Severity:** Low
-
-- **Text outside `strings.json`.** A few texts live in `public/js/main.js`, so editing them on GitHub means touching code:
-  - the About sheet's paragraphs, including "ตรวจสอบเมื่อ ต.ค. 2569" ("checked Oct 2026"), which must change at each seasonal content review
-  - the checklist image captions ("เก็บไว้ แล้วส่งต่อให้คนที่บ้าน", "เบอร์ช่วยเหลือ โทรฟรี", "ส่งต่อด้วยความห่วงใย ♥")
-  - the boot-failure line
-  - the share-sheet title
-- **An unused event.** `install` is in the allowlists in `public/js/analytics.js` and `functions/api/e.js`, but nothing sends it. It was reserved for an "add to home screen" prompt that was not built.
-
-**Fix:**
-
-- Move those texts to `strings.json`, under `th` and `en`.
-- Either remove `install` from both allowlists, or listen for `appinstalled` and send it.
 
 ### 33. Interactive targets lack visual affordance (Pixel-hunting risk)
 
@@ -461,6 +435,14 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### After v1.0.0: CI and text clean-up (10 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F15 (was #4) | No CI on GitHub | **Partly:** the `checks` job is green on GitHub; the `smoke` job is still being verified. `.github/workflows/ci.yml`: a `checks` job (build with content validation and the budget, generated files current, `npm test`, `npm run check:docs`) and a `smoke` job (Playwright 1.63.0 Chromium, `npm run smoke`), on every push to `main` and every pull request. |
+| F16 (was #5) | About-sheet text, the checklist captions and the language-button label were hard-coded in `main.js`; the `install` event was allowed but never sent | The texts now live in `strings.json` (th and en), and a smoke check proves the About sheet follows the EN toggle. `main.js` keeps only the brand name, the mascot name and the boot-failure line (it must work when the JSON can't load). `install` was removed from both allowlists. |
+| F17 | "analytics beacons received" counted **0** on GitHub's runner (6 locally), because the beacon is only sent when the page is hidden and closing the context doesn't fire that reliably | The test fires `pagehide` itself. CI is how this was found. |
 
 ### In v1.1.0, during the 3-loop optimization cycle (7 Oct 2026)
 

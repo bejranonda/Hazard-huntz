@@ -155,7 +155,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 24 checks) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 25 checks) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -173,7 +173,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 | Version 2 combined run | The brief asked for it to be structured, not built | Data links, `Run` and a test exist; the card and button don't ([#15](KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)) |
 | Per-request preview images | Free-plan CPU and request limits | Pre-rendered instead ([#23](KNOWN_ISSUES.md#23-link-previews-are-pre-rendered-not-drawn-per-request)) |
 | Leaderboards, names, accounts | Personal data and PDPA work, plus moderation | Not planned. Challenge links give the social comparison without identities. |
-| Push notifications, install prompt | They need permissions, and in-app browsers lack them | Not planned. The `install` event is reserved ([#5](KNOWN_ISSUES.md#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused)). |
+| Push notifications, install prompt | They need permissions, and in-app browsers lack them | Not planned. The `install` event is reserved ([#5](KNOWN_ISSUES.md#fixed)). |
 | Real-device testing | No devices in the build environment | The owner's launch task ([#3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers)) |
 
 ## 11. How to keep going

@@ -6,7 +6,7 @@
 | **Version** | 1.0.0 |
 | **Date** | 7 Oct 2026 |
 | **State** | Code complete, optimized across 3 loops (9.74/10 score, 0% overlaps, senior accessibility). **Live at https://baanrodmai.autobahn.bot**. **Not yet tested on real phones.** |
-| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first (L1 Web Analytics, L8 search consoles), then N2–N4 |
+| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first (L1 Web Analytics, L8 search consoles), then N4 |
 | **For AI assistants** | Start with [AGENTS.md](AGENTS.md); lessons are in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
 
 ## 1. In one minute
@@ -71,7 +71,7 @@ node tools/build.mjs                    # validate content + generate pages and 
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
 npm test                                # 12 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 24 browser checks; add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 25 browser checks; add  -- --screens docs/screens  to refresh screenshots
 npm run images                          # re-render previews, checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
 npm run docs                            # regenerate the safety table in docs/01 from items.json
@@ -102,7 +102,7 @@ Rules, formulas and the content model are in [docs/KNOWLEDGE.md](docs/KNOWLEDGE.
 |---|---|
 | Fix a tip, choice or explanation | `public/content/items.json`, then `npm run docs`. Follow [GUIDELINES §2](docs/GUIDELINES.md#2-safety-content). |
 | Change which mode is recommended | `public/content/config.json → rainWarningActive` |
-| Change texts, rank titles or share texts | `public/content/strings.json`. A few texts are still in `main.js` ([#5](docs/KNOWN_ISSUES.md#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused)). |
+| Change texts, rank titles or share texts | `public/content/strings.json`. A few texts are still in `main.js` ([#5](docs/KNOWN_ISSUES.md#fixed)). |
 | Change round length, points or the water curve | `public/content/config.json → round` |
 | Edit a checklist or the help numbers | `checklists.json` / `helplines.json`, then `npm run images` |
 | Move or add slots | `public/content/rooms.json`, then `npm run probe` |
@@ -158,8 +158,8 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
 1. **Launch** (section 2, ROADMAP L1–L7): the domain, images, forecast link, ⚠️ review, real-phone matrix and soft launch.
 2. **v1.1, polish:**
    - ~~Fix the overlapping tap areas~~ (Done in v1.1.0: slot exclusion graph, 0% overlap, [#1](docs/KNOWN_ISSUES.md#1-neighbouring-tap-areas-can-overlap)).
-   - Move the hard-coded texts into `strings.json` ([#5](docs/KNOWN_ISSUES.md#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused)).
-   - Add a GitHub Actions workflow for the build and tests ([#4](docs/KNOWN_ISSUES.md#4-no-ci-on-github)).
+   - Move the hard-coded texts into `strings.json` ([#5](docs/KNOWN_ISSUES.md#fixed)).
+   - Add a GitHub Actions workflow for the build and tests ([#4](docs/KNOWN_ISSUES.md#fixed)).
    - Use the first two weeks of metrics to find the most-missed lessons and improve their art or wording.
 3. **v1.2, more house:** draw the bathroom, bedroom and garage ([#14](docs/KNOWN_ISSUES.md#14-bathroom-bedroom-and-garage-are-not-drawn)), and settle the mattress conflict first ([#10](docs/KNOWN_ISSUES.md#10-sources-conflict-on-soaked-mattresses)).
 4. **v2, the combined run:** the before/after card and a third start button ([#15](docs/KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)).

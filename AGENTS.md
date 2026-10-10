@@ -30,7 +30,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview pages and `sw.js`, and checks the 500 KB budget | Every change |
 | `npm test` | 12 rule tests, Node only, well under a second | Every change |
-| `npm run smoke` | 24 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
+| `npm run smoke` | 25 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
 | `npm run probe` | Measures tap-area overlaps over two years of houses, and flood timings | Slot, size or water-curve changes |
 | `npm run docs` | Regenerates the safety table in `docs/01` from `items.json` | Any `items.json` / `sources.json` change |
@@ -113,7 +113,5 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
 1. **If the owner gave a launch input** (domain, forecast URL, review results or phone-test results), do the matching **L** task in [docs/ROADMAP.md](docs/ROADMAP.md) first.
 2. **Otherwise** take the top **AI-ready** task under *Next*:
    - **N1:** fix overlapping tap areas
-   - **N2:** move the hard-coded text into JSON
-   - **N3:** add CI
    - **N4:** bigger tap areas on 320 px phones
 3. **When you finish,** update the task card's status, and add any new lesson to [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md).

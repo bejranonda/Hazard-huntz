@@ -4,6 +4,15 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Added
+
+- **CI** (`.github/workflows/ci.yml`): build, rule tests, docs link check and the browser smoke test on every push to `main` and every pull request.
+- **Smoke check:** the About sheet follows the EN toggle (25 checks).
+
+### Changed
+
+- **About sheet, checklist captions and the language button** read their text from `strings.json`; the unused `install` analytics event was removed.
+
 ## [1.0.0] — 2026-10-07
 
 The official 1.0 release of **บ้านรอดไหม? (Baan Rod Mai?)** — a 60-second flood-safety hazard hunt game for Thai families, live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot).

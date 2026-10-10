@@ -74,7 +74,7 @@ These come from the original brief. A change that breaks one of them is not fini
 - **Never edit safety advice quietly.**
   - After the deploy, post a correction that starts with **"UPDATE:"** on every channel where the game was shared.
   - Say what changed and why.
-- **Update the source dates.** If the guidance changed, also update the "ตรวจสอบเมื่อ" date in the About sheet. It is currently in `main.js`; see [KNOWN_ISSUES #5](KNOWN_ISSUES.md#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused).
+- **Update the source dates.** If the guidance changed, also update the "ตรวจสอบเมื่อ" date in the About sheet. It is currently in `main.js`; see [KNOWN_ISSUES #5](KNOWN_ISSUES.md#fixed).
 - **Ship structural edits at night.** Adding, removing or disabling items, or changing slots, reshuffles today's house. Ship such edits around midnight Bangkok time ([KNOWN_ISSUES #24](KNOWN_ISSUES.md#24-some-content-edits-reshuffle-todays-house-and-old-challenge-links)).
 
 ### 2.5 Seasonal review (April–May, before the rains)
@@ -140,7 +140,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 - **Logic stays pure.** `house.js`, `round.js`, `rng.js` and `run.js` don't touch the DOM. Tests and the build import them in Node. Keep it that way, and put DOM work in `scene.js`, `ui.js` and `main.js`.
 - **Data, not code.**
   - Tunable numbers go in `config.json`.
-  - Text players see goes in `strings.json`, `items.json` and `checklists.json`. A few exceptions remain; see [KNOWN_ISSUES #5](KNOWN_ISSUES.md#5-some-ui-text-is-hard-coded-in-mainjs-and-one-event-is-unused), and don't add more.
+  - Text players see goes in `strings.json`, `items.json` and `checklists.json`. A few exceptions remain; see [KNOWN_ISSUES #5](KNOWN_ISSUES.md#fixed), and don't add more.
   - New features go behind `config.features.*`.
 - **Tap targets:**
   - Items get `MIN_HIT` (64 scene units).
@@ -179,7 +179,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 | When | Run |
 |---|---|
 | Every change | `node tools/build.mjs` and `npm test` (12 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
-| UI, CSS or sharing changes | `npm run smoke` (24 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| UI, CSS or sharing changes | `npm run smoke` (25 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |

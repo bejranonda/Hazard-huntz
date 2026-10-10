@@ -1,0 +1,44 @@
+# Checks every push and pull request. The Cloudflare build already validates
+# content, so this adds the rule tests, the docs link check and the browser
+# smoke test before anything reaches main.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Build (validates content, checks the 500 KB budget)
+        run: node tools/build.mjs
+      - name: Generated files are committed and current
+        run: git diff --exit-code -- public/index.html public/c public/checklist public/learn.html public/sitemap.xml public/llms.txt public/robots.txt
+      - run: npm test
+      - run: npm run check:docs
+
+  smoke:
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium for the pinned Playwright
+        run: npx playwright@1.63.0 install --with-deps chromium
+      - run: node tools/build.mjs
+      - run: npm run smoke

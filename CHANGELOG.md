@@ -6,7 +6,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [1.1.0] — 2026-10-10
 
-CI, a text clean-up and a clearer version label on top of 1.0.0.
+CI, a text clean-up and a clearer version label on top of 1.0.0. Live at https://baanrodmai.autobahn.bot (push-to-deploy checked).
 
 ### Added
 

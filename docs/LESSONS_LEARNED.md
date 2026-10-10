@@ -297,6 +297,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* load it with `set -a; . ./.env; set +a` in the same shell command, and never print it. `.env` is git-ignored.
 - *Encoded in:* this lesson.
 
+**F6b. A green push is not a live site.**
+
+- *What happened:* v1.1.0 was pushed with green CI, but the live site still served an old build because Cloudflare couldn't see the repository, until the owner granted access.
+- *Do this:* after every push, check the live site for something that changed (here the version chip), not only the CI result.
+- *Encoded in:* [AGENTS.md §1](../AGENTS.md#1-the-project-in-brief), [HANDOFF.md](../HANDOFF.md).
+
 **F5. Ignore the "repository moved" notice.**
 
 - *What happened:* the session's remote URL is lowercase (`hazard-huntz`), while the repository is named `Hazard-huntz`, so every push prints this notice.

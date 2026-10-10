@@ -13,7 +13,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 - **State (10 Oct 2026):** v1.1.0. The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: the forecast-app link, Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
-- **Branches:** `main` is production. Pushes to `main` should deploy; the first two deploys were started through the API, so check that a push triggers a build.
+- **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
 
 ## 2. Read in this order
 

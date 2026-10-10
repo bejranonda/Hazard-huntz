@@ -869,7 +869,7 @@ function openAbout() {
     <p>${esc(t('aboutPrivacy'))}</p>
     <h3>${esc(t('aboutSourcesTitle'))}</h3>
     <ul class="sources">${srcHtml}</ul>
-    <p class="note">${esc(t('aboutCredits'))} · <span class="tag">v${esc(C.config.version || '1.0')}</span></p>
+    <p class="note">${esc(t('aboutCredits'))} · <span class="tag">v${esc(C.config.version)}</span></p>
     <p class="note">${esc(t('disclaimer'))}</p>
     <button class="btn secondary small" type="button" id="about-close">${esc(t('close'))}</button>`);
   $('#about-close').addEventListener('click', () => closeSheet());

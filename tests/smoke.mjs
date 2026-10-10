@@ -149,6 +149,8 @@ try {
     check('start screen transfer < 500 KB (uncompressed)', bytes < 500 * 1024, `${(bytes / 1024).toFixed(0)} KB`);
     await shot(page, '01-start');
     check('default mode badge shown', await page.isVisible('.mode-btn.is-default .mode-badge'));
+    const shownVersion = (await page.textContent('#app-version')).trim();
+    check('start screen shows the package.json version', shownVersion === `v${JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version}`, shownVersion);
     await playRound(page, 'prepare', {
       wrongAt: 1,
       screens: { howto: '02-howto', room: '03-room', choice: '04a-choice', tip: '04b-tip-correct', learn: '04c-tip-learned' },

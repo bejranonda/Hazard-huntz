@@ -4,13 +4,21 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-10-10
+
+CI, a text clean-up and a clearer version label on top of 1.0.0.
+
 ### Added
+
+- **Version on the homepage:** the start screen shows `v1.1.0` as a visible chip (13 px, bordered) under the footer links, and the About sheet shows it too. A smoke check compares it with `package.json` (26 checks).
+- **One version number.** `package.json` is the source. The build stamps it into the start screen's HTML (so it shows before any script runs) and **fails** if `config.json → version` differs.
 
 - **CI** (`.github/workflows/ci.yml`): build, rule tests, docs link check and the browser smoke test on every push to `main` and every pull request.
 - **Smoke check:** the About sheet follows the EN toggle (25 checks).
 
 ### Changed
 
+- **Version bumped** from 1.0.0 to 1.1.0 in `package.json`, `package-lock.json` and `config.json`.
 - **About sheet, checklist captions and the language button** read their text from `strings.json`; the unused `install` analytics event was removed.
 
 ## [1.0.0] — 2026-10-07

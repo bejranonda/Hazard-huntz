@@ -14,7 +14,7 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (6 Oct 2026): v1.0.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (6 Oct 2026): v1.1.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
 > - The code is finished and every automated check passes: 12 rule tests and 24 headless-browser checks.
 > - It is deployed on Cloudflare Pages and set up for search and AI search (see [SEO and AI search](#seo-and-ai-search)).

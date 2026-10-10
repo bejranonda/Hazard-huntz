@@ -33,6 +33,7 @@ const readJSON = (rel) => {
 
 // ---------------------------------------------------------------- content
 const config = readJSON('content/config.json');
+const pkgVersion = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
 const strings = readJSON('content/strings.json');
 const itemsFile = readJSON('content/items.json');
 const roomsFile = readJSON('content/rooms.json');
@@ -222,6 +223,11 @@ const indexLd = {
     },
   ],
 };
+// One version number: package.json. config.json must match it (the game reads
+// it for the About sheet) and the start screen is stamped with it, so the
+// version shows even before the script runs.
+if (config.version !== pkgVersion) err(`config.json version "${config.version}" must equal package.json version "${pkgVersion}"`);
+indexHtml = indexHtml.replace(/(<div class="app-version" id="app-version">)[^<]*(<\/div>)/, `$1v${pkgVersion}$2`);
 indexHtml = indexHtml.replace(OG_RE, ogBlock({
   title: og.defaultTitle, desc: og.defaultDesc, image: '/og/default.png', alt: og.defaultAlt, url: `${SITE}/`, ld: indexLd,
 }));

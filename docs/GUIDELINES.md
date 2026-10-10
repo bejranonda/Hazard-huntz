@@ -211,7 +211,7 @@ Rules:
   1. `node tools/build.mjs` passes with no unexpected warnings.
   2. `npm test` and `npm run smoke` pass.
   3. Images are re-rendered if the copy, ranks, checklists or domain changed.
-  4. `CHANGELOG.md` and the version are updated.
+  4. `CHANGELOG.md` and the version are updated. The version lives in `package.json` (and `package-lock.json`); `config.json → version` must match it, and the build fails if it doesn't.
   5. Merge to `main`, and wait for the Cloudflare deploy.
   6. Open the live site once and reload, so the new service worker takes over. Check that a changed text appears.
   7. If the previews changed, re-scrape them in Facebook's Sharing Debugger and check LINE with `?v=<n>`.

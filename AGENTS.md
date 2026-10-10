@@ -10,7 +10,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (6 Oct 2026):** v1.0.0. The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (10 Oct 2026):** v1.1.0. The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: the forecast-app link, Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` should deploy; the first two deploys were started through the API, so check that a push triggers a build.

@@ -191,11 +191,11 @@ function bindGlobal() {
   }
   $('#forecast-link-start').addEventListener('click', () => track('forecast_click', { label: 'start' }));
 
-  $('#btn-lang').textContent = getLang() === 'th' ? 'EN' : 'ไทย';
+  $('#btn-lang').textContent = t('langSwitch');
   $('#btn-lang').addEventListener('click', () => {
     setLang(getLang() === 'th' ? 'en' : 'th');
     track('lang', { label: getLang() });
-    $('#btn-lang').textContent = getLang() === 'th' ? 'EN' : 'ไทย';
+    $('#btn-lang').textContent = t('langSwitch');
     applyStaticStrings();
     renderStart(state.defaultMode);
   });
@@ -824,12 +824,12 @@ export function checklistData(mode) {
   return {
     mode,
     title: L(list.title),
-    subtitle: getLang() === 'th' ? 'เก็บไว้ แล้วส่งต่อให้คนที่บ้าน' : 'Save it and pass it on to your family',
+    subtitle: t('clSubtitle'),
     items: list.items.map((it) => ({ text: L(it), sprite: it.sprite })),
-    helpLabel: getLang() === 'th' ? 'เบอร์ช่วยเหลือ โทรฟรี' : 'Free helplines',
+    helpLabel: t('clHelpLabel'),
     helpNumbers: main.join('  ·  '),
     url: siteUrl(),
-    forward: getLang() === 'th' ? 'ส่งต่อด้วยความห่วงใย ♥' : 'Shared with care ♥',
+    forward: t('clForward'),
     footer: t('cardFooter'),
   };
 }
@@ -855,7 +855,6 @@ function openHelp() {
 
 function openAbout() {
   const C = content();
-  const th = getLang() === 'th';
   const byAgency = new Map();
   for (const s of Object.values(C.sources)) {
     if (!byAgency.has(s.agency)) byAgency.set(s.agency, []);
@@ -865,16 +864,12 @@ function openAbout() {
     <li><b>${esc(agency)}</b><ul>${list.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}${s.date ? `<span class="tag">(${esc(s.date)})</span>` : ''}</a></li>`).join('')}</ul></li>`).join('');
   openSheet(`
     <h2 id="sheet-title">${esc(t('aboutTitle'))}</h2>
-    <p>${th
-    ? 'บ้านรอดไหม? เป็นเกมสั้นเพื่อการเรียนรู้ ช่วยให้ทุกคนรู้วิธีเตรียมบ้านก่อนน้ำท่วม และตรวจจุดอันตรายก่อนกลับเข้าบ้าน ทุกคำแนะนำอ้างอิงจากหน่วยงานรัฐ (ตรวจสอบเมื่อ ต.ค. 2569) ถ้าสถานการณ์จริงต่างออกไป ให้เชื่อประกาศและเจ้าหน้าที่ในพื้นที่ก่อนเสมอ'
-    : 'Baan Rod Mai? is a short learning game about preparing a home before a flood and spotting dangers before moving back in. Every tip comes from Thai government agencies (checked Oct 2026). If local announcements say otherwise, follow your local officials.'}</p>
-    <h3>${th ? 'ความเป็นส่วนตัว' : 'Privacy'}</h3>
-    <p>${th
-    ? 'ไม่ต้องสมัคร ไม่เก็บข้อมูลส่วนบุคคล ไม่ใช้คุกกี้ คะแนนและสถิติเก็บไว้ในเครื่องของคุณเท่านั้น เรานับเฉพาะจำนวนการเล่นและการแชร์แบบไม่ระบุตัวตน (Cloudflare Web Analytics ไม่ใช้คุกกี้) สอดคล้องกับ พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล'
-    : 'No sign-up, no personal data, no cookies. Scores stay on your device. We only count plays and shares anonymously (Cloudflare Web Analytics is cookieless), in line with Thailand\'s PDPA.'}</p>
-    <h3>${th ? 'ที่มาของข้อมูล' : 'Sources'}</h3>
+    <p>${esc(t('aboutIntro'))}</p>
+    <h3>${esc(t('aboutPrivacyTitle'))}</h3>
+    <p>${esc(t('aboutPrivacy'))}</p>
+    <h3>${esc(t('aboutSourcesTitle'))}</h3>
     <ul class="sources">${srcHtml}</ul>
-    <p class="note">${th ? 'ภาพวาดและน้องจกออกแบบขึ้นใหม่สำหรับเกมนี้ · ฟอนต์ Kanit (SIL Open Font License)' : 'Original illustrations and mascot · Kanit font (SIL Open Font License)'} · <span class="tag">v${esc(C.config.version || '1.0')}</span></p>
+    <p class="note">${esc(t('aboutCredits'))} · <span class="tag">v${esc(C.config.version || '1.0')}</span></p>
     <p class="note">${esc(t('disclaimer'))}</p>
     <button class="btn secondary small" type="button" id="about-close">${esc(t('close'))}</button>`);
   $('#about-close').addEventListener('click', () => closeSheet());

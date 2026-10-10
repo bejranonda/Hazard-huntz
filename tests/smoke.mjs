@@ -164,6 +164,10 @@ try {
     const channels = await page.$$eval('[data-ch]', (b) => b.map((x) => x.dataset.ch));
     check('share fallbacks: LINE, Facebook, X, copy', ['line', 'facebook', 'x', 'copy'].every((c) => channels.includes(c)), channels.join());
     check('no page errors (Android, prepare)', !page.errors.length, page.errors.join(' | '));
+    // Events are sent when the page is hidden. Closing the context does not
+    // reliably fire that on every runner, so trigger it here.
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(300);
     await ctx.close();
   }
 
@@ -245,6 +249,11 @@ try {
     await page.click('#btn-lang');
     check('English toggle', (await page.textContent('.mode-btn.mode-prepare .mode-name')).includes('Before'));
     await shot(page, '10-english');
+    await page.click('[data-open="about"]');
+    await page.waitForSelector('#sheet-title');
+    const aboutEn = await page.textContent('#sheet-body');
+    check('About sheet follows the EN toggle', aboutEn.includes('Privacy') && aboutEn.includes('Baan Rod Mai?'));
+    await page.keyboard.press('Escape');
     await ctx.close();
   }
 

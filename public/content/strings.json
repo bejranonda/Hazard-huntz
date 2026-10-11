@@ -190,7 +190,9 @@
     },
     "offline": "ออฟไลน์อยู่ ยังเล่นได้ แต่แชร์ต้องต่อเน็ตก่อน",
     "updateReady": "UPDATE: มีเนื้อหาใหม่ เปิดเกมใหม่อีกครั้งเพื่อใช้งาน",
-    "challengeText": "เราได้ {score}/10 ในบ้านหลังนี้ {emoji} ลองเล่นบ้านหลังเดียวกันดู ใครได้มากกว่ากัน? 👉 {url}"
+    "challengeText": "เราได้ {score}/10 ในบ้านหลังนี้ {emoji} ลองเล่นบ้านหลังเดียวกันดู ใครได้มากกว่ากัน? 👉 {url}",
+    "logoA": "บ้าน",
+    "logoB": "รอดไหม?"
   },
   "en": {
     "tagline": "A 60-second game to help your home survive a flood",
@@ -382,7 +384,9 @@
     },
     "offline": "You're offline. You can still play; sharing needs a connection.",
     "updateReady": "UPDATE: new content is ready. Reopen the game to use it.",
-    "challengeText": "I got {score}/10 in this house {emoji} Play the exact same house. Can you beat me? 👉 {url}"
+    "challengeText": "I got {score}/10 in this house {emoji} Play the exact same house. Can you beat me? 👉 {url}",
+    "logoA": "Baan ",
+    "logoB": "Rod Mai?"
   },
   "og": {
     "_readme": "ข้อความตัวอย่างลิงก์ (ภาษาไทยเท่านั้น) ที่ LINE / Facebook แสดงเมื่อส่งลิงก์",

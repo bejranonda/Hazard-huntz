@@ -4,6 +4,12 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.2.2] — 2026-10-11
+
+### Fixed
+
+- **English mode still showed the Thai logo.** The big title, the result card, the checklist image and the English preview images now show **"Baan Rod Mai?"** in English (`strings.json → logoA/logoB`); Thai stays "บ้านรอดไหม?". The canvas shrinks the English wordmark to fit, and the static `/en/` page carries it too. New smoke check (33). Reported by the owner from a screenshot.
+
 ## [1.2.1] — 2026-10-11
 
 ### Changed

@@ -16,7 +16,7 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 
 > **Status (11 Oct 2026): v1.2.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 13 rule tests and 32 headless-browser checks.
+> - The code is finished and every automated check passes: 13 rule tests and 33 headless-browser checks.
 > - **In Thai and English:** [baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot) · [/en/](https://baanrodmai.autobahn.bot/en/) (English), each with its own link previews.
 > - It is deployed on Cloudflare Pages and set up for search and AI search (see [SEO and AI search](#seo-and-ai-search)).
 > - Before launch it still needs a forecast-app link, a review of 9 safety items flagged ⚠️, and a pass on real phones.

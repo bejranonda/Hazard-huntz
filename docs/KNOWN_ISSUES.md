@@ -420,7 +420,7 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 
 - **One extra language.** `/en/` adds English. Other languages would need their own `strings.json` table, `ogEn`-style preview text and images; the build only knows Thai and English.
 - **Thai advice and numbers.** Every lesson is sourced from Thai agencies, and the hotlines (1784, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
-- **The logo stays Thai** on the English previews; the English headline sits under it.
+- **The wordmark is romanised in English** ("Baan Rod Mai?"), so English players don't see Thai script as the brand; the Thai name still appears in the Thai pages' titles and `alternateName`.
 - **The English text has had no native-speaker review** of tone; it was written alongside the Thai.
 - **Preview caches:** Facebook and LINE cache per URL, so a previously shared `/c/…` link keeps its Thai preview.
 

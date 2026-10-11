@@ -257,8 +257,7 @@ const localize = (html) => html
   .replace(/(<[^>]*\bdata-i18n-aria="(\w+)"[^>]*>)/g,
     (tag, _, key) => (typeof enText[key] === 'string' ? tag.replace(/aria-label="[^"]*"/, `aria-label="${esc(enText[key])}"`) : tag))
   .replace(/href="\/learn"/g, `href="${EN}/learn"`)
-  .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2')
-  .replace(/(<h1 id="logo-title" class="logo">[\s\S]*?)(<\/h1>)/, `$1<span class="sr-only"> ${esc(ogEn.siteName)}</span>$2`);
+  .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2');
 const enIndexLd = JSON.parse(JSON.stringify(indexLd));
 enIndexLd['@graph'][0] = { ...enIndexLd['@graph'][0], '@id': `${SITE}${EN}/#website`, url: `${SITE}${EN}/`, name: ogEn.siteName, alternateName: ['Baan Rod Mai?', og.siteName], inLanguage: 'en' };
 enIndexLd['@graph'][1] = { ...enIndexLd['@graph'][1], url: `${SITE}${EN}/`, description: ogEn.defaultDesc, isPartOf: { '@id': `${SITE}${EN}/#website` }, subjectOf: { '@type': 'WebPage', url: `${SITE}${EN}/learn` } };

@@ -662,6 +662,7 @@ async function showResult(result) {
     state.cardAssets = state.cardAssets || await loadCardAssets();
     const canvas = document.createElement('canvas');
     drawResultCard(canvas, {
+      logo: [t('logoA'), t('logoB')],
       mode,
       tier: result.tier,
       modeLabel: t(mode === 'prepare' ? 'modePrepare' : 'modeReturn'),
@@ -825,6 +826,7 @@ export function checklistData(mode) {
   const main = C.helplines.filter((h) => h.main).map((h) => h.number);
   return {
     mode,
+    logo: [t('logoA'), t('logoB')],
     title: L(list.title),
     subtitle: t('clSubtitle'),
     items: list.items.map((it) => ({ text: L(it), sprite: it.sprite })),

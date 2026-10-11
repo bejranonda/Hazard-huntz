@@ -299,6 +299,9 @@ try {
     await page.goto(`${BASE}/en/c/p8?h=20261007`, { waitUntil: 'networkidle' });
     const banner = await page.textContent('#challenge-banner');
     check('English challenge link shows an English banner', /8\/10/.test(banner) && !/[\u0E00-\u0E7F]/.test(banner), banner.trim().slice(0, 60));
+    await page.goto(`${BASE}/en/`, { waitUntil: 'networkidle' });
+    const title = (await page.textContent('#logo-title')).trim();
+    check('English start screen shows the English wordmark', title === 'Baan Rod Mai?', title);
     const html = await (await fetch(`${BASE}/en/`)).text();
     check('/en/ is English before any script runs (lang, title, hreflang, og:locale)',
       html.includes('<html lang="en">') && html.includes('<title>Will the house survive?') && html.includes('hreflang="th"') && html.includes('og:locale" content="en_US"') && html.includes('/og/en/default.png'));

@@ -4,7 +4,7 @@
   "forecastAppUrl": "https://flood.autobahn.bot/",
   "forecastStatusUrl": null,
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

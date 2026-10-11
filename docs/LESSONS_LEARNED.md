@@ -315,6 +315,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* after `npm run images`, restore the images you didn't mean to change (`git checkout -- <paths>`), so commits only carry real changes.
 - *Encoded in:* this lesson.
 
+**C8. A language switch must reach every place the brand name is drawn.**
+
+- *What happened:* v1.2.0 translated the page text and previews, but the big title, the result card and the preview images still drew the Thai wordmark; the owner spotted it in English mode.
+- *Do this:* when adding a language, search for every hard-coded visible string (HTML, canvas drawing, tools) and check a screenshot of each screen in that language, including the cards and images.
+- *Encoded in:* `strings.json → logoA/logoB`, `cards.js → logo`, the smoke check "English start screen shows the English wordmark".
+
 **F5. Ignore the "repository moved" notice.**
 
 - *What happened:* the session's remote URL is lowercase (`hazard-huntz`), while the repository is named `Hazard-huntz`, so every push prints this notice.

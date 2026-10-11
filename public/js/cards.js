@@ -21,7 +21,7 @@ const FONT = 'Kanit, "Noto Sans Thai", Tahoma, sans-serif';
 export async function loadCardAssets() {
   if (document.fonts?.load) {
     await Promise.all([
-      document.fonts.load(`600 64px Kanit`, 'บ้านรอดไหม? 0123456789/'),
+      document.fonts.load(`600 64px Kanit`, 'บ้านรอดไหม? Baan Rod Mai? 0123456789/'),
       document.fonts.load(`400 40px Kanit`, 'เตรียมบ้าน abc'),
     ]).catch(() => {});
   }
@@ -114,11 +114,18 @@ function pill(ctx, cx, y, text, { size = 44, fill = SUN, color = INK, padX = 34,
   return w;
 }
 
-function logo(ctx, cx, y, size) {
+// The wordmark: Thai "บ้าน|รอดไหม?" or English "Baan |Rod Mai?" (d.logo). When the
+// English words are wider than maxW, the type shrinks to fit.
+function logo(ctx, cx, y, size, parts, maxW = 640) {
+  const [a, b] = parts || ['บ้าน', 'รอดไหม?'];
   font(ctx, size);
+  const natural = ctx.measureText(a).width + ctx.measureText(b).width;
+  if (natural > maxW) {
+    size = Math.floor(size * maxW / natural);
+    font(ctx, size);
+  }
   ctx.textBaseline = 'alphabetic';
   ctx.textAlign = 'left';
-  const a = 'บ้าน', b = 'รอดไหม?';
   const wa = ctx.measureText(a).width, wb = ctx.measureText(b).width;
   const x0 = cx - (wa + wb) / 2;
   ctx.lineJoin = 'round';
@@ -214,7 +221,7 @@ export function drawResultCard(canvas, d, assets) {
   if (d.mode === 'prepare') waves(ctx, W, 1110, '#9FD3F0', '#63B8EA');
   else waves(ctx, W, 1110, '#D9C08E', '#B08B62');
 
-  logo(ctx, W / 2, 150, 104);
+  logo(ctx, W / 2, 150, 104, d.logo, W - 160);
   const chipFill = d.mode === 'prepare' ? '#CFEAFB' : '#FFE6B0';
   pill(ctx, W / 2, 192, d.modeLabel, { size: 40, fill: chipFill, lw: 4 });
 
@@ -279,7 +286,7 @@ export function drawChecklist(canvas, d, assets) {
   ctx.fill();
   ctx.fillStyle = accentDark;
   ctx.fillRect(0, 322, W, 10);
-  logo(ctx, 380, 108, 74);
+  logo(ctx, 380, 108, 74, d.logo, 600);
   drawGecko(ctx, assets, 790, 24, 250, 270, 'happy', d.mode === 'prepare' ? 'hood' : 'torch');
   ctx.textAlign = 'left';
   ctx.fillStyle = INK;
@@ -389,7 +396,7 @@ export function drawOG(canvas, d, assets) {
   drawGecko(ctx, assets, 70, 90, 360, 400, face, prepare ? 'hood' : 'torch');
 
   const cx = 800;
-  logo(ctx, cx, 120, 88);
+  logo(ctx, cx, 120, 88, d.logo, 620);
   ctx.textAlign = 'center';
   ctx.fillStyle = INK;
   if (d.kind === 'challenge') {

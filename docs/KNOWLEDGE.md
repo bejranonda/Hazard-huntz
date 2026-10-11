@@ -628,7 +628,7 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 **Social previews**
 
 - `og:locale` (`th_TH` or `en_US`) plus `og:locale:alternate`, and `twitter:image:alt` on every page.
-- 25 English preview images in `public/og/en/` (default, 22 challenge scores, 2 checklists), drawn by the same canvas code from `strings.json → ogEn`. The brand logo stays Thai on every image; the English default image says *"Will the house survive? A 60-second flood game"* under it.
+- 25 English preview images in `public/og/en/` (default, 22 challenge scores, 2 checklists), drawn by the same canvas code from `strings.json → ogEn`. The wordmark follows the language: Thai "บ้านรอดไหม?" or English "Baan Rod Mai?" (`strings.json → logoA/logoB`), on the start screen, the result card, the checklist image and every preview image; the canvas shrinks it to fit. The English default image reads *"Will the house survive? A 60-second flood game"* under it.
 - English share texts carry `#BaanRodMai #FloodSafety`; the Thai ones keep `#บ้านรอดไหม`.
 
 **Honesty for an international audience.** The advice comes from Thai agencies and the hotlines are Thai numbers. The English help sheet, `/en/learn`, the checklist preview and `llms.txt` say so and tell people outside Thailand to follow their local authorities and emergency number. **No foreign numbers were added**, because none were verified.

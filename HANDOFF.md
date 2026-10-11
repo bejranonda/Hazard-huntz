@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
-| **Version** | 1.2.1 (Thai + English) |
+| **Version** | 1.2.2 (Thai + English) |
 | **Date** | 7 Oct 2026 |
 | **State** | Code complete, optimized across 3 loops (9.74/10 score, 0% overlaps, senior accessibility). **Live at https://baanrodmai.autobahn.bot**. **Not yet tested on real phones.** |
 | **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first (L1 Web Analytics, L8 search consoles), then N4 |
@@ -23,7 +23,7 @@
 - **Docs:** the six deliverables plus the maintainer reference.
 - **Review & Optimization:** live site UI/UX evaluation and 3-loop iterative refinement (9.74/10 optimal score), resolving tap collisions to 0% and eliminating senior timer anxiety. Full audit in [review/](review/README.md) and [review/ITERATION_LOG.md](review/ITERATION_LOG.md).
 
-**Checks.** The build passes, with its content validation and size budget. The start screen is 147 KB compressed against a 500 KB limit. All **13 rule tests**, **32 browser checks**, and **0% tap-overlap probe** pass.
+**Checks.** The build passes, with its content validation and size budget. The start screen is 147 KB compressed against a 500 KB limit. All **13 rule tests**, **33 browser checks**, and **0% tap-overlap probe** pass.
 
 **What's not done:**
 
@@ -72,7 +72,7 @@ node tools/build.mjs                    # validate content + generate pages and 
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
 npm test                                # 13 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 32 browser checks; add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 33 browser checks; add  -- --screens docs/screens  to refresh screenshots
 npm run images                          # re-render previews, checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
 npm run docs                            # regenerate the safety table in docs/01 from items.json

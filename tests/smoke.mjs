@@ -47,8 +47,10 @@ const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath
 const results = [];
 const check = (name, ok, detail = '') => results.push({ name, ok: !!ok, detail });
 
-async function newPage({ width = 390, height = 760, ua = UA.android, reducedMotion = 'no-preference' } = {}) {
-  const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: ua, reducedMotion, serviceWorkers: 'block' });
+// Players default to a Thai phone in Bangkok (the main audience); the
+// international test passes its own locale and time zone.
+async function newPage({ width = 390, height = 760, ua = UA.android, reducedMotion = 'no-preference', locale = 'th-TH', timezoneId = 'Asia/Bangkok' } = {}) {
+  const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: ua, reducedMotion, serviceWorkers: 'block', locale, timezoneId });
   // Desktop Chrome on Windows/macOS has Web Share, which opens the OS dialog
   // instead of our share sheet; the cloud Chromium has none. Hide it so every
   // platform tests the same in-page fallback.
@@ -261,7 +263,7 @@ try {
 
   // 6. Offline after first visit (service worker)
   {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 760 }, isMobile: true, hasTouch: true });
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 760 }, isMobile: true, hasTouch: true, locale: 'th-TH', timezoneId: 'Asia/Bangkok' });
     const page = await ctx.newPage();
     await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
     await page.waitForFunction(() => navigator.serviceWorker?.controller || navigator.serviceWorker.ready.then(() => true), null, { timeout: 15000 });
@@ -284,6 +286,23 @@ try {
     await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
     await playRound(page, 'prepare', { decoy: false });
     check('no page errors with reduced motion', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+  }
+  // 8. International visitor: English browser outside Thailand
+  {
+    const { ctx, page } = await newPage({ locale: 'en-GB', timezoneId: 'Europe/London' });
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    const tag = await page.evaluate(() => [document.documentElement.lang, location.pathname, document.querySelector('.mode-btn.mode-prepare .mode-name').textContent]);
+    check('international visitor gets English and the /en/ address', tag[0] === 'en' && tag[1] === '/en/' && tag[2].includes('Before'), tag.join(' | '));
+    await page.goto(`${BASE}/en/c/p8?h=20261007`, { waitUntil: 'networkidle' });
+    const banner = await page.textContent('#challenge-banner');
+    check('English challenge link shows an English banner', /8\/10/.test(banner) && !/[\u0E00-\u0E7F]/.test(banner), banner.trim().slice(0, 60));
+    const html = await (await fetch(`${BASE}/en/`)).text();
+    check('/en/ is English before any script runs (lang, title, hreflang, og:locale)',
+      html.includes('<html lang="en">') && html.includes('<title>Will the house survive?') && html.includes('hreflang="th"') && html.includes('og:locale" content="en_US"') && html.includes('/og/en/default.png'));
+    const learn = await (await fetch(`${BASE}/en/learn`)).text();
+    check('/en/learn is the English lessons page', learn.includes('<html lang="en">') && /outside Thailand/i.test(learn) && learn.includes('hreflang="th"'));
+    check('no page errors (international)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
   check('analytics beacons received', beacons > 0, String(beacons));

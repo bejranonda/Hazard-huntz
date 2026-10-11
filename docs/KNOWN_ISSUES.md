@@ -49,6 +49,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 | 29 | [Rendering images needs a matching Chromium](#29-rendering-images-needs-a-matching-chromium) | By design | — |
 | 31 | [`/learn` repeats the lessons, and `seo.updated` is bumped by hand](#31-learn-repeats-the-lessons-and-seoupdated-is-bumped-by-hand) | By design | — |
 | 32 | [Search and AI-search results can't be guaranteed](#32-search-and-ai-search-results-cant-be-guaranteed) | Platform | — |
+| 37 | [The international version is English only, with Thai advice and hotlines](#37-the-international-version-is-english-only-with-thai-advice-and-hotlines) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -412,6 +413,17 @@ A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; an
 The build does what can be done from this side: crawlable pages, canonical links, structured data, a sitemap, `robots.txt` and `llms.txt` ([KNOWLEDGE §16](KNOWLEDGE.md#16-search-and-ai-search-facts)). Whether Google or Bing index and rank them, and whether AI assistants cite `/learn`, isn't in our control and hasn't been measured. `llms.txt` is an informal proposal, and no major search engine is confirmed to use it **[unverified]**. A brand-new subdomain also starts with no authority.
 
 Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) and write the result here.
+
+### 37. The international version is English only, with Thai advice and hotlines
+
+**Status:** By design (v1.2.0)
+
+- **One extra language.** `/en/` adds English. Other languages would need their own `strings.json` table, `ogEn`-style preview text and images; the build only knows Thai and English.
+- **Thai advice and numbers.** Every lesson is sourced from Thai agencies, and the hotlines (1784, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
+- **The logo stays Thai** on the English previews; the English headline sits under it.
+- **The English text has had no native-speaker review** of tone; it was written alongside the Thai.
+- **Preview caches:** Facebook and LINE cache per URL, so a previously shared `/c/…` link keeps its Thai preview.
+
 
 ---
 

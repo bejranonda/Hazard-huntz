@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
-| **Version** | 1.1.0 |
+| **Version** | 1.2.0 (Thai + English) |
 | **Date** | 7 Oct 2026 |
 | **State** | Code complete, optimized across 3 loops (9.74/10 score, 0% overlaps, senior accessibility). **Live at https://baanrodmai.autobahn.bot**. **Not yet tested on real phones.** |
 | **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): launch tasks first (L1 Web Analytics, L8 search consoles), then N4 |
@@ -23,7 +23,7 @@
 - **Docs:** the six deliverables plus the maintainer reference.
 - **Review & Optimization:** live site UI/UX evaluation and 3-loop iterative refinement (9.74/10 optimal score), resolving tap collisions to 0% and eliminating senior timer anxiety. Full audit in [review/](review/README.md) and [review/ITERATION_LOG.md](review/ITERATION_LOG.md).
 
-**Checks.** The build passes, with its content validation and size budget. The start screen is 145 KB compressed against a 500 KB limit. All **12 rule tests**, **24 browser checks**, and **0% tap-overlap probe** pass.
+**Checks.** The build passes, with its content validation and size budget. The start screen is 147 KB compressed against a 500 KB limit. All **13 rule tests**, **31 browser checks**, and **0% tap-overlap probe** pass.
 
 **What's not done:**
 
@@ -69,9 +69,9 @@ Requirements: Node 18 or later (Cloudflare uses 22). For `npm run images` and `n
 ```bash
 node tools/build.mjs                    # validate content + generate pages and the service worker
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
-npm test                                # 12 rule tests (Node only, well under a second)
+npm test                                # 13 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 25 browser checks; add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 31 browser checks; add  -- --screens docs/screens  to refresh screenshots
 npm run images                          # re-render previews, checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
 npm run docs                            # regenerate the safety table in docs/01 from items.json
@@ -221,6 +221,11 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
   - [review/UI_UX_EVALUATION.md](review/UI_UX_EVALUATION.md): Heuristic analysis and deep-dive evaluation.
   - [review/PERSONA_VALIDATION_REPORT.md](review/PERSONA_VALIDATION_REPORT.md): Persona journey and friction simulation.
   - [review/ACTIONABLE_RECOMMENDATIONS.md](review/ACTIONABLE_RECOMMENDATIONS.md): Prioritized task backlog (IMP-01 to IMP-07) ready for AI agent execution.
+
+### 11 Oct 2026: international version (v1.2.0)
+
+- English game at `/en/`, English lessons at `/en/learn`, English share and checklist links, all with English link previews (25 new images) and `hreflang` pairing with the Thai pages. Thai players keep Thai: the first-visit guess picks Thai for Thai browsers or Bangkok time.
+- **Owner to-do:** resubmit the sitemap in the search consoles, and check an `/en/c/p8` link in Facebook's Sharing Debugger. Details in [ROADMAP N7](docs/ROADMAP.md#n7-international-version-and-social-previews) and [KNOWN_ISSUES #37](docs/KNOWN_ISSUES.md#37-the-international-version-is-english-only-with-thai-advice-and-hotlines).
 
 ## 10. Access, accounts and secrets
 

@@ -27,12 +27,33 @@ export async function loadContent() {
     helplines: helplines.helplines,
   };
   const q = new URLSearchParams(location.search).get('lang');
-  setLang(q === 'en' || q === 'th' ? q : store.get('lang', 'th'));
+  setLang(q === 'en' || q === 'th' ? q : pathLang() || store.get('lang', null) || guessLang());
   return C;
 }
 
 export const content = () => C;
 export const getLang = () => lang;
+
+// English pages live under /en/ (/en/, /en/c/p8, /en/checklist/prepare).
+export const pathLang = (pathname = location.pathname) => (/^\/en(\/|$)/.test(pathname) ? 'en' : null);
+
+// First visit, no choice made yet: Thai for anyone whose browser lists Thai or
+// whose clock is on Bangkok time (many Thais use English phone settings),
+// English for everyone else.
+export function guessLang(langs = navigator.languages || [navigator.language || ''], tz = Intl.DateTimeFormat().resolvedOptions().timeZone) {
+  if (langs.some((l) => /^th\b/i.test(l || ''))) return 'th';
+  if (tz === 'Asia/Bangkok') return 'th';
+  return 'en';
+}
+
+// The same page in the other language: "/c/p8" <-> "/en/c/p8", "/" <-> "/en/".
+// Paths outside the app shell (e.g. /learn) are returned unchanged.
+export function langPath(pathname, next) {
+  const bare = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  if (!/^\/(c\/[pr]\d{1,2}|checklist\/(prepare|return))?\/?$/.test(bare)) return pathname;
+  if (next !== 'en') return bare;
+  return bare === '/' ? '/en/' : `/en${bare}`;
+}
 
 export function setLang(next) {
   lang = next === 'en' ? 'en' : 'th';

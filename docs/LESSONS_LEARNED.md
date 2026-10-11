@@ -303,6 +303,18 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* after every push, check the live site for something that changed (here the version chip), not only the CI result.
 - *Encoded in:* [AGENTS.md §1](../AGENTS.md#1-the-project-in-brief), [HANDOFF.md](../HANDOFF.md).
 
+**C7. Don't let "international" take Thai away from Thai players.**
+
+- *What happened:* a plain browser-language rule would switch many Thai players to English, because many Thais use English phone settings.
+- *Do this:* default to Thai if any browser language is Thai **or** the clock is on Bangkok time; use English only otherwise. An explicit `/en/` link, `?lang=` or the toggle always wins.
+- *Encoded in:* `content.js → guessLang`, the unit test "international: …", the smoke test's Thai/Bangkok default context.
+
+**F8. Re-rendering images on a different Chromium changes every PNG.**
+
+- *What happened:* rendering the new English previews also re-drew all Thai images with tiny pixel differences, because the sandbox's Chromium differs from the one used before.
+- *Do this:* after `npm run images`, restore the images you didn't mean to change (`git checkout -- <paths>`), so commits only carry real changes.
+- *Encoded in:* this lesson.
+
 **F5. Ignore the "repository moved" notice.**
 
 - *What happened:* the session's remote URL is lowercase (`hazard-huntz`), while the repository is named `Hazard-huntz`, so every push prints this notice.

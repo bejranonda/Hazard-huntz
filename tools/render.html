@@ -43,6 +43,26 @@ window.renderAll = async (site) => {
   drawOG(c, { kind: 'default', mode: 'prepare', line1: og.defaultLine1, line2: og.defaultLine2, line3: og.defaultPill, url }, assets);
   out['og/default.png'] = c.toDataURL('image/png');
 
+  // English link previews for the /en/ pages (strings.ogEn), same layouts.
+  const ogEn = strings.ogEn;
+  c = canvas();
+  drawOG(c, { kind: 'default', mode: 'prepare', line1: ogEn.defaultLine1, line2: ogEn.defaultLine2, line3: ogEn.defaultPill, url }, assets);
+  out['og/en/default.png'] = c.toDataURL('image/png');
+  for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
+    for (let s = 0; s <= 10; s++) {
+      c = canvas();
+      drawOG(c, {
+        kind: 'challenge', mode, score: s, scoreText: `${s}/10`,
+        line1: mode === 'prepare' ? ogEn.challengeLinePrepare : ogEn.challengeLineReturn,
+        line2: ogEn.challengePill, url,
+      }, assets);
+      out[`og/en/${m}${s}.png`] = c.toDataURL('image/png');
+    }
+    c = canvas();
+    drawOG(c, { kind: 'checklist', mode, line1: ogEn[mode === 'prepare' ? 'checklistTitlePrepare' : 'checklistTitleReturn'], line2: ogEn.checklistLine2, line3: ogEn.checklistPill, url }, assets);
+    out[`og/en/checklist-${mode}.png`] = c.toDataURL('image/png');
+  }
+
   for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
     for (let s = 0; s <= 10; s++) {
       c = canvas();

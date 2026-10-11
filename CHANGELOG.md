@@ -4,6 +4,23 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-10-11
+
+An international (English) version, and better search and social previews in both languages.
+
+### Added
+
+- **English addresses:** `/en/` (the game), `/en/learn` (every lesson in English, agency names in English), `/en/c/…` challenge links and `/en/checklist/…`. The English pages are English in their static HTML (title, description, start-screen text, a hidden English `<h1>`), so crawlers and link previews see English.
+- **Language choice:** `?lang=`, then the `/en` path, then the stored choice, then a first-visit guess: Thai for Thai browsers **or** Bangkok time, English otherwise. The address bar follows the language, and English players share `/en/c/…` links.
+- **Search:** `hreflang` (th, en, x-default → en) on every indexable page and in `sitemap.xml` (`xhtml:link` alternates); English JSON-LD; `llms.txt` lists the English pages.
+- **Social:** 25 English preview images (`public/og/en/`, from `strings.json → ogEn`), `og:locale:alternate`, `twitter:image:alt`; English share texts add `#FloodSafety`.
+- **Honest scope for visitors outside Thailand:** the English help sheet, `/en/learn` and `llms.txt` say the advice and hotlines are Thai and point people to their local emergency number.
+- **Checks:** the build fails if any `og` key lacks an English `ogEn` version or an agency lacks an English name; 1 new unit test (13) and 5 new smoke checks (31), including an English visitor from London.
+
+### Changed
+
+- **Version 1.2.0.** The smoke test now runs players as a Thai phone in Bangkok by default; CI also checks that `public/en/` is regenerated and committed.
+
 ## [1.1.0] — 2026-10-10
 
 CI, a text clean-up and a clearer version label on top of 1.0.0. Live at https://baanrodmai.autobahn.bot (push-to-deploy checked).

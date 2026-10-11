@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://baanrodmai.autobahn.bot/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://baanrodmai.autobahn.bot/learn</loc><lastmod>2026-10-06</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://baanrodmai.autobahn.bot/</loc><lastmod>2026-10-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/</loc><lastmod>2026-10-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/learn</loc><lastmod>2026-10-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/learn"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/learn"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/learn"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/learn</loc><lastmod>2026-10-11</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/learn"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/learn"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/learn"/>
+  </url>
 </urlset>

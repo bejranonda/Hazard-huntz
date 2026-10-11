@@ -14,9 +14,10 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (6 Oct 2026): v1.1.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (11 Oct 2026): v1.2.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 12 rule tests and 24 headless-browser checks.
+> - The code is finished and every automated check passes: 13 rule tests and 31 headless-browser checks.
+> - **In Thai and English:** [baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot) · [/en/](https://baanrodmai.autobahn.bot/en/) (English), each with its own link previews.
 > - It is deployed on Cloudflare Pages and set up for search and AI search (see [SEO and AI search](#seo-and-ai-search)).
 > - Before launch it still needs a forecast-app link, a review of 9 safety items flagged ⚠️, and a pass on real phones.
 > - Start with **[HANDOFF.md](HANDOFF.md)**.
@@ -59,6 +60,7 @@ Most AI crawlers and link-preview bots don't run JavaScript, so a game that rend
 | `/sitemap.xml`, `/robots.txt` | Crawler discovery. Search and AI crawlers are welcome; only `/api/` is closed. |
 | `<link rel="canonical">` and JSON-LD | `WebSite` + `VideoGame` on `/`, and `Article` with source citations on `/learn`. The share-preview pages point their canonical at `/`. |
 | `X-Robots-Tag: noindex` on `*.pages.dev` | Only the custom domain is indexed |
+| `/en/`, `/en/learn`, `/en/c/…`, `/en/checklist/…` + `hreflang` | The English (international) version, with English previews in `public/og/en/`. See [KNOWLEDGE §18](docs/KNOWLEDGE.md#18-international-version-and-social-previews). |
 
 The Thai copy for these pages is in `public/content/strings.json → seo`. Bump `seo.updated` when lessons change. The rules and the reasons are in [APPROACH_AND_METHOD §13](docs/APPROACH_AND_METHOD.md#13-making-the-game-findable-seo-and-ai-search).
 

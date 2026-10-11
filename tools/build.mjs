@@ -153,25 +153,35 @@ if (SITE.includes('[DOMAIN]')) warn('No SITE_URL: link previews need an absolute
 // ---------------------------------------------------------------- OG pages
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const og = strings.og;
+const ogEn = strings.ogEn;
+if (!ogEn) err('strings.json: "ogEn" (English link previews) is missing');
+for (const k of Object.keys(og)) if (k !== '_readme' && ogEn && !(k in ogEn)) err(`strings.json: ogEn.${k} is missing (every "og" key needs an English version)`);
+// English pages live under /en/. x-default (people whose language is neither
+// Thai nor English) goes to English.
+const EN = '/en';
+const alt = (thPath, enPath) => [['th', `${SITE}${thPath}`], ['en', `${SITE}${enPath}`], ['x-default', `${SITE}${enPath}`]];
 // canonical: where search engines should index this page. The share pages
 // (/c/*, /checklist/*) are copies of the app shell, so they point at "/".
 // ld: optional JSON-LD object (index.html only).
 const jsonLd = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
-const ogBlock = ({ title, desc, image, alt, url, canonical = `${SITE}/`, ld }) => [
+const ogBlock = ({ title, desc, image, alt: imgAlt, url, canonical = `${SITE}/`, ld, lang = 'th', alternates = [] }) => [
   '<!--OG:START-->',
   `<link rel="canonical" href="${canonical}">`,
+  ...alternates.map(([hl, href]) => `<link rel="alternate" hreflang="${hl}" href="${href}">`),
   '<meta property="og:type" content="website">',
-  `<meta property="og:site_name" content="${esc(og.siteName)}">`,
+  `<meta property="og:site_name" content="${esc((lang === 'en' ? ogEn : og).siteName)}">`,
   `<meta property="og:title" content="${esc(title)}">`,
   `<meta property="og:description" content="${esc(desc)}">`,
   `<meta property="og:image" content="${SITE}${image}">`,
   '<meta property="og:image:type" content="image/png">',
   '<meta property="og:image:width" content="1200">',
   '<meta property="og:image:height" content="630">',
-  `<meta property="og:image:alt" content="${esc(alt)}">`,
-  '<meta property="og:locale" content="th_TH">',
+  `<meta property="og:image:alt" content="${esc(imgAlt)}">`,
+  `<meta property="og:locale" content="${lang === 'en' ? 'en_US' : 'th_TH'}">`,
+  `<meta property="og:locale:alternate" content="${lang === 'en' ? 'th_TH' : 'en_US'}">`,
   url ? `<meta property="og:url" content="${url}">` : '',
   '<meta name="twitter:card" content="summary_large_image">',
+  `<meta name="twitter:image:alt" content="${esc(imgAlt)}">`,
   ld ? jsonLd(ld) : '',
   '<!--OG:END-->',
 ].filter(Boolean).join('\n');
@@ -230,8 +240,33 @@ if (config.version !== pkgVersion) err(`config.json version "${config.version}" 
 indexHtml = indexHtml.replace(/(<div class="app-version" id="app-version">)[^<]*(<\/div>)/, `$1v${pkgVersion}$2`);
 indexHtml = indexHtml.replace(OG_RE, ogBlock({
   title: og.defaultTitle, desc: og.defaultDesc, image: '/og/default.png', alt: og.defaultAlt, url: `${SITE}/`, ld: indexLd,
+  alternates: alt('/', `${EN}/`),
 }));
 fs.writeFileSync(indexPath, indexHtml);
+
+// English app shell for /en/: same game, but the HTML that crawlers and link
+// previews see is English (lang, title, description, the start-screen text),
+// so search engines can index it and shares from English players preview in
+// English. The script switches the language from the /en path.
+const enText = strings.en;
+const localize = (html) => html
+  .replace('<html lang="th">', '<html lang="en">')
+  .replace('<body class="lang-th">', '<body class="lang-en">')
+  .replace(/(<([a-z0-9]+)\b[^>]*\bdata-i18n="(\w+)"[^>]*>)([^<]*)(<\/\2>)/g,
+    (m, open, tag, key, text, close) => (typeof enText[key] === 'string' ? `${open}${esc(enText[key])}${close}` : m))
+  .replace(/(<[^>]*\bdata-i18n-aria="(\w+)"[^>]*>)/g,
+    (tag, _, key) => (typeof enText[key] === 'string' ? tag.replace(/aria-label="[^"]*"/, `aria-label="${esc(enText[key])}"`) : tag))
+  .replace(/href="\/learn"/g, `href="${EN}/learn"`)
+  .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2')
+  .replace(/(<h1 id="logo-title" class="logo">[\s\S]*?)(<\/h1>)/, `$1<span class="sr-only"> ${esc(ogEn.siteName)}</span>$2`);
+const enIndexLd = JSON.parse(JSON.stringify(indexLd));
+enIndexLd['@graph'][0] = { ...enIndexLd['@graph'][0], '@id': `${SITE}${EN}/#website`, url: `${SITE}${EN}/`, name: ogEn.siteName, alternateName: ['Baan Rod Mai?', og.siteName], inLanguage: 'en' };
+enIndexLd['@graph'][1] = { ...enIndexLd['@graph'][1], url: `${SITE}${EN}/`, description: ogEn.defaultDesc, isPartOf: { '@id': `${SITE}${EN}/#website` }, subjectOf: { '@type': 'WebPage', url: `${SITE}${EN}/learn` } };
+const enIndexHtml = page(localize(indexHtml), ogBlock({
+  title: ogEn.defaultTitle, desc: ogEn.defaultDesc, image: '/og/en/default.png', alt: ogEn.defaultAlt,
+  url: `${SITE}${EN}/`, canonical: `${SITE}${EN}/`, ld: enIndexLd, lang: 'en', alternates: alt('/', `${EN}/`),
+}), ogEn.defaultTitle);
+write('en/index.html', enIndexHtml);
 
 for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
   const cap = mode === 'prepare' ? 'Prepare' : 'Return';
@@ -245,7 +280,21 @@ for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
   const ct = og[`checklistTitle${cap}`];
   write(`checklist/${mode}.html`, page(indexHtml, ogBlock({
     title: ct, desc: og.checklistDesc, image: `/og/checklist-${mode}.png`, alt: ct, url: `${SITE}/checklist/${mode}`,
+    alternates: alt(`/checklist/${mode}`, `${EN}/checklist/${mode}`),
   }), `${ct} · บ้านรอดไหม?`));
+
+  for (let s = 0; s <= 10; s++) {
+    const title = fill(ogEn[`challengeTitle${cap}`], { score: s });
+    write(`en/c/${m}${s}.html`, page(enIndexHtml, ogBlock({
+      title, desc: ogEn[`challengeDesc${cap}`], image: `/og/en/${m}${s}.png`, alt: title,
+      canonical: `${SITE}${EN}/`, lang: 'en',
+    }), `${title} · Baan Rod Mai?`));
+  }
+  const cte = ogEn[`checklistTitle${cap}`];
+  write(`en/checklist/${mode}.html`, page(enIndexHtml, ogBlock({
+    title: cte, desc: ogEn.checklistDesc, image: `/og/en/checklist-${mode}.png`, alt: cte, url: `${SITE}${EN}/checklist/${mode}`,
+    canonical: `${SITE}${EN}/`, lang: 'en', alternates: alt(`/checklist/${mode}`, `${EN}/checklist/${mode}`),
+  }), `${cte} · Baan Rod Mai?`));
 }
 
 // ---------------------------------------------------------------- SEO / AI search
@@ -264,8 +313,12 @@ const roomOrder = roomsFile.rooms.map((r) => r.id);
 const lessons = (mode) => itemsFile.items
   .filter((it) => it.mode === mode && it.enabled !== false)
   .sort((a, b) => roomOrder.indexOf(a.room) - roomOrder.indexOf(b.room));
-const srcLinks = (ids) => (ids || []).filter((id) => sources[id])
-  .map((id) => `<a href="${esc(sources[id].url)}">${esc(sources[id].agency)}${sources[id].date ? ` (${esc(sources[id].date.slice(0, 4))})` : ''}</a>`).join(' · ');
+const srcLinks = (ids, lang = 'th') => (ids || []).filter((id) => sources[id])
+  .map((id) => {
+    const ag = sources[id].agency;
+    const name = lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag;
+    return `<a href="${esc(sources[id].url)}">${esc(name)}${sources[id].date ? ` (${esc(sources[id].date.slice(0, 4))})` : ''}</a>`;
+  }).join(' · ');
 const lessonHtml = (it) => {
   const right = it.choices.find((c) => c.correct);
   const wet = it.wet ? it.wet.choices.find((c) => c.correct) : null;
@@ -305,6 +358,7 @@ const learnHtml = `<!doctype html>
 <title>${esc(learnTitle)}</title>
 <meta name="description" content="${esc(S.learnDesc)}">
 <link rel="canonical" href="${LEARN_URL}">
+${alt('/learn', `${EN}/learn`).map(([hl, href]) => `<link rel="alternate" hreflang="${hl}" href="${href}">`).join('\n')}
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="${esc(og.siteName)}">
 <meta property="og:title" content="${esc(learnTitle)}">
@@ -313,6 +367,7 @@ const learnHtml = `<!doctype html>
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="th_TH">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:url" content="${LEARN_URL}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
@@ -331,7 +386,7 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 </head>
 <body>
 <main>
-<p><a href="/">${esc(og.siteName)}</a></p>
+<p><a href="/">${esc(og.siteName)}</a> · <a href="${EN}/learn" lang="en" hreflang="en">English</a></p>
 <h1>${esc(S.learnH1)}</h1>
 <p>${esc(S.learnIntro)}</p>
 <p class="en" lang="en">${esc(E.learnIntro)}</p>
@@ -353,6 +408,60 @@ ${helplineHtml}
 `;
 writeSeo('learn.html', learnHtml);
 
+// /en/learn: the same lessons, English first, for international search and
+// AI assistants. It says plainly that the advice and hotlines are Thai.
+const LEARN_EN = `${SITE}${EN}/learn`;
+for (const ag of new Set(Object.values(sources).map((x) => x.agency))) if (!seo.en.agencies?.[ag]) err(`strings.json: seo.en.agencies has no English name for "${ag}"`);
+const enLesson = (it) => {
+  const right = it.choices.find((c) => c.correct);
+  const wet = it.wet ? it.wet.choices.find((c) => c.correct) : null;
+  return `<article id="${esc(it.id)}">
+<h3>${esc(it.name.en)} <span class="en" lang="th">${esc(it.name.th)}</span></h3>
+<p class="room">${esc(roomById.get(it.room)?.name?.en || '')}</p>
+<p><b>${esc(E.doThis)}:</b> ${esc(right.label.en)}</p>
+<p class="tip">${esc(it.tip.en)}</p>
+${it.why?.en ? `<p><b>${esc(E.why)}:</b> ${esc(it.why.en)}</p>` : ''}
+${wet ? `<p><b>${esc(E.ifWet)}:</b> ${esc(wet.label.en)}${it.wet.tip?.en ? ` · ${esc(it.wet.tip.en)}` : ''}</p>` : ''}
+<p class="src">${esc(E.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])], 'en')}${it.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc(E.partialNote)}</span>` : ''}</p>
+</article>`;
+};
+const learnTitleEn = fill(E.learnTitle, { n: nLessons });
+const learnEnHtml = learnHtml
+  .replace('<html lang="th">', '<html lang="en">')
+  .replace(/<title>[^<]*<\/title>/, `<title>${esc(learnTitleEn)}</title>`)
+  .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(E.learnDesc)}">`)
+  .replace(`<link rel="canonical" href="${LEARN_URL}">`, `<link rel="canonical" href="${LEARN_EN}">`)
+  .replace(`<meta property="og:site_name" content="${esc(og.siteName)}">`, `<meta property="og:site_name" content="${esc(ogEn.siteName)}">`)
+  .replace(`<meta property="og:title" content="${esc(learnTitle)}">`, `<meta property="og:title" content="${esc(learnTitleEn)}">`)
+  .replace(`<meta property="og:description" content="${esc(S.learnDesc)}">`, `<meta property="og:description" content="${esc(E.learnDesc)}">`)
+  .replace(`${SITE}/og/default.png">`, `${SITE}/og/en/default.png">`)
+  .replace('<meta property="og:locale" content="th_TH">\n<meta property="og:locale:alternate" content="en_US">', '<meta property="og:locale" content="en_US">\n<meta property="og:locale:alternate" content="th_TH">')
+  .replace(`<meta property="og:url" content="${LEARN_URL}">`, `<meta property="og:url" content="${LEARN_EN}">`)
+  .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, jsonLd({ ...learnLd, '@id': `${LEARN_EN}#article`, url: LEARN_EN, mainEntityOfPage: LEARN_EN, headline: E.learnH1, name: learnTitleEn, description: E.learnDesc, inLanguage: 'en', image: `${SITE}/og/en/default.png` }))
+  .replace(/<main>[\s\S]*<\/main>/, `<main>
+<p><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="/learn" lang="th" hreflang="th">ภาษาไทย</a></p>
+<h1>${esc(E.learnH1)}</h1>
+<p>${esc(E.learnIntro)}</p>
+<p class="tip">${esc(E.intlNote)}</p>
+<p><a class="cta" href="${EN}/">${esc(E.playCta)}</a></p>
+<p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<h2 id="prepare">${esc(E.sectionPrepare)}</h2>
+${prepareL.map(enLesson).join('\n')}
+<h2 id="return">${esc(E.sectionReturn)}</h2>
+${returnL.map(enLesson).join('\n')}
+<h2 id="checklists">${esc(E.checklists)}</h2>
+${['prepare', 'return'].map((m) => `<h3>${esc(checklists[m].title.en)}</h3>\n<ol>${checklists[m].items.map((c) => `<li>${esc(c.en)}</li>`).join('')}</ol>`).join('\n')}
+<h2 id="helplines">${esc(E.helplines)}</h2>
+<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${esc(h.who.en)}: ${esc(h.what.en)}</li>`).join('')}</ul>
+<p>${esc(E.intlNote)}</p>
+<p><a class="cta" href="${EN}/">${esc(E.back)}</a></p>
+<footer><p>${esc(strings.en.disclaimer)}</p></footer>
+</main>`);
+fs.mkdirSync(path.join(PUB, 'en'), { recursive: true });
+writeSeo('en/learn.html', learnEnHtml);
+if (/[\u0E00-\u0E7F]/.test(learnEnHtml.replace(/lang="th"[^>]*>[^<]*</g, '').replace(/<script[\s\S]*?<\/script>/g, '').replace(/href="[^"]*"/g, '')))
+  warn('en/learn.html contains Thai text outside Thai-tagged spans (link addresses excepted)');
+
 // robots.txt: everyone, including AI search and AI assistants, may read the
 // public pages; only the event endpoint is off limits.
 writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): a public flood-safety game.
@@ -365,9 +474,13 @@ Disallow: /api/
 Sitemap: ${SITE}/sitemap.xml
 `);
 
+// Each page lists its other-language version (hreflang), as Google asks.
+const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`]];
 writeSeo('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[`${SITE}/`, LEARN_URL].map((u) => `  <url><loc>${u}</loc><lastmod>${seoUpdated}</lastmod></url>`).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${sitemapPairs.flatMap(([th, en]) => [th, en].map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${seoUpdated}</lastmod>
+${alt(th, en).map(([hl, href]) => `    <xhtml:link rel="alternate" hreflang="${hl}" href="${href}"/>`).join('\n')}
+  </url>`)).join('\n')}
 </urlset>
 `);
 
@@ -381,8 +494,9 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 
 > ${md(E.llmsSummary)}
 
-- Play: ${SITE}/
-- Every lesson with its reason and sources (Thai + English): ${LEARN_URL}
+- Play in Thai: ${SITE}/ · in English: ${SITE}${EN}/
+- Every lesson with its reason and sources: ${LEARN_URL} (Thai, with English) · ${LEARN_EN} (English)
+- The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 
 ## Before the flood (ก่อนน้ำมา)
@@ -408,6 +522,7 @@ ${helplines.helplines.map((h) => `- ${h.number}: ${md(h.who.en)} (${md(h.who.th)
 const listFiles = (dir) => fs.readdirSync(path.join(PUB, dir)).filter((f) => !f.startsWith('.')).map((f) => `/${dir}/${f}`);
 const precache = [
   '/',
+  '/en/',
   '/css/app.css',
   ...listFiles('js').filter((f) => f.endsWith('.js')),
   ...listFiles('content').filter((f) => f.endsWith('.json')),
@@ -419,7 +534,7 @@ const precache = [
 ];
 const hash = crypto.createHash('sha256');
 for (const url of precache) {
-  const file = url === '/' ? indexPath : path.join(PUB, url);
+  const file = url === '/' ? indexPath : url.endsWith('/') ? path.join(PUB, url, 'index.html') : path.join(PUB, url);
   if (!fs.existsSync(file)) err(`precache: ${url} does not exist`);
   else hash.update(fs.readFileSync(file));
 }

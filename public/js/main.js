@@ -4,7 +4,7 @@ import { $, $$, esc, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from 
 import { randomHouseKey, isValidHouseKey } from './rng.js';
 import {
   loadContent, content, t, L, setLang, getLang, pickLine, rankTitle, sourceList,
-  siteUrl, forecastUrl, applyStaticStrings,
+  siteUrl, forecastUrl, applyStaticStrings, langPath,
 } from './content.js';
 import { generateHouse, playableRooms } from './house.js';
 import { Round, STATUS } from './round.js';
@@ -73,6 +73,7 @@ async function boot() {
   applyStaticStrings();
   heroGecko = new Gecko($('#hero-gecko'), { title: 'น้องจก' });
 
+  syncLangPath();
   state.challenge = parseChallenge();
   if (state.challenge && !isValidHouseKey(state.challenge.houseKey)) state.challenge.houseKey = bangkokDateKey();
 
@@ -85,7 +86,7 @@ async function boot() {
 
   // Deep links: /checklist/prepare, ?open=help, etc.
   const open = new URLSearchParams(location.search).get('open') || '';
-  const cl = /^\/checklist\/(prepare|return)\/?$/.exec(location.pathname);
+  const cl = /^(?:\/en)?\/checklist\/(prepare|return)\/?$/.exec(location.pathname);
   if (cl) openChecklist(cl[1]);
   else if (/^checklist-(prepare|return)$/.test(open)) openChecklist(open.split('-')[1]);
   else if (open === 'help') openHelp();
@@ -194,6 +195,7 @@ function bindGlobal() {
   $('#btn-lang').textContent = t('langSwitch');
   $('#btn-lang').addEventListener('click', () => {
     setLang(getLang() === 'th' ? 'en' : 'th');
+    syncLangPath();
     track('lang', { label: getLang() });
     $('#btn-lang').textContent = t('langSwitch');
     applyStaticStrings();
@@ -571,7 +573,7 @@ async function showResult(result) {
   const rank = rankTitle(mode, result.tier);
   const prog = recordResult(result, run.kind);
   const site = siteUrl();
-  const cUrl = challengeUrl(site, mode, result.score10, run.houseKey);
+  const cUrl = challengeUrl(site, mode, result.score10, run.houseKey, getLang());
   const grid = gridOf(result);
   const headlineKey = mode === 'prepare' ? 'resultPrepare' : 'resultReturn';
   const shareText = t(mode === 'prepare' ? 'shareTextPrepare' : 'shareTextReturn', {
@@ -792,7 +794,7 @@ async function openChecklist(mode) {
   const img = $('#cl-img');
   if (!img) return; // sheet closed meanwhile
   img.src = await imageSrc(blob);
-  const url = `${siteUrl()}/checklist/${mode}`;
+  const url = `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/checklist/${mode}`;
   const text = t('shareTextChecklist', { title: L(list.title), url: siteUrl() });
   let file = null;
   try { file = new File([blob], `baanrodmai-checklist-${mode}.png`, { type: 'image/png' }); } catch { /* old browser */ }
@@ -876,6 +878,15 @@ function openAbout() {
 }
 
 // ------------------------------------------------------------------ offline
+
+// Keep the address bar on the page for the current language, so a copied or
+// shared link opens in that language (and previews in it).
+function syncLangPath() {
+  const next = langPath(location.pathname, getLang());
+  if (next !== location.pathname) {
+    try { history.replaceState(history.state, '', next + location.search + location.hash); } catch { /* sandboxed */ }
+  }
+}
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;

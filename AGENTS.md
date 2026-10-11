@@ -10,7 +10,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (10 Oct 2026):** v1.1.0. The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (11 Oct 2026):** v1.2.0, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: the forecast-app link, Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
@@ -29,8 +29,8 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | Command | What it does | When |
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview pages and `sw.js`, and checks the 500 KB budget | Every change |
-| `npm test` | 12 rule tests, Node only, well under a second | Every change |
-| `npm run smoke` | 25 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
+| `npm test` | 13 rule tests, Node only, well under a second | Every change |
+| `npm run smoke` | 31 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
 | `npm run probe` | Measures tap-area overlaps over two years of houses, and flood timings | Slot, size or water-curve changes |
 | `npm run docs` | Regenerates the safety table in `docs/01` from `items.json` | Any `items.json` / `sources.json` change |
@@ -70,12 +70,12 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
   - humour aimed only at the situation
 - **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous.
 - **Tap targets:** every one is at least 44 px. The smoke test measures items and controls.
-- **Weight:** the start screen stays under 500 KB compressed (144 KB today).
+- **Weight:** the start screen stays under 500 KB compressed (147 KB today).
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
-- **Text location:** player-facing text belongs in `public/content/*.json`, not in JS.
+- **Text location:** player-facing text belongs in `public/content/*.json`, not in JS. Every new `og` key needs an English `ogEn` twin (the build fails otherwise); re-render with `npm run images` and commit only the images you meant to change.
 - **Search and AI search:** `/learn`, `/llms.txt`, `/sitemap.xml`, `/robots.txt`, the canonical link and the JSON-LD are all generated from the content JSON. Don't hand-write lesson text anywhere else, or it will drift from `items.json`.
 - **Cloudflare token:** it is in `.env` (git-ignored). Load it with `set -a; . ./.env; set +a` and never print it. `wrangler.toml` manages the Pages project, so the site address comes from `config.json → siteUrl`, not a dashboard variable.
-- **Generated files** are never edited by hand: `public/sw.js`, `public/c/*.html`, `public/checklist/*.html`, the SEO files (`public/learn.html`, `robots.txt`, `sitemap.xml`, `llms.txt`), and the OG block in `index.html`. Bump `strings.json → seo.updated` when the lessons change.
+- **Generated files** are never edited by hand: `public/sw.js`, `public/c/*.html`, `public/checklist/*.html`, the English pages (`public/en/`), the SEO files (`public/learn.html`, `robots.txt`, `sitemap.xml`, `llms.txt`), and the OG block in `index.html`. Bump `strings.json → seo.updated` when the lessons change.
 - **Changes that reshuffle houses.** Adding, removing or disabling items, or moving slots, changes today's house and old challenge links. Say so in the commit, and ship such changes around midnight Bangkok time.
 - **Correcting published advice** requires an "UPDATE:" post. Note it for the owner.
 

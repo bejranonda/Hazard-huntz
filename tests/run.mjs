@@ -9,6 +9,7 @@ import { makeRng, isValidHouseKey } from '../public/js/rng.js';
 import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.js';
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
+import { guessLang, langPath, pathLang } from '../public/js/content.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const load = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content', `${f}.json`), 'utf8'));
@@ -178,6 +179,29 @@ test('challenge links round-trip', () => {
   assert.equal(parseChallenge(new URL('https://example.org/c/p11?h=1')), null);
   assert.equal(parseChallenge(new URL('https://example.org/')), null);
   assert.ok(isValidHouseKey('20261007') && isValidHouseKey('rab23cd') && !isValidHouseKey('../x'));
+});
+
+test('international: /en links, language guess and path switching', () => {
+  assert.equal(challengeUrl('https://example.org', 'prepare', 8, '20261007', 'en'), 'https://example.org/en/c/p8?h=20261007');
+  assert.deepEqual(parseChallenge(new URL('https://example.org/en/c/p8?h=20261007')), { mode: 'prepare', score: 8, houseKey: '20261007' });
+  assert.equal(parseChallenge(new URL('https://example.org/en/x/c/p8')), null);
+  assert.equal(pathLang('/en/'), 'en');
+  assert.equal(pathLang('/en/c/r3'), 'en');
+  assert.equal(pathLang('/english'), null);
+  assert.equal(pathLang('/'), null);
+  // Thai browser, or a Thai on English phone settings in Thailand: Thai.
+  assert.equal(guessLang(['th-TH'], 'Europe/Berlin'), 'th');
+  assert.equal(guessLang(['en-US', 'th'], 'America/New_York'), 'th');
+  assert.equal(guessLang(['en-US'], 'Asia/Bangkok'), 'th');
+  // Everyone else: English.
+  assert.equal(guessLang(['en-GB'], 'Europe/London'), 'en');
+  assert.equal(guessLang(['de-DE', 'en'], 'Europe/Berlin'), 'en');
+  for (const [th, en] of [['/', '/en/'], ['/c/p8', '/en/c/p8'], ['/checklist/return', '/en/checklist/return']]) {
+    assert.equal(langPath(th, 'en'), en);
+    assert.equal(langPath(en, 'th'), th);
+    assert.equal(langPath(en, 'en'), en);
+  }
+  assert.equal(langPath('/learn', 'en'), '/learn');
 });
 
 test('daily house resets at midnight Bangkok time', () => {

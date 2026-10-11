@@ -40,6 +40,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N4 | [Bigger tap areas on 320 px phones](#n4-bigger-tap-areas-on-320-px-phones) | AI-ready | Todo |
 | N5 | [First metrics review](#n5-first-metrics-review) | Owner + AI | Blocked: needs 2 weeks live |
 | N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Done: IMP-01 to IMP-07 verified |
+| N7 | [International version and social previews](#n7-international-version-and-social-previews) | AI-ready | Done (11 Oct 2026, v1.2.0) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -209,6 +210,15 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - Tasks IMP-01 through IMP-05 are implemented and verified.
   - Smoke tests and probe checks pass with 0 regressions.
   - Issues #33–#36 are updated in `KNOWN_ISSUES.md`.
+
+### N7. International version and social previews
+
+- **Who:** AI-ready · **Status:** Done (11 Oct 2026, v1.2.0) · **Issue:** #37
+- **What was done:** English addresses `/en/`, `/en/learn`, `/en/c/…`, `/en/checklist/…`; English start screen in the static HTML; first-visit language guess (Thai for Thai browsers or Bangkok time); `hreflang` + sitemap alternates; English JSON-LD; 25 English preview images; `og:locale:alternate` and `twitter:image:alt`; English share links keep `/en`. See [KNOWLEDGE §18](KNOWLEDGE.md#18-international-version-and-social-previews).
+- **Left for the owner:**
+  - submit the updated sitemap again in Google Search Console and Bing (it now lists `/en/` and `/en/learn`)
+  - check an `/en/c/p8` link in Facebook's Sharing Debugger and in LinkedIn's Post Inspector
+  - have a native English speaker read `ogEn` and `seo.en`
 
 ## Later
 

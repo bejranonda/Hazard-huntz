@@ -150,6 +150,8 @@ try {
     const bytes = resp.reduce((a, r) => a + r.len, 0);
     check('start screen transfer < 500 KB (uncompressed)', bytes < 500 * 1024, `${(bytes / 1024).toFixed(0)} KB`);
     await shot(page, '01-start');
+    const fHref = await page.getAttribute('#forecast-link-start', 'href');
+    check('forecast button is visible and opens FloodWatch', (await page.isVisible('#forecast-link-start')) && fHref === 'https://flood.autobahn.bot/', String(fHref));
     check('default mode badge shown', await page.isVisible('.mode-btn.is-default .mode-badge'));
     const shownVersion = (await page.textContent('#app-version')).trim();
     check('start screen shows the package.json version', shownVersion === `v${JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version}`, shownVersion);

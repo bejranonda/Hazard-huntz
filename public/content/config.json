@@ -1,10 +1,10 @@
 {
   "_readme": "rainWarningActive: true = ช่วงที่มีเตือนฝน/น้ำกำลังมา หน้าแรกจะแนะนำโหมด 'ก่อนน้ำมา' ก่อน, false = แนะนำ 'หลังน้ำลด'. แก้ forecastAppUrl ก่อนเปิดตัว (siteUrl = โดเมนจริงของเกม)",
   "rainWarningActive": true,
-  "forecastAppUrl": "[FORECAST_APP_URL]",
+  "forecastAppUrl": "https://flood.autobahn.bot/",
   "forecastStatusUrl": null,
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

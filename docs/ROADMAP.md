@@ -28,7 +28,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 |---|---|---|---|
 | L1 | [Create the Cloudflare Pages project](#l1-create-the-cloudflare-pages-project) | Owner | Mostly done: Web Analytics left |
 | L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
-| L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Blocked: needs the URL |
+| L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 9 flagged (⚠️) safety items](#l4-review-the-9-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
@@ -80,7 +80,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L3. Set the forecast-app link
 
-- **Who:** Owner + AI · **Status:** Blocked (needs the URL) · **Issues:** #6, #13
+- **Who:** Owner + AI · **Status:** Done (11 Oct 2026, v1.2.1): `forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch, water levels of canals and rivers across Thailand). The button shows on the start screen, result screen and help sheet. **Optional left:** `forecastStatusUrl`, only if FloodWatch offers a small `{"rainWarning": true|false}` endpoint with CORS · **Issues:** #6 (fixed), #13
 - **Steps:**
   1. Set `config.json → forecastAppUrl`.
   2. Optionally set `forecastStatusUrl`. Its endpoint must send CORS headers and answer `{"rainWarning": true|false}` within 1.5 s.

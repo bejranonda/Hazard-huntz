@@ -4,6 +4,12 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.2.1] — 2026-10-11
+
+### Changed
+
+- **Forecast button is live:** `config.json → forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch, canal and river water levels across Thailand), so "เช็กระดับน้ำล่วงหน้า" / "Water levels" shows on the start screen, the result screen and the help sheet. A smoke check (32) covers it; the build no longer warns about the placeholder.
+
 ## [1.2.0] — 2026-10-11
 
 An international (English) version, and better search and social previews in both languages.

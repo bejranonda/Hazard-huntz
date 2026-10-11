@@ -80,7 +80,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L3. Set the forecast-app link
 
-- **Who:** Owner + AI · **Status:** Done (11 Oct 2026, v1.2.1): `forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch, water levels of canals and rivers across Thailand). The button shows on the start screen, result screen and help sheet. **Optional left:** `forecastStatusUrl`, only if FloodWatch offers a small `{"rainWarning": true|false}` endpoint with CORS · **Issues:** #6 (fixed), #13
+- **Who:** Owner + AI · **Status:** Done (11 Oct 2026, v1.2.1): `forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch, water levels of canals and rivers across Thailand; the owner confirmed on 11 Oct 2026 that it is their own Autobahn Bot project). The button shows on the start screen, result screen and help sheet. **Optional left:** `forecastStatusUrl`, only if FloodWatch offers a small `{"rainWarning": true|false}` endpoint with CORS · **Issues:** #6 (fixed), #13
 - **Steps:**
   1. Set `config.json → forecastAppUrl`.
   2. Optionally set `forecastStatusUrl`. Its endpoint must send CORS headers and answer `{"rainWarning": true|false}` within 1.5 s.
@@ -216,6 +216,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Who:** AI-ready · **Status:** Done (11 Oct 2026, v1.2.0) · **Issue:** #37
 - **What was done:** English addresses `/en/`, `/en/learn`, `/en/c/…`, `/en/checklist/…`; English start screen in the static HTML; first-visit language guess (Thai for Thai browsers or Bangkok time); `hreflang` + sitemap alternates; English JSON-LD; 25 English preview images; `og:locale:alternate` and `twitter:image:alt`; English share links keep `/en`. See [KNOWLEDGE §18](KNOWLEDGE.md#18-international-version-and-social-previews).
 - **Left for the owner:**
+  - language check of the English text (`ogEn`, `seo.en`, the English UI strings): the owner will provide it; apply it in `strings.json`, re-render with `npm run images`, and restore the Thai images that change by pixel noise
   - submit the updated sitemap again in Google Search Console and Bing (it now lists `/en/` and `/en/learn`)
   - check an `/en/c/p8` link in Facebook's Sharing Debugger and in LinkedIn's Post Inspector
   - have a native English speaker read `ogEn` and `seo.en`

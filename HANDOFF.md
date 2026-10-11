@@ -50,7 +50,8 @@ Work through these in order. Each links to the details.
   npm install
   SITE_URL=https://your.domain npm run images
   ```
-- [x] **Set `config.json → forecastAppUrl`** (done 11 Oct 2026: BKK FloodWatch, `https://flood.autobahn.bot/`). Optionally also set `forecastStatusUrl`; its endpoint needs CORS ([#13](docs/KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)).
+- [x] **Set `config.json → forecastAppUrl`** (done 11 Oct 2026: BKK FloodWatch, `https://flood.autobahn.bot/`, the owner's own Autobahn Bot project).
+- [ ] **Language check:** the owner will supply a native-speaker review of the English text (and the Thai); then apply it ([ROADMAP N7](docs/ROADMAP.md#n7-international-version-and-social-previews), [KNOWN_ISSUES #11](docs/KNOWN_ISSUES.md#11-thai-copy-needs-a-second-native-reader), [#37](docs/KNOWN_ISSUES.md#37-the-international-version-is-english-only-with-thai-advice-and-hotlines)). Optionally also set `forecastStatusUrl`; its endpoint needs CORS ([#13](docs/KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)).
 - [ ] **Finish configuring the Pages project:**
   - Metrics → **Web Analytics → Enable** (**still to do**; the API token has no permission for it)
   - ~~Bindings: `EVENTS`~~ and ~~Runtime → Fail open~~ are done. Analytics Engine was enabled on the account, which the first deploy needed.

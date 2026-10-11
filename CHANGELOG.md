@@ -8,6 +8,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ### Changed
 
+- **Published 11 Oct 2026** (CI green on `f31c600`; live site shows `v1.2.1`). FloodWatch is the owner's own Autobahn Bot project.
 - **Forecast button is live:** `config.json → forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch, canal and river water levels across Thailand), so "เช็กระดับน้ำล่วงหน้า" / "Water levels" shows on the start screen, the result screen and the help sheet. A smoke check (32) covers it; the build no longer warns about the placeholder.
 
 ## [1.2.0] — 2026-10-11

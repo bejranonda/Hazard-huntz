@@ -29,7 +29,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - Nothing flashes, and `prefers-reduced-motion` is respected.
    - Every control is reachable by keyboard and readable by a screen reader.
 5. **Fast:**
-   - The start screen stays **under 500 KB** compressed. It is 144 KB today.
+   - The start screen stays **under 500 KB** compressed. It is 147 KB today (156 KB with the first game screen).
    - No frameworks and no runtime npm packages.
 6. **Works where people share it.** It must work in the LINE, Facebook and TikTok in-app browsers on Android and iOS, in iOS Safari and in Android Chrome. Every feature that a platform may lack has a fallback (see [KNOWLEDGE §11](KNOWLEDGE.md#11-browser-and-in-app-facts)).
 7. **The disclaimer and help numbers are always there.**
@@ -55,7 +55,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - `partial`: the core is official but one detail is inferred, older, or from another body. Explain which in `verifyNote`.
    - `unverified`: no official source. The build warns. Do not ship these.
 4. Run `npm run docs` to regenerate the table in [01-safety-content.md](01-safety-content.md). Then run `node tools/build.mjs` and `npm test`.
-5. If the item is in a playable room, check that it fits a slot and doesn't crowd a neighbour (see [KNOWN_ISSUES #1](KNOWN_ISSUES.md#1-neighbouring-tap-areas-can-overlap)).
+5. If the item is in a playable room, check that it fits a slot and doesn't crowd a neighbour (see [KNOWN_ISSUES #1](KNOWN_ISSUES.md#fixed)).
 
 ### 2.2 Numbers
 
@@ -87,7 +87,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 4. Re-render the images.
 5. Re-run the full test matrix.
 
-## 3. Thai copy and tone
+## 3. Thai and English copy and tone
 
 - **Voice:** a helpful neighbour. Warm, casual and native. Short sentences, with particles used naturally (นะ, จ้า, เลย). Explain jargon; use everyday words (ภาษาชาวบ้าน).
 - **Tips:**
@@ -103,12 +103,16 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - catchphrases that mock officials, even popular ones
   - fear-mongering
   - AI-generated or realistic disaster imagery
-- **English** mirrors the tone. It is a translation for helpers, not a separate voice.
+- **English** mirrors the tone. It is written for visitors from outside Thailand and for helpers, not as a separate voice.
+  - Every player-facing string has a `th` and an `en` value with the same keys (130 each), and every `og` key has an `ogEn` twin. The build fails otherwise.
+  - Say plainly that the advice and hotlines are Thai. Don't add foreign numbers or laws that no source backs.
+  - Agency names appear in English in `seo.en.agencies`.
+  - The wordmark is `logoA` + `logoB` in each language ("Baan " + "Rod Mai?" in English; a space at the end of `logoA` is intentional). Never hard-code the name in HTML or canvas code.
 - **Formatting:**
   - Keep `{placeholders}` exactly as they are.
   - Write phone numbers as plain digits (`1784`).
   - Write Thai dates as `6 ต.ค. 69` in the UI (Buddhist era, short), produced by `formatHouseDate()`.
-- **Review:** have a second native speaker read new copy before release, ideally an older family member from the forwarding audience.
+- **Review:** have a second native speaker read new copy before release, ideally an older family member from the forwarding audience, and a native English reader for English copy (the owner has promised a language check, [KNOWN_ISSUES #11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
 
 ## 4. Art
 
@@ -171,7 +175,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - Add structured data only for things that exist on the page. No `FAQPage`, `HowTo`, ratings or reviews unless the page really has them.
   - Share-preview pages (`/c/*`, `/checklist/*`) keep a canonical link to `/` and stay out of the sitemap.
   - Keep `/api/` the only path `robots.txt` closes, and leave Cloudflare's AI-bot blocking off for this host.
-- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 144 KB.
+- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 147 KB.
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 
 ## 6. Testing
@@ -210,12 +214,13 @@ Rules:
 - **Release checklist:**
   1. `node tools/build.mjs` passes with no unexpected warnings.
   2. `npm test` and `npm run smoke` pass.
-  3. Images are re-rendered if the copy, ranks, checklists or domain changed.
+  3. Images are re-rendered if the copy, ranks, checklists or domain changed (Thai `og/` and English `og/en/`). Restore any PNG you did not mean to change with `git checkout -- <path>`; a different Chromium alters every PNG slightly.
   4. `CHANGELOG.md` and the version are updated. The version lives in `package.json` (and `package-lock.json`); `config.json → version` must match it, and the build fails if it doesn't.
   5. Merge to `main`, and wait for the Cloudflare deploy.
-  6. Open the live site once and reload, so the new service worker takes over. Check that a changed text appears.
+  6. Open the live site once and reload, so the new service worker takes over. Check that a changed text appears, in Thai (`/`) **and** English (`/en/`), and that the version chip matches. A green push is not a live site.
   7. If the previews changed, re-scrape them in Facebook's Sharing Debugger and check LINE with `?v=<n>`.
-  8. If safety content changed, publish an "UPDATE:" post.
+  8. If safety content changed, publish an "UPDATE:" post. Bump `strings.json → seo.updated`.
+  9. If a version tag is wanted, the owner creates it as a GitHub Release, because the session's git proxy refuses tag pushes.
 - **Rollback:** Cloudflare → the Pages project → Deployments → pick an earlier one → *Rollback*.
 - **Prefer additive history.**
   - Fix mistakes with new commits (reverts, removal commits), not resets.
@@ -256,6 +261,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 27. **Reassure players against timer anxiety.** Explain prominently in how-to dialogs that timer countdowns pause during question reading, avoiding unnecessary panic for older adults.
 28. **In-app browser sharing must guide around download restrictions.** In LINE and Facebook webviews where programmatic canvas downloads fail, pair long-press guidance with a direct "Open in external browser" option.
 29. **Slot exclusions prevent neighbouring tap collisions.** Instead of fragile manual coordinate balancing that cascades across room layouts, declare conflicting slot IDs in `slot.excludes` within `rooms.json` so `generateHouse()` in `house.js` never places two items in overlapping hitboxes in the same house.
+30. **Every language switch has three places:** the page text (`data-i18n`), the address bar (`langPath`, `/en/…`) and the images (`ogEn`). A change that touches only one leaves English visitors with Thai in the other two.
+31. **The wordmark is data, not markup.** `logoA`/`logoB` feed both the HTML and the canvas `logo()`, which shrinks to fit. A hard-coded Thai name once stayed in the English header and on the English result card.
+32. **Spacing between canvas text parts lives in the string.** CSS can't add it to a canvas; the English name showed as "BaanRod Mai?" until the space went into `logoA`.
+33. **Test as an international visitor, not only a Thai one.** The smoke test defaults to locale th-TH and the Asia/Bangkok time zone; English checks set their own (for example London). Otherwise `guessLang` hides English bugs.
+34. **A path ending in `/` precaches `index.html`.** The service-worker list once crashed the build (`EISDIR`) on `/en/`.
 
 ## 9. Working with AI assistants
 

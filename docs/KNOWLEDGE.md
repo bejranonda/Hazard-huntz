@@ -2,7 +2,7 @@
 
 A reference for anyone maintaining บ้านรอดไหม?. It covers every rule, constant and formula in the game, the content model, the platform facts the design depends on, and the research behind it.
 
-Facts are as of **6 Oct 2026**. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
+Facts are as of **12 Oct 2026** (the research in §13–§15 was compiled on 6 Oct 2026). Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
 What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
 
@@ -25,6 +25,8 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 15. [From research to features](#15-from-research-to-features)
 16. [Search and AI-search facts](#16-search-and-ai-search-facts)
 17. [UI/UX evaluation and target persona findings](#17-uiux-evaluation-and-target-persona-findings)
+18. [International version and social previews](#18-international-version-and-social-previews)
+19. [The water-level link (BKK FloodWatch)](#19-the-water-level-link-bkk-floodwatch)
 
 ---
 
@@ -228,7 +230,10 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`.
   - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost) or `secondary` (news quoting the agency).
   - Totals: 54 sources, of which 30 official, 9 government and 15 secondary.
-- **`strings.json`:** `th` and `en` UI strings (115 keys each), plus `og` (link-preview texts used by the build and the image renderer). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`.
+- **`strings.json`:**
+  - `th` and `en` UI strings (130 keys each, the same keys in both). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
+  - `og`: Thai link-preview texts, and `ogEn`: their English twins (the build fails if a key is missing from `ogEn`). Both are used by the build and by the image renderer.
+  - `seo`: the lessons pages and `llms.txt` text (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`).
 - **`checklists.json`:** `prepare` and `return`, each `{title, items: exactly 10 × {icon, th, en, sprite?}}`.
 - **`helplines.json`:** `{number, main, who{th,en}, what{th,en}, source}`. Numbers have 3–5 digits. `main: true` puts the number on the cards.
 - **`config.json`:**
@@ -261,13 +266,13 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 **2. Site URL.** The first of these that is set: `SITE_URL` env → `config.siteUrl` (if not a placeholder) → `CF_PAGES_URL` → `https://[DOMAIN]`. On Cloudflare the `SITE_URL` variable doesn't exist (see §10), so the live value is `config.siteUrl` = `https://baanrodmai.autobahn.bot`.
 
-**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 22 challenge pages (`c/{p,r}{0..10}.html`, *without* `og:url`) and 2 checklist pages.
+**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 22 challenge pages (`c/{p,r}{0..10}.html`, *without* `og:url`) and 2 checklist pages, and the English set: `en/index.html` (the app shell in English), 22 `en/c/…` pages and 2 `en/checklist/…` pages. That is 49 generated pages in all.
 
-**3b. SEO and AI-search files.** It writes `learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
+**3b. SEO and AI-search files.** It writes `learn.html`, `en/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16, §18). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
 
-**4. Service worker.** It fills `tools/sw.template.js` with the precache list (37 files) and a version: the first 10 hex characters of the SHA-256 of those files.
+**4. Service worker.** It fills `tools/sw.template.js` with the precache list (38 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **144 KB**, or **154 KB** including the first room and the sprites.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **147 KB**, or **156 KB** including the first room and the sprites.
 
 **6. `--docs`.** Regenerates the table, flags and references in `docs/01-safety-content.md` from `items.json` and `sources.json`.
 
@@ -289,7 +294,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 | Everything else (same origin) | Stale-while-revalidate |
 | `/api/*`, other origins, non-GET | Not handled |
 
-- **Install** precaches the 37 files and calls `skipWaiting()`.
+- **Install** precaches the 38 files and calls `skipWaiting()`.
 - **Activate** deletes old `brm-*` caches and claims open clients.
 - **Registration** happens after `load`. Boot checks `document.readyState`, so it also registers when boot runs late.
 - **iOS in-app browsers** never run it. See [KNOWN_ISSUES #16](KNOWN_ISSUES.md#16-no-offline-play-inside-ios-in-app-browsers).
@@ -302,12 +307,13 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 ## 8. Sharing system
 
-**Challenge URL.** `/c/{p|r}{score}?h={houseKey}`, for example `/c/p8?h=20261007`. `parseChallenge()` reads the mode, score and key, and ignores any extra query such as `fbclid`. Pages serves `/c/p8` from `c/p8.html` with a 200, and redirects `/c/p8.html` and `/c/p8/` with a 308 that keeps the query.
+**Challenge URL.** `/c/{p|r}{score}?h={houseKey}`, for example `/c/p8?h=20261007` (English players use `/en/c/p8?h=20261007`; `parseChallenge()` accepts both, and the house is identical). `parseChallenge()` reads the mode, score and key, and ignores any extra query such as `fbclid`. Pages serves `/c/p8` from `c/p8.html` with a 200, and redirects `/c/p8.html` and `/c/p8/` with a 308 that keeps the query.
 
 **Share text** (`strings.json → shareTextPrepare / shareTextReturn`):
 
 ```
 ตรวจบ้านผ่าน {score}/10 ⚡ / ได้ฉายา "{rank}" / {grid} / … 👉 {url} / #บ้านรอดไหม
+(English) Home checked: {score}/10 ⚡ / Title: "{rank}" / {grid} / … 👉 {url} / #BaanRodMai #FloodSafety
 ```
 
 **Order of attempts, inside the tap:**
@@ -341,6 +347,7 @@ Only the Facebook tokens are documented by Meta; the others were taken from real
   - `flush()` sends them with `sendBeacon` (falling back to `fetch` with keepalive) when the page is hidden, on `pagehide`, or after 20 queued events.
   - `POST /api/e` takes at most 4,096 bytes and 25 events, cleans every field to `[\w\-.:]` and writes one Analytics Engine data point per event: `indexes: [name]`, `blobs: [name, mode, label]`, `doubles: [value]`.
 - **Sampling:** `config.analytics.sampleRate` decides once per page load whether this player is counted. The SQL uses `SUM(_sample_interval)`, so totals stay correct.
+- **Language in the numbers:** only the `lang` event (label `th` / `en`) records language, when someone toggles it. Events don't say which address a visit came through. Cloudflare Web Analytics counts `/en/…` paths separately from `/…` paths, which is the simplest split of English and Thai traffic ([05-metrics.md](05-metrics.md)).
 - **No IP, user agent, ID, cookie or location is stored.** Scores stay in `localStorage`. There is nothing to ask consent for under the PDPA. The About sheet says this in Thai and English.
 
 ## 10. Cloudflare platform facts
@@ -534,7 +541,7 @@ Social listening by Wisesight / Zocial Eye, 16–26 Sep 2026 ([Marketeer](https:
 | Identity and social currency drive sharing | Flattering rank titles that never shame (*บ้านนี้เตรียมพร้อม*, *เซียนกู้บ้าน*) |
 | People tag family on their own (สาดไปสมาชิก) | Challenge links that rebuild the exact house: "ท้าเพื่อนเล่นบ้านนี้", "ส่งให้คนที่บ้าน" |
 | Practical value spreads; long documents don't | Every tap teaches one action with a tip of 80 characters or fewer; every result lists all the lessons and the help numbers |
-| 78% mobile, 74% Android, in-app browsers dominate | 144 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
+| 78% mobile, 74% Android, in-app browsers dominate | 147 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
 | Coping humour works; suffering-as-content backfires | Humour only at the situation (mud, the rope that isn't a snake, the gecko's faces). No real photos, no AI flood images, no people in danger. |
 | Political anger is high | No politicians, agencies blamed, party colours, royal or religious references |
 | Quiet edits cost trust | "UPDATE:" labels for content changes, and dated sources in the About sheet |
@@ -554,11 +561,11 @@ What the build does for search, why, and how sure we are. Facts about *this site
 |---|---|---|
 | `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 40 articles (one per enabled item, ordered by mode then room), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 9 partly verified items carry "⚠️ under review". About 50 KB, 17 KB gzipped. No script. |
 | `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
-| `/sitemap.xml` | `/`, `/learn`, with `seo.updated` as `lastmod` | The `/c/*` and `/checklist/*` share pages are left out on purpose: they are copies of the app shell. |
+| `/sitemap.xml` | `/`, `/en/`, `/learn`, `/en/learn`, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
 | `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
-| `<link rel="canonical">` | the OG block | `/` → `/`, `/learn` → `/learn`; the 24 share pages → `/`. |
-| JSON-LD on `/` | `og` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English, about flood safety). |
-| JSON-LD on `/learn` | `sources.json` | `Article` with a `citation` list of the 51 sources actually used. |
+| `<link rel="canonical">` and `hreflang` | the OG block | `/` → `/`, `/learn` → `/learn`, `/en/` → `/en/`, `/en/learn` → `/en/learn`; the 24 Thai share pages → `/` and the 24 English ones → `/en/`. Each indexable page lists its twin with `hreflang` (§18). |
+| JSON-LD on `/` and `/en/` | `og` / `ogEn` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English, about flood safety). |
+| JSON-LD on `/learn` and `/en/learn` | `sources.json` | `Article` with a `citation` list of the 51 sources actually used. |
 | `X-Robots-Tag: noindex` | `_headers` | On `*.pages.dev` addresses only. Confirmed present on `baanrodmai.pages.dev` and absent on the custom domain. |
 | GitHub About | `gh repo edit` | Thai + English description, homepage, 20 topics. |
 
@@ -584,7 +591,7 @@ Findings from the live-site evaluation on 7 Oct 2026 across mobile viewports (39
 - **Thai Copy & Tone (9.8/10):** Warm, supportive Thai copy with cultural care forwarding phrasing (*"ส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙"*).
 - **Sharing Architecture (9.8/10):** Dedicated LINE In-App Browser guidance, long-press save instructions, and direct external browser launcher.
 - **Senior Accessibility (9.6/10):** Contextual idle affordance timer (3.5s breathing cue) and timer anxiety relief with prominent `⏸️ พักเวลาอยู่` badge.
-- **Performance (9.9/10):** 145 KB start load, zero runtime npm packages, 0 KB Web Audio synthesis, 100% offline functionality.
+- **Performance (9.9/10):** 145 KB start load at the time of the review (147 KB with the English version), zero runtime npm packages, 0 KB Web Audio synthesis, 100% offline functionality.
 
 ### Target personas and validation outcomes
 1. **Elderly LINE Forwarders (ป้าสมศรี, 64):**
@@ -598,13 +605,13 @@ Full evaluation, task backlog, and iterative loop logs are documented in [review
 
 ## 18. International version and social previews
 
-Added in v1.2.0 (11 Oct 2026). Everything below is generated by `tools/build.mjs` from `strings.json` (`ogEn`, `seo.en`) and the content files.
+Added in v1.2.0 (11 Oct 2026), with the wordmark fix in v1.2.2. Everything below is generated by `tools/build.mjs` from `strings.json` (`ogEn`, `seo.en`) and the content files.
 
 **Addresses**
 
 | Thai | English | Notes |
 |---|---|---|
-| `/` | `/en/` | The same game. The English page is English **before any script runs**: `lang="en"`, title, description, the start-screen text and a hidden English `<h1>` name, so crawlers and link previews see English. |
+| `/` | `/en/` | The same game. The English page is English **before any script runs**: `lang="en"`, title, description, the start-screen text and the English wordmark "Baan Rod Mai?" in the `<h1>`, so crawlers and link previews see English. |
 | `/learn` | `/en/learn` | `/en/learn` is English-first: every lesson's action, tip and reason in English, agency names in English (`seo.en.agencies`), and a note that the advice and hotlines are Thai. |
 | `/c/p8?h=…` | `/en/c/p8?h=…` | English players share `/en/c/…`, so the friend's preview is English. Both rebuild the same house. |
 | `/checklist/prepare` | `/en/checklist/prepare` | |
@@ -632,3 +639,14 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 - English share texts carry `#BaanRodMai #FloodSafety`; the Thai ones keep `#บ้านรอดไหม`.
 
 **Honesty for an international audience.** The advice comes from Thai agencies and the hotlines are Thai numbers. The English help sheet, `/en/learn`, the checklist preview and `llms.txt` say so and tell people outside Thailand to follow their local authorities and emergency number. **No foreign numbers were added**, because none were verified.
+
+**The wordmark.** The two-colour title is drawn from `strings.json → logoA/logoB` in the page, on the result card, on the checklist image and on every preview image (`cards.js → logo()`; the canvas shrinks it to fit when the English words are wider than the space). The static `/en/` page carries the English text, so it never flashes Thai.
+
+**How to add a language** (what it would take; only Thai and English exist): add a table next to `th`/`en` in `strings.json` and every `*.en` object in the content files, an `og` twin and `seo` block, agency names, a `logoA/logoB` pair, a path prefix and `hreflang` entries in `build.mjs`, preview images in `tools/render.html`, and rows in the test matrix. See [KNOWN_ISSUES #37](KNOWN_ISSUES.md#37-the-international-version-is-english-only-with-thai-advice-and-hotlines).
+
+## 19. The water-level link (BKK FloodWatch)
+
+- `config.json → forecastAppUrl` is `https://flood.autobahn.bot/`: **BKK FloodWatch**, canal and river water levels across Thailand, the owner's own Autobahn Bot project (confirmed 11 Oct 2026).
+- The "เช็กระดับน้ำล่วงหน้า" / "Water levels" button shows on the start screen, the result screen and the help sheet, only when this is a real `https://` address (`forecastUrl()` in `content.js`). It opens in a new tab and is counted as `forecast_click`.
+- `flood.autobahn.bot` is a different live site: **never redirect it to the game**. Both sites sit on `autobahn.bot` and can link to each other.
+- Optional and not set: `forecastStatusUrl`, a small endpoint returning `{"rainWarning": true|false}` with CORS, so the start screen could pick the recommended mode from live data ([KNOWN_ISSUES #13](KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)).

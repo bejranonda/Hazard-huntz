@@ -92,6 +92,19 @@ You don't have to pick one region: the "แนะนำช่วงนี้" ba
 - Facebook: 07:00, 12:00, 19:30.
 - TikTok: 18:00–22:00.
 
+### English posts (for readers outside Thailand, link to `/en/`)
+
+> **Can your home survive a flood? Find out in 60 seconds.** 🏠💧
+> Baan Rod Mai? is a free game that teaches real flood-safety steps from Thai agencies (prepare the house before the water comes, and spot the dangers when you move back). No sign-up, no cookies.
+> 👉 https://baanrodmai.autobahn.bot/en/ #FloodSafety #Thailand
+
+Notes for English posts:
+
+- Say plainly that the advice and the hotlines (1784, 1669, 1555, 1130, 1129) are Thai. Tell people elsewhere to follow their local authorities.
+- Good channels: expat and migrant-worker groups in Thailand, Thailand-focused travel and Facebook groups, X and LinkedIn for disaster-risk and education people, and the Autobahn Bot / BKK FloodWatch audience (see [ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
+- Share `/en/` links (not `/`) so the preview and the page are English from the first tap.
+- Have a native English reader check any new English copy first ([KNOWN_ISSUES #11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
+
 ## 3. Outreach (who to send it to, and the ask)
 
 Give every partner the same **ready-to-forward kit**:

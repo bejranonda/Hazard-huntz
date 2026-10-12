@@ -37,13 +37,13 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* a share is self-presentation. A low score with a mocking title doesn't get forwarded.
 - *Do this:* make rank titles flattering at every level, call mistakes "learned" (orange !) rather than "failed", and give gentle feedback that explains the risk.
-- *Encoded in:* `strings.json → rankPrepare/rankReturn`, `round.js` statuses, [GUIDELINES §3](GUIDELINES.md#3-thai-copy-and-tone).
+- *Encoded in:* `strings.json → rankPrepare/rankReturn`, `round.js` statuses, [GUIDELINES §3](GUIDELINES.md#3-thai-and-english-copy-and-tone).
 
 **A4. Humour about the situation spreads; suffering as content backfires.**
 
 - *What happened:* during the Sep 2026 floods, coping humour spread fastest. AI-generated flood images and mockery of victims or rescuers drew backlash, and politics was heated.
 - *Do this:* aim the humour at mud, the rope that isn't a snake, and the gecko. Use no real or AI disaster images and no politics.
-- *Encoded in:* [GUIDELINES §1](GUIDELINES.md#1-non-negotiables) and [§3](GUIDELINES.md#3-thai-copy-and-tone).
+- *Encoded in:* [GUIDELINES §1](GUIDELINES.md#1-non-negotiables) and [§3](GUIDELINES.md#3-thai-and-english-copy-and-tone).
 
 **A5. Corrections must be public.**
 
@@ -97,7 +97,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:*
   - build static-first
   - keep Functions on `/api/*` only
-  - pre-render the small, fixed set of previews (25 images)
+  - pre-render the small, fixed set of previews (50 images: 25 Thai and 25 English)
 - *Encoded in:* `_routes.json`, `tools/build.mjs`, [03-deploy.md](03-deploy.md#why-the-link-preview-images-are-pre-rendered).
 
 **C2. In-app browsers are the main place people play.**
@@ -320,6 +320,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* v1.2.0 translated the page text and previews, but the big title, the result card and the preview images still drew the Thai wordmark; the owner spotted it in English mode.
 - *Do this:* when adding a language, search for every hard-coded visible string (HTML, canvas drawing, tools) and check a screenshot of each screen in that language, including the cards and images.
 - *Encoded in:* `strings.json → logoA/logoB`, `cards.js → logo`, the smoke check "English start screen shows the English wordmark".
+
+**C9. Test the default path of the new audience, and time the first paint.**
+
+- *What happened:* an English browser opening `/` sees the Thai page for about 0.9 s before the script switches to English and rewrites the address to `/en/`. It was found only by timing the wordmark text after load, not by any functional check.
+- *Do this:* when a page changes language after load, measure what is on screen over time. Fix it at the server (redirect or separate HTML), not by hiding content.
+- *Encoded in:* [KNOWN_ISSUES #38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-).
 
 **F5. Ignore the "repository moved" notice.**
 

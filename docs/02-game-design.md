@@ -197,6 +197,7 @@ The share assets, rendered by the same canvas code as the game:
   - Otherwise a sheet with LINE (`line.me/R/share`), Facebook (`sharer.php`), X (`x.com/intent/tweet`), copy link, and save image.
   - In LINE, Facebook and TikTok in-app browsers, downloads usually fail. The card is shown as an `<img>` with *"กดค้างที่รูป แล้วเลือกบันทึกรูปภาพ"*, and LINE also gets an *open in browser* link (`openExternalBrowser=1`).
 - **Challenge link:** `/c/p8?h=20261007` encodes the mode, the score to beat and the house seed. The friend sees a banner ("เพื่อนเตรียมบ้านทัน 8/10") and plays the identical house. The result compares scores and invites a challenge back.
+- **English:** the same cards, text and links exist in English. In English the share text ends `#FloodSafety`, challenge links are `/en/c/p8?h=…`, and the wordmark on cards and checklists is "Baan Rod Mai?" (`strings.json → logoA/logoB`, shrunk to fit by `logo()` in `cards.js`).
 - **Link previews:** each `/c/{p|r}{0–10}` URL is its own static HTML page. Each has Open Graph tags and a pre-rendered 1200×630 PNG showing the score, so LINE and Facebook show "เพื่อนเตรียมบ้านทัน 8/10" in the preview. See [03-deploy.md](03-deploy.md#why-the-link-preview-images-are-pre-rendered) for why these are pre-rendered rather than rendered per request.
 - **Family-group checklists:** two 1080×1920 images, *เตรียมบ้านก่อนน้ำมา 10 ข้อ* and *ก่อนกลับเข้าบ้าน 10 ข้อ*. They have big text, an icon per item, the helpline numbers and "ส่งต่อด้วยความห่วงใย ♥". They are available in-game and at `/checklist/prepare` and `/checklist/return`, which have their own previews for people who never play.
 
@@ -231,7 +232,8 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── content/            ← EDITABLE: items, rooms, strings, config, sources, checklists, helplines
 │   ├── art/                rooms/*.svg (front, living, kitchen) + sprites.svg
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)
-│   ├── og/  share/  icons/ pre-rendered images (npm run images)
+│   ├── og/  share/  icons/ pre-rendered images (npm run images); og/en/ holds the English previews
+│   ├── en/                 generated English start page, learn page, c/ and checklist/ (npm run build)
 │   ├── c/  checklist/      generated link-preview pages (npm run build)
 │   ├── learn.html llms.txt sitemap.xml robots.txt   generated SEO / AI-search files (npm run build)
 │   ├── sw.js               generated service worker (offline)

@@ -65,6 +65,8 @@ Two working rules followed from those principles:
 | 9. Documents | Deploy steps, launch kit, metrics and test checklist, written against the built code | `docs/03`–`06` |
 | 10. Handoff | Moved to this repository (§12); every control re-measured; four tap-size problems fixed; maintainer documents written | This file, [HANDOFF.md](../HANDOFF.md), [KNOWN_ISSUES.md](KNOWN_ISSUES.md) |
 | 11. Guidance for AI | What was learned and what comes next, written down for the next assistant | [AGENTS.md](../AGENTS.md), [LESSONS_LEARNED.md](LESSONS_LEARNED.md), [ROADMAP.md](ROADMAP.md) |
+| 12. Live review, three refinement loops, going live | Persona review of the live site, slot exclusion, affordance and wording fixes, CI, Cloudflare connected to GitHub (§§14–15) | v1.1.0, v1.2.x |
+| 13. International version | `/en/` pages, English previews, SEO for both languages, the FloodWatch link, and fixes from the owner's screenshots (§§16–17) | v1.2.0 to v1.2.2 |
 
 The brief allowed up to three questions. None were asked: every gap had a reasonable default, so the work used one and wrote it down. The two values only the owner has became the placeholders `[DOMAIN]` and `[FORECAST_APP_URL]`. Judgement calls, such as which rooms the first version should include, are written down in [02-game-design.md](02-game-design.md) and in this file.
 
@@ -155,7 +157,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 33 checks) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 33 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -163,7 +165,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
    They also test offline play after the first visit, reduced motion, and the analytics beacon.
 3. **Screenshots** from the same run (`--screens docs/screens`) were *looked at*. Several bugs were found only that way: the lamp behind the wall, the speech bubble covering items, a blue result screen, a date overlapping a pill on the card.
-4. **Real phones were not available.** The 32-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
+4. **Real phones were not available.** The 35-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
 
 ## 10. Scope cuts, said out loud
 
@@ -214,7 +216,7 @@ The brief for going live was: put the app on a suitable subdomain of `autobahn.b
 3. **Be honest about uncertainty on the page.** The 9 partly verified items appear on `/learn` with "⚠️ under review", the same flag the game's docs use. Crawlers and assistants shouldn't see more certainty than a reviewer would give.
 4. **Add only what is true.** There is no FAQ, HowTo, rating or review markup, because the page has none of those. `llms.txt` is included knowing it is an informal proposal that no major engine is confirmed to use ([KNOWLEDGE §16](KNOWLEDGE.md#16-search-and-ai-search-facts)); it costs nothing.
 5. **Choose the address on evidence.** `baanrodmai.autobahn.bot` was weighed against a shorter name. Length wasn't the problem: the name matches the game, follows the zone's other subdomains, and rendered fully on the 1200×630 previews and the checklist image. Those images were re-rendered and looked at, not assumed. The one existing name that would have been shorter (`flood`) was already in use by another service, so it was left alone.
-6. **Keep the duplicates out of the index.** The 24 share pages are copies of the app shell, so they canonicalise to `/` and stay out of the sitemap, and `*.pages.dev` gets `noindex` so only the custom domain competes.
+6. **Keep the duplicates out of the index.** The 49 share pages (Thai and English, a few of them `/learn` and `/en/learn` excluded) are copies of the app shell, so they canonicalise to `/` and stay out of the sitemap, and `*.pages.dev` gets `noindex` so only the custom domain competes.
 7. **Test the part you can measure; say what you can't.** The build, tests and a phone-sized browser run were checked on the live site. Indexing, ranking and AI citation can't be measured on day one, so they became a roadmap task with a date ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) and a known issue (#32).
 8. **Run the existing guard rails on new work.** The new footer link failed the 44 px check at 41 px, and a smoke-test hang on Windows Chrome was reproduced on untouched `HEAD` before anyone blamed the new code. Both are in [LESSONS D7, D8](LESSONS_LEARNED.md#d-testing-and-verification).
 9. **Deployment surfaced two account-level prerequisites** (a repository Cloudflare could see, and Analytics Engine enabled) that no code change could fix. They are recorded as lessons ([F6, F7](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox)) and in [03-deploy.md](03-deploy.md#the-live-setup), so the next deploy starts with them.
@@ -247,3 +249,29 @@ Following the empirical live evaluation, a structured 3-loop improvement process
    - Infused warm Thai care copy (*"ส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙"*) into result forwarding templates.
    - Re-validated across all 3 personas and heuristics, achieving an optimal net score of 9.74 / 10.
    - Validated automated suites (`npm test`, `node tools/build.mjs`, `npm run probe`, `npm run check:docs`). Documented in [review/ITERATION_LOG.md](../review/ITERATION_LOG.md).
+
+## 16. Making the game international
+
+The brief was: people around the world should be able to find and use it, with the focus kept on Thailand. The decisions and the method:
+
+1. **Decide the scope in a sentence.** English, added to Thai, with Thai advice and Thai hotlines. Safety advice is sourced from Thai agencies, so it isn't translated into other legal or electrical settings, and no foreign numbers were added because none were verified ([KNOWN_ISSUES #37](KNOWN_ISSUES.md#37-the-international-version-is-english-only-with-thai-advice-and-hotlines)).
+2. **Give each language its own address.** `/en/`, `/en/learn`, `/en/c/…` and `/en/checklist/…` are real files, so crawlers and link previews see English without running JavaScript. `hreflang` pairs (th, en, x-default → en) sit in the pages and the sitemap.
+3. **Choose the language in a fixed order:** `?lang`, then the `/en` path, then the stored choice, then a guess. The guess is Thai for a Thai browser or the Asia/Bangkok time zone, otherwise English. A Thai person abroad can switch with one button, and the choice is remembered.
+4. **Keep the address bar honest.** `langPath` rewrites it with `history.replaceState`, so a link copied from the page is in the language the person sees.
+5. **Generate, don't copy.** The English pages, previews and `/learn` come from the same JSON as the Thai ones (`strings.json` `th`/`en`/`ogEn`/`seo`, and the English fields of `items.json`). The build fails if a key is missing in either language, so the two can't drift.
+6. **Render English previews separately.** `ogEn` feeds `tools/render.html`, giving 25 English images next to the 25 Thai ones (50 in all). Static files keep this inside the free plan.
+7. **Treat the brand as data.** The Thai name stays in Thai pages; the English pages use "Baan Rod Mai?" built from `logoA`/`logoB`, in HTML and on the canvas.
+8. **Choose the subdomain on evidence.** The owner asked whether to change it for SEO. The existing name matches the game and sits in the zone the owner already controls, and the shorter `flood` was taken by the owner's own BKK FloodWatch. So the game stayed on `baanrodmai.autobahn.bot`, and FloodWatch became a button inside the game ([KNOWLEDGE §19](KNOWLEDGE.md#19-the-water-level-link-bkk-floodwatch)).
+9. **Test as the new audience.** The smoke test runs an English visitor from London, the `/en/` HTML as a crawler sees it, `/en/learn`, an English challenge banner and the English wordmark. The default Thai tests moved to the Thai locale and Bangkok time zone so the guess doesn't change them.
+10. **Say what isn't done.** A short flash of Thai on `/` for English visitors ([#38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-)), no language in game events ([#39](KNOWN_ISSUES.md#39-game-events-carry-no-language)) and no native English review ([#11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
+
+## 17. Working from the owner's feedback
+
+After going live, most corrections came from the owner's short messages and screenshots. The method that worked:
+
+1. **Reproduce first.** "Header still in Thai at EN mode" was reproduced in headless Chromium before changing anything. It was a hard-coded wordmark, which also affected the result card and the checklist image, so the fix covered all three ([GUIDELINES §8, rules 31–32](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+2. **Fix the class of bug, not the instance.** The wordmark became data, and a smoke check was added so it can't regress.
+3. **Answer the question that was asked.** For "should we change the subdomain" the answer was an evidence-based "no", with the reasons, then the owner's decision was followed.
+4. **Don't assume what a name means.** `flood.autobahn.bot` already existed; the owner confirmed it was their own project before it was linked as `forecastAppUrl`.
+5. **Verify the live site after each push.** A green push is not a live site (see [LESSONS](LESSONS_LEARNED.md)). The version chip on the start screen makes this a one-glance check.
+6. **Write the documents last, from the code.** Every figure in this sweep (130 keys per language, 49 pages, 50 images, 38 precached files, 33 checks, 147 KB) was read from the build or test output, not remembered.

@@ -71,6 +71,7 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
 - **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous.
 - **Tap targets:** every one is at least 44 px. The smoke test measures items and controls.
 - **Weight:** the start screen stays under 500 KB compressed (147 KB today).
+- **Two languages:** every `th` string needs an `en` twin (and every `og` an `ogEn`). Don't hard-code the brand name; use `logoA`/`logoB`. Check `/en/` as well as `/` before calling a change done.
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
 - **Text location:** player-facing text belongs in `public/content/*.json`, not in JS. Every new `og` key needs an English `ogEn` twin (the build fails otherwise); re-render with `npm run images` and commit only the images you meant to change.
 - **Search and AI search:** `/learn`, `/llms.txt`, `/sitemap.xml`, `/robots.txt`, the canonical link and the JSON-LD are all generated from the content JSON. Don't hand-write lesson text anywhere else, or it will drift from `items.json`.
@@ -103,7 +104,7 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
 - **Git.**
   - Use additive commits by default.
   - Rewriting history was blocked until the owner asked for it explicitly. It then worked with `--force-with-lease` and the expected SHA.
-  - The session's git proxy refuses branch deletion, so the owner deletes branches in the GitHub UI.
+  - The session's git proxy refuses branch deletion and tag pushes, so the owner deletes branches and creates `vX.Y.Z` tags (as GitHub Releases) in the GitHub UI.
   - Never work around a denial.
   - The session's remote URL is lowercase (`hazard-huntz`), so `git push` prints "This repository moved". It is harmless.
 - **Scratch work.** Keep one-off probes and screenshots in the session scratchpad. Commit a tool only when it is reusable, like `tools/probe.mjs`.

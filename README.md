@@ -1,6 +1,6 @@
 # บ้านรอดไหม? (Baan Rod Mai?)
 
-**A 60-second hazard-hunt game that teaches Thai families how to protect their home from floods, and is built to be forwarded.**
+**A 60-second hazard-hunt game that teaches Thai families how to protect their home from floods, and is built to be forwarded.** Play it in Thai at **[baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot)** or in English at **[baanrodmai.autobahn.bot/en/](https://baanrodmai.autobahn.bot/en/)**.
 
 - **ก่อนน้ำมา (Before the flood):** get the house ready before the water rises.
 - **หลังน้ำลด (After the water drops):** spot the dangers before moving back in.
@@ -14,19 +14,20 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (11 Oct 2026): v1.2.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (12 Oct 2026): v1.2.2 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 13 rule tests and 33 headless-browser checks.
-> - **In Thai and English:** [baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot) · [/en/](https://baanrodmai.autobahn.bot/en/) (English), each with its own link previews.
-> - It is deployed on Cloudflare Pages and set up for search and AI search (see [SEO and AI search](#seo-and-ai-search)).
-> - Before launch it still needs a forecast-app link, a review of 9 safety items flagged ⚠️, and a pass on real phones.
+> - The code is finished and every automated check passes: 13 rule tests and 33 headless-browser checks, plus CI on every push.
+> - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).
+> - The water-level button opens **BKK FloodWatch** (`flood.autobahn.bot`), the owner's own Autobahn Bot project.
+> - Before launch it still needs Web Analytics switched on, the sitemap submitted to the search consoles, a review of 9 safety items flagged ⚠️, a native-speaker language check, and a pass on real phones.
 > - Start with **[HANDOFF.md](HANDOFF.md)**.
 
 ## Highlights
 
 - **Plain HTML, CSS and JavaScript with SVG art.** No framework and no build dependencies. It runs on the **free Cloudflare Pages plan**.
-- **Light:** 144 KB compressed to the start screen and 154 KB to the first game screen (the limit is 500 KB).
-- **Findable by search engines and AI assistants.** The game draws itself with JavaScript, so the build also writes plain-HTML pages and files that crawlers can read ([details below](#seo-and-ai-search)).
+- **Thai and English.** Thai at `/`, English at `/en/`; the first visit picks Thai for Thai browsers or Bangkok time and English for everyone else.
+- **Light:** 147 KB compressed to the start screen and 156 KB to the first game screen (the limit is 500 KB).
+- **Findable by search engines and AI assistants, in both languages.** The game draws itself with JavaScript, so the build also writes plain-HTML pages and files that crawlers can read ([details below](#seo-and-ai-search)).
 - **Plays offline after the first visit,** thanks to a service worker.
 - **Works inside the LINE, Facebook and TikTok in-app browsers.** Where an app blocks sharing or downloads, the game falls back to another way.
 - **All content is editable JSON** in `public/content/`. The build checks it before anything is published.
@@ -49,20 +50,33 @@ npm run check:docs                      # after editing docs: every relative lin
 
 Node 18 or later is required. Cloudflare builds with Node 22, pinned in `.node-version`. Browser checks use `playwright-core` 1.63.0. Install its browser with `npx playwright@1.63.0 install chromium`, or point `CHROME_PATH` at any recent Chromium.
 
+## Thai and English
+
+| | Thai | English |
+|---|---|---|
+| The game | `/` | `/en/` |
+| Every lesson, with sources | `/learn` | `/en/learn` |
+| A friend's challenge link | `/c/p8?h=…` | `/en/c/p8?h=…` |
+| Family checklists | `/checklist/prepare` | `/en/checklist/prepare` |
+| Wordmark | บ้านรอดไหม? | Baan Rod Mai? |
+
+- **Which language a visitor gets:** `?lang=`, then an `/en` address, then their earlier choice, then a first-visit guess (Thai for Thai browsers **or** Bangkok time, English otherwise). The address bar follows the language, and English players share `/en/` links.
+- **Search and social:** each page and its other-language twin point to each other with `hreflang`; the sitemap lists both; each language has its own link previews (`public/og/` and `public/og/en/`) and its own structured data.
+- **Honest scope outside Thailand:** the advice comes from Thai agencies and the helplines are Thai numbers, and the English pages say so. Details: [KNOWLEDGE §18](docs/KNOWLEDGE.md#18-international-version-and-social-previews).
+
 ## SEO and AI search
 
 Most AI crawlers and link-preview bots don't run JavaScript, so a game that renders in the browser looks empty to them. `node tools/build.mjs` therefore also writes, from the same JSON the game uses:
 
 | Output | For |
 |---|---|
-| [`/learn`](https://baanrodmai.autobahn.bot/learn) | Every lesson (correct action, tip, reason, sources, ⚠️ where partly verified), both checklists and the helplines, in Thai with English. Plain HTML, no script. |
-| `/llms.txt` | A Markdown summary for AI assistants ([llmstxt.org](https://llmstxt.org)) |
-| `/sitemap.xml`, `/robots.txt` | Crawler discovery. Search and AI crawlers are welcome; only `/api/` is closed. |
-| `<link rel="canonical">` and JSON-LD | `WebSite` + `VideoGame` on `/`, and `Article` with source citations on `/learn`. The share-preview pages point their canonical at `/`. |
+| [`/learn`](https://baanrodmai.autobahn.bot/learn) and [`/en/learn`](https://baanrodmai.autobahn.bot/en/learn) | Every lesson (correct action, tip, reason, sources, ⚠️ where partly verified), both checklists and the helplines: Thai with English, and English-first. Plain HTML, no script. |
+| `/llms.txt` | A Markdown summary for AI assistants ([llmstxt.org](https://llmstxt.org)), listing both languages |
+| `/sitemap.xml`, `/robots.txt` | Crawler discovery, with `hreflang` pairs. Search and AI crawlers are welcome; only `/api/` is closed. |
+| `<link rel="canonical">`, `hreflang` and JSON-LD | `WebSite` + `VideoGame` on `/` and `/en/`, and `Article` with source citations on `/learn` and `/en/learn`. The share-preview pages point their canonical at `/` (Thai) or `/en/` (English). |
 | `X-Robots-Tag: noindex` on `*.pages.dev` | Only the custom domain is indexed |
-| `/en/`, `/en/learn`, `/en/c/…`, `/en/checklist/…` + `hreflang` | The English (international) version, with English previews in `public/og/en/`. See [KNOWLEDGE §18](docs/KNOWLEDGE.md#18-international-version-and-social-previews). |
 
-The Thai copy for these pages is in `public/content/strings.json → seo`. Bump `seo.updated` when lessons change. The rules and the reasons are in [APPROACH_AND_METHOD §13](docs/APPROACH_AND_METHOD.md#13-making-the-game-findable-seo-and-ai-search).
+The Thai and English copy for these pages is in `public/content/strings.json → seo` (and `ogEn` for English link previews). Bump `seo.updated` when lessons change. The rules and the reasons are in [APPROACH_AND_METHOD §13](docs/APPROACH_AND_METHOD.md#13-making-the-game-findable-seo-and-ai-search).
 
 ## Deploy (Cloudflare Pages, about 5 minutes)
 
@@ -98,7 +112,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | 3 | [Deploy to Cloudflare Pages](docs/03-deploy.md) | The live setup, Git and Wrangler steps, the free-plan budget, search setup, and why link previews are pre-rendered |
 | 4 | [Launch kit](docs/04-launch-kit.md) | Thai post copy (Facebook, LINE, TikTok), outreach, the Prepare → Return switch, and the seasonal relaunch |
 | 5 | [Metrics plan](docs/05-metrics.md) | Event dictionary and Analytics Engine SQL for every metric |
-| 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix covering 8 browser and app combinations |
+| 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix (35 checks across 8 browser and app combinations) and the live-site checks |
 
 **Reference for maintainers**
 
@@ -106,14 +120,14 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 |---|---|
 | [Knowledge base](docs/KNOWLEDGE.md) | Every rule, constant and formula; the content model; platform limits; audience research with sources |
 | [Known issues](docs/KNOWN_ISSUES.md) | Open issues, platform limits and deliberate trade-offs, with measurements |
-| [Guidelines](docs/GUIDELINES.md) | Rules for editing safety content, writing Thai copy, changing code, testing and releasing |
-| [Approach and method](docs/APPROACH_AND_METHOD.md) | How the project was researched, designed, built, verified and iteratively optimized |
+| [Guidelines](docs/GUIDELINES.md) | Rules for editing safety content, writing Thai and English copy, changing code, testing and releasing |
+| [Approach and method](docs/APPROACH_AND_METHOD.md) | How the project was researched, designed, built, verified, optimized, made international and kept honest |
 | [Lessons learned](docs/LESSONS_LEARNED.md) | What went wrong or right while building it, and the rule each lesson became |
 | [UI/UX Review & Optimization](review/README.md) | Live evaluation, 3-loop refinement cycle (9.74/10 optimal), persona validation, and [iteration log](review/ITERATION_LOG.md) |
 
 ## แก้เนื้อหาเอง (สำหรับทีมที่ไม่ได้เขียนโค้ด)
 
-ทุกอย่างที่ผู้เล่นเห็นอยู่ในโฟลเดอร์ `public/content/` แก้บน GitHub ได้เลย (กดรูปดินสอ → Commit) ระบบจะตรวจไฟล์ให้ก่อนขึ้นเว็บ ถ้ามีอะไรผิด เว็บเดิมจะยังอยู่ ไม่พัง
+ทุกอย่างที่ผู้เล่นเห็นอยู่ในโฟลเดอร์ `public/content/` (มีทั้งภาษาไทยและอังกฤษ ต้องแก้ให้ตรงกันทั้งสองภาษา) แก้บน GitHub ได้เลย (กดรูปดินสอ → Commit) ระบบจะตรวจไฟล์ให้ก่อนขึ้นเว็บ ถ้ามีอะไรผิด เว็บเดิมจะยังอยู่ ไม่พัง
 
 | อยากแก้อะไร | ไฟล์ | ระวัง |
 |---|---|---|
@@ -121,7 +135,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | ลิงก์แอปเช็กระดับน้ำ / โดเมน | `config.json` → `forecastAppUrl`, `siteUrl` | ต้องขึ้นต้นด้วย `https://` |
 | คำแนะนำ ตัวเลือก เคล็ดลับ คำอธิบาย "ทำไม?" | `items.json` | `tip` ไม่เกิน 80 ตัวอักษร · ต้องมีคำตอบถูก (`"correct": true`) ข้อเดียว |
 | ที่มาของข้อมูล | `sources.json` | รหัสต้องตรงกับที่ใช้ใน `items.json` |
-| ข้อความปุ่ม คำพูดน้องจก ฉายา ข้อความแชร์ | `strings.json` | อย่าลบ `{คำในวงเล็บปีกกา}` |
+| ข้อความปุ่ม คำพูดน้องจก ฉายา ข้อความแชร์ | `strings.json` | อย่าลบ `{คำในวงเล็บปีกกา}` · แก้ทั้ง `th` และ `en` · ข้อความตัวอย่างลิงก์ภาษาอังกฤษอยู่ที่ `ogEn` |
 | เช็กลิสต์ 10 ข้อ | `checklists.json` | ต้องมี 10 ข้อพอดี · ถ้าแก้แล้ว รันภาพใหม่ด้วย `npm run images` |
 | เบอร์ช่วยเหลือ | `helplines.json` | ตรวจเบอร์กับหน่วยงานก่อนทุกครั้ง |
 | เปิดห้องใหม่ | `rooms.json` → `"enabled": true` | ต้องมีภาพห้องใน `public/art/rooms/` ก่อน |
@@ -136,8 +150,9 @@ public/            static site (Cloudflare Pages output directory)
   js/              game modules (plain ES modules, no bundler)
   art/             room SVGs + sprite sheet
   fonts/           Kanit Thai/Latin subsets (SIL OFL, see fonts/OFL-Kanit.txt)
-  og/ share/       pre-rendered link previews, checklists, sample cards
-  c/ checklist/    generated link-preview pages
+  og/ og/en/ share/ pre-rendered link previews (Thai, English), checklists, sample cards
+  c/ checklist/    generated link-preview pages (Thai)
+  en/              generated English app shell, lessons and link-preview pages
 functions/api/e.js anonymous event counter → Workers Analytics Engine
 tools/             build.mjs (validate + generate), render-images.mjs, sw.template.js, probe.mjs, check-docs.mjs
 tests/             run.mjs (rules), smoke.mjs (headless browser)

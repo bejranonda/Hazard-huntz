@@ -101,6 +101,12 @@ FROM baanrodmai_events WHERE blob1 = 'mode_select' AND timestamp > NOW() - INTER
 GROUP BY mode, picked
 ```
 
+## Thai and English split
+
+- **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
+- **Game events** do not carry a language yet ([KNOWN_ISSUES #39](KNOWN_ISSUES.md#39-game-events-carry-no-language)), so Analytics Engine can't split plays by language. Until a `lang` dimension is added to the event and to the Function's allowlist, compare the English page views with the totals instead.
+- **Referrals** from `flood.autobahn.bot` (BKK FloodWatch) appear in Web Analytics once the owner links back ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
+
 ## Reporting rhythm
 
 - **Daily during launch:** completion, share rate, the challenge funnel, help clicks. Paste the five queries into a Google Sheet, or run them from a small script.

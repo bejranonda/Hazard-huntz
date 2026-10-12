@@ -1,8 +1,8 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.0.0 (6 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.2.2 (12 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
-The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = #1, N2 = #5, N3 = #4, N4 = #2).
+The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N4 = #2, L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
 | Status | Meaning |
 |---|---|
@@ -16,18 +16,14 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N1 = 
 
 | # | Issue | Status | Severity |
 |---|---|---|---|
-| 1 | [Neighbouring tap areas can overlap](#1-neighbouring-tap-areas-can-overlap) | Fixed | Medium |
 | 2 | [Item tap areas are 38–43 px on 320 px-wide phones](#2-item-tap-areas-are-3843-px-on-320-px-wide-phones) | Open | Low |
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 33 | [Interactive targets lack visual affordance (Pixel-hunting risk)](#33-interactive-targets-lack-visual-affordance-pixel-hunting-risk) | Fixed | Medium |
-| 34 | [LINE in-app browser blocks direct image downloads](#34-line-in-app-browser-blocks-direct-image-downloads) | Fixed | Medium |
-| 35 | [Timer anxiety in older players during the first 5 seconds](#35-timer-anxiety-in-older-players-during-the-first-5-seconds) | Fixed | Low |
-| 36 | [Hidden "ทำไม?" explanation is frequently skipped by players](#36-hidden-ทำไม-explanation-is-frequently-skipped-by-players) | Fixed | Low |
-| 6 | [Placeholders `[DOMAIN]` and `[FORECAST_APP_URL]` are unset](#6-placeholders-domain-and-forecast_app_url-are-unset) | Owner (domain fixed) | **High (launch blocker)** |
+| 38 | [English visitors briefly see Thai text on `/`](#38-english-visitors-briefly-see-thai-text-on-) | Open | Low |
+| 39 | [Game events carry no language](#39-game-events-carry-no-language) | Open | Low |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
-| 11 | [Thai copy needs a second native reader](#11-thai-copy-needs-a-second-native-reader) | Owner | Medium |
+| 11 | [Thai and English copy need a second native reader](#11-thai-and-english-copy-need-a-second-native-reader) | Owner | Medium |
 | 12 | [Analytics SQL and the Fail-open default are unchecked on a live account](#12-analytics-sql-and-the-fail-open-default-are-unchecked-on-a-live-account) | Owner (partly checked) | Low |
 | 13 | [`forecastStatusUrl` needs CORS and a fast answer](#13-forecaststatusurl-needs-cors-and-a-fast-answer) | Owner | Low |
 | 30 | [Web Analytics, search consoles and push-to-deploy are not done or checked](#30-web-analytics-search-consoles-and-push-to-deploy-are-not-done-or-checked) | Owner | Medium |
@@ -57,14 +53,6 @@ Fixed issues are listed [at the end](#fixed).
 
 ## Open
 
-### 1. Neighbouring tap areas can overlap
-
-**Status:** Fixed in v1.1.0 ([F10](#fixed)) · **Severity:** Medium
-
-Every item's tap area is grown to at least `MIN_HIT` = 64 scene units so that it stays at or above 44 px (`public/js/house.js`). Some slots in `rooms.json` were originally close enough that grown areas overlapped (in 32% of houses, worst 45%).
-
-**Fix:** Resolved in v1.1.0 using a slot exclusion graph (`slot.excludes` in `rooms.json` checked during item and decoy placement in `house.js`). `npm run probe` over 1,460 houses (both modes, 2 years) confirms **0 (0%) overlaps**, worst 0%.
-
 ### 2. Item tap areas are 38–43 px on 320 px-wide phones
 
 **Status:** Open · **Severity:** Low
@@ -82,7 +70,7 @@ The room art is 360×600 scene units, scaled to fit the stage. On short screens 
 
 Buttons, tabs and links stay at 44 px or more everywhere; only the items inside the art are affected. Phones 320 px wide are rare by 2026, so this is low priority.
 
-**A possible fix:** on screens under about 480 px tall, hide the room tabs (the ‹ › arrows remain) to give the stage about 50 px more. Growing `MIN_HIT` instead would make [#1](#1-neighbouring-tap-areas-can-overlap) worse.
+**A possible fix:** on screens under about 480 px tall, hide the room tabs (the ‹ › arrows remain) to give the stage about 50 px more. Growing `MIN_HIT` instead would make [#1](#fixed) worse.
 
 ### 3. Not yet tested on real phones or real in-app browsers
 
@@ -98,44 +86,25 @@ What a headless test **cannot** show:
 - how the font, notch and home bar look on real screens
 - audio on iOS when the silent switch is on
 
-**To do:** run the 32-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 35-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
-### 33. Interactive targets lack visual affordance (Pixel-hunting risk)
+### 38. English visitors briefly see Thai text on `/`
 
-**Status:** Fixed in v1.1.0 ([F11](#fixed)) · **Severity:** Medium
+**Status:** Open · **Severity:** Low
 
-Resolved by adding a 3.5s contextual idle hint timer in `main.js` that triggers a soft breathing ring (`.show-hints`) on unhandled items, plus hover micro-interactions and reduced-motion fallback. See [IMP-02 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+The page at `/` is Thai HTML. When an international visitor opens `/` (no `/en`, no stored choice), `guessLang` picks English and the page switches after the content JSON loads. Measured on 12 Oct 2026 with an English browser outside Bangkok: Thai wordmark at about 0.2 s, English from about 0.9 s, and the address bar becomes `/en/`. It is a short flash of the wrong language, not a failure. Links shared as `/en/…` have no flash because the HTML is already English.
 
-### 34. LINE in-app browser blocks direct image downloads
+**Fix ideas:** (a) a Cloudflare redirect rule on `Accept-Language` for `/` only, which keeps search crawlers on the Thai page by excluding bot user agents; (b) a tiny inline script that hides the body until the language is set (costs first paint). Neither is done, because redirecting by language can hurt SEO if done wrong.
 
-**Status:** Fixed in v1.1.0 ([F12](#fixed)) · **Severity:** Medium
+### 39. Game events carry no language
 
-Resolved by displaying explicit card tap/hold guidance on the result screen, a dedicated `.line-guide` helper banner in the share sheet, and a direct external browser launcher. See [IMP-03 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+**Status:** Open · **Severity:** Low
 
-### 35. Timer anxiety in older players during the first 5 seconds
-
-**Status:** Fixed in v1.1.0 ([F13](#fixed)) · **Severity:** Low
-
-Resolved by adding reassuring How-to micro-copy explaining that time pauses on tap, and adding a prominent `⏸️ พักเวลาอยู่` badge inside the choice sheet. See [IMP-04 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
-
-### 36. Hidden "ทำไม?" explanation is frequently skipped by players
-
-**Status:** Fixed in v1.1.0 ([F14](#fixed)) · **Severity:** Low
-
-Resolved by surfacing the causal 1-sentence `why` explanation directly inside the tip card (💡), reserving the `<details>` accordion strictly for authoritative agency citations. See [IMP-05 in review/ACTIONABLE_RECOMMENDATIONS.md](../review/ACTIONABLE_RECOMMENDATIONS.md).
+The anonymous events sent to `/api/e` do not say which language was played, so Analytics Engine can't split plays by Thai and English. Web Analytics can still split page views by path (`/en/…` against the rest). **Fix:** add an allowlisted `lang` dimension to the event and to the Function's allowlist, then update [05-metrics.md](05-metrics.md).
 
 ---
 
 ## Needs the owner
-
-### 6. Placeholders `[DOMAIN]` and `[FORECAST_APP_URL]` are unset
-
-**Status:** Owner · **Severity:** High: a launch blocker
-
-- **`[DOMAIN]`: fixed on 6 Oct 2026.** `config.json → siteUrl` is `https://baanrodmai.autobahn.bot`, and the build prints `site https://baanrodmai.autobahn.bot`. A dashboard `SITE_URL` does not survive, because `wrangler.toml` manages the project. If the domain ever changes, edit `config.json` and re-render the images.
-  - Without either, the build falls back to `CF_PAGES_URL`. That is the address of one particular deployment (`https://<hash>.<project>.pages.dev`), so link-preview tags would point at an old deployment.
-  - In-game share links use the address the player is on, so they keep working either way.
-- **`[FORECAST_APP_URL]`: fixed on 11 Oct 2026.** `config.json → forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch), so the "เช็กระดับน้ำล่วงหน้า" buttons show and the build no longer warns. A smoke check proves the start-screen button points there.
 
 ### 8. 9 safety items are only partially verified
 
@@ -180,11 +149,11 @@ Their wording was taken from the agencies' statements as republished by กร�
 
 The mattress is **not in the game**. Decide which advice to follow, or ask กรมอนามัย, before adding it to the bedroom.
 
-### 11. Thai copy needs a second native reader
+### 11. Thai and English copy need a second native reader
 
-**Status:** Owner · **Severity:** Medium
+**Status:** Owner (the owner said on 11 Oct 2026 they will provide the language check) · **Severity:** Medium
 
-All Thai copy was written in one pass and checked against the guidelines: the tone, the 80-character tip limit and the guardrails. That covers tips, choices, feedback, the gecko's lines, rank titles and the share texts. A second native speaker should still read everything in `strings.json`, `items.json` and `checklists.json` once, ideally an older family member who represents the forwarding audience.
+The English text (`en`, `ogEn`, `seo.en`) was written alongside the Thai and has had no native-English review either. All Thai copy was written in one pass and checked against the guidelines: the tone, the 80-character tip limit and the guardrails. That covers tips, choices, feedback, the gecko's lines, rank titles and the share texts. A second native speaker should still read everything in `strings.json`, `items.json` and `checklists.json` once, ideally an older family member who represents the forwarding audience.
 
 ### 12. Analytics SQL and the Fail-open default are unchecked on a live account
 
@@ -321,7 +290,7 @@ Game events go to Analytics Engine through `/api/e`, which covers what Web Analy
 
 **Status:** By design
 
-There are only 25 preview images: 2 modes × 11 scores, plus the default and the two checklists. Each is a static page and a PNG.
+There are only 50 preview images: 25 Thai and 25 English, each being 2 modes × 11 scores, plus the default and the two checklists. Each is a static page and a PNG.
 
 A Pages Function that drew previews per request would face two limits:
 
@@ -420,8 +389,8 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 
 - **One extra language.** `/en/` adds English. Other languages would need their own `strings.json` table, `ogEn`-style preview text and images; the build only knows Thai and English.
 - **Thai advice and numbers.** Every lesson is sourced from Thai agencies, and the hotlines (1784, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
-- **The wordmark is romanised in English** ("Baan Rod Mai?"), so English players don't see Thai script as the brand; the Thai name still appears in the Thai pages' titles and `alternateName`.
-- **The English text has had no native-speaker review** of tone; it was written alongside the Thai.
+- **The wordmark is romanised in English** ("Baan Rod Mai?", from `strings.json → logoA/logoB`), so English players don't see Thai script as the brand; the Thai name still appears in the Thai pages' titles and `alternateName`.
+- **The English text has had no native-speaker review** of tone; it was written alongside the Thai ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
 - **Preview caches:** Facebook and LINE cache per URL, so a previously shared `/c/…` link keeps its Thai preview.
 
 
@@ -447,6 +416,14 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### After v1.1.0: international version and wording (11–12 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F18 (was #6) | `[FORECAST_APP_URL]` was a placeholder, so the "check the water level" button was hidden | `config.json → forecastAppUrl` is `https://flood.autobahn.bot/` (BKK FloodWatch, the owner's own project). A smoke check proves the start-screen button points there. The `[DOMAIN]` half was fixed on 6 Oct (F5). |
+| F19 | On `/en/` the header still said "บ้านรอดไหม?", and the English result card and checklist image drew the Thai name | The wordmark comes from `strings.json → logoA/logoB` in HTML (`data-i18n`) and in the canvas `logo()`, which also shrinks to fit. A smoke check covers the English wordmark. The first English version drew "BaanRod Mai?" (no space); the space now lives in `logoA`. |
+| F20 | English visitors had to find the language button; links and previews were Thai only | `/en/` pages, English previews, `hreflang`, language guess (Thai browser or Bangkok time zone = Thai, otherwise English) and `/en` challenge links (v1.2.0). |
 
 ### After v1.0.0: CI and text clean-up (10 Oct 2026)
 

@@ -7,7 +7,7 @@ The game is a static site in `public/`, plus one tiny Pages Function (`functions
 | Placeholder | Where | What to put |
 |---|---|---|
 | `[DOMAIN]` | `public/content/config.json → siteUrl` (**set to `https://baanrodmai.autobahn.bot`**), or the `SITE_URL` environment variable when the project is *not* managed by `wrangler.toml` | e.g. `https://baanrodmai.pages.dev` or your custom domain. Used in share links, link-preview tags, the SEO files and the images. |
-| `[FORECAST_APP_URL]` | `public/content/config.json → forecastAppUrl` | Your water-level forecast app. The "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until this is a real `https://` link. |
+| `[FORECAST_APP_URL]` | `public/content/config.json → forecastAppUrl` (**set to `https://flood.autobahn.bot/`**, BKK FloodWatch) | Your water-level app. The "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until this is a real `https://` link. |
 
 Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends the right mode automatically; if the call fails or times out, `rainWarningActive` is used.
 
@@ -96,7 +96,7 @@ Any static server also works (`npx serve public`), apart from the `/c/p8` pretty
 
 | Piece | Free-plan cost |
 |---|---|
-| Pages, images, link-preview pages `/c/*` and `/checklist/*` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
+| Pages, images, link-preview pages `/c/*` and `/checklist/*`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
 | `/api/e` event counter | 1 Function request per page session (events are batched and sent with `sendBeacon` when the page is hidden). Shares the 100,000 requests/day quota. |
 | Workers Analytics Engine | 100,000 data points/day written free. Each event is one data point. |
 | Cloudflare Web Analytics | Free, cookieless. |
@@ -116,7 +116,7 @@ The reasons:
 
 1. **CPU limit.** Workers Free allows **10 ms CPU** per request. Rendering a PNG with Thai text (satori/resvg) takes far longer, and the needed WASM is several MB.
 2. **Quota.** A viral challenge link served by a Function counts against the **100,000/day** Functions quota. Past that it would fail (or, with fail-open, lose its preview). Static pages are unlimited.
-3. **The set is tiny and fixed:** 2 modes × 11 scores, plus default and checklists. Pre-rendering costs nothing and the previews are cached and instant.
+3. **The set is tiny and fixed:** 2 modes × 11 scores, plus default and checklists, in two languages: 50 images (25 Thai, 25 English) and 49 generated pages. Pre-rendering costs nothing and the previews are cached and instant.
 
 If you later move to Workers Paid and want per-player text (for example a nickname, which would need a privacy review), a Function can rewrite the same tags with `HTMLRewriter`.
 

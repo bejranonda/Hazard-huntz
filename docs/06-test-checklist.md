@@ -61,10 +61,13 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 30 | Android "force dark" / dark-mode WebView does not invert the art | n/a | | n/a | | n/a | | n/a | |
 | 31 | VoiceOver / TalkBack reads item names; sheets can be closed | | | | | | | | |
 | 32 | iOS "Reduce Motion" / Android "Remove animations": no bouncing, still playable | | | | | | | | |
+| 33 | Open `/en/`: the header and start screen are English ("Baan Rod Mai?"), the version chip shows, and the language button switches to Thai and back | | | | | | | | |
+| 34 | Share an English result: the card shows "Baan Rod Mai?"; the link is `/en/c/…`; LINE or Facebook shows the English preview | | | | | | | | |
+| 35 | Open `/en/learn`: English headings, 40 lessons, hotlines marked as Thai | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
-² About a third of houses have two neighbouring items whose tap areas overlap ([KNOWN_ISSUES #1](KNOWN_ISSUES.md#1-neighbouring-tap-areas-can-overlap)). If a tap opens the wrong item, note the room, the two items and the phone.
+² Tap areas no longer overlap in the generator ([KNOWN_ISSUES F10](KNOWN_ISSUES.md#fixed)). If a tap still opens the wrong item, note the room, the two items and the phone.
 
 ## Content and preview checks after each content change
 
@@ -76,11 +79,11 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-- Start screen: **144 KB** compressed (HTML + CSS + JS + content JSON + fonts).
-- First game screen: **154 KB** (adds the first room and the sprites).
+- Start screen: **147 KB** compressed (HTML + CSS + JS + content JSON + fonts).
+- First game screen: **156 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 
-Rooms are fetched while the player is still on the start screen. The service worker precaches about 37 files for offline play after the page has loaded.
+Rooms are fetched while the player is still on the start screen. The service worker precaches 38 files for offline play after the page has loaded.
 
 ## Live-site checks (search and AI search)
 
@@ -88,10 +91,10 @@ Run these against https://baanrodmai.autobahn.bot after any change to the build,
 
 | Check | How | Expected |
 |---|---|---|
-| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/checklist/prepare` | 200, right content type |
+| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/en/`, `/en/learn`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/en/c/p7`, `/checklist/prepare` | 200, right content type |
 | Event endpoint | `curl -X POST -H 'Content-Type: application/json' --data '{"e":[]}' …/api/e` | 204 |
-| Canonical and JSON-LD | View source of `/` and `/learn` | `rel="canonical"` with the live address; one `application/ld+json` block that parses |
-| `/learn` is complete | Count `<article` in the page | 40, and 9 ⚠️ flags |
+| Canonical, hreflang and JSON-LD | View source of `/`, `/learn`, `/en/` and `/en/learn` | `rel="canonical"` with the live address; th, en and x-default `hreflang` links; one `application/ld+json` block that parses |
+| `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 40 each, and 9 ⚠️ flags |
 | Only the custom domain is indexable | `curl -sI` the `*.pages.dev` address and the custom domain | `x-robots-tag: noindex` on `*.pages.dev` only |
 | Phone-sized load | Headless Chromium, 390×760, touch | No console errors; the footer link to `/learn` is ≥ 44 px |
 | Rich Results Test, Search Console, Bing | Owner, in the web tools | Not done yet ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) |

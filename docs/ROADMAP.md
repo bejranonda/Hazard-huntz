@@ -34,6 +34,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo |
+| L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
@@ -44,6 +45,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
+| P4 | [More languages](#p4-more-languages) | Owner + AI | Todo (optional) |
 | V1 | [Version 2: the combined Prepare → Return run](#v1-version-2-the-combined-prepare--return-run) | AI-ready | Todo |
 | S1 | [Seasonal relaunch (every April–May)](#s1-seasonal-relaunch-every-aprilmay) | Owner + AI | Recurring |
 | H1 | [Housekeeping](#h1-housekeeping) | Owner | Partly done |
@@ -97,8 +99,8 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L5. Second native reader for the Thai copy
 
-- **Who:** Owner + AI · **Status:** Todo · **Issue:** #11
-- **Steps:** a native speaker reads `strings.json`, `items.json` and `checklists.json`, ideally an older relative. An assistant applies the edits. Tips stay at 80 characters or fewer, and placeholders stay as they are.
+- **Who:** Owner + AI · **Status:** Todo (the owner said on 11 Oct 2026 they will provide a language check, Thai and English) · **Issue:** #11
+- **Steps:** a native speaker reads `strings.json` (`th`, `en`, `ogEn`, `seo`), `items.json` and `checklists.json`, ideally an older relative for the Thai and a native English reader for the `en` and `ogEn` text. An assistant applies the edits. Tips stay at 80 characters or fewer, and placeholders stay as they are.
 - **Done when:** the edits are committed and the images re-rendered where the copy appears in them.
 
 ### L6. Real-phone test matrix
@@ -124,7 +126,17 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   3. Paste a challenge link and `/learn` into the Facebook Sharing Debugger and a LINE chat.
   4. After about two weeks, search the game's Thai name and "เตรียมบ้านก่อนน้ำท่วม" in Google and Bing, and ask two AI assistants about it. Record what appears.
   5. Record the result in [KNOWN_ISSUES #32](KNOWN_ISSUES.md#32-search-and-ai-search-results-cant-be-guaranteed), and adjust the `/learn` headings and `seo` copy if the Thai queries find nothing.
+  6. Repeat steps 2 and 3 for `/en/`, `/en/learn` and an English challenge link (`/en/c/p7`), and check that the `hreflang` pairs show no errors in Search Console. Search in English for "flood safety game Thailand".
 - **Done when:** both consoles accept the sitemap, the Rich Results Test shows no errors, and the findings are written down.
+
+### L9. Link FloodWatch and the game to each other
+
+- **Who:** Owner + AI · **Status:** Half done (12 Oct 2026). Game → FloodWatch is live: `forecastAppUrl` is `https://flood.autobahn.bot/`. **Left:** FloodWatch → game. · **Issues:** #6 (fixed), #13
+- **Steps:**
+  1. The owner adds a link from https://flood.autobahn.bot/ to https://baanrodmai.autobahn.bot/ (Thai) and `/en/` (English). The two sites share the parent domain, which helps both.
+  2. Optional: FloodWatch offers `{"rainWarning": true|false}` with CORS, and the owner sets `forecastStatusUrl` so the game can show a rain banner.
+  3. After two weeks, check whether Web Analytics shows referrals from `flood.autobahn.bot`.
+- **Done when:** both sites link to each other and the referrals show in Web Analytics.
 
 ## Next (v1.1, AI-ready)
 
@@ -245,6 +257,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Who:** AI-ready · **Status:** Todo (optional) · **Issue:** #28
 - **Steps:** render `og/*.png` as JPEG at about quality 85, update `og:image:type` in `tools/build.mjs`, and re-check Facebook and LINE.
 - **Done when:** the previews are about half their current size and still look sharp in both apps.
+
+### P4. More languages
+
+- **Who:** Owner + AI · **Status:** Todo (optional)
+- **Why:** English and Thai cover the first launch. Tourists and migrant workers in Thailand may read Burmese, Lao, Khmer or Chinese.
+- **Steps:** add a `strings.json` block and an `ogEn`-style set for the language, a path such as `/my/`, extend `langPath`, `guessLang` and the build's `localize()`, and have a native reader check the safety text. Do not machine-translate safety advice without that review.
+- **Done when:** the build, tests and smoke test cover the new language and a native reader has signed off.
 
 ### V1. Version 2: the combined Prepare → Return run
 

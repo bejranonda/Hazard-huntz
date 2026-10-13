@@ -4,6 +4,14 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Fixed
+
+- **Tap areas on 320 px phones.** Under 520 px of height the room tabs are hidden (the ‹ › arrows stay) and the HUD padding shrinks, so item tap areas at 320×460 grow from 38.1 px to 44.1 px (N4, issue #2). Two new smoke checks (35).
+
+### Changed
+
+- **Game events carry the language** (`th` or `en`, stored as `blob4` by `/api/e`), so plays can be split by language (issue #39).
+
 ### Documentation
 
 - Documentation sweep for v1.2.2: README, HANDOFF, KNOWLEDGE (new §19, the FloodWatch link), KNOWN_ISSUES (fixed rows moved to *Fixed* as F18–F20; new #38 flash of Thai on `/` and #39 no language in game events), GUIDELINES (English copy rules and rules 30–34), APPROACH_AND_METHOD (new §§16–17), ROADMAP (new L9 and P4), and docs 02–06 (English previews, 50 images, 35-row phone matrix, 147/156 KB, 38 precached files). No code changes; the app stays at 1.2.2.

@@ -177,6 +177,25 @@ try {
     await ctx.close();
   }
 
+  // 1b. The smallest phones (320x460, iPhone SE 1st gen with toolbars): the
+  // room tabs are hidden so the house is bigger and item tap areas reach 44 px
+  {
+    const { ctx, page } = await newPage({ width: 320, height: 460, ua: UA.iphone });
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await page.click('.mode-btn.mode-return');
+    await page.click('#howto-go');
+    await page.waitForFunction(() => window.__brm?.state.round?.running);
+    const sizes = await page.$$eval('.room:first-child .item .hit', (els) => els.map((e) => {
+      const r = e.getBoundingClientRect();
+      return Math.min(r.width, r.height);
+    }));
+    const min = Math.min(...sizes);
+    check('tap targets >= 44 px on 320x460', min >= 44, `${min.toFixed(1)} px`);
+    const smallGame = await smallControls(page);
+    check('game controls >= 44 px on 320x460', !smallGame.length, smallGame.join(', '));
+    await ctx.close();
+  }
+
   // 2. Return mode on a short iPhone-SE-sized screen: tap targets >= 44 px
   {
     const { ctx, page } = await newPage({ width: 375, height: 548, ua: UA.iphone });

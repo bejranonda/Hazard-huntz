@@ -69,7 +69,7 @@ node tools/build.mjs                    # validate content + generate pages (Tha
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
 npm test                                # 13 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 33 browser checks; add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 35 browser checks; add  -- --screens docs/screens  to refresh screenshots
 npm run images                          # re-render previews (Thai + English), checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
 npm run docs                            # regenerate the safety table in docs/01 from items.json
@@ -162,7 +162,7 @@ Fixed so far: #1 (tap overlaps), #4 (CI), #5 (hard-coded text), #6 (placeholders
 All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each with steps, the person needed and a "done when". In short:
 
 1. **Launch** (section 2, ROADMAP L-tasks): Web Analytics, search consoles, the language check, the ⚠️ review, the real-phone matrix, the FloodWatch link and the soft launch.
-2. **Polish, AI-ready:** N4, bigger tap areas on 320 px-wide phones ([#2](docs/KNOWN_ISSUES.md#2-item-tap-areas-are-3843-px-on-320-px-wide-phones)).
+2. **Polish, AI-ready:** N4 is done (13 Oct 2026, F21). Pick the next AI-ready card in [docs/ROADMAP.md](docs/ROADMAP.md), for example the flash of Thai on `/` ([#38](docs/KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-)).
 3. **After two weeks live:** the first metrics review (N5): the most-missed lessons, share and challenge numbers, and which language and channel bring players.
 4. **More house:** draw the bathroom, bedroom and garage ([#14](docs/KNOWN_ISSUES.md#14-bathroom-bedroom-and-garage-are-not-drawn)), and settle the mattress conflict first ([#10](docs/KNOWN_ISSUES.md#10-sources-conflict-on-soaked-mattresses)).
 5. **v2, the combined run:** the before/after card and a third start button ([#15](docs/KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)).

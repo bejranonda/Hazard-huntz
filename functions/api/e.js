@@ -37,10 +37,10 @@ export async function onRequest({ request, env }) {
       const name = clean(ev[0], 24);
       if (!ALLOWED.has(name)) continue;
       const value = Number(ev[3]);
-      // blob1 event, blob2 mode, blob3 label; double1 value (e.g. score).
+      // blob1 event, blob2 mode, blob3 label, blob4 language (th|en); double1 value (e.g. score).
       ds.writeDataPoint({
         indexes: [name],
-        blobs: [name, clean(ev[1], 16), clean(ev[2], 32)],
+        blobs: [name, clean(ev[1], 16), clean(ev[2], 32), ev[4] === 'en' ? 'en' : 'th'],
         doubles: [Number.isFinite(value) ? value : 0],
       });
     }

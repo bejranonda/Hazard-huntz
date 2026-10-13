@@ -38,7 +38,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
-| N4 | [Bigger tap areas on 320 px phones](#n4-bigger-tap-areas-on-320-px-phones) | AI-ready | Todo |
+| N4 | [Bigger tap areas on 320 px phones](#n4-bigger-tap-areas-on-320-px-phones) | AI-ready | Done (13 Oct 2026) |
 | N5 | [First metrics review](#n5-first-metrics-review) | Owner + AI | Blocked: needs 2 weeks live |
 | N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Done: IMP-01 to IMP-07 verified |
 | N7 | [International version and social previews](#n7-international-version-and-social-previews) | AI-ready | Done (11 Oct 2026, v1.2.0) |
@@ -191,7 +191,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N4. Bigger tap areas on 320 px phones
 
-- **Who:** AI-ready · **Status:** Todo · **Issue:** #2
+- **Who:** AI-ready · **Status:** Done (13 Oct 2026: below 520 px of height the room tabs are hidden and the HUD padding shrinks; smallest item tap area at 320×460 is 44.1 px, smoke checks added) · **Issue:** #2 (now F21)
 - **Steps:**
   1. Add a media query for screens under about 480 px tall that gives the stage more room. For example, hide `.tabs`, since the ‹ › arrows stay.
   2. Add a smoke check at 320×460 that measures the item tap areas.

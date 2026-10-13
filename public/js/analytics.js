@@ -2,7 +2,7 @@
 // batched in memory and sent with sendBeacon when the page is hidden, so the
 // game never waits on the network.
 
-import { content } from './content.js';
+import { content, getLang } from './content.js';
 
 const ALLOWED = new Set([
   'view', 'mode_select', 'round_start', 'round_end', 'share_open', 'share_click',
@@ -23,7 +23,7 @@ function inSample() {
 // track('round_end', { mode: 'prepare', label: 'daily', value: 8 })
 export function track(name, { mode = '', label = '', value = 0 } = {}) {
   if (!ALLOWED.has(name) || !inSample()) return;
-  queue.push([name, String(mode).slice(0, 16), String(label).slice(0, 32), Number(value) || 0]);
+  queue.push([name, String(mode).slice(0, 16), String(label).slice(0, 32), Number(value) || 0, getLang()]);
   if (queue.length >= 20) flush();
 }
 

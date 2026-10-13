@@ -131,7 +131,7 @@ Several requirements are numbers, and numbers get measured.
 | Start-screen weight (< 500 KB) | The build gzips everything the start screen loads and fails above the limit | `tools/build.mjs` (prints `budget …`) |
 | Item tap areas (≥ 44 px) | Playwright reads `getBoundingClientRect()` of every `.hit` on a 375×548 screen | `tests/smoke.mjs` |
 | Controls (≥ 44 px) | Every visible `button`, `a[href]`, `summary` and `[role=button]` on the game, result, checklist, help and about screens is measured. Source links inside a line of text are checked by height. | `tests/smoke.mjs` (`smallControls`) |
-| Tap areas on other screen sizes | The same measurement at 320×460 … 390×664 (one-off probe; results in [KNOWN_ISSUES #2](KNOWN_ISSUES.md#2-item-tap-areas-are-3843-px-on-320-px-wide-phones)) | Re-run by changing the smoke test's viewport |
+| Tap areas on other screen sizes | The same measurement at 320×460 … 390×664 (one-off probe; results in [KNOWN_ISSUES F21](KNOWN_ISSUES.md#fixed)) | Re-run by changing the smoke test's viewport |
 | Overlapping tap areas | Generate two years of daily houses in both modes and intersect the hit boxes in each room | `npm run probe` |
 | Flood timings | Invert the water curve for each item's possible slots | `npm run probe` |
 | Determinism and rules | 365 daily houses per mode. Each must have: 5–7 targets, at least one target per room, a critical item in Prepare, no slot used twice, tap areas ≥ `MIN_HIT`, and exactly one correct answer. Across the year, every playable item must appear at least once. | `npm test` |
@@ -157,7 +157,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 33 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 35 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -263,7 +263,7 @@ The brief was: people around the world should be able to find and use it, with t
 7. **Treat the brand as data.** The Thai name stays in Thai pages; the English pages use "Baan Rod Mai?" built from `logoA`/`logoB`, in HTML and on the canvas.
 8. **Choose the subdomain on evidence.** The owner asked whether to change it for SEO. The existing name matches the game and sits in the zone the owner already controls, and the shorter `flood` was taken by the owner's own BKK FloodWatch. So the game stayed on `baanrodmai.autobahn.bot`, and FloodWatch became a button inside the game ([KNOWLEDGE §19](KNOWLEDGE.md#19-the-water-level-link-bkk-floodwatch)).
 9. **Test as the new audience.** The smoke test runs an English visitor from London, the `/en/` HTML as a crawler sees it, `/en/learn`, an English challenge banner and the English wordmark. The default Thai tests moved to the Thai locale and Bangkok time zone so the guess doesn't change them.
-10. **Say what isn't done.** A short flash of Thai on `/` for English visitors ([#38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-)), no language in game events ([#39](KNOWN_ISSUES.md#39-game-events-carry-no-language)) and no native English review ([#11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
+10. **Say what isn't done.** A short flash of Thai on `/` for English visitors ([#38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-)), (game events gained a language field on 13 Oct) and no native English review ([#11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
 
 ## 17. Working from the owner's feedback
 
@@ -274,4 +274,4 @@ After going live, most corrections came from the owner's short messages and scre
 3. **Answer the question that was asked.** For "should we change the subdomain" the answer was an evidence-based "no", with the reasons, then the owner's decision was followed.
 4. **Don't assume what a name means.** `flood.autobahn.bot` already existed; the owner confirmed it was their own project before it was linked as `forecastAppUrl`.
 5. **Verify the live site after each push.** A green push is not a live site (see [LESSONS](LESSONS_LEARNED.md)). The version chip on the start screen makes this a one-glance check.
-6. **Write the documents last, from the code.** Every figure in this sweep (130 keys per language, 49 pages, 50 images, 38 precached files, 33 checks, 147 KB) was read from the build or test output, not remembered.
+6. **Write the documents last, from the code.** Every figure in this sweep (130 keys per language, 49 pages, 50 images, 38 precached files, 35 checks, 147 KB) was read from the build or test output, not remembered.

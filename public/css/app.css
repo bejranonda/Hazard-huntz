@@ -688,3 +688,9 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   .tab { min-height: 44px; font-size: 14px; padding: 2px 6px; }
   .tab .count { min-width: 20px; height: 20px; font-size: 12px; }
 }
+
+/* very short screens (iPhone SE 1st gen, 320x460): the room arrows stay, the tabs go, so the house is bigger */
+@media (max-height: 520px) {
+  .tabs { display: none; }
+  .hud { padding: 2px 8px 1px; }
+}

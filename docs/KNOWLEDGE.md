@@ -178,7 +178,7 @@ x = slot.x − w/2,  y = slot.y − h,  cx = slot.x,  cy = slot.y − h/2
 hit = the sprite box (or the item's own `hit` box), grown to at least MIN_HIT = 64 units each way, centred
 ```
 
-**From scene units to pixels.** The SVG uses `preserveAspectRatio="xMidYMid meet"`, so `scale = min(stageWidth/360, stageHeight/600)`. On phones the height usually decides. Example: a 375×548 viewport gives a stage of 375×445, so the scale is 0.742 and 64 units = 47.5 px. Measurements for other sizes are in [KNOWN_ISSUES #2](KNOWN_ISSUES.md#2-item-tap-areas-are-3843-px-on-320-px-wide-phones).
+**From scene units to pixels.** The SVG uses `preserveAspectRatio="xMidYMid meet"`, so `scale = min(stageWidth/360, stageHeight/600)`. On phones the height usually decides. Example: a 375×548 viewport gives a stage of 375×445, so the scale is 0.742 and 64 units = 47.5 px. Before the 13 Oct fix the smallest item at 320×460 was 38.1 px, at 320×504 42.8 px and at 360×560 48.7 px; see [KNOWN_ISSUES F21](KNOWN_ISSUES.md#fixed).
 
 **Determinism and content.** The same seed and the **same content** always give the same house. Changing the pool, slots or sizes changes houses. See [KNOWN_ISSUES #24](KNOWN_ISSUES.md#24-some-content-edits-reshuffle-todays-house-and-old-challenge-links).
 

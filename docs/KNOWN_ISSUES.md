@@ -2,7 +2,7 @@
 
 This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.2.2 (12 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
-The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N4 = #2, L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
+The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
 | Status | Meaning |
 |---|---|
@@ -16,10 +16,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (N4 = 
 
 | # | Issue | Status | Severity |
 |---|---|---|---|
-| 2 | [Item tap areas are 38–43 px on 320 px-wide phones](#2-item-tap-areas-are-3843-px-on-320-px-wide-phones) | Open | Low |
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
 | 38 | [English visitors briefly see Thai text on `/`](#38-english-visitors-briefly-see-thai-text-on-) | Open | Low |
-| 39 | [Game events carry no language](#39-game-events-carry-no-language) | Open | Low |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
@@ -53,25 +51,6 @@ Fixed issues are listed [at the end](#fixed).
 
 ## Open
 
-### 2. Item tap areas are 38–43 px on 320 px-wide phones
-
-**Status:** Open · **Severity:** Low
-
-The room art is 360×600 scene units, scaled to fit the stage. On short screens the height limits the scale, so 64 units shrink below 44 px.
-
-| Viewport (CSS px) | Example | Stage | Smallest item tap area |
-|---|---|---|---|
-| 320×460 | iPhone SE (1st gen) / 5s in Safari with toolbars | 320×357 | **38.1 px** |
-| 320×504 | same, toolbars collapsed | 320×401 | **42.8 px** |
-| 360×560 | small Android inside LINE | 360×457 | 48.7 px |
-| 375×548 | iPhone SE (2nd/3rd gen) in Safari | 375×445 | 47.5 px |
-| 360×640 | common Android in Chrome | 360×537 | 57.3 px |
-| 390×664 | iPhone 12–15 in Safari | 390×552 | 58.9 px |
-
-Buttons, tabs and links stay at 44 px or more everywhere; only the items inside the art are affected. Phones 320 px wide are rare by 2026, so this is low priority.
-
-**A possible fix:** on screens under about 480 px tall, hide the room tabs (the ‹ › arrows remain) to give the stage about 50 px more. Growing `MIN_HIT` instead would make [#1](#fixed) worse.
-
 ### 3. Not yet tested on real phones or real in-app browsers
 
 **Status:** Open · **Severity:** High: a launch blocker
@@ -95,12 +74,6 @@ What a headless test **cannot** show:
 The page at `/` is Thai HTML. When an international visitor opens `/` (no `/en`, no stored choice), `guessLang` picks English and the page switches after the content JSON loads. Measured on 12 Oct 2026 with an English browser outside Bangkok: Thai wordmark at about 0.2 s, English from about 0.9 s, and the address bar becomes `/en/`. It is a short flash of the wrong language, not a failure. Links shared as `/en/…` have no flash because the HTML is already English.
 
 **Fix ideas:** (a) a Cloudflare redirect rule on `Accept-Language` for `/` only, which keeps search crawlers on the Thai page by excluding bot user agents; (b) a tiny inline script that hides the body until the language is set (costs first paint). Neither is done, because redirecting by language can hurt SEO if done wrong.
-
-### 39. Game events carry no language
-
-**Status:** Open · **Severity:** Low
-
-The anonymous events sent to `/api/e` do not say which language was played, so Analytics Engine can't split plays by Thai and English. Web Analytics can still split page views by path (`/en/…` against the rest). **Fix:** add an allowlisted `lang` dimension to the event and to the Function's allowlist, then update [05-metrics.md](05-metrics.md).
 
 ---
 
@@ -416,6 +389,13 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### After v1.2.2 (13 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F21 (was #2) | Item tap areas were 38.1 px at 320×460 and 42.8 px at 320×504 | Under 520 px of height the room tabs are hidden (the ‹ › arrows stay) and the HUD padding shrinks. Smoke check "tap targets >= 44 px on 320x460" measures **44.1 px**; the same page's controls stay at 44 px or more. On 360×560 and larger screens nothing changes. |
+| F22 (was #39) | Game events carried no language | `track()` now sends `th` or `en` as a fifth field and `/api/e` stores it as `blob4` (anything else is stored as `th`). [05-metrics.md](05-metrics.md) has the Thai/English split. |
 
 ### After v1.1.0: international version and wording (11–12 Oct 2026)
 

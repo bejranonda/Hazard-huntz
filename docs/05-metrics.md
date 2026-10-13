@@ -4,7 +4,7 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 
 1. **Cloudflare Web Analytics:** page views, referrers (LINE / Facebook / TikTok), devices and Core Web Vitals. Turn it on in Pages → Metrics; it is cookieless.
 2. **Game events → Workers Analytics Engine.** The game batches anonymous events and sends them to `POST /api/e` (`functions/api/e.js`) when the page is hidden. Each event becomes one data point:
-   - `blob1` event name, `blob2` mode, `blob3` label, `double1` value
+   - `blob1` event name, `blob2` mode, `blob3` label, `blob4` language (`th` or `en`), `double1` value
    - **no** IP, user agent, ID or location is stored
 
 ## Event dictionary
@@ -104,7 +104,7 @@ GROUP BY mode, picked
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
-- **Game events** do not carry a language yet ([KNOWN_ISSUES #39](KNOWN_ISSUES.md#39-game-events-carry-no-language)), so Analytics Engine can't split plays by language. Until a `lang` dimension is added to the event and to the Function's allowlist, compare the English page views with the totals instead.
+- **Game events** carry the language as `blob4` (`th` or `en`) from 13 Oct 2026 on; earlier rows have no `blob4`. Example: `SELECT blob4 AS lang, SUM(_sample_interval) AS n FROM baanrodmai_events WHERE blob1 = 'round_end' GROUP BY lang`. This query has not been run on real data yet ([KNOWN_ISSUES #12](KNOWN_ISSUES.md#12-analytics-sql-and-the-fail-open-default-are-unchecked-on-a-live-account)).
 - **Referrals** from `flood.autobahn.bot` (BKK FloodWatch) appear in Web Analytics once the owner links back ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
 
 ## Reporting rhythm

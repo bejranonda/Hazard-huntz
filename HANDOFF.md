@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
-| **Version** | 1.3.0 (Thai + English) |
+| **Version** | 1.3.1 (Thai + English) |
 | **Date** | 14 Oct 2026 |
 | **State** | Code complete and **live** at https://baanrodmai.autobahn.bot (Thai) and https://baanrodmai.autobahn.bot/en/ (English). CI is green. **Not yet launched; not yet tested on real phones.** |
-| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L5 language check, L6 real phones, L8 search consoles, L9 FloodWatch link); AI-ready ideas are #38 and P5 |
+| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L5 language check, L6 real phones, L8 search consoles, L9 FloodWatch link); AI-ready ideas are #40 and P5 |
 | **For AI assistants** | Start with [AGENTS.md](AGENTS.md); lessons are in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
 
 ## 1. In one minute
@@ -26,7 +26,7 @@
 - **Review and optimisation:** live-site UI/UX evaluation and 3-loop refinement (9.74/10), tap overlaps at 0%, senior-friendly timer copy. Full audit in [review/](review/README.md).
 - **Docs:** the six deliverables plus the maintainer reference and the guidance for AI assistants.
 
-**Checks.** The build passes, with its content validation and size budget (start screen **151 KB** compressed against a 500 KB limit). All **15 rule tests**, **45 browser checks**, the **0% tap-overlap probe** and the docs link check (all relative links) pass locally and in CI.
+**Checks.** The build passes, with its content validation and size budget (start screen **151 KB** compressed against a 500 KB limit). All **16 rule tests**, **51 browser checks**, the **0% tap-overlap probe** and the docs link check (all relative links) pass locally and in CI.
 
 **What's not done:**
 
@@ -68,9 +68,9 @@ Requirements: Node 18 or later (Cloudflare uses 22). For `npm run images` and `n
 ```bash
 node tools/build.mjs                    # validate content + generate pages (Thai and English), SEO files and the service worker
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
-npm test                                # 15 rule tests (Node only, well under a second)
+npm test                                # 16 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 45 browser checks; add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 51 browser checks; add  -- --screens docs/screens  to refresh screenshots
 npm run images                          # re-render previews (Thai + English), checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
 npm run docs                            # regenerate the safety table in docs/01 from items.json
@@ -163,7 +163,7 @@ Fixed so far: #1 (tap overlaps), #4 (CI), #5 (hard-coded text), #6 (placeholders
 All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each with steps, the person needed and a "done when". In short:
 
 1. **Launch** (section 2, ROADMAP L-tasks): Web Analytics, search consoles, the language check, the ⚠️ review, the real-phone matrix, the FloodWatch link and the soft launch.
-2. **Polish, AI-ready:** N4 (13 Oct) and N8 (14 Oct, v1.3.0) are done. Next: the flash of Thai on `/` ([#38](docs/KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-)), the smoke test's uncompressed size check ([#40](docs/KNOWN_ISSUES.md#40-the-smoke-tests-uncompressed-start-screen-check-is-close-to-its-limit)), and the share-loop ideas in [ROADMAP P5](docs/ROADMAP.md#p5-share-loop-ideas-not-built-yet) (weekly house, QR code, family round-up).
+2. **Polish, AI-ready:** N4 (13 Oct) and N8 (14 Oct, v1.3.0) are done. Next: the smoke test's uncompressed size check ([#40](docs/KNOWN_ISSUES.md#40-the-smoke-tests-uncompressed-start-screen-check-is-close-to-its-limit)), and the share-loop ideas in [ROADMAP P5](docs/ROADMAP.md#p5-share-loop-ideas-not-built-yet) (weekly house, QR code, family round-up).
 3. **After two weeks live:** the first metrics review (N5): the most-missed lessons, share and challenge numbers, and which language and channel bring players.
 4. **More house:** draw the bathroom, bedroom and garage ([#14](docs/KNOWN_ISSUES.md#14-bathroom-bedroom-and-garage-are-not-drawn)), and settle the mattress conflict first ([#10](docs/KNOWN_ISSUES.md#10-sources-conflict-on-soaked-mattresses)).
 5. **v2, the combined run:** the before/after card and a third start button ([#15](docs/KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)).
@@ -257,6 +257,10 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
 - The owner asked what else would make the game enjoyable and shareable. A review of the share loop and the round found: the card printed only the site address (so a forwarded picture led to the wrong house), no real challenge back, nothing to collect, the same ending for every score, and the share title hard-coded in Thai.
 - Built (ROADMAP N8): the challenge link on the card, challenge back with both scores and the card, the score to beat next to the clock, the house date and streak in the share text, the safety book, end-of-round moments by score, a feel-only combo, splash and tick sounds, streak milestones, replay buttons above the lessons, bilingual share titles, the checklist share fix. **Scoring, items and slots unchanged.**
 - Checked as a visitor in Thai and English (perfect round, challenge win, 320 px phone, checklist). Two layout problems found that way and fixed before release.
+
+### 14 Oct 2026 (later): v1.3.1, no flash of Thai for visitors from abroad
+
+- The owner approved fixing #38. Visitors from outside Thailand are now sent to `/en/…` by a tiny inline script before any Thai is drawn (Thai browsers, Bangkok time, a stored choice, `?lang=` and search bots stay on Thai). Measured with the same probe that found the problem: only "Baan Rod Mai?" is ever shown. KNOWN_ISSUES F23.
 
 ## 10. Access, accounts and secrets
 

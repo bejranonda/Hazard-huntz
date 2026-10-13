@@ -4,6 +4,12 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.3.1] — 2026-10-14
+
+### Fixed
+
+- **No more flash of Thai for visitors from abroad.** On `/`, `/c/…` and `/checklist/…`, an inline script sends visitors from outside Thailand to the English page (`/en/…`) before anything is drawn. Thai browsers, Bangkok time, a stored choice, `?lang=` and search or preview bots (new `isBot()` in `content.js`) stay on Thai. KNOWN_ISSUES #38 → F23. Tests: 16 rule tests, 51 smoke checks (+6, five of them for who is *not* redirected).
+
 ## [1.3.0] — 2026-10-14
 
 More fun to play, more worth sharing. **Scores, items and slots are unchanged**, so today's houses and old challenge links stay the same.

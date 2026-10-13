@@ -9,7 +9,7 @@ import { makeRng, isValidHouseKey } from '../public/js/rng.js';
 import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.js';
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
-import { guessLang, langPath, pathLang } from '../public/js/content.js';
+import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { bookPool, correctIds, mergeLearned } from '../public/js/collection.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -203,6 +203,14 @@ test('international: /en links, language guess and path switching', () => {
     assert.equal(langPath(en, 'en'), en);
   }
   assert.equal(langPath('/learn', 'en'), '/learn');
+});
+
+test('bots stay on the Thai page, people do not', () => {
+  assert.ok(isBot('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'));
+  assert.ok(isBot('Mozilla/5.0 (compatible; bingbot/2.0)'));
+  assert.ok(isBot('facebookexternalhit/1.1'));
+  assert.ok(!isBot('Mozilla/5.0 (iPhone; CPU iPhone OS 17_6 like Mac OS X) AppleWebKit/605.1.15 Version/17.6 Mobile/15E148 Safari/604.1'));
+  assert.ok(!isBot('Mozilla/5.0 (Linux; Android 13; SM-A145F) AppleWebKit/537.36 Chrome/129.0.0.0 Mobile Safari/537.36'));
 });
 
 test('daily house resets at midnight Bangkok time', () => {

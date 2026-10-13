@@ -158,7 +158,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 45 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 51 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -264,7 +264,7 @@ The brief was: people around the world should be able to find and use it, with t
 7. **Treat the brand as data.** The Thai name stays in Thai pages; the English pages use "Baan Rod Mai?" built from `logoA`/`logoB`, in HTML and on the canvas.
 8. **Choose the subdomain on evidence.** The owner asked whether to change it for SEO. The existing name matches the game and sits in the zone the owner already controls, and the shorter `flood` was taken by the owner's own BKK FloodWatch. So the game stayed on `baanrodmai.autobahn.bot`, and FloodWatch became a button inside the game ([KNOWLEDGE §19](KNOWLEDGE.md#19-the-water-level-link-bkk-floodwatch)).
 9. **Test as the new audience.** The smoke test runs an English visitor from London, the `/en/` HTML as a crawler sees it, `/en/learn`, an English challenge banner and the English wordmark. The default Thai tests moved to the Thai locale and Bangkok time zone so the guess doesn't change them.
-10. **Say what isn't done.** A short flash of Thai on `/` for English visitors ([#38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-)), (game events gained a language field on 13 Oct) and no native English review ([#11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
+10. **Say what isn't done.** The short flash of Thai on `/` for visitors from abroad was found by timing the first paint and fixed on 14 Oct with a redirect that leaves search bots on Thai ([F23](KNOWN_ISSUES.md#fixed)). Game events gained a language field on 13 Oct. Still open: no native English review ([#11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
 
 ## 17. Working from the owner's feedback
 

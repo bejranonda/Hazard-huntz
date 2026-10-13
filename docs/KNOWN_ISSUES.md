@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.3.0 (14 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.3.1 (14 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -17,7 +17,6 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | # | Issue | Status | Severity |
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 38 | [English visitors briefly see Thai text on `/`](#38-english-visitors-briefly-see-thai-text-on-) | Open | Low |
 | 40 | [The smoke test's uncompressed start-screen check is close to its limit](#40-the-smoke-tests-uncompressed-start-screen-check-is-close-to-its-limit) | Open | Low |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
@@ -69,14 +68,6 @@ What a headless test **cannot** show:
 - audio on iOS when the silent switch is on
 
 **To do:** run the 35-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
-
-### 38. English visitors briefly see Thai text on `/`
-
-**Status:** Open · **Severity:** Low
-
-The page at `/` is Thai HTML. When an international visitor opens `/` (no `/en`, no stored choice), `guessLang` picks English and the page switches after the content JSON loads. Measured on 12 Oct 2026 with an English browser outside Bangkok: Thai wordmark at about 0.2 s, English from about 0.9 s, and the address bar becomes `/en/`. It is a short flash of the wrong language, not a failure. Links shared as `/en/…` have no flash because the HTML is already English.
-
-**Fix ideas:** (a) a Cloudflare redirect rule on `Accept-Language` for `/` only, which keeps search crawlers on the Thai page by excluding bot user agents; (b) a tiny inline script that hides the body until the language is set (costs first paint). Neither is done, because redirecting by language can hurt SEO if done wrong.
 
 ### 40. The smoke test's uncompressed start-screen check is close to its limit
 
@@ -414,6 +405,12 @@ The safety book (`brm:learned`), the streak, best scores and the how-to flags ar
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### After v1.3.0 (14 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F23 (was #38) | A visitor from outside Thailand who opened `/` saw Thai text for about 0.9 s before the page switched to English | A tiny inline script at the top of `index.html` sends them to the same page under `/en/` (`/`, `/c/…`, `/checklist/…`) before anything is drawn, so they never see Thai. Same rule as the language guess: a Thai browser or Bangkok time stays on Thai; a stored choice or `?lang=` wins; search and preview bots (`isBot`) stay on Thai, so Google keeps the Thai page and finds English through `hreflang`. Measured: the wordmark text seen is only "Baan Rod Mai?". Five smoke checks cover who is **not** sent. |
 
 ### After v1.2.2 (13 Oct 2026)
 

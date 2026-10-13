@@ -182,8 +182,8 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 
 | When | Run |
 |---|---|
-| Every change | `node tools/build.mjs` and `npm test` (15 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
-| UI, CSS or sharing changes | `npm run smoke` (45 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| Every change | `node tools/build.mjs` and `npm test` (16 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
+| UI, CSS or sharing changes | `npm run smoke` (51 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |

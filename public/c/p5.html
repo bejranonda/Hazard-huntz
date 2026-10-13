@@ -5,6 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FFF4E3">
+<script>
+/* Visitors from outside Thailand go straight to the English page, so they never see Thai first.
+   Same rule as guessLang() in js/content.js: a Thai browser or Bangkok time stays on Thai, a stored
+   choice or ?lang= wins, and search/preview bots stay on the Thai page (their hreflang covers English). */
+(function () {
+  try {
+    var p = location.pathname;
+    if (/^\/en(\/|$)/.test(p) || /[?&]lang=/.test(location.search) || localStorage.getItem('brm:lang')) return;
+    if (/bot|crawl|spider|slurp|facebookexternalhit|preview|lighthouse/i.test(navigator.userAgent)) return;
+    var l = navigator.languages || [navigator.language || ''];
+    if (l.some(function (x) { return /^th\b/i.test(x || ''); }) || Intl.DateTimeFormat().resolvedOptions().timeZone === 'Asia/Bangkok') return;
+    if (!/^\/(c\/[pr]\d{1,2}|checklist\/(prepare|return))?\/?$/.test(p)) return;
+    location.replace('/en' + p + location.search + location.hash);
+  } catch (e) { /* the page still works without it */ }
+})();
+</script>
 <title>เพื่อนเตรียมบ้านทัน 5/10 🏠 ท้าคุณเล่นบ้านหลังเดียวกัน · บ้านรอดไหม?</title>
 <meta name="description" content="เกม 60 วิ เตรียมบ้านก่อนน้ำมา บ้านเดียวกันเป๊ะ คุณจะได้กี่คะแนน?">
 <!--OG:START-->
@@ -86,7 +102,7 @@
       <p data-i18n="disclaimer">เนื้อหาเพื่อการเรียนรู้ หากไม่แน่ใจให้ติดต่อช่างหรือเจ้าหน้าที่</p>
       <a class="link" href="/learn" data-i18n="learnLink">อ่านสรุปวิธีรับมือน้ำท่วมทุกข้อ</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">ที่มาของข้อมูล · ความเป็นส่วนตัว</button>
-      <div class="app-version" id="app-version">v1.3.0</div>
+      <div class="app-version" id="app-version">v1.3.1</div>
     </footer>
   </section>
 

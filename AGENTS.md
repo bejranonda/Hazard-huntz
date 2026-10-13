@@ -10,7 +10,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (14 Oct 2026):** v1.3.0, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (14 Oct 2026):** v1.3.1, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
@@ -29,8 +29,8 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | Command | What it does | When |
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview pages and `sw.js`, and checks the 500 KB budget | Every change |
-| `npm test` | 15 rule tests, Node only, well under a second | Every change |
-| `npm run smoke` | 45 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
+| `npm test` | 16 rule tests, Node only, well under a second | Every change |
+| `npm run smoke` | 51 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
 | `npm run probe` | Measures tap-area overlaps over two years of houses, and flood timings | Slot, size or water-curve changes |
 | `npm run docs` | Regenerates the safety table in `docs/01` from `items.json` | Any `items.json` / `sources.json` change |
@@ -113,7 +113,6 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
 
 1. **If the owner gave a launch input** (domain, forecast URL, review results or phone-test results), do the matching **L** task in [docs/ROADMAP.md](docs/ROADMAP.md) first.
 2. **Otherwise** take the top **AI-ready** task under *Next*:
-   - **#38:** the brief flash of Thai on `/` for English visitors (see KNOWN_ISSUES)
    - **#40:** make the smoke test's size check compare compressed bytes
    - **P5:** share-loop ideas (weekly house, QR code, family round-up)
 3. **When you finish,** update the task card's status, and add any new lesson to [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md).

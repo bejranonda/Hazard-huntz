@@ -325,7 +325,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* an English browser opening `/` sees the Thai page for about 0.9 s before the script switches to English and rewrites the address to `/en/`. It was found only by timing the wordmark text after load, not by any functional check.
 - *Do this:* when a page changes language after load, measure what is on screen over time. Fix it at the server (redirect or separate HTML), not by hiding content.
-- *Encoded in:* [KNOWN_ISSUES #38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-).
+- *Fixed in v1.3.1:* an inline script sends visitors from abroad to `/en/` before anything is drawn ([KNOWN_ISSUES F23](KNOWN_ISSUES.md#fixed)). Search bots are excluded, so the Thai page stays indexed.
 
 **C10. Passing checks don't mean a screen looks right; look at it as a visitor.**
 

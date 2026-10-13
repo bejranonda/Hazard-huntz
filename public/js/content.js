@@ -27,7 +27,7 @@ export async function loadContent() {
     helplines: helplines.helplines,
   };
   const q = new URLSearchParams(location.search).get('lang');
-  setLang(q === 'en' || q === 'th' ? q : pathLang() || store.get('lang', null) || guessLang());
+  setLang(q === 'en' || q === 'th' ? q : pathLang() || store.get('lang', null) || (isBot() ? 'th' : guessLang()));
   return C;
 }
 
@@ -45,6 +45,10 @@ export function guessLang(langs = navigator.languages || [navigator.language || 
   if (tz === 'Asia/Bangkok') return 'th';
   return 'en';
 }
+
+// Search and preview bots stay on the Thai page (their hreflang links point to the English one).
+// Keep this pattern the same as the inline script in index.html.
+export const isBot = (ua = navigator.userAgent) => /bot|crawl|spider|slurp|facebookexternalhit|preview|lighthouse/i.test(ua || '');
 
 // The same page in the other language: "/c/p8" <-> "/en/c/p8", "/" <-> "/en/".
 // Paths outside the app shell (e.g. /learn) are returned unchanged.

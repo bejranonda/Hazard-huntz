@@ -346,12 +346,37 @@ try {
     check('no page errors with reduced motion', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
+  // 8b. Who is NOT sent to English: Thai browsers, a stored Thai choice, ?lang=th, search bots
+  {
+    const cases = [
+      ['Thai browser abroad', { locale: 'th-TH', timezoneId: 'Europe/London' }, '/', null],
+      ['English phone on Bangkok time', { locale: 'en-US', timezoneId: 'Asia/Bangkok' }, '/', null],
+      ['English visitor with a stored Thai choice', { locale: 'en-GB', timezoneId: 'Europe/London' }, '/', 'th'],
+      ['English visitor with ?lang=th', { locale: 'en-GB', timezoneId: 'Europe/London' }, '/?lang=th', null],
+      ['Googlebot', { locale: 'en-US', timezoneId: 'UTC', ua: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X) AppleWebKit/537.36 Chrome/129.0 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' }, '/', null],
+    ];
+    for (const [name, opts, url, stored] of cases) {
+      const { ctx, page } = await newPage(opts);
+      if (stored) await page.addInitScript((v) => localStorage.setItem('brm:lang', JSON.stringify(v)), stored);
+      await page.goto(`${BASE}${url}`, { waitUntil: 'networkidle' });
+      const lang = await page.getAttribute('html', 'lang');
+      const here = new URL(page.url()).pathname;
+      check(`stays on Thai: ${name}`, here === '/' && lang === 'th', `${here} ${lang}`);
+      await ctx.close();
+    }
+  }
+
   // 8. International visitor: English browser outside Thailand
   {
     const { ctx, page } = await newPage({ locale: 'en-GB', timezoneId: 'Europe/London' });
     await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
     const tag = await page.evaluate(() => [document.documentElement.lang, location.pathname, document.querySelector('.mode-btn.mode-prepare .mode-name').textContent]);
     check('international visitor gets English and the /en/ address', tag[0] === 'en' && tag[1] === '/en/' && tag[2].includes('Before'), tag.join(' | '));
+    // They are sent to /en/ before any Thai is drawn: the page they land on is already English
+    const seen = [];
+    page.on('framenavigated', (f) => { if (f === page.mainFrame()) seen.push(new URL(f.url()).pathname); });
+    await page.goto(`${BASE}/c/p8?h=20261007`, { waitUntil: 'networkidle' });
+    check('visitor from abroad is sent to /en/ without seeing Thai', page.url().includes('/en/c/p8?h=20261007') && (await page.getAttribute('html', 'lang')) === 'en', seen.join(' > '));
     await page.goto(`${BASE}/en/c/p8?h=20261007`, { waitUntil: 'networkidle' });
     const banner = await page.textContent('#challenge-banner');
     check('English challenge link shows an English banner', /8\/10/.test(banner) && !/[\u0E00-\u0E7F]/.test(banner), banner.trim().slice(0, 60));

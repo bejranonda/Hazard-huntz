@@ -21,7 +21,8 @@ import {
   canDownload, downloadBlob, lineExternalUrl, imageSrc,
 } from './share.js';
 import { track, initAnalytics, flush } from './analytics.js';
-import { seenHowto, markHowto, bestScore, streak, recordResult } from './progress.js';
+import { seenHowto, markHowto, bestScore, streak, recordResult, learnedIds, addLearned } from './progress.js';
+import { bookPool, correctIds } from './collection.js';
 
 const app = $('#app');
 const state = {
@@ -33,6 +34,9 @@ const state = {
   challenge: null,
   decoysTapped: new Set(),
   lowWarned: false,
+  combo: 0,
+  target: null,
+  lastTick: 0,
   lastFloodLine: 0,
   cardAssets: null,
   result: null,
@@ -115,6 +119,16 @@ async function pickDefaultMode(C) {
   return warning ? 'prepare' : 'return';
 }
 
+// The brand name in the current language ("บ้านรอดไหม?" / "Baan Rod Mai?").
+const brandName = () => `${t('logoA')}${t('logoB')}`.trim();
+
+function bookCounts() {
+  const pool = bookPool(content());
+  const all = [...pool.prepare, ...pool.return];
+  const have = new Set(learnedIds());
+  return { pool, total: all.length, n: all.filter((it) => have.has(it.id)).length, have };
+}
+
 function renderStart(defaultMode) {
   state.defaultMode = defaultMode;
   for (const btn of $$('.mode-btn')) {
@@ -135,6 +149,11 @@ function renderStart(defaultMode) {
     parts.push(esc(t('best', { score: best })));
   }
   $('#daily-line').innerHTML = parts.join(' · ');
+
+  const book = bookCounts();
+  const bookBtn = $('#btn-book');
+  bookBtn.textContent = t('bookChip', { n: book.n, total: book.total });
+  bookBtn.hidden = false;
 
   const fUrl = forecastUrl();
   const fl = $('#forecast-link-start');
@@ -211,7 +230,9 @@ function bindGlobal() {
   soundBtn.addEventListener('click', () => {
     setMuted(!isMuted());
     paintSound();
+    if (!isMuted()) { unlockAudio(); play('tap'); }
   });
+  $('#btn-book').addEventListener('click', () => openBook());
 
   $('#btn-pause').addEventListener('click', () => pauseGame(true));
   document.addEventListener('visibilitychange', () => {
@@ -254,6 +275,8 @@ async function startRound() {
   state.house = house;
   state.decoysTapped = new Set();
   state.lowWarned = false;
+  state.combo = 0;
+  state.lastTick = 0;
   state.result = null;
 
   app.classList.remove('is-prepare', 'is-return');
@@ -288,6 +311,8 @@ async function startRound() {
   state.scene.updateCounts(round.records);
   if (mode === 'prepare') state.scene.setWater(round.waterLevel);
   $('#gauge').classList.remove('low');
+  state.target = run.kind === 'challenge' && state.challenge ? state.challenge.score : null;
+  updateHud();
   say(pickLine(mode === 'prepare' ? 'geckoStartPrepare' : 'geckoStartReturn'), 3200);
   round.start();
   resetHintTimer();
@@ -309,6 +334,11 @@ function loop() {
         $('#gauge').classList.add('low');
         say(t('geckoTimeLow'), 2200);
       }
+      const sec = Math.ceil(r.remaining);
+      if (sec <= 5 && sec > 0 && sec !== state.lastTick) {
+        state.lastTick = sec;
+        play('tick');
+      }
     }
     if (!r.ended) state.raf = requestAnimationFrame(step);
   };
@@ -320,7 +350,9 @@ function updateHud() {
   if (!r) return;
   const left = 1 - r.progress;
   $('#gauge-fill').style.transform = `scaleX(${left.toFixed(4)})`;
-  $('#gauge-label').textContent = t('seconds', { s: Math.ceil(r.remaining) });
+  // In a challenge, the friend's score to beat sits next to the clock.
+  const secs = t('seconds', { s: Math.ceil(r.remaining) });
+  $('#gauge-label').textContent = state.target != null ? `${secs} · 🏆 ${t('challengeTarget', { score: state.target })}` : secs;
   const done = [...r.records.values()].filter((x) => x.status !== STATUS.PENDING).length;
   $('#hud-score').textContent = t('scoreHud', { done, total: r.records.size });
 }
@@ -339,7 +371,7 @@ function onItemTap(p) {
     const pt = stagePoint(p);
     const note = L(p.ref.note);
     if (state.decoysTapped.has(p.pid)) {
-      say(note, 2200);
+      say(`${pickLine('geckoDecoy')} · ${note}`, 2200);
       return;
     }
     state.decoysTapped.add(p.pid);
@@ -436,10 +468,18 @@ function onChoice(p, choice, variant, choices) {
     sparkle(stage, pt.x, pt.y);
     floatText(stage, pt.x, pt.y - 10, `+${content().config.round.pointsCorrect + res.bonus}`, 'ok');
     state.scene.mark(p, 'correct', { swap: p.ref.doneSprite, anim: p.ref.doneAnim });
+    state.combo++;
+    if (state.combo >= 3) {
+      // Feel only: a streak of right answers never changes the score.
+      // Centred near the top of the stage, so it never runs off the edge.
+      floatText(stage, stage.clientWidth / 2, stage.clientHeight * 0.22, t('comboText', { n: state.combo }), 'combo');
+      setTimeout(() => play('combo'), 260);
+    }
     say(pickLine('geckoCorrect'), 1800);
   } else {
     play('wrong');
     haptic(50);
+    state.combo = 0;
     gameGecko.set('oops', { hold: 1800, anim: 'wobble' });
     floatText(stage, pt.x, pt.y, `−${res.penalty} ${t('seconds', { s: '' }).trim()}`, 'warn');
     state.scene.mark(p, 'learned');
@@ -533,6 +573,7 @@ function onFlood(p) {
 }
 
 function onWet() {
+  play('splash');
   say(t('geckoWet'), 3600);
   gameGecko?.set('wow', { hold: 1600, anim: 'wobble' });
 }
@@ -544,7 +585,7 @@ async function onRoundEnd(result) {
   state.scene.revealMissed(state.house.targets, state.round.records);
   closeSheet();
   hideBubble();
-  play('fanfare');
+  play(result.score10 === 10 ? 'fanfareBig' : result.tier >= 2 ? 'fanfare' : 'chime');
   gameGecko?.set(result.tier >= 2 ? 'cheer' : 'happy', { anim: 'hop' });
   state.run.record(result);
   await wait(1100);
@@ -576,21 +617,35 @@ async function showResult(result) {
   const cUrl = challengeUrl(site, mode, result.score10, run.houseKey, getLang());
   const grid = gridOf(result);
   const headlineKey = mode === 'prepare' ? 'resultPrepare' : 'resultReturn';
+  const houseText = run.kind === 'random' ? t('cardRandomHouse') : t('cardHouse', { date: houseLabel(run.houseKey) });
   const shareText = t(mode === 'prepare' ? 'shareTextPrepare' : 'shareTextReturn', {
-    score: result.score10, rank, grid: emojiGrid(mode, grid), url: cUrl,
+    score: result.score10, rank, grid: emojiGrid(mode, grid), url: cUrl, house: houseText,
+    streak: prog.streak >= 2 ? ` · ${t('streak', { n: prog.streak })}` : '',
   });
+  const isChallenge = run.kind === 'challenge' && !!state.challenge;
+  const them = isChallenge ? state.challenge.score : null;
   state.result = result;
-  state.share = { text: shareText, url: cUrl, mode, blob: null, file: null, score: result.score10, emoji: mode === 'prepare' ? '🏠' : '⚡' };
+  state.share = {
+    text: shareText, url: cUrl, mode, blob: null, file: null, score: result.score10,
+    emoji: mode === 'prepare' ? '🏠' : '⚡', them,
+  };
   track('round_end', { mode, label: run.kind, value: result.score10 });
 
+  // Safety book: lessons answered correctly for the first time.
+  const pool = bookPool(C);
+  const valid = new Set([...pool.prepare, ...pool.return].map((it) => it.id));
+  const added = addLearned(correctIds(state.house.targets, result.records), valid);
+  const book = bookCounts();
+
   const other = mode === 'prepare' ? 'return' : 'prepare';
-  const vs = run.kind === 'challenge' && state.challenge
+  const me = result.score10;
+  const vs = isChallenge
     ? (() => {
-      const them = state.challenge.score;
-      const me = result.score10;
       const line = me > them ? t('versusWin') : me === them ? t('versusTie') : t('versusLose');
       return `<div class="versus">${esc(t('versus', { me: `${me}/10`, them: `${them}/10` }))}<br>${esc(line)}</div>`;
     })() : '';
+  const perfect = me === 10;
+  const cheerKey = perfect ? 'cheerPerfect' : ['cheerLow', 'cheerMid', 'cheerHigh'][result.tier] || 'cheerMid';
 
   const lessons = state.house.targets.map((p) => {
     const rec = result.records.find((r) => r.pid === p.pid);
@@ -620,21 +675,29 @@ async function showResult(result) {
       <img class="card-preview" id="card-img" alt="${esc(t(headlineKey, { score: result.score10 }))} · ${esc(rank)}">
       <p class="card-sub-hint">👆 ${esc(t('cardTapHint'))}</p>
     </div>
+    <div class="result-cheer">
+      <div class="gecko-host" id="result-gecko"></div>
+      <p class="bubble">${esc(pickLine(cheerKey))}</p>
+    </div>
     <h1 id="result-title" class="sr-only">${esc(t(headlineKey, { score: result.score10 }))}</h1>
     <div class="stats">
       <span>${esc(t('statCorrect', { c: result.correct, n: result.total }))}</span>
       ${mode === 'prepare' && result.criticalTotal ? `<span>${esc(t('statBonus', { b: result.bonusHits }))}</span>` : ''}
       <span>${esc(t('statTime', { t: result.timeLeft }))}</span>
     </div>
+    ${added.length ? `<button class="book-chip is-new" type="button" id="btn-book-new">${esc(t('bookNew', { n: added.length, have: book.n, total: book.total }))}</button>` : ''}
     ${vs}
-    <button class="btn" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button>
-    <button class="btn secondary" type="button" id="btn-challenge">🏆 ${esc(t('challengeCta'))}</button>
-    <h2 class="section-title">${esc(t('lessonTitle'))}</h2>
-    <ul class="lessons">${lessons}</ul>
+    ${isChallenge
+    ? `<button class="btn" type="button" id="btn-challenge">🏆 ${esc(t('challengeBackCta'))}</button>
+    <button class="btn secondary" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button>`
+    : `<button class="btn" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button>
+    <button class="btn secondary" type="button" id="btn-challenge">🏆 ${esc(t('challengeCta'))}</button>`}
     <div class="btn-row">
       <button class="btn secondary small" type="button" id="btn-other">${esc(t('playOther', { mode: t(other === 'prepare' ? 'modePrepare' : 'modeReturn') }))}</button>
       <button class="btn secondary small" type="button" id="btn-random">🎲 ${esc(t('playRandom'))}</button>
     </div>
+    <h2 class="section-title">${esc(t('lessonTitle'))}</h2>
+    <ul class="lessons">${lessons}</ul>
     <button class="btn secondary small" type="button" id="btn-home">${esc(t('home'))}</button>
     <h2 class="section-title">${esc(t('helpTitle'))}</h2>
     <ul class="help-list">${help}</ul>
@@ -643,7 +706,11 @@ async function showResult(result) {
     <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
+  const resultGecko = new Gecko($('#result-gecko'), { prop: mode === 'prepare' ? 'hood' : 'torch' });
+  resultGecko.set(perfect ? 'wow' : result.tier >= 2 ? 'cheer' : result.tier === 1 ? 'happy' : 'think', { anim: 'hop' });
   if (result.tier >= 2) confetti($('#screen-result'));
+  if (perfect) setTimeout(() => confetti($('#screen-result'), 40), 700);
+  $('#btn-book-new')?.addEventListener('click', () => openBook());
 
   $('#btn-share').addEventListener('click', () => shareResultNow());
   $('#btn-challenge').addEventListener('click', () => shareChallenge());
@@ -670,8 +737,9 @@ async function showResult(result) {
       scoreText: `${result.score10}/10`,
       rankTitle: rank,
       grid,
-      cta: t('cardChallenge'),
-      url: site,
+      cta: isChallenge ? t('cardVersus', { them: `${them}/10`, me: `${me}/10` }) : t('cardChallenge'),
+      url: cUrl,
+      perfect: perfect ? t('perfectStamp') : null,
       footer: t('cardFooter'),
       houseLabel: run.kind === 'random' ? t('cardRandomHouse') : t('cardHouse', { date: houseLabel(run.houseKey) }),
     }, state.cardAssets);
@@ -684,7 +752,10 @@ async function showResult(result) {
   } catch (e) {
     console.warn('card render failed', e);
   }
-  if (prog.isBest && prog.plays > 1) toast(`${t('best', { score: result.score10 })} 🎉`, 2200);
+  const notes = [];
+  if (prog.milestone) notes.push(t('streakMilestone', { n: prog.milestone }));
+  if (prog.isBest && prog.plays > 1) notes.push(`${t('best', { score: result.score10 })} 🎉`);
+  notes.forEach((n, i) => setTimeout(() => toast(n, 2400), i * 2600));
 }
 
 async function shareResultNow() {
@@ -692,7 +763,7 @@ async function shareResultNow() {
   if (!s) return;
   track('share_open', { mode: s.mode, label: 'result' });
   if (canNativeShare()) {
-    const outcome = await nativeShare({ file: s.file, title: 'บ้านรอดไหม?', text: s.text, url: s.url });
+    const outcome = await nativeShare({ file: s.file, title: brandName(), text: s.text, url: s.url });
     if (outcome === 'shared') {
       track('share_click', { mode: s.mode, label: 'native' });
       return;
@@ -705,17 +776,23 @@ async function shareResultNow() {
 async function shareChallenge() {
   const s = state.share;
   if (!s) return;
-  const text = t('challengeText', { score: s.score, emoji: s.emoji, url: s.url });
-  track('share_open', { mode: s.mode, label: 'challenge' });
+  // After playing a friend's challenge, the reply names both scores.
+  const back = s.them != null;
+  const tail = !back ? '' : s.score > s.them ? t('backWin') : s.score === s.them ? t('backTie') : t('backLose');
+  const text = back
+    ? t('challengeBackText', { me: s.score, them: s.them, emoji: s.emoji, url: s.url, tail })
+    : t('challengeText', { score: s.score, emoji: s.emoji, url: s.url });
+  const label = back ? 'challenge-back' : 'challenge';
+  track('share_open', { mode: s.mode, label });
   if (canNativeShare()) {
-    const outcome = await nativeShare({ title: 'บ้านรอดไหม?', text, url: s.url });
+    const outcome = await nativeShare({ file: s.file, title: brandName(), text, url: s.url });
     if (outcome === 'shared') {
-      track('share_click', { mode: s.mode, label: 'challenge-native' });
+      track('share_click', { mode: s.mode, label: `${label}-native` });
       return;
     }
     if (outcome === 'cancelled') return;
   }
-  openShareSheet({ ...s, text, imgSrc: null });
+  openShareSheet({ ...s, text, filename: `baanrodmai-${s.mode}.png`, imgSrc: $('#card-img')?.src });
 }
 
 function openShareSheet({ text, url, blob, file, mode, filename, imgSrc }) {
@@ -742,7 +819,7 @@ function openShareSheet({ text, url, blob, file, mode, filename, imgSrc }) {
     b.addEventListener('click', async () => {
       const ch = b.dataset.ch;
       if (ch === 'native') {
-        const o = await nativeShare({ file, title: 'บ้านรอดไหม?', text, url });
+        const o = await nativeShare({ file, title: brandName(), text, url });
         if (o === 'shared') track('share_click', { mode, label: 'native' });
       } else if (ch === 'copy') {
         await copyText(text);
@@ -796,13 +873,14 @@ async function openChecklist(mode) {
   if (!img) return; // sheet closed meanwhile
   img.src = await imageSrc(blob);
   const url = `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/checklist/${mode}`;
-  const text = t('shareTextChecklist', { title: L(list.title), url: siteUrl() });
+  const text = t('shareTextChecklist', { title: L(list.title), url });
   let file = null;
   try { file = new File([blob], `baanrodmai-checklist-${mode}.png`, { type: 'image/png' }); } catch { /* old browser */ }
   const saveOk = canDownload();
   $('#cl-share').innerHTML = `
     ${canNativeShare() ? `<button class="share-btn" data-c="native"><span class="ico ico-native">⇪</span>${esc(t('checklistShare'))}</button>` : ''}
     <button class="share-btn" data-c="line"><span class="ico ico-line">L</span>${esc(t('shareLine'))}</button>
+    <button class="share-btn" data-c="facebook"><span class="ico ico-fb">f</span>${esc(t('shareFb'))}</button>
     <button class="share-btn" data-c="copy"><span class="ico ico-copy">⧉</span>${esc(t('shareCopy'))}</button>
     ${saveOk ? `<button class="share-btn" data-c="save"><span class="ico ico-save">↓</span>${esc(t('shareSave'))}</button>` : ''}`;
   $('#cl-hint').hidden = saveOk;
@@ -811,9 +889,9 @@ async function openChecklist(mode) {
       const c = b.dataset.c;
       track('checklist_save', { mode, label: c });
       if (c === 'native') await nativeShare({ file, title: L(list.title), text, url });
-      else if (c === 'line') shareChannel('line', { text: `${text}\n${url}`, url, mode });
+      else if (c === 'line' || c === 'facebook') shareChannel(c, { text, url, mode });
       else if (c === 'copy') {
-        await copyText(`${text}\n${url}`);
+        await copyText(text);
         toast(t('copied'));
       } else if (c === 'save') downloadBlob(blob, `baanrodmai-checklist-${mode}.png`);
     });
@@ -836,6 +914,30 @@ export function checklistData(mode) {
     forward: t('clForward'),
     footer: t('cardFooter'),
   };
+}
+
+// The safety book: every playable lesson, learned ones with their tip.
+async function openBook() {
+  try { await loadSprites(); } catch { /* icons are optional */ }
+  const { pool, total, n, have } = bookCounts();
+  const section = (mode) => `
+    <h3>${esc(t(mode === 'prepare' ? 'modePrepare' : 'modeReturn'))} · ${pool[mode].filter((it) => have.has(it.id)).length}/${pool[mode].length}</h3>
+    <ul class="book-list">${pool[mode].filter((it) => have.has(it.id)).map((it) => `
+      <li>${spriteIcon(it.sprite)}<div><b>${esc(L(it.name))}</b><p>${esc(L(it.tip))}</p></div></li>`).join('')}</ul>
+    <ul class="book-grid" aria-label="${esc(t('bookLocked'))}">${pool[mode].filter((it) => !have.has(it.id)).map((it) => `
+      <li title="${esc(t('bookLocked'))}">${spriteIcon(it.sprite)}<span aria-hidden="true">🔒</span></li>`).join('')}</ul>`;
+  openSheet(`
+    <h2 id="sheet-title">📖 ${esc(t('bookTitle'))} · ${n}/${total}</h2>
+    <p class="sub">${esc(n >= total ? t('bookDone') : t('bookIntro'))}</p>
+    ${section('prepare')}
+    ${section('return')}
+    <button class="btn" type="button" id="book-play">${esc(t('bookPlay'))}</button>
+    <button class="btn secondary small" type="button" id="book-close">${esc(t('close'))}</button>`);
+  $('#book-close').addEventListener('click', () => closeSheet());
+  $('#book-play').addEventListener('click', () => {
+    closeSheet();
+    startFlow(state.result?.mode || state.defaultMode, { kind: 'random' });
+  });
 }
 
 function openHelp() {

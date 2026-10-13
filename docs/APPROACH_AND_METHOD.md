@@ -67,6 +67,7 @@ Two working rules followed from those principles:
 | 11. Guidance for AI | What was learned and what comes next, written down for the next assistant | [AGENTS.md](../AGENTS.md), [LESSONS_LEARNED.md](LESSONS_LEARNED.md), [ROADMAP.md](ROADMAP.md) |
 | 12. Live review, three refinement loops, going live | Persona review of the live site, slot exclusion, affordance and wording fixes, CI, Cloudflare connected to GitHub (§§14–15) | v1.1.0, v1.2.x |
 | 13. International version | `/en/` pages, English previews, SEO for both languages, the FloodWatch link, and fixes from the owner's screenshots (§§16–17) | v1.2.0 to v1.2.2 |
+| 14. More fun, more worth sharing | Review of the round and the share loop, one release that fixes the loop and adds reasons to return, a visitor probe in both languages (§18) | v1.3.0 |
 
 The brief allowed up to three questions. None were asked: every gap had a reasonable default, so the work used one and wrote it down. The two values only the owner has became the placeholders `[DOMAIN]` and `[FORECAST_APP_URL]`. Judgement calls, such as which rooms the first version should include, are written down in [02-game-design.md](02-game-design.md) and in this file.
 
@@ -157,7 +158,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 35 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 45 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -275,3 +276,16 @@ After going live, most corrections came from the owner's short messages and scre
 4. **Don't assume what a name means.** `flood.autobahn.bot` already existed; the owner confirmed it was their own project before it was linked as `forecastAppUrl`.
 5. **Verify the live site after each push.** A green push is not a live site (see [LESSONS](LESSONS_LEARNED.md)). The version chip on the start screen makes this a one-glance check.
 6. **Write the documents last, from the code.** Every figure in this sweep (130 keys per language, 49 pages, 50 images, 38 precached files, 35 checks, 147 KB) was read from the build or test output, not remembered.
+
+## 18. Making it more fun and more worth sharing (v1.3.0)
+
+The owner's question was open: "anything else to improve, to enjoy and like to share". The method:
+
+1. **Map before proposing.** Two read-only reviews ran in parallel: one traced the round (timer, scoring, feedback, progress), one traced every share path (card, text, links, previews, events). Each listed gaps with file and line.
+2. **Fix the loop before adding features.** The biggest gap wasn't missing fun but a broken share path: the card printed the site root, so forwarding the picture (the main way older relatives share) led to today's house, not the one on the card. That and challenge back came first.
+3. **Add reasons to return that respect the rules.** A safety book (ids on the device), streak milestones and score-based endings. No leaderboards, names or accounts, because the privacy rule forbids them.
+4. **Keep the score honest.** Feel features (combo, sounds, stamp) add no points, so challenge links stay fair and nobody is rewarded for rushing past the tips.
+5. **Reuse what exists.** `fitText`, `pickLine`, `Gecko`, `confetti`, `shareChannel`, `playableRooms`, and two strings that were written but never used (`challengeTarget`, `geckoDecoy`).
+6. **Test as a visitor, then look.** Beyond the 45 checks, a one-off probe played a perfect English round, a Thai challenge win, the smallest phone and the checklist, copying the real share texts from the clipboard. Its screenshots found two layout bugs the checks missed ([LESSONS C10](LESSONS_LEARNED.md#c-engineering-and-platform)).
+7. **Say what was left out:** a weekly house, a QR code, a family round-up and crowd stats ([ROADMAP P5](ROADMAP.md#p5-share-loop-ideas-not-built-yet)).
+

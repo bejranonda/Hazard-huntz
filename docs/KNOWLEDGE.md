@@ -27,6 +27,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 17. [UI/UX evaluation and target persona findings](#17-uiux-evaluation-and-target-persona-findings)
 18. [International version and social previews](#18-international-version-and-social-previews)
 19. [The water-level link (BKK FloodWatch)](#19-the-water-level-link-bkk-floodwatch)
+20. [Fun and sharing features (v1.3.0)](#20-fun-and-sharing-features-v130)
 
 ---
 
@@ -270,9 +271,9 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 **3b. SEO and AI-search files.** It writes `learn.html`, `en/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16, §18). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
 
-**4. Service worker.** It fills `tools/sw.template.js` with the precache list (38 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
+**4. Service worker.** It fills `tools/sw.template.js` with the precache list (39 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **147 KB**, or **156 KB** including the first room and the sprites.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **151 KB**, or **161 KB** including the first room and the sprites.
 
 **6. `--docs`.** Regenerates the table, flags and references in `docs/01-safety-content.md` from `items.json` and `sources.json`.
 
@@ -294,7 +295,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 | Everything else (same origin) | Stale-while-revalidate |
 | `/api/*`, other origins, non-GET | Not handled |
 
-- **Install** precaches the 38 files and calls `skipWaiting()`.
+- **Install** precaches the 39 files and calls `skipWaiting()`.
 - **Activate** deletes old `brm-*` caches and claims open clients.
 - **Registration** happens after `load`. Boot checks `document.readyState`, so it also registers when boot runs late.
 - **iOS in-app browsers** never run it. See [KNOWN_ISSUES #16](KNOWN_ISSUES.md#16-no-offline-play-inside-ios-in-app-browsers).
@@ -541,7 +542,7 @@ Social listening by Wisesight / Zocial Eye, 16–26 Sep 2026 ([Marketeer](https:
 | Identity and social currency drive sharing | Flattering rank titles that never shame (*บ้านนี้เตรียมพร้อม*, *เซียนกู้บ้าน*) |
 | People tag family on their own (สาดไปสมาชิก) | Challenge links that rebuild the exact house: "ท้าเพื่อนเล่นบ้านนี้", "ส่งให้คนที่บ้าน" |
 | Practical value spreads; long documents don't | Every tap teaches one action with a tip of 80 characters or fewer; every result lists all the lessons and the help numbers |
-| 78% mobile, 74% Android, in-app browsers dominate | 147 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
+| 78% mobile, 74% Android, in-app browsers dominate | 151 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
 | Coping humour works; suffering-as-content backfires | Humour only at the situation (mud, the rope that isn't a snake, the gecko's faces). No real photos, no AI flood images, no people in danger. |
 | Political anger is high | No politicians, agencies blamed, party colours, royal or religious references |
 | Quiet edits cost trust | "UPDATE:" labels for content changes, and dated sources in the About sheet |
@@ -650,3 +651,26 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 - The "เช็กระดับน้ำล่วงหน้า" / "Water levels" button shows on the start screen, the result screen and the help sheet, only when this is a real `https://` address (`forecastUrl()` in `content.js`). It opens in a new tab and is counted as `forecast_click`.
 - `flood.autobahn.bot` is a different live site: **never redirect it to the game**. Both sites sit on `autobahn.bot` and can link to each other.
 - Optional and not set: `forecastStatusUrl`, a small endpoint returning `{"rainWarning": true|false}` with CORS, so the start screen could pick the recommended mode from live data ([KNOWN_ISSUES #13](KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)).
+
+## 20. Fun and sharing features (v1.3.0)
+
+Built 14 Oct 2026 (ROADMAP N8). None of it changes scoring, items or slots.
+
+| Feature | Where | Facts |
+|---|---|---|
+| Challenge link on the card | `main.js → showResult` passes `cUrl`; `cards.js → drawResultCard` fits it with `fitText` (40 → 26 px) | `baanrodmai.autobahn.bot/c/p8?h=20261014` is 43 characters and fits at full size; English adds `/en` |
+| Challenge back | `main.js → shareChallenge`, strings `challengeBackCta`, `challengeBackText`, `backWin`/`backTie`/`backLose`, `cardVersus` | Only after `run.kind === 'challenge'`. The text names both scores, the share attaches the card, events use the label `challenge-back` |
+| Score to beat | `updateHud`, string `challengeTarget` | Shown in the gauge label ("50 วิ · 🏆 เป้า 8/10"), not as an overlay, so it never covers the room or the gecko's bubble |
+| Share text | `shareTextPrepare/Return` gained `{house}` and `{streak}` | `{streak}` is " · เล่นต่อเนื่อง N วัน 🔥" from N = 2, else empty. A unit test checks every placeholder in both languages |
+| Safety book | `collection.js` (`bookPool`, `correctIds`, `mergeLearned`), `progress.js` (`learnedIds`, `addLearned`), `main.js → openBook` | Stored as `brm:learned`, item ids only. Counts targets in drawn rooms that aren't disabled: 17 Prepare + 21 Return = **38**. `p-toilet` and `p-fuel` don't count until their rooms are drawn |
+| End of round by score | `onRoundEnd`, `audio.js` (`fanfareBig`, `fanfare`, `chime`), `fx.js → confetti` | 10/10: big fanfare, two confetti bursts, `perfectStamp` on the card. Tier 2 (8–9): fanfare and confetti. Tiers 0–1: chime. Result gecko line from `cheerPerfect`/`cheerHigh`/`cheerMid`/`cheerLow` |
+| Combo | `state.combo` in `main.js`, sound `combo`, string `comboText` | From 3 right answers in a row; a wrong answer resets it. Feel only: no points |
+| Sounds | `audio.js`: `splash` (floor wet), `tick` (each of the last 5 s), `tap` on un-mute | All synthesised, still 0 KB of audio files |
+| Streak milestones | `progress.js → recordResult` returns `milestone` | Days 3, 7, 14, 21, … of the daily house, shown as a toast (`streakMilestone`) |
+| Replay first | result screen order | Share buttons → "play the other mode" / "random house" → lessons |
+| Bilingual share title | `brandName()` in `main.js` | `t('logoA') + t('logoB')`, trimmed |
+
+**Why the combo doesn't score.** The score means "safe actions out of 10" and is compared across challenge links. Adding speed or combo points would make a 10/10 from v1.2 worth less than one from v1.3, and would reward rushing over reading the tip.
+
+**Why the safety book stores ids only.** The same rule as the streak: nothing personal and nothing that leaves the phone ([KNOWN_ISSUES #41](KNOWN_ISSUES.md#41-the-safety-book-and-streak-live-on-one-device)).
+

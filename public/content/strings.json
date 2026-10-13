@@ -142,8 +142,8 @@
     "cardTapHint": "แตะรูปค้างไว้เพื่อเซฟรูป ส่งต่อให้ครอบครัวทาง LINE",
     "lineGuideText": "สำหรับผู้ใช้ LINE: แตะรูปด้านบนค้างไว้เพื่อบันทึกรูป หรือกดปุ่มเปิดเบราว์เซอร์หลักด้านล่าง",
     "openExternal": "เปิดในเบราว์เซอร์ เพื่อแชร์รูปได้ง่ายขึ้น",
-    "shareTextPrepare": "เตรียมบ้านทัน {score}/10 🏠\nได้ฉายา “{rank}”\n{grid}\nส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
-    "shareTextReturn": "ตรวจบ้านผ่าน {score}/10 ⚡\nได้ฉายา “{rank}”\n{grid}\nส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยหลังน้ำลด 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
+    "shareTextPrepare": "เตรียมบ้านทัน {score}/10 🏠 ({house})\nได้ฉายา “{rank}”{streak}\n{grid}\nส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยจากน้ำท่วม 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
+    "shareTextReturn": "ตรวจบ้านผ่าน {score}/10 ⚡ ({house})\nได้ฉายา “{rank}”{streak}\n{grid}\nส่งต่อด้วยความห่วงใย เพื่อบ้านปลอดภัยหลังน้ำลด 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
     "shareTextChecklist": "{title}\nเก็บไว้ ส่งต่อให้คนที่บ้านด้วยนะ 💛\nเล่นเกมฝึกจริง 60 วิ 👉 {url}",
     "checklistTitle": "เช็กลิสต์ส่งต่อให้คนที่บ้าน",
     "checklistTabPrepare": "ก่อนน้ำมา",
@@ -190,9 +190,41 @@
     },
     "offline": "ออฟไลน์อยู่ ยังเล่นได้ แต่แชร์ต้องต่อเน็ตก่อน",
     "updateReady": "UPDATE: มีเนื้อหาใหม่ เปิดเกมใหม่อีกครั้งเพื่อใช้งาน",
-    "challengeText": "เราได้ {score}/10 ในบ้านหลังนี้ {emoji} ลองเล่นบ้านหลังเดียวกันดู ใครได้มากกว่ากัน? 👉 {url}",
+    "challengeText": "เราได้ {score}/10 ในบ้านหลังนี้ {emoji} ลองเล่นบ้านหลังเดียวกันดู ใครได้มากกว่ากัน? 👉 {url}\n#บ้านรอดไหม",
     "logoA": "บ้าน",
-    "logoB": "รอดไหม?"
+    "logoB": "รอดไหม?",
+    "challengeBackCta": "ส่งกลับไปท้าเพื่อน",
+    "challengeBackText": "เพื่อนได้ {them}/10 เราได้ {me}/10 ในบ้านหลังเดียวกัน {emoji} {tail} 👉 {url}\n#บ้านรอดไหม",
+    "backWin": "ตาเธอแล้ว ลองแก้มือดู!",
+    "backTie": "เสมอกัน! มาตัดสินกันอีกรอบ",
+    "backLose": "เธอยังนำอยู่ เดี๋ยวขอแก้มือนะ!",
+    "cardVersus": "เพื่อน {them} · เรา {me} · บ้านหลังเดียวกัน",
+    "perfectStamp": "เต็มสิบไม่หัก!",
+    "cheerPerfect": [
+      "สุดยอด! ทำถูกทุกข้อเลย 🎉",
+      "เต็มสิบ! ส่งต่อให้คนที่บ้านเลย"
+    ],
+    "cheerHigh": [
+      "เก่งมาก! อีกนิดเดียวเต็มสิบ",
+      "พร้อมมาก! ลองท้าคนที่บ้านดู"
+    ],
+    "cheerMid": [
+      "ดีเลย! ข้อที่พลาดอ่านด้านล่างได้นะ",
+      "มาถูกทางแล้ว ลองอีกรอบไหม?"
+    ],
+    "cheerLow": [
+      "ไม่เป็นไรนะ ได้รู้เพิ่มตั้งหลายข้อ",
+      "ทุกข้อที่พลาดคือบทเรียน ลองใหม่ได้เลย"
+    ],
+    "comboText": "🔥 ถูก {n} ข้อติด!",
+    "bookTitle": "สมุดบ้านรอด",
+    "bookChip": "📖 รู้แล้ว {n}/{total} เรื่อง",
+    "bookIntro": "ข้อที่ตอบถูกจะเก็บไว้ที่นี่ (เก็บในเครื่องนี้เท่านั้น) เล่นบ้านสุ่มเพื่อเจอเรื่องใหม่",
+    "bookNew": "📖 ใหม่! +{n} เรื่องในสมุดบ้านรอด (รวม {have}/{total})",
+    "bookLocked": "ยังไม่เจอ",
+    "bookDone": "ครบทุกเรื่องแล้ว! เก่งมาก 🎉",
+    "bookPlay": "🎲 เล่นบ้านสุ่ม หาเรื่องใหม่",
+    "streakMilestone": "เล่นต่อเนื่อง {n} วันแล้ว! น้องจกภูมิใจมาก 🔥"
   },
   "en": {
     "tagline": "A 60-second game to help your home survive a flood",
@@ -222,7 +254,7 @@
     "challengeReturn": "Your friend checked",
     "challengeBody": "The exact same house ({date}). Can you beat it?",
     "challengeAccept": "Accept the challenge!",
-    "challengeTarget": "Target {score}/10",
+    "challengeTarget": "Beat {score}/10",
     "howtoTitlePrepare": "Water's coming! Get the house ready",
     "howtoTitleReturn": "The flood's gone. Check before moving back",
     "howtoPrepare": [
@@ -336,8 +368,8 @@
     "cardTapHint": "Touch and hold image to save, or share in LINE",
     "lineGuideText": "LINE users: Touch and hold the card above to save, or tap Open in browser below",
     "openExternal": "Open in your browser to share the image more easily",
-    "shareTextPrepare": "House ready: {score}/10 🏠\nTitle: “{rank}”\n{grid}\nSharing with care for a flood-safe home 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai #FloodSafety",
-    "shareTextReturn": "House checked: {score}/10 ⚡\nTitle: “{rank}”\n{grid}\nSharing with care for a safe homecoming 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai #FloodSafety",
+    "shareTextPrepare": "House ready: {score}/10 🏠 ({house})\nTitle: “{rank}”{streak}\n{grid}\nSharing with care for a flood-safe home 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai #FloodSafety",
+    "shareTextReturn": "House checked: {score}/10 ⚡ ({house})\nTitle: “{rank}”{streak}\n{grid}\nSharing with care for a safe homecoming 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai #FloodSafety",
     "shareTextChecklist": "{title}\nSave it and pass it on to your family 💛\nPractise in a 60-second game 👉 {url}",
     "checklistTitle": "Checklists to share with family",
     "checklistTabPrepare": "Before the flood",
@@ -384,9 +416,41 @@
     },
     "offline": "You're offline. You can still play; sharing needs a connection.",
     "updateReady": "UPDATE: new content is ready. Reopen the game to use it.",
-    "challengeText": "I got {score}/10 in this house {emoji} Play the exact same house. Can you beat me? 👉 {url}",
+    "challengeText": "I got {score}/10 in this house {emoji} Play the exact same house. Can you beat me? 👉 {url}\n#BaanRodMai #FloodSafety",
     "logoA": "Baan ",
-    "logoB": "Rod Mai?"
+    "logoB": "Rod Mai?",
+    "challengeBackCta": "Challenge them back",
+    "challengeBackText": "You got {them}/10, I got {me}/10 in the same house {emoji} {tail} 👉 {url}\n#BaanRodMai #FloodSafety",
+    "backWin": "Your turn. Can you win it back?",
+    "backTie": "A draw! Let's settle it.",
+    "backLose": "You're still ahead. I'll be back!",
+    "cardVersus": "Friend {them} · Me {me} · same house",
+    "perfectStamp": "Perfect 10!",
+    "cheerPerfect": [
+      "Amazing! Every single one right 🎉",
+      "Perfect! Pass it on to your family"
+    ],
+    "cheerHigh": [
+      "Great job! So close to perfect",
+      "Well prepared! Challenge your family"
+    ],
+    "cheerMid": [
+      "Nice! Check the ones you missed below",
+      "On the right track. One more go?"
+    ],
+    "cheerLow": [
+      "That's okay, you learned a lot",
+      "Every miss is a lesson. Try again!"
+    ],
+    "comboText": "🔥 {n} in a row!",
+    "bookTitle": "Safety book",
+    "bookChip": "📖 {n}/{total} learned",
+    "bookIntro": "Every item you get right is kept here (on this device only). Play random houses to find new ones.",
+    "bookNew": "📖 New! +{n} in your safety book ({have}/{total})",
+    "bookLocked": "Not found yet",
+    "bookDone": "All learned! Well done 🎉",
+    "bookPlay": "🎲 Random house, find new ones",
+    "streakMilestone": "{n} days in a row! The gecko is proud of you 🔥"
   },
   "og": {
     "_readme": "ข้อความตัวอย่างลิงก์ (ภาษาไทยเท่านั้น) ที่ LINE / Facebook แสดงเมื่อส่งลิงก์",

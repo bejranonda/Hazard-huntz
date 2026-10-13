@@ -15,12 +15,12 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `mode_select` | Mode button tapped | prepare / return | `default` / `other` | – |
 | `round_start` | Round begins | mode | `daily` / `challenge` / `random` | – |
 | `round_end` | Round finished (all found or time up) | mode | same as above | score 0–10 |
-| `share_open` | Share or challenge button tapped | mode | `result` / `challenge` | – |
-| `share_click` | Share channel used | mode | `native` / `line` / `facebook` / `x` / `copy` / `save` / `challenge-native` | – |
+| `share_open` | Share or challenge button tapped | mode | `result` / `challenge` / `challenge-back` (reply after playing a friend's challenge, v1.3.0) | – |
+| `share_click` | Share channel used | mode | `native` / `line` / `facebook` / `x` / `copy` / `save` / `challenge-native` / `challenge-back-native` | – |
 | `challenge_open` | Opened a challenge link | mode | – | friend's score |
 | `challenge_play` | Accepted the challenge | mode | – | friend's score |
 | `checklist_open` | Checklist sheet opened | prepare / return | – | – |
-| `checklist_save` | Checklist shared or saved | prepare / return | `native` / `line` / `copy` / `save` | – |
+| `checklist_save` | Checklist shared or saved | prepare / return | `native` / `line` / `facebook` / `copy` / `save` | – |
 | `help_click` | Helpline tapped (tel:) | mode or – | the number, e.g. `1784` | – |
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
@@ -106,6 +106,17 @@ GROUP BY mode, picked
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
 - **Game events** carry the language as `blob4` (`th` or `en`) from 13 Oct 2026 on; earlier rows have no `blob4`. Example: `SELECT blob4 AS lang, SUM(_sample_interval) AS n FROM baanrodmai_events WHERE blob1 = 'round_end' GROUP BY lang`. This query has not been run on real data yet ([KNOWN_ISSUES #12](KNOWN_ISSUES.md#12-analytics-sql-and-the-fail-open-default-are-unchecked-on-a-live-account)).
 - **Referrals** from `flood.autobahn.bot` (BKK FloodWatch) appear in Web Analytics once the owner links back ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
+
+## How far a challenge travels (v1.3.0)
+
+`share_open` with label `challenge-back` counts replies: someone opened a friend's link, played, and sent a challenge back. The ratio of `challenge-back` to `challenge_play` says how often a challenge turns into a reply. **[unverified]** on real data; no players yet.
+
+```sql
+SELECT blob3 AS label, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 = 'share_open' AND timestamp > NOW() - INTERVAL '7' DAY
+GROUP BY label
+```
 
 ## Reporting rhythm
 

@@ -327,6 +327,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* when a page changes language after load, measure what is on screen over time. Fix it at the server (redirect or separate HTML), not by hiding content.
 - *Encoded in:* [KNOWN_ISSUES #38](KNOWN_ISSUES.md#38-english-visitors-briefly-see-thai-text-on-).
 
+**C10. Passing checks don't mean a screen looks right; look at it as a visitor.**
+
+- *What happened:* in v1.3.0 all 45 smoke checks passed while the combo text ran off the right edge of the room and the challenge-target chip covered the gecko's speech bubble on a 320 px phone. A one-off visitor probe (Thai and English, a perfect round, a challenge win, the smallest phone) and its screenshots found both.
+- *Do this:* after UI work, play the new paths as a visitor in both languages and on the smallest phone, and look at every screenshot. Turn what you find into a rule or a check.
+- *Encoded in:* [GUIDELINES §8, rules 36–37](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); smoke checks for the target in the gauge and the replay order.
+
 **F5. Ignore the "repository moved" notice.**
 
 - *What happened:* the session's remote URL is lowercase (`hazard-huntz`), while the repository is named `Hazard-huntz`, so every push prints this notice.

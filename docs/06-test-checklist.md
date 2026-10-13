@@ -4,8 +4,8 @@
 
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
-npm test                 # 13 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset
-npm run smoke            # 35 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm test                 # 15 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts
+npm run smoke            # 45 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
@@ -64,6 +64,9 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 33 | Open `/en/`: the header and start screen are English ("Baan Rod Mai?"), the version chip shows, and the language button switches to Thai and back | | | | | | | | |
 | 34 | Share an English result: the card shows "Baan Rod Mai?"; the link is `/en/c/…`; LINE or Facebook shows the English preview | | | | | | | | |
 | 35 | Open `/en/learn`: English headings, 40 lessons, hotlines marked as Thai | | | | | | | | |
+| 36 | Play a friend's challenge link, then tap "ส่งกลับไปท้าเพื่อน": the text names both scores, the card is attached, and the link opens the same house | | | | | | | | |
+| 37 | Forward only the result **picture** to a chat: the printed link on it opens the same house | | | | | | | | |
+| 38 | Safety book: the start-screen count goes up after a round; the sheet scrolls and closes; the count survives closing the app | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
@@ -79,11 +82,11 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-- Start screen: **147 KB** compressed (HTML + CSS + JS + content JSON + fonts).
-- First game screen: **156 KB** (adds the first room and the sprites).
+- Start screen: **151 KB** compressed (HTML + CSS + JS + content JSON + fonts).
+- First game screen: **161 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 
-Rooms are fetched while the player is still on the start screen. The service worker precaches 38 files for offline play after the page has loaded.
+Rooms are fetched while the player is still on the start screen. The service worker precaches 39 files for offline play after the page has loaded.
 
 ## Live-site checks (search and AI search)
 

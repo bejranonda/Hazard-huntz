@@ -86,6 +86,26 @@ const SOUNDS = {
   fanfare() {
     [523, 659, 784, 1046].forEach((f, i) => tone({ type: 'triangle', from: f, dur: 0.3, gain: 0.16, delay: i * 0.11 }));
   },
+  // A perfect round: the fanfare, then a bright second phrase.
+  fanfareBig() {
+    SOUNDS.fanfare();
+    [784, 1046, 1318, 1568, 2093].forEach((f, i) => tone({ type: 'triangle', from: f, dur: 0.26, gain: 0.14, delay: 0.55 + i * 0.09 }));
+  },
+  // A low score: warm and short, never a "fail" sound.
+  chime() {
+    [523, 659, 784].forEach((f, i) => tone({ type: 'sine', from: f, dur: 0.34, gain: 0.13, delay: i * 0.14 }));
+  },
+  // Three right answers in a row: a quick rising run.
+  combo() {
+    [880, 1175, 1568].forEach((f, i) => tone({ type: 'triangle', from: f, dur: 0.12, gain: 0.1, delay: i * 0.05 }));
+  },
+  // Water reaches the floor.
+  splash() {
+    noise({ dur: 0.45, gain: 0.26, freq: 900, sweepTo: 300, q: 0.9 });
+    tone({ type: 'sine', from: 300, to: 120, dur: 0.3, gain: 0.14 });
+  },
+  // The last five seconds: a soft clock tick.
+  tick() { tone({ type: 'square', from: 1200, to: 1100, dur: 0.035, gain: 0.05 }); },
 };
 
 export function play(name) {

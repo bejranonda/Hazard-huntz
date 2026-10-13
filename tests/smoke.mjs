@@ -169,6 +169,15 @@ try {
     await shot(page, '06-share');
     const channels = await page.$$eval('[data-ch]', (b) => b.map((x) => x.dataset.ch));
     check('share fallbacks: LINE, Facebook, X, copy', ['line', 'facebook', 'x', 'copy'].every((c) => channels.includes(c)), channels.join());
+    const sh = await page.evaluate(() => ({ url: window.__brm.state.share.url, text: window.__brm.state.share.text }));
+    check('card and share text carry this house (challenge link + date)', /\/c\/p\d+\?h=\d{8}$/.test(sh.url) && sh.text.includes('บ้านวันที่'), sh.url);
+    const order = await page.evaluate(() => {
+      const r = document.querySelector('#btn-random').getBoundingClientRect().top;
+      const l = document.querySelector('.lesson').getBoundingClientRect().top;
+      return [r, l];
+    });
+    check('replay buttons sit above the lessons', order[0] < order[1], order.map((x) => x.toFixed(0)).join(' < '));
+    check('safety book counts the new lessons', /\+\d/.test((await page.textContent('#btn-book-new').catch(() => '')) || ''));
     check('no page errors (Android, prepare)', !page.errors.length, page.errors.join(' | '));
     // Events are sent when the page is hidden. Closing the context does not
     // reliably fire that on every runner, so trigger it here.
@@ -246,8 +255,36 @@ try {
     await page.waitForFunction(() => window.__brm?.state.round?.running);
     const key = await page.evaluate(() => [window.__brm.state.run.houseKey, window.__brm.state.house.mode]);
     check('challenge plays house 20261007 in return mode', key[0] === '20261007' && key[1] === 'return', key.join());
+    const target = await page.textContent('#gauge-label');
+    check('challenge round shows the target to beat', target.includes('9/10'), target);
+    await page.evaluate(() => window.__brm.state.round.finish('time'));
+    await page.waitForSelector('#screen-result.active', { timeout: 15000 });
+    await page.waitForFunction(() => document.querySelector('#card-img')?.naturalWidth > 0, null, { timeout: 15000 });
+    const firstBtn = await page.$eval('#result .btn', (b) => [b.id, b.textContent.trim()]);
+    check('after a challenge, the first button challenges back', firstBtn[0] === 'btn-challenge' && firstBtn[1].includes('ส่งกลับไปท้า'), firstBtn.join(' | '));
+    await page.click('#btn-challenge');
+    await page.waitForSelector('.share-grid');
+    check('challenge-back sheet carries the result card', !!(await page.$('#sheet .card-preview')));
+    await shot(page, '11-challenge-back');
     const og = await (await fetch(`${BASE}/c/r9`)).text();
     check('challenge page has its own OG image', og.includes('/og/r9.png') && !og.includes('og:url'));
+    await ctx.close();
+  }
+
+  // 4b. The safety book opens from the start screen
+  {
+    const { ctx, page } = await newPage();
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    const chip = (await page.textContent('#btn-book')).trim();
+    check('start screen shows the safety book count', /0\/\d{2}/.test(chip), chip);
+    await page.click('#btn-book');
+    await page.waitForSelector('.book-grid li');
+    const rows = await page.$$eval('.book-list li, .book-grid li', (l) => l.length);
+    check('safety book lists every playable lesson', rows === Number(chip.match(/\/(\d+)/)[1]), String(rows));
+    const smallBook = await smallControls(page);
+    check('safety book controls >= 44 px', !smallBook.length, smallBook.join(', '));
+    await shot(page, '12-book');
+    check('no page errors (safety book)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
 

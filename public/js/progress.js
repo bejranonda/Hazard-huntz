@@ -2,6 +2,7 @@
 // daily streak and how-to flags. Nothing here leaves the phone.
 
 import { store, bangkokDateKey, daysBetween } from './util.js';
+import { mergeLearned } from './collection.js';
 
 export function seenHowto(mode) { return !!store.get(`howto-${mode}`, false); }
 export function markHowto(mode) { store.set(`howto-${mode}`, true); }
@@ -17,7 +18,15 @@ export function streak() {
   return gap <= 1 ? s.count : 0;
 }
 
-// Save a finished round; returns { isBest, streak }.
+// The safety book: item ids the player has answered correctly at least once.
+export function learnedIds() { return store.get('learned', []); }
+export function addLearned(ids, valid) {
+  const { ids: all, added } = mergeLearned(learnedIds(), ids, valid);
+  if (added.length) store.set('learned', all);
+  return added;
+}
+
+// Save a finished round; returns { isBest, streak, plays, milestone }.
 export function recordResult(result, kind) {
   const best = store.get('best', {});
   const prev = best[result.mode];
@@ -27,15 +36,17 @@ export function recordResult(result, kind) {
     store.set('best', best);
   }
   let count = streak();
+  let milestone = 0;
   if (kind === 'daily') {
     const today = bangkokDateKey();
     const s = store.get('streak', null);
     if (!s || s.last !== today) {
       count = s && daysBetween(s.last, today) === 1 ? s.count + 1 : 1;
       store.set('streak', { last: today, count });
+      if (count === 3 || count === 7 || (count > 7 && count % 7 === 0)) milestone = count;
     }
   }
   const plays = store.get('plays', 0) + 1;
   store.set('plays', plays);
-  return { isBest, streak: count, plays };
+  return { isBest, streak: count, plays, milestone };
 }

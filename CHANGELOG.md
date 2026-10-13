@@ -4,15 +4,42 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
-### Fixed
+## [1.3.0] — 2026-10-14
 
-- **Tap areas on 320 px phones.** Under 520 px of height the room tabs are hidden (the ‹ › arrows stay) and the HUD padding shrinks, so item tap areas at 320×460 grow from 38.1 px to 44.1 px (N4, issue #2). Two new smoke checks (35).
+More fun to play, more worth sharing. **Scores, items and slots are unchanged**, so today's houses and old challenge links stay the same.
+
+### Added
+
+- **The card carries the challenge link.** The result card prints `baanrodmai.autobahn.bot/c/p8?h=…` (or `/en/c/…`) instead of the bare site address, so a forwarded *picture* leads to the same house. The text shrinks to fit.
+- **Challenge back.** After playing a friend's challenge, the first button is "🏆 ส่งกลับไปท้าเพื่อน" / "Challenge them back". Its text names both scores ("เพื่อนได้ 3/10 เราได้ 8/10 …"), the card shows "เพื่อน 3/10 · เรา 8/10 · บ้านหลังเดียวกัน", and the share now attaches the card image. Its events use the label `challenge-back`, so the loop depth can be counted.
+- **Score to beat on the clock.** During a challenge round the gauge reads "50 วิ · 🏆 เป้า 8/10" (the `challengeTarget` string was written but never used).
+- **Share text names the house and the streak:** "เตรียมบ้านทัน 8/10 🏠 (บ้านวันที่ 14 ต.ค. 69)", plus " · เล่นต่อเนื่อง 3 วัน 🔥" from two days on. `challengeText` gained the hashtag.
+- **Safety book (สมุดบ้านรอด).** Every lesson answered correctly is kept on the device (item ids only, `brm:learned`). A chip on the start screen ("📖 รู้แล้ว 6/38 เรื่อง") opens a sheet with learned lessons and their tips, and locked tiles for the rest. The result screen says "ใหม่! +2 เรื่อง". Only rooms that are drawn count (38 lessons today).
+- **End-of-round moments by score:** 10/10 gets a bigger fanfare, a second confetti burst and a "เต็มสิบไม่หัก!" / "Perfect 10!" stamp on the screen card and shared card; 8–9 keep today's fanfare and confetti; lower scores get a soft chime. A small gecko on the result screen says a line that fits the score (warm and encouraging at every level).
+- **Combo, for feel only.** Three or more right answers in a row show "🔥 3 ข้อติด!" and a rising run of notes. It never changes the score.
+- **Sounds for silent moments:** a splash when water reaches the floor, a soft tick for each of the last five seconds, and a blip when sound is switched back on.
+- **Streak milestones:** a toast on day 3, day 7 and every 7th day after.
+- **Checklist sheet:** a Facebook button; the share text carries the checklist link once (LINE and copy used to add it twice).
 
 ### Changed
 
+- **Replay first.** On the result screen, "play the other mode" and "🎲 random house" moved up under the share buttons, above the lessons.
+- **Native share titles follow the language** ("Baan Rod Mai?" in English); they were hard-coded Thai.
+- A second tap on a decoy now gets one of the gecko's decoy lines (`geckoDecoy`, unused until now) with the note.
+- Sample result cards in `public/share/` re-rendered: one shows a challenge win with the perfect stamp.
+- Tests: 15 rule tests (safety book, share-text placeholders), 45 smoke checks (+10).
+
+### Also in 1.3.0 (live since 13 Oct 2026, still labelled v1.2.2 then)
+
+#### Fixed
+
+- **Tap areas on 320 px phones.** Under 520 px of height the room tabs are hidden (the ‹ › arrows stay) and the HUD padding shrinks, so item tap areas at 320×460 grow from 38.1 px to 44.1 px (N4, issue #2). Two new smoke checks (35).
+
+#### Changed
+
 - **Game events carry the language** (`th` or `en`, stored as `blob4` by `/api/e`), so plays can be split by language (issue #39).
 
-### Documentation
+#### Documentation
 
 - Documentation sweep for v1.2.2: README, HANDOFF, KNOWLEDGE (new §19, the FloodWatch link), KNOWN_ISSUES (fixed rows moved to *Fixed* as F18–F20; new #38 flash of Thai on `/` and #39 no language in game events), GUIDELINES (English copy rules and rules 30–34), APPROACH_AND_METHOD (new §§16–17), ROADMAP (new L9 and P4), and docs 02–06 (English previews, 50 images, 35-row phone matrix, 147/156 KB, 38 precached files). No code changes; the app stays at 1.2.2.
 

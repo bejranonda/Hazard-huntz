@@ -107,6 +107,10 @@
   - **squish + sparkle** on success, a soft boop on mistakes, a blub when water reaches something, a short fanfare at the end.
   - All synthesised with Web Audio (0 KB of audio files), and only started after the first tap.
   - Vibration on Android only (iOS has none).
+- **End of the round by score** (v1.3.0): 10/10 gets a bigger fanfare, a second confetti burst and a stamp; 8–9 the fanfare and confetti; lower scores a soft chime. A small gecko on the result screen says a line that fits (`cheerPerfect`/`cheerHigh`/`cheerMid`/`cheerLow`), always warm.
+- **Combo, for feel only:** three or more right in a row show "🔥 3 ข้อติด!" near the top of the room and play a rising run. No points.
+- **More sound:** a splash when water reaches the floor, a tick for each of the last five seconds, a blip when sound is switched on.
+- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (38 playable lessons). Locked lessons show as grey tiles, so there is something to find in random houses.
 - **Motion:** gentle hops and sparkles, no flashing. `prefers-reduced-motion` turns animations into instant state changes.
 - **Copy voice:** casual, warm, native Thai, like a helpful neighbour. Short sentences, particles used naturally (นะ, จ้า, เลย). No jargon, no blame. English mirrors the tone (toggle at top right).
 
@@ -178,6 +182,8 @@ Low-fidelity layouts below. Real screenshots from the built game, captured by `n
 | Challenge landing | [08-challenge.png](screens/08-challenge.png) |
 | Checklist | [09-checklist.png](screens/09-checklist.png) |
 | English | [10-english.png](screens/10-english.png) |
+| Challenge back (share sheet with the versus card) | [11-challenge-back.png](screens/11-challenge-back.png) |
+| Safety book | [12-book.png](screens/12-book.png) |
 
 The share assets, rendered by the same canvas code as the game:
 
@@ -189,9 +195,11 @@ The share assets, rendered by the same canvas code as the game:
 
 - **Result card** (1080×1350 PNG, drawn on a canvas in the browser):
   - logo, mode chip, house date, the gecko's face matching the rank, the headline and big score
-  - rank pill, a ✓/!/? row (shapes as well as colours), "บ้านหลังเดียวกัน ท้าเลย!", the web address, the disclaimer
+  - rank pill, a ✓/!/? row (shapes as well as colours), "บ้านหลังเดียวกัน ท้าเลย!" (or, after a challenge, "เพื่อน 3/10 · เรา 8/10 · บ้านหลังเดียวกัน"), **the challenge link for this house** (v1.3.0), the disclaimer
+  - a "เต็มสิบไม่หัก!" / "Perfect 10!" stamp for 10/10
   - bright and warm, readable at chat-thumbnail size
-- **Share text** pastes anywhere: `เตรียมบ้านทัน 8/10 🏠 · ได้ฉายา "…" · ✅✅💡✅💧✅ · … 👉 link · #บ้านรอดไหม`
+- **Share text** pastes anywhere: `เตรียมบ้านทัน 8/10 🏠 (บ้านวันที่ 14 ต.ค. 69) · ได้ฉายา "…" · เล่นต่อเนื่อง 3 วัน 🔥 · ✅✅💡✅💧✅ · … 👉 link · #บ้านรอดไหม` (the streak part only from two days on)
+- **Challenge back** (v1.3.0): after a friend's challenge, the first button replies with both scores and the card: *"เพื่อนได้ 3/10 เราได้ 8/10 ในบ้านหลังเดียวกัน 🏠 ตาเธอแล้ว ลองแก้มือดู! 👉 link"*. During the round the clock shows the score to beat.
 - **One tap:**
   - Web Share API with the PNG attached (iOS Safari, Android Chrome).
   - Otherwise a sheet with LINE (`line.me/R/share`), Facebook (`sharer.php`), X (`x.com/intent/tweet`), copy link, and save image.
@@ -227,6 +235,7 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   │   ├── cards.js        canvas: result card, checklists, link previews
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links
+│   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
 │   │   ├── mascot.js       น้องจก (SVG, faces, props)
 │   │   ├── audio.js fx.js icons.js ui.js content.js progress.js analytics.js rng.js util.js
 │   ├── content/            ← EDITABLE: items, rooms, strings, config, sources, checklists, helplines

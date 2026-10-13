@@ -256,16 +256,40 @@ export function drawResultCard(canvas, d, assets) {
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#FFFFFF';
-  font(ctx, 46);
+  fitText(ctx, d.cta, W - 100, 46, 32);
   ctx.fillText(d.cta, W / 2, 1238);
-  font(ctx, 40, 400);
-  ctx.fillText(d.url.replace(/^https?:\/\//, ''), W / 2, 1290);
+  // The challenge link itself, so a forwarded picture leads to this house.
+  const shown = d.url.replace(/^https?:\/\//, '');
+  fitText(ctx, shown, W - 100, 40, 26, 400);
+  ctx.fillText(shown, W / 2, 1290);
   font(ctx, 24, 400);
   ctx.fillStyle = 'rgba(255,255,255,.92)';
   ctx.fillText(d.footer, W / 2, 1332);
   font(ctx, 30, 400);
   ctx.fillStyle = INK2;
   ctx.fillText(d.houseLabel, W / 2, 300);
+
+  if (d.perfect) stamp(ctx, W - 200, 470, d.perfect);
+}
+
+// A tilted "rubber stamp" for a perfect round.
+function stamp(ctx, cx, cy, text) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(-0.2);
+  fitText(ctx, text, 300, 48, 28);
+  const w = ctx.measureText(text).width + 56, h = 96;
+  roundRect(ctx, -w / 2, -h / 2, w, h, 22);
+  ctx.fillStyle = 'rgba(255,255,255,.9)';
+  ctx.fill();
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = CORAL;
+  ctx.stroke();
+  ctx.fillStyle = CORAL;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 0, 4);
+  ctx.restore();
 }
 
 // ---------------- checklist 1080x1920 ----------------

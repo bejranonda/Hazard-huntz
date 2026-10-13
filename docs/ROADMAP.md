@@ -42,6 +42,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N5 | [First metrics review](#n5-first-metrics-review) | Owner + AI | Blocked: needs 2 weeks live |
 | N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Done: IMP-01 to IMP-07 verified |
 | N7 | [International version and social previews](#n7-international-version-and-social-previews) | AI-ready | Done (11 Oct 2026, v1.2.0) |
+| N8 | [More fun to play, more worth sharing](#n8-more-fun-to-play-more-worth-sharing) | AI-ready | Done (14 Oct 2026, v1.3.0) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -233,6 +234,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - check an `/en/c/p8` link in Facebook's Sharing Debugger and in LinkedIn's Post Inspector
   - have a native English speaker read `ogEn` and `seo.en`
 
+### N8. More fun to play, more worth sharing
+
+- **Who:** AI-ready · **Status:** Done (14 Oct 2026, v1.3.0)
+- **Why:** the owner asked what else would make the game more enjoyable and more shareable. A review found that a forwarded card led to the wrong house, there was no real "challenge back", and nothing gave a reason to come back.
+- **What was built:** the challenge link on the card, challenge back with both scores, the score to beat on the clock, the house date and streak in the share text, the safety book, end-of-round moments by score, a feel-only combo, sounds for silent moments, streak milestones, replay buttons above the lessons, bilingual share titles, and the checklist share fix. See [CHANGELOG 1.3.0](../CHANGELOG.md).
+- **Rule kept:** no change to scoring, items or slots, so houses and old links stay the same.
+- **Done when:** build, 15 unit tests and 45 smoke checks pass, screenshots looked at in Thai and English, and the live site shows v1.3.0. All true on 14 Oct 2026.
+
 ## Later
 
 ### P1. Bathroom, bedroom and garage
@@ -264,6 +273,15 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Why:** English and Thai cover the first launch. Tourists and migrant workers in Thailand may read Burmese, Lao, Khmer or Chinese.
 - **Steps:** add a `strings.json` block and an `ogEn`-style set for the language, a path such as `/my/`, extend `langPath`, `guessLang` and the build's `localize()`, and have a native reader check the safety text. Do not machine-translate safety advice without that review.
 - **Done when:** the build, tests and smoke test cover the new language and a native reader has signed off.
+
+### P5. Share-loop ideas not built yet
+
+- **Who:** AI-ready (P5a–c) / Owner + AI (P5d) · **Status:** Todo (optional)
+- **P5a. Weekly house** ("บ้านแห่งสัปดาห์"): a house key per ISO week, a third start button for the week, its own streak. It gives family groups one house to compare all week.
+- **P5b. QR code on the card and the checklists:** for people who print the checklist or forward only the picture. It needs a small hand-written QR encoder (no runtime packages); check the 500 KB budget first.
+- **P5c. Family round-up:** the share text of a challenge chain could list every score it has seen (`?s=8,6,9` in the link). Keep it to scores only, no names, and cap the list.
+- **P5d. Crowd stats on the page** ("7 in 10 players turned the breaker off"): needs aggregate numbers from Analytics Engine published as a static JSON by the owner, never per-player data.
+- **Done when:** each idea is built with a smoke check, or dropped with a reason written here.
 
 ### V1. Version 2: the combined Prepare → Return run
 

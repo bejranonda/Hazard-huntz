@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.2.2 (12 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.3.0 (14 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -18,6 +18,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
 | 38 | [English visitors briefly see Thai text on `/`](#38-english-visitors-briefly-see-thai-text-on-) | Open | Low |
+| 40 | [The smoke test's uncompressed start-screen check is close to its limit](#40-the-smoke-tests-uncompressed-start-screen-check-is-close-to-its-limit) | Open | Low |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
@@ -44,6 +45,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 31 | [`/learn` repeats the lessons, and `seo.updated` is bumped by hand](#31-learn-repeats-the-lessons-and-seoupdated-is-bumped-by-hand) | By design | — |
 | 32 | [Search and AI-search results can't be guaranteed](#32-search-and-ai-search-results-cant-be-guaranteed) | Platform | — |
 | 37 | [The international version is English only, with Thai advice and hotlines](#37-the-international-version-is-english-only-with-thai-advice-and-hotlines) | By design | — |
+| 41 | [The safety book and streak live on one device](#41-the-safety-book-and-streak-live-on-one-device) | By design | — |
+| 42 | [A challenge link carries one score, and the combo never scores](#42-a-challenge-link-carries-one-score-and-the-combo-never-scores) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -74,6 +77,14 @@ What a headless test **cannot** show:
 The page at `/` is Thai HTML. When an international visitor opens `/` (no `/en`, no stored choice), `guessLang` picks English and the page switches after the content JSON loads. Measured on 12 Oct 2026 with an English browser outside Bangkok: Thai wordmark at about 0.2 s, English from about 0.9 s, and the address bar becomes `/en/`. It is a short flash of the wrong language, not a failure. Links shared as `/en/…` have no flash because the HTML is already English.
 
 **Fix ideas:** (a) a Cloudflare redirect rule on `Accept-Language` for `/` only, which keeps search crawlers on the Thai page by excluding bot user agents; (b) a tiny inline script that hides the body until the language is set (costs first paint). Neither is done, because redirecting by language can hurt SEO if done wrong.
+
+### 40. The smoke test's uncompressed start-screen check is close to its limit
+
+**Status:** Open · **Severity:** Low
+
+The build's real budget is **compressed** (151 KB of 500 KB). The smoke test also checks that the bytes the browser receives for the start screen, **uncompressed**, stay under 500 KB, because the test server doesn't gzip. That figure was 465 KB in v1.2.2 and is **479 KB** in v1.3.0 (mostly the Kanit fonts and `strings.json`). The next big text addition could fail that check even though real visitors get about a third of it.
+
+**Fix:** make the smoke server gzip like Cloudflare does and compare against the same 500 KB, or count only the compressed size. Don't raise the limit silently.
 
 ---
 
@@ -366,6 +377,20 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 - **The English text has had no native-speaker review** of tone; it was written alongside the Thai ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
 - **Preview caches:** Facebook and LINE cache per URL, so a previously shared `/c/…` link keeps its Thai preview.
 
+
+### 41. The safety book and streak live on one device
+
+**Status:** By design
+
+The safety book (`brm:learned`), the streak, best scores and the how-to flags are kept in the browser's `localStorage`, with no account. A new phone, a different in-app browser (LINE and Facebook each have their own storage) or private mode starts from zero, and an in-app browser may clear it. That is the price of keeping no personal data. The sheet says "เก็บในเครื่องนี้เท่านั้น" so players aren't surprised.
+
+### 42. A challenge link carries one score, and the combo never scores
+
+**Status:** By design (v1.3.0)
+
+- **One score per link.** `/c/p8?h=…` carries the sender's score only. In a family group, each reply compares with the person it came from, not with everyone. A round-up of several scores is an idea in [ROADMAP P5c](ROADMAP.md#p5-share-loop-ideas-not-built-yet).
+- **Anyone can edit a link's score.** The score is in the URL, so a sender could type `/c/p10`. It is a friendly game with no leaderboard, so this is accepted.
+- **The combo is feel only.** Three right answers in a row show "🔥 3 ข้อติด!" but add no points. The score stays "safe actions out of 10", and challenge links from earlier versions stay fair.
 
 ---
 

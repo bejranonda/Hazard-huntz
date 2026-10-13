@@ -10,6 +10,7 @@ import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang } from '../public/js/content.js';
+import { bookPool, correctIds, mergeLearned } from '../public/js/collection.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const load = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content', `${f}.json`), 'utf8'));
@@ -222,6 +223,49 @@ test('version 2 combo run carries Prepare outcomes into Return', () => {
   const h = generateHouse(C, 'return', '20261007', opts);
   assert.ok(!h.targets.some((p) => p.ref.id === 'r-tv'));
   assert.ok(h.targets.some((p) => p.ref.id === 'r-carmud'));
+});
+
+test('safety book: only playable lessons, each counted once', () => {
+  const pool = bookPool(C);
+  const rooms = new Set(playableRooms(C).map((r) => r.id));
+  for (const mode of ['prepare', 'return']) {
+    assert.ok(pool[mode].length > 0);
+    assert.ok(pool[mode].every((it) => it.mode === mode && rooms.has(it.room) && !it.disabled));
+  }
+  // Items in rooms that aren't drawn yet (bathroom, garage) don't count.
+  assert.ok(!pool.prepare.some((it) => it.id === 'p-toilet' || it.id === 'p-fuel'));
+  const valid = new Set([...pool.prepare, ...pool.return].map((it) => it.id));
+  const h = generateHouse(C, 'prepare', '20261007');
+  const recs = h.targets.map((p, i) => ({ pid: p.pid, status: i % 2 ? 'learned' : 'correct' }));
+  const ids = correctIds(h.targets, recs);
+  assert.equal(ids.length, Math.ceil(h.targets.length / 2));
+  const first = mergeLearned([], ids, valid);
+  assert.deepEqual(first.added, ids);
+  const again = mergeLearned(first.ids, ids, valid);
+  assert.equal(again.added.length, 0);
+  assert.equal(again.ids.length, ids.length);
+  assert.equal(mergeLearned(null, ['not-an-item'], valid).added.length, 0);
+});
+
+test('share texts fill every placeholder in both languages', () => {
+  const strings = load('strings');
+  const vars = {
+    shareTextPrepare: ['score', 'rank', 'grid', 'url', 'house', 'streak'],
+    shareTextReturn: ['score', 'rank', 'grid', 'url', 'house', 'streak'],
+    challengeText: ['score', 'emoji', 'url'],
+    challengeBackText: ['me', 'them', 'emoji', 'url', 'tail'],
+    cardVersus: ['me', 'them'],
+    bookChip: ['n', 'total'],
+    bookNew: ['n', 'have', 'total'],
+    shareTextChecklist: ['title', 'url'],
+  };
+  for (const lang of ['th', 'en']) {
+    for (const [key, allowed] of Object.entries(vars)) {
+      const used = [...strings[lang][key].matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
+      for (const u of used) assert.ok(allowed.includes(u), `${lang}.${key} uses {${u}}`);
+      assert.ok(used.includes('url') || !allowed.includes('url'), `${lang}.${key} has no {url}`);
+    }
+  }
 });
 
 console.log(`${passed} passed, ${failures.length} failed`);

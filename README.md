@@ -14,9 +14,9 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (12 Oct 2026): v1.2.2 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (14 Oct 2026): v1.3.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 13 rule tests and 33 headless-browser checks, plus CI on every push.
+> - The code is finished and every automated check passes: 15 rule tests and 45 headless-browser checks, plus CI on every push.
 > - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).
 > - The water-level button opens **BKK FloodWatch** (`flood.autobahn.bot`), the owner's own Autobahn Bot project.
 > - Before launch it still needs Web Analytics switched on, the sitemap submitted to the search consoles, a review of 9 safety items flagged ⚠️, a native-speaker language check, and a pass on real phones.
@@ -26,8 +26,9 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 
 - **Plain HTML, CSS and JavaScript with SVG art.** No framework and no build dependencies. It runs on the **free Cloudflare Pages plan**.
 - **Thai and English.** Thai at `/`, English at `/en/`; the first visit picks Thai for Thai browsers or Bangkok time and English for everyone else.
-- **Light:** 147 KB compressed to the start screen and 156 KB to the first game screen (the limit is 500 KB).
+- **Light:** 151 KB compressed to the start screen and 161 KB to the first game screen (the limit is 500 KB).
 - **Findable by search engines and AI assistants, in both languages.** The game draws itself with JavaScript, so the build also writes plain-HTML pages and files that crawlers can read ([details below](#seo-and-ai-search)).
+- **Made to be shared and replayed (v1.3.0).** The result card prints the link to its own house, a friend's challenge can be answered with both scores, a safety book collects the 38 lessons, and a perfect 10 gets its own stamp.
 - **Plays offline after the first visit,** thanks to a service worker.
 - **Works inside the LINE, Facebook and TikTok in-app browsers.** Where an app blocks sharing or downloads, the game falls back to another way.
 - **All content is editable JSON** in `public/content/`. The build checks it before anything is published.
@@ -112,7 +113,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | 3 | [Deploy to Cloudflare Pages](docs/03-deploy.md) | The live setup, Git and Wrangler steps, the free-plan budget, search setup, and why link previews are pre-rendered |
 | 4 | [Launch kit](docs/04-launch-kit.md) | Thai post copy (Facebook, LINE, TikTok), outreach, the Prepare → Return switch, and the seasonal relaunch |
 | 5 | [Metrics plan](docs/05-metrics.md) | Event dictionary and Analytics Engine SQL for every metric |
-| 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix (35 checks across 8 browser and app combinations) and the live-site checks |
+| 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix (38 checks across 8 browser and app combinations) and the live-site checks |
 
 **Reference for maintainers**
 

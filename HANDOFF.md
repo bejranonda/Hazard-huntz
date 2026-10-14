@@ -6,7 +6,7 @@
 | **Version** | 1.3.1 (Thai + English) |
 | **Date** | 14 Oct 2026 |
 | **State** | Code complete and **live** at https://baanrodmai.autobahn.bot (Thai) and https://baanrodmai.autobahn.bot/en/ (English). CI is green. **Not yet launched; not yet tested on real phones.** |
-| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L5 language check, L6 real phones, L8 search consoles, L9 FloodWatch link); AI-ready ideas are #40 and P5 |
+| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L5 language check, L6 real phones, L8 search consoles, L9 FloodWatch link); AI-ready ideas are P5, P1 and V1 |
 | **For AI assistants** | Start with [AGENTS.md](AGENTS.md); lessons are in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
 
 ## 1. In one minute
@@ -163,7 +163,7 @@ Fixed so far: #1 (tap overlaps), #4 (CI), #5 (hard-coded text), #6 (placeholders
 All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each with steps, the person needed and a "done when". In short:
 
 1. **Launch** (section 2, ROADMAP L-tasks): Web Analytics, search consoles, the language check, the ⚠️ review, the real-phone matrix, the FloodWatch link and the soft launch.
-2. **Polish, AI-ready:** N4 (13 Oct) and N8 (14 Oct, v1.3.0) are done. Next: the smoke test's uncompressed size check ([#40](docs/KNOWN_ISSUES.md#40-the-smoke-tests-uncompressed-start-screen-check-is-close-to-its-limit)), and the share-loop ideas in [ROADMAP P5](docs/ROADMAP.md#p5-share-loop-ideas-not-built-yet) (weekly house, QR code, family round-up).
+2. **Polish, AI-ready:** N4 (13 Oct) and N8 (14 Oct, v1.3.0) are done. Next: the share-loop ideas in [ROADMAP P5](docs/ROADMAP.md#p5-share-loop-ideas-not-built-yet) (weekly house, QR code, family round-up).
 3. **After two weeks live:** the first metrics review (N5): the most-missed lessons, share and challenge numbers, and which language and channel bring players.
 4. **More house:** draw the bathroom, bedroom and garage ([#14](docs/KNOWN_ISSUES.md#14-bathroom-bedroom-and-garage-are-not-drawn)), and settle the mattress conflict first ([#10](docs/KNOWN_ISSUES.md#10-sources-conflict-on-soaked-mattresses)).
 5. **v2, the combined run:** the before/after card and a third start button ([#15](docs/KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)).

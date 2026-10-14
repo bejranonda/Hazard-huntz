@@ -4,6 +4,7 @@
 // Needs playwright-core and a Chromium (set CHROME_PATH if needed).
 
 import http from 'node:http';
+import zlib from 'node:zlib';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -142,13 +143,17 @@ try {
   {
     const { ctx, page } = await newPage();
     const resp = [];
+    // Measure what a visitor downloads: Cloudflare compresses text files, so gzip
+    // them here too; fonts and images are counted as they are.
     page.on('response', async (r) => {
-      const len = Number(r.headers()['content-length'] || 0) || (await r.body().catch(() => Buffer.alloc(0))).length;
-      resp.push({ url: r.url(), len });
+      const body = await r.body().catch(() => Buffer.alloc(0));
+      const text = /text|javascript|json|svg|xml|manifest/.test(r.headers()['content-type'] || '');
+      resp.push({ url: r.url(), raw: body.length, len: text ? zlib.gzipSync(body).length : body.length });
     });
     await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
     const bytes = resp.reduce((a, r) => a + r.len, 0);
-    check('start screen transfer < 500 KB (uncompressed)', bytes < 500 * 1024, `${(bytes / 1024).toFixed(0)} KB`);
+    const raw = resp.reduce((a, r) => a + r.raw, 0);
+    check('start screen download < 500 KB (compressed, as served)', bytes < 500 * 1024, `${(bytes / 1024).toFixed(0)} KB compressed, ${(raw / 1024).toFixed(0)} KB raw`);
     await shot(page, '01-start');
     const fHref = await page.getAttribute('#forecast-link-start', 'href');
     check('forecast button is visible and opens FloodWatch', (await page.isVisible('#forecast-link-start')) && fHref === 'https://flood.autobahn.bot/', String(fHref));

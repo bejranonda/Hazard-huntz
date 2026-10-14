@@ -113,6 +113,5 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
 
 1. **If the owner gave a launch input** (domain, forecast URL, review results or phone-test results), do the matching **L** task in [docs/ROADMAP.md](docs/ROADMAP.md) first.
 2. **Otherwise** take the top **AI-ready** task under *Next*:
-   - **#40:** make the smoke test's size check compare compressed bytes
    - **P5:** share-loop ideas (weekly house, QR code, family round-up)
 3. **When you finish,** update the task card's status, and add any new lesson to [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md).

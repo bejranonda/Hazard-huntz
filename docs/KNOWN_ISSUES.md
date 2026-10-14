@@ -17,7 +17,6 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | # | Issue | Status | Severity |
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 40 | [The smoke test's uncompressed start-screen check is close to its limit](#40-the-smoke-tests-uncompressed-start-screen-check-is-close-to-its-limit) | Open | Low |
 | 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
@@ -68,14 +67,6 @@ What a headless test **cannot** show:
 - audio on iOS when the silent switch is on
 
 **To do:** run the 35-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
-
-### 40. The smoke test's uncompressed start-screen check is close to its limit
-
-**Status:** Open · **Severity:** Low
-
-The build's real budget is **compressed** (151 KB of 500 KB). The smoke test also checks that the bytes the browser receives for the start screen, **uncompressed**, stay under 500 KB, because the test server doesn't gzip. That figure was 465 KB in v1.2.2 and is **479 KB** in v1.3.0 (mostly the Kanit fonts and `strings.json`). The next big text addition could fail that check even though real visitors get about a third of it.
-
-**Fix:** make the smoke server gzip like Cloudflare does and compare against the same 500 KB, or count only the compressed size. Don't raise the limit silently.
 
 ---
 
@@ -410,6 +401,7 @@ The safety book (`brm:learned`), the streak, best scores and the how-to flags ar
 
 | # | Problem | Fix |
 |---|---|---|
+| F24 (was #40) | The smoke test counted the start screen **uncompressed** (479 KB against 500 KB), so a text addition could fail it though visitors download a third of that | The test now gzips text responses the way Cloudflare does and counts fonts and images as they are: **167 KB** compressed (481 KB raw), still against 500 KB. |
 | F23 (was #38) | A visitor from outside Thailand who opened `/` saw Thai text for about 0.9 s before the page switched to English | A tiny inline script at the top of `index.html` sends them to the same page under `/en/` (`/`, `/c/…`, `/checklist/…`) before anything is drawn, so they never see Thai. Same rule as the language guess: a Thai browser or Bangkok time stays on Thai; a stored choice or `?lang=` wins; search and preview bots (`isBot`) stay on Thai, so Google keeps the Thai page and finds English through `hreflang`. Measured: the wordmark text seen is only "Baan Rod Mai?". Five smoke checks cover who is **not** sent. |
 
 ### After v1.2.2 (13 Oct 2026)

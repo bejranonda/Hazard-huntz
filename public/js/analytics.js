@@ -7,7 +7,7 @@ import { content, getLang } from './content.js';
 const ALLOWED = new Set([
   'view', 'mode_select', 'round_start', 'round_end', 'share_open', 'share_click',
   'challenge_open', 'challenge_play', 'checklist_open', 'checklist_save',
-  'help_click', 'forecast_click', 'lang',
+  'help_click', 'forecast_click', 'lang', 'learn_open',
 ]);
 const queue = [];
 let sampled = null;

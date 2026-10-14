@@ -5,7 +5,7 @@
 - Play in Thai: https://baanrodmai.autobahn.bot/ · in English: https://baanrodmai.autobahn.bot/en/
 - Every lesson with its reason and sources: https://baanrodmai.autobahn.bot/learn (Thai, with English) · https://baanrodmai.autobahn.bot/en/learn (English)
 - The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
-- Last content update: 2026-10-11
+- Last content update: 2026-10-15
 
 ## Before the flood (ก่อนน้ำมา)
 
@@ -39,6 +39,7 @@
 - **Pile of flood debris** (กองเศษขยะที่น้ำพัดมา): Boots and gloves on; poke it with a long stick first, then clear it. กองขยะอาจมีตะขาบหรืองูซ่อนอยู่ ใช้ไม้ยาวเขี่ยดูก่อน อย่าใช้มือล้วง [https://baanrodmai.autobahn.bot/learn#r-debris]
 - **Cracked wall** (ผนังบ้านร้าว): Don't move back in yet; have a builder or engineer check it. ผนังร้าว พื้นทรุด บ้านเอียง อย่าเพิ่งเข้าอยู่ ให้ช่างตรวจโครงสร้างก่อน [https://baanrodmai.autobahn.bot/learn#r-crack]
 - **Standing water in a bucket** (น้ำขังในถัง): Tip it out, rinse it and turn it upside down. เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก [https://baanrodmai.autobahn.bot/learn#r-bucket]
+- **Stagnant water out front** (น้ำเน่าขังหน้าบ้าน): Clear the rubbish, then help drain it so the water can move. น้ำท่วมขังเน่า EM บอลไม่ช่วยบำบัด ระบายน้ำออก เก็บขยะ และเติมอากาศดีกว่า [https://baanrodmai.autobahn.bot/learn#r-stagnant]
 - **Wet socket** (ปลั๊กไฟที่เปียก): Don't touch or use it until an electrician has checked it. ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน [https://baanrodmai.autobahn.bot/learn#r-socket]
 - **Breaker panel after the flood** (ตู้เบรกเกอร์หลังน้ำลด): Call an electrician, or the electricity authority, to check before switching on. หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน [https://baanrodmai.autobahn.bot/learn#r-breaker]
 - **TV that was under water** (ทีวีที่จมน้ำมา): Don't plug it in; let it dry and have a technician check it. เครื่องใช้ไฟฟ้าที่จมน้ำ ห้ามเสียบใช้ ห้ามซ่อมเอง ให้ช่างตรวจก่อนเสมอ [https://baanrodmai.autobahn.bot/learn#r-tv]
@@ -46,9 +47,11 @@
 - **Mould on the wall** (เชื้อราบนผนัง): N95 mask and rubber gloves on, doors and windows open, then clean. เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด [https://baanrodmai.autobahn.bot/learn#r-mould]
 - **Generator running indoors** (เครื่องปั่นไฟในบ้าน): Switch it off and move it outside into open air. เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก [https://baanrodmai.autobahn.bot/learn#r-generator]
 - **Fever after wading** (มีไข้หลังลุยน้ำ): See a doctor soon and say you waded through floodwater. ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง [https://baanrodmai.autobahn.bot/learn#r-fever]
+- **One towel for the whole family** (ผ้าเช็ดตัวผืนเดียวใช้ทั้งบ้าน): Give everyone their own towel, wash hands often, don't rub eyes. ตาแดงหลังน้ำท่วม ล้างมือบ่อย ไม่ขยี้ตา ไม่ใช้ผ้าเช็ดตัวร่วมกัน [https://baanrodmai.autobahn.bot/learn#r-towel]
 - **Gas smell in the kitchen** (กลิ่นแก๊สในครัว): No switches, no flames: open windows, close the valve, go outside and call. ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง [https://baanrodmai.autobahn.bot/learn#r-gas]
 - **Food that touched floodwater** (อาหารที่โดนน้ำท่วม): Throw it all out, even if it's bagged or boxed. อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม [https://baanrodmai.autobahn.bot/learn#r-foodwet]
 - **Dented, bulging, rusty cans** (กระป๋องบุบ บวม เป็นสนิม): Throw out any can that's dented, bulging, leaking or rusty. กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน [https://baanrodmai.autobahn.bot/learn#r-cans]
+- **Diarrhoea after the flood** (ท้องเสียหลังน้ำลด): Sip ORS often to stay hydrated, then eat freshly cooked food. ท้องเสียหลังน้ำท่วม จิบผงเกลือแร่ ORS กันขาดน้ำ กินอาหารปรุงสุกใหม่ [https://baanrodmai.autobahn.bot/learn#r-ors]
 - **Tap water after the flood** (น้ำประปาหลังน้ำลด): Run it until clear and boil before drinking, or drink standard bottled water. หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน [https://baanrodmai.autobahn.bot/learn#r-tap]
 - **Bleach plus toilet cleaner** (น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ): Use one at a time, never mix, and keep windows open. ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง [https://baanrodmai.autobahn.bot/learn#r-bleach]
 - **Cupboard under the sink** (ตู้ใต้ซิงก์): Step back, shine a torch, open it with a long stick; if it's a snake, call for help. ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ [https://baanrodmai.autobahn.bot/learn#r-cupboard]

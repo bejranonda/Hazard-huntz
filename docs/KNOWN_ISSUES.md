@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.3.1 (14 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.4.0 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -17,7 +17,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | # | Issue | Status | Severity |
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 8 | [9 safety items are only partially verified](#8-9-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
+| 8 | [10 safety items are only partially verified](#8-10-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
 | 11 | [Thai and English copy need a second native reader](#11-thai-and-english-copy-need-a-second-native-reader) | Owner | Medium |
@@ -45,6 +45,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 37 | [The international version is English only, with Thai advice and hotlines](#37-the-international-version-is-english-only-with-thai-advice-and-hotlines) | By design | — |
 | 41 | [The safety book and streak live on one device](#41-the-safety-book-and-streak-live-on-one-device) | By design | — |
 | 42 | [A challenge link carries one score, and the combo never scores](#42-a-challenge-link-carries-one-score-and-the-combo-never-scores) | By design | — |
+| 43 | [The EM-ball lesson rests on academic sources, not an agency](#43-the-em-ball-lesson-rests-on-academic-sources-not-an-agency) | Owner | Medium |
+| 44 | [The featured topic is switched by hand](#44-the-featured-topic-is-switched-by-hand) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -72,7 +74,7 @@ What a headless test **cannot** show:
 
 ## Needs the owner
 
-### 8. 9 safety items are only partially verified
+### 8. 10 safety items are only partially verified
 
 **Status:** Owner · **Severity:** High: review before launch
 
@@ -373,6 +375,20 @@ The safety book (`brm:learned`), the streak, best scores and the how-to flags ar
 - **One score per link.** `/c/p8?h=…` carries the sender's score only. In a family group, each reply compares with the person it came from, not with everyone. A round-up of several scores is an idea in [ROADMAP P5c](ROADMAP.md#p5-share-loop-ideas-not-built-yet).
 - **Anyone can edit a link's score.** The score is in the URL, so a sender could type `/c/p10`. It is a friendly game with no leaderboard, so this is accepted.
 - **The combo is feel only.** Three right answers in a row show "🔥 3 ข้อติด!" but add no points. The score stays "safe actions out of 10", and challenge links from earlier versions stay fair.
+
+### 43. The EM-ball lesson rests on academic sources, not an agency
+
+**Status:** Owner · **Severity:** Medium
+
+`r-stagnant` says EM balls don't treat stagnant floodwater. Its sources are a 2011 statement signed by 48 environmental scientists (Chula, Kasetsart, Mahidol, KMUTT and others) and a 2026 peer-reviewed study from Bangkokthonburi University ([KNOWLEDGE §21](KNOWLEDGE.md#21-topics-and-the-news-driven-lessons-v140)). No current statement from the Pollution Control Department or the Department of Health was found, and a local administration in Pathum Thani was using EM balls with aerators in October 2026. The lesson is flagged ⚠️, states the evidence without blaming anyone, and gives the action the scientists recommend (drain, remove rubbish, add air).
+
+**Fix:** ask the PCD or the Department of Health for a current position. If an agency supports using EM in some situations (for example to reduce smell), add that nuance and its source; if it agrees, mark the item `verified`. An NSTDA page from 2011 ("Suggested treatments for foul water and when EM is effective") returned an error on 15 Oct 2026 and was not read; read it first.
+
+### 44. The featured topic is switched by hand
+
+**Status:** By design
+
+`config.featuredTopic` puts one topic on the start screen. Nothing switches it on or off from the news; the owner sets it (now `"health"`, for the disease warnings in September–October 2026) and sets it back to `null` when the news fades, or to another topic. Leaving it on for months makes it wallpaper.
 
 ---
 

@@ -14,6 +14,8 @@ const P = {
   boil: '<path d="M4 12h16l-1.5 8h-13L4 12z"/><path d="M8 9c0-1.5 1.5-1.5 1.5-3M12 9c0-1.5 1.5-1.5 1.5-3M16 9c0-1.5 1.5-1.5 1.5-3"/>',
   move: '<path d="M3 15l2-6h10l4 6v3H3v-3z"/><circle cx="7" cy="18" r="1.6"/><circle cx="16" cy="18" r="1.6"/><path d="M14 4h6m-2.5-2.5L20 4l-2.5 2.5"/>',
   clear: '<path d="M14 3l-4 9"/><path d="M5 13h10l2 8H3l2-8z"/><path d="M8 17v4M12 17v4"/>',
+  drink: '<path d="M6 4h12l-1.6 16H7.6L6 4z"/><path d="M6.7 10h10.6"/>',
+  wash: '<path d="M12 3c3.2 4.2 5.2 6.8 5.2 9.4a5.2 5.2 0 0 1-10.4 0C6.8 9.8 8.8 7.2 12 3z"/><path d="M9.6 13.4a2.4 2.4 0 0 0 2.4 2.4"/>',
 };
 
 export function actionIcon(kind) {

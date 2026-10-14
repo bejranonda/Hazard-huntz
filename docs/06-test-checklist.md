@@ -4,8 +4,8 @@
 
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
-npm test                 # 16 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts
-npm run smoke            # 51 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm test                 # 17 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts
+npm run smoke            # 55 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
@@ -63,10 +63,12 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 32 | iOS "Reduce Motion" / Android "Remove animations": no bouncing, still playable | | | | | | | | |
 | 33 | Open `/en/`: the header and start screen are English ("Baan Rod Mai?"), the version chip shows, and the language button switches to Thai and back | | | | | | | | |
 | 34 | Share an English result: the card shows "Baan Rod Mai?"; the link is `/en/c/…`; LINE or Facebook shows the English preview | | | | | | | | |
-| 35 | Open `/en/learn`: English headings, 40 lessons, hotlines marked as Thai | | | | | | | | |
+| 35 | Open `/en/learn`: English headings, 43 lessons, hotlines marked as Thai | | | | | | | | |
 | 36 | Play a friend's challenge link, then tap "ส่งกลับไปท้าเพื่อน": the text names both scores, the card is attached, and the link opens the same house | | | | | | | | |
 | 37 | Forward only the result **picture** to a chat: the printed link on it opens the same house | | | | | | | | |
 | 38 | Safety book: the start-screen count goes up after a round; the sheet scrolls and closes; the count survives closing the app | | | | | | | | |
+| 39 | Featured card "📰 เรื่องที่ควรรู้ช่วงนี้": "read all" opens `/learn` at the health topic; "book" opens the book with health first | | | | | | | | |
+| 40 | New lessons look right on the phone: the EM-ball puddle (front yard), the ORS glass (kitchen), the towel on the sofa (living room) | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
@@ -82,8 +84,8 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-- Start screen: **151 KB** compressed (HTML + CSS + JS + content JSON + fonts).
-- First game screen: **161 KB** (adds the first room and the sprites).
+- Start screen: **158 KB** compressed (HTML + CSS + JS + content JSON + fonts).
+- First game screen: **168 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 
 Rooms are fetched while the player is still on the start screen. The service worker precaches 39 files for offline play after the page has loaded.
@@ -97,7 +99,7 @@ Run these against https://baanrodmai.autobahn.bot after any change to the build,
 | Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/en/`, `/en/learn`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/en/c/p7`, `/checklist/prepare` | 200, right content type |
 | Event endpoint | `curl -X POST -H 'Content-Type: application/json' --data '{"e":[]}' …/api/e` | 204 |
 | Canonical, hreflang and JSON-LD | View source of `/`, `/learn`, `/en/` and `/en/learn` | `rel="canonical"` with the live address; th, en and x-default `hreflang` links; one `application/ld+json` block that parses |
-| `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 40 each, and 9 ⚠️ flags |
+| `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 43 each, and 10 ⚠️ flags |
 | Only the custom domain is indexable | `curl -sI` the `*.pages.dev` address and the custom domain | `x-robots-tag: noindex` on `*.pages.dev` only |
 | Phone-sized load | Headless Chromium, 390×760, touch | No console errors; the footer link to `/learn` is ≥ 44 px |
 | Rich Results Test, Search Console, Bing | Owner, in the web tools | Not done yet ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) |

@@ -28,6 +28,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 18. [International version and social previews](#18-international-version-and-social-previews)
 19. [The water-level link (BKK FloodWatch)](#19-the-water-level-link-bkk-floodwatch)
 20. [Fun and sharing features (v1.3.0)](#20-fun-and-sharing-features-v130)
+21. [Topics and the news-driven lessons (v1.4.0)](#21-topics-and-the-news-driven-lessons-v140)
 
 ---
 
@@ -230,7 +231,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - **`rooms.json`:** `{id, order, enabled, art, name{th,en}, slots: [{id, x, y, tags[]}]}`. Slots must lie inside the 360×600 scene.
 - **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`.
   - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost) or `secondary` (news quoting the agency).
-  - Totals: 54 sources, of which 30 official, 9 government and 15 secondary.
+  - Totals: 57 sources, of which 30 official, 9 government, 16 secondary and 2 academic (a university statement and a peer-reviewed study, used only for `r-stagnant` and always flagged ⚠️).
 - **`strings.json`:**
   - `th` and `en` UI strings (130 keys each, the same keys in both). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
   - `og`: Thai link-preview texts, and `ogEn`: their English twins (the build fails if a key is missing from `ogEn`). Both are used by the build and by the image renderer.
@@ -273,7 +274,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 **4. Service worker.** It fills `tools/sw.template.js` with the precache list (39 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **151 KB**, or **161 KB** including the first room and the sprites.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **158 KB**, or **168 KB** including the first room and the sprites.
 
 **6. `--docs`.** Regenerates the table, flags and references in `docs/01-safety-content.md` from `items.json` and `sources.json`.
 
@@ -412,7 +413,7 @@ Seen on the live account, 6 Oct 2026 (observed, not from the docs):
 
 ## 13. Safety domain knowledge
 
-The full table of 40 items with their sources is in [01-safety-content.md](01-safety-content.md). These are the rules that shaped the game mechanics:
+The full table of 43 items with their sources is in [01-safety-content.md](01-safety-content.md). These are the rules that shaped the game mechanics:
 
 - **Electricity is the top killer in both modes.**
   - **Before the flood:** turn off the main breaker while your body and the ground are dry, wearing rubber shoes (MEA). **Never** touch switches while wet or standing in water (PEA).
@@ -560,7 +561,7 @@ What the build does for search, why, and how sure we are. Facts about *this site
 
 | File or tag | Where it comes from | Notes |
 |---|---|---|
-| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 40 articles (one per enabled item, ordered by mode then room), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 9 partly verified items carry "⚠️ under review". About 50 KB, 17 KB gzipped. No script. |
+| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 43 articles (one per enabled item, ordered by mode then room) after an index by topic (`#t-health` and so on), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 9 partly verified items carry "⚠️ under review". About 50 KB, 17 KB gzipped. No script. |
 | `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
 | `/sitemap.xml` | `/`, `/en/`, `/learn`, `/en/learn`, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
 | `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
@@ -676,3 +677,33 @@ Built 14 Oct 2026 (ROADMAP N8). None of it changes scoring, items or slots.
 
 **Language redirect (v1.3.1).** An inline script in `index.html` (not in a module, so it runs before anything is drawn) sends visitors on `/`, `/c/{p|r}N` and `/checklist/{prepare|return}` to the same path under `/en/` when: no `/en` in the path, no `?lang=`, nothing stored under `brm:lang`, the user agent doesn't match `isBot` (`content.js`; keep the two patterns identical), the browser has no Thai language, and the time zone isn't Asia/Bangkok. It uses `location.replace`, so the Back button doesn't bounce. `main.js` applies the same bot rule, so a bot that runs JavaScript also stays on Thai. The copy of the script inside `/en/index.html` exits at once.
 
+## 21. Topics and the news-driven lessons (v1.4.0)
+
+Built 15 Oct 2026 (ROADMAP N9).
+
+**Topics.** Every item has `topic`, one of `config.topics`. The build fails on an unknown topic or a missing `topic_<id>` string in either language.
+
+| Topic | Emoji | Lessons (playable) | Examples |
+|---|---|---|---|
+| `health` | 🦠 | 8 (8) | `r-mudfeet`, `r-fever`, `r-bucket`, `r-mould`, `r-stagnant`, `r-ors`, `r-towel`, `p-meds` |
+| `power` | ⚡ | 9 (9) | breakers, sockets, appliances, generator, gas |
+| `food` | 💧 | 4 (4) | water and food stocks, flooded food, cans, tap water |
+| `critters` | 🐍 | 4 (4) | shoes, glass and nails, debris, the cupboard |
+| `home` | 🏠 | 12 (10) | sandbags, drains, documents, chemicals, car, cracks, ceiling, bleach; `p-toilet` and `p-fuel` wait for their rooms |
+| `plan` | 🎒 | 6 (6) | phone, torch, the plan for grandma, pets, shelter, numbers |
+
+- **Safety book:** grouped by topic in `config.topics` order (the featured or asked-for topic first), each with `n/total`, a progress bar and a 🏅 badge when full. `collection.js → topicProgress()` and `completedTopics()` are pure and unit-tested; a full set after a round shows `topicDoneToast`. Playable lessons: 41 (17 Prepare, 24 Return).
+- **Locked lessons are never hidden for good:** the book links to `/learn` (`bookReadAll`). For health topics in particular, nobody should have to play to read the answer.
+- **Featured topic:** `config.featuredTopic` (`"health"` now, or `null`). The start-screen card links to `/learn#t-<topic>` (event `learn_open`) and opens the book on the topic; the book's "play" button picks the mode with the most lessons left to find in that topic.
+- **`/learn`:** an index by topic (`<div class="tix" id="t-<topic>">`, chips of at least 44 px) before the mode sections; each article names its topic.
+
+**EM balls (`r-stagnant`).**
+
+| Source | What it says |
+|---|---|
+| Statement by 48 environmental scientists, led by Chula's Dept. of Environmental Engineering, 9 Nov 2011 (read in full) | Floodwater is organic-polluted and low in dissolved oxygen. EM is not recommended for treating it: not scientifically proven for wastewater; its microbes can't reduce the dirt; part of EM is organic matter that adds to it; its microbes don't produce oxygen. Instead, in order: drain the water as soon as possible, collect rubbish and waste, add oxygen (circulate the water, aerators). |
+| Krobthong & Watpathomsub, J Med Glob 4(3):52–61, 2026 (abstract read) | Three stagnant-floodwater sites in Bangkok, field and lab, one month. Field: fewer coliforms at two sites, clearer water. Lab: BOD up to 290 mg/L, DO below 1 mg/L. EM balls alone could not consistently improve the water. |
+| Khaosod English, 8 Oct 2026 | Khlong Sam SAO (Pathum Thani) used EM balls together with aerators in a canal. The article makes no claim about effectiveness. Not cited in the game. |
+| NSTDA, 2011, "Suggested treatments for foul water and when EM is effective" | **[unverified]** returned HTTP 503 on 15 Oct 2026. A search index quotes it as not recommending EM during the flood itself and recommending aeration. |
+
+**Disease groups after floods (DDC, 27 Sep 2026, via Bangkokbiznews).** Leptospirosis, skin infections, stomach and bowel illness, mosquito-borne disease, eye infections, respiratory infections. The game covers the first five (`r-mudfeet`, `r-fever`; `r-mudfeet` partly for skin; `r-ors`, `r-foodwet`, `r-tap`; `r-bucket`; `r-towel`). Respiratory infections and melioidosis are not covered ([ROADMAP P6](ROADMAP.md#p6-more-lessons-for-the-remaining-disease-groups)).

@@ -10,7 +10,7 @@ import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
-import { bookPool, correctIds, mergeLearned } from '../public/js/collection.js';
+import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const load = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content', `${f}.json`), 'utf8'));
@@ -253,6 +253,20 @@ test('safety book: only playable lessons, each counted once', () => {
   assert.equal(again.added.length, 0);
   assert.equal(again.ids.length, ids.length);
   assert.equal(mergeLearned(null, ['not-an-item'], valid).added.length, 0);
+});
+
+test('topics: every lesson has one, and a full set is reported once', () => {
+  const topics = C.config.topics;
+  assert.ok(Array.isArray(topics) && topics.length >= 4);
+  for (const it of C.items) assert.ok(topics.includes(it.topic), `${it.id} has topic ${it.topic}`);
+  assert.ok(C.config.featuredTopic === null || topics.includes(C.config.featuredTopic));
+  const pool = bookPool(C);
+  const none = topicProgress(pool, new Set(), topics);
+  assert.equal(none.reduce((a, tp) => a + tp.total, 0), pool.prepare.length + pool.return.length);
+  const food = none.find((tp) => tp.id === 'food');
+  const all = topicProgress(pool, new Set(food.items.map((it) => it.id)), topics);
+  assert.deepEqual(completedTopics(none, all), ['food']);
+  assert.deepEqual(completedTopics(all, all), []);
 });
 
 test('share texts fill every placeholder in both languages', () => {

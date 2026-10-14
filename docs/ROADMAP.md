@@ -29,7 +29,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L1 | [Create the Cloudflare Pages project](#l1-create-the-cloudflare-pages-project) | Owner | Mostly done: Web Analytics left |
 | L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
-| L4 | [Review the 9 flagged (⚠️) safety items](#l4-review-the-9-flagged-safety-items) | Owner + AI | Todo |
+| L4 | [Review the 10 flagged (⚠️) safety items](#l4-review-the-10-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
@@ -43,6 +43,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N6 | [Implement live-site UX improvements](#n6-implement-live-site-ux-improvements) | AI-ready | Done: IMP-01 to IMP-07 verified |
 | N7 | [International version and social previews](#n7-international-version-and-social-previews) | AI-ready | Done (11 Oct 2026, v1.2.0) |
 | N8 | [More fun to play, more worth sharing](#n8-more-fun-to-play-more-worth-sharing) | AI-ready | Done (14 Oct 2026, v1.3.0) |
+| N9 | [Organise the knowledge by topic, add the news-driven lessons](#n9-organise-the-knowledge-by-topic-add-the-news-driven-lessons) | AI-ready | Done (15 Oct 2026, v1.4.0) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -89,7 +90,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. Optionally set `forecastStatusUrl`. Its endpoint must send CORS headers and answer `{"rainWarning": true|false}` within 1.5 s.
 - **Done when:** the build no longer warns about the placeholder, and the "เช็กระดับน้ำล่วงหน้า" buttons appear and open the app.
 
-### L4. Review the 9 flagged safety items
+### L4. Review the 10 flagged safety items
 
 - **Who:** Owner + AI · **Status:** Todo · **Issues:** #8, #9, #10
 - **Steps:**
@@ -242,6 +243,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Rule kept:** no change to scoring, items or slots, so houses and old links stay the same.
 - **Done when:** build, 15 unit tests and 45 smoke checks pass, screenshots looked at in Thai and English, and the live site shows v1.3.0. All true on 14 Oct 2026.
 
+### N9. Organise the knowledge by topic, add the news-driven lessons
+
+- **Who:** AI-ready · **Status:** Done (15 Oct 2026, v1.4.0)
+- **Why:** the owner asked to check the EM-ball advice, to add knowledge about diseases after floods (in the news), and to organise the growing knowledge for a better journey and more enjoyment.
+- **What was built:** `r-stagnant` (EM balls), `r-ors` (diarrhoea), `r-towel` (eye infections); six topics across the book, tip card, result list and `/learn`; a featured-topic card on the start screen. See [CHANGELOG 1.4.0](../CHANGELOG.md).
+- **Done when:** build, 17 unit tests, 55 smoke checks and the overlap probe (0%) pass; screens checked as a visitor in Thai and English on a phone and three tablet sizes. All true on 15 Oct 2026.
+
 ## Later
 
 ### P1. Bathroom, bedroom and garage
@@ -281,7 +289,15 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **P5b. QR code on the card and the checklists:** for people who print the checklist or forward only the picture. It needs a small hand-written QR encoder (no runtime packages); check the 500 KB budget first.
 - **P5c. Family round-up:** the share text of a challenge chain could list every score it has seen (`?s=8,6,9` in the link). Keep it to scores only, no names, and cap the list.
 - **P5d. Crowd stats on the page** ("7 in 10 players turned the breaker off"): needs aggregate numbers from Analytics Engine published as a static JSON by the owner, never per-player data.
+- **P5e. Themed practice house:** a random house built only from one topic (for example "🦠 health week"). It needs the topic in the house key so challenge links rebuild the same house; until then the featured card sends players to `/learn` and the book.
 - **Done when:** each idea is built with a smoke check, or dropped with a reason written here.
+
+### P6. More lessons for the remaining disease groups
+
+- **Who:** Owner + AI · **Status:** Todo (optional)
+- **Why:** the DDC's six groups (27 Sep 2026) are now covered except **skin infections** (keep skin clean and dry, avoid walking barefoot; partly in `r-mudfeet`) and **respiratory infections** (hygiene, a mask when coughing or sneezing). Melioidosis (southern provinces) is not covered either.
+- **Steps:** find an agency source (or the DDC page itself), draw a sprite, pick a slot, run `npm run probe`, and keep each tip under 80 characters in both languages.
+- **Done when:** each new lesson has a source, a topic, a smoke-checked tip card, and the probe still reports 0%.
 
 ### V1. Version 2: the combined Prepare → Return run
 

@@ -224,7 +224,19 @@
     "bookLocked": "ยังไม่เจอ",
     "bookDone": "ครบทุกเรื่องแล้ว! เก่งมาก 🎉",
     "bookPlay": "🎲 เล่นบ้านสุ่ม หาเรื่องใหม่",
-    "streakMilestone": "เล่นต่อเนื่อง {n} วันแล้ว! น้องจกภูมิใจมาก 🔥"
+    "streakMilestone": "เล่นต่อเนื่อง {n} วันแล้ว! น้องจกภูมิใจมาก 🔥",
+    "topic_health": "🦠 โรคหลังน้ำท่วม",
+    "topic_power": "⚡ ไฟฟ้าและแก๊ส",
+    "topic_food": "💧 น้ำดื่มและอาหาร",
+    "topic_critters": "🐍 สัตว์มีพิษและของมีคม",
+    "topic_home": "🏠 บ้าน รถ และของใช้",
+    "topic_plan": "🎒 แผนและของจำเป็น",
+    "featuredLabel": "📰 เรื่องที่ควรรู้ช่วงนี้",
+    "featuredRead": "📄 อ่านครบ {total} ข้อ",
+    "featuredBook": "📖 สมุด {n}/{total}",
+    "bookReadAll": "อยากรู้คำตอบทุกข้อเลย? อ่านสรุปทั้งหมด",
+    "bookTopicDone": "🏅 ครบหมวด!",
+    "topicDoneToast": "🏅 เก็บครบหมวด {topic} แล้ว!"
   },
   "en": {
     "tagline": "A 60-second game to help your home survive a flood",
@@ -450,7 +462,19 @@
     "bookLocked": "Not found yet",
     "bookDone": "All learned! Well done 🎉",
     "bookPlay": "🎲 Random house, find new ones",
-    "streakMilestone": "{n} days in a row! The gecko is proud of you 🔥"
+    "streakMilestone": "{n} days in a row! The gecko is proud of you 🔥",
+    "topic_health": "🦠 Health after floods",
+    "topic_power": "⚡ Power & gas",
+    "topic_food": "💧 Water & food",
+    "topic_critters": "🐍 Snakes & sharp things",
+    "topic_home": "🏠 Home, car & belongings",
+    "topic_plan": "🎒 Plans & go-bag",
+    "featuredLabel": "📰 Worth knowing right now",
+    "featuredRead": "📄 Read all {total}",
+    "featuredBook": "📖 Book {n}/{total}",
+    "bookReadAll": "Want every answer now? Read them all",
+    "bookTopicDone": "🏅 Set complete!",
+    "topicDoneToast": "🏅 You completed {topic}!"
   },
   "og": {
     "_readme": "ข้อความตัวอย่างลิงก์ (ภาษาไทยเท่านั้น) ที่ LINE / Facebook แสดงเมื่อส่งลิงก์",
@@ -476,7 +500,7 @@
   },
   "seo": {
     "_readme": "ข้อความสำหรับหน้าสรุปความรู้ /learn, /llms.txt และข้อมูลโครงสร้าง (JSON-LD) ที่ tools/build.mjs สร้างให้ ไม่แสดงในเกม {n} = จำนวนข้อ updated = วันที่แก้เนื้อหาล่าสุด (YYYY-MM-DD) แก้เมื่อแก้ items.json",
-    "updated": "2026-10-11",
+    "updated": "2026-10-15",
     "th": {
       "learnTitle": "วิธีเตรียมบ้านรับน้ำท่วม และสิ่งที่ต้องเช็กหลังน้ำลด {n} ข้อ · บ้านรอดไหม?",
       "learnDesc": "สรุปทุกบทเรียนจากเกมบ้านรอดไหม? ควรทำอะไรก่อนน้ำมา ต้องระวังอะไรก่อนกลับเข้าบ้านหลังน้ำลด อ้างอิงคำแนะนำจากหน่วยงานรัฐ พร้อมเบอร์ช่วยเหลือ",
@@ -493,7 +517,8 @@
       "checklists": "เช็กลิสต์ส่งต่อ",
       "helplines": "เบอร์ช่วยเหลือ",
       "updated": "ปรับปรุงล่าสุด",
-      "back": "กลับไปเล่นเกม"
+      "back": "กลับไปเล่นเกม",
+      "topicsTitle": "ค้นตามหมวด"
     },
     "en": {
       "learnIntro": "Every lesson from the Baan Rod Mai? flood-safety game: what to do before a flood and what to check before moving back in, each with its Thai agency source.",
@@ -535,8 +560,11 @@
         "สพฉ.": "National Institute for Emergency Medicine (NIEMS)",
         "สสน.": "Hydro-Informatics Institute (HII)",
         "สำนักงานตำรวจแห่งชาติ (บช.น.)": "Royal Thai Police (Metropolitan Police Bureau)",
-        "อย.": "Thai Food and Drug Administration (FDA)"
-      }
+        "อย.": "Thai Food and Drug Administration (FDA)",
+        "นักวิชาการสิ่งแวดล้อม 48 คน (ภาควิชาวิศวกรรมสิ่งแวดล้อม จุฬาฯ)": "48 environmental scientists (Dept. of Environmental Engineering, Chulalongkorn University)",
+        "มหาวิทยาลัยกรุงเทพธนบุรี": "Bangkokthonburi University"
+      },
+      "topicsTitle": "By topic"
     }
   },
   "ogEn": {

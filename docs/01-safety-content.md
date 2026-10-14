@@ -1,6 +1,6 @@
 # Step 1 — Safety content table (for review)
 
-**40 items:** 19 ก่อนน้ำมา (Prepare) and 21 หลังน้ำลด (Return). Facts were checked against official Thai sources on **6 Oct 2026**. Every Thai tip is ≤ 80 characters; the build enforces this.
+**43 items:** 19 ก่อนน้ำมา (Prepare) and 24 หลังน้ำลด (Return), in 6 topics. Facts were checked against official Thai sources on **6 Oct 2026**; the three items added on 15 Oct 2026 (`r-stagnant`, `r-ors`, `r-towel`) were checked that day. Every Thai tip is ≤ 80 characters; the build enforces this.
 
 The game reads its content from `public/content/items.json`, and the table below is generated from that file with `npm run docs`. Fix wording in the JSON and the game and this table stay in step.
 
@@ -96,19 +96,20 @@ The "wrong action" column shows the most common mistake. In the game each item o
 | 25 | หลังน้ำลด | หน้าบ้าน | กองเศษขยะที่น้ำพัดมา | ล้วงมือลงไปหยิบขยะออก | ใส่บูทกับถุงมือ ใช้ไม้ยาวเขี่ยดูก่อน แล้วค่อยเก็บ | กองขยะอาจมีตะขาบหรืองูซ่อนอยู่ ใช้ไม้ยาวเขี่ยดูก่อน อย่าใช้มือล้วง | ✅ กรมควบคุมโรค [ddc-manual] [ddc-snake] |
 | 26 | หลังน้ำลด | หน้าบ้าน | ผนังบ้านร้าว | เอาปูนโป๊ปิดรอยร้าว แล้วเข้าอยู่ได้เลย | อย่าเพิ่งเข้าไปอยู่ ให้ช่างหรือวิศวกรตรวจโครงสร้างก่อน | ผนังร้าว พื้นทรุด บ้านเอียง อย่าเพิ่งเข้าอยู่ ให้ช่างตรวจโครงสร้างก่อน | ✅ กรมอนามัย, กรมโยธาธิการและผังเมือง [anamai-mould] [dpt-manual] |
 | 27 | หลังน้ำลด | หน้าบ้าน | น้ำขังในถัง | เก็บไว้รดน้ำต้นไม้ | เทน้ำทิ้ง ล้างแล้วคว่ำไว้ | เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก | ✅ กรมควบคุมโรค [ddc-rainy] [ddc-dengue] |
-| 28 | หลังน้ำลด | ห้องนั่งเล่น | ปลั๊กไฟที่เปียก | เอาไดร์เป่าผมเป่าให้แห้ง แล้วเสียบใช้เลย | ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ | ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน | ✅ กฟน., กรมควบคุมโรค [mea-2022] [mea-gov] [ddc-59806] |
-| 29 | หลังน้ำลด | ห้องนั่งเล่น | ตู้เบรกเกอร์หลังน้ำลด | ตัดเบรกเกอร์เองตอนนี้เลย | เรียกช่างไฟ หรือแจ้งการไฟฟ้าให้ตรวจระบบก่อนเปิดไฟ | หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน | ✅ กรมควบคุมโรค, กฟภ., กฟน. [ddc-59806] [pea-1415] [mea-gov] |
-| 30 | หลังน้ำลด | ห้องนั่งเล่น | ทีวีที่จมน้ำมา | เช็ดให้แห้งแล้วเสียบปลั๊กดูเลย | ห้ามเสียบใช้ ผึ่งให้แห้ง แล้วให้ช่างตรวจก่อน | เครื่องใช้ไฟฟ้าที่จมน้ำ ห้ามเสียบใช้ ห้ามซ่อมเอง ให้ช่างตรวจก่อนเสมอ | ✅ กฟภ. [pea-1384] [pea-1415] |
-| 31 | หลังน้ำลด | ห้องนั่งเล่น | ฝ้าเพดานอุ้มน้ำ | เอาไม้แทงให้น้ำไหลออก | อย่ายืนใต้ฝ้า กันบริเวณไว้ แล้วให้ช่างมารื้อเปลี่ยน | ฝ้าอุ้มน้ำจนย้อย อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ กันพื้นที่ไว้ให้ช่างรื้อ | ⚠️ กรมโยธาธิการและผังเมือง, กรมควบคุมโรค [dpt-manual] [ddc-59806] |
-| 32 | หลังน้ำลด | ห้องนั่งเล่น | เชื้อราบนผนัง | ปิดห้องเปิดแอร์ ให้แห้งไวๆ | ใส่หน้ากาก N95 ถุงมือยาง เปิดประตูหน้าต่าง แล้วค่อยเช็ด | เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-manual] [anamai-mould] |
-| 33 | หลังน้ำลด | ห้องนั่งเล่น | เครื่องปั่นไฟในบ้าน | แง้มหน้าต่างนิดหน่อยก็พอ | ปิดเครื่อง แล้วย้ายไปตั้งนอกบ้านในที่โล่ง อากาศถ่ายเทดี | เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก | ✅ กรมควบคุมโรค [ddc-manual] |
-| 34 | หลังน้ำลด | ห้องนั่งเล่น | มีไข้หลังลุยน้ำ | ซื้อยาแก้ปวดกินเอง เดี๋ยวก็หาย | รีบไปหาหมอ แล้วบอกว่าเคยลุยน้ำหรือโคลนมา | ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง | ✅ กรมควบคุมโรค [ddc-lepto] [ddc-59806] [ddc-dengue] |
-| 35 | หลังน้ำลด | ครัว | กลิ่นแก๊สในครัว | เปิดไฟดูว่ารั่วตรงไหน | ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้งข้างนอก | ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง | ✅ ปภ., กรมควบคุมโรค [ddpm-gas] [ddc-manual] |
-| 36 | หลังน้ำลด | ครัว | อาหารที่โดนน้ำท่วม | ล้างน้ำให้สะอาดแล้วกินต่อได้ | ทิ้งทั้งหมด แม้จะอยู่ในถุงหรือกล่อง | อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-59984] [anamai-kitchen] |
-| 37 | หลังน้ำลด | ครัว | กระป๋องบุบ บวม เป็นสนิม | เคาะให้กลับเป็นรูปเดิมแล้วเก็บไว้ | ทิ้งกระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม | กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน | ✅ อย., กรมอนามัย [fda-cans] [anamai-cans] |
-| 38 | หลังน้ำลด | ครัว | น้ำประปาหลังน้ำลด | ดื่มจากก๊อกได้เลย น้ำประปาสะอาดอยู่แล้ว | เปิดน้ำทิ้งจนใส แล้วต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | ✅ กรมอนามัย, กปน., กปภ. [anamai-water] [mwa-safe] [pwa-repair] [mwa-tank] |
-| 39 | หลังน้ำลด | ครัว | น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ | ผสมกันในถัง จะได้แรงๆ | ใช้ทีละอย่าง ห้ามผสมกัน เปิดประตูหน้าต่างระหว่างใช้ | ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง | ✅ อย., กรมควบคุมโรค [fda-bleach] [ddc-manual] |
-| 40 | หลังน้ำลด | ครัว | ตู้ใต้ซิงก์ | ล้วงมือเข้าไปหยิบของออกมาเลย | ถอยห่าง ส่องไฟฉาย ใช้ไม้ยาวเปิดดู ถ้าเป็นงูให้แจ้งเจ้าหน้าที่ | ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ | ✅ กรมควบคุมโรค [ddc-45196] [ddc-manual] [ddc-snake] |
+| 28 | หลังน้ำลด | หน้าบ้าน | น้ำเน่าขังหน้าบ้าน | โยน EM บอลลงไป แล้วรอให้น้ำใสเอง | เก็บขยะออก แล้วช่วยกันระบายน้ำ ให้น้ำได้ไหลเวียน | น้ำท่วมขังเน่า EM บอลไม่ช่วยบำบัด ระบายน้ำออก เก็บขยะ และเติมอากาศดีกว่า | ⚠️ นักวิชาการสิ่งแวดล้อม 48 คน (ภาควิชาวิศวกรรมสิ่งแวดล้อม จุฬาฯ), มหาวิทยาลัยกรุงเทพธนบุรี, กทม. [chula-em-2554] [bkkthon-em-2569] [bma-1555] |
+| 29 | หลังน้ำลด | ห้องนั่งเล่น | ปลั๊กไฟที่เปียก | เอาไดร์เป่าผมเป่าให้แห้ง แล้วเสียบใช้เลย | ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ | ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน | ✅ กฟน., กรมควบคุมโรค [mea-2022] [mea-gov] [ddc-59806] |
+| 30 | หลังน้ำลด | ห้องนั่งเล่น | ตู้เบรกเกอร์หลังน้ำลด | ตัดเบรกเกอร์เองตอนนี้เลย | เรียกช่างไฟ หรือแจ้งการไฟฟ้าให้ตรวจระบบก่อนเปิดไฟ | หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน | ✅ กรมควบคุมโรค, กฟภ., กฟน. [ddc-59806] [pea-1415] [mea-gov] |
+| 31 | หลังน้ำลด | ห้องนั่งเล่น | ทีวีที่จมน้ำมา | เช็ดให้แห้งแล้วเสียบปลั๊กดูเลย | ห้ามเสียบใช้ ผึ่งให้แห้ง แล้วให้ช่างตรวจก่อน | เครื่องใช้ไฟฟ้าที่จมน้ำ ห้ามเสียบใช้ ห้ามซ่อมเอง ให้ช่างตรวจก่อนเสมอ | ✅ กฟภ. [pea-1384] [pea-1415] |
+| 32 | หลังน้ำลด | ห้องนั่งเล่น | ฝ้าเพดานอุ้มน้ำ | เอาไม้แทงให้น้ำไหลออก | อย่ายืนใต้ฝ้า กันบริเวณไว้ แล้วให้ช่างมารื้อเปลี่ยน | ฝ้าอุ้มน้ำจนย้อย อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ กันพื้นที่ไว้ให้ช่างรื้อ | ⚠️ กรมโยธาธิการและผังเมือง, กรมควบคุมโรค [dpt-manual] [ddc-59806] |
+| 33 | หลังน้ำลด | ห้องนั่งเล่น | เชื้อราบนผนัง | ปิดห้องเปิดแอร์ ให้แห้งไวๆ | ใส่หน้ากาก N95 ถุงมือยาง เปิดประตูหน้าต่าง แล้วค่อยเช็ด | เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-manual] [anamai-mould] |
+| 34 | หลังน้ำลด | ห้องนั่งเล่น | เครื่องปั่นไฟในบ้าน | แง้มหน้าต่างนิดหน่อยก็พอ | ปิดเครื่อง แล้วย้ายไปตั้งนอกบ้านในที่โล่ง อากาศถ่ายเทดี | เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก | ✅ กรมควบคุมโรค [ddc-manual] |
+| 35 | หลังน้ำลด | ห้องนั่งเล่น | มีไข้หลังลุยน้ำ | ซื้อยาแก้ปวดกินเอง เดี๋ยวก็หาย | รีบไปหาหมอ แล้วบอกว่าเคยลุยน้ำหรือโคลนมา | ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง | ✅ กรมควบคุมโรค [ddc-lepto] [ddc-59806] [ddc-dengue] |
+| 36 | หลังน้ำลด | ครัว | กลิ่นแก๊สในครัว | เปิดไฟดูว่ารั่วตรงไหน | ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้งข้างนอก | ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง | ✅ ปภ., กรมควบคุมโรค [ddpm-gas] [ddc-manual] |
+| 37 | หลังน้ำลด | ครัว | อาหารที่โดนน้ำท่วม | ล้างน้ำให้สะอาดแล้วกินต่อได้ | ทิ้งทั้งหมด แม้จะอยู่ในถุงหรือกล่อง | อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-59984] [anamai-kitchen] |
+| 38 | หลังน้ำลด | ครัว | กระป๋องบุบ บวม เป็นสนิม | เคาะให้กลับเป็นรูปเดิมแล้วเก็บไว้ | ทิ้งกระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม | กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน | ✅ อย., กรมอนามัย [fda-cans] [anamai-cans] |
+| 39 | หลังน้ำลด | ครัว | น้ำประปาหลังน้ำลด | ดื่มจากก๊อกได้เลย น้ำประปาสะอาดอยู่แล้ว | เปิดน้ำทิ้งจนใส แล้วต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | ✅ กรมอนามัย, กปน., กปภ. [anamai-water] [mwa-safe] [pwa-repair] [mwa-tank] |
+| 40 | หลังน้ำลด | ครัว | น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ | ผสมกันในถัง จะได้แรงๆ | ใช้ทีละอย่าง ห้ามผสมกัน เปิดประตูหน้าต่างระหว่างใช้ | ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง | ✅ อย., กรมควบคุมโรค [fda-bleach] [ddc-manual] |
+| 41 | หลังน้ำลด | ครัว | ตู้ใต้ซิงก์ | ล้วงมือเข้าไปหยิบของออกมาเลย | ถอยห่าง ส่องไฟฉาย ใช้ไม้ยาวเปิดดู ถ้าเป็นงูให้แจ้งเจ้าหน้าที่ | ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ | ✅ กรมควบคุมโรค [ddc-45196] [ddc-manual] [ddc-snake] |
 <!-- TABLE:END -->
 
 ## Flags: please review these
@@ -127,6 +128,7 @@ Items marked ⚠️, with the reason:
 - ⚠️ **โถส้วมชั้นล่าง** (`p-toilet`): Official wording: 'plug the toilet'. Using a sandbag in the bowl is the widely shared method, not official wording.
 - ⚠️ **น้ำมันและยาฆ่าหญ้าในโรงรถ** (`p-fuel`): Same gap as p-chem: 'store high before flooding' is inferred, not official wording. Garage room not in the MVP.
 - ✅ **ผนังบ้านร้าว** (`r-crack`): DPT manual read from a third-party copy (dpt.go.th unreachable). DPT has run free inspections (hotline 1531 reported in Dec 2025; not used in game copy).
+- ⚠️ **น้ำเน่าขังหน้าบ้าน** (`r-stagnant`): The advice comes from a 2011 statement by 48 academics and a 2026 peer-reviewed study, not from a government agency; no current PCD or DOH statement on EM balls was found. Local officials still use EM balls with aerators (e.g. Pathum Thani, Oct 2026), so the wording states the evidence and blames no one.
 - ⚠️ **ฝ้าเพดานอุ้มน้ำ** (`r-sag`): DPT confirms flooded gypsum must be removed/replaced; 'it can fall, don't stand under it' is an inference, not official wording.
 - ✅ **กลิ่นแก๊สในครัว** (`r-gas`): DDPM wording via a Thai PBS report (2022); DOEB pages were unreachable. Fire/rescue 199 is cited only by news, so it is not used in game copy.
 - ✅ **ตู้ใต้ซิงก์** (`r-cupboard`): DDC names dark corners and hidden spots rather than cupboards specifically.
@@ -263,6 +265,9 @@ These are in the table now. Each needs only art once its room ships:
   <https://www.prd.go.th/th/content/category/detail/id/33/iid/545362>
 - **[oic-photo]** คปภ. — ถ่ายภาพรถทั้งภายนอก ภายใน ห้องเครื่อง และรอยคราบน้ำ เป็นหลักฐานเคลมประกัน (2026-09-27) · _government channel (PRD)_  
   <https://www.prd.go.th/th/content/category/detail/id/33/iid/545410>
+- **[chula-em-2554]** นักวิชาการสิ่งแวดล้อม 48 คน (ภาควิชาวิศวกรรมสิ่งแวดล้อม จุฬาฯ) — แถลงการณ์ เรื่อง “EM กับความเหมาะสมในการบำบัดน้ำเน่าเสียในสภาวะน้ำท่วมขัง” (2011-11-09) · _academic statement or peer-reviewed study (not an agency)_  
+  <https://www.eng.chula.ac.th/wp-content/uploads/2017/06/12.aethlngkaarn_eruueng_em_kabkhwaamehmaaasmainkaarbambadnamenaaesiiyainsphaawanamthwmkhang.pdf>  
+  Read in full on 15 Oct 2026. Signed by 48 environmental scientists and engineers (Chula, Kasetsart, Mahidol, KMUTT, Khon Kaen, Ubon Ratchathani, the Environmental Engineering Association of Thailand and others). Point 2: EM is not recommended for treating stagnant floodwater (no proof it works; part of EM is organic matter that adds to the dirt; its microbes don't add oxygen). Point 3, in order: drain the water as soon as possible, remove rubbish and waste, add oxygen (let water circulate, aerators). An academic statement, not a government agency.
 - **[ddpm-1784]** ปภ. — สายด่วนนิรภัย 1784 (ฟรี ตลอด 24 ชั่วโมง) · _news quoting the agency_  
   <https://www.bangkokbiznews.com/news/news-update/1237412>
 - **[ddpm-6kit]** ปภ. — ปภ. แนะเตรียม 'ถุงยังชีพฉุกเฉิน' 6 สิ่งต้องมี · _news quoting the agency_  
@@ -277,6 +282,9 @@ These are in the table now. Each needs only art once its room ships:
   <https://www.thansettakij.com/news/general-news/613204>
 - **[ddpm-mea]** ปภ. + กฟน. — ปภ. - MEA แนะวิธีเอาตัวรอดอย่างปลอดภัยในฤดูฝน — งดเสียบปลั๊กในบริเวณน้ำท่วม ปลดเบรกเกอร์ (2025-07-11) · _news quoting the agency_  
   <https://mgronline.com/qol/detail/9680000065431>
+- **[bkkthon-em-2569]** มหาวิทยาลัยกรุงเทพธนบุรี — Analysis of stagnant floodwater quality after treatment with Effective Microorganisms (EM) balls (J Med Glob 4(3):52–61) (2026-09-15) · _academic statement or peer-reviewed study (not an agency)_  
+  <https://he01.tci-thaijo.org/index.php/JMedGlob/article/view/291814>  
+  Peer-reviewed study of three stagnant-floodwater sites in Bangkok, field and lab, one month. Field: fewer coliform bacteria at two sites and clearer water. Lab: BOD up to 290 mg/L and DO below 1.0 mg/L. Conclusion: EM balls alone could not consistently improve stagnant floodwater. Abstract read on 15 Oct 2026.
 - **[niems-1669]** สพฉ. — เจ็บป่วยฉุกเฉิน โทร 1669 (ระบุในประกาศรับมือน้ำท่วมของกรมประชาสัมพันธ์) · _government channel (PRD)_  
   <https://www.prd.go.th/th/content/category/detail/id/31/iid/534015>
 - **[thaiwater]** สสน. — คลังข้อมูลน้ำแห่งชาติ ThaiWater — ระดับน้ำ ฝน เรดาร์ · _agency site_ · not cited yet  

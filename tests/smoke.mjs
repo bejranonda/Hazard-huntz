@@ -286,9 +286,25 @@ try {
     await page.waitForSelector('.book-grid li');
     const rows = await page.$$eval('.book-list li, .book-grid li', (l) => l.length);
     check('safety book lists every playable lesson', rows === Number(chip.match(/\/(\d+)/)[1]), String(rows));
+    const topicCount = await page.$$eval('.book-topic', (l) => l.length);
+    const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/config.json'), 'utf8'));
+    check('safety book is grouped by topic', topicCount === cfg.topics.length, String(topicCount));
     const smallBook = await smallControls(page);
     check('safety book controls >= 44 px', !smallBook.length, smallBook.join(', '));
     await shot(page, '12-book');
+    await page.click('#book-close');
+    await page.waitForTimeout(400);
+    // The topic in the news: a card on the start screen that links to every answer
+    if (cfg.featuredTopic) {
+      const href = await page.getAttribute('#featured-read', 'href');
+      check('start screen features the topic in the news', (await page.isVisible('#featured')) && href === `/learn#t-${cfg.featuredTopic}`, String(href));
+      const learn = await (await fetch(`${BASE}/learn`)).text();
+      check('/learn has an anchor for that topic', learn.includes(`id="t-${cfg.featuredTopic}"`));
+      await page.click('#featured-book');
+      await page.waitForSelector('.book-topic');
+      const first = await page.$eval('.book-topic', (el) => el.id);
+      check('featured topic opens first in the safety book', first === `book-${cfg.featuredTopic}`, first);
+    }
     check('no page errors (safety book)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }

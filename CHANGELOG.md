@@ -4,7 +4,29 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.4.0] — 2026-10-15
+
+Knowledge, organised. **Adds 3 Return-mode lessons, so today's Return houses and old Return challenge links change** (Prepare houses are unchanged). Shipped at night, Bangkok time.
+
+### Added
+
+- **EM balls in stagnant floodwater (`r-stagnant`, front yard).** The owner asked whether EM balls help; the evidence says no. A statement by 48 environmental scientists (Chula-led, 9 Nov 2011) does not recommend EM for stagnant floodwater: its microbes add no oxygen and part of it is organic matter. Do this instead, in order: drain, remove rubbish, add air. A 2026 peer-reviewed Bangkok study found EM balls alone didn't help consistently. Flagged ⚠️ because the sources are academic, not an agency.
+- **Two lessons from the DDC's warning of 27 Sep 2026 on six disease groups after floods:** diarrhoea, sip ORS and eat freshly cooked food (`r-ors`, kitchen); eye infections, wash hands, don't rub, don't share towels (`r-towel`, living room). The same source now backs `r-mudfeet`, `r-bucket` and `r-fever`.
+- **Six topics** for every lesson (`topic` in `items.json`, list in `config.topics`): 🦠 health after floods, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, car & belongings, 🎒 plans & go-bag.
+  - The safety book is grouped by topic, with a progress bar per topic and a 🏅 badge for a full set; finishing a set after a round shows a toast.
+  - The tip card names the topic; result lessons show its emoji.
+  - `/learn` and `/en/learn` start with an index by topic (`#t-health` …) made of 44 px chips, and every lesson names its topic.
+  - The safety book links to `/learn` so no answer is ever locked away.
+- **A topic in the news on the start screen** (`config.featuredTopic`, now `"health"`): "📰 เรื่องที่ควรรู้ช่วงนี้ · 🦠 โรคหลังน้ำท่วม", with "📄 read all 8" (→ `/learn#t-health`) and "📖 book n/8" (opens the book on that topic; "play" picks the mode with the most left to find). Set it to `null` when the news fades.
+- New event `learn_open` (label: the topic, or `book`) in both allowlists.
+- New source kind `academic`, labelled in the docs table as "academic statement or peer-reviewed study (not an agency)".
+
 ### Tests
+
+- 17 rule tests (topics: every lesson has one; a full set is reported once), 55 smoke checks (+4: book grouped by topic, the featured card and its `/learn` anchor, the featured topic opens first).
+
+### Also in 1.4.0
+
 
 - The smoke test's start-screen size check now measures what visitors download (text gzipped like Cloudflare does): 167 KB of 500 KB. It used to count raw bytes (481 KB) and was about to fail on harmless text additions. KNOWN_ISSUES #40 → F24.
 

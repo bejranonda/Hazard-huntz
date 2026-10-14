@@ -113,7 +113,14 @@ for (const it of itemsFile.items) {
   if (!['verified', 'partial', 'unverified'].includes(it.verify)) err(`${where}: verify must be verified/partial/unverified`);
   if (it.verify === 'unverified') warn(`${where}: marked unverified — confirm with an agency before launch`);
   if (it.pair && !itemsFile.items.some((x) => x.id === it.pair)) err(`${where}: pair "${it.pair}" not found`);
+  if (!(config.topics || []).includes(it.topic)) err(`${where}: topic "${it.topic}" must be one of config.json topics (${(config.topics || []).join(', ')})`);
 }
+// Topics group the lessons in the safety book, the tip card and /learn.
+for (const tp of config.topics || []) {
+  for (const l of LANGS) if (!strings[l]?.[`topic_${tp}`]) err(`strings.json: ${l}.topic_${tp} is missing`);
+  if (!itemsFile.items.some((it) => it.topic === tp)) warn(`config.json: topic "${tp}" has no items`);
+}
+if (config.featuredTopic != null && !(config.topics || []).includes(config.featuredTopic)) err(`config.json: featuredTopic "${config.featuredTopic}" must be null or one of the topics`);
 for (const d of itemsFile.decoys) {
   thing(d, `items.json decoy ${d.id}`, 'decoy');
   text(d.note, `items.json decoy ${d.id} note`);
@@ -323,7 +330,7 @@ const lessonHtml = (it) => {
   const wet = it.wet ? it.wet.choices.find((c) => c.correct) : null;
   return `<article id="${esc(it.id)}">
 <h3>${T(it.name)} ${En(it.name)}</h3>
-<p class="room">${T(roomById.get(it.room)?.name)}</p>
+<p class="room">${T(roomById.get(it.room)?.name)} · ${esc(strings.th[`topic_${it.topic}`] || '')}</p>
 <p><b>${esc(S.doThis)}:</b> ${T(right.label)} ${En(right.label)}</p>
 <p class="tip">${T(it.tip)} ${En(it.tip)}</p>
 ${it.why ? `<p><b>${esc(S.why)}:</b> ${T(it.why)}</p>` : ''}
@@ -332,6 +339,13 @@ ${wet ? `<p><b>${esc(S.ifWet)}:</b> ${T(wet.label)} ${En(wet.label)}${it.wet.tip
 </article>`;
 };
 const prepareL = lessons('prepare'), returnL = lessons('return');
+// An index by topic, so a link such as /learn#t-health can be shared when a
+// topic is in the news. Each entry jumps to the lesson's article.
+const topicIndex = (lang) => `<h2 id="topics">${esc((lang === 'en' ? E : S).topicsTitle)}</h2>
+${(config.topics || []).map((tp) => {
+  const its = [...prepareL, ...returnL].filter((it) => it.topic === tp);
+  return `<div class="tix" id="t-${tp}"><p><b>${esc(strings[lang][`topic_${tp}`])}</b> (${its.length})</p><ul>${its.map((it) => `<li><a href="#${esc(it.id)}">${esc(it.name[lang])}</a></li>`).join('')}</ul></div>`;
+}).join('\n')}`;
 const nLessons = prepareL.length + returnL.length;
 const learnTitle = fill(S.learnTitle, { n: nLessons });
 const checklistHtml = ['prepare', 'return'].map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
@@ -380,7 +394,9 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 .room{color:#8a6d4f;font-size:.85em;margin:0}.tip{background:#fff4e3;border-radius:10px;padding:6px 10px}
 .src{font-size:.85em;color:#6b5a4a}.flag{white-space:nowrap}a{color:#9a4a00}
 .cta{display:inline-block;background:#e8742a;color:#fff;font-weight:600;text-decoration:none;border-radius:999px;padding:12px 24px;min-height:44px;box-sizing:border-box}
-.src a,.help a{display:inline-block;min-height:44px;line-height:44px}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
+.src a,.help a{display:inline-block;min-height:44px;line-height:44px}
+.tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.tix li{margin:0}.tix a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
 </style>
 </head>
 <body>
@@ -391,6 +407,7 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 <p class="en" lang="en">${esc(E.learnIntro)}</p>
 <p><a class="cta" href="/">${esc(S.playCta)}</a></p>
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+${topicIndex('th')}
 <h2 id="prepare">${esc(S.sectionPrepare)} <span class="en" lang="en">${esc(E.sectionPrepare)}</span></h2>
 ${prepareL.map(lessonHtml).join('\n')}
 <h2 id="return">${esc(S.sectionReturn)} <span class="en" lang="en">${esc(E.sectionReturn)}</span></h2>
@@ -416,7 +433,7 @@ const enLesson = (it) => {
   const wet = it.wet ? it.wet.choices.find((c) => c.correct) : null;
   return `<article id="${esc(it.id)}">
 <h3>${esc(it.name.en)} <span class="en" lang="th">${esc(it.name.th)}</span></h3>
-<p class="room">${esc(roomById.get(it.room)?.name?.en || '')}</p>
+<p class="room">${esc(roomById.get(it.room)?.name?.en || '')} · ${esc(strings.en[`topic_${it.topic}`] || '')}</p>
 <p><b>${esc(E.doThis)}:</b> ${esc(right.label.en)}</p>
 <p class="tip">${esc(it.tip.en)}</p>
 ${it.why?.en ? `<p><b>${esc(E.why)}:</b> ${esc(it.why.en)}</p>` : ''}
@@ -444,6 +461,7 @@ const learnEnHtml = learnHtml
 <p class="tip">${esc(E.intlNote)}</p>
 <p><a class="cta" href="${EN}/">${esc(E.playCta)}</a></p>
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+${topicIndex('en')}
 <h2 id="prepare">${esc(E.sectionPrepare)}</h2>
 ${prepareL.map(enLesson).join('\n')}
 <h2 id="return">${esc(E.sectionReturn)}</h2>
@@ -584,7 +602,7 @@ if (process.argv.includes('--docs')) {
       '|---|---|---|---|---|---|---|---|',
       ...rows,
     ].join('\n');
-    const kindLabel = { official: 'agency site', government: 'government channel (PRD)', secondary: 'news quoting the agency' };
+    const kindLabel = { official: 'agency site', government: 'government channel (PRD)', secondary: 'news quoting the agency', academic: 'academic statement or peer-reviewed study (not an agency)' };
     const used = new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]));
     for (const h of helplines.helplines) if (h.source) used.add(h.source);
     const refs = Object.entries(sources)

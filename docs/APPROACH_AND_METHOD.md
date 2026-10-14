@@ -158,7 +158,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 51 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 55 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -214,7 +214,7 @@ The brief for going live was: put the app on a suitable subdomain of `autobahn.b
 
 1. **Find the real problem before choosing tactics.** The game is a JavaScript app, and link-preview bots don't run JavaScript. Fetching the live start page showed what a crawler sees: a title, a description and one `<noscript>` line. Everything the game teaches was invisible. That decided the plan: put the substance into plain HTML.
 2. **Reuse the content, don't rewrite it.** Safety advice is the one thing in this project that must not drift. `/learn`, `/llms.txt` and the JSON-LD are generated from the same JSON as the game, so a corrected tip corrects every surface, and `seo.updated` is the single value to bump.
-3. **Be honest about uncertainty on the page.** The 9 partly verified items appear on `/learn` with "⚠️ under review", the same flag the game's docs use. Crawlers and assistants shouldn't see more certainty than a reviewer would give.
+3. **Be honest about uncertainty on the page.** The partly verified items (10 since v1.4.0) appear on `/learn` with "⚠️ under review", the same flag the game's docs use. Crawlers and assistants shouldn't see more certainty than a reviewer would give.
 4. **Add only what is true.** There is no FAQ, HowTo, rating or review markup, because the page has none of those. `llms.txt` is included knowing it is an informal proposal that no major engine is confirmed to use ([KNOWLEDGE §16](KNOWLEDGE.md#16-search-and-ai-search-facts)); it costs nothing.
 5. **Choose the address on evidence.** `baanrodmai.autobahn.bot` was weighed against a shorter name. Length wasn't the problem: the name matches the game, follows the zone's other subdomains, and rendered fully on the 1200×630 previews and the checklist image. Those images were re-rendered and looked at, not assumed. The one existing name that would have been shorter (`flood`) was already in use by another service, so it was left alone.
 6. **Keep the duplicates out of the index.** The 49 share pages (Thai and English, a few of them `/learn` and `/en/learn` excluded) are copies of the app shell, so they canonicalise to `/` and stay out of the sitemap, and `*.pages.dev` gets `noindex` so only the custom domain competes.
@@ -289,3 +289,14 @@ The owner's question was open: "anything else to improve, to enjoy and like to s
 6. **Test as a visitor, then look.** Beyond the 45 checks, a one-off probe played a perfect English round, a Thai challenge win, the smallest phone and the checklist, copying the real share texts from the clipboard. Its screenshots found two layout bugs the checks missed ([LESSONS C10](LESSONS_LEARNED.md#c-engineering-and-platform)).
 7. **Say what was left out:** a weekly house, a QR code, a family round-up and crowd stats ([ROADMAP P5](ROADMAP.md#p5-share-loop-ideas-not-built-yet)).
 
+## 19. Checking a claim, adding knowledge, and organising it (v1.4.0)
+
+The owner asked three things in one go: is "throw EM balls into stagnant water" right, add knowledge about the diseases in the news, and organise the growing knowledge for a better and more enjoyable journey. The method:
+
+1. **Find the strongest source you can read in full.** For EM balls no agency statement turned up; a statement by 48 environmental scientists (2011) and a 2026 peer-reviewed study did. Both were read (the statement in full, the study's abstract). Pages that couldn't be read (NSTDA, HTTP 503) were written down as **[unverified]**, not used.
+2. **Say what is uncertain.** The lesson is flagged ⚠️ with the reason, and the docs name the local office still using EM balls without blaming it.
+3. **Prefer today's agency wording for news topics.** The diseases lessons use the DDC's own advice of 27 Sep 2026 (six disease groups), and only the parts that fit a 60-second hazard hunt (ORS for diarrhoea, towels and eyes).
+4. **Organise by what people ask, not by where the code keeps things.** Rooms and modes suit the game; topics ("health after floods") suit a person reading the news. Topics now run through the book, the tip card, the results and `/learn`.
+5. **Keep enjoyment and access apart.** Collecting a set (🏅) is the fun; reading every answer on `/learn` is the safety net. The news card offers both.
+6. **Re-run every probe.** The overlap probe caught a new tap-area clash at once (9% of houses), fixed before release by changing the slot.
+7. **Test on the screens people have.** Phone (390 px) and tablets (768, 1024 portrait, 1366 landscape) in Thai and English: no sideways scrolling, item tap areas 69–85 px, no page errors. Two layout issues (a button wrapping to two lines, small inline links on `/learn`) were seen in the screenshots and fixed.

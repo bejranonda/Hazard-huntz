@@ -29,7 +29,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - Nothing flashes, and `prefers-reduced-motion` is respected.
    - Every control is reachable by keyboard and readable by a screen reader.
 5. **Fast:**
-   - The start screen stays **under 500 KB** compressed. It is 151 KB today (161 KB with the first game screen).
+   - The start screen stays **under 500 KB** compressed. It is 158 KB today (168 KB with the first game screen).
    - No frameworks and no runtime npm packages.
 6. **Works where people share it.** It must work in the LINE, Facebook and TikTok in-app browsers on Android and iOS, in iOS Safari and in Android Chrome. Every feature that a platform may lack has a fallback (see [KNOWLEDGE §11](KNOWLEDGE.md#11-browser-and-in-app-facts)).
 7. **The disclaimer and help numbers are always there.**
@@ -175,15 +175,15 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - Add structured data only for things that exist on the page. No `FAQPage`, `HowTo`, ratings or reviews unless the page really has them.
   - Share-preview pages (`/c/*`, `/checklist/*`) keep a canonical link to `/` and stay out of the sitemap.
   - Keep `/api/` the only path `robots.txt` closes, and leave Cloudflare's AI-bot blocking off for this host.
-- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 151 KB.
+- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 158 KB.
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 
 ## 6. Testing
 
 | When | Run |
 |---|---|
-| Every change | `node tools/build.mjs` and `npm test` (16 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
-| UI, CSS or sharing changes | `npm run smoke` (51 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| Every change | `node tools/build.mjs` and `npm test` (17 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
+| UI, CSS or sharing changes | `npm run smoke` (55 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |
@@ -270,6 +270,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 36. **Pop-up text goes where it can't run off the screen.** The combo text first followed the item and was cut off at the right edge; it now sits centred near the top of the room.
 37. **New HUD information goes inside the HUD.** An overlay chip for the challenge target covered the gecko's bubble on a 320 px phone; the target now sits in the gauge label.
 38. **Every share path names its house.** The card, the share text and the challenge reply all carry the challenge link, because many people forward only the picture.
+39. **Every lesson has a topic.** Pick one of `config.topics`; add a topic only with its `topic_<id>` string in both languages. The build checks both.
+40. **Never lock health advice behind play.** Collecting is for fun; anyone who needs the answer now gets it on `/learn`, and the book and the featured card link there.
+41. **A myth needs evidence, not an opinion.** When busting a popular belief (EM balls), cite the strongest source you can read in full, flag it ⚠️ when it isn't an agency, and blame nobody who still uses it.
+42. **A featured topic is temporary.** Switch `config.featuredTopic` on when a topic is in the news and back to `null` after.
+43. **Measure what visitors get.** The size check counts compressed bytes; the raw size passed 500 KB in v1.4.0 while visitors download 174 KB.
 
 ## 9. Working with AI assistants
 

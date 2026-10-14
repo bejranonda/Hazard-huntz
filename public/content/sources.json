@@ -369,6 +369,30 @@
       "title": "ประกาศเตือนภัยลักษณะอากาศ (สายด่วน 1182)",
       "url": "https://www.tmd.go.th/warning-and-events/warning-storm",
       "kind": "official"
+    },
+    "chula-em-2554": {
+      "agency": "นักวิชาการสิ่งแวดล้อม 48 คน (ภาควิชาวิศวกรรมสิ่งแวดล้อม จุฬาฯ)",
+      "title": "แถลงการณ์ เรื่อง “EM กับความเหมาะสมในการบำบัดน้ำเน่าเสียในสภาวะน้ำท่วมขัง”",
+      "url": "https://www.eng.chula.ac.th/wp-content/uploads/2017/06/12.aethlngkaarn_eruueng_em_kabkhwaamehmaaasmainkaarbambadnamenaaesiiyainsphaawanamthwmkhang.pdf",
+      "date": "2011-11-09",
+      "kind": "academic",
+      "note": "Read in full on 15 Oct 2026. Signed by 48 environmental scientists and engineers (Chula, Kasetsart, Mahidol, KMUTT, Khon Kaen, Ubon Ratchathani, the Environmental Engineering Association of Thailand and others). Point 2: EM is not recommended for treating stagnant floodwater (no proof it works; part of EM is organic matter that adds to the dirt; its microbes don't add oxygen). Point 3, in order: drain the water as soon as possible, remove rubbish and waste, add oxygen (let water circulate, aerators). An academic statement, not a government agency."
+    },
+    "bkkthon-em-2569": {
+      "agency": "มหาวิทยาลัยกรุงเทพธนบุรี",
+      "title": "Analysis of stagnant floodwater quality after treatment with Effective Microorganisms (EM) balls (J Med Glob 4(3):52–61)",
+      "url": "https://he01.tci-thaijo.org/index.php/JMedGlob/article/view/291814",
+      "date": "2026-09-15",
+      "kind": "academic",
+      "note": "Peer-reviewed study of three stagnant-floodwater sites in Bangkok, field and lab, one month. Field: fewer coliform bacteria at two sites and clearer water. Lab: BOD up to 290 mg/L and DO below 1.0 mg/L. Conclusion: EM balls alone could not consistently improve stagnant floodwater. Abstract read on 15 Oct 2026."
+    },
+    "ddc-6groups-2569": {
+      "agency": "กรมควบคุมโรค",
+      "title": "กรมควบคุมโรค เตือนระวัง 6 กลุ่มโรคหลังน้ำท่วม (อธิบดี นพ.มณเฑียร คณาสวัสดิ์)",
+      "url": "https://www.bangkokbiznews.com/health/public-health/1253743",
+      "date": "2026-09-27",
+      "kind": "secondary",
+      "note": "News report quoting the DDC Director-General on 27 Sep 2026, read on 15 Oct 2026. Six groups: leptospirosis (boots, cover wounds, wash with soap after contact), skin infections (keep clean and dry, avoid walking barefoot), gastrointestinal (freshly cooked food, clean water, ORS for diarrhoea), mosquito-borne (remove standing water, no NSAIDs for fever), conjunctivitis (wash hands often, don't rub eyes, don't share towels or personal items), respiratory (hygiene, mask when coughing or sneezing)."
     }
   }
 }

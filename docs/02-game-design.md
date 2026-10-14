@@ -110,7 +110,8 @@
 - **End of the round by score** (v1.3.0): 10/10 gets a bigger fanfare, a second confetti burst and a stamp; 8–9 the fanfare and confetti; lower scores a soft chime. A small gecko on the result screen says a line that fits (`cheerPerfect`/`cheerHigh`/`cheerMid`/`cheerLow`), always warm.
 - **Combo, for feel only:** three or more right in a row show "🔥 3 ข้อติด!" near the top of the room and play a rising run. No points.
 - **More sound:** a splash when water reaches the floor, a tick for each of the last five seconds, a blip when sound is switched on.
-- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (38 playable lessons). Locked lessons show as grey tiles, so there is something to find in random houses.
+- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (41 playable lessons, grouped in 6 topics). Locked lessons show as grey tiles, so there is something to find in random houses. The book is grouped by **topic** (🦠 health, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, car & belongings, 🎒 plans & go-bag) with a progress bar each and a 🏅 badge for a full set; it links to `/learn`, where every answer is readable without playing.
+- **Topic in the news** (v1.4.0): `config.featuredTopic` adds a card under the daily line: "📰 เรื่องที่ควรรู้ช่วงนี้ · 🦠 โรคหลังน้ำท่วม" with "read all" (→ `/learn#t-health`) and "book n/8".
 - **Motion:** gentle hops and sparkles, no flashing. `prefers-reduced-motion` turns animations into instant state changes.
 - **Copy voice:** casual, warm, native Thai, like a helpful neighbour. Short sentences, particles used naturally (นะ, จ้า, เลย). No jargon, no blame. English mirrors the tone (toggle at top right).
 
@@ -183,7 +184,7 @@ Low-fidelity layouts below. Real screenshots from the built game, captured by `n
 | Checklist | [09-checklist.png](screens/09-checklist.png) |
 | English | [10-english.png](screens/10-english.png) |
 | Challenge back (share sheet with the versus card) | [11-challenge-back.png](screens/11-challenge-back.png) |
-| Safety book | [12-book.png](screens/12-book.png) |
+| Safety book (by topic) | [12-book.png](screens/12-book.png) |
 
 The share assets, rendered by the same canvas code as the game:
 

@@ -75,7 +75,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* 9 items were official at their core but had one inferred or dated detail.
 - *Do this:* mark them `partial` with a `verifyNote`, and treat the review as a launch task. Never ship `unverified`.
-- *Encoded in:* the build's validation, [KNOWN_ISSUES #8](KNOWN_ISSUES.md#8-9-safety-items-are-only-partially-verified).
+- *Encoded in:* the build's validation, [KNOWN_ISSUES #8](KNOWN_ISSUES.md#8-10-safety-items-are-only-partially-verified).
 
 **B5. One source of truth for the game and the review table.**
 
@@ -326,6 +326,18 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* an English browser opening `/` sees the Thai page for about 0.9 s before the script switches to English and rewrites the address to `/en/`. It was found only by timing the wordmark text after load, not by any functional check.
 - *Do this:* when a page changes language after load, measure what is on screen over time. Fix it at the server (redirect or separate HTML), not by hiding content.
 - *Fixed in v1.3.1:* an inline script sends visitors from abroad to `/en/` before anything is drawn ([KNOWN_ISSUES F23](KNOWN_ISSUES.md#fixed)). Search bots are excluded, so the Thai page stays indexed.
+
+**C11. Grow the content and the way to find it together.**
+
+- *What happened:* v1.4.0 added three lessons on request (EM balls, diarrhoea, eye infections) and the owner asked to organise the knowledge for a better journey. A flat list of 43 lessons is hard to browse, and a collection that locks health answers would be wrong during a disease warning.
+- *Do this:* give every lesson a topic, show progress per topic (fun), and keep every answer one tap away on `/learn` (safety). Put the topic in the news on the start screen, and take it down when the news fades.
+- *Encoded in:* `config.topics`, `config.featuredTopic`, GUIDELINES rules 39–42, smoke checks for the topic book and the featured card.
+
+**C12. A placement can bring back a fixed bug.**
+
+- *What happened:* the EM-ball puddle first went into the unused `drain-out` slot. The overlap probe jumped from 0% to 9% of houses (worst 22%), because that slot sits close to three floor slots. Moving it to `floor-big` brought it back to 0%.
+- *Do this:* run `npm run probe` after any new item or slot, not only after slot edits.
+- *Encoded in:* the definition of done in AGENTS.md (probe for slot or item changes).
 
 **C10. Passing checks don't mean a screen looks right; look at it as a visitor.**
 

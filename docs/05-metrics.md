@@ -24,6 +24,7 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `help_click` | Helpline tapped (tel:) | mode or – | the number, e.g. `1784` | – |
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
+| `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0) | – | the topic (e.g. `health`) or `book` | – |
 
 ## The numbers you asked for
 

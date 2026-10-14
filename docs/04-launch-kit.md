@@ -105,6 +105,16 @@ Notes for English posts:
 - Share `/en/` links (not `/`) so the preview and the page are English from the first tap.
 - Have a native English reader check any new English copy first ([KNOWN_ISSUES #11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
 
+### When diseases after floods are in the news (v1.4.0)
+
+> **น้ำลดแล้ว ระวังโรคที่มากับน้ำ** 🦠
+> ท้องเสีย ตาแดง ไข้ฉี่หนู ไข้เลือดออก รู้วิธีป้องกันครบไหม? อ่านสรุปจากกรมควบคุมโรค 8 ข้อ หรือเล่นเกม 60 วิ เก็บให้ครบหมวด 🏅
+> 👉 https://baanrodmai.autobahn.bot/learn#t-health
+> #บ้านรอดไหม #น้ำท่วม
+
+- Link `/learn#t-health` when people want the answers now; link `/` when the aim is to play and share.
+- Keep `config.featuredTopic` on `"health"` only while the news lasts.
+
 ## 3. Outreach (who to send it to, and the ask)
 
 Give every partner the same **ready-to-forward kit**:

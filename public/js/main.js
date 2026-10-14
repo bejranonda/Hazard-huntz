@@ -22,7 +22,7 @@ import {
 } from './share.js';
 import { track, initAnalytics, flush } from './analytics.js';
 import { seenHowto, markHowto, bestScore, streak, recordResult, learnedIds, addLearned } from './progress.js';
-import { bookPool, correctIds } from './collection.js';
+import { bookPool, correctIds, topicProgress, completedTopics } from './collection.js';
 
 const app = $('#app');
 const state = {
@@ -123,11 +123,17 @@ async function pickDefaultMode(C) {
 const brandName = () => `${t('logoA')}${t('logoB')}`.trim();
 
 function bookCounts() {
-  const pool = bookPool(content());
+  const C = content();
+  const pool = bookPool(C);
   const all = [...pool.prepare, ...pool.return];
   const have = new Set(learnedIds());
-  return { pool, total: all.length, n: all.filter((it) => have.has(it.id)).length, have };
+  const topics = topicProgress(pool, have, C.config.topics || []);
+  return { pool, total: all.length, n: all.filter((it) => have.has(it.id)).length, have, topics };
 }
+
+// "🦠 Health after floods" -> "🦠" (topic names start with their emoji).
+const topicEmoji = (id) => t(`topic_${id}`).split(' ')[0];
+const learnUrl = (hash = '') => `${getLang() === 'en' ? '/en' : ''}/learn${hash}`;
 
 function renderStart(defaultMode) {
   state.defaultMode = defaultMode;
@@ -151,6 +157,24 @@ function renderStart(defaultMode) {
   $('#daily-line').innerHTML = parts.join(' · ');
 
   const book = bookCounts();
+  // A topic in the news (config.featuredTopic): read every answer now, or
+  // collect it in the safety book by playing.
+  const feat = content().config.featuredTopic;
+  const ft = feat && book.topics.find((tp) => tp.id === feat);
+  const featEl = $('#featured');
+  if (ft) {
+    const allInTopic = content().items.filter((it) => it.topic === feat && !it.disabled).length;
+    featEl.innerHTML = `
+      <p class="featured-label">${esc(t('featuredLabel'))}</p>
+      <p class="featured-topic">${esc(t(`topic_${feat}`))}</p>
+      <div class="featured-actions">
+        <a class="btn small" id="featured-read" href="${esc(learnUrl(`#t-${feat}`))}">${esc(t('featuredRead', { total: allInTopic }))}</a>
+        <button class="btn secondary small" type="button" id="featured-book">${esc(t('featuredBook', { n: ft.n, total: ft.total }))}</button>
+      </div>`;
+    featEl.hidden = false;
+    $('#featured-book').addEventListener('click', () => openBook(feat));
+    $('#featured-read').addEventListener('click', () => track('learn_open', { label: feat }));
+  } else featEl.hidden = true;
   const bookBtn = $('#btn-book');
   bookBtn.textContent = t('bookChip', { n: book.n, total: book.total });
   bookBtn.hidden = false;
@@ -503,7 +527,7 @@ function onChoice(p, choice, variant, choices) {
       <p class="safe-answer"><b>${esc(t('safeAnswer'))}:</b> ${esc(L(right.label))}</p>
       ${choice.feedback ? `<p class="safe-answer">${esc(L(choice.feedback))}</p>` : ''}`}
     <div class="tip-card ${res.correct ? 'ok' : 'learn'}">
-      <span class="label">${esc(t('tipLabel'))}</span>
+      <span class="label">${esc(t('tipLabel'))} · ${esc(t(`topic_${p.ref.topic}`))}</span>
       <p class="tip">${esc(tip)}</p>
       ${why ? `<p class="why-text">💡 ${esc(why)}</p>` : ''}
     </div>
@@ -634,8 +658,10 @@ async function showResult(result) {
   // Safety book: lessons answered correctly for the first time.
   const pool = bookPool(C);
   const valid = new Set([...pool.prepare, ...pool.return].map((it) => it.id));
+  const before = bookCounts().topics;
   const added = addLearned(correctIds(state.house.targets, result.records), valid);
   const book = bookCounts();
+  const doneTopics = completedTopics(before, book.topics);
 
   const other = mode === 'prepare' ? 'return' : 'prepare';
   const me = result.score10;
@@ -656,7 +682,7 @@ async function showResult(result) {
     return `<li class="lesson ${st}">
       <div class="row"><span class="st" aria-hidden="true">${glyph}</span>
         <div>
-          <div class="name">${esc(L(p.ref.name))} <span class="tag">· ${esc(t(tag))}</span></div>
+          <div class="name"><span aria-hidden="true">${esc(topicEmoji(p.ref.topic))}</span> ${esc(L(p.ref.name))} <span class="tag">· ${esc(t(tag))}</span></div>
           <p class="tip">${esc(L(data.tip))}</p>
           <details><summary>${esc(t('why'))}</summary><p>${esc(L(data.why))}</p>${sourcesLine(data.sources || p.ref.sources)}</details>
         </div>
@@ -752,7 +778,7 @@ async function showResult(result) {
   } catch (e) {
     console.warn('card render failed', e);
   }
-  const notes = [];
+  const notes = doneTopics.map((tp) => t('topicDoneToast', { topic: t(`topic_${tp}`) }));
   if (prog.milestone) notes.push(t('streakMilestone', { n: prog.milestone }));
   if (prog.isBest && prog.plays > 1) notes.push(`${t('best', { score: result.score10 })} 🎉`);
   notes.forEach((n, i) => setTimeout(() => toast(n, 2400), i * 2600));
@@ -916,27 +942,45 @@ export function checklistData(mode) {
   };
 }
 
-// The safety book: every playable lesson, learned ones with their tip.
-async function openBook() {
+// The safety book, grouped by topic: learned lessons with their tip, locked
+// ones as grey tiles, a progress bar per topic and a badge for a full set.
+// Locked answers are never hidden for good: /learn has every one of them.
+async function openBook(focus = null) {
   try { await loadSprites(); } catch { /* icons are optional */ }
-  const { pool, total, n, have } = bookCounts();
-  const section = (mode) => `
-    <h3>${esc(t(mode === 'prepare' ? 'modePrepare' : 'modeReturn'))} · ${pool[mode].filter((it) => have.has(it.id)).length}/${pool[mode].length}</h3>
-    <ul class="book-list">${pool[mode].filter((it) => have.has(it.id)).map((it) => `
-      <li>${spriteIcon(it.sprite)}<div><b>${esc(L(it.name))}</b><p>${esc(L(it.tip))}</p></div></li>`).join('')}</ul>
-    <ul class="book-grid" aria-label="${esc(t('bookLocked'))}">${pool[mode].filter((it) => !have.has(it.id)).map((it) => `
-      <li title="${esc(t('bookLocked'))}">${spriteIcon(it.sprite)}<span aria-hidden="true">🔒</span></li>`).join('')}</ul>`;
+  const { total, n, have, topics } = bookCounts();
+  const modeTag = (it) => t(it.mode === 'prepare' ? 'modePrepare' : 'modeReturn');
+  const section = (tp) => {
+    const got = tp.items.filter((it) => have.has(it.id));
+    const locked = tp.items.filter((it) => !have.has(it.id));
+    const full = tp.n === tp.total;
+    return `
+    <section class="book-topic${full ? ' is-full' : ''}" id="book-${esc(tp.id)}">
+      <h3>${esc(t(`topic_${tp.id}`))} <span class="count">${tp.n}/${tp.total}</span>${full ? ` <span class="badge">${esc(t('bookTopicDone'))}</span>` : ''}</h3>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${tp.total}" aria-valuenow="${tp.n}"><i style="width:${Math.round((100 * tp.n) / tp.total)}%"></i></div>
+      <ul class="book-list">${got.map((it) => `
+        <li>${spriteIcon(it.sprite)}<div><b>${esc(L(it.name))}</b> <span class="mode-tag">${esc(modeTag(it))}</span><p>${esc(L(it.tip))}</p></div></li>`).join('')}</ul>
+      <ul class="book-grid" aria-label="${esc(t('bookLocked'))}">${locked.map((it) => `
+        <li title="${esc(t('bookLocked'))}">${spriteIcon(it.sprite)}<span aria-hidden="true">🔒</span></li>`).join('')}</ul>
+    </section>`;
+  };
+  // The featured or asked-for topic comes first.
+  const order = [...topics].sort((a, b) => (b.id === focus) - (a.id === focus));
   openSheet(`
     <h2 id="sheet-title">📖 ${esc(t('bookTitle'))} · ${n}/${total}</h2>
     <p class="sub">${esc(n >= total ? t('bookDone') : t('bookIntro'))}</p>
-    ${section('prepare')}
-    ${section('return')}
+    ${order.map(section).join('')}
+    <a class="link" id="book-learn" href="${esc(learnUrl(focus ? `#t-${focus}` : ''))}">${esc(t('bookReadAll'))}</a>
     <button class="btn" type="button" id="book-play">${esc(t('bookPlay'))}</button>
     <button class="btn secondary small" type="button" id="book-close">${esc(t('close'))}</button>`);
   $('#book-close').addEventListener('click', () => closeSheet());
+  $('#book-learn').addEventListener('click', () => track('learn_open', { label: focus || 'book' }));
   $('#book-play').addEventListener('click', () => {
     closeSheet();
-    startFlow(state.result?.mode || state.defaultMode, { kind: 'random' });
+    // Play the mode that still has the most to find in the focused topic.
+    const tp = focus && topics.find((x) => x.id === focus);
+    const left = (m) => (tp ? tp.items.filter((it) => it.mode === m && !have.has(it.id)).length : 0);
+    const mode = tp ? (left('return') >= left('prepare') ? 'return' : 'prepare') : (state.result?.mode || state.defaultMode);
+    startFlow(mode, { kind: 'random' });
   });
 }
 

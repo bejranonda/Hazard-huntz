@@ -32,3 +32,18 @@ export function mergeLearned(prev, ids, valid = null) {
   }
   return { ids: [...have], added };
 }
+
+// Progress per topic (config.topics order), counting only playable lessons:
+// [{ id, items, n, total }]. Topics with no playable lesson are left out.
+export function topicProgress(pool, have, topics = []) {
+  const all = [...pool.prepare, ...pool.return];
+  return topics.map((id) => {
+    const items = all.filter((it) => it.topic === id);
+    return { id, items, total: items.length, n: items.filter((it) => have.has(it.id)).length };
+  }).filter((tp) => tp.total);
+}
+
+// Topics that a round has just completed: full now, not full before.
+export function completedTopics(before, after) {
+  return after.filter((tp) => tp.n === tp.total && (before.find((b) => b.id === tp.id)?.n ?? 0) < tp.total).map((tp) => tp.id);
+}

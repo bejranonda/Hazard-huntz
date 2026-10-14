@@ -13,7 +13,7 @@
       ],
       "tip": { "th": "เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที", "en": "Seal key documents in a waterproof bag and keep them in your go-bag." },
       "why": { "th": "ปภ. แนะให้เก็บเอกสารสำคัญไว้ในถุงพลาสติกหรือซองกันน้ำ และใส่ไว้ในถุงยังชีพ ถ้าต้องอพยพ เอกสารเหล่านี้ใช้ยืนยันตัวตนและติดต่อขอความช่วยเหลือได้ทันที", "en": "DDPM advises keeping important documents in plastic or waterproof pouches inside the emergency bag. If you evacuate, they prove who you are and help you get assistance." },
-      "sources": ["ddpm-noru", "ddpm-6kit", "ddpm-amarin"], "verify": "verified"
+      "sources": ["ddpm-noru", "ddpm-6kit", "ddpm-amarin"], "verify": "verified", "topic": "home"
     },
     {
       "id": "p-breaker", "mode": "prepare", "room": "living", "critical": true, "pair": "r-breaker",
@@ -27,7 +27,7 @@
       ],
       "tip": { "th": "ปลดเบรกเกอร์ก่อนน้ำเข้าบ้าน ทำตอนตัวแห้ง ยืนบนพื้นแห้งเท่านั้น", "en": "Switch off the breaker before water gets in, only while dry and on dry ground." },
       "why": { "th": "ปภ. และการไฟฟ้าแนะให้ตัดไฟชั้นล่างเมื่อน้ำกำลังจะท่วมบ้าน กฟน. แนะให้ยืนบนที่แห้งและสวมรองเท้ายางขณะปลดเบรกเกอร์ ถ้าบ้านชั้นเดียว กฟภ. แนะให้งดใช้ไฟฟ้าไปเลย", "en": "DDPM and the electricity authorities say to cut downstairs power as flooding approaches. MEA says stand on dry ground in rubber shoes while doing it; for single-storey homes PEA says stop using power entirely." },
-      "sources": ["ddpm-south", "ddpm-mea", "pea-943", "mea-2022"], "verify": "verified",
+      "sources": ["ddpm-south", "ddpm-mea", "pea-943", "mea-2022"], "verify": "verified", "topic": "power",
       "verifyNote": "The 'only while dry, on dry ground' condition combines MEA (stand on dry ground, rubber shoes) and PEA (never operate switches while wet).",
       "wet": {
         "context": { "th": "น้ำเข้าบ้านแล้ว พื้นเปียก ขาเราแช่น้ำอยู่", "en": "Water is inside now and you're standing in it" },
@@ -53,7 +53,7 @@
       ],
       "tip": { "th": "เครื่องใช้ไฟฟ้า ของมีค่า ถอดปลั๊กแล้วยกขึ้นที่สูงหรือชั้นบนก่อนน้ำเข้าบ้าน", "en": "Unplug appliances and lift them and valuables upstairs before the water arrives." },
       "why": { "th": "ปภ. แนะให้ขนย้ายสิ่งของขึ้นที่สูง โดยเฉพาะเครื่องใช้ไฟฟ้าและของมีค่าให้พ้นระดับน้ำท่วม กฟภ. ให้ขนย้ายก่อนน้ำเข้าบ้าน และงดเสียบปลั๊กหรือใช้เครื่องใช้ไฟฟ้าในบริเวณที่น้ำท่วมถึง", "en": "DDPM says move belongings, especially appliances and valuables, above the flood level. PEA says do it before water enters, and don't plug in or use appliances where water can reach." },
-      "sources": ["ddpm-noru", "pea-943", "ddpm-mea"], "verify": "verified"
+      "sources": ["ddpm-noru", "pea-943", "ddpm-mea"], "verify": "verified", "topic": "power"
     },
     {
       "id": "p-phone", "mode": "prepare", "room": "living",
@@ -67,7 +67,7 @@
       ],
       "tip": { "th": "ชาร์จมือถือกับพาวเวอร์แบงก์ให้เต็ม เซฟเบอร์ 1784 กับ 1669 ไว้ในเครื่อง", "en": "Charge your phone and power bank fully; save 1784 and 1669 in your contacts." },
       "why": { "th": "ปภ. ให้ใส่โทรศัพท์มือถือ ที่ชาร์จ และแบตสำรองไว้ในของจำเป็นยามฉุกเฉิน ช่วงน้ำท่วมสูง การไฟฟ้าอาจต้องตัดไฟชั่วคราวเพื่อป้องกันอันตราย มือถือที่มีแบตจึงเป็นช่องทางขอความช่วยเหลือ", "en": "DDPM lists a phone, charger and power bank among emergency essentials. In deep floods the utility may cut power temporarily, so a charged phone is your lifeline." },
-      "sources": ["ddpm-6kit", "ddpm-amarin", "mea-gov"], "verify": "partial",
+      "sources": ["ddpm-6kit", "ddpm-amarin", "mea-gov"], "verify": "partial", "topic": "plan",
       "verifyNote": "Phone + power bank are on DDPM kit lists; 'charge fully' and 'save numbers' are practical inferences, not official wording."
     },
     {
@@ -82,7 +82,7 @@
       ],
       "tip": { "th": "ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย", "en": "Keep a torch and spare batteries in the go-bag, ready for a power cut." },
       "why": { "th": "ไฟฉายพร้อมถ่านสำรองเป็นหนึ่งใน 6 สิ่งจำเป็นในถุงยังชีพที่ ปภ. แนะนำ ใช้ส่องทางตอนไฟดับ และช่วยเก็บแบตมือถือไว้โทรขอความช่วยเหลือ", "en": "A torch with spare batteries is one of DDPM's six emergency-bag essentials. It lights the way in a power cut and saves your phone battery for calls." },
-      "sources": ["ddpm-6kit", "ddpm-amarin"], "verify": "verified"
+      "sources": ["ddpm-6kit", "ddpm-amarin"], "verify": "verified", "topic": "plan"
     },
     {
       "id": "p-plan", "mode": "prepare", "room": "living",
@@ -96,7 +96,7 @@
       ],
       "tip": { "th": "พาผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา พร้อมยาและอุปกรณ์", "en": "Move older and bedridden family members to safety early, with medicine and aids." },
       "why": { "th": "ปภ. ให้ช่วยเหลือเด็กและผู้สูงอายุก่อนเมื่อต้องอพยพ กรมอนามัยแนะให้เตรียมยาที่ใช้ประจำและอุปกรณ์ช่วยพยุงตัวให้พร้อม ผู้ป่วยติดเตียงที่ต้องใช้ไฟฟ้า กฟภ. ให้ย้ายไปที่ปลอดภัย เวลาโทรขอความช่วยเหลือ บอกเจ้าหน้าที่ด้วยว่ามีผู้สูงอายุหรือผู้ป่วยติดเตียง", "en": "DDPM says help children and older people first when evacuating. The Department of Health says keep regular medicine and mobility aids ready. PEA says move bedridden patients who rely on electricity to safety. When calling for help, tell responders an older or bedridden person is there." },
-      "sources": ["ddpm-noru", "anamai-elderly", "pea-1372", "prd-flood"], "verify": "verified"
+      "sources": ["ddpm-noru", "anamai-elderly", "pea-1372", "prd-flood"], "verify": "verified", "topic": "plan"
     },
     {
       "id": "p-sandbags", "mode": "prepare", "room": "front",
@@ -110,7 +110,7 @@
       ],
       "tip": { "th": "เรียงถุงทรายกั้นหน้าประตูเป็นแนวให้แนบกัน ช่วยชะลอน้ำไม่ให้ทะลักเข้าบ้าน", "en": "Line sandbags tightly across the door to slow water getting in." },
       "why": { "th": "ปภ. แนะให้นำกระสอบทรายมาวางเป็นแนวคันกั้นน้ำรอบบ้าน กรมประชาสัมพันธ์แนะให้ใช้กระสอบทรายหรือวัสดุกันน้ำอุดบริเวณประตูและหน้าต่าง", "en": "DDPM advises lining sandbags into a barrier around the house; the Government PR Department says use sandbags or waterproof material to seal doors and windows." },
-      "sources": ["ddpm-noru", "prd-flood"], "verify": "verified",
+      "sources": ["ddpm-noru", "prd-flood"], "verify": "verified", "topic": "home",
       "verifyNote": "How full to fill the bags varies by source (½ in a US guide, ⅓ from a BMA district engineer, unconfirmed), so the game gives no fill ratio."
     },
     {
@@ -125,7 +125,7 @@
       ],
       "tip": { "th": "ย้ายรถไปจุดจอดที่ทางการเปิดให้แต่เนิ่นๆ อย่าจอดบนสะพานหรือทางขึ้นทางด่วน", "en": "Move the car early to official flood parking, never onto bridges or ramps." },
       "why": { "th": "ปภ. แนะให้เคลื่อนย้ายพาหนะไปยังพื้นที่ปลอดภัย ช่วงน้ำท่วมมักมีอาคารจอดรถเปิดให้จอดฟรี ติดตามประกาศในพื้นที่ (กรุงเทพฯ ดูได้ที่ BMA Flood Support) ส่วนการจอดบนสะพานหรือทางขึ้นลงทางด่วน ตำรวจเคยขอความร่วมมือเพราะกีดขวางการลำเลียงผู้ป่วย", "en": "DDPM says move vehicles to safe ground. During floods, car parks often open for free: check local announcements (Bangkok: BMA Flood Support). Police have asked people not to park on bridges or expressway ramps because it blocks patient transport." },
-      "sources": ["ddpm-south", "bma-floodsupport", "police-2011"], "verify": "partial",
+      "sources": ["ddpm-south", "bma-floodsupport", "police-2011"], "verify": "partial", "topic": "home",
       "verifyNote": "The bridge/expressway warning comes from a 2011 Metropolitan Police request; no 2024–2026 restatement was found."
     },
     {
@@ -140,7 +140,7 @@
       ],
       "tip": { "th": "เตรียมกรง สายจูง ปลอกคอป้ายชื่อ อาหารสัตว์ไว้ แล้วพาน้องไปด้วยตอนอพยพ", "en": "Ready a carrier, leash, name-tag collar and food; take your pets when you go." },
       "why": { "th": "ปภ. แนะให้อพยพสัตว์เลี้ยงไปอยู่ในพื้นที่ปลอดภัย กรมอนามัยระบุว่าศูนย์พักพิงรับสุนัขและแมวได้ แต่ควรได้รับวัคซีนพิษสุนัขบ้า ใส่กรงหรือสายจูงตลอดเวลาที่อยู่ในพื้นที่ส่วนรวม และมีปลอกคอกับป้ายชื่อชัดเจน", "en": "DDPM says evacuate pets to safety. The Department of Health says shelters can take dogs and cats, which should be rabies-vaccinated, kept in a carrier or on a leash in shared areas, and wear a collar with a clear name tag." },
-      "sources": ["ddpm-noru", "anamai-pets", "dlt-car"], "verify": "verified"
+      "sources": ["ddpm-noru", "anamai-pets", "dlt-car"], "verify": "verified", "topic": "plan"
     },
     {
       "id": "p-poster", "mode": "prepare", "room": "front",
@@ -154,7 +154,7 @@
       ],
       "tip": { "th": "รู้ไว้ก่อนว่าศูนย์พักพิงใกล้บ้านอยู่ไหน และไปเส้นทางไหนที่เจ้าหน้าที่แนะนำ", "en": "Know where your nearest shelter is and the route officials recommend." },
       "why": { "th": "กรมประชาสัมพันธ์แนะให้เดินทางตามเส้นทางที่เจ้าหน้าที่กำหนดไปยังศูนย์พักพิง ปภ. ให้อพยพไปตามเส้นทางที่ปลอดภัย กรุงเทพฯ ดูศูนย์พักพิงได้ที่ BMA Flood Support ต่างจังหวัดติดตามประกาศของจังหวัด อำเภอ หรือท้องถิ่น และสายด่วน ปภ. 1784", "en": "The Government PR Department says follow the officially designated route to shelters; DDPM says evacuate by safe routes. Bangkok shelters are listed on BMA Flood Support; elsewhere follow provincial and local announcements, or call DDPM 1784." },
-      "sources": ["prd-flood", "ddpm-noru", "bma-floodsupport", "ddpm-1784"], "verify": "verified"
+      "sources": ["prd-flood", "ddpm-noru", "bma-floodsupport", "ddpm-1784"], "verify": "verified", "topic": "plan"
     },
     {
       "id": "p-gutter", "mode": "prepare", "room": "front",
@@ -168,7 +168,7 @@
       ],
       "tip": { "th": "เก็บขยะที่อุดตะแกรงท่อหน้าบ้าน ให้น้ำฝนไหลได้สะดวก ลดน้ำท่วมขัง", "en": "Clear rubbish from street drains so rainwater can flow away." },
       "why": { "th": "ปภ. แนะให้ป้องกันน้ำท่วมบ้านด้วยการกำจัดขยะไม่ให้อุดตันท่อน้ำและทางระบายน้ำ รวมถึงสิ่งกีดขวางทางน้ำ เพื่อให้น้ำไหลผ่านได้สะดวก", "en": "DDPM advises preventing house flooding by keeping rubbish out of pipes, drains and waterways so water can flow freely." },
-      "sources": ["ddpm-noru"], "verify": "verified"
+      "sources": ["ddpm-noru"], "verify": "verified", "topic": "home"
     },
     {
       "id": "p-waterfood", "mode": "prepare", "room": "kitchen", "pair": "r-foodwet",
@@ -182,7 +182,7 @@
       ],
       "tip": { "th": "สำรองน้ำดื่มกับอาหารแห้งให้พออย่างน้อย 3 วัน เก็บในภาชนะปิดสนิทที่สูง", "en": "Keep at least 3 days of water and dry food, sealed and stored up high." },
       "why": { "th": "ปภ. แนะให้เตรียมน้ำดื่มและอาหารแห้งที่เก็บได้นาน ให้พอใช้ชีวิตช่วงเกิดภัยอย่างน้อย 3–5 วัน กรมอนามัยแนะให้เก็บในภาชนะปิดสนิท กรมประชาสัมพันธ์คิดน้ำดื่มไว้อย่างน้อยคนละ 3 ลิตรต่อวัน", "en": "DDPM says keep long-life water and food for at least 3–5 days. The Department of Health says store it in sealed containers; the Government PR Department suggests at least 3 litres of drinking water per person per day." },
-      "sources": ["ddpm-noru", "ddpm-6kit", "anamai-stock", "prd-72h"], "verify": "verified"
+      "sources": ["ddpm-noru", "ddpm-6kit", "anamai-stock", "prd-72h"], "verify": "verified", "topic": "food"
     },
     {
       "id": "p-lpg", "mode": "prepare", "room": "kitchen", "pair": "r-gas",
@@ -196,7 +196,7 @@
       ],
       "tip": { "th": "ปิดวาล์วถังแก๊สให้สนิท แล้วผูกยึดถังไว้กับที่มั่นคงในที่สูง กันล้มกันลอย", "en": "Close the gas valve tight and tie the cylinder up high so it can't tip or float." },
       "why": { "th": "กรมประชาสัมพันธ์แนะให้ปิดวาล์วถังแก๊สให้แน่นหนา และผูกยึดถังแก๊สไว้กับโครงสร้างบ้านที่มั่นคงในที่สูง ไม่ให้ถังล้มหรือลอยไปกับน้ำจนแก๊สรั่ว", "en": "The Government PR Department advises closing the cylinder valve tightly and tying the cylinder to a sturdy part of the house up high, so it can't tip or float away and leak." },
-      "sources": ["prd-flood"], "verify": "verified"
+      "sources": ["prd-flood"], "verify": "verified", "topic": "power"
     },
     {
       "id": "p-meds", "mode": "prepare", "room": "kitchen", "critical": true,
@@ -210,7 +210,7 @@
       ],
       "tip": { "th": "เตรียมยาประจำตัวพออย่างน้อย 7 วัน ใส่ถุงกันน้ำรวมกับชุดปฐมพยาบาล", "en": "Pack at least 7 days of regular medicine, waterproofed, with a first-aid kit." },
       "why": { "th": "ชุดปฐมพยาบาลและยารักษาโรคประจำตัวเป็นหนึ่งใน 6 สิ่งจำเป็นในถุงยังชีพของ ปภ. กระทรวงสาธารณสุขแนะให้ผู้มีโรคประจำตัวเตรียมยาไว้อย่างน้อย 7 วัน", "en": "A first-aid kit and regular medicines are among DDPM's six emergency-bag essentials. The Ministry of Public Health advises people with chronic conditions to keep at least 7 days of medicine." },
-      "sources": ["ddpm-6kit", "moph-7days", "anamai-elderly"], "verify": "partial",
+      "sources": ["ddpm-6kit", "moph-7days", "anamai-elderly"], "verify": "partial", "topic": "health",
       "verifyNote": "The 7-day figure comes from a 2013 Ministry of Public Health statement (news report); DDPM gives no day count for medicine."
     },
     {
@@ -225,7 +225,7 @@
       ],
       "tip": { "th": "เซฟเบอร์ 1784 1669 และเบอร์การไฟฟ้าไว้ในมือถือทุกเครื่อง จดใส่กระดาษอีกชุด", "en": "Save 1784, 1669 and your electricity hotline on every phone, plus on paper." },
       "why": { "th": "สายด่วนนิรภัย ปภ. 1784 รับแจ้งตลอด 24 ชั่วโมง เจ็บป่วยฉุกเฉินโทร 1669 เรื่องไฟฟ้า กฟน. 1130 (กรุงเทพฯ นนทบุรี สมุทรปราการ) และ กฟภ. 1129 (จังหวัดอื่น) ในกรุงเทพฯ ติดต่อ กทม. ได้ที่ 1555", "en": "DDPM's 1784 safety hotline runs 24 hours; medical emergencies are 1669. For electricity: MEA 1130 (Bangkok, Nonthaburi, Samut Prakan) and PEA 1129 (other provinces). In Bangkok, the BMA is on 1555." },
-      "sources": ["ddpm-1784", "niems-1669", "mea-1130", "pea-service", "bma-1555"], "verify": "partial",
+      "sources": ["ddpm-1784", "niems-1669", "mea-1130", "pea-service", "bma-1555"], "verify": "partial", "topic": "plan",
       "verifyNote": "All five numbers verified (1555 via PRD, 1 Oct 2026). 'Save them in every phone' is a practical inference, not official wording."
     },
     {
@@ -240,7 +240,7 @@
       ],
       "tip": { "th": "ยาฆ่าแมลง น้ำยาเคมี ปิดฝาให้แน่น ยกขึ้นที่สูงพ้นน้ำ เก็บให้ห่างอาหาร", "en": "Cap pesticides and chemicals tightly and store them high, away from food." },
       "why": { "th": "เมื่อน้ำท่วมถึง ภาชนะสารเคมีอาจรั่วหรือลอยไปกับน้ำ กรมควบคุมโรคเตือนให้ระวังภาชนะสารเคมีที่น้ำท่วมถึง และห้ามเทสารเคมีลงท่อหรือแหล่งน้ำ การปิดฝาแน่นแล้วยกขึ้นที่สูงก่อนน้ำมาจึงช่วยลดการปนเปื้อน", "en": "Chemical containers can leak or float off in floodwater. The Department of Disease Control warns about flooded chemical containers and says never pour chemicals into drains. Capping and lifting them first reduces contamination." },
-      "sources": ["ddc-manual"], "verify": "partial",
+      "sources": ["ddc-manual"], "verify": "partial", "topic": "home",
       "verifyNote": "No official Thai source found that says 'store chemicals high before a flood'; the advice is inferred from DDC's after-flood chemical guidance. Please confirm with an agency."
     },
     {
@@ -255,7 +255,7 @@
       ],
       "tip": { "th": "อุดท่อระบายน้ำที่พื้นด้วยถุงทราย กันน้ำเสียดันย้อนเข้าบ้าน น้ำลดแล้วค่อยเปิด", "en": "Plug floor drains with a sandbag to stop sewage backflow; unplug after." },
       "why": { "th": "กรมประชาสัมพันธ์แนะให้อุดปิดชักโครกหรือท่อน้ำทิ้งในห้องน้ำชั้นล่าง ไม่ให้น้ำเสียและสิ่งปฏิกูลดันย้อนกลับเข้ามาในบ้าน ถุงทรายหรือถุงพลาสติกใส่น้ำเป็นวิธีอุดที่ทำเองได้ง่าย อย่าลืมเอาออกเมื่อน้ำลด", "en": "The Government PR Department advises plugging downstairs toilets and drains so sewage can't push back into the house. A sandbag or water-filled bag is an easy plug; remove it once the water drops." },
-      "sources": ["prd-flood"], "verify": "partial",
+      "sources": ["prd-flood"], "verify": "partial", "topic": "home",
       "verifyNote": "Official wording says 'plug toilets/drains'; the sandbag or water-bag method itself is common practice, not official wording."
     },
     {
@@ -270,7 +270,7 @@
       ],
       "tip": { "th": "วางถุงทรายห่อพลาสติกกดในโถส้วมชั้นล่าง กันน้ำเสียดันย้อนขึ้นมาในบ้าน", "en": "Press a plastic-wrapped sandbag into the downstairs toilet to stop backflow." },
       "why": { "th": "กรมประชาสัมพันธ์แนะให้อุดปิดชักโครกหรือท่อน้ำทิ้งในห้องน้ำชั้นล่าง เพื่อป้องกันไม่ให้น้ำเสียและสิ่งปฏิกูลดันย้อนกลับเข้ามาในตัวบ้าน", "en": "The Government PR Department advises plugging downstairs toilets and drains to stop sewage pushing back into the house." },
-      "sources": ["prd-flood"], "verify": "partial",
+      "sources": ["prd-flood"], "verify": "partial", "topic": "home",
       "verifyNote": "Official wording: 'plug the toilet'. Using a sandbag in the bowl is the widely shared method, not official wording."
     },
     {
@@ -285,7 +285,7 @@
       ],
       "tip": { "th": "แกลลอนน้ำมัน ปุ๋ย ยาฆ่าหญ้า ปิดฝาให้แน่น ยกขึ้นที่สูง ไม่ให้รั่วปนน้ำท่วม", "en": "Seal fuel, fertiliser and weedkiller and store them high, out of floodwater." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าน้ำท่วมอาจพาน้ำมันหรือแก๊สมาด้วย ให้ระวังภาชนะสารเคมีที่น้ำท่วมถึง และห้ามเทสารเคมีลงท่อหรือแหล่งน้ำ การเก็บให้มิดชิดบนที่สูงก่อนน้ำมาช่วยลดการปนเปื้อน", "en": "The Department of Disease Control warns floodwater can carry fuel or gas, urges care with flooded chemical containers, and says never pour chemicals into drains. Storing them sealed and high beforehand limits contamination." },
-      "sources": ["ddc-manual"], "verify": "partial",
+      "sources": ["ddc-manual"], "verify": "partial", "topic": "home",
       "verifyNote": "Same gap as p-chem: 'store high before flooding' is inferred, not official wording. Garage room not in the MVP."
     },
     {
@@ -300,7 +300,7 @@
       ],
       "tip": { "th": "เจอสายไฟขาด อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 หรือ 1129 ทันที", "en": "See a downed line? Stay 3–5 m away and call 1130 or 1129 right away." },
       "why": { "th": "กฟภ. เตือนว่าเมื่อเห็นสายไฟห้อยลงมาหรือขาด หรือเสาไฟล้มเอียง ต้องอยู่ห่างอย่างน้อย 3–5 เมตร เพราะไฟอาจรั่วลงพื้นบริเวณนั้น กรมควบคุมโรคระบุว่าไฟรั่วกระจายได้เป็นวงกว้างไม่ต่ำกว่า 3 เมตร แจ้ง กฟภ. 1129 หรือ กฟน. 1130", "en": "PEA says keep at least 3–5 m from hanging or broken lines and leaning poles because current can leak into the ground. The Department of Disease Control says leaks can spread at least 3 m. Report to PEA 1129 or MEA 1130." },
-      "sources": ["pea-1348", "ddc-45196", "mea-1130"], "verify": "verified"
+      "sources": ["pea-1348", "ddc-45196", "mea-1130"], "verify": "verified", "topic": "power"
     },
     {
       "id": "r-shoes", "mode": "return", "room": "front",
@@ -314,7 +314,7 @@
       ],
       "tip": { "th": "งู ตะขาบ ชอบหลบในรองเท้า ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง อย่าใช้มือล้วง", "en": "Snakes and centipedes hide in shoes. Check with a stick first, never bare hands." },
       "why": { "th": "กรมควบคุมโรคเตือนว่างู ตะขาบ แมงป่อง อาจหนีน้ำมาหลบซ่อนตามบ้านและมุมมืด ให้สำรวจเสื้อผ้าและรองเท้าก่อนสวมใส่ทุกครั้ง ใช้แท่งไม้เขี่ยดู อย่าใช้มือเปล่าสัมผัส ถ้าถูกกัด ให้ขยับส่วนที่ถูกกัดให้น้อยที่สุด ห้ามขันชะเนาะ แล้วรีบไปโรงพยาบาลหรือโทร 1669", "en": "The Department of Disease Control warns snakes, centipedes and scorpions shelter in homes and dark corners after floods. Check clothes and shoes before wearing them, use a stick, never bare hands. If bitten, keep the limb still, no tourniquet, and get to hospital or call 1669." },
-      "sources": ["ddc-45196", "ddc-manual", "ddc-rainy", "moph-snakebite"], "verify": "verified"
+      "sources": ["ddc-45196", "ddc-manual", "ddc-rainy", "moph-snakebite"], "verify": "verified", "topic": "critters"
     },
     {
       "id": "r-mudfeet", "mode": "return", "room": "front",
@@ -328,7 +328,7 @@
       ],
       "tip": { "th": "ลุยโคลนต้องใส่บูทยาง ถุงมือยาง เสร็จแล้วล้างสบู่เช็ดตัวให้แห้ง กันโรคฉี่หนู", "en": "Boots and gloves in mud, then wash with soap and dry off to avoid leptospirosis." },
       "why": { "th": "กรมควบคุมโรคระบุว่าเชื้อโรคฉี่หนู (เลปโตสไปโรสิส) เข้าสู่ร่างกายทางบาดแผล รอยขีดข่วน ตา จมูก ปาก หรือผิวหนังที่แช่น้ำนานๆ ถ้าจำเป็นต้องลุยน้ำให้สวมรองเท้าบูทและถุงมือยาง ปิดแผลด้วยพลาสเตอร์กันน้ำ แล้วรีบล้างตัวด้วยน้ำสะอาดกับสบู่และเช็ดให้แห้งทันที", "en": "The Department of Disease Control says leptospirosis enters through cuts, scratches, eyes, nose, mouth or water-softened skin. If you must wade, wear boots and rubber gloves, cover wounds with waterproof plasters, then wash with soap and dry off at once." },
-      "sources": ["ddc-lepto", "ddc-59806", "ddc-odpc6"], "verify": "verified"
+      "sources": ["ddc-lepto", "ddc-59806", "ddc-odpc6", "ddc-6groups-2569"], "verify": "verified", "topic": "health"
     },
     {
       "id": "r-glass", "mode": "return", "room": "front",
@@ -342,7 +342,7 @@
       ],
       "tip": { "th": "ของมีคมซ่อนอยู่ในโคลน ใส่บูทพื้นหนา ถุงมือหนา ใช้ที่ตักแทนมือ", "en": "Sharp debris hides in mud: thick-soled boots, heavy gloves, a scoop, not hands." },
       "why": { "th": "กรมควบคุมโรคเตือนให้ระวังบาดแผลจากของมีคมและเศษแก้วที่อาจติดเชื้อแทรกซ้อน ให้เก็บกวาดวัตถุแหลมคม ตะปู ในบ้านและทางเดิน ใช้รองเท้าบูทยางที่พื้นแข็งแรงพอกันการแทงทะลุ ถ้าโดนบาด ล้างแผลให้สะอาดแล้วปิดด้วยพลาสเตอร์กันน้ำ", "en": "The Department of Disease Control warns that cuts from glass and sharp objects can get infected. Clear nails and sharp debris from floors and paths, wear boots with puncture-proof soles, and clean and cover any cut with a waterproof plaster." },
-      "sources": ["ddc-odpc11", "ddc-odpc6", "ddc-manual", "ddc-56084"], "verify": "verified"
+      "sources": ["ddc-odpc11", "ddc-odpc6", "ddc-manual", "ddc-56084"], "verify": "verified", "topic": "critters"
     },
     {
       "id": "r-carmud", "mode": "return", "room": "front",
@@ -356,7 +356,7 @@
       ],
       "tip": { "th": "รถที่จมน้ำ ห้ามสตาร์ทเด็ดขาด ถ่ายรูปความเสียหายไว้ แล้วให้ช่างลากไปตรวจ", "en": "Never start a flooded car. Photograph the damage and have it towed for checks." },
       "why": { "th": "กรมการขนส่งทางบกเตือนว่าห้ามสตาร์ทรถที่จมน้ำเด็ดขาด เพราะน้ำอาจเข้าระบบไฟฟ้าจนลัดวงจร ทำให้เครื่องยนต์เสียหายหนักขึ้น เมื่อน้ำลดให้ยกรถเข้าศูนย์หรืออู่ตรวจละเอียด คปภ. แนะให้ถ่ายรูปรถทั้งภายนอก ภายใน ห้องเครื่อง และรอยคราบน้ำไว้ใช้เคลมประกัน ในกรุงเทพฯ ตำรวจจราจรมีรถยกช่วยฟรี โทร 1197", "en": "The Department of Land Transport says never start a car that was under water: water in the electrics can short-circuit and wreck the engine. Once the water drops, have it lifted to a service centre for a full check. The insurance regulator (OIC) says photograph the outside, inside, engine bay and water marks for your claim. In Bangkok, traffic police tow flooded cars for free on 1197." },
-      "sources": ["dlt-car", "oic-photo", "police-tow"], "verify": "verified"
+      "sources": ["dlt-car", "oic-photo", "police-tow"], "verify": "verified", "topic": "home"
     },
     {
       "id": "r-debris", "mode": "return", "room": "front",
@@ -370,7 +370,7 @@
       ],
       "tip": { "th": "กองขยะอาจมีตะขาบหรืองูซ่อนอยู่ ใช้ไม้ยาวเขี่ยดูก่อน อย่าใช้มือล้วง", "en": "Debris piles can hide centipedes or snakes. Check with a long stick, not hands." },
       "why": { "th": "กรมควบคุมโรคระบุว่าตะกอนน้ำท่วม ถุงขยะ หรือซอกหลืบต่างๆ อาจเป็นที่ซ่อนของสัตว์มีพิษ ให้ใช้แท่งไม้เขี่ยตรวจดู อย่าใช้มือเปล่า เตรียมไฟฉายไว้ส่องมุมมืด และห้ามเผาสารเคมี", "en": "The Department of Disease Control says flood sediment, rubbish bags and crevices can hide venomous animals. Check with a stick, never bare hands, use a torch for dark corners, and never burn chemicals." },
-      "sources": ["ddc-manual", "ddc-snake"], "verify": "verified"
+      "sources": ["ddc-manual", "ddc-snake"], "verify": "verified", "topic": "critters"
     },
     {
       "id": "r-crack", "mode": "return", "room": "front",
@@ -384,7 +384,7 @@
       ],
       "tip": { "th": "ผนังร้าว พื้นทรุด บ้านเอียง อย่าเพิ่งเข้าอยู่ ให้ช่างตรวจโครงสร้างก่อน", "en": "Cracked walls, sunken floors or a lean? Don't move in until it's been checked." },
       "why": { "th": "กรมอนามัยแนะว่าก่อนเข้าบ้านต้องสำรวจว่าโครงสร้างบ้านมั่นคงแข็งแรง คู่มือซ่อมบ้านหลังน้ำลดของกรมโยธาธิการและผังเมืองระบุว่า ถ้าผนังร้าวกว้างและยาวเห็นได้ชัด หรือร้าวทะลุอีกด้าน คานร้าว หรือฐานรากทรุดเอียง ควรรีบปรึกษาวิศวกร", "en": "The Department of Health says check the structure is sound before going back in. The Department of Public Works and Town & Country Planning's post-flood repair manual says wide, long or through-wall cracks, cracked beams or a sinking, tilting foundation need an engineer." },
-      "sources": ["anamai-mould", "dpt-manual"], "verify": "verified",
+      "sources": ["anamai-mould", "dpt-manual"], "verify": "verified", "topic": "home",
       "verifyNote": "DPT manual read from a third-party copy (dpt.go.th unreachable). DPT has run free inspections (hotline 1531 reported in Dec 2025; not used in game copy)."
     },
     {
@@ -399,7 +399,22 @@
       ],
       "tip": { "th": "เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก", "en": "Tip out standing water and turn containers over so mosquitoes can't breed." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าน้ำท่วมขังทำให้มีโอกาสพบผู้ป่วยไข้เลือดออกต่อเนื่อง ให้ปิดฝาภาชนะเก็บน้ำให้มิดชิด ล้างคว่ำภาชนะใส่น้ำ และสำรวจน้ำขังตามเศษขยะ ไม่ให้ยุงลายวางไข่", "en": "The Department of Disease Control warns flooding keeps dengue cases coming. Cover stored water tightly, rinse and upturn containers, and check rubbish for standing water so Aedes mosquitoes can't breed." },
-      "sources": ["ddc-rainy", "ddc-dengue"], "verify": "verified"
+      "sources": ["ddc-rainy", "ddc-dengue", "ddc-6groups-2569"], "verify": "verified", "topic": "health"
+    },
+    {
+      "id": "r-stagnant", "mode": "return", "room": "front",
+      "sprite": "stagnant", "doneSprite": "stagnant-done", "size": [96, 38], "slots": ["floor-big"],
+      "name": { "th": "น้ำเน่าขังหน้าบ้าน", "en": "Stagnant water out front" },
+      "context": { "th": "น้ำขังดำส่งกลิ่น เพื่อนบ้านบอกให้โยน EM บอลลงไป", "en": "Dark, smelly water. A neighbour says to throw in EM balls" },
+      "choices": [
+        { "kind": "clear", "correct": true, "label": { "th": "เก็บขยะออก แล้วช่วยกันระบายน้ำ ให้น้ำได้ไหลเวียน", "en": "Clear the rubbish, then help drain it so the water can move" } },
+        { "kind": "place", "label": { "th": "โยน EM บอลลงไป แล้วรอให้น้ำใสเอง", "en": "Throw in EM balls and wait for it to clear" }, "feedback": { "th": "นักวิชาการสิ่งแวดล้อมไม่แนะนำ EM บำบัดน้ำท่วมขัง จุลินทรีย์ใน EM ไม่ได้เพิ่มออกซิเจนให้น้ำ และส่วนผสมบางส่วนเป็นสารอินทรีย์ที่ทำให้น้ำสกปรกขึ้น", "en": "Environmental scientists don't recommend EM for stagnant floodwater. Its microbes add no oxygen, and part of it is organic matter that makes the water dirtier." } },
+        { "kind": "leave", "label": { "th": "ปิดหน้าต่างทนกลิ่นไป เดี๋ยวน้ำก็แห้งเอง", "en": "Shut the windows and wait for it to dry up" }, "feedback": { "th": "น้ำที่ขังนานออกซิเจนต่ำ ยิ่งรอยิ่งเน่า ควรระบายออกให้เร็วที่สุด และเก็บขยะที่ทำให้น้ำเน่าออกก่อน", "en": "Standing water is low in oxygen and gets worse with time. Drain it as soon as you can and remove the rubbish rotting in it." } }
+      ],
+      "tip": { "th": "น้ำท่วมขังเน่า EM บอลไม่ช่วยบำบัด ระบายน้ำออก เก็บขยะ และเติมอากาศดีกว่า", "en": "EM balls don't treat stagnant floodwater. Drain it, clear rubbish, add air." },
+      "why": { "th": "นักวิชาการสิ่งแวดล้อม 48 คน (แถลงการณ์ 9 พ.ย. 2554) ไม่แนะนำ EM บำบัดน้ำท่วมขัง เพราะไม่เพิ่มออกซิเจนและอาจทำให้น้ำสกปรกขึ้น ให้ระบายน้ำออกก่อน เก็บขยะ แล้วเติมอากาศ งานวิจัยปี 2569 ก็พบว่า EM บอลอย่างเดียวช่วยได้ไม่สม่ำเสมอ ในกรุงเทพฯ น้ำขังเป็นบริเวณกว้างแจ้ง 1555 หรือ Traffy Fondue", "en": "48 environmental scientists (statement, 9 Nov 2011) don't recommend EM for stagnant floodwater: it adds no oxygen and can add dirt. Drain the water first, remove rubbish, then add air. A 2026 study also found EM balls alone didn't help consistently. In Bangkok, report wide-area standing water to 1555 or Traffy Fondue." },
+      "sources": ["chula-em-2554", "bkkthon-em-2569", "bma-1555"], "verify": "partial", "topic": "health",
+      "verifyNote": "The advice comes from a 2011 statement by 48 academics and a 2026 peer-reviewed study, not from a government agency; no current PCD or DOH statement on EM balls was found. Local officials still use EM balls with aerators (e.g. Pathum Thani, Oct 2026), so the wording states the evidence and blames no one."
     },
     {
       "id": "r-socket", "mode": "return", "room": "living",
@@ -413,7 +428,7 @@
       ],
       "tip": { "th": "ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน", "en": "A socket that was under water: don't touch or use it until it's been checked." },
       "why": { "th": "กฟน. เตือนว่าห้ามใช้ปลั๊กไฟ เครื่องใช้ไฟฟ้า และสวิตช์ที่น้ำท่วมถึงโดยเด็ดขาด จนกว่าจะได้รับการตรวจสอบจากผู้เชี่ยวชาญ กรมควบคุมโรคย้ำว่าห้ามสัมผัสปลั๊กไฟหรือสายไฟที่เปียกน้ำ", "en": "MEA warns never to use sockets, appliances or switches that were flooded until an expert has checked them. The Department of Disease Control says don't touch wet sockets or wires." },
-      "sources": ["mea-2022", "mea-gov", "ddc-59806"], "verify": "verified"
+      "sources": ["mea-2022", "mea-gov", "ddc-59806"], "verify": "verified", "topic": "power"
     },
     {
       "id": "r-breaker", "mode": "return", "room": "living",
@@ -427,7 +442,7 @@
       ],
       "tip": { "th": "หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน", "en": "After a flood, don't touch the breaker on a wet floor. Get an electrician first." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าไม่ควรเข้าไปตรวจสอบหรือเปิด–ปิดระบบไฟฟ้าด้วยตนเอง กฟภ. ห้ามยืนแช่น้ำขณะตรวจอุปกรณ์ไฟฟ้า และให้ช่างไฟฟ้าที่มีความรู้ความชำนาญตรวจก่อนกลับมาใช้ไฟ ติดต่อ กฟน. 1130 หรือ กฟภ. 1129 ได้ตลอด 24 ชั่วโมง", "en": "The Department of Disease Control says don't inspect or switch the electrical system yourself. PEA says never stand in water while checking equipment and have a skilled electrician check before reconnecting. MEA 1130 and PEA 1129 are open 24 hours." },
-      "sources": ["ddc-59806", "pea-1415", "mea-gov"], "verify": "verified"
+      "sources": ["ddc-59806", "pea-1415", "mea-gov"], "verify": "verified", "topic": "power"
     },
     {
       "id": "r-tv", "mode": "return", "room": "living",
@@ -441,7 +456,7 @@
       ],
       "tip": { "th": "เครื่องใช้ไฟฟ้าที่จมน้ำ ห้ามเสียบใช้ ห้ามซ่อมเอง ให้ช่างตรวจก่อนเสมอ", "en": "Flooded appliances: don't plug in, don't self-repair. A technician checks first." },
       "why": { "th": "กฟภ. แนะว่าเครื่องใช้ไฟฟ้าที่ถูกน้ำท่วม ห้ามใช้งานทันที ห้ามนำกลับมาใช้และห้ามซ่อมเอง ควรเรียกช่างไฟฟ้าที่มีความรู้ความชำนาญช่วยตรวจสอบก่อน", "en": "PEA says don't use flooded appliances straight away, don't reuse or repair them yourself, and have a skilled electrician check them first." },
-      "sources": ["pea-1384", "pea-1415"], "verify": "verified"
+      "sources": ["pea-1384", "pea-1415"], "verify": "verified", "topic": "power"
     },
     {
       "id": "r-sag", "mode": "return", "room": "living",
@@ -455,7 +470,7 @@
       ],
       "tip": { "th": "ฝ้าอุ้มน้ำจนย้อย อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ กันพื้นที่ไว้ให้ช่างรื้อ", "en": "A sagging wet ceiling can fall in one piece. Keep clear; a builder removes it." },
       "why": { "th": "คู่มือของกรมโยธาธิการและผังเมืองระบุว่าฝ้ายิปซัมไม่ทนน้ำเลย ฝ้าที่โดนน้ำท่วมส่วนใหญ่ต้องเลาะออกแล้วเปลี่ยนใหม่เพราะจะเปื่อยยุ่ย ฝ้าที่อุ้มน้ำจึงทั้งหนักและอ่อนตัว อย่ายืนข้างใต้ และอย่าเพิ่งเปิดไฟในห้องนั้นจนกว่าช่างจะตรวจ", "en": "The Department of Public Works and Town & Country Planning's manual says gypsum board can't take water: flooded ceilings usually have to be stripped out and replaced because they turn soft. A soaked board is heavy and weak, so stay out from under it and keep the lights off until it's checked." },
-      "sources": ["dpt-manual", "ddc-59806"], "verify": "partial",
+      "sources": ["dpt-manual", "ddc-59806"], "verify": "partial", "topic": "home",
       "verifyNote": "DPT confirms flooded gypsum must be removed/replaced; 'it can fall, don't stand under it' is an inference, not official wording."
     },
     {
@@ -470,7 +485,7 @@
       ],
       "tip": { "th": "เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด", "en": "Mould: N95 mask, rubber gloves, windows open, and no fans while you clean." },
       "why": { "th": "กรมควบคุมโรคระบุว่าเชื้อรากระตุ้นภูมิแพ้และหอบหืดได้ ให้สวมหน้ากากชนิด N95 อย่าเช็ดแบบแห้งหรือเปิดพัดลมเป่า กรมอนามัยแนะให้เปิดประตูหน้าต่างให้อากาศถ่ายเท และห้ามเปิดพัดลมหรือแอร์ขณะกำจัดเชื้อรา คนที่เป็นหอบหืด ภูมิแพ้ เด็ก และผู้สูงอายุ ไม่ควรเป็นคนลงมือทำความสะอาด", "en": "The Department of Disease Control says mould triggers allergies and asthma: wear an N95, don't dry-wipe or blow fans at it. The Department of Health says open doors and windows and keep fans and AC off while removing mould. People with asthma or allergies, children and older people shouldn't do the cleaning." },
-      "sources": ["ddc-manual", "anamai-mould"], "verify": "verified"
+      "sources": ["ddc-manual", "anamai-mould"], "verify": "verified", "topic": "health"
     },
     {
       "id": "r-generator", "mode": "return", "room": "living",
@@ -484,7 +499,7 @@
       ],
       "tip": { "th": "เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก", "en": "Never run a generator indoors or in closed spaces: its fumes are silent poison." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าไม่ควรใช้ปั๊มน้ำหรือเครื่องปั่นไฟที่ใช้น้ำมันในพื้นที่ระบายอากาศไม่ดีหรืออับอากาศ เพราะเกิดก๊าซพิษเป็นอันตรายต่อคนใกล้เคียง ก๊าซคาร์บอนมอนอกไซด์ไม่มีสี ไม่มีกลิ่น จึงอันตรายโดยไม่รู้ตัว", "en": "The Department of Disease Control warns against running fuel-powered pumps or generators in poorly ventilated or enclosed spaces because of toxic gas. Carbon monoxide has no colour or smell, so it harms people without warning." },
-      "sources": ["ddc-manual"], "verify": "verified"
+      "sources": ["ddc-manual"], "verify": "verified", "topic": "power"
     },
     {
       "id": "r-fever", "mode": "return", "room": "living",
@@ -498,7 +513,21 @@
       ],
       "tip": { "th": "ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง", "en": "Fever and sore calves after wading? See a doctor; don't self-medicate." },
       "why": { "th": "กรมควบคุมโรคระบุว่าโรคฉี่หนูมีระยะฟักตัว 2–30 วัน ส่วนใหญ่ราว 1–2 สัปดาห์ อาการคือไข้สูงเฉียบพลัน ปวดศีรษะ ปวดกล้ามเนื้อโดยเฉพาะน่อง และตาแดง ห้ามซื้อยากินเอง ให้รีบพบแพทย์และแจ้งประวัติการลุยน้ำ ส่วนไข้เลือดออก ห้ามใช้ยาแก้ปวดกลุ่ม NSAIDs เช่น แอสไพริน ไอบูโพรเฟน", "en": "The Department of Disease Control says leptospirosis shows up 2–30 days after exposure, usually 1–2 weeks: sudden high fever, headache, muscle pain especially in the calves, red eyes. Don't self-medicate; see a doctor and mention wading. With dengue, NSAIDs like aspirin and ibuprofen must be avoided." },
-      "sources": ["ddc-lepto", "ddc-59806", "ddc-dengue"], "verify": "verified"
+      "sources": ["ddc-lepto", "ddc-59806", "ddc-dengue", "ddc-6groups-2569"], "verify": "verified", "topic": "health"
+    },
+    {
+      "id": "r-towel", "mode": "return", "room": "living",
+      "sprite": "towel", "doneSprite": "towel-done", "size": [62, 40], "slots": ["seat"],
+      "name": { "th": "ผ้าเช็ดตัวผืนเดียวใช้ทั้งบ้าน", "en": "One towel for the whole family" },
+      "context": { "th": "น้องตาแดง คันตา แต่ทุกคนยังใช้ผ้าผืนนี้ร่วมกัน", "en": "Your little one has red, itchy eyes, but everyone shares this towel" },
+      "choices": [
+        { "kind": "wash", "correct": true, "label": { "th": "แยกผ้าเช็ดตัวคนละผืน ล้างมือบ่อยๆ และไม่ขยี้ตา", "en": "Give everyone their own towel, wash hands often, don't rub eyes" } },
+        { "kind": "leave", "label": { "th": "ใช้ร่วมกันต่อ ประหยัดผ้า", "en": "Keep sharing it, less washing" }, "feedback": { "th": "โรคตาอักเสบติดต่อกันได้ทางผ้าเช็ดตัวและของใช้ส่วนตัว กรมควบคุมโรคแนะไม่ใช้ผ้าเช็ดตัวหรือของใช้ส่วนตัวร่วมกับผู้อื่น", "en": "Eye infections spread through towels and personal items. The DDC says don't share towels or personal items." } },
+        { "kind": "place", "label": { "th": "เอาผ้าชุบน้ำขยี้ตาแรงๆ ให้หายคัน", "en": "Rub the eyes hard with a wet cloth to stop the itch" }, "feedback": { "th": "การขยี้ตาพาเชื้อเข้าตาและลามได้ กรมควบคุมโรคแนะให้ล้างมือบ่อยๆ และไม่ขยี้ตา", "en": "Rubbing carries germs into the eyes and spreads them. The DDC says wash hands often and don't rub your eyes." } }
+      ],
+      "tip": { "th": "ตาแดงหลังน้ำท่วม ล้างมือบ่อย ไม่ขยี้ตา ไม่ใช้ผ้าเช็ดตัวร่วมกัน", "en": "Red eyes after a flood? Wash hands often, don't rub, don't share towels." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าโรคตาอักเสบเป็น 1 ใน 6 กลุ่มโรคที่มากับน้ำท่วม ให้ล้างมือบ่อยๆ ไม่ขยี้ตา และไม่ใช้ผ้าเช็ดตัวหรือของใช้ส่วนตัวร่วมกับผู้อื่น", "en": "The Department of Disease Control lists eye infections (conjunctivitis) among six disease groups that come with floods. Wash hands often, don't rub your eyes, and don't share towels or personal items." },
+      "sources": ["ddc-6groups-2569"], "verify": "verified", "topic": "health"
     },
     {
       "id": "r-gas", "mode": "return", "room": "kitchen",
@@ -512,7 +541,7 @@
       ],
       "tip": { "th": "ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง", "en": "Smell gas? No switches or flames. Open windows, shut the valve, leave and call." },
       "why": { "th": "ปภ. แนะว่าเมื่อแก๊สรั่ว ให้ปิดวาล์วถังแก๊สและเตา เปิดประตูหน้าต่างทุกบาน ห้ามเปิด–ปิดอุปกรณ์ไฟฟ้าทุกชนิดหรือทำอะไรที่เกิดประกายไฟ และห้ามใช้พัดลมไล่แก๊ส กรมควบคุมโรคย้ำว่าตอนกลับเข้าบ้านหลังน้ำลดให้ใช้ไฟฉายแบบใช้ถ่าน เพราะน้ำท่วมอาจพาแก๊สหรือน้ำมันมาด้วย ออกไปให้พ้นบริเวณก่อนแล้วค่อยโทรขอความช่วยเหลือ", "en": "DDPM says if gas leaks, close the cylinder and stove valves, open every door and window, don't switch any electrical device on or off or make sparks, and never use a fan. The Department of Disease Control adds: use a battery torch when re-entering, as floodwater can carry gas or fuel. Get clear of the area before you call for help." },
-      "sources": ["ddpm-gas", "ddc-manual"], "verify": "verified",
+      "sources": ["ddpm-gas", "ddc-manual"], "verify": "verified", "topic": "power",
       "verifyNote": "DDPM wording via a Thai PBS report (2022); DOEB pages were unreachable. Fire/rescue 199 is cited only by news, so it is not used in game copy."
     },
     {
@@ -527,7 +556,7 @@
       ],
       "tip": { "th": "อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม", "en": "Food that touched floodwater goes in the bin, even if it was bagged or boxed." },
       "why": { "th": "กรมควบคุมโรคย้ำว่าไม่ควรกินอาหารที่สัมผัสน้ำท่วม แม้อยู่ในบรรจุภัณฑ์ที่เปียกหรือเสียหาย กรมอนามัยแนะให้สำรวจข้าวสาร อาหารแห้ง และอาหารที่เก็บไว้ ถ้าถูกน้ำท่วมให้ทิ้งไป เพราะน้ำท่วมสกปรก มีเชื้อโรค และให้กินอาหารปรุงสุกใหม่ตามหลัก สุก ร้อน สะอาด", "en": "The Department of Disease Control says don't eat food that touched floodwater, even in wet or damaged packaging. The Department of Health says throw out flood-damaged rice and dry food because floodwater carries germs, and eat freshly cooked food: cooked, hot, clean." },
-      "sources": ["ddc-59984", "anamai-kitchen"], "verify": "verified"
+      "sources": ["ddc-59984", "anamai-kitchen"], "verify": "verified", "topic": "food"
     },
     {
       "id": "r-cans", "mode": "return", "room": "kitchen",
@@ -541,7 +570,21 @@
       ],
       "tip": { "th": "กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน", "en": "Dented, bulging, leaking or rusty cans: throw them out, don't eat them." },
       "why": { "th": "อย. ระบุว่ากระป๋องที่บุบ โป่งพอง หรือเป็นสนิม เป็นอาหารกระป๋องที่ไม่ควรบริโภค กรมอนามัยแนะให้ดูว่ากระป๋องปิดสนิท ไม่ปูดบวม ไม่เป็นสนิม ดูวันหมดอายุ และห้ามอุ่นอาหารทั้งกระป๋อง", "en": "The Thai FDA lists dented, bulging or rusty cans as unsafe to eat. The Department of Health says check cans are sealed, not swollen or rusty, within date, and never heat food in the can." },
-      "sources": ["fda-cans", "anamai-cans"], "verify": "verified"
+      "sources": ["fda-cans", "anamai-cans"], "verify": "verified", "topic": "food"
+    },
+    {
+      "id": "r-ors", "mode": "return", "room": "kitchen",
+      "sprite": "ors", "doneSprite": "ors-done", "size": [46, 46], "slots": ["counter", "floor"],
+      "name": { "th": "ท้องเสียหลังน้ำลด", "en": "Diarrhoea after the flood" },
+      "context": { "th": "กินของค้างไป ตอนนี้ถ่ายเหลวหลายรอบแล้ว", "en": "Ate leftovers, now it's runny stools again and again" },
+      "choices": [
+        { "kind": "drink", "correct": true, "label": { "th": "จิบผงเกลือแร่ ORS บ่อยๆ กันขาดน้ำ แล้วกินอาหารปรุงสุกใหม่", "en": "Sip ORS often to stay hydrated, then eat freshly cooked food" } },
+        { "kind": "leave", "label": { "th": "อดน้ำอดข้าวไปก่อน ให้ท้องหยุดเสียเอง", "en": "Stop eating and drinking until it stops" }, "feedback": { "th": "ท้องเสียทำให้ร่างกายเสียน้ำ ยิ่งอดน้ำยิ่งเสี่ยงขาดน้ำ กรมควบคุมโรคแนะให้ดื่มสารละลายเกลือแร่ ORS", "en": "Diarrhoea drains water from the body, and going without makes it worse. The DDC advises drinking ORS." } },
+        { "kind": "place", "label": { "th": "อุ่นของค้างที่เหลือกินต่อ เสียดายของ", "en": "Reheat the leftovers and keep eating them" }, "feedback": { "th": "ช่วงน้ำท่วมอาหารปนเปื้อนง่าย กรมควบคุมโรคแนะให้กินอาหารปรุงสุกใหม่และดื่มน้ำสะอาด", "en": "Food spoils easily in a flood. The DDC says eat freshly cooked food and drink clean water." } }
+      ],
+      "tip": { "th": "ท้องเสียหลังน้ำท่วม จิบผงเกลือแร่ ORS กันขาดน้ำ กินอาหารปรุงสุกใหม่", "en": "Diarrhoea after a flood? Sip ORS to stay hydrated; eat freshly cooked food." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าโรคระบบทางเดินอาหารเป็น 1 ใน 6 กลุ่มโรคที่มากับน้ำท่วม ให้กินอาหารปรุงสุกใหม่ ดื่มน้ำสะอาด และถ้าท้องเสียให้ดื่มสารละลายเกลือแร่ (ORS) ป้องกันภาวะขาดน้ำ", "en": "The Department of Disease Control lists stomach and bowel illness among six disease groups that come with floods. Eat freshly cooked food, drink clean water, and if diarrhoea starts, drink oral rehydration salts (ORS) to prevent dehydration." },
+      "sources": ["ddc-6groups-2569"], "verify": "verified", "topic": "health"
     },
     {
       "id": "r-tap", "mode": "return", "room": "kitchen",
@@ -555,7 +598,7 @@
       ],
       "tip": { "th": "หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน", "en": "After a flood, run taps clear and boil before drinking, or use bottled water." },
       "why": { "th": "กรมอนามัยแนะว่าน้ำประปาควรต้มให้เดือดก่อนบริโภค และเลือกน้ำบรรจุขวดที่ได้มาตรฐาน น้ำที่สงสัยว่าปนเปื้อน ห้ามดื่มหรือใช้ปรุงอาหาร การประปาฯ ยืนยันว่าน้ำจากระบบได้มาตรฐาน แต่ระบบประปาในบ้านที่ถูกน้ำท่วมควรตรวจซ่อมก่อนใช้ และล้างถังพักน้ำ", "en": "The Department of Health says boil tap water before drinking and choose standard bottled water; don't drink or cook with water you suspect is contaminated. The waterworks say the mains supply stays safe, but flooded household plumbing should be checked and tanks cleaned before use." },
-      "sources": ["anamai-water", "mwa-safe", "pwa-repair", "mwa-tank"], "verify": "verified"
+      "sources": ["anamai-water", "mwa-safe", "pwa-repair", "mwa-tank"], "verify": "verified", "topic": "food"
     },
     {
       "id": "r-bleach", "mode": "return", "room": "kitchen",
@@ -569,7 +612,7 @@
       ],
       "tip": { "th": "ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง", "en": "Never mix bleach with toilet cleaner: toxic gas. One at a time, windows open." },
       "why": { "th": "อย. เตือนว่าผลิตภัณฑ์ซักผ้าขาวที่มีโซเดียมไฮโปคลอไรต์ เมื่อผสมกับผลิตภัณฑ์ล้างห้องน้ำที่มีกรดไฮโดรคลอริก จะเกิดก๊าซคลอรีนซึ่งเป็นพิษสูง กรมควบคุมโรคย้ำว่าห้ามเทหรือผสมสารเคมีหลายชนิดรวมกัน และให้เปิดประตูหน้าต่างเพิ่มการระบายอากาศ", "en": "The Thai FDA warns that bleach (sodium hypochlorite) mixed with acidic toilet cleaner (hydrochloric acid) produces highly toxic chlorine gas. The Department of Disease Control says never pour or mix chemicals together and keep doors and windows open." },
-      "sources": ["fda-bleach", "ddc-manual"], "verify": "verified"
+      "sources": ["fda-bleach", "ddc-manual"], "verify": "verified", "topic": "home"
     },
     {
       "id": "r-cupboard", "mode": "return", "room": "kitchen",
@@ -583,7 +626,7 @@
       ],
       "tip": { "th": "ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ", "en": "Dark cupboards can hide snakes. Use a torch and a long stick, never your hand." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าสัตว์มีพิษอาจหนีน้ำมาหลบตามบ้านและมุมมืด ให้สอดส่องมุมอับเป็นประจำ ใช้แท่งไม้เขี่ยดู อย่าใช้มือเปล่า และควรมีไฟฉายกับไม้ไว้ส่องและเคาะให้มีเสียง", "en": "The Department of Disease Control warns venomous animals shelter in homes and dark corners after floods. Check hidden spots, use a stick rather than bare hands, and carry a torch and a stick to light and tap ahead." },
-      "sources": ["ddc-45196", "ddc-manual", "ddc-snake"], "verify": "verified",
+      "sources": ["ddc-45196", "ddc-manual", "ddc-snake"], "verify": "verified", "topic": "critters",
       "verifyNote": "DDC names dark corners and hidden spots rather than cupboards specifically."
     }
   ],

@@ -4,6 +4,10 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Checked
+
+- Frame times with the CPU slowed 6× (360 × 640, 2× pixels): 40–46 fps in all four modes; the haze and smoke cost no more than the flood modes. Unthrottled, 60 fps. KNOWN_ISSUES #48 updated with the table.
+
 ## [1.5.3] — 2026-10-15
 
 Second check-and-improve loop. Houses, items and scores are unchanged.

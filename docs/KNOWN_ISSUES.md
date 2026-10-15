@@ -426,7 +426,16 @@ A person should read the agency pages before December ([ROADMAP L10](ROADMAP.md#
 
 **Status:** Owner · **Severity:** Low
 
-The haze (a full-room rectangle and 46 specks per room) and the smoke (a translucent band) are redrawn by changing one attribute per room each frame. Headless Chromium shows no problem, but no real low-end Android phone has been tried ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)). If it stutters, drop the specks or update less often.
+The haze (a full-room rectangle and 46 specks per room) and the smoke (a translucent band) are redrawn by changing one attribute per room each frame. Measured on 15 Oct 2026 in headless Chromium at 360 × 640, 2× pixels, half-way through a round, with the CPU slowed 6× (Chrome's "low-end mobile" setting):
+
+| Mode | fps | median frame | 95th percentile | worst |
+|---|---|---|---|---|
+| ก่อนน้ำมา (water) | ~43 | 16.7 ms | 33.4 ms | 50 ms |
+| หลังน้ำลด (no threat) | ~40 | 16.7 ms | 50.0 ms | 83 ms |
+| ฝุ่น (haze) | ~46 | 16.7 ms | 33.4 ms | 50 ms |
+| ไฟ (smoke) | ~40 | 16.7 ms | 50.0 ms | 133 ms |
+
+Unthrottled, all four hold 60 fps. The haze and smoke cost no more than the flood modes, so the layers are not the bottleneck. A real low-end Android phone is still untested ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)); if it stutters, drop the specks or update less often.
 
 ### 51. The wordmark's coral half is low contrast
 

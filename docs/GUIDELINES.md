@@ -29,7 +29,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - Nothing flashes, and `prefers-reduced-motion` is respected.
    - Every control is reachable by keyboard and readable by a screen reader.
 5. **Fast:**
-   - The start screen stays **under 500 KB** compressed. It is 158 KB today (168 KB with the first game screen).
+   - The start screen stays **under 500 KB** compressed. It is 183 KB today (197 KB with the first game screen).
    - No frameworks and no runtime npm packages.
 6. **Works where people share it.** It must work in the LINE, Facebook and TikTok in-app browsers on Android and iOS, in iOS Safari and in Android Chrome. Every feature that a platform may lack has a fallback (see [KNOWLEDGE §11](KNOWLEDGE.md#11-browser-and-in-app-facts)).
 7. **The disclaimer and help numbers are always there.**
@@ -45,6 +45,8 @@ These come from the original brief. A change that breaks one of them is not fini
    - **`official`:** the agency's own site. Preferred.
    - **`government`:** the agency's statement republished by กรมประชาสัมพันธ์ (prd.go.th).
    - **`secondary`:** a news article that directly quotes the agency. Use this only when the first two can't be reached, and say so in `note`.
+   - **`academic`:** a peer-reviewed study or an academic statement. Flag the item ⚠️ `partial`.
+   - **`international`:** a UN, WHO or foreign agency page (WHO Europe, the US Fire Administration). Use it to cross-check Thai advice. When it is the *only* source, the item is ⚠️ `partial` with a `verifyNote` that says so (today: `f-alarm`).
 2. **Write the item in `items.json`** (field reference: [KNOWLEDGE §5](KNOWLEDGE.md#5-content-model)):
    - **One correct choice**, using the agency's action in plain words.
    - **One or two wrong choices** that are *common real mistakes*. Each has gentle `feedback` that says why it's risky.
@@ -175,15 +177,15 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - Add structured data only for things that exist on the page. No `FAQPage`, `HowTo`, ratings or reviews unless the page really has them.
   - Share-preview pages (`/c/*`, `/checklist/*`) keep a canonical link to `/` and stay out of the sitemap.
   - Keep `/api/` the only path `robots.txt` closes, and leave Cloudflare's AI-bot blocking off for this host.
-- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 158 KB.
+- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 183 KB.
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 
 ## 6. Testing
 
 | When | Run |
 |---|---|
-| Every change | `node tools/build.mjs` and `npm test` (17 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
-| UI, CSS or sharing changes | `npm run smoke` (55 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| Every change | `node tools/build.mjs` and `npm test` (20 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
+| UI, CSS or sharing changes | `npm run smoke` (57 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |
@@ -275,6 +277,10 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 41. **A myth needs evidence, not an opinion.** When busting a popular belief (EM balls), cite the strongest source you can read in full, flag it ⚠️ when it isn't an agency, and blame nobody who still uses it.
 42. **A featured topic is temporary.** Switch `config.featuredTopic` on when a topic is in the news and back to `null` after.
 43. **Measure what visitors get.** The size check counts compressed bytes; the raw size passed 500 KB in v1.4.0 while visitors download 174 KB.
+44. **Short link text still needs a 44 px target.** "ปภ." is 23 px wide; source links get `min-width: 44px` as well as 44 px of height.
+45. **Teach the order when the numbers moved.** Thailand changed its PM2.5 colour ranges in 2023 and older articles still quote the old ones, so the dust mode teaches blue → green → yellow → orange → red and "red means stay in", not the µg/m³ ranges.
+46. **A threat must be visible on its own background.** The first haze (tan at 55%) disappeared against beige walls; it now has drifting specks and a darker fill. Look at the screenshot in every room before calling an effect done.
+47. **Smoke, not victims.** Fire lessons show smoke, cords, pans and doors. No flames on people, no injuries, no burnt rooms.
 
 ## 9. Working with AI assistants
 
@@ -284,3 +290,17 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 - **Don't let it make up safety facts.** Ask for the source first. Treat every claim without a source in `sources.json` as `unverified`.
 - **Ask for real test output.** The build, `npm test` and, for UI work, `npm run smoke` should be run and their output reported, not summarised from memory.
 - **Keep changes small.** One change per commit, written in the style of the code around it, without unrelated rewrites.
+
+## 10. Adding a hazard mode
+
+The registry (`config.json → modes`, defaults in `public/js/modes.js`) makes a new hazard mostly data. Dust and fire (v1.5.0) were added this way. The build fails on anything missing.
+
+1. **Research first.** At least one Thai agency source per correct action (see §2.1), cross-checked with an international one where possible. Record what the sources disagree on and leave it out.
+2. **Registry entry** in `config.json → modes`: `id` (a–z), a new one-letter `code` (never reuse one; `h` is kept for heat), `hazard`, `threat` (`water`, `smoke`, `haze` or `null`), `prop` (in `mascot.js`), `emoji`, optional `icon`, `months` (Bangkok months it is in season), `topic`, optional `link` (https). Mirror it in `modes.js` `DEFAULTS`.
+3. **Round settings:** `round.<id>.seconds` and the threat's keyframes (`water` + `floorWetY`, `smoke` + `lowY`, or `haze`). Check the timings with `npm run probe`.
+4. **Strings** in `th` and `en`: `mode`, `mode<Mode>Desc`, `hero`, `challenge`, `howto`, `howtoTitle`, `geckoStart`, `result`, `shareText`, `checklistTab`, `rank` (3), each as `<base><Mode>`. Optional overrides that fall back to the shared key: `floodedToast`, `geckoFlood`, `geckoWet`, `stFlooded`, `forecastShort`, `forecastLong`, `forecastIcon`. Plus `og`/`ogEn` `challengeTitle`, `challengeDesc`, `challengeLine`, `checklistTitle`, and `seo.th/en.section<Mode>`.
+5. **Content:** 10–13 items across the three drawn rooms (at least one per room), 5 decoys, a 10-item checklist with sprites, a `topic_<id>` string pair and the topic in `config.topics`.
+6. **Start button:** add a static `data-mode` button to `index.html` (the JS rebuilds the grid from the registry; the static one avoids a jump on first paint). Card colours in `app.css` (`.mode-btn.mode-<id>`, `.is-<id>` layers).
+7. **Card theme** in `cards.js → THEMES`, then `SITE_URL=… npm run images` and commit only the new images.
+8. **Check:** build, `npm test`, `npm run probe`, `npm run smoke`, a visitor pass at 320 px and on a tablet in both languages, and compare flood houses before and after (they must not change).
+

@@ -12,7 +12,7 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | Event | When | mode | label | value |
 |---|---|---|---|---|
 | `view` | Page opened | – | `direct` / `challenge` / `checklist` | – |
-| `mode_select` | Mode button tapped | prepare / return | `default` / `other` | – |
+| `mode_select` | Mode button tapped | prepare / return / dust / fire | `default` (the season's recommended mode) / `other` | – |
 | `round_start` | Round begins | mode | `daily` / `challenge` / `random` | – |
 | `round_end` | Round finished (all found or time up) | mode | same as above | score 0–10 |
 | `share_open` | Share or challenge button tapped | mode | `result` / `challenge` / `challenge-back` (reply after playing a friend's challenge, v1.3.0) | – |

@@ -1,35 +1,42 @@
 # บ้านรอดไหม? (Baan Rod Mai?)
 
-**A 60-second hazard-hunt game that teaches Thai families how to protect their home from floods, and is built to be forwarded.** Play it in Thai at **[baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot)** or in English at **[baanrodmai.autobahn.bot/en/](https://baanrodmai.autobahn.bot/en/)**.
+**A 60-second hazard-hunt game that teaches Thai families how to protect their home through the year (floods, PM2.5 dust and house fire), and is built to be forwarded.** Play it in Thai at **[baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot)** or in English at **[baanrodmai.autobahn.bot/en/](https://baanrodmai.autobahn.bot/en/)**.
 
 - **ก่อนน้ำมา (Before the flood):** get the house ready before the water rises.
 - **หลังน้ำลด (After the water drops):** spot the dangers before moving back in.
+- **ฝุ่น PM2.5 (PM2.5 dust, v1.5.0):** shut out the dust and look after the people most at risk.
+- **ไฟไหม้ (House fire, v1.5.0):** find the fire risks, and know how to get out of smoke.
 
-Every tap teaches one real action from a Thai agency (ปภ., กฟน., กฟภ., กรมควบคุมโรค, กรมอนามัย…). Every result becomes a card for the family LINE group.
+The start screen recommends the mode in season: dust in December–March, fire in April, floods from May.
+
+Every tap teaches one real action from a Thai agency (ปภ., กฟน., กฟภ., กรมควบคุมโรค, กรมอนามัย…), cross-checked with WHO or the US Fire Administration where they cover the same ground. Every result becomes a card for the family LINE group.
 
 <p>
 <img src="docs/screens/01-start.png" width="200" alt="Start screen">
 <img src="docs/screens/03-room.png" width="200" alt="Prepare mode">
 <img src="docs/screens/04b-tip-correct.png" width="200" alt="Tip card">
+<img src="docs/screens/13-dust.png" width="200" alt="PM2.5 dust mode">
+<img src="docs/screens/14-fire.png" width="200" alt="House fire mode">
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (15 Oct 2026): v1.4.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (15 Oct 2026): v1.5.0 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 17 rule tests and 55 headless-browser checks, plus CI on every push.
+> - The code is finished and every automated check passes: 20 rule tests and 57 headless-browser checks, plus CI on every push.
 > - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).
 > - The water-level button opens **BKK FloodWatch** (`flood.autobahn.bot`), the owner's own Autobahn Bot project.
-> - Before launch it still needs Web Analytics switched on, the sitemap submitted to the search consoles, a review of 10 safety items flagged ⚠️, a native-speaker language check, and a pass on real phones.
+> - Before launch it still needs Web Analytics switched on, the sitemap submitted to the search consoles, a review of 11 safety items flagged ⚠️ and of the new dust and fire lessons, a native-speaker language check, and a pass on real phones.
 > - Start with **[HANDOFF.md](HANDOFF.md)**.
 
 ## Highlights
 
 - **Plain HTML, CSS and JavaScript with SVG art.** No framework and no build dependencies. It runs on the **free Cloudflare Pages plan**.
 - **Thai and English.** Thai at `/`, English at `/en/`; the first visit picks Thai for Thai browsers or Bangkok time and English for everyone else.
-- **Light:** 158 KB compressed to the start screen and 168 KB to the first game screen (the limit is 500 KB).
+- **Light:** 183 KB compressed to the start screen and 197 KB to the first game screen (the limit is 500 KB).
 - **Findable by search engines and AI assistants, in both languages.** The game draws itself with JavaScript, so the build also writes plain-HTML pages and files that crawlers can read ([details below](#seo-and-ai-search)).
 - **Made to be shared and replayed (v1.3.0).** The result card prints the link to its own house, a friend's challenge can be answered with both scores, a safety book collects the 41 playable lessons in 6 topics, and a perfect 10 gets its own stamp.
 - **Knowledge by topic (v1.4.0).** 43 lessons in six topics (🦠 health after floods, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, 🎒 plans). The topic in the news gets a card on the start screen, and `/learn#t-health` links straight to it.
+- **A game for the whole year (v1.5.0).** Four modes on one mode registry: flood before and after, PM2.5 dust (a thickening haze, the Air4Thai colours, an Air4Thai link) and house fire (smoke falling from the ceiling, helpline 199). 66 playable lessons in 8 topics, each mode with its own challenge links, previews and 10-item checklist.
 - **Plays offline after the first visit,** thanks to a service worker.
 - **Works inside the LINE, Facebook and TikTok in-app browsers.** Where an app blocks sharing or downloads, the game falls back to another way.
 - **All content is editable JSON** in `public/content/`. The build checks it before anything is published.
@@ -110,7 +117,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | # | Document | What's inside |
 |---|---|---|
 | 1 | [Safety content table](docs/01-safety-content.md) | 43 items, each with the wrong action, the correct action, a Thai tip (≤ 80 characters) and its official source. Anything not fully verified is flagged. |
-| 2 | [Game design and wireframes](docs/02-game-design.md) | Rules, both modes, scoring, mascot, sharing, accessibility, the version 2 structure, and a code map |
+| 2 | [Game design and wireframes](docs/02-game-design.md) | Rules, the four modes, scoring, mascot, sharing, accessibility, the version 2 structure, and a code map |
 | 3 | [Deploy to Cloudflare Pages](docs/03-deploy.md) | The live setup, Git and Wrangler steps, the free-plan budget, search setup, and why link previews are pre-rendered |
 | 4 | [Launch kit](docs/04-launch-kit.md) | Thai post copy (Facebook, LINE, TikTok), outreach, the Prepare → Return switch, and the seasonal relaunch |
 | 5 | [Metrics plan](docs/05-metrics.md) | Event dictionary and Analytics Engine SQL for every metric |

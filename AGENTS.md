@@ -4,13 +4,13 @@ This file is for any AI coding assistant working on this repository. Claude Code
 
 ## 1. The project in brief
 
-- **บ้านรอดไหม? (Baan Rod Mai?)** is a 60-second Thai flood-safety game for phones.
-  - **Two modes:** ก่อนน้ำมา (prepare the house) and หลังน้ำลด (spot the dangers when moving back).
+- **บ้านรอดไหม? (Baan Rod Mai?)** is a 60-second Thai home-safety game for phones, built around the hazards of the Thai year.
+  - **Four modes:** ก่อนน้ำมา (prepare the house for a flood), หลังน้ำลด (spot the dangers when moving back), ฝุ่น PM2.5 (shut out the dust) and ไฟไหม้ (house fire). Modes live in a registry (`config.json → modes`, `public/js/modes.js`); see [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode).
   - **Built to spread:** it is meant to be forwarded in LINE family groups.
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (15 Oct 2026):** v1.4.0, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (15 Oct 2026):** v1.5.0, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
@@ -29,10 +29,10 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | Command | What it does | When |
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview pages and `sw.js`, and checks the 500 KB budget | Every change |
-| `npm test` | 17 rule tests, Node only, well under a second | Every change |
-| `npm run smoke` | 55 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
+| `npm test` | 20 rule tests, Node only, well under a second | Every change |
+| `npm run smoke` | 57 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
-| `npm run probe` | Measures tap-area overlaps over two years of houses, and flood timings | Slot, size or water-curve changes |
+| `npm run probe` | Measures tap-area overlaps over two years of houses in every mode, plus flood and smoke timings | Slot, size or water-curve changes |
 | `npm run docs` | Regenerates the safety table in `docs/01` from `items.json` | Any `items.json` / `sources.json` change |
 | `npm run check:docs` | Checks every relative link and anchor in the Markdown | Any doc change |
 | `SITE_URL=… npm run images` | Re-renders the previews, checklists, cards and icons | Copy, rank, checklist or domain changes |
@@ -70,7 +70,7 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
   - humour aimed only at the situation
 - **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous.
 - **Tap targets:** every one is at least 44 px. The smoke test measures items and controls.
-- **Weight:** the start screen stays under 500 KB compressed (158 KB today).
+- **Weight:** the start screen stays under 500 KB compressed (183 KB today).
 - **Two languages:** every `th` string needs an `en` twin (and every `og` an `ogEn`). Don't hard-code the brand name; use `logoA`/`logoB`. Check `/en/` as well as `/` before calling a change done.
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
 - **Text location:** player-facing text belongs in `public/content/*.json`, not in JS. Every new `og` key needs an English `ogEn` twin (the build fails otherwise); re-render with `npm run images` and commit only the images you meant to change.
@@ -112,7 +112,9 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
 ## 8. What to do next
 
 1. **If the owner gave a launch input** (domain, forecast URL, review results or phone-test results), do the matching **L** task in [docs/ROADMAP.md](docs/ROADMAP.md) first.
-2. **Otherwise** take the top **AI-ready** task under *Next*:
+2. **Otherwise** take the top **AI-ready** task under *Later*:
+   - **P7:** heat and summer storms (the next hazard mode; follow [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode))
+   - **P8:** earthquake and tsunami
    - **P5:** share-loop ideas (weekly house, QR code, family round-up, themed house)
    - **P6:** lessons for the remaining disease groups (skin, respiratory)
 3. **When you finish,** update the task card's status, and add any new lesson to [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md).

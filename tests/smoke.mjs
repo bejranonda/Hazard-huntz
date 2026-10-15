@@ -235,6 +235,20 @@ try {
     await ctx.close();
   }
 
+  // 2b. Every non-flood mode in the registry plays end to end (v1.5.0: dust, fire)
+  for (const m of JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/config.json'), 'utf8')).modes.filter((x) => x.hazard !== 'flood')) {
+    const { ctx, page } = await newPage();
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await playRound(page, m.id, { wrongAt: 1, decoy: false });
+    const r = await page.evaluate(() => ({
+      layer: !!document.querySelector('.haze, .smoke-body'),
+      lessons: document.querySelectorAll('.lesson').length,
+    }));
+    const okThreat = m.threat ? r.layer : true;
+    check(`${m.id} mode: full round, result card, lessons, its threat layer, no page errors`, okThreat && r.lessons >= 5 && !page.errors.length, `${r.lessons} lessons, layer ${r.layer}, ${page.errors.join(' | ')}`);
+    await ctx.close();
+  }
+
   // 3. LINE in-app browser: no Web Share, no download -> long-press hint
   {
     const { ctx, page } = await newPage({ ua: UA.line });

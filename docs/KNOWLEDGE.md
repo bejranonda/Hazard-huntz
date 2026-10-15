@@ -29,6 +29,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 19. [The water-level link (BKK FloodWatch)](#19-the-water-level-link-bkk-floodwatch)
 20. [Fun and sharing features (v1.3.0)](#20-fun-and-sharing-features-v130)
 21. [Topics and the news-driven lessons (v1.4.0)](#21-topics-and-the-news-driven-lessons-v140)
+22. [A game for the whole year (v1.5.0)](#22-a-game-for-the-whole-year-v150)
 
 ---
 
@@ -274,7 +275,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 **4. Service worker.** It fills `tools/sw.template.js` with the precache list (39 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **158 KB**, or **168 KB** including the first room and the sprites.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **183 KB**, or **197 KB** including the first room and the sprites (v1.5.0).
 
 **6. `--docs`.** Regenerates the table, flags and references in `docs/01-safety-content.md` from `items.json` and `sources.json`.
 
@@ -707,3 +708,74 @@ Built 15 Oct 2026 (ROADMAP N9).
 | NSTDA, 2011, "Suggested treatments for foul water and when EM is effective" | **[unverified]** returned HTTP 503 on 15 Oct 2026. A search index quotes it as not recommending EM during the flood itself and recommending aeration. |
 
 **Disease groups after floods (DDC, 27 Sep 2026, via Bangkokbiznews).** Leptospirosis, skin infections, stomach and bowel illness, mosquito-borne disease, eye infections, respiratory infections. The game covers the first five (`r-mudfeet`, `r-fever`; `r-mudfeet` partly for skin; `r-ors`, `r-foodwet`, `r-tap`; `r-bucket`; `r-towel`). Respiratory infections and melioidosis are not covered ([ROADMAP P6](ROADMAP.md#p6-more-lessons-for-the-remaining-disease-groups)).
+
+## 22. A game for the whole year (v1.5.0)
+
+The owner asked to keep people engaged outside the flood season and to "consider the future, also international guidance". This section records what we found, what we built and what is left.
+
+### 22.1 Research: what other programmes do
+
+| Source | What it says | What we took |
+|---|---|---|
+| IFRC and Save the Children, *Public Awareness and Public Education for Disaster Risk Reduction: Key Messages* (2nd ed., 2018) | An all-hazards template: household preparedness plus about a dozen hazards (flood, storm, fire, heat, earthquake, tsunami, air pollution and more), each as short action messages meant to be adapted locally. People act when they know the specific step, believe it works and feel able to do it. | The checklist of hazards to cover in time (ROADMAP P7–P8), and the rule that each lesson is one concrete action. Thai agencies still decide the wording. |
+| The Great ShakeOut (yearly earthquake drill on a fixed date); Ready.gov (a theme per month); Japan's *Bōsai* ("disaster prevention") campaigns that make drills playful | Fixed, expected dates keep people coming back between disasters. | The season default and the idea of yearly hazard weeks (ROADMAP P9). |
+| A 2026 systematic review of serious games for disaster education (preprint, about 130 studies) | Evidence is mostly about usability and knowledge right after play; evidence on real behaviour change is thin. | We measure plays, shares and checklist saves (05-metrics) and claim knowledge, not behaviour. |
+
+The review and the IFRC document were read through their summaries; the numbers above are approximate **[not re-verified in full]**.
+
+### 22.2 The Thai year
+
+| Months | Hazard | Mode | `months` |
+|---|---|---|---|
+| December–March | PM2.5 dust and smoke (Bangkok Dec–Feb, the North Feb–Apr) | `dust` | 12, 1, 2, 3 |
+| April (dry season, all year in practice) | House fire | `fire` | 4 |
+| May–November | Flood | `prepare` (rain warning on) / `return` | 5–11 / — |
+| March–May | Heat, summer storms | not built (P7) | — |
+| Any time, 26 Dec anniversary | Earthquake, tsunami | not built (P8) | — |
+
+The month table is ours, not an agency's ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). `seasonalMode(month, rainWarning)` in `modes.js`: a rain warning → `prepare`; else the first non-flood mode whose `months` include the month; else `return`.
+
+### 22.3 The mode registry
+
+Each mode is one entry in `config.json → modes` (defaults in `public/js/modes.js`): `id`, `hazard`, `code` (challenge letter: `p`, `r`, `d`, `f`; `h` kept for heat), `threat`, `prop`, `emoji`, `icon`, `months`, `topic`, `link`, `bonus`. Per-mode strings are `<base><Mode>` (for example `rankDust`); `tm(base, mode)` uses the mode's key if it exists, else the shared one, so a mode only overrides what differs. House seeds are `${mode}|${houseKey}|v${houseVersion}`, so a new mode never changes another mode's houses. How to add one: [GUIDELINES §10](GUIDELINES.md#10-adding-a-hazard-mode).
+
+| Threat | Drawn as | Loses an item when | Config |
+|---|---|---|---|
+| `water` (prepare) | A waterline rising from the floor | the line reaches the item's centre | `water` keyframes, `floorWetY` |
+| `smoke` (fire) | A grey band with a wavy edge falling from the ceiling | the edge reaches the item's centre (high items first) | `smoke` keyframes (y of the edge: −30 → 60 → 230 → 330 over 55 s), `lowY` 230 (the gecko says "crawl low") |
+| `haze` (dust) | A full-room tint with drifting specks, opacity 0.06 → 0.64 | never; the clock is the pressure | `haze` keyframes |
+| `null` (return) | nothing | never | — |
+
+In dust mode the gauge carries `data-aqi` 0–4 and moves through the Air4Thai colours (blue `#3BB3E6`, green `#5CC05C`, yellow `#F2D22E`, orange `#F59B3A`, red `#E5533D`) as the haze thickens. It teaches the order, not the µg/m³ ranges, because the ranges changed in 2023 ([GUIDELINES rule 45](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+
+### 22.4 PM2.5 dust: sources and what each lesson rests on
+
+| Source (`id`) | Read | Key points used |
+|---|---|---|
+| `doh-dustroom-2569` THE STANDARD, 1 Apr 2026, DOH deputy DG | 15 Oct 2026 | Dust-free room: shut doors and windows, seal gaps and vents, purifier or fresh-air system, damp cloth instead of sweeping, **filters every 6 months**, shoes off. Above 37.5 µg/m³ cut outdoor activity; above 75 stay mainly in a clean room. N95 outside. Air4Thai, AirBKK, Life Dee. |
+| `doh-10ways-2564` Thai PBS, 10 Dec 2021, DOH DG | 15 Oct 2026 | Ten ways: Air4Thai before going out; masks; clean dust traps (air-con, fan, screens, bedding) with a wet cloth; seal gaps; no outdoor exercise over the standard; medicines ready; cough, wheeze or tight chest → doctor; cut charcoal grilling, no open burning, fewer black-smoke diesels, plant trees. |
+| `doh-mask-2565` PPTV, 14 Dec 2022, DOH deputy DG | 15 Oct 2026 | N95 snug over the nose and under the chin; cloth masks at least 2 layers; replace when loose, torn, dirty or wet; at-risk groups: children, pregnant women, older people, the chronically ill; on red days they stay in, with **at least 5 days** of medicine. |
+| `who-smoke-2566` WHO Europe Q&A, 16 Jun 2023 (`international`) | 15 Oct 2026 | Stay in with doors and windows shut; reduce frying, grilling and smoking indoors; well-fitting N95/FFP2 outside; the same at-risk groups; get medical help for symptoms. |
+
+Deliberately left out: incense and candles (the DOH lists them, but religious references are off limits for the game), air-purifier brands and numbers, and the colour ranges.
+
+### 22.5 House fire: sources and what each lesson rests on
+
+| Source (`id`) | Read | Key points used |
+|---|---|---|
+| `ddpm-fire10-2569` Krungthep Turakij, DDPM's 10 ways (2026, page undated) | 15 Oct 2026 | Sound the alarm; **199** for a serious fire; extinguisher on a small fire; cloth over nose and mouth; feel the door, open slowly only if not hot; crawl low (clean air near the floor); no lifts. |
+| `ddpm-fire10-2563` Krungthep Turakij, the same 10 ways (Feb 2020) | 15 Oct 2026 | Same steps with a **wet** cloth; check the stove and LPG cylinder, close the valve after every use. |
+| `ddpm-dryfire-2568` MGR Online, 17 Dec 2025 | 15 Oct 2026 | Dry, windy weather: check wiring; repair cracked or burning-smelling cords; unplug after use; don't load one strip; **don't charge phones on a bed or sofa**; close the gas; no burning rubbish or weeds in wind; never leave fire unattended; put cigarettes out; flammables away from heat; an extinguisher within reach. |
+| `mea-strip-2569` Thansettakij, 17 Sep 2026 | 15 Oct 2026 | Power strips with **มอก. 2432-2555**; never chain strips; don't run microwave, electric pan and iron together; not in wet places; damaged, hot or burning-smelling: stop and cut the power; unplug when not in use. |
+| `usfa-cooking-2569` US Fire Administration (`international`) | 15 Oct 2026 | Cooking is the leading cause of home fires; stand by your pan; turn the burner off if you leave. |
+| `usfa-alarm-2569` US Fire Administration (`international`) | 15 Oct 2026 | Test smoke alarms monthly; change batteries yearly; under 2 minutes to get out once it sounds. The only source for `f-alarm` ⚠️. |
+
+NFPA's pages render only with JavaScript and could not be read, so the US Fire Administration was used for the international cross-check. Not used: "never use water on an oil fire" (no source we could read said it in those words), escape-plan drills (no Thai source yet), kitchen-hood grease (not confirmed).
+
+### 22.6 What changed for players
+
+- The start screen recommends the season's mode as the big card; the others are a row of small cards.
+- The "check before you go" link follows the mode: the flood forecast app, or Air4Thai for dust. Fire has none; 199 is in the helplines.
+- The safety book and `/learn` gain two topics (😷 `air`, 🔥 `fire`), 66 playable lessons in all.
+- Each mode has its own link previews (`/c/d0…d10`, `/c/f0…f10`, English under `/en/`) and checklist (`/checklist/dust`, `/checklist/fire`).
+

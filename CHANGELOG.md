@@ -4,6 +4,44 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.5.0] — 2026-10-15
+
+A home-safety game for the whole year, not only the flood season. **Two new modes, PM2.5 dust and house fire, with their own houses and challenge links (`/c/d…`, `/c/f…`).** Flood houses and old flood challenge links are unchanged (244 houses compared byte for byte), so this needs no midnight release.
+
+### Added
+
+- **PM2.5 dust mode (`dust`, ฝุ่น PM2.5, code `d`).** 12 lessons in the front yard, living room and kitchen, topic 😷 ฝุ่นและควัน (`air`), 5 decoys, 14 new sprites.
+  - Shut and seal the window, wipe with a damp cloth instead of sweeping, check the purifier filter (every 6 months), keep medicine ready, see a doctor for a bad cough or tight chest, wet-wipe fans and air-cons, check Air4Thai before going out, skip the charcoal grill, wear a snug N95, exercise indoors, keep children (an at-risk group) in on red days, don't burn leaves.
+  - A haze with drifting specks thickens over 55 seconds and the gauge moves through the Air4Thai colours (blue, green, yellow, orange, red). Nothing is lost to the haze; the clock is the pressure.
+  - Sources: the Department of Health via THE STANDARD (1 Apr 2026), Thai PBS (10 Dec 2021) and PPTV (14 Dec 2022), cross-checked with WHO Europe (16 Jun 2023). The colour ranges in the 2022 article use the scale before the 2023 change, so the game teaches the colour order, not the numbers.
+  - Checklist "ห้องปลอดฝุ่น 10 ข้อ" (`/checklist/dust`), and a "😷 เช็กค่าฝุ่นวันนี้ (Air4Thai)" link where flood modes show the forecast app.
+- **House fire mode (`fire`, ไฟไหม้, code `f`).** 13 lessons, topic 🔥 ไฟไหม้ (`fire`), 5 decoys, 12 new sprites.
+  - Chained power strips, a hot cracked cord, a phone charging on the sofa, a chirping smoke alarm, a towel (wet cloth over nose and mouth, crawl low), a pan left on the stove, the gas valve, sprays by the stove, an extinguisher buried in a cupboard, which number to call (199), smoke under a door (touch it first), burning leaves on a windy day, a cigarette end.
+  - Smoke falls from the ceiling, so high things are lost first (`round.fire.smoke`, `lowY`); the gecko says "near the floor the air is cleaner".
+  - Sources: DDPM via Krungthep Turakij (2020 and 2026) and MGR Online (17 Dec 2025), MEA via Thansettakij (17 Sep 2026). The US Fire Administration cross-checks cooking, and is the only source for the smoke-alarm lesson, which is flagged ⚠️ `partial`.
+  - Checklist "บ้านปลอดภัยจากไฟ 10 ข้อ" (`/checklist/fire`). Helpline **199** (fire) added, so the checklist cards now list it.
+- **Mode registry** (`config.json → modes`, `js/modes.js`): id, hazard, challenge letter, threat (water, smoke, haze or none), gecko prop, emoji, months, topic and link per mode. Strings follow `<base><Mode>`; `tm()` falls back to the shared key. The build checks every mode has its round settings, strings, link-preview text, `/learn` section, checklist and start button.
+- **Season default.** Without a rain warning, the start screen recommends the mode in season (Bangkok month): dust in December–March, fire in April, otherwise "after the flood". The featured card falls back to that mode's topic when `featuredTopic` is `null`.
+- New source kind `international` (WHO, US Fire Administration): used to cross-check Thai advice, never alone without a ⚠️.
+- The gecko wears a mask in dust mode and a red helmet in fire mode, on the start screen, in rounds and on the cards.
+
+### Changed
+
+- **Start screen:** the season's mode is the big card; the others sit in a row of compact cards (icon over name, at least 78 × 89 px at 320 px wide).
+- **Wording:** tagline, page titles, link previews, `/learn`, `llms.txt` and the app manifest now say floods, dust and fire. English hashtag `#HomeSafety`.
+- **Help sheet** lists one "check before you go" link per kind (flood forecast app, Air4Thai).
+- `npm run probe` prints smoke timings for fire (alarm 21.8 s, pan 50.1 s, note 53.7 s).
+
+### Fixed
+
+- Source links in lessons were 31–43 px wide for short agency names (ปภ., อย.); they now have a 44 px wide tap area, in the game and on `/learn`.
+- A fan sprite overlapped a kitchen floor slot by 1% in 35 of 2,920 houses; now 0%.
+
+### Tests
+
+- 20 rule tests (every mode: a year of houses, codes round-trip, season pick), 57 smoke checks (+2: a full dust round and a full fire round, each with its haze or smoke layer and no page errors), 0% tap overlaps over 2,920 houses.
+- Visitor pass: four modes × Thai/English × 320 × 460, 390 × 760, 768 × 1024, 1024 × 1366 and 1366 × 1024: no overflow, no page errors, no target under 44 px; `/c/d7`, `/c/f7`, `/checklist/dust`, `/checklist/fire`, `/learn#t-air`, `/learn#t-fire`; season default for 15 Dec, 1 Feb, 10 Apr and 15 Oct.
+
 ## [1.4.0] — 2026-10-15
 
 Knowledge, organised. **Adds 3 Return-mode lessons, so today's Return houses and old Return challenge links change** (Prepare houses are unchanged). Shipped at night, Bangkok time.

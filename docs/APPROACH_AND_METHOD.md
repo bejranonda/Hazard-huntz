@@ -133,7 +133,7 @@ Several requirements are numbers, and numbers get measured.
 | Item tap areas (≥ 44 px) | Playwright reads `getBoundingClientRect()` of every `.hit` on a 375×548 screen | `tests/smoke.mjs` |
 | Controls (≥ 44 px) | Every visible `button`, `a[href]`, `summary` and `[role=button]` on the game, result, checklist, help and about screens is measured. Source links inside a line of text are checked by height. | `tests/smoke.mjs` (`smallControls`) |
 | Tap areas on other screen sizes | The same measurement at 320×460 … 390×664 (one-off probe; results in [KNOWN_ISSUES F21](KNOWN_ISSUES.md#fixed)) | Re-run by changing the smoke test's viewport |
-| Overlapping tap areas | Generate two years of daily houses in both modes and intersect the hit boxes in each room | `npm run probe` |
+| Overlapping tap areas | Generate two years of daily houses in every mode and intersect the hit boxes in each room | `npm run probe` |
 | Flood timings | Invert the water curve for each item's possible slots | `npm run probe` |
 | Determinism and rules | 365 daily houses per mode. Each must have: 5–7 targets, at least one target per room, a critical item in Prepare, no slot used twice, tap areas ≥ `MIN_HIT`, and exactly one correct answer. Across the year, every playable item must appear at least once. | `npm test` |
 
@@ -158,7 +158,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 55 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 57 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -300,3 +300,14 @@ The owner asked three things in one go: is "throw EM balls into stagnant water" 
 5. **Keep enjoyment and access apart.** Collecting a set (🏅) is the fun; reading every answer on `/learn` is the safety net. The news card offers both.
 6. **Re-run every probe.** The overlap probe caught a new tap-area clash at once (9% of houses), fixed before release by changing the slot.
 7. **Test on the screens people have.** Phone (390 px) and tablets (768, 1024 portrait, 1366 landscape) in Thai and English: no sideways scrolling, item tap areas 69–85 px, no page errors. Two layout issues (a button wrapping to two lines, small inline links on `/learn`) were seen in the screenshots and fixed.
+
+## 20. From one hazard to a year of hazards (v1.5.0)
+
+The owner saw the problem plainly: a flood game matters for half the year. They asked to extend it to other dangers (storm, tsunami, fire, PM2.5 …), to look at international guidance, and chose to start with **both dust and fire**. How it was done:
+
+1. **Research what keeps people coming back.** All-hazards programmes (IFRC and Save the Children key messages), yearly drills (the Great ShakeOut), monthly themes (Ready.gov) and playful drills in Japan all point to a calendar people can expect. That became the season default now and a roadmap card for hazard weeks (P9). A review of serious games warned that evidence of behaviour change is thin, so we still claim knowledge only.
+2. **Refactor before adding.** A registry replaced every "prepare or return" in the code, with the flood houses proven unchanged before any new content went in ([LESSONS C13](LESSONS_LEARNED.md#c-engineering-and-platform)).
+3. **One mechanic per hazard that teaches something true.** Water rises, so low things flood first. Smoke falls from the ceiling, so high things go first and the air near the floor is cleaner, which is the DDPM's "crawl low". Dust is a haze you can't escape, only shut out, so nothing is lost to it and the gauge teaches the Air4Thai colours.
+4. **Thai agencies decide; international guidance checks.** Every correct action rests on the Department of Health, DDPM or MEA. WHO and the US Fire Administration cross-check, and the one lesson that rests on them alone is flagged ⚠️ (smoke alarms).
+5. **Leave out what can't be said safely.** Incense and candles (religious), µg/m³ ranges (changed in 2023), "never put water on an oil fire" (no readable source said it), flames on people (guardrail).
+6. **Check every screen, every mode, both languages.** Four modes × Thai and English × five screen sizes, plus deep links, the checklists, `/learn` anchors and the season default for four dates. The pass found short source links under 44 px wide, now fixed.

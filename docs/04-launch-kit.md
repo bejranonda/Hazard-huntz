@@ -115,6 +115,34 @@ Notes for English posts:
 - Link `/learn#t-health` when people want the answers now; link `/` when the aim is to play and share.
 - Keep `config.featuredTopic` on `"health"` only while the news lasts.
 
+### When the dust season starts (v1.5.0, from December)
+
+Set nothing: from December the start screen recommends ฝุ่น PM2.5 by itself (unless `rainWarningActive` is on). Optionally set `featuredTopic: "air"`. Share `/checklist/dust` and a `/c/d…` challenge.
+
+> ฝุ่นมาอีกแล้ว 😷 บ้านเราพร้อมสู้ฝุ่นหรือยัง?
+>
+> เล่น "บ้านรอดไหม?" โหมดฝุ่น PM2.5 แค่ 60 วินาที
+> ✅ ปิดหน้าต่าง อุดรอยรั่ว เช็ดถูด้วยผ้าหมาดๆ แทนการกวาด
+> ✅ ใส่ N95 ให้แนบหน้า ครอบจมูกถึงใต้คาง
+> ✅ เด็ก ผู้สูงอายุ คนท้อง คนมีโรคประจำตัว วันฝุ่นแดงให้อยู่ในบ้าน
+> อ้างอิงคำแนะนำจากกรมอนามัย
+>
+> เช็กค่าฝุ่นวันนี้ในแอป Air4Thai แล้วส่งต่อให้คนที่บ้านนะ 💙
+
+### Fire season (v1.5.0, April, or after a fire in the news)
+
+From April the start screen recommends ไฟไหม้ by itself. After a fire in the news, set `featuredTopic: "fire"` for a week or two. Keep posts about prevention and escape; never use photos of a real fire or its victims.
+
+> ไฟไหม้เริ่มจากเรื่องเล็กๆ ในบ้าน 🔥
+>
+> เล่น "บ้านรอดไหม?" โหมดไฟไหม้ 60 วินาที
+> ✅ ปลั๊กพ่วงต้องมี มอก. และไม่เสียบต่อกันเป็นทอดๆ
+> ✅ ไม่ชาร์จมือถือบนที่นอนหรือโซฟา
+> ✅ เกิดไฟไหม้ ผ้าชุบน้ำปิดจมูก หมอบต่ำ ออกไปแล้วโทร 199
+> อ้างอิงคำแนะนำจาก ปภ. และ กฟน.
+>
+> เก็บเช็กลิสต์ "บ้านปลอดภัยจากไฟ 10 ข้อ" ไว้ แล้วส่งต่อให้คนที่บ้านนะ 💙
+
 ## 3. Outreach (who to send it to, and the ask)
 
 Give every partner the same **ready-to-forward kit**:

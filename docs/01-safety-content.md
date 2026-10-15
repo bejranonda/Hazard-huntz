@@ -90,12 +90,12 @@ The "wrong action" column shows the most common mistake. In the game each item o
 | 19 | ก่อนน้ำมา | โรงรถ (เร็วๆ นี้) | น้ำมันและยาฆ่าหญ้าในโรงรถ | วางไว้บนพื้นตามเดิม | ปิดฝาให้แน่น แล้วยกขึ้นชั้นที่สูงพ้นน้ำ | แกลลอนน้ำมัน ปุ๋ย ยาฆ่าหญ้า ปิดฝาให้แน่น ยกขึ้นที่สูง ไม่ให้รั่วปนน้ำท่วม | ⚠️ กรมควบคุมโรค [ddc-manual] |
 | 20 | หลังน้ำลด | หน้าบ้าน | สายไฟขาดห้อยลงมา | ใช้ไม้แห้งเขี่ยสายออกจากทางเดิน | อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 / 1129 | เจอสายไฟขาด อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 หรือ 1129 ทันที | ✅ กฟภ., กรมควบคุมโรค, กฟน. [pea-1348] [ddc-45196] [mea-1130] |
 | 21 | หลังน้ำลด | หน้าบ้าน | รองเท้าหน้าบ้าน | รีบใส่แล้วเดินเลย ไม่เสียเวลา | ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง | งู ตะขาบ ชอบหลบในรองเท้า ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง อย่าใช้มือล้วง | ✅ กรมควบคุมโรค, กระทรวงสาธารณสุข [ddc-45196] [ddc-manual] [ddc-rainy] [moph-snakebite] |
-| 22 | หลังน้ำลด | หน้าบ้าน | จะลุยโคลนด้วยรองเท้าแตะ | เดินเท้าเปล่า คล่องตัวดี | ใส่บูทยางกับถุงมือยาง ลุยเสร็จล้างสบู่แล้วเช็ดตัวให้แห้ง | ลุยโคลนต้องใส่บูทยาง ถุงมือยาง เสร็จแล้วล้างสบู่เช็ดตัวให้แห้ง กันโรคฉี่หนู | ✅ กรมควบคุมโรค [ddc-lepto] [ddc-59806] [ddc-odpc6] |
+| 22 | หลังน้ำลด | หน้าบ้าน | จะลุยโคลนด้วยรองเท้าแตะ | เดินเท้าเปล่า คล่องตัวดี | ใส่บูทยางกับถุงมือยาง ลุยเสร็จล้างสบู่แล้วเช็ดตัวให้แห้ง | ลุยโคลนต้องใส่บูทยาง ถุงมือยาง เสร็จแล้วล้างสบู่เช็ดตัวให้แห้ง กันโรคฉี่หนู | ✅ กรมควบคุมโรค [ddc-lepto] [ddc-59806] [ddc-odpc6] [ddc-6groups-2569] |
 | 23 | หลังน้ำลด | หน้าบ้าน | เศษแก้วกับตะปูในโคลน | ใช้มือเปล่าหยิบออกทีละชิ้น | ใส่บูทพื้นหนา ถุงมือหนา แล้วใช้ที่ตักเก็บใส่ถุงหนาๆ | ของมีคมซ่อนอยู่ในโคลน ใส่บูทพื้นหนา ถุงมือหนา ใช้ที่ตักแทนมือ | ✅ กรมควบคุมโรค [ddc-odpc11] [ddc-odpc6] [ddc-manual] [ddc-56084] |
 | 24 | หลังน้ำลด | หน้าบ้าน | รถที่จมน้ำมา | ลองสตาร์ทดูว่ายังติดไหม | ห้ามสตาร์ท ถ่ายรูปไว้ แล้วให้ศูนย์หรืออู่ลากไปตรวจ | รถที่จมน้ำ ห้ามสตาร์ทเด็ดขาด ถ่ายรูปความเสียหายไว้ แล้วให้ช่างลากไปตรวจ | ✅ กรมการขนส่งทางบก, คปภ., กองบังคับการตำรวจจราจร [dlt-car] [oic-photo] [police-tow] |
 | 25 | หลังน้ำลด | หน้าบ้าน | กองเศษขยะที่น้ำพัดมา | ล้วงมือลงไปหยิบขยะออก | ใส่บูทกับถุงมือ ใช้ไม้ยาวเขี่ยดูก่อน แล้วค่อยเก็บ | กองขยะอาจมีตะขาบหรืองูซ่อนอยู่ ใช้ไม้ยาวเขี่ยดูก่อน อย่าใช้มือล้วง | ✅ กรมควบคุมโรค [ddc-manual] [ddc-snake] |
 | 26 | หลังน้ำลด | หน้าบ้าน | ผนังบ้านร้าว | เอาปูนโป๊ปิดรอยร้าว แล้วเข้าอยู่ได้เลย | อย่าเพิ่งเข้าไปอยู่ ให้ช่างหรือวิศวกรตรวจโครงสร้างก่อน | ผนังร้าว พื้นทรุด บ้านเอียง อย่าเพิ่งเข้าอยู่ ให้ช่างตรวจโครงสร้างก่อน | ✅ กรมอนามัย, กรมโยธาธิการและผังเมือง [anamai-mould] [dpt-manual] |
-| 27 | หลังน้ำลด | หน้าบ้าน | น้ำขังในถัง | เก็บไว้รดน้ำต้นไม้ | เทน้ำทิ้ง ล้างแล้วคว่ำไว้ | เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก | ✅ กรมควบคุมโรค [ddc-rainy] [ddc-dengue] |
+| 27 | หลังน้ำลด | หน้าบ้าน | น้ำขังในถัง | เก็บไว้รดน้ำต้นไม้ | เทน้ำทิ้ง ล้างแล้วคว่ำไว้ | เทน้ำขังทิ้งแล้วคว่ำภาชนะ ไม่ให้ยุงลายวางไข่ ลดเสี่ยงไข้เลือดออก | ✅ กรมควบคุมโรค [ddc-rainy] [ddc-dengue] [ddc-6groups-2569] |
 | 28 | หลังน้ำลด | หน้าบ้าน | น้ำเน่าขังหน้าบ้าน | โยน EM บอลลงไป แล้วรอให้น้ำใสเอง | เก็บขยะออก แล้วช่วยกันระบายน้ำ ให้น้ำได้ไหลเวียน | น้ำท่วมขังเน่า EM บอลไม่ช่วยบำบัด ระบายน้ำออก เก็บขยะ และเติมอากาศดีกว่า | ⚠️ นักวิชาการสิ่งแวดล้อม 48 คน (ภาควิชาวิศวกรรมสิ่งแวดล้อม จุฬาฯ), มหาวิทยาลัยกรุงเทพธนบุรี, กทม. [chula-em-2554] [bkkthon-em-2569] [bma-1555] |
 | 29 | หลังน้ำลด | ห้องนั่งเล่น | ปลั๊กไฟที่เปียก | เอาไดร์เป่าผมเป่าให้แห้ง แล้วเสียบใช้เลย | ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ | ปลั๊กที่น้ำท่วมถึง ห้ามแตะ ห้ามเสียบ จนกว่าช่างไฟจะตรวจให้ก่อน | ✅ กฟน., กรมควบคุมโรค [mea-2022] [mea-gov] [ddc-59806] |
 | 30 | หลังน้ำลด | ห้องนั่งเล่น | ตู้เบรกเกอร์หลังน้ำลด | ตัดเบรกเกอร์เองตอนนี้เลย | เรียกช่างไฟ หรือแจ้งการไฟฟ้าให้ตรวจระบบก่อนเปิดไฟ | หลังน้ำลด อย่าเปิด–ปิดตู้ไฟเองตอนพื้นยังเปียก เรียกช่างไฟมาตรวจก่อน | ✅ กรมควบคุมโรค, กฟภ., กฟน. [ddc-59806] [pea-1415] [mea-gov] |
@@ -103,13 +103,40 @@ The "wrong action" column shows the most common mistake. In the game each item o
 | 32 | หลังน้ำลด | ห้องนั่งเล่น | ฝ้าเพดานอุ้มน้ำ | เอาไม้แทงให้น้ำไหลออก | อย่ายืนใต้ฝ้า กันบริเวณไว้ แล้วให้ช่างมารื้อเปลี่ยน | ฝ้าอุ้มน้ำจนย้อย อาจหล่นลงมาทั้งแผ่น อย่ายืนข้างใต้ กันพื้นที่ไว้ให้ช่างรื้อ | ⚠️ กรมโยธาธิการและผังเมือง, กรมควบคุมโรค [dpt-manual] [ddc-59806] |
 | 33 | หลังน้ำลด | ห้องนั่งเล่น | เชื้อราบนผนัง | ปิดห้องเปิดแอร์ ให้แห้งไวๆ | ใส่หน้ากาก N95 ถุงมือยาง เปิดประตูหน้าต่าง แล้วค่อยเช็ด | เจอเชื้อรา ใส่หน้ากาก N95 ถุงมือยาง เปิดหน้าต่าง ห้ามเปิดพัดลมตอนเช็ด | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-manual] [anamai-mould] |
 | 34 | หลังน้ำลด | ห้องนั่งเล่น | เครื่องปั่นไฟในบ้าน | แง้มหน้าต่างนิดหน่อยก็พอ | ปิดเครื่อง แล้วย้ายไปตั้งนอกบ้านในที่โล่ง อากาศถ่ายเทดี | เครื่องปั่นไฟห้ามใช้ในบ้านหรือที่อับ ไอเสียมีก๊าซพิษไม่มีกลิ่น ตั้งไว้ข้างนอก | ✅ กรมควบคุมโรค [ddc-manual] |
-| 35 | หลังน้ำลด | ห้องนั่งเล่น | มีไข้หลังลุยน้ำ | ซื้อยาแก้ปวดกินเอง เดี๋ยวก็หาย | รีบไปหาหมอ แล้วบอกว่าเคยลุยน้ำหรือโคลนมา | ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง | ✅ กรมควบคุมโรค [ddc-lepto] [ddc-59806] [ddc-dengue] |
-| 36 | หลังน้ำลด | ครัว | กลิ่นแก๊สในครัว | เปิดไฟดูว่ารั่วตรงไหน | ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้งข้างนอก | ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง | ✅ ปภ., กรมควบคุมโรค [ddpm-gas] [ddc-manual] |
-| 37 | หลังน้ำลด | ครัว | อาหารที่โดนน้ำท่วม | ล้างน้ำให้สะอาดแล้วกินต่อได้ | ทิ้งทั้งหมด แม้จะอยู่ในถุงหรือกล่อง | อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-59984] [anamai-kitchen] |
-| 38 | หลังน้ำลด | ครัว | กระป๋องบุบ บวม เป็นสนิม | เคาะให้กลับเป็นรูปเดิมแล้วเก็บไว้ | ทิ้งกระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม | กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน | ✅ อย., กรมอนามัย [fda-cans] [anamai-cans] |
-| 39 | หลังน้ำลด | ครัว | น้ำประปาหลังน้ำลด | ดื่มจากก๊อกได้เลย น้ำประปาสะอาดอยู่แล้ว | เปิดน้ำทิ้งจนใส แล้วต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | ✅ กรมอนามัย, กปน., กปภ. [anamai-water] [mwa-safe] [pwa-repair] [mwa-tank] |
-| 40 | หลังน้ำลด | ครัว | น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ | ผสมกันในถัง จะได้แรงๆ | ใช้ทีละอย่าง ห้ามผสมกัน เปิดประตูหน้าต่างระหว่างใช้ | ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง | ✅ อย., กรมควบคุมโรค [fda-bleach] [ddc-manual] |
-| 41 | หลังน้ำลด | ครัว | ตู้ใต้ซิงก์ | ล้วงมือเข้าไปหยิบของออกมาเลย | ถอยห่าง ส่องไฟฉาย ใช้ไม้ยาวเปิดดู ถ้าเป็นงูให้แจ้งเจ้าหน้าที่ | ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ | ✅ กรมควบคุมโรค [ddc-45196] [ddc-manual] [ddc-snake] |
+| 35 | หลังน้ำลด | ห้องนั่งเล่น | มีไข้หลังลุยน้ำ | ซื้อยาแก้ปวดกินเอง เดี๋ยวก็หาย | รีบไปหาหมอ แล้วบอกว่าเคยลุยน้ำหรือโคลนมา | ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง | ✅ กรมควบคุมโรค [ddc-lepto] [ddc-59806] [ddc-dengue] [ddc-6groups-2569] |
+| 36 | หลังน้ำลด | ห้องนั่งเล่น | ผ้าเช็ดตัวผืนเดียวใช้ทั้งบ้าน | ใช้ร่วมกันต่อ ประหยัดผ้า | แยกผ้าเช็ดตัวคนละผืน ล้างมือบ่อยๆ และไม่ขยี้ตา | ตาแดงหลังน้ำท่วม ล้างมือบ่อย ไม่ขยี้ตา ไม่ใช้ผ้าเช็ดตัวร่วมกัน | ✅ กรมควบคุมโรค [ddc-6groups-2569] |
+| 37 | หลังน้ำลด | ครัว | กลิ่นแก๊สในครัว | เปิดไฟดูว่ารั่วตรงไหน | ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้งข้างนอก | ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง | ✅ ปภ., กรมควบคุมโรค [ddpm-gas] [ddc-manual] |
+| 38 | หลังน้ำลด | ครัว | อาหารที่โดนน้ำท่วม | ล้างน้ำให้สะอาดแล้วกินต่อได้ | ทิ้งทั้งหมด แม้จะอยู่ในถุงหรือกล่อง | อาหารที่โดนน้ำท่วม ทิ้งไปอย่าเสียดาย แม้จะอยู่ในถุงหรือกล่องก็ตาม | ✅ กรมควบคุมโรค, กรมอนามัย [ddc-59984] [anamai-kitchen] |
+| 39 | หลังน้ำลด | ครัว | กระป๋องบุบ บวม เป็นสนิม | เคาะให้กลับเป็นรูปเดิมแล้วเก็บไว้ | ทิ้งกระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม | กระป๋องบุบ บวม รั่ว หรือเป็นสนิม ทิ้งไปเลย ไม่ควรกิน | ✅ อย., กรมอนามัย [fda-cans] [anamai-cans] |
+| 40 | หลังน้ำลด | ครัว | ท้องเสียหลังน้ำลด | อดน้ำอดข้าวไปก่อน ให้ท้องหยุดเสียเอง | จิบผงเกลือแร่ ORS บ่อยๆ กันขาดน้ำ แล้วกินอาหารปรุงสุกใหม่ | ท้องเสียหลังน้ำท่วม จิบผงเกลือแร่ ORS กันขาดน้ำ กินอาหารปรุงสุกใหม่ | ✅ กรมควบคุมโรค [ddc-6groups-2569] |
+| 41 | หลังน้ำลด | ครัว | น้ำประปาหลังน้ำลด | ดื่มจากก๊อกได้เลย น้ำประปาสะอาดอยู่แล้ว | เปิดน้ำทิ้งจนใส แล้วต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | หลังน้ำลด เปิดน้ำทิ้งจนใส ต้มให้เดือดก่อนดื่ม หรือดื่มน้ำขวดที่ได้มาตรฐาน | ✅ กรมอนามัย, กปน., กปภ. [anamai-water] [mwa-safe] [pwa-repair] [mwa-tank] |
+| 42 | หลังน้ำลด | ครัว | น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ | ผสมกันในถัง จะได้แรงๆ | ใช้ทีละอย่าง ห้ามผสมกัน เปิดประตูหน้าต่างระหว่างใช้ | ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง | ✅ อย., กรมควบคุมโรค [fda-bleach] [ddc-manual] |
+| 43 | หลังน้ำลด | ครัว | ตู้ใต้ซิงก์ | ล้วงมือเข้าไปหยิบของออกมาเลย | ถอยห่าง ส่องไฟฉาย ใช้ไม้ยาวเปิดดู ถ้าเป็นงูให้แจ้งเจ้าหน้าที่ | ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ | ✅ กรมควบคุมโรค [ddc-45196] [ddc-manual] [ddc-snake] |
+| 44 | ฝุ่น PM2.5 | ห้องนั่งเล่น | หน้าต่างเปิดอ้า | เปิดไว้ ให้ลมพัดฝุ่นออกไป | ปิดหน้าต่างให้สนิท อุดรอยรั่วตามขอบ | วันฝุ่นสูง ปิดประตูหน้าต่างให้สนิท อุดรอยรั่วตามขอบ ไม่ให้ฝุ่นลอยเข้าบ้าน | ✅ กรมอนามัย, องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป [doh-dustroom-2569] [doh-10ways-2564] [who-smoke-2566] |
+| 45 | ฝุ่น PM2.5 | ห้องนั่งเล่น | ไม้กวาดกับพื้นฝุ่นเขรอะ | กวาดแรงๆ ให้ฝุ่นออกให้หมด | เช็ดถูด้วยผ้าชุบน้ำหมาดๆ แทนการกวาด | เช็ดถูด้วยผ้าชุบน้ำหมาดๆ แทนการกวาด ฝุ่นจะไม่ฟุ้งกลับขึ้นมา | ✅ กรมอนามัย [doh-dustroom-2569] [doh-10ways-2564] |
+| 46 | ฝุ่น PM2.5 | ห้องนั่งเล่น | เครื่องฟอกอากาศ | เปิดต่อไป เครื่องยังหมุนอยู่ | เช็กแผ่นกรอง แล้วเปลี่ยนตามรอบ | หมั่นเช็กแผ่นกรองเครื่องฟอกอากาศ กรมอนามัยแนะเปลี่ยนทุก 6 เดือน | ✅ กรมอนามัย [doh-dustroom-2569] |
+| 47 | ฝุ่น PM2.5 | ห้องนั่งเล่น | ยาพ่นของคุณตา | รอให้หมดก่อนค่อยไปเอาใหม่ | สำรองยาและอุปกรณ์ให้พร้อม ตามที่หมอสั่ง | คนที่มีโรคประจำตัว สำรองยาและอุปกรณ์ให้พร้อม ทำตามที่หมอแนะนำ | ✅ กรมอนามัย [doh-10ways-2564] [doh-mask-2565] |
+| 48 | ฝุ่น PM2.5 | ห้องนั่งเล่น | คุณยายไอไม่หยุด | ให้นอนพักก่อน เดี๋ยวก็หาย | รีบพาไปพบแพทย์ | ไอบ่อย หายใจลำบาก แน่นหน้าอก ช่วงฝุ่นหนัก รีบไปพบแพทย์ | ✅ กรมอนามัย, องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป [doh-10ways-2564] [who-smoke-2566] |
+| 49 | ฝุ่น PM2.5 | ครัว | พัดลมฝุ่นจับหนา | เปิดพัดลมแรงสุด ให้ฝุ่นปลิวออก | ถอดตะแกรง เช็ดด้วยผ้าชุบน้ำ | เช็ดจุดสะสมฝุ่น เช่น พัดลม แอร์ มุ้งลวด ด้วยผ้าชุบน้ำ | ✅ กรมอนามัย [doh-10ways-2564] |
+| 50 | ฝุ่น PM2.5 | ครัว | มือถือก่อนออกไปตลาด | มองฟ้าเอา ถ้าไม่หมอกก็ไม่เป็นไร | เช็กค่าฝุ่นในแอป Air4Thai แล้วทำตามคำแนะนำ | ก่อนออกจากบ้าน เช็กค่าฝุ่นในแอป Air4Thai แล้วทำตามคำแนะนำ | ✅ กรมอนามัย [doh-10ways-2564] [doh-dustroom-2569] |
+| 51 | ฝุ่น PM2.5 | ครัว | เตาถ่านปิ้งย่าง | จุดเลย เปิดพัดลมไล่ควันเอา | งดเตาถ่านวันนี้ ทำอาหารแบบอื่นแทน | วันฝุ่นสูง งดปิ้งย่างด้วยเตาถ่าน ลดควันในบ้านและรอบบ้าน | ✅ กรมอนามัย, องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป [doh-10ways-2564] [who-smoke-2566] |
+| 52 | ฝุ่น PM2.5 | หน้าบ้าน | หน้ากากผ้าบางๆ | ใส่ผ้าบางชั้นเดียวก็พอ | ใส่ N95 ให้แนบหน้า ครอบจมูกถึงใต้คาง | ต้องออกไปข้างนอก ใส่ N95 ให้แนบหน้า ครอบจมูกและใต้คาง | ✅ กรมอนามัย, องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป [doh-dustroom-2569] [doh-mask-2565] [who-smoke-2566] |
+| 53 | ฝุ่น PM2.5 | หน้าบ้าน | รองเท้าวิ่ง | วิ่งเร็วๆ จะได้กลับมาไว | งดวิ่งข้างนอก เปลี่ยนมาออกกำลังกายในบ้าน | วันฝุ่นเกินมาตรฐาน งดออกกำลังกายกลางแจ้ง เปลี่ยนมาออกกำลังในบ้าน | ✅ กรมอนามัย [doh-10ways-2564] [doh-mask-2565] |
+| 54 | ฝุ่น PM2.5 | หน้าบ้าน | ลูกบอลของหลาน | ให้เล่นได้ เด็กแข็งแรงอยู่แล้ว | ชวนเล่นในบ้านแทน เด็กเป็นกลุ่มเสี่ยง | เด็ก ผู้สูงอายุ คนท้อง ผู้มีโรคประจำตัว เป็นกลุ่มเสี่ยง วันฝุ่นแดงให้อยู่ในบ้าน | ✅ กรมอนามัย, องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป [doh-mask-2565] [doh-dustroom-2569] [who-smoke-2566] |
+| 55 | ฝุ่น PM2.5 | หน้าบ้าน | กองใบไม้แห้งกับไม้ขีด | เผาตอนเย็น ควันจะได้ไม่รบกวนใคร | ไม่เผา เก็บใส่ถุงไว้ทิ้งกับขยะ | งดเผาขยะและใบไม้ในที่โล่ง ช่วยลดฝุ่น PM2.5 ให้ทั้งซอย | ✅ กรมอนามัย [doh-10ways-2564] |
+| 56 | ไฟไหม้ | ห้องนั่งเล่น | ปลั๊กพ่วงต่อกันเป็นทอดๆ | ใช้ต่อไป ยังไม่เห็นมีอะไรไหม้ | ถอดออก ไม่พ่วงต่อกัน เครื่องกินไฟสูงไม่เสียบรวมกัน | ไม่เสียบปลั๊กพ่วงต่อกันเป็นทอดๆ เครื่องกินไฟสูงไม่เสียบรวมกัน | ✅ กฟน., ปภ. [mea-strip-2569] [ddpm-dryfire-2568] |
+| 57 | ไฟไหม้ | ห้องนั่งเล่น | สายไฟโคมไฟร้อนผิดปกติ | พันเทปตรงรอยแตก ใช้ต่อได้ | หยุดใช้ ถอดปลั๊ก แล้วซ่อมหรือเปลี่ยนใหม่ | สายไฟแตก ร้อนผิดปกติ หรือมีกลิ่นไหม้ หยุดใช้ ถอดปลั๊ก ซ่อมหรือเปลี่ยนใหม่ | ✅ ปภ., กฟน. [ddpm-dryfire-2568] [mea-strip-2569] |
+| 58 | ไฟไหม้ | ห้องนั่งเล่น | มือถือชาร์จอยู่บนโซฟา | ปล่อยไว้ ชาร์จข้ามคืนสะดวกดี | ย้ายไปชาร์จบนโต๊ะ ไม่ชาร์จบนโซฟาหรือที่นอน | ไม่ชาร์จมือถือบนที่นอนหรือโซฟา วางชาร์จบนโต๊ะแทน | ✅ ปภ. [ddpm-dryfire-2568] |
+| 59 | ไฟไหม้ | ห้องนั่งเล่น | เครื่องจับควันส่งเสียงปี๊บ | ถอดแบตออก เสียงจะได้เงียบ | เปลี่ยนแบต แล้วกดทดสอบ ทำทุกเดือน | เครื่องจับควัน กดทดสอบทุกเดือน แบตใกล้หมดให้เปลี่ยนทันที | ⚠️ U.S. Fire Administration (FEMA) [usfa-alarm-2569] |
+| 60 | ไฟไหม้ | ห้องนั่งเล่น | ผ้าขนหนูผืนนี้ | คลุมหัวแล้ววิ่งตัวตรงฝ่าควันออกไป | ชุบน้ำ ปิดจมูกและปาก แล้วหมอบคลานต่ำออกไป | เกิดไฟไหม้ ใช้ผ้าชุบน้ำปิดจมูกปาก หมอบคลานต่ำ หาทางออก | ✅ ปภ. [ddpm-fire10-2569] [ddpm-fire10-2563] |
+| 61 | ไฟไหม้ | ครัว | กระทะน้ำมันบนเตา | ไปแป๊บเดียว เปิดไฟอ่อนไว้ | ปิดเตาก่อนออกจากครัว อยู่เฝ้าเตาตอนทำอาหาร | ทำอาหารอยู่อย่าทิ้งเตา จะออกจากครัวต้องปิดเตาก่อน | ✅ ปภ., U.S. Fire Administration (FEMA) [ddpm-dryfire-2568] [usfa-cooking-2569] |
+| 62 | ไฟไหม้ | ครัว | ถังแก๊สหลังทำอาหารเสร็จ | ปิดแค่ปุ่มเตาก็พอ | ปิดวาล์วหัวถัง และปิดเตาให้สนิท | ใช้แก๊สเสร็จ ปิดวาล์วหัวถังและปิดเตาให้สนิททุกครั้ง | ✅ ปภ. [ddpm-fire10-2563] [ddpm-dryfire-2568] |
+| 63 | ไฟไหม้ | ครัว | สเปรย์และทินเนอร์ข้างเตา | วางไว้ หยิบใช้ง่ายดี | ย้ายไปเก็บให้ห่างเตาและความร้อน | ของไวไฟ เช่น สเปรย์ ทินเนอร์ เก็บให้ห่างเตาและความร้อน | ✅ ปภ., U.S. Fire Administration (FEMA) [ddpm-dryfire-2568] [usfa-cooking-2569] |
+| 64 | ไฟไหม้ | ครัว | ถังดับเพลิงในตู้ | เก็บในตู้ต่อไป กันฝุ่น | ย้ายออกมาไว้จุดที่เห็นชัด หยิบใช้ได้ทันที | ถังดับเพลิงไว้ในจุดที่เห็นชัด หยิบใช้ได้ทันที | ✅ ปภ. [ddpm-dryfire-2568] |
+| 65 | ไฟไหม้ | ครัว | โน้ตเบอร์โทรข้างตู้เย็น | โทร 1669 | โทร 199 แจ้งดับเพลิง | ไฟไหม้ ดับเองไม่ได้ ออกจากบ้าน แล้วโทรแจ้ง 199 ทันที | ✅ ปภ. [ddpm-fire10-2569] [ddpm-fire10-2563] |
+| 66 | ไฟไหม้ | หน้าบ้าน | ควันลอดใต้ประตู | เปิดออกไปเลย เร็วที่สุด | เอามือแตะประตูก่อน ร้อนห้ามเปิด หาทางอื่น | ไฟไหม้ แตะประตูก่อนเปิด ถ้าร้อนห้ามเปิด ไม่ร้อนค่อยๆ เปิด | ✅ ปภ. [ddpm-fire10-2569] [ddpm-fire10-2563] |
+| 67 | ไฟไหม้ | หน้าบ้าน | กองขยะใบไม้แห้ง วันลมแรง | เผาเลย ลมแรงไฟจะได้ไหม้เร็ว | ไม่เผา โดยเฉพาะวันลมแรง เก็บใส่ถุงทิ้ง | ไม่เผาขยะและใบไม้ในที่โล่ง โดยเฉพาะตอนลมแรง | ✅ ปภ. [ddpm-dryfire-2568] |
+| 68 | ไฟไหม้ | หน้าบ้าน | ก้นบุหรี่ยังมีควัน | ปล่อยไว้ เดี๋ยวก็ดับเอง | ดับให้สนิทก่อนทิ้ง | ดับก้นบุหรี่ให้สนิทก่อนทิ้ง ไม่สูบใกล้ของที่ติดไฟง่าย | ✅ ปภ. [ddpm-dryfire-2568] |
 <!-- TABLE:END -->
 
 ## Flags: please review these
@@ -132,6 +159,7 @@ Items marked ⚠️, with the reason:
 - ⚠️ **ฝ้าเพดานอุ้มน้ำ** (`r-sag`): DPT confirms flooded gypsum must be removed/replaced; 'it can fall, don't stand under it' is an inference, not official wording.
 - ✅ **กลิ่นแก๊สในครัว** (`r-gas`): DDPM wording via a Thai PBS report (2022); DOEB pages were unreachable. Fire/rescue 199 is cited only by news, so it is not used in game copy.
 - ✅ **ตู้ใต้ซิงก์** (`r-cupboard`): DDC names dark corners and hidden spots rather than cupboards specifically.
+- ⚠️ **เครื่องจับควันส่งเสียงปี๊บ** (`f-alarm`): International source only (US Fire Administration). Smoke alarms are not yet common in Thai homes and no Thai agency page on testing them was found; a Thai reviewer should confirm.
 <!-- NOTES:END -->
 
 General flags:
@@ -194,6 +222,9 @@ These are in the table now. Each needs only art once its room ships:
   <https://www.dailynews.co.th/news/1481017/>
 - **[mea-gov]** กฟน. — ให้ช่างผู้ชำนาญตรวจระบบไฟฟ้า เครื่องใช้ไฟฟ้า ปลั๊ก สวิตช์ ที่เคยถูกน้ำท่วมก่อนนำกลับมาใช้ (2026-09-29) · _news quoting the agency_  
   <https://www.amarintv.com/news/politic/558914>
+- **[mea-strip-2569]** กฟน. — MEA เตือนใช้ปลั๊กพ่วงอย่างปลอดภัย เลือก มอก. 2432-2555 ป้องกันไฟฟ้าลัดวงจร (2026-09-17) · _news quoting the agency_  
+  <https://www.thansettakij.com/social-biz/669184>  
+  Thansettakij reporting MEA advice, read on 15 Oct 2026. Use strips with the TIS mark มอก. 2432-2555, 3-pin with earth; don't run high-power appliances (microwave, electric pan, iron) together on one strip; never chain strips together; not in wet or unventilated places; check cords and sockets; damaged cord, cracked insulation, loose plug, unusual heat or a burning smell: stop using and cut the power; switch off and unplug when not in use.
 - **[pea-1348]** กฟภ. — PEA แนะนำพบคนถูกไฟฟ้าดูดต้องทำอย่างไร — สายไฟขาดให้อยู่ห่างอย่างน้อย 3–5 เมตร แจ้ง 1129 (2025-11-15) · _agency site_  
   <https://www.pea.co.th/news/corporate-news/1348>
 - **[pea-1372]** กฟภ. — PEA แจ้งดับไฟบางพื้นที่เนื่องจากน้ำท่วมสูง — ขณะตัวเปียกหรือยืนแช่น้ำ ห้ามเปิด–ปิดสวิตช์ไฟฟ้า (2025-11-22) · _agency site_  
@@ -216,6 +247,9 @@ These are in the table now. Each needs only art once its room ships:
   <https://ddc.moph.go.th/brc/news.php?news=59806&deptcode=brc>
 - **[ddc-59984]** กรมควบคุมโรค — น้ำลดไม่ได้แปลว่าความเสี่ยงลดลงทันที — ไม่กินอาหารที่สัมผัสน้ำท่วม (2026-09-03) · _agency site_  
   <https://www.ddc.moph.go.th/brc/news.php?news=59984&deptcode=brc&news_views=175>
+- **[ddc-6groups-2569]** กรมควบคุมโรค — กรมควบคุมโรค เตือนระวัง 6 กลุ่มโรคหลังน้ำท่วม (อธิบดี นพ.มณเฑียร คณาสวัสดิ์) (2026-09-27) · _news quoting the agency_  
+  <https://www.bangkokbiznews.com/health/public-health/1253743>  
+  News report quoting the DDC Director-General on 27 Sep 2026, read on 15 Oct 2026. Six groups: leptospirosis (boots, cover wounds, wash with soap after contact), skin infections (keep clean and dry, avoid walking barefoot), gastrointestinal (freshly cooked food, clean water, ORS for diarrhoea), mosquito-borne (remove standing water, no NSAIDs for fever), conjunctivitis (wash hands often, don't rub eyes, don't share towels or personal items), respiratory (hygiene, mask when coughing or sneezing).
 - **[ddc-dengue]** กรมควบคุมโรค — สถานการณ์โรคไข้เลือดออก — ห้ามใช้ยากลุ่ม NSAIDs เช่น แอสไพริน ไอบูโพรเฟน (2024-09-06) · _agency site_  
   <https://ddc.moph.go.th/uploads/ckeditor2//files/แจ้งเตือนโรคไข้เลือดออก_edit2024.09.06.pdf>
 - **[ddc-lepto]** กรมควบคุมโรค — โรคเลปโตสไปโรสิส (Leptospirosis) — กองระบาดวิทยา (2024-09-06) · _agency site_  
@@ -255,6 +289,15 @@ These are in the table now. Each needs only art once its room ships:
   <https://www.thansettakij.com/health-wellness/health/644224>
 - **[anamai-water]** กรมอนามัย — น้ำท่วม–น้ำลด เรื่อง 'น้ำ' อย่ามองข้าม — น้ำประปาควรต้มให้เดือดก่อนบริโภค เลือกน้ำบรรจุขวดที่ได้มาตรฐาน (2026-09-27) · _government channel (PRD)_  
   <https://www.prd.go.th/th/content/category/detail/id/33/iid/545269>
+- **[doh-10ways-2564]** กรมอนามัย — อธิบดีกรมอนามัย แนะ 10 วิธีดูแลสุขภาพช่วงฝุ่น PM2.5 (2021-12-10) · _news quoting the agency_  
+  <https://www.thaipbs.or.th/news/content/310541>  
+  Thai PBS quoting the DOH Director-General, read on 15 Oct 2026. 1 check Air4Thai before going out; 2 keep masks (surgical or N95); 3–4 rest, water, vegetables and fruit; 5 clean dust traps (air-con, fan, screens, bedding) with a wet cloth; 6 seal gaps round doors and windows; 7 no outdoor exercise when PM2.5 is over the standard, exercise indoors; 8 people with chronic illness keep medicine and equipment ready; 9 frequent cough, hard or fast breathing, wheeze, chest tightness or pain, palpitations, nausea, unusual tiredness or dizziness: see a doctor; 10 cut charcoal grilling, no incense or candles, no open burning, fewer black-smoke diesels, plant trees.
+- **[doh-dustroom-2569]** กรมอนามัย — กรมอนามัยเตือน 8 จังหวัดเหนือ-อีสาน ฝุ่น PM2.5 วิกฤตสีแดง แนะ 6 วิธีทำห้องปลอดฝุ่นในบ้าน (2026-04-01) · _news quoting the agency_  
+  <https://thestandard.co/pm25-dust-free-room-thailand-tips/>  
+  THE STANDARD quoting the DOH deputy Director-General and the Health Impact Assessment Division, read on 15 Oct 2026. Dust-free room: seal doors and windows, seal gaps, cover vents, a purifier or fresh-air system, wipe with a damp cloth instead of sweeping, check and replace filters every 6 months, shoes off, fewer door openings. Over 37.5 µg/m³ cut outdoor activity; over 75 µg/m³ stay mainly in a dust-free room. N95 when going out. Apps: Air4Thai, AirBKK, Life Dee. Vulnerable groups: young children, older people, pregnant women, people with lung or heart disease.
+- **[doh-mask-2565]** กรมอนามัย — กรมอนามัยคาดแนวโน้ม PM 2.5 สูงขึ้น แนะเช็กค่าฝุ่น-เปิดวิธีดูแลตัวเอง (2022-12-14) · _news quoting the agency_  
+  <https://www.pptvhd36.com/health/news/2486>  
+  PPTV quoting the DOH deputy Director-General, read on 15 Oct 2026. N95 must fit, snug, covering nose and under the chin; surgical masks 3 layers; cloth at least 2 layers; replace when loose, hard to breathe through, torn, dirty or wet. At-risk: children, pregnant women, older people, people with chronic illness. Red level: at-risk groups stay in; chronic patients keep at least 5 days of medicine. The colour ranges in this article use the scale before the 2023 change, so the game does not quote them.
 - **[tmd-warn]** กรมอุตุนิยมวิทยา — ประกาศเตือนภัยลักษณะอากาศ (สายด่วน 1182) · _agency site_ · not cited yet  
   <https://www.tmd.go.th/warning-and-events/warning-storm>
 - **[moph-7days]** กระทรวงสาธารณสุข — ผู้มีโรคประจำตัวเตรียมยาไว้อย่างน้อย 7 วัน เตรียมน้ำและอาหารอย่างน้อย 3 วัน (2013-09-26) · _news quoting the agency_  
@@ -274,6 +317,15 @@ These are in the table now. Each needs only art once its room ships:
   <https://www.bangkokbiznews.com/news/news-update/1183355>
 - **[ddpm-amarin]** ปภ. — ปภ. แนะเตรียมของจำเป็น: อุปกรณ์ชาร์จไฟและแบตสำรอง ไฟฉาย เอกสารในถุงกันน้ำ อาหารและยาอย่างน้อย 3–4 วัน (2025-04-01) · _news quoting the agency_  
   <https://www.amarintv.com/news/social/510554>
+- **[ddpm-dryfire-2568]** ปภ. — ปภ. แนะวิธีป้องกันเพลิงไหม้ ช่วงสภาพอากาศแห้งและลมพัดแรง (2025-12-17) · _news quoting the agency_  
+  <https://mgronline.com/uptodate/detail/9680000121426>  
+  MGR Online quoting DDPM, read on 15 Oct 2026. Check appliances and wiring; repair or replace cracked or burning-smelling cords at once; switch off and unplug after use; don't load one power strip with many appliances; don't charge smartphones on a bed or sofa; close the LPG valve and stove; no burning rubbish or weeds in the open or in strong wind; never leave flames or sparks unattended; put cigarettes out fully, don't smoke near flammables; store flammable chemicals away from heat; keep an extinguisher where it is easy to use. Hotline 1784.
+- **[ddpm-fire10-2563]** ปภ. — 10 วิธีเอาตัวรอดจากเหตุเพลิงไหม้ และวิธีป้องกันอัคคีภัย (ปภ.) (2020-02-25) · _news quoting the agency_  
+  <https://www.bangkokbiznews.com/social/867826>  
+  Krungthep Turakij citing DDPM, read on 15 Oct 2026; the date comes from the image path (Feb 2020), the page shows none. The same 10 steps as the 2026 article, with a wet cloth over nose and mouth, crawl or crouch low, don't open a hot door, no lifts, call 199. Prevention: check the stove and LPG cylinder and close the cylinder valve after every use.
+- **[ddpm-fire10-2569]** ปภ. — 10 วิธีเอาตัวรอดจากเหตุเพลิงไหม้ (ปภ.) หลังเหตุไฟไหม้โรงเบียร์ลาดพร้าว · _news quoting the agency_  
+  <https://www.bangkokbiznews.com/news/news-update/1243425>  
+  Krungthep Turakij citing DDPM (and the Royal Thai Police), read on 15 Oct 2026. The page shows no date of its own; related stories are dated Jul 2026. Steps: stay calm, sound the alarm on seeing sparks or smoke, call 199 for a serious fire, use an extinguisher on a small fire, cover nose and mouth with cloth against smoke, don't open a door at once: feel it and open slowly only if not hot, crawl low because clean air is within about a foot of the floor, never use a lift.
 - **[ddpm-gas]** ปภ. — วิธีป้องกัน-รับมือ ถังก๊าซรั่ว — ปิดวาล์ว เปิดประตูหน้าต่าง ห้ามเปิด-ปิดอุปกรณ์ไฟฟ้า ห้ามใช้พัดลม (2022-08-30) · _news quoting the agency_  
   <https://www.thaipbs.or.th/news/content/318924>
 - **[ddpm-noru]** ปภ. — ปภ. แนะข้อปฏิบัติเตรียมรับมือ (พายุโนรู) — เก็บเอกสารในถุงกันน้ำ ขนของขึ้นที่สูง วางกระสอบทราย ช่วยเด็กและคนชราก่อน อพยพสัตว์เลี้ยง กำจัดขยะอุดท่อ (2022-09-28) · _news quoting the agency_  
@@ -291,8 +343,17 @@ These are in the table now. Each needs only art once its room ships:
   <https://www.thaiwater.net/>
 - **[police-2011]** สำนักงานตำรวจแห่งชาติ (บช.น.) — ขอความร่วมมือไม่นำรถมาจอดทางขึ้นลงทางด่วนและบนสะพาน เพราะกีดขวางการลำเลียงผู้ป่วย (2011-10-23) · _news quoting the agency_  
   <https://mgronline.com/crime/detail/9540000135203>
+- **[who-smoke-2566]** องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป — Public health advice during the wildfires: how to protect your health and keep safe (Q&A) (2023-06-16) · _international guidance (cross-check only)_  
+  <https://www.who.int/europe/news-room/questions-and-answers/item/public-health-advice-during-the-wildfires--how-to-protect-your-health-and-keep-safe>  
+  WHO Europe Q&A, read on 15 Oct 2026. Stay indoors with doors and windows shut; reduce indoor pollution such as smoking and frying or grilling; a well-fitting FFP2/N95 mask outside; most at risk: children, older people, people with heart or lung disease, pregnant women; get medical help for symptoms. Used to cross-check the Thai advice, never as the only source.
 - **[fda-bleach]** อย. — อย. เตือน อย่านำน้ำยาซักผ้าขาวผสมน้ำยาล้างห้องน้ำ ทำให้เกิดก๊าซพิษ (2023-03-28) · _agency site_  
   <https://hazard.fda.moph.go.th/our-service/detergent/>
 - **[fda-cans]** อย. — 4 เรื่องน่ารู้ของอาหารกระป๋อง — กระป๋องบุบ โป่งพอง เป็นสนิม ไม่ควรบริโภค (2020-03-09) · _agency site_  
   <https://dis.fda.moph.go.th/darabank/motion-05>
+- **[usfa-alarm-2569]** U.S. Fire Administration (FEMA) — Smoke Alarms (2026-10-13) · _international guidance (cross-check only)_  
+  <https://www.usfa.fema.gov/prevention/home-fires/prepare-for-fire/smoke-alarms/>  
+  Read on 15 Oct 2026 (page last reviewed 13 Oct 2026). Smoke alarms inside and outside each sleeping area; test monthly; replace batteries at least yearly; replace the alarm every 10 years; when it sounds you may have less than 2 minutes to get out.
+- **[usfa-cooking-2569]** U.S. Fire Administration (FEMA) — Cooking Fire Safety (2026-09-28) · _international guidance (cross-check only)_  
+  <https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/cooking/>  
+  Read on 15 Oct 2026 (page last reviewed 28 Sep 2026). Cooking is by far the leading cause of home fires and injuries; unattended equipment is the leading factor; stand by your pan and turn the burner off if you leave the kitchen; keep a lid nearby to smother a pan fire; keep anything that can burn away from the stovetop.
 <!-- REFS:END -->

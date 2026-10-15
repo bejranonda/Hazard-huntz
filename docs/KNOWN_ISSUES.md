@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.4.0 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.5.0 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -47,6 +47,11 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 42 | [A challenge link carries one score, and the combo never scores](#42-a-challenge-link-carries-one-score-and-the-combo-never-scores) | By design | — |
 | 43 | [The EM-ball lesson rests on academic sources, not an agency](#43-the-em-ball-lesson-rests-on-academic-sources-not-an-agency) | Owner | Medium |
 | 44 | [The featured topic is switched by hand](#44-the-featured-topic-is-switched-by-hand) | By design | — |
+| 45 | [The smoke-alarm lesson has no Thai source](#45-the-smoke-alarm-lesson-has-no-thai-source) | Owner | Medium |
+| 46 | [Dust and fire advice is quoted through news reports](#46-dust-and-fire-advice-is-quoted-through-news-reports) | Owner | Medium |
+| 47 | [The season calendar is editorial](#47-the-season-calendar-is-editorial) | By design | — |
+| 48 | [Haze and smoke are untested on low-end phones](#48-haze-and-smoke-are-untested-on-low-end-phones) | Owner | Low |
+| 49 | [Dust and fire use the flood house](#49-dust-and-fire-use-the-flood-house) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -390,6 +395,43 @@ The safety book (`brm:learned`), the streak, best scores and the how-to flags ar
 
 `config.featuredTopic` puts one topic on the start screen. Nothing switches it on or off from the news; the owner sets it (now `"health"`, for the disease warnings in September–October 2026) and sets it back to `null` when the news fades, or to another topic. Leaving it on for months makes it wallpaper.
 
+Since v1.5.0, `null` is no longer blank: the start screen then features the topic of the mode in season (dust → 😷 `air` in December–March, fire → 🔥 `fire` in April). In the flood months nothing is featured unless the owner sets a topic.
+
+### 45. The smoke-alarm lesson has no Thai source
+
+**Status:** Owner · **Severity:** Medium
+
+`f-alarm` (test smoke alarms monthly, change a low battery) rests only on the US Fire Administration (`usfa-alarm-2569`, kind `international`) and is flagged ⚠️ `partial`. No Thai agency page about home smoke alarms was found on 15 Oct 2026, and few Thai homes have one. Keep it as a nudge, or drop it, after the owner's review ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-and-fire-lessons)). Dropping it reshuffles fire houses only.
+
+### 46. Dust and fire advice is quoted through news reports
+
+**Status:** Owner · **Severity:** Medium
+
+The Department of Health, DDPM and MEA advice in v1.5.0 comes from news reports that quote them (THE STANDARD, Thai PBS, PPTV, Krungthep Turakij, MGR Online, Thansettakij), kind `secondary`, because the agency sites refuse automated access ([AGENTS §7](../AGENTS.md#7-environment-notes)). Two details to know:
+
+- The DDPM "10 ways to survive a fire" article of 2026 (`ddpm-fire10-2569`) shows no date on the page; related stories are from July 2026. The 2020 version (`ddpm-fire10-2563`) says the same.
+- PPTV (2022) gives PM2.5 colour ranges from before Thailand's 2023 change. The game uses only the colour order and "red: at-risk groups stay in", which both scales share.
+
+A person should read the agency pages before December ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-and-fire-lessons)).
+
+### 47. The season calendar is editorial
+
+**Status:** By design
+
+`config.modes[].months` (dust December–March, fire April, flood May–November) was chosen by us from the general pattern (Bangkok's dust peaks December–February and the North's February–April; dry, windy months raise fire risk). No Thai agency publishes a month-by-month hazard calendar that we could find **[unverified]**. The North's dust season runs later than Bangkok's, so a northern player in April sees fire recommended, not dust. The owner can change the months, and `rainWarningActive` still overrides them.
+
+### 48. Haze and smoke are untested on low-end phones
+
+**Status:** Owner · **Severity:** Low
+
+The haze (a full-room rectangle and 46 specks per room) and the smoke (a translucent band) are redrawn by changing one attribute per room each frame. Headless Chromium shows no problem, but no real low-end Android phone has been tried ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)). If it stutters, drop the specks or update less often.
+
+### 49. Dust and fire use the flood house
+
+**Status:** By design
+
+The three rooms were drawn for floods: the Return mud layer is hidden for dust and fire, but the window and yard are the same, and the smoke can cover the alarm early (about 22 s). New rooms (P1) and a coast scene (P8) would give each hazard its own look. Items don't overlap: the probe reports 0% over 2,920 houses in all four modes.
+
 ---
 
 ## Fixed
@@ -412,6 +454,13 @@ The safety book (`brm:learned`), the streak, best scores and the how-to flags ar
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.5.0 (15 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F26 | Source links under lessons were 31–43 px wide for short agency names (ปภ. 23 px of text, อย. 43 px with padding), in the game and on `/learn` | `min-width: 44px` on the links in both places; the visitor pass over four modes and five screen sizes finds no target under 44 px. |
+| F25 | The first dust fan sprite (50 × 70) overlapped the kitchen's lower floor slot by 1% in 35 of 2,920 houses | Resized to 46 × 64; `npm run probe` reports 0%. |
 
 ### After v1.3.0 (14 Oct 2026)
 

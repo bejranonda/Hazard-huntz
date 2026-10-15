@@ -29,12 +29,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L1 | [Create the Cloudflare Pages project](#l1-create-the-cloudflare-pages-project) | Owner | Mostly done: Web Analytics left |
 | L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
-| L4 | [Review the 10 flagged (⚠️) safety items](#l4-review-the-10-flagged-safety-items) | Owner + AI | Todo |
+| L4 | [Review the 11 flagged (⚠️) safety items](#l4-review-the-11-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
+| L10 | [Thai review of the dust and fire lessons](#l10-thai-review-of-the-dust-and-fire-lessons) | Owner + AI | Todo |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
@@ -44,10 +45,16 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N7 | [International version and social previews](#n7-international-version-and-social-previews) | AI-ready | Done (11 Oct 2026, v1.2.0) |
 | N8 | [More fun to play, more worth sharing](#n8-more-fun-to-play-more-worth-sharing) | AI-ready | Done (14 Oct 2026, v1.3.0) |
 | N9 | [Organise the knowledge by topic, add the news-driven lessons](#n9-organise-the-knowledge-by-topic-add-the-news-driven-lessons) | AI-ready | Done (15 Oct 2026, v1.4.0) |
+| N10 | [A game for the whole year: PM2.5 dust and house fire](#n10-a-game-for-the-whole-year-pm25-dust-and-house-fire) | AI-ready | Done (15 Oct 2026, v1.5.0) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
 | P4 | [More languages](#p4-more-languages) | Owner + AI | Todo (optional) |
+| P5 | [Share-loop ideas not built yet](#p5-share-loop-ideas-not-built-yet) | AI-ready / Owner + AI | Todo (optional) |
+| P6 | [More lessons for the remaining disease groups](#p6-more-lessons-for-the-remaining-disease-groups) | Owner + AI | Todo (optional) |
+| P7 | [Heat and summer storms](#p7-heat-and-summer-storms) | AI-ready (research) + Owner review | Todo |
+| P8 | [Earthquake and tsunami](#p8-earthquake-and-tsunami) | AI-ready (research) + Owner review | Todo |
+| P9 | [A safety calendar: one hazard week at a time](#p9-a-safety-calendar-one-hazard-week-at-a-time) | Owner + AI | Todo |
 | V1 | [Version 2: the combined Prepare → Return run](#v1-version-2-the-combined-prepare--return-run) | AI-ready | Todo |
 | S1 | [Seasonal relaunch (every April–May)](#s1-seasonal-relaunch-every-aprilmay) | Owner + AI | Recurring |
 | H1 | [Housekeeping](#h1-housekeeping) | Owner | Partly done |
@@ -90,7 +97,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. Optionally set `forecastStatusUrl`. Its endpoint must send CORS headers and answer `{"rainWarning": true|false}` within 1.5 s.
 - **Done when:** the build no longer warns about the placeholder, and the "เช็กระดับน้ำล่วงหน้า" buttons appear and open the app.
 
-### L4. Review the 10 flagged safety items
+### L4. Review the 11 flagged safety items
 
 - **Who:** Owner + AI · **Status:** Todo · **Issues:** #8, #9, #10
 - **Steps:**
@@ -98,6 +105,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. The owner or an agency contact confirms or corrects each item.
   3. An assistant applies the answers in `items.json` and `sources.json`, sets `verify`, and runs `npm run docs`.
 - **Done when:** every playable item is `verified`, or the owner has knowingly accepted it as `partial`, and the table is regenerated.
+- **Note (v1.5.0):** the eleventh is `f-alarm` (smoke alarms), backed only by the US Fire Administration.
 
 ### L5. Second native reader for the Thai copy
 
@@ -139,6 +147,16 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. Optional: FloodWatch offers `{"rainWarning": true|false}` with CORS, and the owner sets `forecastStatusUrl` so the game can show a rain banner.
   3. After two weeks, check whether Web Analytics shows referrals from `flood.autobahn.bot`.
 - **Done when:** both sites link to each other and the referrals show in Web Analytics.
+
+### L10. Thai review of the dust and fire lessons
+
+- **Who:** Owner + AI · **Status:** Todo · **Issues:** #45, #46
+- **Why:** the 25 new lessons (v1.5.0) quote the Department of Health, DDPM and MEA through news reports, because the agency sites refuse automated access. A person should read the agency pages themselves before the dust season (December).
+- **Steps:**
+  1. An assistant prints the dust and fire rows of [01-safety-content.md](01-safety-content.md) with their source links as a review sheet.
+  2. The owner (or a contact at กรมอนามัย / ปภ.) opens each source, checks the wording, and notes changes.
+  3. An assistant applies them, upgrades sources to `official` where an agency page is found, and runs `npm run docs`.
+- **Done when:** every dust and fire lesson is confirmed or corrected by a person, and the decision on `f-alarm` (keep as ⚠️, or drop) is recorded.
 
 ## Next (v1.1, AI-ready)
 
@@ -250,6 +268,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **What was built:** `r-stagnant` (EM balls), `r-ors` (diarrhoea), `r-towel` (eye infections); six topics across the book, tip card, result list and `/learn`; a featured-topic card on the start screen. See [CHANGELOG 1.4.0](../CHANGELOG.md).
 - **Done when:** build, 17 unit tests, 55 smoke checks and the overlap probe (0%) pass; screens checked as a visitor in Thai and English on a phone and three tablet sizes. All true on 15 Oct 2026.
 
+### N10. A game for the whole year: PM2.5 dust and house fire
+
+- **Who:** AI-ready · **Status:** Done (15 Oct 2026, v1.5.0)
+- **Why:** the owner: "we have stories only before and after flood, that no people will pay attention outside risk time". The game needed reasons to come back in the dry season too.
+- **What was built:** a mode registry, `dust` (12 lessons, haze, Air4Thai link) and `fire` (13 lessons, falling smoke, helpline 199), a season default, the year-round wording, and per-mode link previews and checklists. See [CHANGELOG 1.5.0](../CHANGELOG.md) and [KNOWLEDGE §22](KNOWLEDGE.md#22-a-game-for-the-whole-year-v150).
+- **Done when:** build, 20 unit tests, 57 smoke checks and the overlap probe (0%) pass; flood houses unchanged; four modes checked as a visitor in Thai and English at 320 px and on three tablet sizes. All true on 15 Oct 2026.
+
 ## Later
 
 ### P1. Bathroom, bedroom and garage
@@ -298,6 +323,36 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Why:** the DDC's six groups (27 Sep 2026) are now covered except **skin infections** (keep skin clean and dry, avoid walking barefoot; partly in `r-mudfeet`) and **respiratory infections** (hygiene, a mask when coughing or sneezing). Melioidosis (southern provinces) is not covered either.
 - **Steps:** find an agency source (or the DDC page itself), draw a sprite, pick a slot, run `npm run probe`, and keep each tip under 80 characters in both languages.
 - **Done when:** each new lesson has a source, a topic, a smoke-checked tip card, and the probe still reports 0%.
+
+### P7. Heat and summer storms
+
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** Todo
+- **Season:** March–May (`months: [3, 4, 5]`), next to fire. Reserve code `h` for heat.
+- **Why:** heat illness and summer storms (พายุฤดูร้อน: wind, hail, lightning) hit in the same dry months as fire, and DDPM and the DOH publish advice every year.
+- **Candidate lessons** (each needs its own source): water for elders and children, never leave a child or pet in a parked car, tie down loose roof sheets and signs, stay away from big trees and billboards in a storm, unplug in lightning, call 1669 for heatstroke.
+- **Sources to try:** DDPM summer-storm advice (via PRD or news), DOH heat advice, TMD warnings (1182), WHO heat-health guidance (international).
+- **Art:** a heat shimmer threat (`haze` with a warm tint) or a storm layer; a sun-hat prop for the gecko.
+- **Done when:** the mode passes [GUIDELINES §10](GUIDELINES.md#10-adding-a-hazard-mode) and a person has reviewed the advice.
+
+### P8. Earthquake and tsunami
+
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** Todo
+- **Season:** any time; feature it around 26 December (the 2004 tsunami anniversary) and after quakes in the news (Bangkok felt the March 2025 Myanmar quake).
+- **Why:** rare but high-impact; people in high-rise condos and on the Andaman coast need a few clear actions.
+- **Candidate lessons:** drop, cover, hold on; stay away from windows and tall furniture; secure shelves; after shaking, use the stairs not the lift; on the coast, a strong quake or the sea pulling back means go to high ground at once; know the evacuation route signs.
+- **Sources to try:** DDPM and the Department of Mineral Resources, the National Disaster Warning Center, Great ShakeOut and Ready.gov (international).
+- **Note:** this may need a condo room (P1) and a coast scene; the current rooms suit the indoor part only.
+- **Done when:** as P7.
+
+### P9. A safety calendar: one hazard week at a time
+
+- **Who:** Owner + AI · **Status:** Todo
+- **Why:** year-round engagement works best with fixed dates people expect (the Great ShakeOut drill, Ready.gov's monthly themes). A Thai calendar could be: dust week (December), fire week (April), flood week (May, before the rains), tsunami day (26 December).
+- **Steps:**
+  1. The owner picks the weeks and who to partner with (schools, district offices).
+  2. An assistant adds `config.weeks` (start, end, mode, featured topic), so the start screen and the featured card switch by themselves; the season default stays as the fallback.
+  3. A launch-kit post per week in [04-launch-kit.md](04-launch-kit.md).
+- **Done when:** each week switches the start screen without a code change, and the posts are written.
 
 ### V1. Version 2: the combined Prepare → Return run
 

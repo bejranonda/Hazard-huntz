@@ -4,8 +4,8 @@
 
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
-npm test                 # 17 rule tests: a year of daily houses, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts
-npm run smoke            # 55 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm test                 # 20 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts
+npm run smoke            # 57 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
@@ -18,6 +18,7 @@ The smoke test covers:
   - every button, link and expander ≥ 44 px on the game and result screens
   - the same check on the checklist, help and about sheets
 - LINE in-app user agent: long-press hint, no download button, open-in-browser link.
+- Every non-flood mode (dust, fire): a full round with one wrong answer, the result card and lessons, its haze or smoke layer, no page errors (v1.5.0).
 - Facebook in-app user agent: the challenge link `/c/r9?h=20261007&fbclid=…` rebuilds the same house, and its preview page has its own image.
 - Checklist deep link (1080×1920 image) and the English toggle.
 - **Offline play after the first visit.**
@@ -84,7 +85,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-- Start screen: **158 KB** compressed (HTML + CSS + JS + content JSON + fonts).
+- Start screen: **183 KB** compressed (HTML + CSS + JS + content JSON + fonts).
 - First game screen: **168 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 

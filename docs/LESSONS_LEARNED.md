@@ -350,3 +350,27 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the session's remote URL is lowercase (`hazard-huntz`), while the repository is named `Hazard-huntz`, so every push prints this notice.
 - *Do this:* nothing. It is harmless.
 - *Encoded in:* [AGENTS.md §7](../AGENTS.md#7-environment-notes).
+
+**C13. Make the second thing generic before adding the third.**
+
+- *What happened:* v1.5.0 added dust and fire to a game written for two flood modes. An inventory found about 30 places that assumed "prepare or return": three would crash on a new mode, several silently fell back to `prepare` (challenge links, cards, rounds), and five route patterns hard-coded `p|r`.
+- *Do this:* first refactor to a registry with only the existing modes and prove nothing changed (244 flood houses compared byte for byte, all tests green), then add the new modes as data. Let the build fail on any missing per-mode string, round setting, checklist or start button.
+- *Encoded in:* `config.json → modes`, `public/js/modes.js`, the per-mode checks in `tools/build.mjs`, [GUIDELINES §10](GUIDELINES.md#10-adding-a-hazard-mode).
+
+**B7. News articles keep old numbers after the rules change.**
+
+- *What happened:* a 2022 PPTV article quoting the Department of Health gives the PM2.5 colour ranges from before Thailand's 2023 change; a 2026 article uses the new thresholds (37.5 and 75 µg/m³).
+- *Do this:* when two sources disagree on a number, teach what they share (the colour order, "red: at-risk groups stay in") and leave the number out. Note the disagreement in the source's `note`.
+- *Encoded in:* `doh-mask-2565` note, [GUIDELINES rule 45](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES #46](KNOWN_ISSUES.md#46-dust-and-fire-advice-is-quoted-through-news-reports).
+
+**B8. Some international pages can't be read by a fetch; find the plain-HTML twin.**
+
+- *What happened:* NFPA's fire-safety pages render only with JavaScript, so the fetch returned just a title. The US Fire Administration publishes the same advice as plain HTML with a "last reviewed" date.
+- *Do this:* don't cite a page you couldn't read. Look for another official body with the same advice, and record when you read it.
+- *Encoded in:* `usfa-cooking-2569`, `usfa-alarm-2569`, [KNOWLEDGE §22.5](KNOWLEDGE.md#225-house-fire-sources-and-what-each-lesson-rests-on).
+
+**C14. An effect that passes every check can still be invisible.**
+
+- *What happened:* the first dust haze (tan at 55% opacity) was applied correctly, as the DOM showed, but on beige walls it looked like nothing had happened. Only the screenshots showed it.
+- *Do this:* for any new visual effect, screenshot each room at the start, middle and end, and compare. Give a full-screen tint some texture (here, drifting specks) so it reads as the thing it shows.
+- *Encoded in:* [GUIDELINES rule 46](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).

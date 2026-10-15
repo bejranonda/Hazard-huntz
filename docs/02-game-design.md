@@ -72,7 +72,25 @@
 | Example choice | Your breaker example: **ตัดเบรกเกอร์เอง / เรียกช่างไฟ / เสียบปลั๊กลองดู**, with เรียกช่างไฟ correct. |
 | Decoys | Messy but fine, and they teach the good habit: clean boots, an open window ("ถูกต้องแล้ว"), a tied rubbish bag, new bottled water. The comic one is a coiled rope: *"เชือกจ้า ไม่ใช่งู 😅 แต่ระวังไว้ก่อนก็ดีแล้ว"*. |
 
-## Shared rules
+## Mode 3: ฝุ่น PM2.5 (Dust, v1.5.0)
+
+| Element | Rule |
+|---|---|
+| Timer | 55 s. A haze with drifting specks thickens over the rooms (opacity 0.06 → 0.64). Nothing is lost to it; the clock is the pressure. |
+| Gauge | Moves through the Air4Thai colours, blue → green → yellow → orange → red (`data-aqi` 0–4), to teach the order. |
+| Hazards | An open window on a red day, a broom on a dusty floor, a purifier with an unchecked filter, grandpa's inhaler, grandma's cough, a dusty fan, a phone before going out (Air4Thai), a charcoal grill, a thin cloth mask, running shoes, the kids' ball, a leaf pile with matches. |
+| Gecko | Wears a mask. "ฝุ่นจิ๋วมองไม่เห็น แต่เข้าปอดได้นะ" |
+| Link | "😷 เช็กค่าฝุ่นวันนี้ (Air4Thai)" instead of the flood forecast. |
+
+## Mode 4: ไฟไหม้ (House fire, v1.5.0)
+
+| Element | Rule |
+|---|---|
+| Timer | 55 s. Smoke falls from the ceiling; an item is lost when the smoke reaches its centre, so the smoke alarm goes first (about 22 s), then the pan and the 199 note near the end. At `lowY` the gecko says "crawl low". |
+| Hazards | Chained power strips, a hot cracked lamp cord, a phone charging on the sofa, a chirping smoke alarm, a towel (wet cloth, crawl low), a pan left on the stove, the gas valve, sprays by the stove, an extinguisher buried in a cupboard, the 199 note, smoke under the front door, burning leaves in wind, a cigarette end. |
+| Gecko | Wears a red helmet. "ใกล้พื้นอากาศดีกว่า จำไว้นะ" |
+| Guardrail | Smoke, cords and pans only. No flames on people, no injuries. |
+
 
 - **Tap a target:** the timer pauses and a bottom sheet shows 3 choices.
 - **Correct:** +100, a squish and sparkle sound, the gecko cheers. The item changes state: the breaker flips to OFF, sandbags line up, the TV lifts, the car drives away. A **tip card** shows the ≤ 80-character tip, a **ทำไม?** expander and the agency link.
@@ -83,6 +101,8 @@
 - **Ranks (by score10):** 0–4, 5–7, 8–10.
   - ก่อนน้ำมา: มือใหม่หัดเตรียมตัว → หัวหน้าทีมยกของ → บ้านนี้เตรียมพร้อม
   - หลังน้ำลด: มือใหม่หัดกู้บ้าน → ช่างไฟประจำซอย → เซียนกู้บ้าน
+  - ฝุ่น PM2.5: มือใหม่หัดสู้ฝุ่น → นักอุดรอยรั่ว → บ้านนี้หายใจโล่ง
+  - ไฟไหม้: มือใหม่หัดกันไฟ → สารวัตรปลั๊กพ่วง → บ้านนี้ปลอดภัยจากไฟ
 - **Replay:**
   - **Daily house** per mode, the same for everyone, resetting at midnight Bangkok time.
   - A **streak** counter.
@@ -92,8 +112,8 @@
 
 ## Mode selection
 
-- Two large buttons. The recommended one is first, with a "แนะนำช่วงนี้" badge, and the gecko's line changes to match.
-- `config.json → rainWarningActive: true` makes Prepare the default; set it to `false` as water recedes.
+- One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in a row. The gecko's line, prop and the featured topic change to match.
+- `config.json → rainWarningActive: true` makes Prepare the default. When it is `false`, the mode in season is recommended (`modes[].months`, Bangkok month): dust December–March, fire April, otherwise Return.
 - Later, `forecastStatusUrl` can point at your forecast app, returning `{ "rainWarning": true|false }` within 1.5 s. If the call fails, the manual flag is used.
 
 ## Feel
@@ -229,10 +249,11 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── css/app.css
 │   ├── js/
 │   │   ├── main.js         boot, screens, game loop, result, sharing UI
+│   │   ├── modes.js        mode registry: codes, threats, props, seasons (pure, unit-tested)
 │   │   ├── house.js        seeded house generation (pure, unit-tested)
-│   │   ├── round.js        timer, water, choices, score (pure, unit-tested)
+│   │   ├── round.js        timer, water / smoke / haze, choices, score (pure, unit-tested)
 │   │   ├── run.js          v1 single round / v2 combo structure
-│   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, badges
+│   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke, haze, badges
 │   │   ├── cards.js        canvas: result card, checklists, link previews
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links

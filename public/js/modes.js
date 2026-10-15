@@ -10,12 +10,15 @@
 //   prop     what the gecko wears or holds
 //   months   Bangkok months (1–12) when the mode is recommended
 //   bonus    the "critical items before the floor is wet" bonus (flood only)
+//   emoji    used in share texts; icon (optional) replaces it on the start button
+//   topic    the safety-book topic the start screen features in this mode's season
+//   link     "check before you go" link (flood modes use config.forecastAppUrl)
 
 const DEFAULTS = [
   { id: 'prepare', hazard: 'flood', code: 'p', threat: 'water', prop: 'hood', emoji: '🏠', months: [5, 6, 7, 8, 9, 10, 11], bonus: true },
   { id: 'return', hazard: 'flood', code: 'r', threat: null, prop: 'torch', emoji: '⚡', icon: '🧹', months: [] },
-  { id: 'dust', hazard: 'dust', code: 'd', threat: 'haze', prop: 'mask', emoji: '😷', months: [12, 1, 2, 3] },
-  { id: 'fire', hazard: 'fire', code: 'f', threat: 'smoke', prop: 'firehat', emoji: '🔥', months: [4] },
+  { id: 'dust', hazard: 'dust', code: 'd', threat: 'haze', prop: 'mask', emoji: '😷', months: [12, 1, 2, 3], topic: 'air', link: 'https://air4thai.pcd.go.th/webV3/' },
+  { id: 'fire', hazard: 'fire', code: 'f', threat: 'smoke', prop: 'firehat', emoji: '🔥', months: [4], topic: 'fire' },
 ];
 
 let MODES = DEFAULTS;

@@ -144,6 +144,11 @@ for (const m of MODES) {
   for (const l of LANGS) if (strings[l]?.[`mode${capM(m.id)}Desc`] == null) err(`strings.json: ${l}.mode${capM(m.id)}Desc is missing`);
   for (const [name, tbl] of [['og', strings.og], ['ogEn', strings.ogEn]]) for (const k of PER_MODE_OG) if (!tbl?.[`${k}${capM(m.id)}`]) err(`strings.json: ${name}.${k}${capM(m.id)} is missing`);
   for (const l of LANGS) if (!strings.seo?.[l]?.[`section${capM(m.id)}`]) err(`strings.json: seo.${l}.section${capM(m.id)} is missing`);
+  if (!(m.months || []).every((n) => Number.isInteger(n) && n >= 1 && n <= 12)) err(`config.json: mode ${m.id} months must be 1–12`);
+  if (m.topic && !(config.topics || []).includes(m.topic)) err(`config.json: mode ${m.id} topic "${m.topic}" is not in topics`);
+  if (m.link && !/^https:\/\//.test(m.link)) err(`config.json: mode ${m.id} link must start with https://`);
+  // The start screen's static buttons (first paint) must match the registry.
+  if (!fs.readFileSync(path.join(PUB, 'index.html'), 'utf8').includes(`data-mode="${m.id}"`)) err(`index.html: no start button for mode "${m.id}"`);
 }
 
 for (const mode of MODE_IDS) {

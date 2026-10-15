@@ -1,6 +1,6 @@
 # บ้านรอดไหม? (Baan Rod Mai?)
 
-> Baan Rod Mai? ("Will the house survive?") is a free, 60-second Thai flood-safety game for phones, with an English toggle. In "Before the flood" (ก่อนน้ำมา) players prepare an illustrated house; in "After the water recedes" (หลังน้ำลด) they spot the dangers before moving back in. Every correct action comes from Thai government agency guidance and is linked to its source. No sign-up, no cookies, no personal data.
+> Baan Rod Mai? ("Will the house survive?") is a free, 60-second Thai home-safety game for phones, with an English toggle. Four modes rotate with the Thai seasons: "Before the flood" (ก่อนน้ำมา) and "After the water recedes" (หลังน้ำลด), "PM2.5 dust" (ฝุ่น PM2.5) and "House fire" (ไฟไหม้). Players tap the risks in an illustrated house and pick the safe action. Every correct action comes from Thai government agency guidance and is linked to its source; a few are cross-checked with WHO or the US Fire Administration and marked as such. No sign-up, no cookies, no personal data.
 
 - Play in Thai: https://baanrodmai.autobahn.bot/ · in English: https://baanrodmai.autobahn.bot/en/
 - Every lesson with its reason and sources: https://baanrodmai.autobahn.bot/learn (Thai, with English) · https://baanrodmai.autobahn.bot/en/learn (English)

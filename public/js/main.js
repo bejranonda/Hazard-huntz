@@ -176,7 +176,8 @@ function renderStart(defaultMode) {
   const book = bookCounts();
   // A topic in the news (config.featuredTopic): read every answer now, or
   // collect it in the safety book by playing.
-  const feat = content().config.featuredTopic;
+  // Without one, the season's mode brings its own topic (dust → air, fire → fire).
+  const feat = content().config.featuredTopic || modeOf(defaultMode)?.topic || null;
   const ft = feat && book.topics.find((tp) => tp.id === feat);
   const featEl = $('#featured');
   if (ft) {

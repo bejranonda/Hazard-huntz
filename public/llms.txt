@@ -56,6 +56,21 @@
 - **Bleach plus toilet cleaner** (น้ำยาฟอกขาว + น้ำยาล้างห้องน้ำ): Use one at a time, never mix, and keep windows open. ห้ามผสมน้ำยาฟอกขาวกับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ ใช้ทีละอย่าง เปิดหน้าต่าง [https://baanrodmai.autobahn.bot/learn#r-bleach]
 - **Cupboard under the sink** (ตู้ใต้ซิงก์): Step back, shine a torch, open it with a long stick; if it's a snake, call for help. ตู้มืดๆ อาจมีงูหรือตะขาบหลบ ส่องไฟฉาย ใช้ไม้ยาวเปิดดูก่อน อย่าล้วงมือ [https://baanrodmai.autobahn.bot/learn#r-cupboard]
 
+## PM2.5 dust and smoke (ฝุ่น PM2.5: ทำบ้านให้ปลอดฝุ่น ดูแลกลุ่มเสี่ยง)
+
+- **Thin cloth mask** (หน้ากากผ้าบางๆ): Wear an N95 that fits snugly, over the nose and under the chin. ต้องออกไปข้างนอก ใส่ N95 ให้แนบหน้า ครอบจมูกและใต้คาง [https://baanrodmai.autobahn.bot/learn#a-mask]
+- **Running shoes** (รองเท้าวิ่ง): Skip the outdoor run and exercise indoors. วันฝุ่นเกินมาตรฐาน งดออกกำลังกายกลางแจ้ง เปลี่ยนมาออกกำลังในบ้าน [https://baanrodmai.autobahn.bot/learn#a-runshoes]
+- **The kids' ball** (ลูกบอลของหลาน): Play indoors instead; children are at higher risk. เด็ก ผู้สูงอายุ คนท้อง ผู้มีโรคประจำตัว เป็นกลุ่มเสี่ยง วันฝุ่นแดงให้อยู่ในบ้าน [https://baanrodmai.autobahn.bot/learn#a-ball]
+- **Dry leaves and a box of matches** (กองใบไม้แห้งกับไม้ขีด): Don't burn it; bag it up with the rubbish. งดเผาขยะและใบไม้ในที่โล่ง ช่วยลดฝุ่น PM2.5 ให้ทั้งซอย [https://baanrodmai.autobahn.bot/learn#a-leaves]
+- **Wide-open window** (หน้าต่างเปิดอ้า): Shut it tight and seal the gaps round the frame. วันฝุ่นสูง ปิดประตูหน้าต่างให้สนิท อุดรอยรั่วตามขอบ ไม่ให้ฝุ่นลอยเข้าบ้าน [https://baanrodmai.autobahn.bot/learn#a-window]
+- **Broom on a dusty floor** (ไม้กวาดกับพื้นฝุ่นเขรอะ): Wipe with a damp cloth instead of sweeping. เช็ดถูด้วยผ้าชุบน้ำหมาดๆ แทนการกวาด ฝุ่นจะไม่ฟุ้งกลับขึ้นมา [https://baanrodmai.autobahn.bot/learn#a-sweep]
+- **Air purifier** (เครื่องฟอกอากาศ): Check the filter and replace it on schedule. หมั่นเช็กแผ่นกรองเครื่องฟอกอากาศ กรมอนามัยแนะเปลี่ยนทุก 6 เดือน [https://baanrodmai.autobahn.bot/learn#a-purifier]
+- **Grandpa's inhaler** (ยาพ่นของคุณตา): Get his medicine and kit ready, as his doctor says. คนที่มีโรคประจำตัว สำรองยาและอุปกรณ์ให้พร้อม ทำตามที่หมอแนะนำ [https://baanrodmai.autobahn.bot/learn#a-inhaler]
+- **Grandma keeps coughing** (คุณยายไอไม่หยุด): Take her to a doctor soon. ไอบ่อย หายใจลำบาก แน่นหน้าอก ช่วงฝุ่นหนัก รีบไปพบแพทย์ [https://baanrodmai.autobahn.bot/learn#a-cough]
+- **Dusty fan** (พัดลมฝุ่นจับหนา): Take the grille off and wipe with a wet cloth. เช็ดจุดสะสมฝุ่น เช่น พัดลม แอร์ มุ้งลวด ด้วยผ้าชุบน้ำ [https://baanrodmai.autobahn.bot/learn#a-fan]
+- **Phone before the market run** (มือถือก่อนออกไปตลาด): Check the dust level in an air-quality app and follow its advice. ก่อนออกจากบ้าน เช็กค่าฝุ่นในแอป Air4Thai แล้วทำตามคำแนะนำ [https://baanrodmai.autobahn.bot/learn#a-app]
+- **Charcoal grill** (เตาถ่านปิ้งย่าง): Skip the charcoal today and cook another way. วันฝุ่นสูง งดปิ้งย่างด้วยเตาถ่าน ลดควันในบ้านและรอบบ้าน [https://baanrodmai.autobahn.bot/learn#a-grill]
+
 ## Thai emergency helplines
 
 - 1784: DDPM disaster hotline (ปภ. สายด่วนนิรภัย). Report disasters, ask for help, 24 h

@@ -615,7 +615,7 @@ if (process.argv.includes('--docs')) {
       '|---|---|---|---|---|---|---|---|',
       ...rows,
     ].join('\n');
-    const kindLabel = { official: 'agency site', government: 'government channel (PRD)', secondary: 'news quoting the agency', academic: 'academic statement or peer-reviewed study (not an agency)' };
+    const kindLabel = { official: 'agency site', government: 'government channel (PRD)', secondary: 'news quoting the agency', academic: 'academic statement or peer-reviewed study (not an agency)', international: 'international guidance (cross-check only)' };
     const used = new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]));
     for (const h of helplines.helplines) if (h.source) used.add(h.source);
     const refs = Object.entries(sources)

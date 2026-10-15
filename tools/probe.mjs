@@ -52,7 +52,7 @@ for (let d = 0; d < 730; d++) {
   }
 }
 const pct = (x) => `${Math.round(100 * x)}%`;
-console.log(`Tap-area overlaps over ${houses} houses (daily keys from 2026-10-01, both modes)`);
+console.log(`Tap-area overlaps over ${houses} houses (daily keys from 2026-10-01, all modes)`);
 console.log(`  houses with an overlap: ${affected} (${pct(affected / houses)}), worst: ${pct(worst)} of the smaller area`);
 for (const [k, p] of [...pairs].sort((a, b) => b[1].n - a[1].n)) {
   console.log(`  ${k.padEnd(34)} ${String(p.n).padStart(4)} houses, worst ${pct(p.max)}`);

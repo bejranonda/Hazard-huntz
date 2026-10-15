@@ -57,7 +57,7 @@ test('same daily key builds the same house; different keys differ', () => {
   assert.notEqual(sig(h1), sig(h3));
 });
 
-for (const mode of ['prepare', 'return']) {
+for (const mode of C.config.modes.map((m) => m.id)) {
   test(`${mode}: a year of daily houses all follow the round rules`, () => {
     const seen = new Set();
     const roomIds = playableRooms(C).map((r) => r.id);
@@ -258,13 +258,13 @@ test('version 2 combo run carries Prepare outcomes into Return', () => {
 test('safety book: only playable lessons, each counted once', () => {
   const pool = bookPool(C);
   const rooms = new Set(playableRooms(C).map((r) => r.id));
-  for (const mode of ['prepare', 'return']) {
+  for (const mode of C.config.modes.map((m) => m.id)) {
     assert.ok(pool[mode].length > 0);
     assert.ok(pool[mode].every((it) => it.mode === mode && rooms.has(it.room) && !it.disabled));
   }
   // Items in rooms that aren't drawn yet (bathroom, garage) don't count.
   assert.ok(!pool.prepare.some((it) => it.id === 'p-toilet' || it.id === 'p-fuel'));
-  const valid = new Set([...pool.prepare, ...pool.return].map((it) => it.id));
+  const valid = new Set(Object.values(pool).flat().map((it) => it.id));
   const h = generateHouse(C, 'prepare', '20261007');
   const recs = h.targets.map((p, i) => ({ pid: p.pid, status: i % 2 ? 'learned' : 'correct' }));
   const ids = correctIds(h.targets, recs);
@@ -284,7 +284,7 @@ test('topics: every lesson has one, and a full set is reported once', () => {
   assert.ok(C.config.featuredTopic === null || topics.includes(C.config.featuredTopic));
   const pool = bookPool(C);
   const none = topicProgress(pool, new Set(), topics);
-  assert.equal(none.reduce((a, tp) => a + tp.total, 0), pool.prepare.length + pool.return.length);
+  assert.equal(none.reduce((a, tp) => a + tp.total, 0), Object.values(pool).reduce((a, list) => a + list.length, 0));
   const food = none.find((tp) => tp.id === 'food');
   const all = topicProgress(pool, new Set(food.items.map((it) => it.id)), topics);
   assert.deepEqual(completedTopics(none, all), ['food']);
@@ -294,8 +294,7 @@ test('topics: every lesson has one, and a full set is reported once', () => {
 test('share texts fill every placeholder in both languages', () => {
   const strings = load('strings');
   const vars = {
-    shareTextPrepare: ['score', 'rank', 'grid', 'url', 'house', 'streak'],
-    shareTextReturn: ['score', 'rank', 'grid', 'url', 'house', 'streak'],
+    ...Object.fromEntries(C.config.modes.map((m) => [`shareText${m.id[0].toUpperCase()}${m.id.slice(1)}`, ['score', 'rank', 'grid', 'url', 'house', 'streak']])),
     challengeText: ['score', 'emoji', 'url'],
     challengeBackText: ['me', 'them', 'emoji', 'url', 'tail'],
     cardVersus: ['me', 'them'],

@@ -628,6 +628,174 @@
       "why": { "th": "กรมควบคุมโรคเตือนว่าสัตว์มีพิษอาจหนีน้ำมาหลบตามบ้านและมุมมืด ให้สอดส่องมุมอับเป็นประจำ ใช้แท่งไม้เขี่ยดู อย่าใช้มือเปล่า และควรมีไฟฉายกับไม้ไว้ส่องและเคาะให้มีเสียง", "en": "The Department of Disease Control warns venomous animals shelter in homes and dark corners after floods. Check hidden spots, use a stick rather than bare hands, and carry a torch and a stick to light and tap ahead." },
       "sources": ["ddc-45196", "ddc-manual", "ddc-snake"], "verify": "verified", "topic": "critters",
       "verifyNote": "DDC names dark corners and hidden spots rather than cupboards specifically."
+    },
+    {
+      "id": "a-window", "mode": "dust", "room": "living",
+      "sprite": "winopen", "doneSprite": "winclosed", "size": [104, 172], "slots": ["window"],
+      "name": { "th": "หน้าต่างเปิดอ้า", "en": "Wide-open window" },
+      "context": { "th": "วันนี้ค่าฝุ่นขึ้นสีแดง แต่หน้าต่างยังเปิดรับลมอยู่", "en": "The dust level is red today, but the window is wide open for the breeze" },
+      "choices": [
+        { "kind": "seal", "correct": true, "label": { "th": "ปิดหน้าต่างให้สนิท อุดรอยรั่วตามขอบ", "en": "Shut it tight and seal the gaps round the frame" } },
+        { "kind": "leave", "label": { "th": "เปิดไว้ ให้ลมพัดฝุ่นออกไป", "en": "Leave it open so the wind blows the dust out" }, "feedback": { "th": "ลมข้างนอกพาฝุ่นเข้ามาแทน วันฝุ่นสูงต้องปิดประตูหน้าต่าง แล้วอุดช่องตามขอบ", "en": "Outside air brings the dust in. On high-dust days, shut doors and windows and seal the gaps." } },
+        { "kind": "leave", "label": { "th": "แง้มไว้นิดเดียว พอได้อากาศ", "en": "Leave it open just a crack" }, "feedback": { "th": "แม้ช่องเล็กๆ ฝุ่น PM2.5 ก็ลอดเข้ามาได้ กรมอนามัยแนะให้ปิดให้มิดชิดและอุดรอยรั่ว", "en": "Fine dust gets through even a small gap. The health department says shut it fully and seal leaks." } }
+      ],
+      "tip": { "th": "วันฝุ่นสูง ปิดประตูหน้าต่างให้สนิท อุดรอยรั่วตามขอบ ไม่ให้ฝุ่นลอยเข้าบ้าน", "en": "On high-dust days, shut doors and windows and seal the gaps to keep dust out." },
+      "why": { "th": "กรมอนามัยแนะทำห้องปลอดฝุ่น: ปิดประตูหน้าต่างให้มิดชิด ตรวจและอุดรอยรั่วตามขอบประตูหน้าต่าง องค์การอนามัยโลกก็แนะให้อยู่ในบ้านและปิดหน้าต่างเมื่อควันหนัก", "en": "The Thai Department of Health says to shut doors and windows fully and seal gaps round them. WHO also advises staying in with windows shut when smoke is heavy." },
+      "sources": ["doh-dustroom-2569", "doh-10ways-2564", "who-smoke-2566"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-sweep", "mode": "dust", "room": "living",
+      "sprite": "broom", "doneAnim": "none", "size": [46, 72], "slots": ["floor"],
+      "name": { "th": "ไม้กวาดกับพื้นฝุ่นเขรอะ", "en": "Broom on a dusty floor" },
+      "context": { "th": "พื้นบ้านมีฝุ่นเกาะ กำลังจะกวาด", "en": "The floor is dusty and someone is about to sweep" },
+      "choices": [
+        { "kind": "wash", "correct": true, "label": { "th": "เช็ดถูด้วยผ้าชุบน้ำหมาดๆ แทนการกวาด", "en": "Wipe with a damp cloth instead of sweeping" } },
+        { "kind": "clear", "label": { "th": "กวาดแรงๆ ให้ฝุ่นออกให้หมด", "en": "Sweep hard to get it all out" }, "feedback": { "th": "การกวาดทำให้ฝุ่นฟุ้งกลับขึ้นมาในอากาศ ใช้ผ้าชุบน้ำหมาดๆ เช็ดแทน", "en": "Sweeping throws the dust back into the air. Use a damp cloth instead." } },
+        { "kind": "leave", "label": { "th": "ใช้พัดลมเป่าฝุ่นออกนอกบ้าน", "en": "Blow the dust out with a fan" }, "feedback": { "th": "พัดลมทำให้ฝุ่นฟุ้งไปทั่วบ้าน เช็ดด้วยผ้าชุบน้ำหมาดๆ ฝุ่นจะติดผ้าไป", "en": "A fan just spreads the dust around. A damp cloth picks it up." } }
+      ],
+      "tip": { "th": "เช็ดถูด้วยผ้าชุบน้ำหมาดๆ แทนการกวาด ฝุ่นจะไม่ฟุ้งกลับขึ้นมา", "en": "Wipe with a damp cloth instead of sweeping, so the dust stays down." },
+      "why": { "th": "กรมอนามัยแนะให้ใช้ผ้าชุบน้ำหมาดๆ เช็ดทำความสะอาดแทนการกวาด เพื่อไม่ให้ฝุ่นฟุ้งกระจาย", "en": "The Thai Department of Health says to clean with a damp cloth rather than a broom, so dust is not stirred up." },
+      "sources": ["doh-dustroom-2569", "doh-10ways-2564"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-purifier", "mode": "dust", "room": "living",
+      "sprite": "purifier", "doneSprite": "purifier-done", "size": [52, 74], "slots": ["floor"],
+      "name": { "th": "เครื่องฟอกอากาศ", "en": "Air purifier" },
+      "context": { "th": "เปิดเครื่องฟอกทุกวัน แต่ไม่เคยดูแผ่นกรองเลย", "en": "It runs every day, but nobody has checked the filter" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "เช็กแผ่นกรอง แล้วเปลี่ยนตามรอบ", "en": "Check the filter and replace it on schedule" } },
+        { "kind": "leave", "label": { "th": "เปิดต่อไป เครื่องยังหมุนอยู่", "en": "Keep it running, the fan still works" }, "feedback": { "th": "เครื่องหมุนอยู่ไม่ได้แปลว่ายังกรองดี กรมอนามัยแนะให้หมั่นตรวจและเปลี่ยนแผ่นกรองทุก 6 เดือน", "en": "A running fan doesn't mean it still filters well. Check and replace the filter regularly." } },
+        { "kind": "off", "label": { "th": "ปิดเครื่อง เปิดหน้าต่างแทน", "en": "Switch it off and open a window" }, "feedback": { "th": "วันฝุ่นสูงเปิดหน้าต่างจะพาฝุ่นเข้ามา ให้ปิดห้องแล้วดูแลแผ่นกรองให้ใช้ได้", "en": "On dusty days an open window lets dust in. Keep the room shut and the filter working." } }
+      ],
+      "tip": { "th": "หมั่นเช็กแผ่นกรองเครื่องฟอกอากาศ กรมอนามัยแนะเปลี่ยนทุก 6 เดือน", "en": "Check the purifier filter; health officials say replace it every 6 months." },
+      "why": { "th": "กรมอนามัยแนะให้ห้องปลอดฝุ่นมีเครื่องฟอกอากาศหรือระบบเติมอากาศ และหมั่นตรวจสอบ เปลี่ยนแผ่นกรองอากาศทุก 6 เดือน", "en": "The Thai Department of Health suggests a purifier or fresh-air system for a dust-free room, and checking and replacing filters every 6 months." },
+      "sources": ["doh-dustroom-2569"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-inhaler", "mode": "dust", "room": "living",
+      "sprite": "inhaler", "doneAnim": "none", "size": [44, 40], "slots": ["table"],
+      "name": { "th": "ยาพ่นของคุณตา", "en": "Grandpa's inhaler" },
+      "context": { "th": "คุณตามีโรคประจำตัว ยาพ่นใกล้หมด ฝุ่นกำลังหนัก", "en": "Grandpa has a long-term illness, his inhaler is nearly empty and the dust is getting worse" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "สำรองยาและอุปกรณ์ให้พร้อม ตามที่หมอสั่ง", "en": "Get his medicine and kit ready, as his doctor says" } },
+        { "kind": "leave", "label": { "th": "รอให้หมดก่อนค่อยไปเอาใหม่", "en": "Wait till it runs out, then get more" }, "feedback": { "th": "ช่วงฝุ่นหนักอาการอาจกำเริบได้ กรมอนามัยแนะให้ผู้มีโรคประจำตัวสำรองยาและอุปกรณ์ให้พร้อม", "en": "Symptoms can flare when the dust is bad. People with a long-term illness should have medicine ready." } },
+        { "kind": "leave", "label": { "th": "ยืมยาของคนอื่นใช้ไปก่อน", "en": "Borrow someone else's for now" }, "feedback": { "th": "ยาของแต่ละคนไม่เหมือนกัน ใช้ยาตามที่แพทย์สั่งให้ตัวเองเท่านั้น", "en": "Medicines differ person to person. Use only what his own doctor prescribed." } }
+      ],
+      "tip": { "th": "คนที่มีโรคประจำตัว สำรองยาและอุปกรณ์ให้พร้อม ทำตามที่หมอแนะนำ", "en": "Long-term illness? Keep medicine and kit ready, as your doctor advises." },
+      "why": { "th": "กรมอนามัยแนะให้ผู้มีโรคประจำตัวสำรองยาและอุปกรณ์ที่จำเป็นให้พร้อม และปฏิบัติตามคำแนะนำของแพทย์ ในวันค่าฝุ่นสีแดงให้เตรียมยาอย่างน้อย 5 วัน", "en": "The Thai Department of Health says people with a long-term illness should keep medicine and equipment ready and follow their doctor. On red days, have at least 5 days of medicine." },
+      "sources": ["doh-10ways-2564", "doh-mask-2565"], "verify": "verified", "topic": "health"
+    },
+    {
+      "id": "a-cough", "mode": "dust", "room": "living",
+      "sprite": "tissues", "doneAnim": "none", "size": [50, 40], "slots": ["seat", "table"],
+      "name": { "th": "คุณยายไอไม่หยุด", "en": "Grandma keeps coughing" },
+      "context": { "th": "ฝุ่นหนักมาหลายวัน คุณยายไอบ่อย หายใจถี่ แน่นหน้าอก", "en": "After days of heavy dust, Grandma coughs a lot, is short of breath and has a tight chest" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "รีบพาไปพบแพทย์", "en": "Take her to a doctor soon" } },
+        { "kind": "leave", "label": { "th": "ให้นอนพักก่อน เดี๋ยวก็หาย", "en": "Let her rest, it will pass" }, "feedback": { "th": "ไอบ่อย หายใจลำบาก แน่นหน้าอก เป็นอาการที่กรมอนามัยบอกให้รีบไปพบแพทย์", "en": "Coughing, trouble breathing and a tight chest are signs the health department says need a doctor." } },
+        { "kind": "boil", "label": { "th": "ต้มน้ำร้อนให้สูดไอน้ำ", "en": "Give her steam to breathe" }, "feedback": { "th": "อาการแบบนี้ กรมอนามัยแนะให้รีบไปพบแพทย์ ไม่ควรรอดูอาการ", "en": "The health department says these signs mean see a doctor soon, not wait and see." } }
+      ],
+      "tip": { "th": "ไอบ่อย หายใจลำบาก แน่นหน้าอก ช่วงฝุ่นหนัก รีบไปพบแพทย์", "en": "Coughing, short of breath or chest tightness in heavy dust? See a doctor soon." },
+      "why": { "th": "กรมอนามัยแนะให้สังเกตตัวเองและคนในบ้าน ถ้ามีอาการไอบ่อย หายใจลำบาก หายใจถี่ แน่นหน้าอก เจ็บหน้าอก ให้รีบไปพบแพทย์ องค์การอนามัยโลกก็แนะเช่นเดียวกัน", "en": "The Thai Department of Health says watch yourself and your family; frequent coughing, trouble breathing, a tight or painful chest mean see a doctor soon. WHO says the same." },
+      "sources": ["doh-10ways-2564", "who-smoke-2566"], "verify": "verified", "topic": "health"
+    },
+    {
+      "id": "a-fan", "mode": "dust", "room": "kitchen",
+      "sprite": "fandust", "doneSprite": "fandust-done", "size": [46, 64], "slots": ["floor"],
+      "name": { "th": "พัดลมฝุ่นจับหนา", "en": "Dusty fan" },
+      "context": { "th": "ใบพัดและตะแกรงมีฝุ่นจับเป็นคราบ", "en": "The blades and grille are thick with dust" },
+      "choices": [
+        { "kind": "wash", "correct": true, "label": { "th": "ถอดตะแกรง เช็ดด้วยผ้าชุบน้ำ", "en": "Take the grille off and wipe with a wet cloth" } },
+        { "kind": "leave", "label": { "th": "เปิดพัดลมแรงสุด ให้ฝุ่นปลิวออก", "en": "Run it on full to blow the dust off" }, "feedback": { "th": "ฝุ่นที่ปลิวออกจะฟุ้งอยู่ในบ้าน พัดลมและแอร์เป็นจุดสะสมฝุ่น ต้องเช็ดด้วยผ้าชุบน้ำ", "en": "The dust ends up in the room air. Fans and air-cons collect dust; wipe them with a wet cloth." } },
+        { "kind": "clear", "label": { "th": "ใช้ผ้าแห้งปัดๆ พอ", "en": "A quick flick with a dry cloth will do" }, "feedback": { "th": "ผ้าแห้งทำให้ฝุ่นฟุ้ง กรมอนามัยแนะให้ทำความสะอาดด้วยผ้าชุบน้ำ", "en": "A dry cloth stirs dust up. The health department says clean with a wet cloth." } }
+      ],
+      "tip": { "th": "เช็ดจุดสะสมฝุ่น เช่น พัดลม แอร์ มุ้งลวด ด้วยผ้าชุบน้ำ", "en": "Wipe dust traps like fans, air-cons and screens with a wet cloth." },
+      "why": { "th": "กรมอนามัยแนะให้ทำความสะอาดจุดที่สะสมฝุ่น เช่น แอร์ พัดลม มุ้งลวด เครื่องนอน โดยใช้ผ้าชุบน้ำ", "en": "The Thai Department of Health says to clean dust traps such as air-cons, fans, window screens and bedding with a wet cloth." },
+      "sources": ["doh-10ways-2564"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-app", "mode": "dust", "room": "kitchen",
+      "sprite": "aqiphone", "doneAnim": "none", "size": [40, 52], "slots": ["counter-sm", "counter"],
+      "name": { "th": "มือถือก่อนออกไปตลาด", "en": "Phone before the market run" },
+      "context": { "th": "จะออกไปตลาด แต่ยังไม่รู้ว่าวันนี้ฝุ่นเยอะแค่ไหน", "en": "Off to the market, but nobody knows how bad the dust is today" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "เช็กค่าฝุ่นในแอป Air4Thai แล้วทำตามคำแนะนำ", "en": "Check the dust level in an air-quality app and follow its advice" } },
+        { "kind": "leave", "label": { "th": "มองฟ้าเอา ถ้าไม่หมอกก็ไม่เป็นไร", "en": "Look at the sky; if it isn't hazy, it's fine" }, "feedback": { "th": "PM2.5 เล็กมากจนมองด้วยตาไม่เห็น ฟ้าใสก็อาจฝุ่นสูงได้ ต้องเช็กค่าจริง", "en": "PM2.5 is too small to see. A clear sky can still be high-dust, so check the real numbers." } },
+        { "kind": "leave", "label": { "th": "ออกไปเลย ไปแป๊บเดียว", "en": "Just go, it's a quick trip" }, "feedback": { "th": "แม้ออกไปไม่นานก็ควรรู้ค่าฝุ่นก่อน จะได้เตรียมหน้ากากหรือเลื่อนออกไป", "en": "Even for a short trip, check first so you can bring a mask or go later." } }
+      ],
+      "tip": { "th": "ก่อนออกจากบ้าน เช็กค่าฝุ่นในแอป Air4Thai แล้วทำตามคำแนะนำ", "en": "Before going out, check the dust in the Air4Thai app and follow its advice." },
+      "why": { "th": "กรมอนามัยแนะให้ติดตามคุณภาพอากาศก่อนออกจากบ้าน ทางเว็บไซต์หรือแอป Air4Thai ของกรมควบคุมมลพิษ (หรือ AirBKK) และปฏิบัติตามคำแนะนำ", "en": "The Thai Department of Health says to check air quality before leaving home, on the Pollution Control Department's Air4Thai site or app (or AirBKK), and follow the advice." },
+      "sources": ["doh-10ways-2564", "doh-dustroom-2569"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-grill", "mode": "dust", "room": "kitchen",
+      "sprite": "grill", "doneAnim": "none", "size": [60, 52], "slots": ["floor"],
+      "name": { "th": "เตาถ่านปิ้งย่าง", "en": "Charcoal grill" },
+      "context": { "th": "วันฝุ่นสูง กำลังจะจุดเตาถ่านปิ้งหมูในบ้าน", "en": "A high-dust day, and someone is about to light the charcoal grill indoors" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "งดเตาถ่านวันนี้ ทำอาหารแบบอื่นแทน", "en": "Skip the charcoal today and cook another way" } },
+        { "kind": "leave", "label": { "th": "จุดเลย เปิดพัดลมไล่ควันเอา", "en": "Light it and run a fan to clear the smoke" }, "feedback": { "th": "ควันเตาถ่านคือฝุ่นในบ้านเพิ่มขึ้นอีก กรมอนามัยแนะให้ลดการปิ้งย่างที่ใช้เตาถ่าน", "en": "Charcoal smoke adds even more dust indoors. The health department says cut down on charcoal grilling." } },
+        { "kind": "move", "label": { "th": "ย้ายไปจุดหน้าบ้านแทน", "en": "Move it out front instead" }, "feedback": { "th": "ควันยังลอยกลับเข้าบ้านและเพิ่มฝุ่นให้เพื่อนบ้าน งดเตาถ่านในวันฝุ่นสูงดีที่สุด", "en": "The smoke still drifts in and adds dust for the neighbours. Better to skip charcoal on dusty days." } }
+      ],
+      "tip": { "th": "วันฝุ่นสูง งดปิ้งย่างด้วยเตาถ่าน ลดควันในบ้านและรอบบ้าน", "en": "On high-dust days, skip the charcoal grill to cut smoke in and around the home." },
+      "why": { "th": "กรมอนามัยชวนลดฝุ่น เช่น ลดการปิ้งย่างที่ใช้เตาถ่าน งดเผาในที่โล่ง องค์การอนามัยโลกแนะให้ลดแหล่งมลพิษในบ้าน เช่น การทอดหรือปิ้งย่าง", "en": "The Thai Department of Health asks people to cut charcoal grilling and open burning. WHO advises reducing indoor pollution such as frying or grilling." },
+      "sources": ["doh-10ways-2564", "who-smoke-2566"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-mask", "mode": "dust", "room": "front",
+      "sprite": "maskhook", "doneSprite": "maskhook-done", "size": [46, 58], "slots": ["board"],
+      "name": { "th": "หน้ากากผ้าบางๆ", "en": "Thin cloth mask" },
+      "context": { "th": "ต้องออกไปข้างนอกวันฝุ่นหนัก มีแต่หน้ากากผ้าชั้นเดียวหลวมๆ", "en": "Must go out on a heavy-dust day, and there's only a loose single-layer cloth mask" },
+      "choices": [
+        { "kind": "gear", "correct": true, "label": { "th": "ใส่ N95 ให้แนบหน้า ครอบจมูกถึงใต้คาง", "en": "Wear an N95 that fits snugly, over the nose and under the chin" } },
+        { "kind": "gear", "label": { "th": "ใส่ผ้าบางชั้นเดียวก็พอ", "en": "A thin single-layer cloth is enough" }, "feedback": { "th": "ผ้าบางกันฝุ่นเล็กๆ ได้น้อย กรมอนามัยแนะ N95 ที่แนบกระชับเมื่อจำเป็นต้องออกนอกบ้าน", "en": "Thin cloth stops little fine dust. The health department recommends a snug N95 when you must go out." } },
+        { "kind": "leave", "label": { "th": "ใส่ N95 แต่ดึงลงใต้จมูกให้หายใจสะดวก", "en": "Wear an N95 but pull it under the nose" }, "feedback": { "th": "ถ้าไม่ครอบจมูก ฝุ่นก็เข้าทางจมูกได้ ต้องครอบจมูกและใต้คางให้มิดชิด", "en": "If it doesn't cover your nose, dust gets in. It must cover the nose and under the chin." } }
+      ],
+      "tip": { "th": "ต้องออกไปข้างนอก ใส่ N95 ให้แนบหน้า ครอบจมูกและใต้คาง", "en": "Going out? Wear an N95 that fits snugly over the nose and under the chin." },
+      "why": { "th": "กรมอนามัยแนะให้สวมหน้ากาก N95 เมื่อจำเป็นต้องออกนอกบ้าน ต้องมีขนาดเหมาะ แนบกระชับใบหน้า ครอบจมูกและใต้คางได้มิดชิด และเปลี่ยนเมื่อไม่กระชับ ฉีกขาด หรือเปื้อน องค์การอนามัยโลกก็แนะหน้ากาก N95/FFP2 ที่แนบหน้า", "en": "The Thai Department of Health says wear an N95 when you must go out; it must fit snugly over the nose and under the chin, and be replaced when loose, torn or dirty. WHO also advises a well-fitting N95/FFP2." },
+      "sources": ["doh-dustroom-2569", "doh-mask-2565", "who-smoke-2566"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-runshoes", "mode": "dust", "room": "front",
+      "sprite": "runshoes", "doneAnim": "none", "size": [56, 36], "slots": ["shoes"],
+      "name": { "th": "รองเท้าวิ่ง", "en": "Running shoes" },
+      "context": { "th": "ค่าฝุ่นเกินมาตรฐาน แต่พ่อจะออกไปวิ่งรอบหมู่บ้านเหมือนทุกเช้า", "en": "The dust is over the limit, but Dad is about to go for his usual morning run" },
+      "choices": [
+        { "kind": "home", "correct": true, "label": { "th": "งดวิ่งข้างนอก เปลี่ยนมาออกกำลังกายในบ้าน", "en": "Skip the outdoor run and exercise indoors" } },
+        { "kind": "leave", "label": { "th": "วิ่งเร็วๆ จะได้กลับมาไว", "en": "Run fast so it's over quickly" }, "feedback": { "th": "ตอนออกกำลังกาย เราหายใจแรงและลึก ฝุ่นจึงเข้าปอดมากขึ้น วันฝุ่นสูงให้ออกกำลังกายในบ้าน", "en": "Exercise makes you breathe hard and deep, so more dust gets in. Exercise indoors on dusty days." } },
+        { "kind": "gear", "label": { "th": "ใส่หน้ากากผ้าแล้ววิ่งตามปกติ", "en": "Run as usual with a cloth mask" }, "feedback": { "th": "กรมอนามัยแนะให้หลีกเลี่ยงการออกกำลังกายกลางแจ้งในวันที่ฝุ่นเกินมาตรฐาน แล้วออกกำลังกายในอาคารแทน", "en": "The health department says avoid outdoor exercise when dust is over the limit, and exercise indoors instead." } }
+      ],
+      "tip": { "th": "วันฝุ่นเกินมาตรฐาน งดออกกำลังกายกลางแจ้ง เปลี่ยนมาออกกำลังในบ้าน", "en": "When dust is over the limit, skip outdoor exercise and work out indoors." },
+      "why": { "th": "กรมอนามัยแนะว่า วันที่ฝุ่น PM2.5 เกินค่ามาตรฐาน ควรหลีกเลี่ยงการทำกิจกรรมหรือออกกำลังกายกลางแจ้ง ให้เปลี่ยนมาออกกำลังกายภายในอาคารแทน", "en": "The Thai Department of Health says that when PM2.5 is over the standard, avoid outdoor activity and exercise, and exercise indoors instead." },
+      "sources": ["doh-10ways-2564", "doh-mask-2565"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-ball", "mode": "dust", "room": "front",
+      "sprite": "ball", "doneAnim": "none", "size": [40, 40], "slots": ["floor"],
+      "name": { "th": "ลูกบอลของหลาน", "en": "The kids' ball" },
+      "context": { "th": "ค่าฝุ่นขึ้นสีแดง หลานๆ อยากออกไปเตะบอลหน้าบ้าน", "en": "The dust level is red and the kids want to play football outside" },
+      "choices": [
+        { "kind": "home", "correct": true, "label": { "th": "ชวนเล่นในบ้านแทน เด็กเป็นกลุ่มเสี่ยง", "en": "Play indoors instead; children are at higher risk" } },
+        { "kind": "leave", "label": { "th": "ให้เล่นได้ เด็กแข็งแรงอยู่แล้ว", "en": "Let them, kids are tough" }, "feedback": { "th": "เด็กเป็นกลุ่มเสี่ยงที่ได้รับผลจากฝุ่นมาก วันค่าฝุ่นสีแดง กลุ่มเสี่ยงควรงดออกนอกบ้าน", "en": "Children are among those hit hardest by dust. On red days, at-risk groups should stay in." } },
+        { "kind": "leave", "label": { "th": "ให้เล่นได้ แค่ไม่เกินชั่วโมง", "en": "Let them play, but under an hour" }, "feedback": { "th": "วันสีแดง กรมอนามัยแนะให้กลุ่มเสี่ยง เช่น เด็ก งดออกนอกบ้าน ชวนเล่นในบ้านปลอดภัยกว่า", "en": "On red days the health department says at-risk groups like children should stay in. Indoor play is safer." } }
+      ],
+      "tip": { "th": "เด็ก ผู้สูงอายุ คนท้อง ผู้มีโรคประจำตัว เป็นกลุ่มเสี่ยง วันฝุ่นแดงให้อยู่ในบ้าน", "en": "Kids, elders, pregnant women and the ill are at risk. Keep them in on red days." },
+      "why": { "th": "กรมอนามัยระบุว่ากลุ่มเสี่ยงคือ เด็ก หญิงตั้งครรภ์ ผู้สูงอายุ และผู้มีโรคประจำตัว เมื่อค่าฝุ่นอยู่ระดับสีแดง กลุ่มเสี่ยงควรงดออกนอกบ้าน องค์การอนามัยโลกก็ระบุกลุ่มเสี่ยงเดียวกัน", "en": "The Thai Department of Health names children, pregnant women, older people and those with chronic illness as at risk; on red days they should stay in. WHO names the same groups." },
+      "sources": ["doh-mask-2565", "doh-dustroom-2569", "who-smoke-2566"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "a-leaves", "mode": "dust", "room": "front",
+      "sprite": "leafpile", "doneAnim": "none", "size": [88, 46], "slots": ["floor-big"],
+      "name": { "th": "กองใบไม้แห้งกับไม้ขีด", "en": "Dry leaves and a box of matches" },
+      "context": { "th": "กวาดใบไม้มากองไว้ กะว่าจะจุดไฟเผาทิ้ง", "en": "A pile of swept leaves, ready to be burned" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "ไม่เผา เก็บใส่ถุงไว้ทิ้งกับขยะ", "en": "Don't burn it; bag it up with the rubbish" } },
+        { "kind": "leave", "label": { "th": "เผาตอนเย็น ควันจะได้ไม่รบกวนใคร", "en": "Burn it in the evening when fewer people are around" }, "feedback": { "th": "การเผาในที่โล่งเพิ่มฝุ่น PM2.5 ไม่ว่าเวลาไหน กรมอนามัยขอให้งดเผาในที่โล่ง", "en": "Open burning adds PM2.5 at any time of day. The health department asks people not to burn in the open." } },
+        { "kind": "leave", "label": { "th": "เผาทีละน้อย ควันจะได้ไม่เยอะ", "en": "Burn a little at a time to keep the smoke down" }, "feedback": { "th": "เผาน้อยก็ยังเพิ่มฝุ่น ทางที่ดีคือไม่เผาเลย", "en": "Even a small fire adds dust. Best not to burn at all." } }
+      ],
+      "tip": { "th": "งดเผาขยะและใบไม้ในที่โล่ง ช่วยลดฝุ่น PM2.5 ให้ทั้งซอย", "en": "Don't burn rubbish or leaves in the open; it adds PM2.5 for the whole street." },
+      "why": { "th": "กรมอนามัยชวนช่วยกันลดฝุ่น PM2.5 เช่น งดการเผาในที่โล่ง ลดการใช้รถดีเซลที่ปล่อยควันดำ และปลูกต้นไม้", "en": "The Thai Department of Health asks everyone to help cut PM2.5: no open burning, fewer black-smoke diesels, and planting trees." },
+      "sources": ["doh-10ways-2564"], "verify": "verified", "topic": "air"
     }
   ],
   "decoys": [
@@ -645,6 +813,11 @@
     { "id": "d-winopen", "mode": "return", "room": "living", "sprite": "winopen", "size": [104, 172], "slots": ["window"], "name": { "th": "หน้าต่างที่เปิดไว้", "en": "Open window" }, "note": { "th": "เปิดหน้าต่างให้อากาศถ่ายเท ถูกต้องแล้ว", "en": "Letting fresh air through is exactly right." } },
     { "id": "d-trashbag", "mode": "return", "room": "living", "sprite": "trashbag", "size": [48, 48], "slots": ["floor"], "name": { "th": "ถุงขยะที่มัดปากแล้ว", "en": "Tied rubbish bag" }, "note": { "th": "มัดปากถุงแน่น รอส่งให้รถเก็บขยะ ถูกต้อง", "en": "Tied tight and waiting for collection. Correct." } },
     { "id": "d-waternew", "mode": "return", "room": "kitchen", "sprite": "waternew", "size": [54, 42], "slots": ["counter", "floor"], "name": { "th": "น้ำดื่มแพ็กใหม่", "en": "New pack of bottled water" }, "note": { "th": "น้ำดื่มบรรจุขวดใหม่ ปิดสนิท ดื่มได้", "en": "New, sealed bottled water. Safe to drink." } },
-    { "id": "d-soap", "mode": "return", "room": "kitchen", "sprite": "soap", "size": [32, 44], "slots": ["counter-sm", "counter"], "name": { "th": "สบู่ล้างมือ", "en": "Hand soap" }, "note": { "th": "ล้างมือด้วยสบู่ก่อนกินข้าวทุกครั้ง ดีมาก", "en": "Washing hands with soap before eating: great." } }
+    { "id": "d-soap", "mode": "return", "room": "kitchen", "sprite": "soap", "size": [32, 44], "slots": ["counter-sm", "counter"], "name": { "th": "สบู่ล้างมือ", "en": "Hand soap" }, "note": { "th": "ล้างมือด้วยสบู่ก่อนกินข้าวทุกครั้ง ดีมาก", "en": "Washing hands with soap before eating: great." } },
+    { "id": "d-plant-a", "mode": "dust", "room": "front", "sprite": "plant", "size": [42, 54], "slots": ["pot"], "name": { "th": "กระถางต้นไม้", "en": "Potted plant" }, "note": { "th": "ต้นไม้ช่วยดักฝุ่นได้ กรมอนามัยชวนกันปลูกต้นไม้ ปล่อยไว้แบบนี้ดีแล้ว", "en": "Plants help trap dust, and health officials encourage planting trees. All good." } },
+    { "id": "d-clock-a", "mode": "dust", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวน", "en": "Wall clock" }, "note": { "th": "นาฬิกาไม่เกี่ยวกับฝุ่น เก็บเวลาไว้ดูแลจุดอื่นก่อน", "en": "The clock has nothing to do with dust. Spend your time on the rest." } },
+    { "id": "d-books-a", "mode": "dust", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้น", "en": "Books on the shelf" }, "note": { "th": "หนังสือบนชั้นไม่เป็นอะไร ไม่ต้องย้าย", "en": "Books on the shelf are fine where they are." } },
+    { "id": "d-ricebox-a", "mode": "dust", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": { "th": "ถังข้าวสาร", "en": "Rice bin" }, "note": { "th": "ข้าวสารในถังปิดฝาสนิท ไม่ต้องห่วงเรื่องฝุ่น", "en": "Rice in a closed bin is fine." } },
+    { "id": "d-dishes-a", "mode": "dust", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["high"], "name": { "th": "จานชามบนชั้น", "en": "Dishes on the shelf" }, "note": { "th": "จานชามเก็บบนชั้นเรียบร้อยดี", "en": "The dishes are tidy on the shelf. Nothing to do." } }
   ]
 }

@@ -16,6 +16,8 @@ const P = {
   clear: '<path d="M14 3l-4 9"/><path d="M5 13h10l2 8H3l2-8z"/><path d="M8 17v4M12 17v4"/>',
   drink: '<path d="M6 4h12l-1.6 16H7.6L6 4z"/><path d="M6.7 10h10.6"/>',
   wash: '<path d="M12 3c3.2 4.2 5.2 6.8 5.2 9.4a5.2 5.2 0 0 1-10.4 0C6.8 9.8 8.8 7.2 12 3z"/><path d="M9.6 13.4a2.4 2.4 0 0 0 2.4 2.4"/>',
+  seal: '<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M12 3v18M4 12h16"/><path d="M2 7l4-2M18 19l4-2"/>',
+  home: '<path d="M3.5 11.5L12 4l8.5 7.5"/><path d="M6 10v10h12V10"/><path d="M10 20v-5h4v5"/>',
 };
 
 export function actionIcon(kind) {

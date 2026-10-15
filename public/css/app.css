@@ -164,7 +164,8 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .bubble-hero { max-width: 210px; margin-bottom: 70px; text-align: left; }
 .bubble-hero::after { left: auto; right: -11px; bottom: 18px; transform: rotate(-45deg) skew(8deg, 8deg); }
 
-.modes { display: flex; flex-direction: column; gap: 12px; }
+.modes { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 12px 10px; }
+.mode-btn.is-default { grid-column: 1 / -1; }
 .mode-btn {
   position: relative;
   display: flex;
@@ -189,6 +190,11 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .mode-text { display: flex; flex-direction: column; }
 .mode-name { font-size: 23px; font-weight: 600; line-height: 1.2; }
 .mode-desc { font-size: 15px; color: var(--ink-2); }
+/* The other modes: compact cards, icon over name (the description stays for screen readers). */
+.mode-btn:not(.is-default) { flex-direction: column; justify-content: center; gap: 4px; min-height: 78px; padding: 10px 4px; border-radius: 18px; text-align: center; }
+.mode-btn:not(.is-default) .mode-icon { font-size: 28px; }
+.mode-btn:not(.is-default) .mode-name { font-size: 16px; line-height: 1.25; }
+.mode-btn:not(.is-default) .mode-desc { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .mode-badge {
   position: absolute;
   top: -12px;
@@ -481,7 +487,8 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .water-top { fill: #8FD0F5; fill-opacity: .7; }
 .smoke-body { fill: #5E5650; fill-opacity: .55; }
 .smoke-edge { fill: #7A716A; fill-opacity: .55; }
-.haze-body { fill: #B9A58C; }
+.haze-body { fill: #A8957A; fill-opacity: .85; }
+.haze-speck { fill: #6E5D49; fill-opacity: .7; }
 .item.smoked .sprite { filter: grayscale(.8) brightness(.8); }
 
 .spark { pointer-events: none; }

@@ -177,10 +177,16 @@ export class Scene {
 
   _haze(group) {
     group.innerHTML = '';
-    const rect = svgEl('rect', { class: 'haze-body', x: -20, y: -20, width: 400, height: 660, opacity: 0 });
-    group.appendChild(rect);
+    const body = svgEl('g', { class: 'haze', opacity: 0 });
+    body.appendChild(svgEl('rect', { class: 'haze-body', x: -20, y: -20, width: 400, height: 660 }));
+    // Fine specks so it reads as dust, not just a dim screen (fixed pattern, same in every room).
+    for (let i = 0; i < 46; i++) {
+      const x = (i * 97) % 360, y = (i * 151 + (i % 5) * 37) % 600;
+      body.appendChild(svgEl('circle', { class: 'haze-speck', cx: x, cy: y, r: 1.4 + (i % 3) * 0.9 }));
+    }
+    group.appendChild(body);
     group.style.pointerEvents = 'none';
-    return { body: rect, kind: 'haze' };
+    return { body, kind: 'haze' };
   }
 
   // Smoke: y of its lower edge; haze: thickness 0..1.

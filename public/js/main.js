@@ -6,7 +6,7 @@ import {
   loadContent, content, t, L, setLang, getLang, pickLine, rankTitle, sourceList,
   siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
 } from './content.js';
-import { modeList, modeIds, modeOf, mk, idsRe, seasonalMode } from './modes.js';
+import { modeList, modeIds, modeOf, mk, cap, idsRe, seasonalMode } from './modes.js';
 import { generateHouse, playableRooms } from './house.js';
 import { Round, STATUS } from './round.js';
 import { Run } from './run.js';
@@ -83,6 +83,7 @@ async function boot() {
   if (state.challenge && !isValidHouseKey(state.challenge.houseKey)) state.challenge.houseKey = bangkokDateKey();
 
   const defaultMode = await pickDefaultMode(C);
+  renderModes();
   renderStart(defaultMode);
   bindGlobal();
 
@@ -137,6 +138,23 @@ function bookCounts() {
 const topicEmoji = (id) => t(`topic_${id}`).split(' ')[0];
 const learnUrl = (hash = '') => `${getLang() === 'en' ? '/en' : ''}/learn${hash}`;
 
+// One button per mode in the registry (config.json → modes). The season's
+// mode is the big card; the rest are compact cards in a row below it.
+function renderModes() {
+  const list = modeList();
+  const box = $('#modes');
+  box.style.setProperty('--cols', Math.min(3, Math.max(1, list.length - 1)));
+  box.innerHTML = list.map((m) => `
+      <button class="mode-btn mode-${esc(m.id)}" type="button" data-mode="${esc(m.id)}">
+        <span class="mode-icon" aria-hidden="true">${esc(m.icon || m.emoji || '')}</span>
+        <span class="mode-text">
+          <span class="mode-name" data-i18n="${esc(mk('mode', m.id))}">${esc(t(mk('mode', m.id)))}</span>
+          <span class="mode-desc" data-i18n="${esc(`mode${cap(m.id)}Desc`)}">${esc(t(`mode${cap(m.id)}Desc`))}</span>
+        </span>
+        <span class="mode-badge" data-i18n="recommended" hidden>${esc(t('recommended'))}</span>
+      </button>`).join('');
+}
+
 function renderStart(defaultMode) {
   state.defaultMode = defaultMode;
   for (const btn of $$('.mode-btn')) {
@@ -178,12 +196,14 @@ function renderStart(defaultMode) {
   bookBtn.textContent = t('bookChip', { n: book.n, total: book.total });
   bookBtn.hidden = false;
 
-  const fUrl = forecastUrl();
+  const fUrl = forecastUrl(defaultMode);
   const fl = $('#forecast-link-start');
   if (fUrl) {
     fl.href = fUrl;
-    fl.hidden = false;
+    fl.firstElementChild.textContent = tm('forecastIcon', defaultMode);
+    fl.lastElementChild.textContent = tm('forecastShort', defaultMode);
   }
+  fl.hidden = !fUrl;
 
   const vEl = $('#app-version');
   if (vEl && content()?.config?.version) {
@@ -218,12 +238,12 @@ function bindGlobal() {
   addEventListener('pointerdown', unlock, { passive: true });
   addEventListener('keydown', unlock);
 
-  for (const btn of $$('.mode-btn')) {
-    btn.addEventListener('click', () => {
-      track('mode_select', { mode: btn.dataset.mode, label: btn.dataset.mode === state.defaultMode ? 'default' : 'other' });
-      startFlow(btn.dataset.mode, { kind: 'daily' });
-    });
-  }
+  $('#modes').addEventListener('click', (e) => {
+    const btn = e.target.closest('.mode-btn');
+    if (!btn) return;
+    track('mode_select', { mode: btn.dataset.mode, label: btn.dataset.mode === state.defaultMode ? 'default' : 'other' });
+    startFlow(btn.dataset.mode, { kind: 'daily' });
+  });
   for (const b of $$('[data-open]')) {
     b.addEventListener('click', () => {
       const what = b.dataset.open;
@@ -697,11 +717,11 @@ async function showResult(result) {
     const data = rec.variant === 'wet' ? p.ref.wet : p.ref;
     const st = rec.status;
     const glyph = { correct: '✓', learned: '!', flooded: '~', missed: '?' }[st];
-    const tag = { correct: 'stCorrect', learned: 'stLearned', flooded: mk('stFlooded', mode), missed: 'stMissed' }[st];
+    const tagText = st === 'flooded' ? tm('stFlooded', mode) : t({ correct: 'stCorrect', learned: 'stLearned', missed: 'stMissed' }[st]);
     return `<li class="lesson ${st}">
       <div class="row"><span class="st" aria-hidden="true">${glyph}</span>
         <div>
-          <div class="name"><span aria-hidden="true">${esc(topicEmoji(p.ref.topic))}</span> ${esc(L(p.ref.name))} <span class="tag">· ${esc(t(tag))}</span></div>
+          <div class="name"><span aria-hidden="true">${esc(topicEmoji(p.ref.topic))}</span> ${esc(L(p.ref.name))} <span class="tag">· ${esc(tagText)}</span></div>
           <p class="tip">${esc(L(data.tip))}</p>
           <details><summary>${esc(t('why'))}</summary><p>${esc(L(data.why))}</p>${sourcesLine(data.sources || p.ref.sources)}</details>
         </div>
@@ -713,7 +733,7 @@ async function showResult(result) {
       <span class="num">${esc(h.number)}</span>
       <span class="who">${esc(L(h.who))}<span class="what">${esc(L(h.what))}</span></span>
     </a></li>`).join('');
-  const fUrl = forecastUrl();
+  const fUrl = forecastUrl(mode);
 
   $('#result').innerHTML = `
     <div class="card-wrap">
@@ -747,7 +767,7 @@ async function showResult(result) {
     <h2 class="section-title">${esc(t('helpTitle'))}</h2>
     <ul class="help-list">${help}</ul>
     <p class="note">${esc(t('helpNote'))}</p>
-    ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">🌧️ ${esc(t('forecastLong'))}</a>` : ''}
+    ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
@@ -1013,15 +1033,17 @@ function openHelp() {
       <span class="num">${esc(h.number)}</span>
       <span class="who">${esc(L(h.who))}<span class="what">${esc(L(h.what))}</span></span>
     </a></li>`).join('');
-  const fUrl = forecastUrl();
+  // One "check before you go" link per distinct mode link (flood forecast, Air4Thai).
+  const seen = new Set();
+  const links = modeIds().map((id) => [id, forecastUrl(id)]).filter(([, u]) => u && !seen.has(u) && seen.add(u));
   openSheet(`
     <h2 id="sheet-title">${esc(t('helpTitle'))}</h2>
     <ul class="help-list">${help}</ul>
     <p class="note">${esc(t('helpNote'))}</p>
-    ${fUrl ? `<a class="btn blue" href="${esc(fUrl)}" target="_blank" rel="noopener" id="help-forecast">🌧️ ${esc(t('forecastLong'))}</a>` : ''}
+    ${links.map(([id, u]) => `<a class="btn blue" href="${esc(u)}" target="_blank" rel="noopener" data-forecast="${esc(id)}">${esc(tm('forecastIcon', id))} ${esc(tm('forecastLong', id))}</a>`).join('')}
     <button class="btn secondary small" type="button" id="help-close">${esc(t('close'))}</button>`);
   $('#help-close').addEventListener('click', () => closeSheet());
-  $('#help-forecast')?.addEventListener('click', () => track('forecast_click', { label: 'help' }));
+  for (const a of $$('[data-forecast]', $('#sheet'))) a.addEventListener('click', () => track('forecast_click', { mode: a.dataset.forecast, label: 'help' }));
   for (const a of $$('[data-help]', $('#sheet'))) a.addEventListener('click', () => track('help_click', { label: a.dataset.help }));
 }
 

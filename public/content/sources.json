@@ -1,5 +1,5 @@
 {
-  "_readme": "Official sources behind every tip. 'kind': official = the agency's own page/document; government = another government channel (e.g. PRD) relaying the agency; secondary = a news article that quotes the agency. Checked 2026-10-06.",
+  "_readme": "Official sources behind every tip. 'kind': official = the agency's own page/document; government = another government channel (e.g. PRD) relaying the agency; secondary = a news article that quotes the agency; academic = a peer-reviewed study or academic statement; international = a UN/WHO or foreign agency, used to cross-check Thai advice. Checked 2026-10-06.",
   "sources": {
     "ddpm-noru": {
       "agency": "ปภ.",
@@ -393,6 +393,38 @@
       "date": "2026-09-27",
       "kind": "secondary",
       "note": "News report quoting the DDC Director-General on 27 Sep 2026, read on 15 Oct 2026. Six groups: leptospirosis (boots, cover wounds, wash with soap after contact), skin infections (keep clean and dry, avoid walking barefoot), gastrointestinal (freshly cooked food, clean water, ORS for diarrhoea), mosquito-borne (remove standing water, no NSAIDs for fever), conjunctivitis (wash hands often, don't rub eyes, don't share towels or personal items), respiratory (hygiene, mask when coughing or sneezing)."
+    },
+    "doh-dustroom-2569": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัยเตือน 8 จังหวัดเหนือ-อีสาน ฝุ่น PM2.5 วิกฤตสีแดง แนะ 6 วิธีทำห้องปลอดฝุ่นในบ้าน",
+      "url": "https://thestandard.co/pm25-dust-free-room-thailand-tips/",
+      "date": "2026-04-01",
+      "kind": "secondary",
+      "note": "THE STANDARD quoting the DOH deputy Director-General and the Health Impact Assessment Division, read on 15 Oct 2026. Dust-free room: seal doors and windows, seal gaps, cover vents, a purifier or fresh-air system, wipe with a damp cloth instead of sweeping, check and replace filters every 6 months, shoes off, fewer door openings. Over 37.5 µg/m³ cut outdoor activity; over 75 µg/m³ stay mainly in a dust-free room. N95 when going out. Apps: Air4Thai, AirBKK, Life Dee. Vulnerable groups: young children, older people, pregnant women, people with lung or heart disease."
+    },
+    "doh-10ways-2564": {
+      "agency": "กรมอนามัย",
+      "title": "อธิบดีกรมอนามัย แนะ 10 วิธีดูแลสุขภาพช่วงฝุ่น PM2.5",
+      "url": "https://www.thaipbs.or.th/news/content/310541",
+      "date": "2021-12-10",
+      "kind": "secondary",
+      "note": "Thai PBS quoting the DOH Director-General, read on 15 Oct 2026. 1 check Air4Thai before going out; 2 keep masks (surgical or N95); 3–4 rest, water, vegetables and fruit; 5 clean dust traps (air-con, fan, screens, bedding) with a wet cloth; 6 seal gaps round doors and windows; 7 no outdoor exercise when PM2.5 is over the standard, exercise indoors; 8 people with chronic illness keep medicine and equipment ready; 9 frequent cough, hard or fast breathing, wheeze, chest tightness or pain, palpitations, nausea, unusual tiredness or dizziness: see a doctor; 10 cut charcoal grilling, no incense or candles, no open burning, fewer black-smoke diesels, plant trees."
+    },
+    "doh-mask-2565": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัยคาดแนวโน้ม PM 2.5 สูงขึ้น แนะเช็กค่าฝุ่น-เปิดวิธีดูแลตัวเอง",
+      "url": "https://www.pptvhd36.com/health/news/2486",
+      "date": "2022-12-14",
+      "kind": "secondary",
+      "note": "PPTV quoting the DOH deputy Director-General, read on 15 Oct 2026. N95 must fit, snug, covering nose and under the chin; surgical masks 3 layers; cloth at least 2 layers; replace when loose, hard to breathe through, torn, dirty or wet. At-risk: children, pregnant women, older people, people with chronic illness. Red level: at-risk groups stay in; chronic patients keep at least 5 days of medicine. The colour ranges in this article use the scale before the 2023 change, so the game does not quote them."
+    },
+    "who-smoke-2566": {
+      "agency": "องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป",
+      "title": "Public health advice during the wildfires: how to protect your health and keep safe (Q&A)",
+      "url": "https://www.who.int/europe/news-room/questions-and-answers/item/public-health-advice-during-the-wildfires--how-to-protect-your-health-and-keep-safe",
+      "date": "2023-06-16",
+      "kind": "international",
+      "note": "WHO Europe Q&A, read on 15 Oct 2026. Stay indoors with doors and windows shut; reduce indoor pollution such as smoking and frying or grilling; a well-fitting FFP2/N95 mask outside; most at risk: children, older people, people with heart or lung disease, pregnant women; get medical help for symptoms. Used to cross-check the Thai advice, never as the only source."
     }
   }
 }

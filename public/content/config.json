@@ -5,9 +5,10 @@
   "forecastStatusUrl": null,
   "modes": [
     { "id": "prepare", "hazard": "flood", "code": "p", "threat": "water", "prop": "hood", "emoji": "🏠", "months": [5, 6, 7, 8, 9, 10, 11], "bonus": true },
-    { "id": "return", "hazard": "flood", "code": "r", "threat": null, "prop": "torch", "emoji": "⚡", "months": [] }
+    { "id": "return", "hazard": "flood", "code": "r", "threat": null, "prop": "torch", "emoji": "⚡", "icon": "🧹", "months": [] },
+    { "id": "dust", "hazard": "dust", "code": "d", "threat": "haze", "prop": "mask", "emoji": "😷", "months": [12, 1, 2, 3], "link": "https://air4thai.pcd.go.th/webV3/" }
   ],
-  "topics": ["health", "power", "food", "critters", "home", "plan"],
+  "topics": ["health", "power", "food", "critters", "home", "plan", "air"],
   "featuredTopic": "health",
   "siteUrl": "https://baanrodmai.autobahn.bot",
   "version": "1.4.0",
@@ -29,6 +30,10 @@
     },
     "return": {
       "seconds": 50
+    },
+    "dust": {
+      "seconds": 55,
+      "haze": [[0, 0.06], [0.3, 0.28], [0.7, 0.52], [1, 0.64]]
     }
   },
   "analytics": {

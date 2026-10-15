@@ -1,7 +1,7 @@
 // Loads the editable JSON content and provides translation helpers.
 
 import { store } from './util.js';
-import { setModes, mk, codesRe, idsRe } from './modes.js';
+import { setModes, modeOf, mk, codesRe, idsRe } from './modes.js';
 
 const FILES = ['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'];
 
@@ -112,8 +112,11 @@ export function siteUrl() {
   return /^https?:\/\/[^[\]]+$/.test(u) ? u.replace(/\/$/, '') : location.origin;
 }
 
-export function forecastUrl() {
-  const u = C.config.forecastAppUrl || '';
+// The "check before you go" link for a mode: its own config.modes[].link
+// (dust → Air4Thai), else the flood forecast app for flood modes.
+export function forecastUrl(mode) {
+  const m = mode ? modeOf(mode) : null;
+  const u = (m ? m.link ?? (m.hazard === 'flood' ? C.config.forecastAppUrl : '') : C.config.forecastAppUrl) || '';
   return /^https?:\/\/[^[\]]+$/.test(u) ? u : null;
 }
 

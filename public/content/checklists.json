@@ -135,5 +135,73 @@
         "sprite": "thermo"
       }
     ]
+  },
+  "dust": {
+    "title": {
+      "th": "ห้องปลอดฝุ่น 10 ข้อ",
+      "en": "10 things to do on PM2.5 days"
+    },
+    "items": [
+      {
+        "icon": "📱",
+        "th": "เช็กค่าฝุ่นในแอป Air4Thai ก่อนออกจากบ้าน",
+        "en": "Check the dust level in Air4Thai before going out",
+        "sprite": "aqiphone"
+      },
+      {
+        "icon": "🪟",
+        "th": "วันฝุ่นสูง ปิดประตูหน้าต่างให้สนิท อุดรอยรั่วตามขอบ",
+        "en": "High-dust day: shut doors and windows, seal the gaps",
+        "sprite": "winclosed"
+      },
+      {
+        "icon": "🌬️",
+        "th": "ใช้เครื่องฟอกอากาศ เช็กแผ่นกรอง เปลี่ยนทุก 6 เดือน",
+        "en": "Run a purifier; check and change the filter every 6 months",
+        "sprite": "purifier"
+      },
+      {
+        "icon": "🧽",
+        "th": "เช็ดถูด้วยผ้าชุบน้ำหมาดๆ แทนการกวาด",
+        "en": "Wipe with a damp cloth instead of sweeping",
+        "sprite": "broom"
+      },
+      {
+        "icon": "🌀",
+        "th": "เช็ดฝุ่นพัดลม แอร์ มุ้งลวด ที่นอน ด้วยผ้าชุบน้ำ",
+        "en": "Wet-wipe fans, air-cons, window screens and bedding",
+        "sprite": "fandust"
+      },
+      {
+        "icon": "😷",
+        "th": "ออกนอกบ้าน ใส่ N95 ให้แนบหน้า ครอบจมูกถึงใต้คาง",
+        "en": "Going out? A snug N95 over the nose and under the chin",
+        "sprite": "maskhook"
+      },
+      {
+        "icon": "🏃",
+        "th": "วันฝุ่นเกินมาตรฐาน งดออกกำลังกายกลางแจ้ง",
+        "en": "Dust over the limit? Exercise indoors, not outside",
+        "sprite": "runshoes"
+      },
+      {
+        "icon": "👵",
+        "th": "กลุ่มเสี่ยงอยู่ในบ้าน คนมีโรคประจำตัวสำรองยาให้พร้อม",
+        "en": "Kids, elders, pregnant and ill family stay in; keep medicines ready",
+        "sprite": "inhaler"
+      },
+      {
+        "icon": "🩺",
+        "th": "ไอบ่อย หายใจลำบาก แน่นหน้าอก รีบไปพบแพทย์",
+        "en": "Frequent cough, hard breathing or tight chest: see a doctor",
+        "sprite": "tissues"
+      },
+      {
+        "icon": "🍂",
+        "th": "งดเผาขยะและใบไม้ในที่โล่ง ลดปิ้งย่างเตาถ่าน",
+        "en": "No open burning of rubbish or leaves; less charcoal grilling",
+        "sprite": "leafpile"
+      }
+    ]
   }
 }

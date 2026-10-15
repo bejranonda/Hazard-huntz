@@ -320,3 +320,7 @@ The owner asked whether the home page gets people playing, whether the game gets
 2. **Measure the next button, not the page.** For each step (start, accept a challenge, start the round, next, share, the share channels) record its top and bottom against the screen height. The share button turned out to be below the fold on every phone, which no check had asked.
 3. **Fix the layout, not the content.** Cap the card, make the main action sticky, put channels before the preview, let the challenge move up. No text or rule changed.
 4. **Lock it in.** Three smoke checks now fail if the share button, LINE or the challenge accept button leave the first screen ([KNOWLEDGE §23](KNOWLEDGE.md#23-the-visitor-funnel-measured-v152)).
+
+## 22. The second loop: checks that look for different things (v1.5.3)
+
+A repeated loop is only worth it if it looks somewhere new. The second pass used tools the first did not: **axe-core** for accessibility across every view, a **language-switch** check, a **clipped-text** scan, and a **bubble-over-item** measure across 48 houses. Only one finding (the logo's coral, exempt). The bigger gain came from reading the game as a story: the title asks a question the ending never answered, so the ending now does ([KNOWLEDGE §24](KNOWLEDGE.md#24-the-story-the-ending-answers-the-title-v153)).

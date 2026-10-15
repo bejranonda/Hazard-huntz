@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.5.2 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.5.3 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -53,6 +53,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 48 | [Haze and smoke are untested on low-end phones](#48-haze-and-smoke-are-untested-on-low-end-phones) | Owner | Low |
 | 49 | [Dust and fire use the flood house](#49-dust-and-fire-use-the-flood-house) | By design | — |
 | 50 | [The v1.5.1 service worker reloads open pages once](#50-the-v151-service-worker-reloads-open-pages-once) | By design | — |
+| 51 | [The wordmark's coral half is low contrast](#51-the-wordmarks-coral-half-is-low-contrast) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -426,6 +427,12 @@ A person should read the agency pages before December ([ROADMAP L10](ROADMAP.md#
 **Status:** Owner · **Severity:** Low
 
 The haze (a full-room rectangle and 46 specks per room) and the smoke (a translucent band) are redrawn by changing one attribute per room each frame. Headless Chromium shows no problem, but no real low-end Android phone has been tried ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)). If it stutters, drop the specks or update less often.
+
+### 51. The wordmark's coral half is low contrast
+
+**Status:** By design
+
+axe-core flags "รอดไหม?" in the start-screen wordmark: coral `#FF7A59` on cream `#FFF4E3` is 2.35:1, under the 3:1 for large text. WCAG exempts text that is part of a logo, the word is 44 px, and the teal half next to it carries the contrast. Everything else on the screens checked passes. Darken the coral only if a real reader struggles with it, and re-render the images if you do.
 
 ### 50. The v1.5.1 service worker reloads open pages once
 

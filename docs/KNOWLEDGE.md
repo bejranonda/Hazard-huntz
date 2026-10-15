@@ -31,6 +31,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 21. [Topics and the news-driven lessons (v1.4.0)](#21-topics-and-the-news-driven-lessons-v140)
 22. [A game for the whole year (v1.5.0)](#22-a-game-for-the-whole-year-v150)
 23. [The visitor funnel, measured (v1.5.2)](#23-the-visitor-funnel-measured-v152)
+24. [The story: the ending answers the title (v1.5.3)](#24-the-story-the-ending-answers-the-title-v153)
 
 ---
 
@@ -803,3 +804,20 @@ The owner asked three questions as a Thai visitor would live them: does the home
 **Playing to the end.** A round always ends: when every target is resolved or at 50–60 s. The clock pauses while a choice or tip is open, so reading never costs time; the room tabs show how many targets are left in each room (hidden below 520 px tall, where the arrows remain). No change was needed here.
 
 **What the measurements can't tell.** Whether people actually tap share. That needs the live numbers (`share_open` ÷ `round_end`, [05-metrics](05-metrics.md)) after launch ([ROADMAP N5](ROADMAP.md#n5-first-metrics-review)).
+
+## 24. The story: the ending answers the title (v1.5.3)
+
+The owner allowed adapting the story. The story was already there: a gecko (น้องจก) helps a Thai family's house through the hazards of the year, and the family appears in the lessons (grandpa's inhaler, grandma's cough, the grandchildren's ball, dad's morning run). What was missing was an ending. The title asks "บ้านรอดไหม?", and the round ended with a cheer that could belong to any game.
+
+Now the gecko on the result screen answers the question for the mode just played:
+
+| Mode | 10/10 | 8–9 | 5–7 | 0–4 |
+|---|---|---|---|---|
+| ก่อนน้ำมา | บ้านรอดแน่นอน! ของสำคัญปลอดภัยครบทุกชิ้น 🎉 | บ้านรอด! ของสำคัญเกือบครบ อีกนิดเดียวเต็มสิบ | บ้านรอดครึ่งๆ ของบางชิ้นยังเสี่ยงโดนน้ำ ลองอีกรอบนะ | น้ำมาเร็วกว่าเรา แต่ตอนนี้รู้แล้วว่าต้องทำอะไร ลองใหม่นะ |
+| หลังน้ำลด | บ้านรอด! ปลอดภัย พร้อมกลับเข้าอยู่แล้ว 🏠 | เกือบพร้อมกลับเข้าบ้านแล้ว เหลืออีกนิดเดียว | ยังมีอันตรายซ่อนอยู่ ค่อยๆ ตรวจอีกรอบนะ | บ้านยังไม่พร้อม อ่านข้อที่พลาดด้านล่าง แล้วลองใหม่นะ |
+| ฝุ่น PM2.5 | บ้านรอดจากฝุ่น! อากาศในบ้านสะอาด ทุกคนหายใจสบาย 💙 | บ้านเกือบปลอดฝุ่นแล้ว คุณตาคุณยายหายใจสบายขึ้นเยอะ | ฝุ่นยังเล็ดลอดเข้าบ้านบ้าง ลองปิดจุดที่พลาดดูนะ | ฝุ่นยังเข้าบ้านอยู่ แต่ตอนนี้เรารู้วิธีแล้ว ลองอีกรอบ! |
+| ไฟไหม้ | บ้านรอดจากไฟ! จุดเสี่ยงเรียบร้อยทุกจุด นอนหลับสบายได้ 💙 | บ้านเกือบปลอดภัยจากไฟ เหลืออีกจุดสองจุด | ยังมีจุดเสี่ยงไฟอยู่ อ่านข้อที่พลาดด้านล่างนะ | จุดเสี่ยงยังเยอะ แต่ตอนนี้เรารู้แล้ว ลองอีกรอบ! |
+
+**Rules we kept.** The endings are narrative, not safety advice, so they need no source; they never say the house or anyone was lost (guardrail), and a low score always ends on "now you know, try again". The score tiers are the same as the ranks (0–4, 5–7, 8–9, 10). Keys are `cheer<Level><Mode>`; `pickLineFor()` in `content.js` falls back to the shared `cheer<Level>` lines, so a new mode works before its endings are written (the unit test then fails until they are).
+
+**Story ideas not built** (for the owner to choose): a named family on the start screen ("บ้านคุณยายมาลี"), a one-line intro per mode on the how-to sheet ("คุณตามีโรคประจำตัว วันนี้ฝุ่นสีแดง…"), and the ending line on the shared card. Each adds text to read before or after a 60-second game, so test them on real players first.

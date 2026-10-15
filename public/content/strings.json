@@ -273,6 +273,54 @@
       "ไม่เป็นไรนะ ได้รู้เพิ่มตั้งหลายข้อ",
       "ทุกข้อที่พลาดคือบทเรียน ลองใหม่ได้เลย"
     ],
+    "cheerPerfectPrepare": [
+      "บ้านรอดแน่นอน! ของสำคัญปลอดภัยครบทุกชิ้น 🎉"
+    ],
+    "cheerHighPrepare": [
+      "บ้านรอด! ของสำคัญเกือบครบ อีกนิดเดียวเต็มสิบ"
+    ],
+    "cheerMidPrepare": [
+      "บ้านรอดครึ่งๆ ของบางชิ้นยังเสี่ยงโดนน้ำ ลองอีกรอบนะ"
+    ],
+    "cheerLowPrepare": [
+      "น้ำมาเร็วกว่าเรา แต่ตอนนี้รู้แล้วว่าต้องทำอะไร ลองใหม่นะ"
+    ],
+    "cheerPerfectReturn": [
+      "บ้านรอด! ปลอดภัย พร้อมกลับเข้าอยู่แล้ว 🏠"
+    ],
+    "cheerHighReturn": [
+      "เกือบพร้อมกลับเข้าบ้านแล้ว เหลืออีกนิดเดียว"
+    ],
+    "cheerMidReturn": [
+      "ยังมีอันตรายซ่อนอยู่ ค่อยๆ ตรวจอีกรอบนะ"
+    ],
+    "cheerLowReturn": [
+      "บ้านยังไม่พร้อม อ่านข้อที่พลาดด้านล่าง แล้วลองใหม่นะ"
+    ],
+    "cheerPerfectDust": [
+      "บ้านรอดจากฝุ่น! อากาศในบ้านสะอาด ทุกคนหายใจสบาย 💙"
+    ],
+    "cheerHighDust": [
+      "บ้านเกือบปลอดฝุ่นแล้ว คุณตาคุณยายหายใจสบายขึ้นเยอะ"
+    ],
+    "cheerMidDust": [
+      "ฝุ่นยังเล็ดลอดเข้าบ้านบ้าง ลองปิดจุดที่พลาดดูนะ"
+    ],
+    "cheerLowDust": [
+      "ฝุ่นยังเข้าบ้านอยู่ แต่ตอนนี้เรารู้วิธีแล้ว ลองอีกรอบ!"
+    ],
+    "cheerPerfectFire": [
+      "บ้านรอดจากไฟ! จุดเสี่ยงเรียบร้อยทุกจุด นอนหลับสบายได้ 💙"
+    ],
+    "cheerHighFire": [
+      "บ้านเกือบปลอดภัยจากไฟ เหลืออีกจุดสองจุด"
+    ],
+    "cheerMidFire": [
+      "ยังมีจุดเสี่ยงไฟอยู่ อ่านข้อที่พลาดด้านล่างนะ"
+    ],
+    "cheerLowFire": [
+      "จุดเสี่ยงยังเยอะ แต่ตอนนี้เรารู้แล้ว ลองอีกรอบ!"
+    ],
     "comboText": "🔥 ถูก {n} ข้อติด!",
     "bookTitle": "สมุดบ้านรอด",
     "bookChip": "📖 รู้แล้ว {n}/{total} เรื่อง",
@@ -569,6 +617,54 @@
     "cheerLow": [
       "That's okay, you learned a lot",
       "Every miss is a lesson. Try again!"
+    ],
+    "cheerPerfectPrepare": [
+      "The house will make it! Everything important is safe 🎉"
+    ],
+    "cheerHighPrepare": [
+      "The house makes it! Nearly everything is safe"
+    ],
+    "cheerMidPrepare": [
+      "Half safe. Some things are still at risk. One more go?"
+    ],
+    "cheerLowPrepare": [
+      "The water won this time, but now you know what to do."
+    ],
+    "cheerPerfectReturn": [
+      "The house is safe and ready to move back into 🏠"
+    ],
+    "cheerHighReturn": [
+      "Nearly ready to move back in. Just a little more"
+    ],
+    "cheerMidReturn": [
+      "Some dangers are still hiding. Check again, slowly"
+    ],
+    "cheerLowReturn": [
+      "Not ready yet. Read what you missed below, then try again"
+    ],
+    "cheerPerfectDust": [
+      "The house beat the dust! Clean air for everyone inside 💙"
+    ],
+    "cheerHighDust": [
+      "Almost dust-free. Grandma and Grandpa breathe easier"
+    ],
+    "cheerMidDust": [
+      "Some dust still gets in. Fix the ones you missed"
+    ],
+    "cheerLowDust": [
+      "The dust still gets in, but now you know how. Try again!"
+    ],
+    "cheerPerfectFire": [
+      "The house is fire-safe! Every risk sorted. Sleep well 💙"
+    ],
+    "cheerHighFire": [
+      "Almost fire-safe. Just one or two left"
+    ],
+    "cheerMidFire": [
+      "Some fire risks remain. Read the ones you missed below"
+    ],
+    "cheerLowFire": [
+      "Lots of risks left, but now you know. Try again!"
     ],
     "comboText": "🔥 {n} in a row!",
     "bookTitle": "Safety book",

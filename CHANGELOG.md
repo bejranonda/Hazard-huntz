@@ -4,6 +4,25 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.5.3] — 2026-10-15
+
+Second check-and-improve loop. Houses, items and scores are unchanged.
+
+### Added
+
+- **The ending answers the title.** The game asks "บ้านรอดไหม?" (Will the house survive?) but its last word was a generic cheer. The gecko on the result screen now says how the house came through, per mode and score: "บ้านรอดจากฝุ่น! อากาศในบ้านสะอาด ทุกคนหายใจสบาย 💙" (dust, 10/10), "บ้านรอด! ปลอดภัย พร้อมกลับเข้าอยู่แล้ว 🏠" (after the flood), and for low scores a kind line that sends people back ("…แต่ตอนนี้รู้แล้วว่าต้องทำอะไร ลองใหม่นะ"). 16 endings in Thai and English (`cheer<Level><Mode>`), falling back to the shared lines for a new mode.
+
+### Checked (no change needed)
+
+- axe-core on the start, how-to, round, choice, tip, result and share views in dust and fire, Thai and English: one finding, the coral half of the wordmark (2.35:1), which is a logotype and exempt ([KNOWN_ISSUES #51](docs/KNOWN_ISSUES.md#51-the-wordmarks-coral-half-is-low-contrast)).
+- The language switch rebuilds every mode button, its description and the tagline.
+- The gecko's speech bubble covers no item at the start of a round (48 houses, all four modes).
+- No visible text is cut off (only screen-reader-only text measures as clipped, by design).
+
+### Tests
+
+- 21 rule tests (+1: every mode has its four endings in both languages, at most 60 characters).
+
 ## [1.5.2] — 2026-10-15
 
 The path a Thai visitor takes (open → play → finish → share), measured on six screens (320 × 460, 360 × 640 Android in LINE, 390 × 664 iPhone in LINE, 412 × 800, 768 × 1024, 1024 × 768) and fixed where the next step was off screen. Houses, items and scores are unchanged.

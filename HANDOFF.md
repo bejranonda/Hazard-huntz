@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
-| **Version** | 1.5.2 (Thai + English) |
+| **Version** | 1.5.3 (Thai + English) |
 | **Date** | 15 Oct 2026 |
 | **State** | Code complete and **live** at https://baanrodmai.autobahn.bot (Thai) and https://baanrodmai.autobahn.bot/en/ (English). CI is green. **Not yet launched; not yet tested on real phones.** |
 | **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L4 + L10 safety review incl. the new dust and fire lessons, L5 language check, L6 real phones, L8 search consoles, L9 FloodWatch link); AI-ready ideas are P7 heat and storms, P8 earthquake and tsunami, P5, P1 and V1 |
@@ -26,7 +26,7 @@
 - **Review and optimisation:** live-site UI/UX evaluation and 3-loop refinement (9.74/10), tap overlaps at 0%, senior-friendly timer copy. Full audit in [review/](review/README.md).
 - **Docs:** the six deliverables plus the maintainer reference and the guidance for AI assistants.
 
-**Checks.** The build passes, with its content validation and size budget (start screen **183 KB** compressed against a 500 KB limit). All **20 rule tests**, **61 browser checks**, the **0% tap-overlap probe** and the docs link check (all relative links) pass locally and in CI.
+**Checks.** The build passes, with its content validation and size budget (start screen **183 KB** compressed against a 500 KB limit). All **21 rule tests**, **61 browser checks**, the **0% tap-overlap probe** and the docs link check (all relative links) pass locally and in CI.
 
 **What's not done:**
 
@@ -59,7 +59,7 @@ Work through these in order. Each links to the details. Done items are ticked.
 - [ ] **Run the real-phone matrix** in [docs/06-test-checklist.md](docs/06-test-checklist.md): at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok, in Thai and in English ([#3](docs/KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers)).
 - [ ] **Link FloodWatch and the game to each other** (a link from FloodWatch to the game is the owner's side; the game already links to FloodWatch). Relevant links between two flood sites help both in search ([ROADMAP L9](docs/ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
 - [ ] **Soft launch** to 20–30 people, then follow the phases in [docs/04-launch-kit.md](docs/04-launch-kit.md) (Thai posts first; English posts for international channels).
-- [ ] *(Optional)* **Tag the release:** `v1.5.2` on `main`. The session's git connection refuses tag pushes, so create it in the GitHub Releases page.
+- [ ] *(Optional)* **Tag the release:** `v1.5.3` on `main`. The session's git connection refuses tag pushes, so create it in the GitHub Releases page.
 - [ ] *(Optional)* **Confirm the license.** It is MIT, the same as your other repository; change it in `LICENSE` and `package.json` if you prefer.
 
 ## 3. How to run it
@@ -69,7 +69,7 @@ Requirements: Node 18 or later (Cloudflare uses 22). For `npm run images` and `n
 ```bash
 node tools/build.mjs                    # validate content + generate pages (Thai and English), SEO files and the service worker
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
-npm test                                # 20 rule tests (Node only, well under a second)
+npm test                                # 21 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
 npm run smoke                           # 61 browser checks; add  -- --screens docs/screens  to refresh screenshots
 npm run images                          # re-render previews (Thai + English), checklists, sample cards, icons (set SITE_URL)
@@ -281,6 +281,11 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
 - `dust`: 12 lessons from the Department of Health (via three news reports), cross-checked with WHO; a haze with the Air4Thai colours; an Air4Thai link; checklist "ห้องปลอดฝุ่น".
 - `fire`: 13 lessons from DDPM and MEA (via news reports) and the US Fire Administration; smoke falling from the ceiling; helpline 199; checklist "บ้านปลอดภัยจากไฟ". The smoke-alarm lesson rests on the US source only (⚠️).
 - The start screen recommends the mode in season; wording, previews, `/learn` and `llms.txt` now say floods, dust and fire. Checked as a visitor: four modes, Thai and English, 320 px to 1366 px. New modes don't change flood houses, so no midnight release was needed.
+
+### 15 Oct 2026: v1.5.3, second loop: the ending answers the title
+
+- The owner asked to repeat the check-and-improve loop and allowed adapting the story. Checks: axe-core over every view of dust and fire in both languages (only the wordmark's coral half, a logotype; [#51](docs/KNOWN_ISSUES.md#51-the-wordmarks-coral-half-is-low-contrast)), the language switch, clipped text, and the gecko bubble over items (none in 48 houses).
+- Story: the result gecko now answers "บ้านรอดไหม?" for each mode and score, warm at every level ([KNOWLEDGE §24](docs/KNOWLEDGE.md#24-the-story-the-ending-answers-the-title-v153)). Story ideas left for the owner are listed there.
 
 ### 15 Oct 2026: v1.5.2, the visitor funnel
 

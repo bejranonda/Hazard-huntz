@@ -282,6 +282,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Why:** the owner asked how well the home page starts play, the game reaches the end, and the end leads to sharing, for Thai visitors on phones and tablets.
 - **What was built:** sticky share (result) and start/next (sheets), channels before the preview in the share sheet, the challenge first on challenge links, a ▶ play mark. See [KNOWLEDGE §23](KNOWLEDGE.md#23-the-visitor-funnel-measured-v152).
 - **Done when:** every step's button is on the first screen at 320 × 460 to 1024 × 768, three smoke checks guard it, 61 smoke checks pass. All true on 15 Oct 2026.
+- **Second loop (v1.5.3):** the ending answers "บ้านรอดไหม?" per mode and score; axe, language switch, clipping and bubble checks clean.
 
 ## Later
 

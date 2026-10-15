@@ -184,7 +184,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 
 | When | Run |
 |---|---|
-| Every change | `node tools/build.mjs` and `npm test` (20 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
+| Every change | `node tools/build.mjs` and `npm test` (21 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
 | UI, CSS or sharing changes | `npm run smoke` (61 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
@@ -283,6 +283,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 47. **Smoke, not victims.** Fire lessons show smoke, cords, pans and doors. No flames on people, no injuries, no burnt rooms.
 48. **A release must never run on last release's code.** The service worker serves `/js/`, `/css/`, `/content/` and `/art/` network-first, and `main.js` reloads once if `js/version.js` and `config.json` disagree. Test a deploy over an installed older version before changing the caching.
 49. **The next step is on the first screen.** Start, accept a challenge, start the round, next, share, and the share channels must be visible without scrolling at 320 × 460 and 360 × 640 (Android in LINE). Measure where the button is, not only that it exists; the smoke test checks the share button, LINE and the challenge accept button.
+50. **The ending answers "บ้านรอดไหม?".** Every mode has `cheerPerfect`, `cheerHigh`, `cheerMid` and `cheerLow` lines with its own suffix that say how the house came through. Low scores stay kind and point to the next try; never "the house was lost".
 
 ## 9. Working with AI assistants
 
@@ -300,7 +301,7 @@ The registry (`config.json → modes`, defaults in `public/js/modes.js`) makes a
 1. **Research first.** At least one Thai agency source per correct action (see §2.1), cross-checked with an international one where possible. Record what the sources disagree on and leave it out.
 2. **Registry entry** in `config.json → modes`: `id` (a–z), a new one-letter `code` (never reuse one; `h` is kept for heat), `hazard`, `threat` (`water`, `smoke`, `haze` or `null`), `prop` (in `mascot.js`), `emoji`, optional `icon`, `months` (Bangkok months it is in season), `topic`, optional `link` (https). Mirror it in `modes.js` `DEFAULTS`.
 3. **Round settings:** `round.<id>.seconds` and the threat's keyframes (`water` + `floorWetY`, `smoke` + `lowY`, or `haze`). Check the timings with `npm run probe`.
-4. **Strings** in `th` and `en`: `mode`, `mode<Mode>Desc`, `hero`, `challenge`, `howto`, `howtoTitle`, `geckoStart`, `result`, `shareText`, `checklistTab`, `rank` (3), each as `<base><Mode>`. Optional overrides that fall back to the shared key: `floodedToast`, `geckoFlood`, `geckoWet`, `stFlooded`, `forecastShort`, `forecastLong`, `forecastIcon`. Plus `og`/`ogEn` `challengeTitle`, `challengeDesc`, `challengeLine`, `checklistTitle`, and `seo.th/en.section<Mode>`.
+4. **Strings** in `th` and `en`: `mode`, `mode<Mode>Desc`, `hero`, `challenge`, `howto`, `howtoTitle`, `geckoStart`, `result`, `shareText`, `checklistTab`, `rank` (3), and the endings `cheerPerfect`, `cheerHigh`, `cheerMid`, `cheerLow` (a unit test checks them), each as `<base><Mode>`. Optional overrides that fall back to the shared key: `floodedToast`, `geckoFlood`, `geckoWet`, `stFlooded`, `forecastShort`, `forecastLong`, `forecastIcon`. Plus `og`/`ogEn` `challengeTitle`, `challengeDesc`, `challengeLine`, `checklistTitle`, and `seo.th/en.section<Mode>`.
 5. **Content:** 10–13 items across the three drawn rooms (at least one per room), 5 decoys, a 10-item checklist with sprites, a `topic_<id>` string pair and the topic in `config.topics`.
 6. **Start button:** add a static `data-mode` button to `index.html` (the JS rebuilds the grid from the registry; the static one avoids a jump on first paint). Card colours in `app.css` (`.mode-btn.mode-<id>`, `.is-<id>` layers).
 7. **Card theme** in `cards.js → THEMES`, then `SITE_URL=… npm run images` and commit only the new images.

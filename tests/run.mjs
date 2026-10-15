@@ -291,6 +291,19 @@ test('topics: every lesson has one, and a full set is reported once', () => {
   assert.deepEqual(completedTopics(all, all), []);
 });
 
+test('every mode answers "will the house survive?" at each score level, in both languages', () => {
+  const strings = load('strings');
+  for (const m of C.config.modes) {
+    const M = m.id[0].toUpperCase() + m.id.slice(1);
+    for (const base of ['cheerPerfect', 'cheerHigh', 'cheerMid', 'cheerLow']) {
+      for (const l of ['th', 'en']) {
+        const v = strings[l][`${base}${M}`];
+        assert.ok(Array.isArray(v) && v.length && v.every((x) => typeof x === 'string' && x.length > 0 && x.length <= 60), `${l}.${base}${M}`);
+      }
+    }
+  }
+});
+
 test('share texts fill every placeholder in both languages', () => {
   const strings = load('strings');
   const vars = {

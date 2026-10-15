@@ -12,7 +12,7 @@
   "topics": ["health", "power", "food", "critters", "home", "plan", "air", "fire"],
   "featuredTopic": "health",
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

@@ -10,7 +10,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (15 Oct 2026):** v1.5.2, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (15 Oct 2026):** v1.5.3, in Thai (`/`) and English (`/en/`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
@@ -29,7 +29,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | Command | What it does | When |
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview pages and `sw.js`, and checks the 500 KB budget | Every change |
-| `npm test` | 20 rule tests, Node only, well under a second | Every change |
+| `npm test` | 21 rule tests, Node only, well under a second | Every change |
 | `npm run smoke` | 61 checks in headless Chromium. Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
 | `npm run probe` | Measures tap-area overlaps over two years of houses in every mode, plus flood and smoke timings | Slot, size or water-curve changes |

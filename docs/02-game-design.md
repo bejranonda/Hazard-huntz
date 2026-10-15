@@ -128,6 +128,7 @@
   - All synthesised with Web Audio (0 KB of audio files), and only started after the first tap.
   - Vibration on Android only (iOS has none).
 - **Result screen layout** (v1.5.2): the card preview takes at most 58 % of the screen and the main action (share, or challenge back) sticks to the bottom, so it is always on the first screen. The share sheet lists the channels before the card. On a challenge link the gecko steps aside so the challenge and its button come first. The recommended mode card shows a ▶ play mark.
+- **The ending** (v1.5.3): the result gecko answers the title, "บ้านรอดไหม?", for the mode and score (`cheer<Level><Mode>`, [KNOWLEDGE §24](KNOWLEDGE.md#24-the-story-the-ending-answers-the-title-v153)).
 - **End of the round by score** (v1.3.0): 10/10 gets a bigger fanfare, a second confetti burst and a stamp; 8–9 the fanfare and confetti; lower scores a soft chime. A small gecko on the result screen says a line that fits (`cheerPerfect`/`cheerHigh`/`cheerMid`/`cheerLow`), always warm.
 - **Combo, for feel only:** three or more right in a row show "🔥 3 ข้อติด!" near the top of the room and play a rising run. No points.
 - **More sound:** a splash when water reaches the floor, a tick for each of the last five seconds, a blip when sound is switched on.

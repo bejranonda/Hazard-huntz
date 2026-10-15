@@ -3,7 +3,7 @@
 import { $, $$, esc, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from './util.js';
 import { randomHouseKey, isValidHouseKey } from './rng.js';
 import {
-  loadContent, content, t, L, setLang, getLang, pickLine, rankTitle, sourceList,
+  loadContent, content, t, L, setLang, getLang, pickLine, pickLineFor, rankTitle, sourceList,
   siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
 } from './content.js';
 import { modeList, modeIds, modeOf, mk, cap, idsRe, seasonalMode } from './modes.js';
@@ -748,7 +748,7 @@ async function showResult(result) {
     </div>
     <div class="result-cheer">
       <div class="gecko-host" id="result-gecko"></div>
-      <p class="bubble">${esc(pickLine(cheerKey))}</p>
+      <p class="bubble">${esc(pickLineFor(cheerKey, mode))}</p>
     </div>
     <h1 id="result-title" class="sr-only">${esc(t(headlineKey, { score: result.score10 }))}</h1>
     <div class="stats">

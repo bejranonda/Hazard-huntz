@@ -97,6 +97,12 @@ export function pickLine(key, rng = Math.random) {
   return Array.isArray(list) ? list[Math.floor(rng() * list.length)] : list;
 }
 
+// The same, preferring the mode's own lines (<base><Mode>) when they exist.
+export function pickLineFor(base, mode, rng = Math.random) {
+  const key = mk(base, mode);
+  return pickLine((C.strings[lang] && key in C.strings[lang]) || key in C.strings.th ? key : base, rng);
+}
+
 export function rankTitle(mode, tier) {
   const list = t(mk('rank', mode));
   return list[Math.max(0, Math.min(list.length - 1, tier))];

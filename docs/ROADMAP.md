@@ -46,6 +46,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N8 | [More fun to play, more worth sharing](#n8-more-fun-to-play-more-worth-sharing) | AI-ready | Done (14 Oct 2026, v1.3.0) |
 | N9 | [Organise the knowledge by topic, add the news-driven lessons](#n9-organise-the-knowledge-by-topic-add-the-news-driven-lessons) | AI-ready | Done (15 Oct 2026, v1.4.0) |
 | N10 | [A game for the whole year: PM2.5 dust and house fire](#n10-a-game-for-the-whole-year-pm25-dust-and-house-fire) | AI-ready | Done (15 Oct 2026, v1.5.0) |
+| N11 | [The visitor funnel: next step always on the first screen](#n11-the-visitor-funnel-next-step-always-on-the-first-screen) | AI-ready | Done (15 Oct 2026, v1.5.2) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -274,6 +275,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Why:** the owner: "we have stories only before and after flood, that no people will pay attention outside risk time". The game needed reasons to come back in the dry season too.
 - **What was built:** a mode registry, `dust` (12 lessons, haze, Air4Thai link) and `fire` (13 lessons, falling smoke, helpline 199), a season default, the year-round wording, and per-mode link previews and checklists. See [CHANGELOG 1.5.0](../CHANGELOG.md) and [KNOWLEDGE §22](KNOWLEDGE.md#22-a-game-for-the-whole-year-v150).
 - **Done when:** build, 20 unit tests, 57 smoke checks and the overlap probe (0%) pass; flood houses unchanged; four modes checked as a visitor in Thai and English at 320 px and on three tablet sizes. All true on 15 Oct 2026.
+
+### N11. The visitor funnel: next step always on the first screen
+
+- **Who:** AI-ready · **Status:** Done (15 Oct 2026, v1.5.2)
+- **Why:** the owner asked how well the home page starts play, the game reaches the end, and the end leads to sharing, for Thai visitors on phones and tablets.
+- **What was built:** sticky share (result) and start/next (sheets), channels before the preview in the share sheet, the challenge first on challenge links, a ▶ play mark. See [KNOWLEDGE §23](KNOWLEDGE.md#23-the-visitor-funnel-measured-v152).
+- **Done when:** every step's button is on the first screen at 320 × 460 to 1024 × 768, three smoke checks guard it, 61 smoke checks pass. All true on 15 Oct 2026.
 
 ## Later
 

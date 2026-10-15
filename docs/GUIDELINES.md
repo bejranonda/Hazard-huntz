@@ -185,7 +185,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
 | When | Run |
 |---|---|
 | Every change | `node tools/build.mjs` and `npm test` (20 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
-| UI, CSS or sharing changes | `npm run smoke` (58 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| UI, CSS or sharing changes | `npm run smoke` (61 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |
@@ -282,6 +282,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 46. **A threat must be visible on its own background.** The first haze (tan at 55%) disappeared against beige walls; it now has drifting specks and a darker fill. Look at the screenshot in every room before calling an effect done.
 47. **Smoke, not victims.** Fire lessons show smoke, cords, pans and doors. No flames on people, no injuries, no burnt rooms.
 48. **A release must never run on last release's code.** The service worker serves `/js/`, `/css/`, `/content/` and `/art/` network-first, and `main.js` reloads once if `js/version.js` and `config.json` disagree. Test a deploy over an installed older version before changing the caching.
+49. **The next step is on the first screen.** Start, accept a challenge, start the round, next, share, and the share channels must be visible without scrolling at 320 × 460 and 360 × 640 (Android in LINE). Measure where the button is, not only that it exists; the smoke test checks the share button, LINE and the challenge accept button.
 
 ## 9. Working with AI assistants
 

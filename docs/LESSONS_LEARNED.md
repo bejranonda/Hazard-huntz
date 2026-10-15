@@ -381,3 +381,8 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* before a release that changes code and content together, install the previous release in a test browser, switch the server to the new build, and play the new feature on the first visit. Keep code and content on the same caching rule, and give the code a version it can check.
 - *Encoded in:* `tools/sw.template.js` (network-first code), `js/version.js` and `refreshStaleApp()` in `main.js`, a smoke check, [GUIDELINES rule 48](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
 
+**D9. "It's on the page" is not "it's on the screen".**
+
+- *What happened:* for five versions every smoke check passed while the result's share button, the main goal of the game, sat below the fold on every phone (738 px down on a 664 px LINE screen). The checks asked whether the button existed and was 44 px, never where it was.
+- *Do this:* for each step of the funnel, measure the next button's position against the screen height on small and in-app sizes (320 × 460, 360 × 640, 390 × 664), and add a check for the ones that matter.
+- *Encoded in:* three smoke checks (share button, LINE in the share sheet, challenge accept), [GUIDELINES rule 49](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWLEDGE §23](KNOWLEDGE.md#23-the-visitor-funnel-measured-v152).

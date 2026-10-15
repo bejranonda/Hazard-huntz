@@ -4,6 +4,22 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.5.2] — 2026-10-15
+
+The path a Thai visitor takes (open → play → finish → share), measured on six screens (320 × 460, 360 × 640 Android in LINE, 390 × 664 iPhone in LINE, 412 × 800, 768 × 1024, 1024 × 768) and fixed where the next step was off screen. Houses, items and scores are unchanged.
+
+### Changed
+
+- **The share button is always on the first screen of the result.** It was below the fold on every phone and on landscape tablets (for example 738 px down on a 664 px LINE screen). The card preview is capped at 58 % of the screen and the main action (share, or "challenge back" after a friend's challenge) sticks to the bottom until its place scrolls into view. Now 598–654 px on that screen.
+- **The share sheet shows LINE, Facebook, X and copy first,** then the card (capped at 40 % of the screen) and the long-press hint. Before, a second full-size card pushed every channel off the first screen on 320 px phones, in LINE on iPhone and on landscape tablets.
+- **"Start" and "next" stay in reach on short phones.** In the how-to sheet and after each answer the button sticks to the bottom of the sheet; at 320 × 460 both were off screen (538 and 445–501 px).
+- **A friend's challenge comes first.** On a challenge link the gecko and its seasonal line step aside (a dust challenge used to sit under "ฝนจะมาอีกระลอก"), and on short screens the tagline too, so "รับคำท้า!" is on the first screen: 303–359 px at 320 × 460 (it was 509–565).
+- **The recommended card shows a ▶ play mark,** so it reads as a button to play, not a label.
+
+### Tests
+
+- 61 smoke checks (+3: the result's share button, LINE in the share sheet and the challenge's accept button are on the first screen at 360 × 640 or 320 × 460).
+
 ## [1.5.1] — 2026-10-15
 
 ### Fixed

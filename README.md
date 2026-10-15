@@ -20,9 +20,9 @@ Every tap teaches one real action from a Thai agency (ปภ., กฟน., ก�
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (15 Oct 2026): v1.5.1 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (15 Oct 2026): v1.5.2 is live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 20 rule tests and 58 headless-browser checks, plus CI on every push.
+> - The code is finished and every automated check passes: 20 rule tests and 61 headless-browser checks, plus CI on every push.
 > - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).
 > - The water-level button opens **BKK FloodWatch** (`flood.autobahn.bot`), the owner's own Autobahn Bot project.
 > - Before launch it still needs Web Analytics switched on, the sitemap submitted to the search consoles, a review of 11 safety items flagged ⚠️ and of the new dust and fire lessons, a native-speaker language check, and a pass on real phones.

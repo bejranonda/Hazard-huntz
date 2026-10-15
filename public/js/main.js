@@ -214,6 +214,9 @@ function renderStart(defaultMode) {
   }
 
   const banner = $('#challenge-banner');
+  // A friend's challenge is why they came: it moves up and the season's
+  // gecko line (which may be about another hazard) steps aside.
+  $('#screen-start').classList.toggle('has-challenge', !!state.challenge);
   if (state.challenge) {
     const c = state.challenge;
     const lead = t(mk('challenge', c.mode));
@@ -756,9 +759,9 @@ async function showResult(result) {
     ${added.length ? `<button class="book-chip is-new" type="button" id="btn-book-new">${esc(t('bookNew', { n: added.length, have: book.n, total: book.total }))}</button>` : ''}
     ${vs}
     ${isChallenge
-    ? `<button class="btn" type="button" id="btn-challenge">🏆 ${esc(t('challengeBackCta'))}</button>
+    ? `<div class="result-cta"><button class="btn" type="button" id="btn-challenge">🏆 ${esc(t('challengeBackCta'))}</button></div>
     <button class="btn secondary" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button>`
-    : `<button class="btn" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button>
+    : `<div class="result-cta"><button class="btn" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button></div>
     <button class="btn secondary" type="button" id="btn-challenge">🏆 ${esc(t('challengeCta'))}</button>`}
     <div class="btn-row">
       <button class="btn secondary small" type="button" id="btn-other">${esc(t('playOther', { mode: t(mk('mode', other)) }))}</button>
@@ -869,7 +872,6 @@ function openShareSheet({ text, url, blob, file, mode, filename, imgSrc }) {
   const saveOk = blob && canDownload();
   openSheet(`
     <h2 id="sheet-title">${esc(t('shareTitle'))}</h2>
-    ${imgSrc ? `<img class="card-preview" src="${esc(imgSrc)}" alt="">` : ''}
     ${app === 'line' ? `<p class="line-guide">💬 ${esc(t('lineGuideText'))}</p>` : ''}
     <div class="share-grid">
       ${nativeOk ? `<button class="share-btn" data-ch="native"><span class="ico ico-native">⇪</span>${esc(t('shareNative'))}</button>` : ''}
@@ -879,6 +881,7 @@ function openShareSheet({ text, url, blob, file, mode, filename, imgSrc }) {
       <button class="share-btn" data-ch="copy"><span class="ico ico-copy">⧉</span>${esc(t('shareCopy'))}</button>
       ${saveOk ? `<button class="share-btn" data-ch="save"><span class="ico ico-save">↓</span>${esc(t('shareSave'))}</button>` : ''}
     </div>
+    ${imgSrc ? `<img class="card-preview share-preview" src="${esc(imgSrc)}" alt="">` : ''}
     ${imgSrc && !saveOk ? `<p class="save-hint">💡 ${esc(t('saveHint'))}</p>` : ''}
     ${app === 'line' && imgSrc ? `<a class="link" href="${esc(lineExternalUrl(location.href))}">${esc(t('openExternal'))}</a>` : ''}
     <button class="btn secondary small" type="button" id="share-close">${esc(t('close'))}</button>`);

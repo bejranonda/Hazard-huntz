@@ -268,6 +268,27 @@ try {
     await ctx.close();
   }
 
+  // 2d. The funnel on a small Android in LINE (360x640) and the smallest phone:
+  // the next step is always on the first screen, without scrolling.
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await playRound(page, 'return', { decoy: false });
+    const inView = (sel) => page.evaluate((s) => { const r = document.querySelector(s)?.getBoundingClientRect(); return !!r && r.top >= 0 && r.bottom <= innerHeight; }, sel);
+    check('result: the main share button is on the first screen (360x640)', await inView('#btn-share'));
+    await page.click('#btn-share');
+    await page.waitForSelector('#sheet [data-ch="line"]');
+    await page.waitForTimeout(400);
+    check('share sheet: LINE is on the first screen (360x640)', await inView('#sheet [data-ch="line"]'));
+    await ctx.close();
+    const small = await newPage({ width: 320, height: 460, ua: UA.iphone });
+    await small.page.goto(`${BASE}/c/d7?h=20261016`, { waitUntil: 'networkidle' });
+    await small.page.waitForTimeout(300);
+    const acc = await small.page.evaluate(() => { const r = document.querySelector('#btn-accept')?.getBoundingClientRect(); return r ? Math.round(r.bottom) : 9999; });
+    check('challenge landing: the accept button is on the first screen (320x460)', acc <= 460, `bottom ${acc} px`);
+    await small.ctx.close();
+  }
+
   // 3. LINE in-app browser: no Web Share, no download -> long-press hint
   {
     const { ctx, page } = await newPage({ ua: UA.line });

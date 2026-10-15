@@ -158,7 +158,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 ## 9. Testing
 
 1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 58 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+2. **Smoke tests** (`npm run smoke`, 61 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -311,3 +311,12 @@ The owner saw the problem plainly: a flood game matters for half the year. They 
 4. **Thai agencies decide; international guidance checks.** Every correct action rests on the Department of Health, DDPM or MEA. WHO and the US Fire Administration cross-check, and the one lesson that rests on them alone is flagged ⚠️ (smoke alarms).
 5. **Leave out what can't be said safely.** Incense and candles (religious), µg/m³ ranges (changed in 2023), "never put water on an oil fire" (no readable source said it), flames on people (guardrail).
 6. **Check every screen, every mode, both languages.** Four modes × Thai and English × five screen sizes, plus deep links, the checklists, `/learn` anchors and the season default for four dates. The pass found short source links under 44 px wide, now fixed.
+
+## 21. Measuring the funnel instead of judging screenshots (v1.5.2)
+
+The owner asked whether the home page gets people playing, whether the game gets them to the end, and whether the end gets them to share. Screenshots at one size had looked fine for weeks. This time:
+
+1. **Use the screens people really have.** Besides a 390 × 760 phone: 320 × 460 (small iPhone with bars), 360 × 640 (Android inside LINE), 390 × 664 (iPhone inside LINE), 412 × 800 and two tablets.
+2. **Measure the next button, not the page.** For each step (start, accept a challenge, start the round, next, share, the share channels) record its top and bottom against the screen height. The share button turned out to be below the fold on every phone, which no check had asked.
+3. **Fix the layout, not the content.** Cap the card, make the main action sticky, put channels before the preview, let the challenge move up. No text or rule changed.
+4. **Lock it in.** Three smoke checks now fail if the share button, LINE or the challenge accept button leave the first screen ([KNOWLEDGE §23](KNOWLEDGE.md#23-the-visitor-funnel-measured-v152)).

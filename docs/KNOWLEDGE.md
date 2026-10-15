@@ -30,6 +30,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 20. [Fun and sharing features (v1.3.0)](#20-fun-and-sharing-features-v130)
 21. [Topics and the news-driven lessons (v1.4.0)](#21-topics-and-the-news-driven-lessons-v140)
 22. [A game for the whole year (v1.5.0)](#22-a-game-for-the-whole-year-v150)
+23. [The visitor funnel, measured (v1.5.2)](#23-the-visitor-funnel-measured-v152)
 
 ---
 
@@ -780,3 +781,25 @@ NFPA's pages render only with JavaScript and could not be read, so the US Fire A
 - The safety book and `/learn` gain two topics (😷 `air`, 🔥 `fire`), 66 playable lessons in all.
 - Each mode has its own link previews (`/c/d0…d10`, `/c/f0…f10`, English under `/en/`) and checklist (`/checklist/dust`, `/checklist/fire`).
 
+## 23. The visitor funnel, measured (v1.5.2)
+
+The owner asked three questions as a Thai visitor would live them: does the home page get people playing, does the game get them to the end, and does the end get them to share? We measured where the next button sits on six screens (top–bottom in CSS px, against the screen height), with `?debug=1` and Web Share removed so the fallback sheet shows.
+
+| Step | Screen | Before (v1.5.1) | After (v1.5.2) |
+|---|---|---|---|
+| Home: the recommended mode | 320 × 460 | 332–418 / 460, the only mode on screen | 332–440 / 460 (▶ mark added) |
+| Home: the recommended mode | 360 × 640, 390 × 664 | 308–394, 313–399; all four modes on screen | same |
+| Challenge link: "รับคำท้า!" | 320 × 460 | 509–565 / 460 ✗ | 303–359 ✓ (gecko and tagline step aside) |
+| Challenge link: "รับคำท้า!" | 360 × 640 | 486–542 ✓ | 343–399 ✓ |
+| How-to: "เริ่มเลย!" | 320 × 460 | 538–594 ✗ | 388–444 ✓ (sticky) |
+| After an answer: "next" | 320 × 460 | 445–501 ✗ | 388–444 ✓ (sticky) |
+| Result: share | 320 × 460 | 690–746 ✗ | 394–450 ✓ |
+| Result: share | 360 × 640 | 700–756 ✗ | 574–630 ✓ |
+| Result: share | 390 × 664 (LINE, iPhone) | 738–794 ✗ | 598–654 ✓ |
+| Result: share | 412 × 800 | 765–821 ✗ | 734–790 ✓ |
+| Result: share | 1024 × 768 | 811–867 ✗ | 702–758 ✓ |
+| Share sheet: channels on screen | 320 × 460, 390 × 664, 1024 × 768 | none ✗ | LINE, Facebook, X, copy (save) ✓ |
+
+**Playing to the end.** A round always ends: when every target is resolved or at 50–60 s. The clock pauses while a choice or tip is open, so reading never costs time; the room tabs show how many targets are left in each room (hidden below 520 px tall, where the arrows remain). No change was needed here.
+
+**What the measurements can't tell.** Whether people actually tap share. That needs the live numbers (`share_open` ÷ `round_end`, [05-metrics](05-metrics.md)) after launch ([ROADMAP N5](ROADMAP.md#n5-first-metrics-review)).

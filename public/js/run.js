@@ -13,7 +13,8 @@ export const PLANS = {
 export class Run {
   constructor(planName, houseKey, kind) {
     this.planName = planName;
-    this.plan = PLANS[planName] || PLANS.prepare;
+    // Combined plans are listed above; any other mode id is a one-round run.
+    this.plan = PLANS[planName] || [planName];
     this.houseKey = houseKey;
     this.kind = kind; // 'daily' | 'challenge' | 'random'
     this.results = [];

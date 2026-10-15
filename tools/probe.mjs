@@ -10,11 +10,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateHouse } from '../public/js/house.js';
 import { waterY } from '../public/js/round.js';
+import { setModes } from '../public/js/modes.js';
 
 const PUB = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const read = (f) => JSON.parse(fs.readFileSync(path.join(PUB, 'content', `${f}.json`), 'utf8'));
 const items = read('items');
 const content = { config: read('config'), rooms: read('rooms').rooms, items: items.items, decoys: items.decoys };
+setModes(content.config.modes);
+const MODE_IDS = content.config.modes.map((m) => m.id);
 
 // ---------------------------------------------------------------- 1. overlaps
 const overlap = (a, b) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x))
@@ -24,7 +27,7 @@ let houses = 0, affected = 0, worst = 0;
 const start = Date.UTC(2026, 9, 1);
 for (let d = 0; d < 730; d++) {
   const key = new Date(start + d * 86400000).toISOString().slice(0, 10).replace(/-/g, '');
-  for (const mode of ['prepare', 'return']) {
+  for (const mode of MODE_IDS) {
     const house = generateHouse(content, mode, key);
     houses++;
     let any = false;

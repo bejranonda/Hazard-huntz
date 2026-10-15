@@ -104,6 +104,8 @@ const SOUNDS = {
     noise({ dur: 0.45, gain: 0.26, freq: 900, sweepTo: 300, q: 0.9 });
     tone({ type: 'sine', from: 300, to: 120, dur: 0.3, gain: 0.14 });
   },
+  // Smoke reaches something (fire mode): a soft, low puff.
+  puff() { noise({ dur: 0.35, gain: 0.2, freq: 500, sweepTo: 180, q: 0.7 }); },
   // The last five seconds: a soft clock tick.
   tick() { tone({ type: 'square', from: 1200, to: 1100, dur: 0.035, gain: 0.05 }); },
 };

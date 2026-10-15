@@ -5,22 +5,24 @@
 
 import { inAppBrowser, isIOS } from './util.js';
 import { track } from './analytics.js';
+import { codeOf, idOfCode, codesRe } from './modes.js';
 
 // English players share /en/c/… so the friend's link preview is English too.
 export function challengeUrl(site, mode, score10, houseKey, lang = 'th') {
-  const m = mode === 'return' ? 'r' : 'p';
+  const m = codeOf(mode);
+  if (!m) throw new Error(`challengeUrl: unknown mode "${mode}"`);
   const s = Math.max(0, Math.min(10, Math.round(score10)));
   return `${site}${lang === 'en' ? '/en' : ''}/c/${m}${s}?h=${encodeURIComponent(houseKey)}`;
 }
 
 // "/c/p8?h=20261006" -> { mode: 'prepare', score: 8, houseKey: '20261006' }
 export function parseChallenge(loc = location) {
-  const m = /^(?:\/en)?\/c\/([pr])(\d{1,2})\/?$/.exec(loc.pathname);
+  const m = new RegExp(`^(?:/en)?/c/(${codesRe()})(\\d{1,2})/?$`).exec(loc.pathname);
   if (!m) return null;
   const score = Number(m[2]);
   if (score > 10) return null;
   const houseKey = new URLSearchParams(loc.search).get('h') || '';
-  return { mode: m[1] === 'r' ? 'return' : 'prepare', score, houseKey };
+  return { mode: idOfCode(m[1]), score, houseKey };
 }
 
 export function canNativeShare() {

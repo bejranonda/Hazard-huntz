@@ -2,6 +2,7 @@
 // Pure function (no DOM), so tools/ and tests/ can run it in Node.
 
 import { makeRng } from './rng.js';
+import { modeOf } from './modes.js';
 
 const byOrder = (a, b) => (a.order ?? 0) - (b.order ?? 0);
 
@@ -55,10 +56,10 @@ export function generateHouse(content, mode, houseKey, opts = {}) {
     return true;
   };
 
-  // Prepare mode always includes at least one critical item (documents,
-  // medicines or the breaker) so the priority bonus is reachable.
+  // A mode with the priority bonus (Prepare) always includes at least one
+  // critical item (documents, medicines or the breaker) so it is reachable.
   const critical = rng.shuffle(pool.filter((i) => i.critical));
-  if (mode === 'prepare' && critical.length) take(critical[0]);
+  if (modeOf(mode)?.bonus && critical.length) take(critical[0]);
   for (const item of pool) if (opts.include?.has(item.id)) take(item);
   // Then at least one target per room, then fill up to the wanted count.
   for (const room of rng.shuffle(rooms)) {

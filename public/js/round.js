@@ -1,11 +1,13 @@
 // Rules for one 60-second round: clock, rising water, choices and score.
 // No DOM here; the scene and UI subscribe through callbacks.
 
+import { modeOf } from './modes.js';
+
 export const STATUS = {
   PENDING: 'pending',
   CORRECT: 'correct',   // right action on the first try
   LEARNED: 'learned',   // wrong choice, shown the safe action
-  FLOODED: 'flooded',   // Prepare: water reached it first
+  FLOODED: 'flooded',   // the mode's threat got there first (water rose / smoke fell to it)
   MISSED: 'missed',     // time ran out before it was found
 };
 
@@ -35,6 +37,9 @@ export class Round {
     this.mode = house.mode;
     this.cfg = config.round;
     this.modeCfg = this.cfg[this.mode];
+    if (!this.modeCfg) throw new Error(`config.round.${this.mode} is missing`);
+    this.def = modeOf(this.mode) || {};
+    this.threat = this.def.threat || null;
     this.duration = this.modeCfg.seconds * 1000;
     this.clock = clock;
     this.on = on;
@@ -53,8 +58,13 @@ export class Round {
 
   get progress() { return Math.min(1, this.elapsed / this.duration); }
   get remaining() { return Math.max(0, (this.duration - this.elapsed) / 1000); }
-  get floorWet() { return this.mode === 'prepare' && this.waterLevel <= this.modeCfg.floorWetY; }
-  get waterLevel() { return this.mode === 'prepare' ? waterY(this.progress, this.modeCfg.water) : null; }
+  get floorWet() { return this.threat === 'water' && this.waterLevel <= this.modeCfg.floorWetY; }
+  // Water: the waterline rising from the floor (y in scene units, smaller = higher).
+  get waterLevel() { return this.threat === 'water' ? waterY(this.progress, this.modeCfg.water) : null; }
+  // Smoke: the lower edge of the smoke layer falling from the ceiling.
+  get smokeLevel() { return this.threat === 'smoke' ? waterY(this.progress, this.modeCfg.smoke) : null; }
+  // Haze: how thick the haze over the room is (0..1). Nothing is lost to it.
+  get hazeLevel() { return this.threat === 'haze' ? waterY(this.progress, this.modeCfg.haze) : null; }
 
   start() {
     this.running = true;
@@ -94,15 +104,18 @@ export class Round {
   }
 
   checkWater() {
-    if (this.mode !== 'prepare') return;
-    const level = this.waterLevel;
-    if (!this.wasWet && this.floorWet) {
+    if (this.threat !== 'water' && this.threat !== 'smoke') return;
+    const water = this.threat === 'water';
+    const level = water ? this.waterLevel : this.smokeLevel;
+    if (!this.wasWet && (water ? this.floorWet : level >= this.modeCfg.lowY)) {
       this.wasWet = true;
       this.on.wet?.();
     }
     for (const p of this.house.targets) {
       const rec = this.records.get(p.pid);
-      if (rec.status === STATUS.PENDING && level <= p.cy) {
+      // Water reaches an item from below, smoke from above; either way the
+      // moment it reaches the middle of the sprite, as the player sees it.
+      if (rec.status === STATUS.PENDING && (water ? level <= p.cy : level >= p.cy)) {
         rec.status = STATUS.FLOODED;
         rec.at = this.elapsed;
         this.on.flood?.(p);
@@ -134,7 +147,7 @@ export class Round {
       rec.status = STATUS.CORRECT;
       this.points += this.cfg.pointsCorrect;
       // Priority bonus: critical items handled before water gets into the house.
-      if (this.mode === 'prepare' && p.ref.critical && !this.floorWet) {
+      if (this.def.bonus && p.ref.critical && !this.floorWet) {
         bonus = this.cfg.pointsBonus;
         this.points += bonus;
         this.bonusHits++;
@@ -172,7 +185,7 @@ export class Round {
 
   maxPoints() {
     const n = this.house.targets.length;
-    const crit = this.mode === 'prepare' ? this.house.targets.filter((p) => p.ref.critical).length : 0;
+    const crit = this.def.bonus ? this.house.targets.filter((p) => p.ref.critical).length : 0;
     return n * this.cfg.pointsCorrect + crit * this.cfg.pointsBonus;
   }
 

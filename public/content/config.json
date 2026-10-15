@@ -3,6 +3,10 @@
   "rainWarningActive": true,
   "forecastAppUrl": "https://flood.autobahn.bot/",
   "forecastStatusUrl": null,
+  "modes": [
+    { "id": "prepare", "hazard": "flood", "code": "p", "threat": "water", "prop": "hood", "emoji": "🏠", "months": [5, 6, 7, 8, 9, 10, 11], "bonus": true },
+    { "id": "return", "hazard": "flood", "code": "r", "threat": null, "prop": "torch", "emoji": "⚡", "months": [] }
+  ],
   "topics": ["health", "power", "food", "critters", "home", "plan"],
   "featuredTopic": "health",
   "siteUrl": "https://baanrodmai.autobahn.bot",

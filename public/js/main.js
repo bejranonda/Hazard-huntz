@@ -4,8 +4,9 @@ import { $, $$, esc, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from 
 import { randomHouseKey, isValidHouseKey } from './rng.js';
 import {
   loadContent, content, t, L, setLang, getLang, pickLine, rankTitle, sourceList,
-  siteUrl, forecastUrl, applyStaticStrings, langPath,
+  siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
 } from './content.js';
+import { modeList, modeIds, modeOf, mk, idsRe, seasonalMode } from './modes.js';
 import { generateHouse, playableRooms } from './house.js';
 import { Round, STATUS } from './round.js';
 import { Run } from './run.js';
@@ -90,9 +91,9 @@ async function boot() {
 
   // Deep links: /checklist/prepare, ?open=help, etc.
   const open = new URLSearchParams(location.search).get('open') || '';
-  const cl = /^(?:\/en)?\/checklist\/(prepare|return)\/?$/.exec(location.pathname);
+  const cl = new RegExp(`^(?:/en)?/checklist/(${idsRe()})/?$`).exec(location.pathname);
   if (cl) openChecklist(cl[1]);
-  else if (/^checklist-(prepare|return)$/.test(open)) openChecklist(open.split('-')[1]);
+  else if (new RegExp(`^checklist-(${idsRe()})$`).test(open)) openChecklist(open.split('-')[1]);
   else if (open === 'help') openHelp();
   else if (open === 'about') openAbout();
 
@@ -101,8 +102,9 @@ async function boot() {
   registerServiceWorker();
 }
 
-// The default mode follows the rain-warning flag; later the forecast app
-// can drive it through config.forecastStatusUrl ({ "rainWarning": true }).
+// The default mode: a rain warning (manual flag, or the forecast app through
+// config.forecastStatusUrl → { "rainWarning": true }) means flood preparation;
+// otherwise the mode in season this Bangkok month (config.json → modes[].months).
 async function pickDefaultMode(C) {
   let warning = !!C.config.rainWarningActive;
   const url = C.config.forecastStatusUrl;
@@ -116,7 +118,7 @@ async function pickDefaultMode(C) {
       if (typeof data.rainWarning === 'boolean') warning = data.rainWarning;
     } catch { /* keep the manual flag */ }
   }
-  return warning ? 'prepare' : 'return';
+  return seasonalMode(Number(bangkokDateKey().slice(4, 6)), warning);
 }
 
 // The brand name in the current language ("บ้านรอดไหม?" / "Baan Rod Mai?").
@@ -125,7 +127,7 @@ const brandName = () => `${t('logoA')}${t('logoB')}`.trim();
 function bookCounts() {
   const C = content();
   const pool = bookPool(C);
-  const all = [...pool.prepare, ...pool.return];
+  const all = Object.values(pool).flat();
   const have = new Set(learnedIds());
   const topics = topicProgress(pool, have, C.config.topics || []);
   return { pool, total: all.length, n: all.filter((it) => have.has(it.id)).length, have, topics };
@@ -142,18 +144,15 @@ function renderStart(defaultMode) {
     btn.classList.toggle('is-default', isDefault);
     btn.querySelector('.mode-badge').hidden = !isDefault;
   }
-  $('#hero-bubble').textContent = t(defaultMode === 'prepare' ? 'heroPrepare' : 'heroReturn');
-  heroGecko?.setProp(defaultMode === 'prepare' ? 'hood' : 'torch');
+  $('#hero-bubble').textContent = t(mk('hero', defaultMode));
+  heroGecko?.setProp(modeOf(defaultMode)?.prop || 'none');
 
   const today = bangkokDateKey();
   const parts = [`<b>${esc(t('daily', { date: formatHouseDate(today, getLang()) }))}</b>`];
   const s = streak();
   if (s >= 2) parts.push(esc(t('streak', { n: s })));
-  const bp = bestScore('prepare'), br = bestScore('return');
-  if (bp != null || br != null) {
-    const best = Math.max(bp ?? 0, br ?? 0);
-    parts.push(esc(t('best', { score: best })));
-  }
+  const bests = modeIds().map((id) => bestScore(id)).filter((b) => b != null);
+  if (bests.length) parts.push(esc(t('best', { score: Math.max(...bests) })));
   $('#daily-line').innerHTML = parts.join(' · ');
 
   const book = bookCounts();
@@ -194,7 +193,7 @@ function renderStart(defaultMode) {
   const banner = $('#challenge-banner');
   if (state.challenge) {
     const c = state.challenge;
-    const lead = t(c.mode === 'prepare' ? 'challengePrepare' : 'challengeReturn');
+    const lead = t(mk('challenge', c.mode));
     banner.innerHTML = `
       <h2>${esc(t('challengeTitle'))}</h2>
       <p>${esc(lead)}</p>
@@ -278,9 +277,9 @@ function startFlow(mode, { houseKey, kind = 'daily' } = {}) {
 }
 
 function showHowto(mode, onStart) {
-  const steps = t(mode === 'prepare' ? 'howtoPrepare' : 'howtoReturn');
+  const steps = t(mk('howto', mode));
   openSheet(`
-    <h2 id="sheet-title">${esc(t(mode === 'prepare' ? 'howtoTitlePrepare' : 'howtoTitleReturn'))}</h2>
+    <h2 id="sheet-title">${esc(t(mk('howtoTitle', mode)))}</h2>
     <ol class="howto">${steps.map((s, i) => `<li><span class="n">${i + 1}</span><span>${esc(s)}</span></li>`).join('')}</ol>
     <p class="sub">👉 ${esc(t('howtoSwipe'))}</p>
     <button class="btn" type="button" id="howto-go" autofocus>${esc(t('startBtn'))}</button>`, { dismissible: false });
@@ -303,7 +302,7 @@ async function startRound() {
   state.lastTick = 0;
   state.result = null;
 
-  app.classList.remove('is-prepare', 'is-return');
+  app.classList.remove(...modeIds().map((id) => `is-${id}`));
   app.classList.add(`is-${mode}`);
   const loadingTimer = setTimeout(() => setLoading(true), 180);
   showScreen('game');
@@ -323,7 +322,7 @@ async function startRound() {
     clearTimeout(loadingTimer);
     setLoading(false);
   }
-  gameGecko = new Gecko($('#game-gecko'), { prop: mode === 'prepare' ? 'hood' : 'torch' });
+  gameGecko = new Gecko($('#game-gecko'), { prop: modeOf(mode)?.prop || 'none' });
 
   const round = new Round({
     house,
@@ -333,15 +332,31 @@ async function startRound() {
   state.round = round;
   updateHud();
   state.scene.updateCounts(round.records);
-  if (mode === 'prepare') state.scene.setWater(round.waterLevel);
+  state.scene.setThreat(threatLevel(round));
   $('#gauge').classList.remove('low');
   state.target = run.kind === 'challenge' && state.challenge ? state.challenge.score : null;
   updateHud();
-  say(pickLine(mode === 'prepare' ? 'geckoStartPrepare' : 'geckoStartReturn'), 3200);
+  say(pickLine(mk('geckoStart', mode)), 3200);
   round.start();
   resetHintTimer();
   track('round_start', { mode, label: run.kind });
   loop();
+}
+
+const pickOne = (v) => (Array.isArray(v) ? v[Math.floor(Math.random() * v.length)] : v);
+
+// "Play another": the other flood mode, or the next mode in the registry.
+function nextMode(mode) {
+  const ids = modeIds();
+  const def = modeOf(mode);
+  const sibling = def && modeList().find((m) => m.id !== mode && m.hazard === def.hazard);
+  if (sibling) return sibling.id;
+  return ids[(ids.indexOf(mode) + 1) % ids.length];
+}
+
+// What the scene draws for the mode's threat (water y, smoke y, haze 0..1).
+function threatLevel(r) {
+  return r.waterLevel ?? r.smokeLevel ?? r.hazeLevel;
 }
 
 function loop() {
@@ -352,7 +367,7 @@ function loop() {
     if (r.running) {
       r.tick();
       updateHud();
-      if (r.mode === 'prepare') state.scene.setWater(r.waterLevel);
+      state.scene.setThreat(threatLevel(r));
       if (!state.lowWarned && r.remaining <= 10 && !r.ended) {
         state.lowWarned = true;
         $('#gauge').classList.add('low');
@@ -374,6 +389,9 @@ function updateHud() {
   if (!r) return;
   const left = 1 - r.progress;
   $('#gauge-fill').style.transform = `scaleX(${left.toFixed(4)})`;
+  // Haze modes: the gauge colour walks through the Air4Thai scale as dust builds up.
+  if (r.threat === 'haze') $('#gauge').dataset.aqi = String(Math.min(4, Math.floor(r.progress * 5)));
+  else delete $('#gauge').dataset.aqi;
   // In a challenge, the friend's score to beat sits next to the clock.
   const secs = t('seconds', { s: Math.ceil(r.remaining) });
   $('#gauge-label').textContent = state.target != null ? `${secs} · 🏆 ${t('challengeTarget', { score: state.target })}` : secs;
@@ -411,7 +429,7 @@ function onItemTap(p) {
   }
   const rec = r.records.get(p.pid);
   if (rec.status === STATUS.FLOODED) {
-    say(t('floodedToast', { name: L(p.ref.name) }), 2400);
+    say(tm('floodedToast', r.mode, { name: L(p.ref.name) }), 2400);
     return;
   }
   if (rec.status !== STATUS.PENDING) {
@@ -587,18 +605,18 @@ function pauseGame(showSheet) {
 function onFlood(p) {
   state.scene.mark(p, 'flooded');
   state.scene.updateCounts(state.round.records);
-  play('blub');
+  play(modeOf(state.round.mode)?.threat === 'smoke' ? 'puff' : 'blub');
   const now = performance.now();
   if (now - state.lastFloodLine > 3000) {
     state.lastFloodLine = now;
-    say(pickLine('geckoFlood'), 1800);
+    say(pickOne(tm('geckoFlood', state.round.mode)), 1800);
     gameGecko?.set('oops', { hold: 1200 });
   }
 }
 
 function onWet() {
-  play('splash');
-  say(t('geckoWet'), 3600);
+  play(modeOf(state.round.mode)?.threat === 'smoke' ? 'puff' : 'splash');
+  say(tm('geckoWet', state.round.mode), 3600);
   gameGecko?.set('wow', { hold: 1600, anim: 'wobble' });
 }
 
@@ -627,7 +645,8 @@ function gridOf(result) {
 }
 
 function emojiGrid(mode, grid) {
-  const map = { correct: '✅', learned: '💡', flooded: mode === 'prepare' ? '💧' : '⬜', missed: '⬜' };
+  const lost = { water: '💧', smoke: '💨' }[modeOf(mode)?.threat] || '⬜';
+  const map = { correct: '✅', learned: '💡', flooded: lost, missed: '⬜' };
   return grid.map((s) => map[s] || '⬜').join('');
 }
 
@@ -640,9 +659,9 @@ async function showResult(result) {
   const site = siteUrl();
   const cUrl = challengeUrl(site, mode, result.score10, run.houseKey, getLang());
   const grid = gridOf(result);
-  const headlineKey = mode === 'prepare' ? 'resultPrepare' : 'resultReturn';
+  const headlineKey = mk('result', mode);
   const houseText = run.kind === 'random' ? t('cardRandomHouse') : t('cardHouse', { date: houseLabel(run.houseKey) });
-  const shareText = t(mode === 'prepare' ? 'shareTextPrepare' : 'shareTextReturn', {
+  const shareText = t(mk('shareText', mode), {
     score: result.score10, rank, grid: emojiGrid(mode, grid), url: cUrl, house: houseText,
     streak: prog.streak >= 2 ? ` · ${t('streak', { n: prog.streak })}` : '',
   });
@@ -651,19 +670,19 @@ async function showResult(result) {
   state.result = result;
   state.share = {
     text: shareText, url: cUrl, mode, blob: null, file: null, score: result.score10,
-    emoji: mode === 'prepare' ? '🏠' : '⚡', them,
+    emoji: modeOf(mode)?.emoji || '🏠', them,
   };
   track('round_end', { mode, label: run.kind, value: result.score10 });
 
   // Safety book: lessons answered correctly for the first time.
   const pool = bookPool(C);
-  const valid = new Set([...pool.prepare, ...pool.return].map((it) => it.id));
+  const valid = new Set(Object.values(pool).flat().map((it) => it.id));
   const before = bookCounts().topics;
   const added = addLearned(correctIds(state.house.targets, result.records), valid);
   const book = bookCounts();
   const doneTopics = completedTopics(before, book.topics);
 
-  const other = mode === 'prepare' ? 'return' : 'prepare';
+  const other = nextMode(mode);
   const me = result.score10;
   const vs = isChallenge
     ? (() => {
@@ -678,7 +697,7 @@ async function showResult(result) {
     const data = rec.variant === 'wet' ? p.ref.wet : p.ref;
     const st = rec.status;
     const glyph = { correct: '✓', learned: '!', flooded: '~', missed: '?' }[st];
-    const tag = { correct: 'stCorrect', learned: 'stLearned', flooded: 'stFlooded', missed: 'stMissed' }[st];
+    const tag = { correct: 'stCorrect', learned: 'stLearned', flooded: mk('stFlooded', mode), missed: 'stMissed' }[st];
     return `<li class="lesson ${st}">
       <div class="row"><span class="st" aria-hidden="true">${glyph}</span>
         <div>
@@ -708,7 +727,7 @@ async function showResult(result) {
     <h1 id="result-title" class="sr-only">${esc(t(headlineKey, { score: result.score10 }))}</h1>
     <div class="stats">
       <span>${esc(t('statCorrect', { c: result.correct, n: result.total }))}</span>
-      ${mode === 'prepare' && result.criticalTotal ? `<span>${esc(t('statBonus', { b: result.bonusHits }))}</span>` : ''}
+      ${modeOf(mode)?.bonus && result.criticalTotal ? `<span>${esc(t('statBonus', { b: result.bonusHits }))}</span>` : ''}
       <span>${esc(t('statTime', { t: result.timeLeft }))}</span>
     </div>
     ${added.length ? `<button class="book-chip is-new" type="button" id="btn-book-new">${esc(t('bookNew', { n: added.length, have: book.n, total: book.total }))}</button>` : ''}
@@ -719,7 +738,7 @@ async function showResult(result) {
     : `<button class="btn" type="button" id="btn-share">📤 ${esc(t('shareCta'))}</button>
     <button class="btn secondary" type="button" id="btn-challenge">🏆 ${esc(t('challengeCta'))}</button>`}
     <div class="btn-row">
-      <button class="btn secondary small" type="button" id="btn-other">${esc(t('playOther', { mode: t(other === 'prepare' ? 'modePrepare' : 'modeReturn') }))}</button>
+      <button class="btn secondary small" type="button" id="btn-other">${esc(t('playOther', { mode: t(mk('mode', other)) }))}</button>
       <button class="btn secondary small" type="button" id="btn-random">🎲 ${esc(t('playRandom'))}</button>
     </div>
     <h2 class="section-title">${esc(t('lessonTitle'))}</h2>
@@ -732,7 +751,7 @@ async function showResult(result) {
     <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
-  const resultGecko = new Gecko($('#result-gecko'), { prop: mode === 'prepare' ? 'hood' : 'torch' });
+  const resultGecko = new Gecko($('#result-gecko'), { prop: modeOf(mode)?.prop || 'none' });
   resultGecko.set(perfect ? 'wow' : result.tier >= 2 ? 'cheer' : result.tier === 1 ? 'happy' : 'think', { anim: 'hop' });
   if (result.tier >= 2) confetti($('#screen-result'));
   if (perfect) setTimeout(() => confetti($('#screen-result'), 40), 700);
@@ -758,7 +777,7 @@ async function showResult(result) {
       logo: [t('logoA'), t('logoB')],
       mode,
       tier: result.tier,
-      modeLabel: t(mode === 'prepare' ? 'modePrepare' : 'modeReturn'),
+      modeLabel: t(mk('mode', mode)),
       headline: t(headlineKey, { score: '' }).replace(/\s*\/10\s*$/, '').trim(),
       scoreText: `${result.score10}/10`,
       rankTitle: rank,
@@ -863,7 +882,7 @@ function goHome() {
   state.scene?.destroy();
   state.round = null;
   state.challenge = state.run?.kind === 'challenge' ? null : state.challenge;
-  app.classList.remove('is-prepare', 'is-return');
+  app.classList.remove(...modeIds().map((id) => `is-${id}`));
   showScreen('start');
   renderStart(state.defaultMode);
   if (state.updateReady) toast(t('updateReady'), 3200);
@@ -875,12 +894,11 @@ async function openChecklist(mode) {
   const C = content();
   track('checklist_open', { mode });
   const list = C.checklists[mode];
-  const other = mode === 'prepare' ? 'return' : 'prepare';
+  const tabs = modeIds().filter((id) => C.checklists[id]);
   openSheet(`
     <h2 id="sheet-title">${esc(t('checklistTitle'))}</h2>
-    <div class="seg" role="group">
-      <button type="button" data-cl="prepare" aria-pressed="${mode === 'prepare'}">${esc(t('checklistTabPrepare'))}</button>
-      <button type="button" data-cl="return" aria-pressed="${mode === 'return'}">${esc(t('checklistTabReturn'))}</button>
+    <div class="seg${tabs.length > 2 ? ' seg-grid' : ''}" role="group">
+      ${tabs.map((id) => `<button type="button" data-cl="${id}" aria-pressed="${id === mode}">${esc(t(mk('checklistTab', id)))}</button>`).join('')}
     </div>
     <img class="card-preview" id="cl-img" alt="${esc(L(list.title))}">
     <div class="share-grid" id="cl-share"></div>
@@ -889,7 +907,9 @@ async function openChecklist(mode) {
     <ol class="check-list">${list.items.map((it) => `<li><span>${esc(it.icon)} ${esc(L(it))}</span></li>`).join('')}</ol>
     <button class="btn secondary small" type="button" id="cl-close">${esc(t('close'))}</button>`);
   $('#cl-close').addEventListener('click', () => closeSheet());
-  $(`[data-cl="${other}"]`).addEventListener('click', () => openChecklist(other));
+  for (const b of $$('[data-cl]', $('#sheet'))) {
+    if (b.dataset.cl !== mode) b.addEventListener('click', () => openChecklist(b.dataset.cl));
+  }
 
   const assets = state.cardAssets || (state.cardAssets = await loadCardAssets());
   const canvas = document.createElement('canvas');
@@ -948,7 +968,7 @@ export function checklistData(mode) {
 async function openBook(focus = null) {
   try { await loadSprites(); } catch { /* icons are optional */ }
   const { total, n, have, topics } = bookCounts();
-  const modeTag = (it) => t(it.mode === 'prepare' ? 'modePrepare' : 'modeReturn');
+  const modeTag = (it) => t(mk('mode', it.mode));
   const section = (tp) => {
     const got = tp.items.filter((it) => have.has(it.id));
     const locked = tp.items.filter((it) => !have.has(it.id));
@@ -979,7 +999,9 @@ async function openBook(focus = null) {
     // Play the mode that still has the most to find in the focused topic.
     const tp = focus && topics.find((x) => x.id === focus);
     const left = (m) => (tp ? tp.items.filter((it) => it.mode === m && !have.has(it.id)).length : 0);
-    const mode = tp ? (left('return') >= left('prepare') ? 'return' : 'prepare') : (state.result?.mode || state.defaultMode);
+    const mode = tp
+      ? modeIds().reduce((best, id) => (left(id) > left(best) ? id : best), modeIds()[0])
+      : (state.result?.mode || state.defaultMode);
     startFlow(mode, { kind: 'random' });
   });
 }

@@ -16,7 +16,7 @@
     if (/bot|crawl|spider|slurp|facebookexternalhit|preview|lighthouse/i.test(navigator.userAgent)) return;
     var l = navigator.languages || [navigator.language || ''];
     if (l.some(function (x) { return /^th\b/i.test(x || ''); }) || Intl.DateTimeFormat().resolvedOptions().timeZone === 'Asia/Bangkok') return;
-    if (!/^\/(c\/[pr]\d{1,2}|checklist\/(prepare|return))?\/?$/.test(p)) return;
+    if (!/^\/(c\/[a-z]\d{1,2}|checklist\/[a-z]+)?\/?$/.test(p)) return;
     location.replace('/en' + p + location.search + location.hash);
   } catch (e) { /* the page still works without it */ }
 })();

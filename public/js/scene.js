@@ -2,6 +2,7 @@
 // sprites, tap targets, status badges and (before the flood) rising water.
 
 import { svgEl, $, $$, prefersReducedMotion } from './util.js';
+import { modeOf } from './modes.js';
 import { L } from './content.js';
 
 const svgCache = new Map();
@@ -42,6 +43,7 @@ const BADGE = {
   correct: { fill: '#1F6FEB', glyph: 'M-5 0 L-1.5 4 L5.5 -4' },
   learned: { fill: '#C4610A', glyph: 'M0 -5 V1.5 M0 5 V5.2' },
   flooded: { fill: '#6F6A66', glyph: 'M0 -5 Q4 0 4 2.5 A4 4 0 0 1 -4 2.5 Q-4 0 0 -5 Z' },
+  smoked: { fill: '#6F6A66', glyph: 'M-5 2 Q-6 -2 -2.5 -2 Q-2 -5.5 1.5 -4.5 Q5 -5 5 -1 Q6.5 2 3 2.5 Z' },
   missed: { fill: '#6F6A66', glyph: 'M-3.5 -2.5 Q-3.5 -6 0 -6 Q3.5 -6 3.5 -3 Q3.5 -0.5 0 0.5 V2 M0 5 V5.2' },
   decoy: { fill: '#8A847F', glyph: 'M-5 0 L-1.5 4 L5.5 -4' },
 };
@@ -68,6 +70,8 @@ export class Scene {
     this.tabsEl.innerHTML = '';
     this.nodes.clear();
     this.waterGroups = [];
+    this.threatGroups = [];
+    this.threat = modeOf(house.mode)?.threat || null;
     await loadSprites();
     const arts = await Promise.all(this.rooms.map((r) => loadRoomArt(r.art)));
 
@@ -83,7 +87,12 @@ export class Scene {
       svg.setAttribute('aria-hidden', 'false');
       const itemsG = svg.querySelector('.items');
       for (const p of room.placements) itemsG.appendChild(this._itemNode(p));
-      if (house.mode === 'prepare') this.waterGroups.push(this._water(svg.querySelector('.water')));
+      // The mode's threat is drawn over the items: water rising, smoke falling
+      // or haze over the whole room (all in the .water layer of the room SVG).
+      const layer = svg.querySelector('.water');
+      if (this.threat === 'water') this.waterGroups.push(this._water(layer));
+      else if (this.threat === 'smoke') this.threatGroups.push(this._smoke(layer));
+      else if (this.threat === 'haze') this.threatGroups.push(this._haze(layer));
       this.roomsEl.appendChild(wrap);
 
       const tab = document.createElement('button');
@@ -153,6 +162,37 @@ export class Scene {
     return { body, wave, phase: 0 };
   }
 
+  _smoke(group) {
+    group.innerHTML = '';
+    const body = svgEl('g', { class: 'smoke-g' });
+    body.appendChild(svgEl('rect', { class: 'smoke-body', x: -20, y: -700, width: 400, height: 700 }));
+    body.appendChild(svgEl('path', {
+      class: 'smoke-edge',
+      d: 'M-40 -6 q15 10 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V-20 H-40 Z',
+    }));
+    group.appendChild(body);
+    group.style.pointerEvents = 'none';
+    return { body, kind: 'smoke' };
+  }
+
+  _haze(group) {
+    group.innerHTML = '';
+    const rect = svgEl('rect', { class: 'haze-body', x: -20, y: -20, width: 400, height: 660, opacity: 0 });
+    group.appendChild(rect);
+    group.style.pointerEvents = 'none';
+    return { body: rect, kind: 'haze' };
+  }
+
+  // Smoke: y of its lower edge; haze: thickness 0..1.
+  setThreat(level) {
+    if (level == null) return;
+    if (this.threat === 'water') return this.setWater(level);
+    for (const g of this.threatGroups) {
+      if (g.kind === 'smoke') g.body.setAttribute('transform', `translate(0 ${level.toFixed(1)})`);
+      else g.body.setAttribute('opacity', Math.max(0, Math.min(1, level)).toFixed(3));
+    }
+  }
+
   setWater(y) {
     const animate = !prefersReducedMotion();
     for (const w of this.waterGroups) {
@@ -179,8 +219,8 @@ export class Scene {
     if (swap) g.querySelector('use').setAttribute('href', `#s-${swap}`);
     if (anim === 'lift') g.classList.add('lift');
     if (anim === 'away') g.classList.add('away');
-    if (status === 'flooded') g.classList.add('wet');
-    this._badge(g, p, status);
+    if (status === 'flooded') g.classList.add(this.threat === 'smoke' ? 'smoked' : 'wet');
+    this._badge(g, p, status === 'flooded' && this.threat === 'smoke' ? 'smoked' : status);
   }
 
   // A decoy that was tapped: grey tick so nobody taps it twice.

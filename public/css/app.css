@@ -182,6 +182,8 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .mode-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
 .mode-btn.mode-prepare { background: #CFEAFB; }
 .mode-btn.mode-return { background: #FFE6B0; }
+.mode-btn.mode-dust { background: #E9E2D8; }
+.mode-btn.mode-fire { background: #FFDCCB; }
 .mode-btn.is-default { order: -1; }
 .mode-icon { font-size: 38px; line-height: 1; }
 .mode-text { display: flex; flex-direction: column; }
@@ -314,6 +316,13 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   transform-origin: left;
 }
 .is-return .gauge-fill { background: repeating-linear-gradient(-45deg, #FFD15C 0 10px, #FFC83D 10px 20px); }
+.is-fire .gauge-fill { background: repeating-linear-gradient(-45deg, #FF9466 0 10px, #FF7A59 10px 20px); }
+/* PM2.5: the clock walks through the Air4Thai colours (very good → unhealthy) */
+.is-dust .gauge-fill { background: #3BB3E6; transition: background-color .4s; }
+.is-dust .gauge[data-aqi="1"] .gauge-fill { background: #5CC05C; }
+.is-dust .gauge[data-aqi="2"] .gauge-fill { background: #F2D22E; }
+.is-dust .gauge[data-aqi="3"] .gauge-fill { background: #F59B3A; }
+.is-dust .gauge[data-aqi="4"] .gauge-fill { background: #E5533D; }
 .gauge-label {
   position: absolute;
   inset: 0;
@@ -434,6 +443,8 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 /* SVG items */
 .is-prepare .mud, .is-prepare .sky-sun { display: none; }
 .is-return .sky-rain { display: none; }
+.is-dust .mud, .is-dust .sky-rain, .is-fire .mud, .is-fire .sky-rain { display: none; }
+.is-dust .sky-sun { filter: sepia(.55) saturate(.7) brightness(.92); }
 .item { cursor: pointer; }
 .item .hit { fill: transparent; }
 .item:focus { outline: none; }
@@ -468,6 +479,10 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 
 .water-body { fill: #4AA6DE; fill-opacity: .42; }
 .water-top { fill: #8FD0F5; fill-opacity: .7; }
+.smoke-body { fill: #5E5650; fill-opacity: .55; }
+.smoke-edge { fill: #7A716A; fill-opacity: .55; }
+.haze-body { fill: #B9A58C; }
+.item.smoked .sprite { filter: grayscale(.8) brightness(.8); }
 
 .spark { pointer-events: none; }
 .spark path { fill: var(--sun); stroke: var(--ink); stroke-width: 1.5; }

@@ -1,6 +1,7 @@
 // Loads the editable JSON content and provides translation helpers.
 
 import { store } from './util.js';
+import { setModes, mk, codesRe, idsRe } from './modes.js';
 
 const FILES = ['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'];
 
@@ -26,6 +27,7 @@ export async function loadContent() {
     checklists,
     helplines: helplines.helplines,
   };
+  setModes(config.modes);
   const q = new URLSearchParams(location.search).get('lang');
   setLang(q === 'en' || q === 'th' ? q : pathLang() || store.get('lang', null) || (isBot() ? 'th' : guessLang()));
   return C;
@@ -54,7 +56,7 @@ export const isBot = (ua = navigator.userAgent) => /bot|crawl|spider|slurp|faceb
 // Paths outside the app shell (e.g. /learn) are returned unchanged.
 export function langPath(pathname, next) {
   const bare = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-  if (!/^\/(c\/[pr]\d{1,2}|checklist\/(prepare|return))?\/?$/.test(bare)) return pathname;
+  if (!new RegExp(`^/(c/${codesRe()}\\d{1,2}|checklist/(${idsRe()}))?/?$`).test(bare)) return pathname;
   if (next !== 'en') return bare;
   return bare === '/' ? '/en/' : `/en${bare}`;
 }
@@ -82,13 +84,21 @@ export function t(key, vars = {}) {
   return String(s).replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? `{${k}}`));
 }
 
+// A per-mode string: "<base><Mode>" when it exists (rankDust, howtoFire …),
+// otherwise the shared "<base>" (stFlooded, geckoFlood …).
+export function tm(base, mode, vars = {}) {
+  const key = mk(base, mode);
+  const has = (C.strings[lang] && key in C.strings[lang]) || key in C.strings.th;
+  return t(has ? key : base, vars);
+}
+
 export function pickLine(key, rng = Math.random) {
   const list = t(key);
   return Array.isArray(list) ? list[Math.floor(rng() * list.length)] : list;
 }
 
 export function rankTitle(mode, tier) {
-  const list = t(mode === 'prepare' ? 'rankPrepare' : 'rankReturn');
+  const list = t(mk('rank', mode));
   return list[Math.max(0, Math.min(list.length - 1, tier))];
 }
 

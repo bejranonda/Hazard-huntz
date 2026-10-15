@@ -11,6 +11,8 @@
 import { loadCardAssets, drawResultCard, drawChecklist, drawOG } from '/js/cards.js';
 import { geckoSVG } from '/js/mascot.js';
 import { parseSvg, drawSvgInto } from '/js/svgdraw.js';
+import { setModes } from '/js/modes.js';
+const cap = (id) => id.charAt(0).toUpperCase() + id.slice(1);
 
 const get = (f) => fetch(`/content/${f}.json`).then((r) => r.json());
 
@@ -31,7 +33,9 @@ function icon(size, { maskable = false } = {}) {
 }
 
 window.renderAll = async (site) => {
-  const [strings, checklists, helplines] = await Promise.all([get('strings'), get('checklists'), get('helplines')]);
+  const [strings, checklists, helplines, config] = await Promise.all([get('strings'), get('checklists'), get('helplines'), get('config')]);
+  setModes(config.modes);
+  const MODES = config.modes.map((m) => [m.code, m.id]);
   const assets = await loadCardAssets();
   const og = strings.og;
   const th = strings.th;
@@ -49,32 +53,31 @@ window.renderAll = async (site) => {
   c = canvas();
   drawOG(c, { kind: 'default', logo: enLogo, mode: 'prepare', line1: ogEn.defaultLine1, line2: ogEn.defaultLine2, line3: ogEn.defaultPill, url }, assets);
   out['og/en/default.png'] = c.toDataURL('image/png');
-  for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
+  for (const [m, mode] of MODES) {
     for (let s = 0; s <= 10; s++) {
       c = canvas();
       drawOG(c, {
         kind: 'challenge', logo: enLogo, mode, score: s, scoreText: `${s}/10`,
-        line1: mode === 'prepare' ? ogEn.challengeLinePrepare : ogEn.challengeLineReturn,
+        line1: ogEn[`challengeLine${cap(mode)}`],
         line2: ogEn.challengePill, url,
       }, assets);
       out[`og/en/${m}${s}.png`] = c.toDataURL('image/png');
     }
     c = canvas();
-    drawOG(c, { kind: 'checklist', logo: enLogo, mode, line1: ogEn[mode === 'prepare' ? 'checklistTitlePrepare' : 'checklistTitleReturn'], line2: ogEn.checklistLine2, line3: ogEn.checklistPill, url }, assets);
+    drawOG(c, { kind: 'checklist', logo: enLogo, mode, line1: ogEn[`checklistTitle${cap(mode)}`], line2: ogEn.checklistLine2, line3: ogEn.checklistPill, url }, assets);
     out[`og/en/checklist-${mode}.png`] = c.toDataURL('image/png');
   }
 
-  for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
+  for (const [m, mode] of MODES) {
     for (let s = 0; s <= 10; s++) {
       c = canvas();
       drawOG(c, {
         kind: 'challenge', mode, score: s, scoreText: `${s}/10`,
-        line1: mode === 'prepare' ? og.challengeLinePrepare : og.challengeLineReturn,
+        line1: og[`challengeLine${cap(mode)}`],
         line2: og.challengePill, url,
       }, assets);
       out[`og/${m}${s}.png`] = c.toDataURL('image/png');
     }
-    const cap = mode === 'prepare' ? 'Prepare' : 'Return';
     c = canvas();
     drawOG(c, { kind: 'checklist', mode, line1: checklists[mode].title.th, line2: og.checklistLine2, line3: og.checklistPill, url }, assets);
     out[`og/checklist-${mode}.png`] = c.toDataURL('image/png');

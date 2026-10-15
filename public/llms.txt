@@ -7,7 +7,7 @@
 - The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: 2026-10-15
 
-## Before the flood (ก่อนน้ำมา)
+## Before the flood (ก่อนน้ำมา: เตรียมบ้านให้ทัน)
 
 - **Sandbags for the door** (ถุงทรายหน้าประตู): Line them up tightly across the doorway. เรียงถุงทรายกั้นหน้าประตูเป็นแนวให้แนบกัน ช่วยชะลอน้ำไม่ให้ทะลักเข้าบ้าน [https://baanrodmai.autobahn.bot/learn#p-sandbags]
 - **The car** (รถยนต์): Move it to an official flood-parking point or a multi-storey car park. ย้ายรถไปจุดจอดที่ทางการเปิดให้แต่เนิ่นๆ อย่าจอดบนสะพานหรือทางขึ้นทางด่วน [https://baanrodmai.autobahn.bot/learn#p-car]
@@ -29,7 +29,7 @@
 - **Downstairs toilet** (โถส้วมชั้นล่าง): Press a plastic-wrapped sandbag into the bowl and close the lid. วางถุงทรายห่อพลาสติกกดในโถส้วมชั้นล่าง กันน้ำเสียดันย้อนขึ้นมาในบ้าน [https://baanrodmai.autobahn.bot/learn#p-toilet]
 - **Fuel and weedkiller in the garage** (น้ำมันและยาฆ่าหญ้าในโรงรถ): Seal them tight and move them up onto a high shelf. แกลลอนน้ำมัน ปุ๋ย ยาฆ่าหญ้า ปิดฝาให้แน่น ยกขึ้นที่สูง ไม่ให้รั่วปนน้ำท่วม [https://baanrodmai.autobahn.bot/learn#p-fuel]
 
-## After the water recedes (หลังน้ำลด)
+## After the water recedes (หลังน้ำลด: หาจุดอันตรายก่อนกลับเข้าบ้าน)
 
 - **Downed power line** (สายไฟขาดห้อยลงมา): Stay at least 3–5 m away and call 1130 / 1129. เจอสายไฟขาด อยู่ห่างอย่างน้อย 3–5 เมตร แล้วโทรแจ้ง 1130 หรือ 1129 ทันที [https://baanrodmai.autobahn.bot/learn#r-wire]
 - **Shoes by the door** (รองเท้าหน้าบ้าน): Check inside with a stick before putting them on. งู ตะขาบ ชอบหลบในรองเท้า ใช้ไม้เขี่ยดูข้างในก่อนใส่ทุกครั้ง อย่าใช้มือล้วง [https://baanrodmai.autobahn.bot/learn#r-shoes]

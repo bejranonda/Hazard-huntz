@@ -51,7 +51,9 @@ const ARMS = {
     <circle cx="96" cy="63" r="2.6" fill="${SPOT}" stroke="${OL}" stroke-width="1.4"/>`,
 };
 
-// Small accessories per mode: a rain hood before the flood, a torch after.
+// Small accessories per mode (config.json → modes[].prop): a rain hood before
+// the flood, a torch after it, a dust mask, a fire helmet. FRONT parts are
+// drawn over the face (a mask has to cover the mouth).
 const PROPS = {
   none: '',
   hood: `
@@ -62,6 +64,20 @@ const PROPS = {
       <rect x="10" y="96" width="22" height="11" rx="3" fill="#FFC83D" stroke="${OL}" stroke-width="2.2"/>
       <rect x="4" y="94" width="7" height="15" rx="2" fill="#FFF3C4" stroke="${OL}" stroke-width="2.2"/>
     </g>`,
+  mask: '',
+  firehat: `
+    <path d="M26 40 Q26 8 60 8 Q94 8 94 40 Z" fill="#E8452C" stroke="${OL}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M18 42 Q60 32 102 42 L100 47 Q60 38 20 47 Z" fill="#C7361F" stroke="${OL}" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M60 9 V38" stroke="#FF8A6E" stroke-width="3" stroke-linecap="round"/>
+    <path d="M53 18 H67 V30 L60 34 L53 30 Z" fill="#FFC83D" stroke="${OL}" stroke-width="1.8" stroke-linejoin="round"/>`,
+};
+
+const FRONT = {
+  mask: `
+    <path d="M30 53 Q36 49 40 52 M90 53 Q84 49 80 52" fill="none" stroke="#E8E2D6" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M40 51 Q60 45 80 51 L78 66 Q70 77 60 77 Q50 77 42 66 Z" fill="#FFFFFF" stroke="${OL}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M45 58 Q60 54 75 58 M47 65 Q60 61 73 65" fill="none" stroke="#C9D3DA" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M52 50.5 Q60 48.5 68 50.5" fill="none" stroke="#9AA6AE" stroke-width="2" stroke-linecap="round"/>`,
 };
 
 export function geckoSVG({ face = 'happy', arms, prop = 'none', title = '' } = {}) {
@@ -91,6 +107,7 @@ export function geckoSVG({ face = 'happy', arms, prop = 'none', title = '' } = {
   <circle cx="55.5" cy="51" r="1.3" fill="${OL}"/><circle cx="64.5" cy="51" r="1.3" fill="${OL}"/>
   <g class="gk-prop">${PROPS[prop] || ''}</g>
   <g class="gk-face">${FACES[face] || FACES.happy}</g>
+  <g class="gk-front">${FRONT[prop] || ''}</g>
 </svg>`;
 }
 
@@ -108,6 +125,8 @@ export class Gecko {
     this.prop = prop;
     const g = this.svg.querySelector('.gk-prop');
     if (g) g.innerHTML = PROPS[prop] || '';
+    const f = this.svg.querySelector('.gk-front');
+    if (f) f.innerHTML = FRONT[prop] || '';
   }
 
   set(face = 'happy', { arms, hold = 0, anim } = {}) {

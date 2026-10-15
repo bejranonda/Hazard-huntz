@@ -5,6 +5,7 @@
 
 import { geckoSVG } from './mascot.js';
 import { parseSvg, drawSvgInto } from './svgdraw.js';
+import { modeOf } from './modes.js';
 
 const INK = '#3E2A1E';
 const INK2 = '#6B4A35';
@@ -17,6 +18,17 @@ const OK = '#1F6FEB';
 const WARN = '#C4610A';
 const MISS = '#8A847F';
 const FONT = 'Kanit, "Noto Sans Thai", Tahoma, sans-serif';
+
+// Colours per mode for cards, checklists and link previews. A new mode adds
+// one row here; anything missing falls back to the after-the-flood look.
+const THEMES = {
+  prepare: { sun: null, waves: ['#9FD3F0', '#63B8EA'], chip: '#CFEAFB', accentDark: SKY, og: '#DDF0FB' },
+  return: { sun: SUN, waves: ['#D9C08E', '#B08B62'], chip: '#FFE6B0', accentDark: '#C98A0C', og: '#FFF0CC' },
+  dust: { sun: 'rgba(240,150,80,.55)', waves: ['#D8CEC1', '#B0A292'], chip: '#E9E2D8', accentDark: '#8A7E70', og: '#EFE8DF' },
+  fire: { sun: null, waves: ['#FFCDB0', '#FF9466'], chip: '#FFDCCB', accentDark: '#D9572B', og: '#FFEFE6' },
+};
+const theme = (mode) => THEMES[mode] || THEMES.return;
+const propOf = (mode) => modeOf(mode)?.prop || 'none';
 
 export async function loadCardAssets() {
   if (document.fonts?.load) {
@@ -168,8 +180,8 @@ function background(ctx, W, H, mode) {
     ctx.arc(x, y, 3.2, 0, Math.PI * 2);
     ctx.fill();
   }
-  if (mode === 'return') {
-    ctx.fillStyle = SUN;
+  if (theme(mode).sun) {
+    ctx.fillStyle = theme(mode).sun;
     ctx.beginPath();
     ctx.arc(W - 120, 120, 70, 0, Math.PI * 2);
     ctx.fill();
@@ -218,15 +230,14 @@ export function drawResultCard(canvas, d, assets) {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
   background(ctx, W, H, d.mode);
-  if (d.mode === 'prepare') waves(ctx, W, 1110, '#9FD3F0', '#63B8EA');
-  else waves(ctx, W, 1110, '#D9C08E', '#B08B62');
+  waves(ctx, W, 1110, ...theme(d.mode).waves);
 
   logo(ctx, W / 2, 150, 104, d.logo, W - 160);
-  const chipFill = d.mode === 'prepare' ? '#CFEAFB' : '#FFE6B0';
+  const chipFill = theme(d.mode).chip;
   pill(ctx, W / 2, 192, d.modeLabel, { size: 40, fill: chipFill, lw: 4 });
 
   const face = d.tier >= 2 ? 'cheer' : d.tier === 1 ? 'happy' : 'think';
-  drawGecko(ctx, assets, W / 2 - 190, 318, 380, 400, face, d.mode === 'prepare' ? 'hood' : 'torch');
+  drawGecko(ctx, assets, W / 2 - 190, 318, 380, 400, face, propOf(d.mode));
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
@@ -299,8 +310,8 @@ export function drawChecklist(canvas, d, assets) {
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext('2d');
-  const accent = d.mode === 'prepare' ? '#CFEAFB' : '#FFE6B0';
-  const accentDark = d.mode === 'prepare' ? SKY : '#C98A0C';
+  const accent = theme(d.mode).chip;
+  const accentDark = theme(d.mode).accentDark;
   ctx.fillStyle = CREAM;
   ctx.fillRect(0, 0, W, H);
 
@@ -311,7 +322,7 @@ export function drawChecklist(canvas, d, assets) {
   ctx.fillStyle = accentDark;
   ctx.fillRect(0, 322, W, 10);
   logo(ctx, 380, 108, 74, d.logo, 600);
-  drawGecko(ctx, assets, 790, 24, 250, 270, 'happy', d.mode === 'prepare' ? 'hood' : 'torch');
+  drawGecko(ctx, assets, 790, 24, 250, 270, 'happy', propOf(d.mode));
   ctx.textAlign = 'left';
   ctx.fillStyle = INK;
   const tsize = fitText(ctx, d.title, 720, 74, 50);
@@ -397,8 +408,8 @@ export function drawOG(canvas, d, assets) {
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext('2d');
-  const prepare = d.mode !== 'return';
-  ctx.fillStyle = prepare ? '#DDF0FB' : '#FFF0CC';
+  const th = theme(d.mode || 'prepare');
+  ctx.fillStyle = th.og;
   ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = 'rgba(255,255,255,.6)';
   for (let y = 24; y < H; y += 48) for (let x = (y / 48) % 2 ? 24 : 0; x < W; x += 48) {
@@ -406,8 +417,7 @@ export function drawOG(canvas, d, assets) {
     ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fill();
   }
-  if (prepare) waves(ctx, W, 540, '#9FD3F0', '#63B8EA');
-  else waves(ctx, W, 540, '#D9C08E', '#B08B62');
+  waves(ctx, W, 540, ...th.waves);
 
   ctx.beginPath();
   ctx.arc(250, 300, 210, 0, Math.PI * 2);
@@ -417,7 +427,7 @@ export function drawOG(canvas, d, assets) {
   ctx.strokeStyle = INK;
   ctx.stroke();
   const face = d.kind === 'challenge' ? (d.score >= 8 ? 'cheer' : 'happy') : 'happy';
-  drawGecko(ctx, assets, 70, 90, 360, 400, face, prepare ? 'hood' : 'torch');
+  drawGecko(ctx, assets, 70, 90, 360, 400, face, propOf(d.mode || 'prepare'));
 
   const cx = 800;
   logo(ctx, cx, 120, 88, d.logo, 620);

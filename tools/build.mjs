@@ -36,6 +36,11 @@ const config = readJSON('content/config.json');
 const pkgVersion = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
 const strings = readJSON('content/strings.json');
 const itemsFile = readJSON('content/items.json');
+// The mode registry (config.json → modes); every per-mode file, page and
+// string below is derived from it.
+const MODES = config.modes || [];
+const MODE_IDS = MODES.map((m) => m.id);
+const capM = (id) => id.charAt(0).toUpperCase() + id.slice(1);
 const roomsFile = readJSON('content/rooms.json');
 const sourcesFile = readJSON('content/sources.json');
 const checklists = readJSON('content/checklists.json');
@@ -79,7 +84,7 @@ const ids = new Set();
 const thing = (it, where, kind) => {
   if (ids.has(it.id)) err(`${where}: duplicate id`);
   ids.add(it.id);
-  if (!['prepare', 'return'].includes(it.mode)) err(`${where}: mode must be "prepare" or "return"`);
+  if (!MODE_IDS.includes(it.mode)) err(`${where}: mode must be one of ${MODE_IDS.join(', ')}`);
   const room = roomById.get(it.room);
   if (!room) return err(`${where}: unknown room "${it.room}"`);
   text(it.name, `${where} name`);
@@ -126,7 +131,22 @@ for (const d of itemsFile.decoys) {
   text(d.note, `items.json decoy ${d.id} note`);
 }
 
-for (const mode of ['prepare', 'return']) {
+// Every mode needs its registry fields, round settings, strings and a checklist.
+const PER_MODE_STRINGS = ['mode', 'hero', 'challenge', 'howto', 'howtoTitle', 'geckoStart', 'result', 'shareText', 'checklistTab', 'rank'];
+const PER_MODE_OG = ['challengeTitle', 'challengeDesc', 'challengeLine', 'checklistTitle'];
+if (MODES.length < 2) err('config.json: modes must list the playable modes');
+if (new Set(MODES.map((m) => m.code)).size !== MODES.length) err('config.json: every mode needs its own one-letter code');
+for (const m of MODES) {
+  if (!/^[a-z]{3,12}$/.test(m.id || '') || !/^[a-z]$/.test(m.code || '')) err(`config.json: mode ${JSON.stringify(m.id)} needs an id (a–z) and a one-letter code`);
+  if (!config.round?.[m.id]?.seconds) err(`config.json: round.${m.id}.seconds is missing`);
+  if (m.threat && !config.round?.[m.id]?.[m.threat]) err(`config.json: round.${m.id}.${m.threat} keyframes are missing`);
+  for (const l of LANGS) for (const k of PER_MODE_STRINGS) if (strings[l]?.[`${k}${capM(m.id)}`] == null) err(`strings.json: ${l}.${k}${capM(m.id)} is missing`);
+  for (const l of LANGS) if (strings[l]?.[`mode${capM(m.id)}Desc`] == null) err(`strings.json: ${l}.mode${capM(m.id)}Desc is missing`);
+  for (const [name, tbl] of [['og', strings.og], ['ogEn', strings.ogEn]]) for (const k of PER_MODE_OG) if (!tbl?.[`${k}${capM(m.id)}`]) err(`strings.json: ${name}.${k}${capM(m.id)} is missing`);
+  for (const l of LANGS) if (!strings.seo?.[l]?.[`section${capM(m.id)}`]) err(`strings.json: seo.${l}.section${capM(m.id)} is missing`);
+}
+
+for (const mode of MODE_IDS) {
   const n = itemsFile.items.filter((i) => i.mode === mode && roomById.get(i.room)?.enabled).length;
   if (n < config.round.targetsMax) warn(`only ${n} playable ${mode} items for up to ${config.round.targetsMax} targets per round`);
   const list = checklists[mode];
@@ -274,8 +294,8 @@ const enIndexHtml = page(localize(indexHtml), ogBlock({
 }), ogEn.defaultTitle);
 write('en/index.html', enIndexHtml);
 
-for (const [m, mode] of [['p', 'prepare'], ['r', 'return']]) {
-  const cap = mode === 'prepare' ? 'Prepare' : 'Return';
+for (const { code: m, id: mode } of MODES) {
+  const cap = capM(mode);
   for (let s = 0; s <= 10; s++) {
     const title = fill(og[`challengeTitle${cap}`], { score: s });
     // No og:url here: the shared link must keep its ?h= house key.
@@ -338,17 +358,18 @@ ${wet ? `<p><b>${esc(S.ifWet)}:</b> ${T(wet.label)} ${En(wet.label)}${it.wet.tip
 <p class="src">${esc(S.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])])}${it.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc(S.partialNote)}</span>` : ''}</p>
 </article>`;
 };
-const prepareL = lessons('prepare'), returnL = lessons('return');
+const lessonsBy = Object.fromEntries(MODE_IDS.map((id) => [id, lessons(id)]));
+const allLessons = MODE_IDS.flatMap((id) => lessonsBy[id]);
 // An index by topic, so a link such as /learn#t-health can be shared when a
 // topic is in the news. Each entry jumps to the lesson's article.
 const topicIndex = (lang) => `<h2 id="topics">${esc((lang === 'en' ? E : S).topicsTitle)}</h2>
 ${(config.topics || []).map((tp) => {
-  const its = [...prepareL, ...returnL].filter((it) => it.topic === tp);
+  const its = allLessons.filter((it) => it.topic === tp);
   return `<div class="tix" id="t-${tp}"><p><b>${esc(strings[lang][`topic_${tp}`])}</b> (${its.length})</p><ul>${its.map((it) => `<li><a href="#${esc(it.id)}">${esc(it.name[lang])}</a></li>`).join('')}</ul></div>`;
 }).join('\n')}`;
-const nLessons = prepareL.length + returnL.length;
+const nLessons = allLessons.length;
 const learnTitle = fill(S.learnTitle, { n: nLessons });
-const checklistHtml = ['prepare', 'return'].map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
+const checklistHtml = MODE_IDS.filter((m) => checklists[m]).map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
 <ol>${checklists[m].items.map((c) => `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}</li>`).join('')}</ol>`).join('\n');
 const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
 const usedSources = [...new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]))].filter((id) => sources[id]);
@@ -408,10 +429,8 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 <p><a class="cta" href="/">${esc(S.playCta)}</a></p>
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${topicIndex('th')}
-<h2 id="prepare">${esc(S.sectionPrepare)} <span class="en" lang="en">${esc(E.sectionPrepare)}</span></h2>
-${prepareL.map(lessonHtml).join('\n')}
-<h2 id="return">${esc(S.sectionReturn)} <span class="en" lang="en">${esc(E.sectionReturn)}</span></h2>
-${returnL.map(lessonHtml).join('\n')}
+${MODE_IDS.map((id) => `<h2 id="${id}">${esc(S[`section${capM(id)}`])} <span class="en" lang="en">${esc(E[`section${capM(id)}`])}</span></h2>
+${lessonsBy[id].map(lessonHtml).join('\n')}`).join('\n')}
 <h2 id="checklists">${esc(S.checklists)}</h2>
 ${checklistHtml}
 <h2 id="helplines">${esc(S.helplines)}</h2>
@@ -462,12 +481,10 @@ const learnEnHtml = learnHtml
 <p><a class="cta" href="${EN}/">${esc(E.playCta)}</a></p>
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${topicIndex('en')}
-<h2 id="prepare">${esc(E.sectionPrepare)}</h2>
-${prepareL.map(enLesson).join('\n')}
-<h2 id="return">${esc(E.sectionReturn)}</h2>
-${returnL.map(enLesson).join('\n')}
+${MODE_IDS.map((id) => `<h2 id="${id}">${esc(E[`section${capM(id)}`])}</h2>
+${lessonsBy[id].map(enLesson).join('\n')}`).join('\n')}
 <h2 id="checklists">${esc(E.checklists)}</h2>
-${['prepare', 'return'].map((m) => `<h3>${esc(checklists[m].title.en)}</h3>\n<ol>${checklists[m].items.map((c) => `<li>${esc(c.en)}</li>`).join('')}</ol>`).join('\n')}
+${MODE_IDS.filter((m) => checklists[m]).map((m) => `<h3>${esc(checklists[m].title.en)}</h3>\n<ol>${checklists[m].items.map((c) => `<li>${esc(c.en)}</li>`).join('')}</ol>`).join('\n')}
 <h2 id="helplines">${esc(E.helplines)}</h2>
 <ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${esc(h.who.en)}: ${esc(h.what.en)}</li>`).join('')}</ul>
 <p>${esc(E.intlNote)}</p>
@@ -516,14 +533,10 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 - The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 
-## Before the flood (ก่อนน้ำมา)
+${MODE_IDS.map((id) => `## ${md(E[`section${capM(id)}`])} (${md(S[`section${capM(id)}`])})
 
-${prepareL.map(llmsLesson).join('\n')}
-
-## After the water recedes (หลังน้ำลด)
-
-${returnL.map(llmsLesson).join('\n')}
-
+${lessonsBy[id].map(llmsLesson).join('\n')}
+`).join('\n')}
 ## Thai emergency helplines
 
 ${helplines.helplines.map((h) => `- ${h.number}: ${md(h.who.en)} (${md(h.who.th)}). ${md(h.what.en)}`).join('\n')}
@@ -589,7 +602,7 @@ if (process.argv.includes('--docs')) {
       const agencies = [...new Set((it.sources || []).map((s) => sources[s]?.agency))].filter(Boolean).join(', ') || '—';
       const refs = (it.sources || []).map((s) => `[${s}]`).join(' ');
       const cell = (s) => String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
-      const row = `| ${i + 1} | ${it.mode === 'prepare' ? 'ก่อนน้ำมา' : 'หลังน้ำลด'} | ${cell(roomName(it.room))}${roomById.get(it.room)?.enabled ? '' : ' (เร็วๆ นี้)'} | ${cell(it.name.th)} | ${cell(wrong.label.th)} | ${cell(right.label.th)} | ${cell(it.tip.th)} | ${flag[it.verify]} ${cell(agencies)} ${refs} |`;
+      const row = `| ${i + 1} | ${strings.th[`mode${capM(it.mode)}`] || it.mode} | ${cell(roomName(it.room))}${roomById.get(it.room)?.enabled ? '' : ' (เร็วๆ นี้)'} | ${cell(it.name.th)} | ${cell(wrong.label.th)} | ${cell(right.label.th)} | ${cell(it.tip.th)} | ${flag[it.verify]} ${cell(agencies)} ${refs} |`;
       if (!it.wet) return row;
       const wr = it.wet.choices.find((c) => !c.correct);
       const rr = it.wet.choices.find((c) => c.correct);

@@ -10,6 +10,7 @@ import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
+import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,6 +22,8 @@ const C = {
   decoys: items.decoys,
   rooms: load('rooms').rooms,
 };
+
+setModes(C.config.modes);
 
 let passed = 0;
 const failures = [];
@@ -211,6 +214,25 @@ test('bots stay on the Thai page, people do not', () => {
   assert.ok(isBot('facebookexternalhit/1.1'));
   assert.ok(!isBot('Mozilla/5.0 (iPhone; CPU iPhone OS 17_6 like Mac OS X) AppleWebKit/605.1.15 Version/17.6 Mobile/15E148 Safari/604.1'));
   assert.ok(!isBot('Mozilla/5.0 (Linux; Android 13; SM-A145F) AppleWebKit/537.36 Chrome/129.0.0.0 Mobile Safari/537.36'));
+});
+
+test('mode registry: unique codes, links round-trip, season picks a mode', () => {
+  const modes = modeList();
+  assert.equal(new Set(modes.map((m) => m.code)).size, modes.length);
+  for (const m of modes) {
+    assert.equal(idOfCode(codeOf(m.id)), m.id);
+    for (const s of [0, 7, 10]) {
+      const u = new URL(challengeUrl('https://x.test', m.id, s, '20261007'));
+      assert.deepEqual(parseChallenge(u), { mode: m.id, score: s, houseKey: '20261007' });
+    }
+    assert.ok(C.config.round[m.id]?.seconds > 0, `round.${m.id}`);
+  }
+  // Old links keep their letters.
+  assert.equal(codeOf('prepare'), 'p');
+  assert.equal(codeOf('return'), 'r');
+  assert.equal(mk('rank', 'return'), 'rankReturn');
+  assert.equal(seasonalMode(10, true), 'prepare');
+  for (let month = 1; month <= 12; month++) assert.ok(modes.some((m) => m.id === seasonalMode(month, false)));
 });
 
 test('daily house resets at midnight Bangkok time', () => {

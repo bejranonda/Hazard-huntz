@@ -3,12 +3,13 @@
 // this device, like the best scores and the streak.
 
 import { playableRooms } from './house.js';
+import { modeIds } from './modes.js';
 
 // Every target a player can meet today, per mode (rooms that are drawn, items
 // that are switched on). Rooms that aren't drawn yet don't count.
 export function bookPool(content) {
   const rooms = new Set(playableRooms(content).map((r) => r.id));
-  const pool = { prepare: [], return: [] };
+  const pool = Object.fromEntries(modeIds().map((id) => [id, []]));
   for (const it of content.items) {
     if (!it.disabled && rooms.has(it.room) && pool[it.mode]) pool[it.mode].push(it);
   }
@@ -36,7 +37,7 @@ export function mergeLearned(prev, ids, valid = null) {
 // Progress per topic (config.topics order), counting only playable lessons:
 // [{ id, items, n, total }]. Topics with no playable lesson are left out.
 export function topicProgress(pool, have, topics = []) {
-  const all = [...pool.prepare, ...pool.return];
+  const all = Object.values(pool).flat();
   return topics.map((id) => {
     const items = all.filter((it) => it.topic === id);
     return { id, items, total: items.length, n: items.filter((it) => have.has(it.id)).length };

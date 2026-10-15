@@ -79,3 +79,25 @@ for (const it of content.items.filter((i) => i.mode === 'prepare')) {
   const range = lo === hi ? fmt(lo === Infinity ? null : lo) : `${fmt(lo === Infinity ? null : lo)} – ${fmt(hi === Infinity ? null : hi)}`;
   console.log(`  ${it.id.padEnd(12)} ${it.critical ? '★' : ' '} ${range}`);
 }
+
+// ---------------------------------------------------------------- 3. smoke timings
+// Smoke modes (fire): the smoke's lower edge falls from the ceiling; an item
+// is lost when the edge reaches its centre, so high items go first.
+for (const m of content.config.modes.filter((x) => x.threat === 'smoke')) {
+  const mc = cfg[m.id];
+  const S = mc.seconds;
+  const smokeAt = (y) => {
+    for (let t = 0; t <= S * 10; t++) if (waterY(t / (S * 10), mc.smoke) >= y) return t / 10;
+    return null;
+  };
+  console.log(`\n${m.id} smoke timings (no penalties; smoke low at ${fmt(smokeAt(mc.lowY))})`);
+  for (const it of content.items.filter((i) => i.mode === m.id)) {
+    const room = content.rooms.find((r) => r.id === it.room && r.enabled);
+    if (!room) continue;
+    const times = room.slots.filter((s) => s.tags.some((t) => it.slots.includes(t))).map((s) => smokeAt(s.y - it.size[1] / 2));
+    const sorted = times.map((t) => (t == null ? Infinity : t)).sort((a, b) => a - b);
+    const lo = sorted[0], hi = sorted[sorted.length - 1];
+    const range = lo === hi ? fmt(lo === Infinity ? null : lo) : `${fmt(lo === Infinity ? null : lo)} – ${fmt(hi === Infinity ? null : hi)}`;
+    console.log(`  ${it.id.padEnd(15)} ${range}`);
+  }
+}

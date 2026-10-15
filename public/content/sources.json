@@ -425,6 +425,53 @@
       "date": "2023-06-16",
       "kind": "international",
       "note": "WHO Europe Q&A, read on 15 Oct 2026. Stay indoors with doors and windows shut; reduce indoor pollution such as smoking and frying or grilling; a well-fitting FFP2/N95 mask outside; most at risk: children, older people, people with heart or lung disease, pregnant women; get medical help for symptoms. Used to cross-check the Thai advice, never as the only source."
+    },
+    "ddpm-fire10-2569": {
+      "agency": "ปภ.",
+      "title": "10 วิธีเอาตัวรอดจากเหตุเพลิงไหม้ (ปภ.) หลังเหตุไฟไหม้โรงเบียร์ลาดพร้าว",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1243425",
+      "kind": "secondary",
+      "note": "Krungthep Turakij citing DDPM (and the Royal Thai Police), read on 15 Oct 2026. The page shows no date of its own; related stories are dated Jul 2026. Steps: stay calm, sound the alarm on seeing sparks or smoke, call 199 for a serious fire, use an extinguisher on a small fire, cover nose and mouth with cloth against smoke, don't open a door at once: feel it and open slowly only if not hot, crawl low because clean air is within about a foot of the floor, never use a lift."
+    },
+    "ddpm-fire10-2563": {
+      "agency": "ปภ.",
+      "title": "10 วิธีเอาตัวรอดจากเหตุเพลิงไหม้ และวิธีป้องกันอัคคีภัย (ปภ.)",
+      "url": "https://www.bangkokbiznews.com/social/867826",
+      "date": "2020-02-25",
+      "kind": "secondary",
+      "note": "Krungthep Turakij citing DDPM, read on 15 Oct 2026; the date comes from the image path (Feb 2020), the page shows none. The same 10 steps as the 2026 article, with a wet cloth over nose and mouth, crawl or crouch low, don't open a hot door, no lifts, call 199. Prevention: check the stove and LPG cylinder and close the cylinder valve after every use."
+    },
+    "ddpm-dryfire-2568": {
+      "agency": "ปภ.",
+      "title": "ปภ. แนะวิธีป้องกันเพลิงไหม้ ช่วงสภาพอากาศแห้งและลมพัดแรง",
+      "url": "https://mgronline.com/uptodate/detail/9680000121426",
+      "date": "2025-12-17",
+      "kind": "secondary",
+      "note": "MGR Online quoting DDPM, read on 15 Oct 2026. Check appliances and wiring; repair or replace cracked or burning-smelling cords at once; switch off and unplug after use; don't load one power strip with many appliances; don't charge smartphones on a bed or sofa; close the LPG valve and stove; no burning rubbish or weeds in the open or in strong wind; never leave flames or sparks unattended; put cigarettes out fully, don't smoke near flammables; store flammable chemicals away from heat; keep an extinguisher where it is easy to use. Hotline 1784."
+    },
+    "mea-strip-2569": {
+      "agency": "กฟน.",
+      "title": "MEA เตือนใช้ปลั๊กพ่วงอย่างปลอดภัย เลือก มอก. 2432-2555 ป้องกันไฟฟ้าลัดวงจร",
+      "url": "https://www.thansettakij.com/social-biz/669184",
+      "date": "2026-09-17",
+      "kind": "secondary",
+      "note": "Thansettakij reporting MEA advice, read on 15 Oct 2026. Use strips with the TIS mark มอก. 2432-2555, 3-pin with earth; don't run high-power appliances (microwave, electric pan, iron) together on one strip; never chain strips together; not in wet or unventilated places; check cords and sockets; damaged cord, cracked insulation, loose plug, unusual heat or a burning smell: stop using and cut the power; switch off and unplug when not in use."
+    },
+    "usfa-alarm-2569": {
+      "agency": "U.S. Fire Administration (FEMA)",
+      "title": "Smoke Alarms",
+      "url": "https://www.usfa.fema.gov/prevention/home-fires/prepare-for-fire/smoke-alarms/",
+      "date": "2026-10-13",
+      "kind": "international",
+      "note": "Read on 15 Oct 2026 (page last reviewed 13 Oct 2026). Smoke alarms inside and outside each sleeping area; test monthly; replace batteries at least yearly; replace the alarm every 10 years; when it sounds you may have less than 2 minutes to get out."
+    },
+    "usfa-cooking-2569": {
+      "agency": "U.S. Fire Administration (FEMA)",
+      "title": "Cooking Fire Safety",
+      "url": "https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/cooking/",
+      "date": "2026-09-28",
+      "kind": "international",
+      "note": "Read on 15 Oct 2026 (page last reviewed 28 Sep 2026). Cooking is by far the leading cause of home fires and injuries; unattended equipment is the leading factor; stand by your pan and turn the burner off if you leave the kitchen; keep a lid nearby to smother a pan fire; keep anything that can burn away from the stovetop."
     }
   }
 }

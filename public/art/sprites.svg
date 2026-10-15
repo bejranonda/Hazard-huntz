@@ -850,4 +850,125 @@
   <path d="M76 36 L84 28" stroke="#E9D3B4" stroke-width="2" stroke-linecap="round"/>
   <circle cx="84.5" cy="27.5" r="2" fill="#E5533D"/>
 </symbol>
+
+<!-- House fire mode (v1.5.0) -->
+<symbol id="s-stripchain" viewBox="0 0 76 36">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="3" y="18" width="34" height="13" rx="3" fill="#F4F1EA"/>
+    <rect x="39" y="18" width="34" height="13" rx="3" fill="#F4F1EA"/>
+    <path d="M37 24.5 H39" stroke-width="3"/>
+    <path d="M9 18 V8 Q9 4 13 4 M19 18 V10 M29 18 V6 Q29 2 33 3 M45 18 V9 M55 18 V5 Q55 2 60 3 M65 18 V10" fill="none" stroke-width="1.8"/>
+    <rect x="6" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+    <rect x="16" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+    <rect x="26" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+    <rect x="42" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+    <rect x="52" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+    <rect x="62" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+  </g>
+  <circle cx="33" cy="24.5" r="2" fill="#E5533D"/><circle cx="69" cy="24.5" r="2" fill="#E5533D"/>
+  <path d="M30 12 q2 -3 0 -6 M36 12 q2 -3 0 -6 M42 12 q2 -3 0 -6" fill="none" stroke="#FF7A59" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="s-stripchain-done" viewBox="0 0 76 36">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="21" y="18" width="34" height="13" rx="3" fill="#F4F1EA"/>
+    <path d="M55 24.5 H72" fill="none" stroke-width="2"/>
+    <path d="M27 18 V8 Q27 4 31 4" fill="none" stroke-width="1.8"/>
+    <rect x="24" y="14" width="6" height="5" rx="1" fill="#2E3236"/>
+  </g>
+  <circle cx="51" cy="24.5" r="2" fill="#3DAE6A"/>
+  <text x="38" y="28" font-size="5" font-family="Kanit, sans-serif" font-weight="600" fill="#2E9BDB" text-anchor="middle">มอก.</text>
+</symbol>
+
+<symbol id="s-lampcord" viewBox="0 0 50 56">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 22 L18 4 H32 L38 22 Z" fill="#FFD27A"/>
+    <path d="M25 22 V44" stroke-width="3"/>
+    <ellipse cx="25" cy="47" rx="13" ry="5" fill="#B5774A"/>
+    <path d="M36 47 Q44 47 44 40 Q44 32 48 30" fill="none" stroke-width="2.6"/>
+  </g>
+  <path d="M41.5 43 l3 -3 M43 37 l3 1" stroke="#E5533D" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M40 30 q-2 -3 0 -6 M46 26 q-2 -3 0 -6" fill="none" stroke="#9A9087" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+</symbol>
+
+<symbol id="s-chargebed" viewBox="0 0 60 34">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M4 22 Q4 10 18 10 H44 Q56 10 56 22 Q56 31 44 31 H16 Q4 31 4 22 Z" fill="#F7B6A3"/>
+    <rect x="30" y="4" width="14" height="22" rx="3" fill="#2E3236" transform="rotate(12 37 15)"/>
+    <path d="M44 24 Q52 26 58 20" fill="none" stroke-width="1.8"/>
+  </g>
+  <path d="M10 18 Q16 15 22 18 M12 24 Q18 21 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+  <path d="M34 8 l2 3 l-2 2 l3 3" fill="none" stroke="#FFC83D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="s-alarm" viewBox="0 0 50 24">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="8" y="2" width="34" height="5" rx="1.5" fill="#E9EEF2"/>
+    <path d="M10 7 H40 Q40 18 25 18 Q10 18 10 7 Z" fill="#FFFFFF"/>
+  </g>
+  <circle cx="25" cy="12" r="2.4" fill="#E5533D"/>
+  <path d="M5 14 l-3 3 M45 14 l3 3 M7 19 l-3 2 M43 19 l3 2" stroke="#E5533D" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="s-alarm-done" viewBox="0 0 50 24">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="8" y="2" width="34" height="5" rx="1.5" fill="#E9EEF2"/>
+    <path d="M10 7 H40 Q40 18 25 18 Q10 18 10 7 Z" fill="#FFFFFF"/>
+  </g>
+  <circle cx="25" cy="12" r="2.4" fill="#3DAE6A"/>
+</symbol>
+
+<symbol id="s-panstove" viewBox="0 0 60 42">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="6" y="28" width="44" height="11" rx="2" fill="#5B5F64"/>
+    <path d="M12 22 H44 Q44 28 38 28 H18 Q12 28 12 22 Z" fill="#2E3236"/>
+    <path d="M44 23 H58" stroke-width="3.4"/>
+    <circle cx="14" cy="33.5" r="2.4" fill="#C9C2B6" stroke-width="1.6"/>
+  </g>
+  <ellipse cx="28" cy="22.5" rx="14" ry="2" fill="#E0B354"/>
+  <path d="M20 17 q-3 -4 0 -8 q3 -4 0 -8 M30 17 q-3 -4 0 -8 q3 -4 0 -8 M38 17 q-3 -3 0 -6" fill="none" stroke="#9A9087" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>
+</symbol>
+
+<symbol id="s-extbox" viewBox="0 0 56 54">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="30" y="8" width="14" height="40" rx="5" fill="#E5533D"/>
+    <path d="M33 8 V4 H41 V8 M41 5 H48" fill="none"/>
+    <rect x="3" y="24" width="30" height="26" rx="2" fill="#C9A15A"/>
+    <rect x="20" y="32" width="24" height="18" rx="2" fill="#B5774A"/>
+    <path d="M3 32 H33 M20 40 H44" stroke-width="1.6"/>
+  </g>
+</symbol>
+
+<symbol id="s-extinguisher" viewBox="0 0 56 54">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="21" y="12" width="16" height="40" rx="6" fill="#E5533D"/>
+    <path d="M25 12 V7 H33 V12 M33 8 H42 L46 12" fill="none"/>
+    <path d="M37 18 Q46 22 44 34" fill="none" stroke-width="2.6"/>
+  </g>
+  <rect x="24" y="26" width="10" height="12" rx="1.5" fill="#FFFFFF" stroke="#4A3426" stroke-width="1.4"/>
+  <path d="M26 30 H32 M26 34 H30" stroke="#E5533D" stroke-width="1.4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="s-note199" viewBox="0 0 38 44">
+  <path d="M3 4 H35 V40 H3 Z" fill="#FFF1A8" stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="19" cy="5" r="3" fill="#E5533D" stroke="#4A3426" stroke-width="1.4"/>
+  <text x="19" y="22" font-size="11" font-family="Kanit, sans-serif" font-weight="600" fill="#E5533D" text-anchor="middle">199</text>
+  <path d="M8 29 H30 M8 34 H24" stroke="#C9B497" stroke-width="2" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="s-smokedoor" viewBox="0 0 84 40">
+  <path d="M6 36 Q12 26 22 30 Q26 18 38 24 Q46 14 56 22 Q66 16 72 26 Q80 26 80 36 Z" fill="#B7AEA4" stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M18 34 Q24 30 30 33 M44 30 Q50 26 56 30" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+  <rect x="4" y="35" width="76" height="4" rx="2" fill="#4A3426"/>
+</symbol>
+
+<symbol id="s-ashtray" viewBox="0 0 44 32">
+  <g stroke="#4A3426" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 22 L30 18 L31 22 L11 26 Z" fill="#FFFFFF"/>
+    <path d="M30 18 L34 17.2 L35 21.2 L31 22 Z" fill="#FF9F6E"/>
+  </g>
+  <circle cx="34.6" cy="19.2" r="1.4" fill="#E5533D"/>
+  <path d="M35 15 q-3 -4 0 -7 q3 -4 0 -7" fill="none" stroke="#9A9087" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+  <path d="M4 30 Q10 26 16 29 M22 30 Q28 27 34 30" fill="none" stroke="#C9A15A" stroke-width="2" stroke-linecap="round"/>
+</symbol>
 </svg>

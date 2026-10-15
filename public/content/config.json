@@ -6,9 +6,10 @@
   "modes": [
     { "id": "prepare", "hazard": "flood", "code": "p", "threat": "water", "prop": "hood", "emoji": "🏠", "months": [5, 6, 7, 8, 9, 10, 11], "bonus": true },
     { "id": "return", "hazard": "flood", "code": "r", "threat": null, "prop": "torch", "emoji": "⚡", "icon": "🧹", "months": [] },
-    { "id": "dust", "hazard": "dust", "code": "d", "threat": "haze", "prop": "mask", "emoji": "😷", "months": [12, 1, 2, 3], "link": "https://air4thai.pcd.go.th/webV3/" }
+    { "id": "dust", "hazard": "dust", "code": "d", "threat": "haze", "prop": "mask", "emoji": "😷", "months": [12, 1, 2, 3], "link": "https://air4thai.pcd.go.th/webV3/" },
+    { "id": "fire", "hazard": "fire", "code": "f", "threat": "smoke", "prop": "firehat", "emoji": "🔥", "months": [4] }
   ],
-  "topics": ["health", "power", "food", "critters", "home", "plan", "air"],
+  "topics": ["health", "power", "food", "critters", "home", "plan", "air", "fire"],
   "featuredTopic": "health",
   "siteUrl": "https://baanrodmai.autobahn.bot",
   "version": "1.4.0",
@@ -34,6 +35,11 @@
     "dust": {
       "seconds": 55,
       "haze": [[0, 0.06], [0.3, 0.28], [0.7, 0.52], [1, 0.64]]
+    },
+    "fire": {
+      "seconds": 55,
+      "smoke": [[0, -30], [0.35, 60], [0.7, 230], [1, 330]],
+      "lowY": 230
     }
   },
   "analytics": {

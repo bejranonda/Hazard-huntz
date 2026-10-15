@@ -579,7 +579,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .why p { margin: 10px 2px 4px; font-size: 16px; }
 .why .src { font-size: 13px; color: var(--ink-2); }
 /* source links are inline text; pad them to a 44 px tall tap area without moving the text */
-.src a { display: inline-block; padding: 12px 3px; margin: -12px -3px; }
+.src a { display: inline-block; min-width: 24px; padding: 12px 10px; margin: -12px -10px; text-align: center; }
 
 /* ---------- result ---------- */
 

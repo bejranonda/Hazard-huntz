@@ -796,6 +796,189 @@
       "tip": { "th": "งดเผาขยะและใบไม้ในที่โล่ง ช่วยลดฝุ่น PM2.5 ให้ทั้งซอย", "en": "Don't burn rubbish or leaves in the open; it adds PM2.5 for the whole street." },
       "why": { "th": "กรมอนามัยชวนช่วยกันลดฝุ่น PM2.5 เช่น งดการเผาในที่โล่ง ลดการใช้รถดีเซลที่ปล่อยควันดำ และปลูกต้นไม้", "en": "The Thai Department of Health asks everyone to help cut PM2.5: no open burning, fewer black-smoke diesels, and planting trees." },
       "sources": ["doh-10ways-2564"], "verify": "verified", "topic": "air"
+    },
+    {
+      "id": "f-strip", "mode": "fire", "room": "living",
+      "sprite": "stripchain", "doneSprite": "stripchain-done", "size": [76, 36], "slots": ["floor"],
+      "name": { "th": "ปลั๊กพ่วงต่อกันเป็นทอดๆ", "en": "Power strips plugged into each other" },
+      "context": { "th": "ปลั๊กพ่วงเสียบต่อกันสองอัน มีหม้อหุงข้าว เตารีด ไมโครเวฟ เสียบรวมกัน", "en": "Two strips chained together, with a rice cooker, iron and microwave all on them" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ถอดออก ไม่พ่วงต่อกัน เครื่องกินไฟสูงไม่เสียบรวมกัน", "en": "Unchain them, and don't run high-power appliances together" } },
+        { "kind": "leave", "label": { "th": "ใช้ต่อไป ยังไม่เห็นมีอะไรไหม้", "en": "Keep using them, nothing has burned yet" }, "feedback": { "th": "ไฟเกินขนาดสายทำให้ความร้อนสะสม กฟน. แนะไม่ให้เสียบปลั๊กพ่วงต่อกันเป็นทอดๆ", "en": "Too much current heats the cable. MEA says never chain power strips." } },
+        { "kind": "pack", "label": { "th": "เอาผ้าคลุมไว้ กันฝุ่น", "en": "Cover them with a cloth to keep dust off" }, "feedback": { "th": "ผ้าคลุมทำให้ความร้อนระบายไม่ได้ ต้องเลิกพ่วงต่อกันและแยกเครื่องที่กินไฟสูง", "en": "A cloth traps the heat. Unchain them and split up the power-hungry appliances." } }
+      ],
+      "tip": { "th": "ไม่เสียบปลั๊กพ่วงต่อกันเป็นทอดๆ เครื่องกินไฟสูงไม่เสียบรวมกัน", "en": "Never chain power strips, and don't run power-hungry appliances together." },
+      "why": { "th": "กฟน. แนะเลือกปลั๊กพ่วงที่มีเครื่องหมาย มอก. 2432-2555 ไม่เสียบต่อกันเป็นทอดๆ และไม่เสียบเครื่องกินไฟสูง เช่น ไมโครเวฟ กระทะไฟฟ้า เตารีด พร้อมกัน ปภ. ก็แนะไม่เสียบเครื่องใช้ไฟฟ้าหลายชนิดกับปลั๊กพ่วงเดียว", "en": "MEA says use strips with the TIS 2432-2555 mark, never chain them, and don't run microwaves, electric pans or irons together on one. DDPM also says don't load one strip with many appliances." },
+      "sources": ["mea-strip-2569", "ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-cord", "mode": "fire", "room": "living",
+      "sprite": "lampcord", "doneAnim": "away", "size": [50, 56], "slots": ["table"],
+      "name": { "th": "สายไฟโคมไฟร้อนผิดปกติ", "en": "Lamp cord running hot" },
+      "context": { "th": "สายไฟโคมไฟมีรอยแตก จับแล้วร้อน ได้กลิ่นเหม็นไหม้", "en": "The lamp cord is cracked, hot to touch and smells of burning" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "หยุดใช้ ถอดปลั๊ก แล้วซ่อมหรือเปลี่ยนใหม่", "en": "Stop using it, unplug it, then repair or replace it" } },
+        { "kind": "leave", "label": { "th": "พันเทปตรงรอยแตก ใช้ต่อได้", "en": "Tape over the crack and carry on" }, "feedback": { "th": "สายที่ร้อนและมีกลิ่นไหม้อันตราย ต้องหยุดใช้ทันที แล้วซ่อมหรือเปลี่ยนใหม่", "en": "A hot, burning-smelling cord is dangerous. Stop using it now and repair or replace it." } },
+        { "kind": "off", "label": { "th": "ปิดไฟไว้ก่อน พรุ่งนี้ค่อยดู", "en": "Switch the lamp off and look tomorrow" }, "feedback": { "th": "ปิดสวิตช์แต่ยังเสียบปลั๊กอยู่ สายยังมีไฟ ต้องถอดปลั๊กและหยุดใช้จนกว่าจะซ่อม", "en": "Switched off but still plugged in, the cord is live. Unplug it until it's fixed." } }
+      ],
+      "tip": { "th": "สายไฟแตก ร้อนผิดปกติ หรือมีกลิ่นไหม้ หยุดใช้ ถอดปลั๊ก ซ่อมหรือเปลี่ยนใหม่", "en": "Cord cracked, hot or smelling of burning? Stop, unplug, repair or replace." },
+      "why": { "th": "ปภ. แนะว่าถ้าเครื่องไฟฟ้าชำรุด สายไฟมีรอยแตก มีกลิ่นเหม็นไหม้ ให้ซ่อมหรือเปลี่ยนใหม่ทันที กฟน. แนะให้หยุดใช้และตัดวงจรเมื่อพบสายชำรุดหรือร้อนผิดปกติ", "en": "DDPM says repair or replace damaged appliances and cracked or burning-smelling cords at once. MEA says stop using and cut the power when a cord is damaged or unusually hot." },
+      "sources": ["ddpm-dryfire-2568", "mea-strip-2569"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-charge", "mode": "fire", "room": "living",
+      "sprite": "chargebed", "doneAnim": "away", "size": [60, 34], "slots": ["seat"],
+      "name": { "th": "มือถือชาร์จอยู่บนโซฟา", "en": "Phone charging on the sofa" },
+      "context": { "th": "เสียบชาร์จมือถือทิ้งไว้ใต้หมอนบนโซฟา", "en": "A phone left charging under a cushion on the sofa" },
+      "choices": [
+        { "kind": "move", "correct": true, "label": { "th": "ย้ายไปชาร์จบนโต๊ะ ไม่ชาร์จบนโซฟาหรือที่นอน", "en": "Move it to a table; never charge on a sofa or bed" } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ ชาร์จข้ามคืนสะดวกดี", "en": "Leave it, overnight charging is handy" }, "feedback": { "th": "ปภ. แนะไม่เสียบชาร์จสมาร์ตโฟนบนที่นอนหรือโซฟา ย้ายไปวางบนโต๊ะดีกว่า", "en": "DDPM says don't charge phones on beds or sofas. Put it on a table." } },
+        { "kind": "pack", "label": { "th": "เอาหมอนอีกใบทับไว้ จะได้ไม่ตก", "en": "Put another cushion on top so it can't fall" }, "feedback": { "th": "ยิ่งคลุมยิ่งร้อน ปภ. แนะไม่ให้ชาร์จมือถือบนที่นอนหรือโซฟาเลย", "en": "Covering it makes it hotter. DDPM says don't charge phones on beds or sofas at all." } }
+      ],
+      "tip": { "th": "ไม่ชาร์จมือถือบนที่นอนหรือโซฟา วางชาร์จบนโต๊ะแทน", "en": "Don't charge phones on beds or sofas. Use a table." },
+      "why": { "th": "ปภ. แนะวิธีป้องกันเพลิงไหม้ในช่วงอากาศแห้ง รวมถึง \"ไม่เสียบชาร์จสมาร์ตโฟนบนที่นอนหรือโซฟา\"", "en": "Among DDPM's fire-prevention tips for the dry season: don't charge smartphones on a bed or sofa." },
+      "sources": ["ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-alarm", "mode": "fire", "room": "living",
+      "sprite": "alarm", "doneSprite": "alarm-done", "size": [50, 24], "slots": ["ceiling"],
+      "name": { "th": "เครื่องจับควันส่งเสียงปี๊บ", "en": "Smoke alarm chirping" },
+      "context": { "th": "เครื่องจับควันบนเพดานส่งเสียงปี๊บเป็นระยะ แบตใกล้หมด", "en": "The ceiling smoke alarm keeps chirping: low battery" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "เปลี่ยนแบต แล้วกดทดสอบ ทำทุกเดือน", "en": "Change the battery, press test, and test it monthly" } },
+        { "kind": "leave", "label": { "th": "ถอดแบตออก เสียงจะได้เงียบ", "en": "Take the battery out to stop the noise" }, "feedback": { "th": "ไม่มีแบต เครื่องก็เตือนไม่ได้ตอนเกิดไฟ ต้องเปลี่ยนแบตใหม่และทดสอบทุกเดือน", "en": "Without a battery it can't warn you of a fire. Fit a new one and test monthly." } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ ยังมีเสียงแปลว่ายังใช้ได้", "en": "Leave it; a chirp means it still works" }, "feedback": { "th": "เสียงปี๊บคือเตือนว่าแบตใกล้หมด ต้องเปลี่ยนแบตแล้วกดทดสอบ", "en": "The chirp means the battery is dying. Replace it and press test." } }
+      ],
+      "tip": { "th": "เครื่องจับควัน กดทดสอบทุกเดือน แบตใกล้หมดให้เปลี่ยนทันที", "en": "Test smoke alarms every month, and change a low battery right away." },
+      "why": { "th": "หน่วยงานดับเพลิงของสหรัฐฯ (USFA) แนะให้ทดสอบเครื่องจับควันทุกเดือน เปลี่ยนแบตอย่างน้อยปีละครั้ง และเมื่อเครื่องเตือน อาจมีเวลาไม่ถึง 2 นาทีในการออกจากบ้าน ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานไทย", "en": "The US Fire Administration says test smoke alarms monthly and change batteries at least yearly; when one sounds you may have under 2 minutes to get out. No Thai agency guidance on this was found yet." },
+      "sources": ["usfa-alarm-2569"], "verify": "partial", "topic": "fire",
+      "verifyNote": "International source only (US Fire Administration). Smoke alarms are not yet common in Thai homes and no Thai agency page on testing them was found; a Thai reviewer should confirm."
+    },
+    {
+      "id": "f-towel", "mode": "fire", "room": "living",
+      "sprite": "towel", "doneAnim": "none", "size": [62, 40], "slots": ["floor"],
+      "name": { "th": "ผ้าขนหนูผืนนี้", "en": "This towel" },
+      "context": { "th": "ถ้าไฟไหม้แล้วควันเต็มห้อง ผ้าผืนนี้ช่วยได้ยังไง", "en": "If there's a fire and the room fills with smoke, how can this towel help?" },
+      "choices": [
+        { "kind": "wash", "correct": true, "label": { "th": "ชุบน้ำ ปิดจมูกและปาก แล้วหมอบคลานต่ำออกไป", "en": "Wet it, cover nose and mouth, and crawl low to get out" } },
+        { "kind": "leave", "label": { "th": "คลุมหัวแล้ววิ่งตัวตรงฝ่าควันออกไป", "en": "Throw it over your head and run upright through the smoke" }, "feedback": { "th": "ควันลอยอยู่สูง อากาศดีอยู่ใกล้พื้น ปภ. แนะให้ปิดจมูกปากด้วยผ้า แล้วหมอบคลานต่ำ", "en": "Smoke rises; cleaner air is near the floor. DDPM says cover nose and mouth and crawl low." } },
+        { "kind": "leave", "label": { "th": "หนีเข้าห้องน้ำ เอาผ้าอุดประตู", "en": "Hide in the bathroom and block the door with it" }, "feedback": { "th": "ห้องน้ำเป็นทางตัน ปภ. แนะให้หาทางออก ปิดจมูกปากด้วยผ้า และหมอบคลานต่ำ", "en": "A bathroom is a dead end. Head for a way out, nose and mouth covered, crawling low." } }
+      ],
+      "tip": { "th": "เกิดไฟไหม้ ใช้ผ้าชุบน้ำปิดจมูกปาก หมอบคลานต่ำ หาทางออก", "en": "In a fire: wet cloth over nose and mouth, crawl low, get out." },
+      "why": { "th": "ปภ. แนะวิธีเอาตัวรอดจากเพลิงไหม้: ใช้ผ้า (ชุบน้ำ) ปิดจมูกและปาก ป้องกันการสูดควัน และหมอบคลานต่ำ เพราะอากาศบริสุทธิ์อยู่ใกล้พื้น ไม่หนีเข้าห้องน้ำ", "en": "DDPM's fire survival steps: cover nose and mouth with a (wet) cloth against smoke, and crawl low because clean air is near the floor. Don't retreat into the bathroom." },
+      "sources": ["ddpm-fire10-2569", "ddpm-fire10-2563"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-pan", "mode": "fire", "room": "kitchen",
+      "sprite": "panstove", "doneAnim": "none", "size": [60, 42], "slots": ["counter"],
+      "name": { "th": "กระทะน้ำมันบนเตา", "en": "Pan of oil on the stove" },
+      "context": { "th": "ตั้งกระทะน้ำมันบนเตาที่เปิดอยู่ แล้วจะเดินไปรับพัสดุหน้าบ้าน", "en": "A pan of oil is heating on the stove, and the cook is heading out front for a delivery" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ปิดเตาก่อนออกจากครัว อยู่เฝ้าเตาตอนทำอาหาร", "en": "Turn the stove off before leaving; stay with the pan" } },
+        { "kind": "leave", "label": { "th": "ไปแป๊บเดียว เปิดไฟอ่อนไว้", "en": "It's only a minute, leave it on low" }, "feedback": { "th": "ไฟที่ไม่มีคนดูแลเป็นต้นเหตุไฟไหม้ ปภ. แนะไม่ทิ้งกิจกรรมที่ใช้ไฟไว้โดยไม่มีคนดูแล", "en": "Unattended flames start fires. DDPM says never leave anything burning unattended." } },
+        { "kind": "pack", "label": { "th": "ปิดฝากระทะไว้ แล้วไปได้", "en": "Put the lid on and go" }, "feedback": { "th": "ปิดฝาแต่เตายังร้อนอยู่ ต้องปิดเตาก่อนออกจากครัว", "en": "The lid doesn't switch off the heat. Turn the stove off before you leave." } }
+      ],
+      "tip": { "th": "ทำอาหารอยู่อย่าทิ้งเตา จะออกจากครัวต้องปิดเตาก่อน", "en": "Stay with the pan. Turn the stove off before you leave the kitchen." },
+      "why": { "th": "ปภ. แนะไม่ประกอบกิจกรรมที่ใช้ไฟหรือก่อให้เกิดประกายไฟทิ้งไว้โดยไม่มีผู้ดูแล หน่วยงานดับเพลิงของสหรัฐฯ ระบุว่าการทำอาหารเป็นสาเหตุอันดับหนึ่งของไฟไหม้บ้าน แนะให้ \"เฝ้ากระทะ\" และปิดเตาเมื่อออกจากครัว", "en": "DDPM says never leave flames or sparks unattended. The US Fire Administration says cooking is the leading cause of home fires: stand by your pan and turn the burner off if you leave." },
+      "sources": ["ddpm-dryfire-2568", "usfa-cooking-2569"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-gas", "mode": "fire", "room": "kitchen",
+      "sprite": "lpg", "doneSprite": "lpg-off", "size": [46, 70], "slots": ["lpg"],
+      "name": { "th": "ถังแก๊สหลังทำอาหารเสร็จ", "en": "Gas cylinder after cooking" },
+      "context": { "th": "ทำกับข้าวเสร็จแล้ว แต่วาล์วถังแก๊สยังเปิดอยู่", "en": "Cooking's done, but the cylinder valve is still open" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ปิดวาล์วหัวถัง และปิดเตาให้สนิท", "en": "Close the cylinder valve and the stove fully" } },
+        { "kind": "off", "label": { "th": "ปิดแค่ปุ่มเตาก็พอ", "en": "Turning off the stove knob is enough" }, "feedback": { "th": "ปภ. แนะให้ปิดวาล์วที่หัวถังทุกครั้งหลังเลิกใช้ ไม่ใช่แค่ปิดเตา", "en": "DDPM says close the valve on the cylinder after every use, not just the stove." } },
+        { "kind": "leave", "label": { "th": "เปิดไว้ พรุ่งนี้ใช้ต่อ", "en": "Leave it, you'll cook again tomorrow" }, "feedback": { "th": "ถ้ามีรั่วจะสะสมทั้งคืน ปภ. แนะปิดวาล์วถังแก๊สและเตาให้สนิทหลังใช้ทุกครั้ง", "en": "A leak would build up all night. Close the valve and stove after every use." } }
+      ],
+      "tip": { "th": "ใช้แก๊สเสร็จ ปิดวาล์วหัวถังและปิดเตาให้สนิททุกครั้ง", "en": "After cooking, always close the cylinder valve and the stove." },
+      "why": { "th": "ปภ. แนะให้หมั่นตรวจสอบเตาและถังก๊าซหุงต้มให้อยู่ในสภาพปลอดภัย และปิดวาล์วที่หัวถังทุกครั้งหลังเลิกใช้งาน", "en": "DDPM says check the stove and LPG cylinder are in good order and close the cylinder valve after every use." },
+      "sources": ["ddpm-fire10-2563", "ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-chem", "mode": "fire", "room": "kitchen",
+      "sprite": "chem", "doneAnim": "none", "size": [64, 60], "slots": ["floor"],
+      "name": { "th": "สเปรย์และทินเนอร์ข้างเตา", "en": "Sprays and thinner by the stove" },
+      "context": { "th": "สเปรย์ไล่ยุง ทินเนอร์ วางอยู่ข้างเตาแก๊ส", "en": "Insect spray and paint thinner sitting next to the gas stove" },
+      "choices": [
+        { "kind": "move", "correct": true, "label": { "th": "ย้ายไปเก็บให้ห่างเตาและความร้อน", "en": "Move them away from the stove and any heat" } },
+        { "kind": "leave", "label": { "th": "วางไว้ หยิบใช้ง่ายดี", "en": "Leave them, they're handy there" }, "feedback": { "th": "ของไวไฟใกล้ความร้อนติดไฟได้ง่าย ปภ. แนะให้เก็บสารเคมีไวไฟให้ห่างจากแหล่งความร้อน", "en": "Flammables near heat catch easily. DDPM says keep them away from heat sources." } },
+        { "kind": "up", "label": { "th": "ย้ายไปไว้บนชั้นเหนือเตา", "en": "Move them to the shelf above the stove" }, "feedback": { "th": "เหนือเตาก็ยังโดนความร้อน ต้องเก็บให้ห่างจากเตาและแหล่งความร้อน", "en": "Above the stove is still hot. Store them well away from heat." } }
+      ],
+      "tip": { "th": "ของไวไฟ เช่น สเปรย์ ทินเนอร์ เก็บให้ห่างเตาและความร้อน", "en": "Keep flammables like sprays and thinner away from the stove and heat." },
+      "why": { "th": "ปภ. แนะให้จัดเก็บสารเคมีที่ติดไฟง่ายให้ห่างจากแหล่งความร้อน หน่วยงานดับเพลิงของสหรัฐฯ ก็แนะให้เก็บของที่ติดไฟได้ให้ห่างจากเตา", "en": "DDPM says store flammable chemicals away from heat. The US Fire Administration also says keep anything that can burn away from the stovetop." },
+      "sources": ["ddpm-dryfire-2568", "usfa-cooking-2569"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-extinguisher", "mode": "fire", "room": "kitchen",
+      "sprite": "extbox", "doneSprite": "extinguisher", "size": [56, 54], "slots": ["cupboard"],
+      "name": { "th": "ถังดับเพลิงในตู้", "en": "Extinguisher in the cupboard" },
+      "context": { "th": "ถังดับเพลิงเก็บอยู่ในตู้ลึกๆ หลังกองของ", "en": "The fire extinguisher is buried at the back of a cupboard" },
+      "choices": [
+        { "kind": "place", "correct": true, "label": { "th": "ย้ายออกมาไว้จุดที่เห็นชัด หยิบใช้ได้ทันที", "en": "Move it somewhere visible you can grab at once" } },
+        { "kind": "leave", "label": { "th": "เก็บในตู้ต่อไป กันฝุ่น", "en": "Keep it in the cupboard, away from dust" }, "feedback": { "th": "ตอนไฟลุกไม่มีเวลารื้อตู้ ปภ. แนะติดตั้งถังดับเพลิงในจุดที่นำไปใช้ได้สะดวก", "en": "In a fire there's no time to dig. DDPM says keep it where you can use it easily." } },
+        { "kind": "leave", "label": { "th": "ไม่ต้องมี เดี๋ยวใช้น้ำแทน", "en": "No need, water will do" }, "feedback": { "th": "ถังดับเพลิงช่วยคุมไฟเล็กๆ ได้ ปภ. แนะให้ติดตั้งไว้ในจุดที่หยิบใช้สะดวก", "en": "An extinguisher can control a small fire. DDPM says keep one where it's easy to reach." } }
+      ],
+      "tip": { "th": "ถังดับเพลิงไว้ในจุดที่เห็นชัด หยิบใช้ได้ทันที", "en": "Keep the extinguisher where you can see it and grab it fast." },
+      "why": { "th": "ปภ. แนะให้ติดตั้งถังดับเพลิงในจุดที่สามารถนำไปใช้ดับไฟได้สะดวก และใช้ถังดับเพลิงควบคุมเพลิงเบื้องต้นเมื่อไฟยังเล็ก", "en": "DDPM says install an extinguisher where it can be used easily, and use it on a fire while it is still small." },
+      "sources": ["ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-call", "mode": "fire", "room": "kitchen",
+      "sprite": "note199", "doneAnim": "none", "size": [38, 44], "slots": ["fridge-note"],
+      "name": { "th": "โน้ตเบอร์โทรข้างตู้เย็น", "en": "Phone numbers on the fridge" },
+      "context": { "th": "ถ้าไฟลุกใหญ่ ดับเองไม่ได้ ต้องโทรเบอร์ไหน", "en": "If a fire gets too big to put out, which number do you call?" },
+      "choices": [
+        { "kind": "call", "correct": true, "label": { "th": "โทร 199 แจ้งดับเพลิง", "en": "Call 199 for the fire service" } },
+        { "kind": "call", "label": { "th": "โทร 1669", "en": "Call 1669" }, "feedback": { "th": "1669 คือเจ็บป่วยฉุกเฉิน ถ้าไฟไหม้ให้โทร 199 ถึงหน่วยดับเพลิงโดยตรง", "en": "1669 is for medical emergencies. For a fire, call 199 for the fire service." } },
+        { "kind": "leave", "label": { "th": "ถ่ายคลิปลงโซเชียลก่อน", "en": "Post a video on social media first" }, "feedback": { "th": "เวลาสำคัญมาก ปภ. แนะให้รีบโทรแจ้ง 199 ทันที แล้วออกจากบ้าน", "en": "Every second counts. DDPM says call 199 at once and get out." } }
+      ],
+      "tip": { "th": "ไฟไหม้ ดับเองไม่ได้ ออกจากบ้าน แล้วโทรแจ้ง 199 ทันที", "en": "A fire you can't put out: get out and call 199 right away." },
+      "why": { "th": "ปภ. แนะว่าเมื่อเกิดเพลิงไหม้รุนแรง ให้รีบโทรแจ้งเจ้าหน้าที่ดับเพลิงที่เบอร์ 199 ทันที และเตรียมอพยพ", "en": "DDPM says in a serious fire, call the fire service on 199 at once and get ready to leave." },
+      "sources": ["ddpm-fire10-2569", "ddpm-fire10-2563"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-door", "mode": "fire", "room": "front",
+      "sprite": "smokedoor", "doneAnim": "none", "size": [84, 40], "slots": ["door"],
+      "name": { "th": "ควันลอดใต้ประตู", "en": "Smoke under the door" },
+      "context": { "th": "ตอนเกิดไฟ มีควันลอดใต้ประตู จะเปิดออกไปดีไหม", "en": "In a fire, smoke is seeping under this door. Should you open it?" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "เอามือแตะประตูก่อน ร้อนห้ามเปิด หาทางอื่น", "en": "Touch the door first; if it's hot, keep it shut and find another way" } },
+        { "kind": "leave", "label": { "th": "เปิดออกไปเลย เร็วที่สุด", "en": "Throw it open and run" }, "feedback": { "th": "ถ้าอีกฝั่งมีไฟ เปิดแล้วไฟและควันจะพุ่งเข้ามา ปภ. แนะให้แตะประตูก่อน ร้อนห้ามเปิด", "en": "If fire is behind it, flames and smoke rush in. DDPM says touch it first; if hot, don't open." } },
+        { "kind": "leave", "label": { "th": "รอให้ควันหายก่อนค่อยออก", "en": "Wait for the smoke to clear first" }, "feedback": { "th": "ควันจะยิ่งหนาขึ้น ให้แตะประตูก่อน ถ้าไม่ร้อนค่อยๆ เปิดออกไป ถ้าร้อนหาทางออกอื่น", "en": "The smoke will only thicken. Touch the door; if cool, open slowly; if hot, use another way." } }
+      ],
+      "tip": { "th": "ไฟไหม้ แตะประตูก่อนเปิด ถ้าร้อนห้ามเปิด ไม่ร้อนค่อยๆ เปิด", "en": "In a fire, touch the door first. Hot: keep it shut. Cool: open slowly." },
+      "why": { "th": "ปภ. แนะว่าอย่าเปิดประตูทันที ให้ใช้มือสัมผัสผิวประตูหรือลูกบิดก่อน ถ้าร้อนห้ามเปิด ถ้าไม่ร้อนจึงค่อยๆ เปิดออกไปช้าๆ", "en": "DDPM says don't open a door straight away: feel the door or handle first. If it's hot, don't open it; if not, open it slowly." },
+      "sources": ["ddpm-fire10-2569", "ddpm-fire10-2563"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-burn", "mode": "fire", "room": "front",
+      "sprite": "leafpile", "doneAnim": "away", "size": [88, 46], "slots": ["floor-big"],
+      "name": { "th": "กองขยะใบไม้แห้ง วันลมแรง", "en": "Dry leaf pile on a windy day" },
+      "context": { "th": "หน้าแล้ง ลมพัดแรง กำลังจะเผากองใบไม้กับขยะหน้าบ้าน", "en": "Dry season, strong wind, and someone is about to burn leaves and rubbish out front" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "ไม่เผา โดยเฉพาะวันลมแรง เก็บใส่ถุงทิ้ง", "en": "Don't burn, especially in wind; bag it for the bin" } },
+        { "kind": "leave", "label": { "th": "เผาเลย ลมแรงไฟจะได้ไหม้เร็ว", "en": "Burn it; the wind will make it quick" }, "feedback": { "th": "ลมพาไฟและสะเก็ดไฟลามไปบ้านข้างๆ ได้ ปภ. แนะไม่เผาขยะในที่โล่งหรือขณะลมแรง", "en": "Wind carries flames and sparks to the neighbours. DDPM says no open burning, especially in wind." } },
+        { "kind": "leave", "label": { "th": "จุดไฟแล้วเข้าบ้านไปทำอย่างอื่น", "en": "Light it and go back inside" }, "feedback": { "th": "ไฟที่ไม่มีคนดูแลลุกลามได้ ปภ. แนะไม่ทิ้งไฟไว้โดยไม่มีผู้ดูแล และไม่เผาขณะลมแรง", "en": "Unwatched fire spreads. DDPM says never leave a fire unattended or burn in strong wind." } }
+      ],
+      "tip": { "th": "ไม่เผาขยะและใบไม้ในที่โล่ง โดยเฉพาะตอนลมแรง", "en": "Don't burn rubbish or leaves in the open, especially on windy days." },
+      "why": { "th": "ปภ. แนะในช่วงอากาศแห้งและลมพัดแรง ไม่เผาขยะและเศษวัชพืชในที่โล่งหรือขณะลมพัดแรง และไม่ทิ้งกิจกรรมที่ใช้ไฟไว้โดยไม่มีผู้ดูแล", "en": "DDPM says that in dry, windy weather people should not burn rubbish or weeds in the open or in strong wind, and never leave a fire unattended." },
+      "sources": ["ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "f-cig", "mode": "fire", "room": "front",
+      "sprite": "ashtray", "doneAnim": "away", "size": [44, 32], "slots": ["pot", "floor"],
+      "name": { "th": "ก้นบุหรี่ยังมีควัน", "en": "Cigarette end still smoking" },
+      "context": { "th": "ก้นบุหรี่ที่ยังไม่ดับ ถูกทิ้งไว้หน้าบ้าน", "en": "A cigarette end, still alight, dropped in front of the house" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "ดับให้สนิทก่อนทิ้ง", "en": "Put it out completely before binning it" } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ เดี๋ยวก็ดับเอง", "en": "Leave it, it'll go out by itself" }, "feedback": { "th": "ก้นบุหรี่ที่ยังไม่ดับจุดไฟใบไม้แห้งได้ ปภ. แนะให้ดับให้สนิทก่อนทิ้ง", "en": "A live cigarette end can light dry leaves. DDPM says put it out fully first." } },
+        { "kind": "toss", "label": { "th": "เขี่ยลงกระถางต้นไม้ไปเลย", "en": "Flick it into the plant pot" }, "feedback": { "th": "ยังไม่ดับก็ยังเป็นไฟอยู่ ปภ. แนะให้ดับให้สนิทก่อนทิ้งทุกครั้ง", "en": "Still alight is still a fire. DDPM says put it out fully every time before you throw it away." } }
+      ],
+      "tip": { "th": "ดับก้นบุหรี่ให้สนิทก่อนทิ้ง ไม่สูบใกล้ของที่ติดไฟง่าย", "en": "Put cigarettes out fully before binning; don't smoke near things that burn." },
+      "why": { "th": "ปภ. แนะให้ดับไฟก้นบุหรี่ให้สนิทก่อนทิ้ง และหลีกเลี่ยงการสูบบุหรี่ในบริเวณที่มีวัสดุไวไฟ", "en": "DDPM says put cigarette ends out completely before throwing them away, and avoid smoking near flammable material." },
+      "sources": ["ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
     }
   ],
   "decoys": [
@@ -818,6 +1001,11 @@
     { "id": "d-clock-a", "mode": "dust", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวน", "en": "Wall clock" }, "note": { "th": "นาฬิกาไม่เกี่ยวกับฝุ่น เก็บเวลาไว้ดูแลจุดอื่นก่อน", "en": "The clock has nothing to do with dust. Spend your time on the rest." } },
     { "id": "d-books-a", "mode": "dust", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้น", "en": "Books on the shelf" }, "note": { "th": "หนังสือบนชั้นไม่เป็นอะไร ไม่ต้องย้าย", "en": "Books on the shelf are fine where they are." } },
     { "id": "d-ricebox-a", "mode": "dust", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": { "th": "ถังข้าวสาร", "en": "Rice bin" }, "note": { "th": "ข้าวสารในถังปิดฝาสนิท ไม่ต้องห่วงเรื่องฝุ่น", "en": "Rice in a closed bin is fine." } },
-    { "id": "d-dishes-a", "mode": "dust", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["high"], "name": { "th": "จานชามบนชั้น", "en": "Dishes on the shelf" }, "note": { "th": "จานชามเก็บบนชั้นเรียบร้อยดี", "en": "The dishes are tidy on the shelf. Nothing to do." } }
+    { "id": "d-dishes-a", "mode": "dust", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["high"], "name": { "th": "จานชามบนชั้น", "en": "Dishes on the shelf" }, "note": { "th": "จานชามเก็บบนชั้นเรียบร้อยดี", "en": "The dishes are tidy on the shelf. Nothing to do." } },
+    { "id": "d-plant-f", "mode": "fire", "room": "front", "sprite": "plant", "size": [42, 54], "slots": ["pot"], "name": { "th": "กระถางต้นไม้", "en": "Potted plant" }, "note": { "th": "ต้นไม้รดน้ำแล้ว ไม่ใช่จุดเสี่ยงไฟ", "en": "A watered plant. Not a fire risk." } },
+    { "id": "d-clock-f", "mode": "fire", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวน", "en": "Wall clock" }, "note": { "th": "นาฬิกาไม่ใช่จุดเสี่ยงไฟ ไปดูจุดอื่นต่อ", "en": "The clock isn't a fire risk. Look elsewhere." } },
+    { "id": "d-books-f", "mode": "fire", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้น", "en": "Books on the shelf" }, "note": { "th": "หนังสืออยู่บนชั้น ห่างจากปลั๊กและความร้อน ไม่เป็นไร", "en": "Books on a shelf, away from plugs and heat. Fine." } },
+    { "id": "d-ricebox-f", "mode": "fire", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": { "th": "ถังข้าวสาร", "en": "Rice bin" }, "note": { "th": "ถังข้าวสารปิดฝา อยู่บนชั้น ไม่ต้องทำอะไร", "en": "A closed rice bin on the shelf. Nothing to do." } },
+    { "id": "d-soap-f", "mode": "fire", "room": "kitchen", "sprite": "soap", "size": [32, 44], "slots": ["counter-sm"], "name": { "th": "สบู่ล้างมือ", "en": "Hand soap" }, "note": { "th": "สบู่ล้างมือ ไม่เกี่ยวกับไฟ", "en": "Hand soap. Nothing to do with fire." } }
   ]
 }

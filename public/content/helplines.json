@@ -2,6 +2,7 @@
   "_readme": "เบอร์ช่วยเหลือ ตรวจสอบเมื่อ 6 ต.ค. 2569 (ดู source ใน sources.json) เรียงตามความสำคัญ main = แสดงในรูปการ์ด",
   "helplines": [
     { "number": "1784", "main": true, "who": { "th": "ปภ. สายด่วนนิรภัย", "en": "DDPM disaster hotline" }, "what": { "th": "แจ้งเหตุสาธารณภัย ขอความช่วยเหลือ 24 ชม.", "en": "Report disasters, ask for help, 24 h" }, "source": "ddpm-1784" },
+    { "number": "199", "main": true, "who": { "th": "แจ้งเหตุไฟไหม้", "en": "Fire" }, "what": { "th": "ไฟไหม้ ดับเองไม่ได้ ออกจากบ้านแล้วโทรแจ้งดับเพลิง", "en": "A fire you can't put out: get out, then call the fire service" }, "source": "ddpm-fire10-2569" },
     { "number": "1669", "main": true, "who": { "th": "เจ็บป่วยฉุกเฉิน (สพฉ.)", "en": "Medical emergency (NIEMS)" }, "what": { "th": "เรียกรถพยาบาล 24 ชม.", "en": "Ambulance, 24 h" }, "source": "niems-1669" },
     { "number": "1555", "main": true, "who": { "th": "กทม.", "en": "Bangkok (BMA)" }, "what": { "th": "แจ้งเหตุ ขอความช่วยเหลือในกรุงเทพฯ", "en": "Report problems and get help in Bangkok" }, "source": "bma-1555" },
     { "number": "1130", "main": true, "who": { "th": "การไฟฟ้านครหลวง (กฟน.)", "en": "MEA electricity" }, "what": { "th": "ไฟฟ้า กรุงเทพฯ นนทบุรี สมุทรปราการ", "en": "Bangkok, Nonthaburi, Samut Prakan" }, "source": "mea-1130" },

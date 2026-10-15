@@ -203,5 +203,73 @@
         "sprite": "leafpile"
       }
     ]
+  },
+  "fire": {
+    "title": {
+      "th": "บ้านปลอดภัยจากไฟ 10 ข้อ",
+      "en": "10 things for a fire-safe home"
+    },
+    "items": [
+      {
+        "icon": "🔌",
+        "th": "ปลั๊กพ่วงมี มอก. 2432-2555 ไม่เสียบต่อกันเป็นทอดๆ",
+        "en": "Power strips with the TIS 2432 mark; never chain them",
+        "sprite": "stripchain"
+      },
+      {
+        "icon": "⚡",
+        "th": "สายไฟแตก ร้อน มีกลิ่นไหม้ หยุดใช้ ถอดปลั๊กทันที",
+        "en": "Cracked, hot or burning-smelling cord? Stop and unplug",
+        "sprite": "lampcord"
+      },
+      {
+        "icon": "📱",
+        "th": "ไม่ชาร์จมือถือบนที่นอนหรือโซฟา",
+        "en": "Don't charge phones on beds or sofas",
+        "sprite": "chargebed"
+      },
+      {
+        "icon": "🍳",
+        "th": "ทำอาหารอย่าทิ้งเตา ออกจากครัวให้ปิดเตาก่อน",
+        "en": "Stay with the pan; turn the stove off if you leave",
+        "sprite": "panstove"
+      },
+      {
+        "icon": "🛢️",
+        "th": "ใช้แก๊สเสร็จ ปิดวาล์วหัวถังและปิดเตาให้สนิท",
+        "en": "After cooking, close the cylinder valve and the stove",
+        "sprite": "lpg-off"
+      },
+      {
+        "icon": "🧴",
+        "th": "ของไวไฟ เก็บให้ห่างเตาและความร้อน",
+        "en": "Keep flammables away from the stove and heat",
+        "sprite": "chem"
+      },
+      {
+        "icon": "🧯",
+        "th": "ถังดับเพลิงไว้ในจุดที่เห็นชัด หยิบใช้ได้ทันที",
+        "en": "Keep an extinguisher in sight, ready to grab",
+        "sprite": "extinguisher"
+      },
+      {
+        "icon": "🍂",
+        "th": "ไม่เผาขยะในที่โล่ง โดยเฉพาะตอนลมแรง",
+        "en": "No open burning, especially on windy days",
+        "sprite": "leafpile"
+      },
+      {
+        "icon": "🚪",
+        "th": "เกิดไฟไหม้ แตะประตูก่อนเปิด ร้อนห้ามเปิด",
+        "en": "In a fire, touch the door first; if hot, keep it shut",
+        "sprite": "smokedoor"
+      },
+      {
+        "icon": "📞",
+        "th": "ผ้าชุบน้ำปิดจมูกปาก หมอบต่ำ ออกไปแล้วโทร 199",
+        "en": "Wet cloth over nose and mouth, crawl low, get out, call 199",
+        "sprite": "towel"
+      }
+    ]
   }
 }

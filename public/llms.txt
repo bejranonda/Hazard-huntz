@@ -71,9 +71,26 @@
 - **Phone before the market run** (มือถือก่อนออกไปตลาด): Check the dust level in an air-quality app and follow its advice. ก่อนออกจากบ้าน เช็กค่าฝุ่นในแอป Air4Thai แล้วทำตามคำแนะนำ [https://baanrodmai.autobahn.bot/learn#a-app]
 - **Charcoal grill** (เตาถ่านปิ้งย่าง): Skip the charcoal today and cook another way. วันฝุ่นสูง งดปิ้งย่างด้วยเตาถ่าน ลดควันในบ้านและรอบบ้าน [https://baanrodmai.autobahn.bot/learn#a-grill]
 
+## House fire (ไฟไหม้ในบ้าน: ป้องกันไฟ และรู้วิธีหนีควัน)
+
+- **Smoke under the door** (ควันลอดใต้ประตู): Touch the door first; if it's hot, keep it shut and find another way. ไฟไหม้ แตะประตูก่อนเปิด ถ้าร้อนห้ามเปิด ไม่ร้อนค่อยๆ เปิด [https://baanrodmai.autobahn.bot/learn#f-door]
+- **Dry leaf pile on a windy day** (กองขยะใบไม้แห้ง วันลมแรง): Don't burn, especially in wind; bag it for the bin. ไม่เผาขยะและใบไม้ในที่โล่ง โดยเฉพาะตอนลมแรง [https://baanrodmai.autobahn.bot/learn#f-burn]
+- **Cigarette end still smoking** (ก้นบุหรี่ยังมีควัน): Put it out completely before binning it. ดับก้นบุหรี่ให้สนิทก่อนทิ้ง ไม่สูบใกล้ของที่ติดไฟง่าย [https://baanrodmai.autobahn.bot/learn#f-cig]
+- **Power strips plugged into each other** (ปลั๊กพ่วงต่อกันเป็นทอดๆ): Unchain them, and don't run high-power appliances together. ไม่เสียบปลั๊กพ่วงต่อกันเป็นทอดๆ เครื่องกินไฟสูงไม่เสียบรวมกัน [https://baanrodmai.autobahn.bot/learn#f-strip]
+- **Lamp cord running hot** (สายไฟโคมไฟร้อนผิดปกติ): Stop using it, unplug it, then repair or replace it. สายไฟแตก ร้อนผิดปกติ หรือมีกลิ่นไหม้ หยุดใช้ ถอดปลั๊ก ซ่อมหรือเปลี่ยนใหม่ [https://baanrodmai.autobahn.bot/learn#f-cord]
+- **Phone charging on the sofa** (มือถือชาร์จอยู่บนโซฟา): Move it to a table; never charge on a sofa or bed. ไม่ชาร์จมือถือบนที่นอนหรือโซฟา วางชาร์จบนโต๊ะแทน [https://baanrodmai.autobahn.bot/learn#f-charge]
+- **Smoke alarm chirping** (เครื่องจับควันส่งเสียงปี๊บ): Change the battery, press test, and test it monthly. เครื่องจับควัน กดทดสอบทุกเดือน แบตใกล้หมดให้เปลี่ยนทันที [https://baanrodmai.autobahn.bot/learn#f-alarm]
+- **This towel** (ผ้าขนหนูผืนนี้): Wet it, cover nose and mouth, and crawl low to get out. เกิดไฟไหม้ ใช้ผ้าชุบน้ำปิดจมูกปาก หมอบคลานต่ำ หาทางออก [https://baanrodmai.autobahn.bot/learn#f-towel]
+- **Pan of oil on the stove** (กระทะน้ำมันบนเตา): Turn the stove off before leaving; stay with the pan. ทำอาหารอยู่อย่าทิ้งเตา จะออกจากครัวต้องปิดเตาก่อน [https://baanrodmai.autobahn.bot/learn#f-pan]
+- **Gas cylinder after cooking** (ถังแก๊สหลังทำอาหารเสร็จ): Close the cylinder valve and the stove fully. ใช้แก๊สเสร็จ ปิดวาล์วหัวถังและปิดเตาให้สนิททุกครั้ง [https://baanrodmai.autobahn.bot/learn#f-gas]
+- **Sprays and thinner by the stove** (สเปรย์และทินเนอร์ข้างเตา): Move them away from the stove and any heat. ของไวไฟ เช่น สเปรย์ ทินเนอร์ เก็บให้ห่างเตาและความร้อน [https://baanrodmai.autobahn.bot/learn#f-chem]
+- **Extinguisher in the cupboard** (ถังดับเพลิงในตู้): Move it somewhere visible you can grab at once. ถังดับเพลิงไว้ในจุดที่เห็นชัด หยิบใช้ได้ทันที [https://baanrodmai.autobahn.bot/learn#f-extinguisher]
+- **Phone numbers on the fridge** (โน้ตเบอร์โทรข้างตู้เย็น): Call 199 for the fire service. ไฟไหม้ ดับเองไม่ได้ ออกจากบ้าน แล้วโทรแจ้ง 199 ทันที [https://baanrodmai.autobahn.bot/learn#f-call]
+
 ## Thai emergency helplines
 
 - 1784: DDPM disaster hotline (ปภ. สายด่วนนิรภัย). Report disasters, ask for help, 24 h
+- 199: Fire (แจ้งเหตุไฟไหม้). A fire you can't put out: get out, then call the fire service
 - 1669: Medical emergency (NIEMS) (เจ็บป่วยฉุกเฉิน (สพฉ.)). Ambulance, 24 h
 - 1555: Bangkok (BMA) (กทม.). Report problems and get help in Bangkok
 - 1130: MEA electricity (การไฟฟ้านครหลวง (กฟน.)). Bangkok, Nonthaburi, Samut Prakan

@@ -5,7 +5,7 @@
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
 npm test                 # 20 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts
-npm run smoke            # 57 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm run smoke            # 58 browser checks in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```

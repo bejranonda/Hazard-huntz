@@ -249,6 +249,25 @@ try {
     await ctx.close();
   }
 
+  // 2c. Code and content from different releases (a cache mixed them): the page
+  // clears the caches and reloads once, then still plays, never in a loop.
+  {
+    const { ctx, page } = await newPage();
+    await page.route('**/content/config.json', async (route) => {
+      const res = await route.fetch();
+      const j = await res.json();
+      j.version = '0.0.0-other';
+      await route.fulfill({ json: j });
+    });
+    let loads = 0;
+    page.on('load', () => loads++);
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(1500);
+    const ok = await page.isVisible('.mode-btn.mode-dust');
+    check('code/content version mismatch: reloads once, then the start screen works', loads === 2 && ok, `${loads} loads, dust button ${ok}`);
+    await ctx.close();
+  }
+
   // 3. LINE in-app browser: no Web Share, no download -> long-press hint
   {
     const { ctx, page } = await newPage({ ua: UA.line });

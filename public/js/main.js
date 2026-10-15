@@ -7,6 +7,7 @@ import {
   siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
 } from './content.js';
 import { modeList, modeIds, modeOf, mk, cap, idsRe, seasonalMode } from './modes.js';
+import { APP_VERSION } from './version.js';
 import { generateHouse, playableRooms } from './house.js';
 import { Round, STATUS } from './round.js';
 import { Run } from './run.js';
@@ -75,6 +76,7 @@ async function boot() {
     return;
   }
   const C = content();
+  if (C.config.version && C.config.version !== APP_VERSION && await refreshStaleApp(C.config.version)) return;
   applyStaticStrings();
   heroGecko = new Gecko($('#hero-gecko'), { title: 'น้องจก' });
 
@@ -1079,6 +1081,22 @@ function syncLangPath() {
   if (next !== location.pathname) {
     try { history.replaceState(history.state, '', next + location.search + location.hash); } catch { /* sandboxed */ }
   }
+}
+
+// The code (APP_VERSION) and the content come from different releases: a
+// cache served last release's code next to this release's content. Clear the
+// caches and reload once per version; never loop (offline, blocked storage).
+async function refreshStaleApp(version) {
+  try {
+    if (sessionStorage.getItem('brm:refresh') === version) return false;
+    sessionStorage.setItem('brm:refresh', version);
+  } catch { return false; }
+  try {
+    for (const key of await caches.keys()) if (key.startsWith('brm-')) await caches.delete(key);
+    await (await navigator.serviceWorker?.getRegistration())?.update();
+  } catch { /* reload anyway */ }
+  location.reload();
+  return true;
 }
 
 function registerServiceWorker() {

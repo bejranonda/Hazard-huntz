@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.5.0 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.5.1 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -454,6 +454,12 @@ The three rooms were drawn for floods: the Return mud layer is hidden for dust a
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.5.1 (15 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F27 | A returning visitor tapped ฝุ่น PM2.5 and got the rising-water house. The service worker served HTML and content network-first but code stale-while-revalidate, so the first visit after a deploy ran v1.4.0 code (which maps an unknown mode to Prepare) under v1.5.0 HTML and content. Reproduced by installing v1.4.0, then serving v1.5.0 on the same address. | Code, content and room art are network-first; a service worker replacing a pre-1.5.1 cache reloads open pages once; `main.js` reloads once when `js/version.js` and `config.json` disagree. Measured: v1.4.0 → v1.5.1 gives one automatic reload and the dust house; v1.5.1 → a fake next release gives the new code on the first visit with no reload. Smoke check added. |
 
 ### In v1.5.0 (15 Oct 2026)
 

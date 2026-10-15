@@ -293,12 +293,13 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 | Request | Strategy |
 |---|---|
 | Page navigations | Network first with a 3 s timeout, then the cached page, then the cached `/` |
-| `/content/*.json` | Network first with a 2.5 s timeout, so safety fixes arrive quickly; then the cache |
-| Everything else (same origin) | Stale-while-revalidate |
+| `/js/`, `/css/`, `/content/`, `/art/`, the manifest (v1.5.1) | Network first with a 3 s timeout, then the cache, so a page never mixes two releases |
+| Fonts and images (same origin) | Stale-while-revalidate |
 | `/api/*`, other origins, non-GET | Not handled |
 
-- **Install** precaches the 39 files and calls `skipWaiting()`.
-- **Activate** deletes old `brm-*` caches and claims open clients.
+- **Install** precaches the 41 files and calls `skipWaiting()`.
+- **Activate** deletes old `brm-*` caches and claims open clients. If an old cache has no `/js/version.js` (a service worker from before v1.5.1, which served code cache-first), it also reloads open pages once.
+- **Version guard** (v1.5.1): the build writes `js/version.js` (`APP_VERSION` from `package.json`). On boot, if it differs from `config.json → version`, `main.js` deletes the `brm-*` caches and reloads, once per version per tab (`sessionStorage brm:refresh`), so it can't loop offline.
 - **Registration** happens after `load`. Boot checks `document.readyState`, so it also registers when boot runs late.
 - **iOS in-app browsers** never run it. See [KNOWN_ISSUES #16](KNOWN_ISSUES.md#16-no-offline-play-inside-ios-in-app-browsers).
 

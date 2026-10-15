@@ -374,3 +374,10 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the first dust haze (tan at 55% opacity) was applied correctly, as the DOM showed, but on beige walls it looked like nothing had happened. Only the screenshots showed it.
 - *Do this:* for any new visual effect, screenshot each room at the start, middle and end, and compare. Give a full-screen tint some texture (here, drifting specks) so it reads as the thing it shows.
 - *Encoded in:* [GUIDELINES rule 46](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**C15. Test a deploy over the version people already have.**
+
+- *What happened:* every check passed on a fresh browser, but the owner, whose browser had played v1.4.0, tapped the new dust mode and got the flood house. The service worker refreshed the page and content but kept the old code, and old code met new content. Fresh-profile tests can never see this.
+- *Do this:* before a release that changes code and content together, install the previous release in a test browser, switch the server to the new build, and play the new feature on the first visit. Keep code and content on the same caching rule, and give the code a version it can check.
+- *Encoded in:* `tools/sw.template.js` (network-first code), `js/version.js` and `refreshStaleApp()` in `main.js`, a smoke check, [GUIDELINES rule 48](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+

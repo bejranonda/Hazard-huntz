@@ -4,6 +4,20 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.5.1] — 2026-10-15
+
+### Fixed
+
+- **Tapping ฝุ่น PM2.5 could open the flood house.** The owner saw it on a browser that had played an earlier version. The service worker served the page and content from the network but the code from its cache, so the new page ran the old code, and the old code turned an unknown mode into Prepare. Only the first visit after a deploy was affected. Three fixes:
+  - The service worker now fetches `/js/`, `/css/`, `/content/`, `/art/` and the manifest network-first (3 s, then the cache for offline play). Fonts and images stay cached.
+  - When the new service worker replaces one from before v1.5.1, it reloads the open pages once from the network.
+  - The build writes `js/version.js`; if it disagrees with `config.json → version`, the page clears its caches and reloads once (never in a loop).
+- Tested over an installed v1.4.0 (one automatic reload, then dust mode opens the dust house) and over v1.5.1 with a fake next release (the new code on the first visit, no reload). KNOWN_ISSUES F27.
+
+### Tests
+
+- 58 smoke checks (+1: content and code from different releases reload once, then the start screen works); offline play still passes.
+
 ## [1.5.0] — 2026-10-15
 
 A home-safety game for the whole year, not only the flood season. **Two new modes, PM2.5 dust and house fire, with their own houses and challenge links (`/c/d…`, `/c/f…`).** Flood houses and old flood challenge links are unchanged (244 houses compared byte for byte), so this needs no midnight release.

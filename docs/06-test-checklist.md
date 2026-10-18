@@ -4,14 +4,14 @@
 
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
-npm test                 # rule tests (25 in v1.7.0): a year of daily houses in every mode, flooding, the power cut's fridge at 4 hours, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends
-npm run smoke            # browser checks (86 in v1.7.0) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm test                 # rule tests (26 in v1.8.0): a year of daily houses in every mode, flooding, the power cut's fridge at 4 hours, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends, the home check's amounts
+npm run smoke            # browser checks (93 in v1.8.0) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 SMOKE_DATE=2026-12-05 npm run smoke   # the same, on another Bangkok day (here: dust season)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
 
-Each run ends with its own count (`25 passed, 0 failed` and `86 passed, 0 failed` in v1.7.0); the number the run prints is the reference, not the one written here.
+Each run ends with its own count (`26 passed, 0 failed` and `93 passed, 0 failed` in v1.8.0); the number the run prints is the reference, not the one written here.
 
 The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by default. Only `Date` is moved; time keeps running. What the start screen should show that day comes from `recommend()` in `modes.js`, so the test never reads the real calendar ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)). It covers:
 
@@ -32,6 +32,7 @@ The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by defau
 - What the start screen recommends (v1.6.0): the pinned day's mode, gecko line, "check before you go" link and featured topic; 5 Dec 2026 recommends dust with the air topic and Air4Thai; `/?mode=fire` opens on fire with no round and counts `view · fire · link`; `/?mode=heat` is ignored; a challenge beats `?mode=`; `/en/?mode=dust`, and a visitor from London keeps the link.
 - The hazard pages (v1.6.0): `/flood`, `/pm25`, `/fire`, `/ready` (v1.7.0) and `/en/…` (heading, canonical, `hreflang`, play links, lesson count, JSON-LD, preview image); `/learn`, the sitemap and `llms.txt` link them; at 320 × 460 every control there and on `/learn` is 44 px or more and the play button is on the first screen; `/pm25` → play → the dust card, no round started.
 - The ending on the result screen and in the card's `alt` text (v1.6.0).
+- The home check and the plan card (v1.8.0), at 360 × 640 from `/?open=kit`: 4 people with daily medicine give 36 litres of water and list the medicine but not baby items; answers and ticks are kept in `brm:kit`; every control of the questions, the list and the plan form is 44 px or more; the check's card renders at 1080 px with LINE on the first screen; the plan card renders; the typed plan text is in no `/api/e` body, while `kit_open`, `kit_share` and `plan_share` are sent; no page errors.
 
 ## Manual matrix (real phones)
 
@@ -84,6 +85,9 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 43 | Open `/posts` on the phone you post from: touch and hold saves each carousel image; **คัดลอกข้อความโพสต์** copies the caption; post one set as an album and check the order and the text in the feed | | | | | | | | |
 | 44 | Play the power cut (`/?mode=stock`): the room darkens but every item stays easy to see and read; the clock shows "ไฟดับมา … ชม."; if you leave the fridge, it goes bad at 4 hours with a clock badge and the gecko says why, and a tester understands that the fridge goes first | | | | | | | | |
 | 45 | In the kitchen (the power cut always has an item there; Prepare and fire sometimes), tap the item on the fridge, just below the left ‹ arrow: the item opens and the room doesn't turn (the slot moved below the arrow in v1.7.0) | | | | | | | | |
+| 46 | Home check (`/?open=kit` from a chat, and the 🎒 quick button): the stepper and the four answers are easy to tap; the list shows amounts for your household (3 people: 27 ลิตร); ticks move the meter; the start-screen button then reads "บ้านพร้อม …%"; the shared card shows the score and up to 3 missing things, and saves (long-press in-app) | | | | | | | | |
+| 47 | Plan card (`/?open=plan`): Thai typing works in every field (including the keyboard's suggestions), the keyboard doesn't cover the field being typed, the card shows every filled field and the helplines, and it saves or shares; an older relative understands what to fill in | | | | | | | | |
+| 48 | Where the answers live: make a list and a plan inside LINE, close LINE, open the same link from LINE again (they should still be there), then open it in the phone's browser (expected: empty, a separate browser; [KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Note what you see | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
@@ -99,13 +103,13 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-The build's `budget` line prints the current numbers. In v1.7.0:
+The build's `budget` line prints the current numbers. In v1.8.0:
 
-- Start screen: **200 KB** compressed (HTML + CSS + JS + content JSON + fonts).
-- First game screen: **215 KB** (adds the first room and the sprites).
+- Start screen: **208 KB** compressed (HTML + CSS + JS + content JSON + fonts). It counts every file in `js/`, including the home check's `kit.js` and `kitplan.js` (about 6 KB), which load only when the check opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)).
+- First game screen: **223 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 
-Rooms are fetched while the player is still on the start screen. The service worker precaches 41 files for offline play after the page has loaded (the build's `sw.js` line).
+Rooms are fetched while the player is still on the start screen. The service worker precaches 44 files for offline play after the page has loaded (the build's `sw.js` line).
 
 ## Live-site checks (search and AI search)
 
@@ -113,7 +117,7 @@ Run these against https://baanrodmai.autobahn.bot after any change to the build,
 
 | Check | How | Expected |
 |---|---|---|
-| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/en/`, `/en/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/en/pm25`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/en/c/p7`, `/checklist/prepare` | 200, right content type; `/pm25.html` answers 308 to `/pm25` |
+| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/en/`, `/en/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/en/pm25`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/en/c/p7`, `/checklist/prepare`, and since v1.8.0 `/js/kit.js`, `/js/kitplan.js`, `/content/kit.json` | 200, right content type; `/pm25.html` answers 308 to `/pm25` |
 | Event endpoint | `curl -X POST -H 'Content-Type: application/json' --data '{"e":[]}' …/api/e` | 204 |
 | Canonical, hreflang and JSON-LD | View source of `/`, `/learn`, `/en/`, `/en/learn` and one hazard page (`/pm25`) | `rel="canonical"` with the live address; th, en and x-default `hreflang` links; one `application/ld+json` block that parses |
 | `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 81 each, and 21 ⚠️ flags (the summary at the top of [01-safety-content.md](01-safety-content.md) has the current counts) |

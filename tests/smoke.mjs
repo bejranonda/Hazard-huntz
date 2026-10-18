@@ -36,6 +36,7 @@ const START = recommend(CFG, dayKey(SMOKE_DATE));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain' };
 let beacons = 0;
 const events = []; // every [name, mode, label, value, lang] the pages sent
+const sent = []; // every raw body posted to /api/e, to prove what never leaves the device
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/api/e') {
@@ -43,6 +44,7 @@ const server = http.createServer((req, res) => {
     let body = '';
     req.on('data', (c) => { body += c; });
     req.on('end', () => {
+      sent.push(body);
       try { events.push(...JSON.parse(body).e); } catch { /* counted anyway */ }
       res.writeHead(204);
       res.end();
@@ -700,6 +702,53 @@ try {
     check('/pm25 → play button → the start screen on dust, no round started', st[0] === 'dust' && st[1] === 'screen-start', st.join());
     check('no page errors (links and hazard pages)', !small.page.errors.length, small.page.errors.join(' | '));
     await small.ctx.close();
+  }
+
+  // 11. The home check and the family plan card (v1.8.0): amounts follow the
+  // household, the card renders and shares, and what people type stays on the device.
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.goto(`${BASE}/?open=kit&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#kit-go');
+    const smallQ = await smallControls(page);
+    await page.click('#kit-plus'); // 3 → 4 people
+    await page.click('.kit-flag:has(input[value="meds"])');
+    await page.click('#kit-go');
+    await page.waitForSelector('.kit-row');
+    const list = await page.evaluate(() => ({
+      water: document.querySelector('.kit-row input[data-id="water"]')?.closest('.kit-row').querySelector('.kit-qty')?.textContent,
+      meds: !!document.querySelector('.kit-row input[data-id="meds"]'),
+      baby: !!document.querySelector('.kit-row input[data-id="baby"]'),
+    }));
+    check('home check: 4 people → 36 litres of water; daily medicine listed, baby items not', /^36 /.test(list.water || '') && list.meds && !list.baby, JSON.stringify(list));
+    await page.click('.kit-row:has(input[data-id="water"])');
+    const kept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:kit')));
+    check('home check: answers and ticks are kept on the device', kept.people === 4 && kept.have.includes('water') && kept.flags.includes('meds'), JSON.stringify(kept));
+    const smallL = await smallControls(page);
+    check('home check controls >= 44 px (questions and list)', !smallQ.length && !smallL.length, [...smallQ, ...smallL].join(', '));
+    await page.click('#kit-share');
+    await page.waitForFunction(() => document.querySelector('#kit-img')?.naturalWidth === 1080, null, { timeout: 15000 });
+    const lineOk = await page.evaluate(() => document.querySelector('[data-k="line"]').getBoundingClientRect().bottom <= innerHeight);
+    check('home check card renders 1080 px, LINE on the first screen (360x640)', lineOk);
+    await page.click('[data-k="copy"]');
+    await page.click('#kit-back');
+    await page.click('#kit-plan');
+    await page.waitForSelector('#plan-make');
+    await page.fill('input[name="meet"]', 'PRIVATE-MEETING-PLACE');
+    await page.fill('input[name="contact"]', 'PRIVATE 081-234-5678');
+    const smallP = await smallControls(page);
+    await page.click('#plan-make');
+    await page.waitForFunction(() => document.querySelector('#kit-img')?.naturalWidth === 1080, null, { timeout: 15000 });
+    await page.click('[data-k="copy"]');
+    check('plan card controls >= 44 px; the card renders', !smallP.length, smallP.join(', '));
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(500);
+    const leaked = sent.filter((b) => /PRIVATE|081-234/.test(b));
+    const names = new Set(events.map((e) => e[0]));
+    check('the plan text never leaves the device; only counts are sent (kit_open, kit_share, plan_share)',
+      !leaked.length && ['kit_open', 'kit_share', 'plan_share'].every((n) => names.has(n)), `${leaked.length} leaked, events: ${[...names].filter((n) => /kit|plan/.test(n)).join(', ')}`);
+    check('no page errors (home check and plan card)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
   }
 
   check('analytics beacons received', beacons > 0, String(beacons));

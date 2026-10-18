@@ -3,6 +3,8 @@
 > **A 60-second house, two moments of truth.** Before the flood you race the rising water to save what matters. After the flood you spot what can still hurt you. Every tap teaches one real action with its source, almost always a Thai agency, and every result is built to be forwarded to the family LINE group.
 >
 > Since v1.5.0 the same house also faces PM2.5 dust and house fire, and since v1.7.0 a night without power (ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม?): five modes in all.
+>
+> Since v1.8.0 two tools outside the round turn the lessons into the family's own: **บ้านเราพร้อมแค่ไหน?** (a home-kit check) and **แผนบ้านรอดของบ้านเรา** (a family plan card).
 
 ## Design pillars
 
@@ -107,6 +109,24 @@
 | Sources | 3 lessons ✅ (Thai agencies, cross-checked with Ready.gov); 10 ⚠️, most on international guidance only (US CDC, Ready.gov, US Fire Administration). The lesson says so ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). |
 | Guardrail | No fear about the dark: the room stays readable, the gecko stays cheerful, and nothing about injuries. Food and medicine advice is general and names its source. |
 
+
+## Outside the round: the home check and the plan card (v1.8.0)
+
+**The idea:** after a round about someone else's house, check your own. Both open in a sheet over the start screen, keep everything on the device, and end in a card to forward. Details and sources: [KNOWLEDGE §28](KNOWLEDGE.md#28-the-home-check-and-the-family-plan-card-v180).
+
+| Element | บ้านเราพร้อมแค่ไหน? (`/?open=kit`) | แผนบ้านรอดของบ้านเรา (`/?open=plan`) |
+|---|---|---|
+| Asks | How many people (1–10, a − / + stepper) and who lives there (small children, older or bedridden people, daily medicine, pets) | Six short fields: the shelter near home, the family meeting place, who to contact if separated, who helps whom (×2), medicine and must-haves |
+| Shows | The household's list: 9 things for every home plus up to 6 by answer, with amounts for this household ("27 ลิตร (3 ลิตร × 3 คน × 3 วัน)", a flashlight each), the agencies per line, and "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน" on lines under review. Ticks fill a meter: "พร้อมแล้ว 33% (มี 3 จาก 9 อย่าง)" | Each field with an example and, for most, a sourced hint ("ยาประจำตัวอย่างน้อย 7 วัน"); the warning not to type ID-card numbers |
+| Card (1080 × 1350) | A score ring, the gecko with a torch (its face follows the score), "มีแล้ว 3 จาก 9 อย่าง", up to 3 things still missing, "บ้านคุณพร้อมแค่ไหน? เช็กฟรี" and `/?open=kit` | The filled fields, the date, the free helplines 1784 · 199 · 1669 · 1555 · 1130 · 1129, "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน" and `/?open=plan` |
+| Ways in | The start screen's quick button 🎒 "บ้านพร้อมไหม?" (then "บ้านพร้อม 70%"), the power cut's result screen, `/ready`, the link | From the check's list, `/ready`, the link |
+| Kept | `brm:kit` on this device | `brm:plan` on this device |
+| Guardrail | No fear and no shame: the score counts things the house has, and the card lists what to get next | Nothing typed leaves the phone except in the picture the family shares; short fields, no names asked |
+
+- **The quick buttons** (checklists, the home check, helplines, the water-level link) sit two per row with the icon beside the label, so the Thai labels don't break mid-word.
+- **Why a score:** a percentage is something to compare in a family group ("บ้านเราพร้อมรับมือไฟดับ 56% 🎒 แล้วบ้านคุณล่ะ?"), like the game's X/10, and the missing things on the card are the next step. The score counts things, not amounts.
+
+## Playing a round
 
 - **Tap a target:** the timer pauses and a bottom sheet shows 3 choices.
 - **Correct:** +100, a squish and sparkle sound, the gecko cheers. The item changes state: the breaker flips to OFF, sandbags line up, the TV lifts, the car drives away. A **tip card** shows the ≤ 80-character tip, a **ทำไม?** expander and the agency link.
@@ -233,6 +253,10 @@ Low-fidelity layouts below. Real screenshots from the built game, captured by `n
 | House fire (v1.5.0) | [14-fire.png](screens/14-fire.png) |
 | Hazard page (v1.6.0) | [15-hazard-page.png](screens/15-hazard-page.png) |
 | Power cut: the kitchen at 6 hours without power, the fridge gone bad (v1.7.0) | [16-stock.png](screens/16-stock.png) |
+| The home check: the list for 3 people, 33 % ready (v1.8.0) | [17-kit.png](screens/17-kit.png) |
+| The family plan card, filled in (v1.8.0) | [18-plan-card.png](screens/18-plan-card.png) |
+
+`npm run smoke -- --screens docs/screens` refreshes 01–12 and 15. The others (13, 14, 16, 17, 18) were captured once, by one-off probes in their releases, and are not refreshed by that run.
 
 The share assets, rendered by the same canvas code as the game:
 
@@ -287,9 +311,11 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
+│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing (loaded on open, v1.8.0)
+│   │   ├── kitplan.js      the household's list, score and missing things from kit.json (pure, unit-tested)
 │   │   ├── mascot.js       น้องจก (SVG, faces, props)
 │   │   ├── audio.js fx.js icons.js ui.js content.js progress.js analytics.js rng.js util.js
-│   ├── content/            ← EDITABLE: items, rooms, strings, config, sources, checklists, helplines
+│   ├── content/            ← EDITABLE: items, rooms, strings, config, sources, checklists, helplines, kit (home check + plan card), carousel
 │   ├── art/                rooms/*.svg (front, living, kitchen) + sprites.svg
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)
 │   ├── og/  share/  icons/ pre-rendered images (npm run images); og/en/ holds the English previews

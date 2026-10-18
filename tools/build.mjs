@@ -50,6 +50,8 @@ const checklists = readJSON('content/checklists.json');
 const helplines = readJSON('content/helplines.json');
 // Text for the carousel images and /posts only; the game never loads it.
 const carousel = readJSON('content/carousel.json');
+// The home check and family plan card (/?open=kit, /?open=plan), loaded on open.
+const kitFile = readJSON('content/kit.json');
 if (errors.length) finish();
 
 const spritesSvg = fs.readFileSync(path.join(PUB, 'art/sprites.svg'), 'utf8');
@@ -192,6 +194,11 @@ for (const [h, v] of Object.entries(HAZARDS)) {
   else if (RESERVED.has(slug) || fs.existsSync(path.join(PUB, slug))) err(`config.json: hazards slug "${slug}" clashes with a site path`);
   slugSeen.add(slug);
   for (const l of LANGS) for (const k of ['Nav', 'Title', 'Desc', 'H1', 'Intro']) if (!strings.seo?.[l]?.[`hazard${capM(h)}${k}`]) err(`strings.json: seo.${l}.hazard${capM(h)}${k} is missing`);
+  // Links on the hazard page to the home check (/?open=kit) and the plan card (/?open=plan).
+  for (const tool of v?.tools || []) {
+    if (!['kit', 'plan'].includes(tool)) err(`config.json: hazards.${h}.tools: "${tool}" is not kit or plan`);
+    for (const l of LANGS) if (!strings.seo?.[l]?.[`tool${capM(tool)}`]) err(`strings.json: seo.${l}.tool${capM(tool)} is missing`);
+  }
   // The lessons in the hazard's carousel post (carousel.json → sets; share/carousel/<slug>/NN.jpg).
   const car = carousel?.sets?.[h] || [];
   if (car.length > 8) err(`carousel.json: sets.${h} has ${car.length} lessons (at most 8, so a post stays short)`);
@@ -232,6 +239,47 @@ for (const k of keysTh) if (!keysEn.has(k)) warn(`strings.json: "${k}" has no En
 
 const isPlaceholder = (u) => !u || /\[[A-Z_]+\]/.test(u);
 if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is still a placeholder (the forecast button stays hidden)');
+
+// The home check: every item and plan field is sourced; every number in a
+// quantity appears in one of its sources' title or note, so a count can't be
+// made up; both languages everywhere.
+{
+  const flagIds = new Set((kitFile.flags || []).map((f) => f.id));
+  const seenKit = new Set();
+  for (const f of kitFile.flags || []) text(f.label, `kit.json flag ${f.id}`);
+  for (const it of kitFile.items || []) {
+    const where = `kit.json item ${it.id}`;
+    if (seenKit.has(it.id)) err(`${where}: duplicate id`);
+    seenKit.add(it.id);
+    text(it.label, where);
+    if (it.for && !flagIds.has(it.for)) err(`${where}: "for" must be one of ${[...flagIds].join(', ')}`);
+    if (!['verified', 'partial'].includes(it.verify)) err(`${where}: verify must be verified or partial`);
+    if (!(it.sources || []).length) err(`${where}: needs sources`);
+    for (const sid of it.sources || []) if (!sources[sid]) err(`${where}: unknown source "${sid}"`);
+    const said = (it.sources || []).map((sid) => `${sources[sid]?.title || ''} ${sources[sid]?.note || ''}`).join(' ');
+    for (const k of ['perPersonPerDay', 'perPerson', 'days']) {
+      const v = it.qty?.[k];
+      if (v == null) continue;
+      if (!(Number.isInteger(v) && v > 0)) err(`${where}: qty.${k} must be a whole number`);
+      else if (v > 1 && !new RegExp(`(^|[^0-9])${v}([^0-9]|$)`).test(said)) err(`${where}: qty.${k} = ${v} is not in any of its sources' title or note`);
+    }
+    // English may leave a unit out ("3 (one each)"), Thai always counts with one ("3 อัน").
+    if (it.qty?.unit && !it.qty.unit.th) err(`${where}: qty.unit needs Thai`);
+  }
+  for (const f of kitFile.plan || []) {
+    const where = `kit.json plan field ${f.id}`;
+    text(f.label, where);
+    text(f.placeholder, `${where} placeholder`);
+    if (!(f.max > 0 && f.max <= 80)) err(`${where}: max must be 1–80 characters`);
+    if (f.hint) {
+      text(f.hint, `${where} hint`);
+      if (!(f.sources || []).length) err(`${where}: a hint needs sources`);
+      for (const sid of f.sources || []) if (!sources[sid]) err(`${where}: unknown source "${sid}"`);
+    }
+  }
+  const uiTh = Object.keys(kitFile.ui?.th || {});
+  for (const k of uiTh) if (!kitFile.ui?.en?.[k]) err(`kit.json: ui.en.${k} is missing`);
+}
 
 // Stop here on content errors: the pages below assume the content is complete.
 if (errors.length) finish();
@@ -507,10 +555,11 @@ const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a 
 // its lessons, so a search such as "ป้องกันฝุ่น PM2.5 ในบ้าน" lands on the answer,
 // next to a button that opens that mode (/?mode=dust). Slugs: config.json → hazards.
 const hazardList = Object.entries(HAZARDS)
-  .map(([id, v]) => ({ id, slug: v.slug, modes: MODES.filter((m) => m.hazard === id).map((m) => m.id) }))
+  .map(([id, v]) => ({ id, slug: v.slug, tools: v.tools || [], modes: MODES.filter((m) => m.hazard === id).map((m) => m.id) }))
   .filter((h) => h.modes.length);
 const hazardChips = (lang, current) => `<div class="tix" id="hazards"><p><b>${esc((lang === 'en' ? E : S).byHazard)}</b></p><ul>${hazardList.map((h) => `<li><a href="${lang === 'en' ? EN : ''}/${h.slug}"${h.id === current ? ' aria-current="page"' : ''}>${esc((lang === 'en' ? E : S)[`hazard${capM(h.id)}Nav`])}</a></li>`).join('')}</ul></div>`;
 const playLinks = (lang, ids) => `<p class="play">${ids.map((id) => `<a class="cta" href="${lang === 'en' ? EN : ''}/?mode=${id}">${esc(fill((lang === 'en' ? E : S).playMode, { mode: strings[lang][`mode${capM(id)}`], s: config.round[id].seconds }))}</a>`).join(' ')}</p>`;
+const toolLinks = (lang, h) => h.tools.map((tool) => `<p class="check"><a href="${lang === 'en' ? EN : ''}/?open=${tool}">${esc((lang === 'en' ? E : S)[`tool${capM(tool)}`])}</a></p>`).join('\n');
 // "Check before you go" (FloodWatch, Air4Thai), once per address.
 const checkLinks = (lang, ids) => {
   const seen = new Set();
@@ -617,6 +666,7 @@ for (const h of hazardList) {
 ${playLinks('th', h.modes)}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${checkLinks('th', h.modes)}
+${toolLinks('th', h)}
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${sectionsTh(h.modes)}
 <h2 id="checklists">${esc(S.checklists)}</h2>
@@ -640,6 +690,7 @@ ${playLinks('en', h.modes)}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 ${checkLinks('en', h.modes)}
+${toolLinks('en', h)}
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${sectionsEn(h.modes)}
 <h2 id="checklists">${esc(E.checklists)}</h2>
@@ -846,6 +897,7 @@ if (gz > 500 * 1024) err(`initial load is ${(gz / 1024).toFixed(0)} KB compresse
     const kindLabel = { official: 'agency site', government: 'government channel (PRD)', secondary: 'news quoting the agency', academic: 'academic statement or peer-reviewed study (not an agency)', international: 'international guidance (cross-check only)' };
     const used = new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]));
     for (const h of helplines.helplines) if (h.source) used.add(h.source);
+    for (const k of [...(kitFile.items || []), ...(kitFile.plan || [])]) for (const id of k.sources || []) used.add(id);
     const refs = Object.entries(sources)
       .sort((a, b) => a[1].agency.localeCompare(b[1].agency, 'th') || a[0].localeCompare(b[0]))
       .map(([id, s]) => `- **[${id}]** ${s.agency} — ${s.title}${s.date ? ` (${s.date})` : ''} · _${kindLabel[s.kind] || s.kind}_${used.has(id) ? '' : ' · not cited yet'}  \n  <${s.url}>${s.note ? `  \n  ${s.note}` : ''}`)

@@ -206,6 +206,52 @@ Links for power-cut posts:
 
 Rules for these posts: no photos of real blackouts, storms or damage; no blame on the electricity authorities or anyone else for a power cut; keep it about getting ready, not about how bad a cut could be.
 
+### The home check and the plan card (v1.8.0, any time of year)
+
+Two tools that end in a picture a family forwards: **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`) works out what this household needs for a power cut or 3 days at home and how ready it is, and **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom. Good moments: next to a power-cut or flood post, before a long holiday, at the start of the rains, or when a family group is already talking about stocking up.
+
+- **Links:** `/?open=kit` and `/?open=plan` (`/en/?open=…` in English) open the tool straight away, but their link preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). Attach a picture, or link `/ready`, which has its own preview and links both tools.
+- **Pictures:** use [17-kit.png](screens/17-kit.png), or a kit card or plan card you make yourself **with the form's example text only**. Never post a real family's plan card: it shows where they meet and who to call.
+- **Numbers:** the posts below name only the 3 days the check is built on (กรมประชาสัมพันธ์'s 72 hours; ปภ. and กรมอนามัย say 3 days or more). Leave the amounts to the check, which shows each one with its source, and don't add an interval, a 7-day target or an eating order: no agency gives them ([KNOWLEDGE §28.10](KNOWLEDGE.md#2810-what-was-left-out-and-why)).
+- **Privacy is part of the message:** the answers and the plan stay on the phone and are never sent. Say so; it is what makes an older relative willing to type a meeting place.
+
+These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
+
+**Facebook: the home check** (with `17-kit.png` or a sample kit card):
+
+> บ้านเราพร้อมแค่ไหน ถ้าไฟดับหรือต้องอยู่ในบ้าน 3 วัน? 🎒
+>
+> ตอบแค่ 2 ข้อ: บ้านเรามีกี่คน และมีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำ หรือสัตว์เลี้ยงไหม
+> แล้วได้รายการของบ้านเราเอง พร้อมจำนวนที่ควรมี เช่น น้ำดื่มกี่ลิตร ไฟฉายกี่อัน
+> ติ๊กของที่มีแล้ว ดูว่าพร้อมกี่เปอร์เซ็นต์ แล้วส่งให้คนในบ้านช่วยกันเติมของที่ยังขาด
+> ทุกข้อบอกที่มา (กรมประชาสัมพันธ์ ปภ. กรมอนามัย และบางข้อจากหน่วยงานต่างประเทศ มีป้ายบอกไว้)
+>
+> 🔒 คำตอบอยู่ในมือถือของคุณเท่านั้น ไม่ส่งไปที่ไหน
+>
+> เช็กฟรี 1 นาที 👉 https://baanrodmai.autobahn.bot/?open=kit
+> #บ้านรอดไหม #ไฟดับ #ของตุน
+
+**Facebook: the plan card** (with a sample plan card):
+
+> ถ้าน้ำมา ไฟดับ หรือต้องออกจากบ้านกะทันหัน บ้านเรานัดเจอกันที่ไหน? 📝
+>
+> ทำ "การ์ดแผนบ้านรอด" ของบ้านเรา กรอกสั้นๆ 6 ช่อง:
+> ศูนย์พักพิงใกล้บ้าน · จุดนัดพบของครอบครัว · ถ้าพลัดกันจะติดต่อใคร · ใครช่วยใคร · ยาที่ต้องเอาไปด้วย
+> กดสร้าง ได้การ์ดพร้อมเบอร์ช่วยเหลือ เซฟไว้ในมือถือทุกคนในบ้าน
+>
+> 🔒 ข้อความอยู่ในเครื่องของคุณเท่านั้น ไม่ส่งไปที่ไหน และไม่ต้องใส่เลขบัตรประชาชน
+>
+> ทำการ์ดของบ้านเรา 👉 https://baanrodmai.autobahn.bot/?open=plan
+> #บ้านรอดไหม
+
+**LINE family groups** (short, warm, one link each):
+
+> ส่งต่อด้วยความห่วงใย 💛 ลองเช็กกันไหมว่าบ้านเราพร้อมแค่ไหน ถ้าไฟดับ 3 วัน ตอบ 2 ข้อ ได้รายการของบ้านเราเลย 👉 https://baanrodmai.autobahn.bot/?open=kit
+
+> แล้วมาทำการ์ดแผนบ้านรอดเก็บไว้ในมือถือทุกคนนะ จะนัดเจอกันที่ไหน ใครดูแลคุณยาย 👉 https://baanrodmai.autobahn.bot/?open=plan
+
+Rules for these posts: never shame a low score ("ยังขาดอีกนิด" is the tone); no lists of what to buy from a shop or a brand; no photos of empty shelves or panic buying.
+
 ## 3. Outreach (who to send it to, and the ask)
 
 Give every partner the same **ready-to-forward kit**:
@@ -264,5 +310,6 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 - [ ] Switch end dates set: the build's `start` line shows the mode and topic you expect today, with no warning about a missing or past end date
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on
 - [ ] Real-phone pass of [06-test-checklist.md](06-test-checklist.md) in LINE, Facebook and TikTok in-app browsers
-- [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md), including the 10 power-cut lessons before the `ready` set is posted widely
+- [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md), including the 10 power-cut lessons before the `ready` set is posted widely, and the home check's ⚠️ lines before the check is promoted ([KNOWN_ISSUES #57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance))
+- [ ] `/?open=kit` and `/?open=plan` tried on a phone, inside LINE and in the phone's browser (rows 46–48 of [06-test-checklist.md](06-test-checklist.md))
 - [ ] Posts scheduled for the 06:00 / 12:00 / 20:00 slots; partner kit sent

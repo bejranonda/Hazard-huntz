@@ -3,10 +3,10 @@
 | | |
 |---|---|
 | **Repository** | [bejranonda/Hazard-huntz](https://github.com/bejranonda/Hazard-huntz) (production branch `main`) |
-| **Version** | 1.7.0 (Thai + English) |
+| **Version** | 1.8.0 (Thai + English) |
 | **Date** | 19 Oct 2026 |
 | **State** | Code complete and **live** at https://baanrodmai.autobahn.bot (Thai) and https://baanrodmai.autobahn.bot/en/ (English). CI is green. **Not yet launched; not yet tested on real phones.** |
-| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L4 + L10 safety review incl. the dust, fire and power-cut lessons, L5 language check incl. the hazard pages' text, L6 real phones, L8 search consoles incl. the eight hazard pages, L9 FloodWatch link to `/?mode=prepare` or `/flood`); planned next is N15 (v1.8.0, a "how ready is our house?" checker and a family plan card); AI-ready ideas are P7 heat and storms, P8 earthquake and tsunami, P5, P1 and V1 |
+| **Next** | [docs/ROADMAP.md](docs/ROADMAP.md): the owner's launch tasks (L1 Web Analytics, L4 + L10 safety review incl. the dust, fire and power-cut lessons and the home check's ⚠️ lines, L5 language check incl. the hazard pages' text and `kit.json`, L6 real phones incl. the home check and plan card inside LINE, L8 search consoles incl. the eight hazard pages, L9 FloodWatch link to `/?mode=prepare` or `/flood`); N15 (the home check and plan card) shipped in v1.8.0; AI-ready next are P7 heat and storms, P8 earthquake and tsunami, then P5, P1 and V1 |
 | **For AI assistants** | Start with [AGENTS.md](AGENTS.md); lessons are in [docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md) |
 
 ## 1. In one minute
@@ -16,7 +16,8 @@
 **What's done:**
 
 - **Game:** five modes over three rooms (หน้าบ้าน, ห้องนั่งเล่น, ครัว): ก่อนน้ำมา and หลังน้ำลด (flood), ฝุ่น PM2.5 and ไฟไหม้ (v1.5.0), and ไฟดับ (v1.7.0), a year-round power cut where the room darkens over 12 story hours and the fridge goes bad at 4. A daily house per mode, streaks, challenge links, offline play. The start screen recommends the mode in season; the owner's switches (rain warning, topic in the news) end by themselves on their end dates (v1.6.0), and a `?mode=` link (`/?mode=dust`) opens the game on one mode for posts and campaigns.
-- **Content:** 81 safety items (60 verified, 21 flagged ⚠️ partial; 79 in playable rooms) in 8 topics, and 30 decoys, from 72 dated sources, in Thai and English. Dust and fire (v1.5.0) rest on the Department of Health, DDPM and MEA, cross-checked with WHO and the US Fire Administration ([KNOWLEDGE §22](docs/KNOWLEDGE.md#22-a-game-for-the-whole-year-v150)). The power cut (v1.7.0) rests largely on international guidance (the US CDC, Ready.gov, Tokyo, the US Fire Administration): 10 of its 13 lessons are ⚠️ and wait for a Thai review ([KNOWLEDGE §27](docs/KNOWLEDGE.md#27-power-cuts-and-home-stock-v170), [#55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
+- **The home check and the family plan card (v1.8.0):** "บ้านเราพร้อมแค่ไหน?" (`/?open=kit`) asks how many people live in the house and who (small children, older people, daily medicine, pets), then lists up to 15 things with amounts for that household (water 3 L × people × 3 days, a flashlight each, 7 days of medicine), each with its source; ticks give a percentage and a card to forward. "แผนบ้านรอดของบ้านเรา" (`/?open=plan`) makes a card with the shelter, meeting place, contact, who helps whom, medicine and the helplines. Reached from a start-screen button, the power cut's result, `/ready` and the links. Everything typed stays on the device ([KNOWLEDGE §28](docs/KNOWLEDGE.md#28-the-home-check-and-the-family-plan-card-v180)).
+- **Content:** 81 safety items (60 verified, 21 flagged ⚠️ partial; 79 in playable rooms) in 8 topics, and 30 decoys, from 73 dated sources, in Thai and English. Dust and fire (v1.5.0) rest on the Department of Health, DDPM and MEA, cross-checked with WHO and the US Fire Administration ([KNOWLEDGE §22](docs/KNOWLEDGE.md#22-a-game-for-the-whole-year-v150)). The power cut (v1.7.0) rests largely on international guidance (the US CDC, Ready.gov, Tokyo, the US Fire Administration): 10 of its 13 lessons are ⚠️ and wait for a Thai review ([KNOWLEDGE §27](docs/KNOWLEDGE.md#27-power-cuts-and-home-stock-v170), [#55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
 - **International version (v1.2):** `/en/` game, `/en/learn` lessons, `/en/c/…` and `/en/checklist/…` links; English link previews (49 images); `hreflang` between each Thai page and its English twin; first-visit language guess that keeps Thai players on Thai; English wordmark "Baan Rod Mai?" ([KNOWLEDGE §18](docs/KNOWLEDGE.md#18-international-version-and-social-previews)).
 - **Sharing:** result cards that print the challenge link for their own house and, since v1.6.0, the ending that answers "บ้านรอดไหม?"; checklists; challenge links with a real **challenge back** (both scores, the card attached); link previews, per language.
 - **Fun and coming back (v1.3.0):** the safety book (สมุดบ้านรอด, 79 lessons to collect since v1.7.0, grouped in 8 topics, kept on the device), end-of-round moments by score with a perfect-10 stamp, a feel-only combo, new sounds, streak milestones, and replay buttons above the lessons ([KNOWLEDGE §20](docs/KNOWLEDGE.md#20-fun-and-sharing-features-v130)).
@@ -26,13 +27,13 @@
 - **Review and optimisation:** live-site UI/UX evaluation and 3-loop refinement (9.74/10), tap overlaps at 0%, senior-friendly timer copy. Full audit in [review/](review/README.md).
 - **Docs:** the six deliverables plus the maintainer reference and the guidance for AI assistants.
 
-**Checks.** The build passes with no warnings, with its content validation and size budget (start screen **200 KB** compressed, 215 KB with the first game screen, against a 500 KB limit). All **25 rule tests**, **86 browser checks**, the **0% tap-overlap probe** (3,650 houses, five modes) and the docs link check (all relative links) pass locally. The browser checks run on a pinned day (18 Oct 2026); in v1.6.0 they also passed as 5 Dec 2026 and 10 Apr 2027.
+**Checks.** The build passes with no warnings, with its content validation and size budget (start screen **208 KB** compressed, 223 KB with the first game screen, against a 500 KB limit; the 208 include the home check's code, which loads only when it opens). All **26 rule tests**, **93 browser checks** and the docs link check (all relative links) pass locally; the **0% tap-overlap probe** (3,650 houses, five modes) was last run for v1.7.0, and v1.8.0 changed no item, slot or water setting. The browser checks run on a pinned day (18 Oct 2026); in v1.6.0 they also passed as 5 Dec 2026 and 10 Apr 2027.
 
 **What's not done:**
 
 - real-phone testing in LINE, Facebook and TikTok
 - Web Analytics switched on, and the sitemap submitted to the search consoles
-- a human review of the ⚠️ items, including a Thai review of the power-cut lessons
+- a human review of the ⚠️ items, including a Thai review of the power-cut lessons and of the home check's ⚠️ lines
 - the native-speaker language check (English and Thai) that the owner will supply
 - three more rooms
 - version 2's combined run
@@ -57,12 +58,14 @@ Work through these in order. Each links to the details. Done items are ticked.
 - [ ] **Review the 21 ⚠️ items** in [docs/01-safety-content.md](docs/01-safety-content.md#flags-please-review-these), ideally with an agency contact. Do the same for the sources that came from reposts because the agency sites blocked automated checks ([#8](docs/KNOWN_ISSUES.md#8-21-safety-items-are-only-partially-verified), [#9](docs/KNOWN_ISSUES.md#9-agency-websites-blocked-automated-checks)).
 - [ ] **Review the 25 dust and fire lessons** before the dust season (December): open each source and confirm the wording; decide whether the smoke-alarm lesson (US source only) stays ([ROADMAP L10](docs/ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [#45](docs/KNOWN_ISSUES.md#45-the-smoke-alarm-lesson-has-no-thai-source), [#46](docs/KNOWN_ISSUES.md#46-dust-and-fire-advice-is-quoted-through-news-reports)).
 - [ ] **Thai review of the 10 ⚠️ power-cut lessons (v1.7.0)**, before posting the power-cut set widely. Open the PRD 72-hour checklist page in a normal browser and confirm the 3 litres and the radio; ask MEA (กฟน.) or PEA (กฟภ.) about unplugging in a power cut; ask กรมอนามัย or อย. about fridge and freezer food, and a pharmacist or อย. about the cold-medicine wording. Where a Thai source says the same, it is added and the lesson becomes ✅ ([ROADMAP L10](docs/ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [#55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
+- [ ] **Try the home check and the plan card on your phone (v1.8.0):** open https://baanrodmai.autobahn.bot/?open=kit and https://baanrodmai.autobahn.bot/?open=plan from a LINE chat. Answer, tick, share the card, make a plan card and save it. Then close LINE, open the link again (the list should still be there), and open it in the phone's own browser (it will be empty: each browser keeps its own copy, [#58](docs/KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Ask an older relative to fill in the plan.
+- [ ] **Thai review of the home check's wording (v1.8.0):** read `kit.json` in Thai and English (or the check itself): the labels, the amounts as shown ("27 ลิตร (3 ลิตร × 3 คน × 3 วัน)"), the plan card's hints and examples. 9 of its 15 lines and 3 of the plan's hints are ⚠️, most on Ready.gov alone; the meeting place and contact have no Thai source yet ([#57](docs/KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance), [ROADMAP L10](docs/ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 - [ ] **Try the power cut on your phone:** open https://baanrodmai.autobahn.bot/ready and play https://baanrodmai.autobahn.bot/?mode=stock. Check that the darkening room is easy to read and that the fridge going bad at 4 hours makes sense to a family member.
 - [ ] **Run the real-phone matrix** in [docs/06-test-checklist.md](docs/06-test-checklist.md): at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok, in Thai and in English ([#3](docs/KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers)).
 - [ ] **Link FloodWatch and the game to each other** (a link from FloodWatch to the game is the owner's side; the game already links to FloodWatch). Link to `https://baanrodmai.autobahn.bot/?mode=prepare` (opens on flood preparation whatever the date) or `/flood` (the flood lessons). Relevant links between two flood sites help both in search ([ROADMAP L9](docs/ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
 - [ ] **Soft launch** to 20–30 people, then follow the phases in [docs/04-launch-kit.md](docs/04-launch-kit.md) (Thai posts first; English posts for international channels).
 - [ ] **Post the carousels:** open https://baanrodmai.autobahn.bot/posts on your phone, save a set in order and paste its caption. Start with the dust set (`pm25`) in early December, the fire set in March ([04-launch-kit](docs/04-launch-kit.md#posting-the-carousels-v161)).
-- [ ] *(Optional)* **Tag the release:** `v1.7.0` on `main` (and `v1.6.1` if it was never tagged). The session's git connection refuses tag pushes, so create it in the GitHub Releases page.
+- [ ] *(Optional)* **Tag the release:** `v1.8.0` on `main` (and `v1.7.0` and `v1.6.1` if they were never tagged). The session's git connection refuses tag pushes, so create it in the GitHub Releases page.
 - [ ] *(Optional)* **Confirm the license.** It is MIT, the same as your other repository; change it in `LICENSE` and `package.json` if you prefer.
 
 ## 3. How to run it
@@ -72,9 +75,9 @@ Requirements: Node 18 or later (Cloudflare uses 22). For `npm run images` and `n
 ```bash
 node tools/build.mjs                    # validate content + generate pages (Thai and English), SEO files and the service worker
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
-npm test                                # 25 rule tests (Node only, well under a second)
+npm test                                # 26 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 86 browser checks on a pinned day (18 Oct 2026); add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 93 browser checks on a pinned day (18 Oct 2026); add  -- --screens docs/screens  to refresh screenshots
 SMOKE_DATE=2026-12-05 npm run smoke     # the same checks on another Bangkok day (another season)
 npm run images                          # re-render previews (Thai + English), checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
@@ -96,6 +99,7 @@ npm run check:docs                      # check every relative link and anchor i
                │  scene.js     inlines room SVGs + sprites, tap areas, threat layers, badges
                │  cards.js     canvas result card / checklists / previews, wordmark per language (svgdraw.js)
                │  share.js     Web Share → LINE / Facebook / X / copy / long-press save; /en links
+               │  kit.js       the home check and the plan card (loaded on open; kit.json, kitplan.js [pure])
                │  analytics.js batches anonymous events ──sendBeacon──▶ functions/api/e.js ──▶ Analytics Engine
                └─ sw.js        offline after the first visit (not inside iOS in-app browsers)
 ```
@@ -117,6 +121,7 @@ Rules, formulas and the content model are in [docs/KNOWLEDGE.md](docs/KNOWLEDGE.
 | Change round length, points or the water curve | `public/content/config.json → round` |
 | Change the water-level link | `config.json → forecastAppUrl` (and optionally `forecastStatusUrl`) |
 | Edit a checklist or the help numbers | `checklists.json` / `helplines.json`, then `npm run images` |
+| Edit the home check or the plan card | `public/content/kit.json`: the things, their amounts and sources, the plan's fields, and the texts (`ui`), in Thai **and** English. Every number in an amount must be in a cited source's title or note; the build checks it ([GUIDELINES rule 57](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)) |
 | Move or add slots | `public/content/rooms.json`, then `npm run probe` |
 | Change the art | `public/art/rooms/*.svg`, `public/art/sprites.svg` ([GUIDELINES §4](docs/GUIDELINES.md#4-art)) |
 | Understand a rule or number | [docs/KNOWLEDGE.md](docs/KNOWLEDGE.md) |
@@ -134,6 +139,7 @@ Rules, formulas and the content model are in [docs/KNOWLEDGE.md](docs/KNOWLEDGE.
 - **What visitors see today:** `node tools/build.mjs` prints a `start` line, for example `start     2026-10-18: prepare (warning until 2026-11-30) · featured health until 2026-11-15`. Cloudflare's build log shows it too, for the day of each deploy.
 - **The year turns.** The start screen follows `config.modes[].months` by itself (dust December–March, fire April). Change the months if your region differs ([#47](docs/KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)); the south's November–January floods are outside this calendar, so campaigns there use `/?mode=prepare`.
 - **The power cut is year-round (v1.7.0).** It has no months, so the start screen never recommends it by itself: it is always one of the small cards. Bring it forward with posts: `/ready` to read (its own preview) and `/?mode=stock` to play, after a planned power cut in the area, a storm warning or in a quiet week ([04-launch-kit](docs/04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)). 5 of the 8 lessons in its carousel set are still under review and say so on the images.
+- **The home check and plan card (v1.8.0)** need no switch and no season. Link `/?open=kit` or `/?open=plan` in posts, with a picture (their preview is the main game's), or `/ready`, which links both ([04-launch-kit](docs/04-launch-kit.md#the-home-check-and-the-plan-card-v180-any-time-of-year)). Never post a real family's plan card. Opens and shares are counted as `kit_open`, `kit_share` and `plan_share` ([05-metrics](docs/05-metrics.md#the-home-check-and-the-plan-card-v180)); answers and text never leave the phone.
 - **Campaign links (v1.6.0):**
   - To **play**, link `/?mode=prepare`, `return`, `dust`, `fire` or `stock` (`/en/?mode=…` in English). The game opens with that mode as the big card and its topic featured, whatever the date; nothing starts until the visitor taps. Its link preview is the main game's ([#52](docs/KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)).
   - To **read**, with a preview of its own, link the hazard page: `/flood`, `/pm25`, `/fire` or `/ready` (`/en/…`). Each has that hazard's lessons, checklists and helplines, and ▶ buttons into the game. Never rename these pages; their names are in `config.json → hazards`.
@@ -168,21 +174,22 @@ The full list, with measurements, is in [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES
 | 8 | 21 safety items are only partially verified (10 flood, the smoke alarm, 10 power cut) | **Review before launch** |
 | 45, 46 | Dust and fire advice comes through news reports; the smoke-alarm lesson has only a US source | Owner review before December |
 | 55 | The power-cut lessons rest largely on international guidance (US CDC, Ready.gov) | Owner: Thai review before posting the set widely |
-| 56 | The English checklist preview still says "from Thai government agency advice" | Open (a one-string fix) |
+| 57 | The home check and plan card rest partly on international guidance (9 of 15 lines, the meeting place and contact) | Owner: Thai review before promoting the check |
+| 58 | The home check and the plan live in one browser (LINE's in-app browser is separate from the phone's) | By design; check on a real phone |
 | 11, 37 | Thai and English copy has had no second native reader; the English version is English only, with Thai advice and hotlines | Owner (the language check is coming) |
 | 30 | Web Analytics and search-console submission are not done | Owner, before launch |
 | 16–18 | iOS in-app browsers: no offline play. Android in-app browsers: no Web Share. In-app browsers: no downloads. | Platform; fallbacks are in place |
 | 21 | Links shared before a preview change keep their cached preview | Platform |
 | 52 | A `?mode=` link previews as the main game; share `/pm25`, `/fire`, `/flood` or `/ready` when the preview matters | By design |
 
-Fixed so far: #1 (tap overlaps), #2 (tap areas on 320 px phones, F21), #4 (CI), #5 (hard-coded text), #6 (placeholders) and the issues listed under *Fixed* in the known-issues file, most recently the room arrow over the item on the fridge, the "every tip is from Thai agencies" texts and the build crash on missing strings (F38–F40, v1.7.0).
+Fixed so far: #1 (tap overlaps), #2 (tap areas on 320 px phones, F21), #4 (CI), #5 (hard-coded text), #6 (placeholders) and the issues listed under *Fixed* in the known-issues file, most recently the English checklist previews that still called the advice Thai (F41, v1.8.0), and before that the room arrow over the item on the fridge, the "every tip is from Thai agencies" texts and the build crash on missing strings (F38–F40, v1.7.0).
 
 ## 8. Suggested next steps
 
 All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each with steps, the person needed and a "done when". In short:
 
 1. **Launch** (section 2, ROADMAP L-tasks): Web Analytics, search consoles, the language check, the ⚠️ review, the real-phone matrix, the FloodWatch link and the soft launch.
-2. **Polish, AI-ready:** N4 (13 Oct) and N8 (14 Oct, v1.3.0) are done. Then N9 (15 Oct, v1.4.0, topics and the news-driven lessons). N10 (15 Oct, v1.5.0, dust and fire), N11 (15 Oct, v1.5.2–1.5.3, the funnel and the ending), N12 (18 Oct, v1.6.0, switch end dates, mode links and hazard pages), N13 (v1.6.1, carousel posts) and N14 (19 Oct, v1.7.0, the power cut) are done. Planned next: N15 (v1.8.0, a "how ready is our house?" checker and a family plan card). After that: heat and summer storms ([P7](docs/ROADMAP.md#p7-heat-and-summer-storms)), earthquake and tsunami ([P8](docs/ROADMAP.md#p8-earthquake-and-tsunami)), a safety calendar of hazard weeks ([P9](docs/ROADMAP.md#p9-a-safety-calendar-one-hazard-week-at-a-time)), the share-loop ideas in [ROADMAP P5](docs/ROADMAP.md#p5-share-loop-ideas-not-built-yet) and the remaining disease lessons in [P6](docs/ROADMAP.md#p6-more-lessons-for-the-remaining-disease-groups). **Owner:** the disease topic ends by itself after 15 Nov 2026 and the rain warning after 30 Nov; move either date if the news or the rain lasts longer ([#44](docs/KNOWN_ISSUES.md#44-the-featured-topic-is-switched-by-hand)).
+2. **Polish, AI-ready:** N4 (13 Oct) and N8 (14 Oct, v1.3.0) are done. Then N9 (15 Oct, v1.4.0, topics and the news-driven lessons). N10 (15 Oct, v1.5.0, dust and fire), N11 (15 Oct, v1.5.2–1.5.3, the funnel and the ending), N12 (18 Oct, v1.6.0, switch end dates, mode links and hazard pages), N13 (v1.6.1, carousel posts), N14 (19 Oct, v1.7.0, the power cut) and N15 (19 Oct, v1.8.0, the home check and the family plan card) are done. Next: heat and summer storms ([P7](docs/ROADMAP.md#p7-heat-and-summer-storms)), earthquake and tsunami ([P8](docs/ROADMAP.md#p8-earthquake-and-tsunami)), a safety calendar of hazard weeks ([P9](docs/ROADMAP.md#p9-a-safety-calendar-one-hazard-week-at-a-time)), the share-loop ideas in [ROADMAP P5](docs/ROADMAP.md#p5-share-loop-ideas-not-built-yet) and the remaining disease lessons in [P6](docs/ROADMAP.md#p6-more-lessons-for-the-remaining-disease-groups). **Owner:** the disease topic ends by itself after 15 Nov 2026 and the rain warning after 30 Nov; move either date if the news or the rain lasts longer ([#44](docs/KNOWN_ISSUES.md#44-the-featured-topic-is-switched-by-hand)).
 3. **After two weeks live:** the first metrics review (N5): the most-missed lessons, share and challenge numbers, and which language and channel bring players.
 4. **More house:** draw the bathroom, bedroom and garage ([#14](docs/KNOWN_ISSUES.md#14-bathroom-bedroom-and-garage-are-not-drawn)), and settle the mattress conflict first ([#10](docs/KNOWN_ISSUES.md#10-sources-conflict-on-soaked-mattresses)).
 5. **v2, the combined run:** the before/after card and a third start button ([#15](docs/KNOWN_ISSUES.md#15-version-2-the-combined-prepare--return-run)).
@@ -203,6 +210,8 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
 - **A switch someone must remember to turn off will be forgotten.** Give it an end date. And a test must not read the calendar: pin the date and take the expectation from the game's own function ([LESSONS C16, D10](docs/LESSONS_LEARNED.md#d-testing-and-verification)).
 - **A viral infographic is a prompt, not a source.** Keep what agencies back, flag what only a foreign agency backs, drop the rest, and re-read every sentence that describes the whole game ([LESSONS B9](docs/LESSONS_LEARNED.md#b-safety-content-and-research)).
 - **A forced click can't see what covers the button.** The room arrow covered part of an item from v1.0 to v1.6.1 because the smoke test clicked with `force: true`; measure what lies over each tap target ([LESSONS D11](docs/LESSONS_LEARNED.md#d-testing-and-verification)).
+- **Run probes from the scratchpad, and read `git status` before committing.** A probe run from the repository root put a screenshot into the v1.7.0 commit, and CI can't catch a stray file once it is committed ([LESSONS E8](docs/LESSONS_LEARNED.md#e-process-documentation-and-git)).
+- **Test a card with the longest text it accepts.** The first plan card silently dropped its sixth row when the entries were long; the rows now shrink together, and all six fit at maximum length ([LESSONS D12](docs/LESSONS_LEARNED.md#d-testing-and-verification)).
 
 ## 9. What changed, in order
 
@@ -332,9 +341,17 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
 
 - The same stockpiling infographic ("72 hours minimum, aim for 7 days", "eat old stock first", "fridge → freezer → canned", "a manual can opener") led to a fifth mode. Its claims were checked one by one: the 3 days match Thai agencies; the fridge and freezer times, the can opener, candles, unplugging and cold medicine were found only at foreign agencies (the US CDC, Ready.gov, the US Fire Administration, Tokyo); the 7-day aim, a 3–6-month check and the eating order were left out ([KNOWLEDGE §27](docs/KNOWLEDGE.md#27-power-cuts-and-home-stock-v170)).
 - `stock` (ไฟดับ / Power cut), year-round, code `s`: the room darkens over 12 story hours, the HUD shows "ไฟดับมา 4 ชม. · 37 วิ", and the fridge's food goes bad at 4 hours (the CDC's figure) unless the player gets to it; the freezer lasts the night. 13 lessons, 5 decoys, a checklist, challenge links `/c/s…`, the page `/ready`, and a carousel set. 3 lessons are ✅ and 10 ⚠️, each saying why ([#55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
-- The About text, the link previews, `/learn`'s titles and `llms.txt` said every tip comes from Thai agencies; they now say most do and some are international and marked (F39). One English preview description was missed ([#56](docs/KNOWN_ISSUES.md#56-the-english-checklist-preview-still-says-from-thai-government-agency-advice)).
+- The About text, the link previews, `/learn`'s titles and `llms.txt` said every tip comes from Thai agencies; they now say most do and some are international and marked (F39). One English preview description was missed (#56, fixed in v1.8.0 as [F41](docs/KNOWN_ISSUES.md#in-v180-19-oct-2026)).
 - Fixed on the way: the left room arrow covered up to 23 % of the item on the fridge (27 % for the new fridge), so a tap there turned the room; the slot moved below the arrow, keeping its id, so houses are unchanged (F38). The build now stops cleanly on content errors (F40).
 - The start screen shows five modes: the four small cards in one row. Start screen 200 KB, first game screen 215 KB. 25 rule tests, 86 browser checks, 0 % tap overlaps over 3,650 houses. The four older modes' houses and challenge links are unchanged, so no midnight release was needed.
+
+### 19 Oct 2026: v1.8.0, how ready is our house? The home check and the family plan card
+
+- Built ROADMAP N15 on the power cut's lessons. **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`): how many people and who lives there, then the household's own list of up to 15 things with amounts worked out for it (water 3 L × people × 3 days, food for 3 days, a flashlight each, 7 days of daily medicine), the agencies per line, ⚠️ on the 9 lines under review, ticks, a percentage and a card with the score and up to 3 missing things. **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`): six short fields and a card with the helplines, for every phone in the house ([KNOWLEDGE §28](docs/KNOWLEDGE.md#28-the-home-check-and-the-family-plan-card-v180)).
+- Privacy by design: answers, ticks and text stay in this browser's `localStorage`; three anonymous events (`kit_open`, `kit_share` with the score, `plan_share`); a smoke check proves typed text never reaches `/api/e`. The limit is that each browser keeps its own copy, LINE's included ([#58](docs/KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)).
+- Sources: every line cites `sources.json`, and the build stops if a number in an amount isn't in a cited source's title or note. A new source, Ready.gov "Make A Plan", for the meeting place and contact, which no Thai page was found for. Left out: a re-check interval, a 7-day stock target and an eating order ([#57](docs/KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)).
+- Fixed: the English checklist previews no longer call the advice Thai (F41, was #56). The start screen's quick buttons are two per row, so Thai labels don't break.
+- Start screen 208 KB (counting the check's code, which loads only on open), first game screen 223 KB, 44 files precached. 26 rule tests, 93 browser checks. No item, room or slot changed, so houses and challenge links are the same and no midnight release was needed.
 
 ## 10. Access, accounts and secrets
 

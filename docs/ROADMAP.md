@@ -30,12 +30,12 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
-| L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
-| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
+| L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0) |
+| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (48 rows since v1.8.0) |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (now with the eight hazard pages) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
-| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0) |
+| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0; the home check's ⚠️ items in v1.8.0) |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
@@ -50,7 +50,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N12 | [A start screen that keeps itself current, mode links and hazard pages](#n12-a-start-screen-that-keeps-itself-current-mode-links-and-hazard-pages) | AI-ready | Done (18 Oct 2026, v1.6.0) |
 | N13 | [Carousel posts for social media](#n13-carousel-posts-for-social-media) | AI-ready | Done (18 Oct 2026, v1.6.1) |
 | N14 | [A power-cut and stockpile mode](#n14-a-power-cut-and-stockpile-mode) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.7.0); Thai review left (L10) |
-| N15 | [How ready is our house? A checker and a family plan card](#n15-how-ready-is-our-house-a-checker-and-a-family-plan-card) | AI-ready | Planned (v1.8.0) |
+| N15 | [How ready is our house? A checker and a family plan card](#n15-how-ready-is-our-house-a-checker-and-a-family-plan-card) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.8.0); Thai review of its wording left (L5, L10) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -112,18 +112,19 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Done when:** every playable item is `verified`, or the owner has knowingly accepted it as `partial`, and the table is regenerated.
 - **Note (v1.5.0):** the eleventh is `f-alarm` (smoke alarms), backed only by the US Fire Administration.
 - **Note (v1.7.0):** ten more are power-cut lessons (`s-…`), most of them backed only by international guidance. Their review is the power-cut part of [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
+- **Note (v1.8.0):** the home check's 9 ⚠️ lines and the plan card's 3 ⚠️ hints are in `kit.json`, not among these 21 lessons. They are reviewed with [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) ([#57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)).
 
 ### L5. Second native reader for the Thai copy
 
 - **Who:** Owner + AI · **Status:** Todo (the owner said on 11 Oct 2026 they will provide a language check, Thai and English) · **Issue:** #11
-- **Steps:** a native speaker reads `strings.json` (`th`, `en`, `ogEn`, `seo`), `items.json` and `checklists.json`, ideally an older relative for the Thai and a native English reader for the `en` and `ogEn` text. An assistant applies the edits. Tips stay at 80 characters or fewer, and placeholders stay as they are.
+- **Steps:** a native speaker reads `strings.json` (`th`, `en`, `ogEn`, `seo`), `items.json`, `checklists.json` and, since v1.8.0, `kit.json` (the home check's labels and amounts, the plan card's labels, hints and examples, and its `ui` texts), ideally an older relative for the Thai and a native English reader for the `en` and `ogEn` text. An assistant applies the edits. Tips stay at 80 characters or fewer, and placeholders stay as they are.
 - **Done when:** the edits are committed and the images re-rendered where the copy appears in them.
 
 ### L6. Real-phone test matrix
 
 - **Who:** Owner + AI · **Status:** Todo · **Issue:** #3
 - **Steps:**
-  1. Run [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok.
+  1. Run [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok. Since v1.8.0 that includes the home check and the plan card (rows 46–48): open `/?open=kit` and `/?open=plan` from a LINE chat, and check whether the ticks and the plan are still there after reopening, and whether the cards save ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)).
   2. An assistant records the results in the matrix and turns each ❌ into a KNOWN_ISSUES entry or a fix.
 - **Done when:** the matrix is filled in, and no ❌ remains that blocks sharing or playing.
 
@@ -156,7 +157,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L10. Thai review of the dust, fire and power-cut lessons
 
-- **Who:** Owner + AI · **Status:** Todo (the power-cut lessons were added in v1.7.0) · **Issues:** #45, #46, #55
+- **Who:** Owner + AI · **Status:** Todo (the power-cut lessons were added in v1.7.0, the home check and plan card in v1.8.0) · **Issues:** #45, #46, #55, #57
 - **Why:** the 25 dust and fire lessons (v1.5.0) quote the Department of Health, DDPM and MEA through news reports, because the agency sites refuse automated access. A person should read the agency pages themselves before the dust season (December). The 13 power-cut lessons (v1.7.0) go further: 10 are ⚠️, and 7 of those rest on international guidance only (the US CDC, Ready.gov, the US Fire Administration). Their `verifyNote` points here.
 - **Steps:**
   1. An assistant prints the dust, fire and power-cut rows of [01-safety-content.md](01-safety-content.md) with their source links as a review sheet.
@@ -166,8 +167,9 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
      - ask MEA (กฟน.) or PEA (กฟภ.) whether they advise unplugging appliances in a power cut (`s-plugs`)
      - ask กรมอนามัย or อย. about fridge and freezer food in a power cut (`s-fridge`, `s-leftover`, `s-freezer`), and have a Thai pharmacist or อย. read the cold-medicine wording (`s-medcold`)
      - look for Thai wording on candles in a power cut (ปภ.) and on a manual can opener in a kit (`s-candle`, `s-opener`)
-  4. An assistant applies them, upgrades sources to `official` where an agency page is found, adds the Thai source next to the international one, sets `verify`, and runs `npm run docs`. Post an "UPDATE:" if the advice changes.
-- **Done when:** every dust, fire and power-cut lesson is confirmed or corrected by a person; the decision on `f-alarm` (keep as ⚠️, or drop) is recorded; and each power-cut lesson either has a Thai source or the owner has knowingly kept it as international guidance, flagged.
+  4. For the home check and plan card (v1.8.0, [#57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)): 9 of its 15 lines are ⚠️. The PRD and cold-medicine checks above cover `water`, `radio`, `meds` and `medcold`. Also look for Thai wording on keeping some cash at home, supplies for small children (กรมอนามัย), spare glasses, a back-up plan for powered medical devices, and a family meeting place and contact plan (ปภ.; the plan card's `meet` and `contact` rest on Ready.gov alone). Read the amounts as a family would: "27 ลิตร (3 ลิตร × 3 คน × 3 วัน)".
+  5. An assistant applies them, upgrades sources to `official` where an agency page is found, adds the Thai source next to the international one, sets `verify` (in `items.json` and `kit.json`), and runs `npm run docs`. Post an "UPDATE:" if the advice changes.
+- **Done when:** every dust, fire and power-cut lesson is confirmed or corrected by a person; the decision on `f-alarm` (keep as ⚠️, or drop) is recorded; each power-cut lesson and each ⚠️ line of the home check and plan card either has a Thai source or the owner has knowingly kept it as international guidance, flagged.
 
 ## Next (v1.1, AI-ready)
 
@@ -341,9 +343,24 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N15. How ready is our house? A checker and a family plan card
 
-- **Who:** AI-ready · **Status:** Planned (v1.8.0); not part of v1.7.0. Check this card before starting related work, as it may be under way.
-- **What:** a "how ready is our house?" checker and a family plan card. The scope, steps and "done when" are written here when the work starts.
-- **Rules that apply:** every item it asks about has a source ([GUIDELINES rule 55](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) for international ones), nothing personal leaves the phone, every control is 44 px or more, and both languages.
+- **Who:** AI-ready (+ Owner review) · **Status:** Done (19 Oct 2026, v1.8.0); the Thai review of its wording is left ([L5](#l5-second-native-reader-for-the-thai-copy), [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)) · **Issues:** #57, #58, #59
+- **Why:** the power cut (N14) teaches what to stock in a house that isn't the player's. A family still has to turn "3 L per person per day for 3 days" into its own number, find what it is missing, and agree who does what. Both are things a family group forwards.
+- **What was built:**
+  - **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`): two questions (how many people, 1–10; small children, older or bedridden people, daily medicine, pets), then the household's list of up to 15 things with amounts computed from `kit.json` (water 3 L × people × 3 days, food for 3 days, a flashlight each, medicine for 7 days), ticks, a percentage, the agencies per line and ⚠️ on the 9 `partial` lines; a 1080 × 1350 card with the score ring and up to 3 missing things
+  - **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`): six short fields (shelter, meeting place, contact, who helps whom ×2, medicine), a card with the helplines 1784 · 199 · 1669 · 1555 · 1130 · 1129; rows shrink together so all six fit
+  - ways in from the start screen (a quick button that shows the last score), the power cut's result, `/ready` and the deep links; `kit.js` loads only when opened
+  - privacy by design: answers, ticks and text only in `localStorage` (`brm:kit`, `brm:plan`); three anonymous events (`kit_open`, `kit_share` with the score, `plan_share`); a smoke check proves typed text never reaches `/api/e`
+  - build checks: sources exist, every number in an amount is in a cited source's title or note, Thai and English everywhere; a new source `readygov-plan`
+  - on the way: the English checklist previews no longer call the advice Thai (F41, was #56)
+
+  See [CHANGELOG 1.8.0](../CHANGELOG.md) and [KNOWLEDGE §28](KNOWLEDGE.md#28-the-home-check-and-the-family-plan-card-v180).
+- **Rule kept:** only sourced amounts (no re-check interval, no 7-day stock target, no eating order); nothing personal leaves the phone ([GUIDELINES rules 56–57](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)); every control 44 px or more; both languages. No item, room or slot changed, so houses and challenge links are unchanged.
+- **Done when:** the build has no warnings, 26 unit tests and 93 smoke checks pass, `17-kit.png` and `18-plan-card.png` have been looked at, and the plan card draws all six fields at their maximum length. All true on 19 Oct 2026.
+- **Left for the owner:**
+  - try `/?open=kit` and `/?open=plan` on a phone, inside LINE and in the phone's browser ([L6](#l6-real-phone-test-matrix), rows 46–48)
+  - the Thai review of the check's ⚠️ lines and the plan card's meeting place and contact ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [#57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)), and the language check of `kit.json` ([L5](#l5-second-native-reader-for-the-thai-copy))
+  - post it when it fits ([04-launch-kit](04-launch-kit.md#the-home-check-and-the-plan-card-v180-any-time-of-year))
+- **Possible next step** (not planned): turn the plan card's longest-input probe into a smoke check ([LESSONS D12](LESSONS_LEARNED.md#d-testing-and-verification)).
 
 ## Later
 

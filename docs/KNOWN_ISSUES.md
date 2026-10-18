@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.7.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.8.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -17,7 +17,6 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | # | Issue | Status | Severity |
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 56 | [The English checklist preview still says "from Thai government agency advice"](#56-the-english-checklist-preview-still-says-from-thai-government-agency-advice) | Open | Low |
 | 8 | [21 safety items are only partially verified](#8-21-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
@@ -45,12 +44,14 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 32 | [Search and AI-search results can't be guaranteed](#32-search-and-ai-search-results-cant-be-guaranteed) | Platform | — |
 | 37 | [The international version is English only, with Thai advice and hotlines](#37-the-international-version-is-english-only-with-thai-advice-and-hotlines) | By design | — |
 | 41 | [The safety book and streak live on one device](#41-the-safety-book-and-streak-live-on-one-device) | By design | — |
+| 58 | [The home check and the plan live in one browser](#58-the-home-check-and-the-plan-live-in-one-browser) | By design | — |
 | 42 | [A challenge link carries one score, and the combo never scores](#42-a-challenge-link-carries-one-score-and-the-combo-never-scores) | By design | — |
 | 43 | [The EM-ball lesson rests on academic sources, not an agency](#43-the-em-ball-lesson-rests-on-academic-sources-not-an-agency) | Owner | Medium |
 | 44 | [The featured topic is switched by hand](#44-the-featured-topic-is-switched-by-hand) | By design | — |
 | 45 | [The smoke-alarm lesson has no Thai source](#45-the-smoke-alarm-lesson-has-no-thai-source) | Owner | Medium |
 | 46 | [Dust and fire advice is quoted through news reports](#46-dust-and-fire-advice-is-quoted-through-news-reports) | Owner | Medium |
 | 55 | [The power-cut lessons rest largely on international guidance](#55-the-power-cut-lessons-rest-largely-on-international-guidance) | Owner | **Medium (review before posting widely)** |
+| 57 | [The home check and plan card rest partly on international guidance](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance) | Owner | Medium |
 | 47 | [The season calendar is editorial](#47-the-season-calendar-is-editorial) | By design | — |
 | 48 | [Haze, smoke and the dark are untested on low-end phones](#48-haze-smoke-and-the-dark-are-untested-on-low-end-phones) | Owner | Low |
 | 49 | [Dust, fire and the power cut use the flood house](#49-dust-fire-and-the-power-cut-use-the-flood-house) | By design | — |
@@ -59,6 +60,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 52 | [A `?mode=` link previews as the main game](#52-a-mode-link-previews-as-the-main-game) | By design | — |
 | 53 | [The smoke test runs on a pinned date](#53-the-smoke-test-runs-on-a-pinned-date) | By design | — |
 | 54 | [Carousel images are committed and Thai only](#54-carousel-images-are-committed-and-thai-only) | By design | — |
+| 59 | [The home check's code is counted in the start-screen budget and precached](#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -79,16 +81,9 @@ What a headless test **cannot** show:
 - what LINE and Facebook show as the link preview
 - how the font, notch and home bar look on real screens
 - audio on iOS when the silent switch is on
+- whether the home check's ticks and the plan card's text are still there when the page is opened again inside LINE, and whether the shared kit and plan cards save there (v1.8.0, [#58](#58-the-home-check-and-the-plan-live-in-one-browser))
 
-**To do:** run the 45-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
-
-### 56. The English checklist preview still says "from Thai government agency advice"
-
-**Status:** Open · **Severity:** Low
-
-v1.7.0 rewrote the generic texts that said every tip comes from Thai agencies (F39). One was missed: `strings.json → ogEn.checklistDesc`, the description of every English checklist preview, reads "A family checklist from Thai government agency advice. Outside Thailand, follow your local authorities." It is shared by all five checklists, so `/en/checklist/stock` says it too, although four of that checklist's ten lines rest on US guidance (the fridge's 4 hours, the manual can opener, unplugging, flashlights instead of candles). The Thai twin (`og.checklistDesc`, "เช็กลิสต์จากคำแนะนำหน่วยงานรัฐ") names no country, so it stays true.
-
-**Fix:** reword `ogEn.checklistDesc` (for example "A family checklist from agency advice, mostly Thai. Outside Thailand, follow your local authorities."), or give the power-cut checklist its own description. It is page text only: no image changes, and the build regenerates the pages.
+**To do:** run the 48-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
 
@@ -109,6 +104,8 @@ Twenty-one items are marked ⚠️ `partial`: ten in the flood modes, one in fir
 - **Ten power-cut lessons** (v1.7.0): `s-fridge`, `s-leftover`, `s-freezer`, `s-opener`, `s-medcold`, `s-candle` and `s-plugs` rest on international guidance only (US CDC, Ready.gov, US Fire Administration); `s-pantry` mixes the Department of Health's 3–5 days with Tokyo's everyday stockpiling and Ready.gov's "replace what's expired"; `s-water` and `s-radio` rest on a PRD checklist page that tools can't read ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
 
 Each reason is listed under *Flags* in [01-safety-content.md](01-safety-content.md). `p-toilet` and `p-fuel` are in rooms that are not playable yet, so 19 of the 21 are in play.
+
+The home check (v1.8.0) has ⚠️ lines of its own, outside this count: they are things to have at home in `kit.json`, not lessons in `items.json` ([#57](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)).
 
 **Fix:**
 
@@ -397,6 +394,19 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 
 The safety book (`brm:learned`), the streak, best scores and the how-to flags are kept in the browser's `localStorage`, with no account. A new phone, a different in-app browser (LINE and Facebook each have their own storage) or private mode starts from zero, and an in-app browser may clear it. That is the price of keeping no personal data. The sheet says "เก็บในเครื่องนี้เท่านั้น" so players aren't surprised.
 
+### 58. The home check and the plan live in one browser
+
+**Status:** By design (v1.8.0)
+
+The home check's answers, ticks and score (`brm:kit`) and the plan card's text (`brm:plan`) are kept only in this browser's `localStorage`, through `store` in `util.js`, like the safety book ([#41](#41-the-safety-book-and-streak-live-on-one-device)). Nothing is sent, so there is nothing to sync:
+
+- **Cleared with the site's data,** and not kept in private browsing.
+- **Each browser has its own copy.** LINE's in-app browser and the phone's main browser keep separate storage, so a list made in LINE isn't there when the same link opens in Chrome or Safari, and the other way round. Facebook's and TikTok's in-app browsers are separate again. **[unverified]** on a real phone: this follows from how in-app browsers keep site data ([#41](#41-the-safety-book-and-streak-live-on-one-device)), and it has not been tried; the headless tests start every browser context empty, so they can't show it.
+- **Safari may delete it after a week without a visit.** WebKit caps script-written storage for sites the user hasn't interacted with in seven days of browser use; whether that applies here, and to LINE's in-app browser on iPhone, is **[unverified]**.
+- **Anyone holding the phone can open it.** The plan text is on the device in plain form, which is why the form warns against ID-card numbers and more personal data than needed, and caps each field at 40 characters (60 for medicine).
+
+**What families keep is the picture.** The plan card says "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน": the saved or forwarded image is the copy that lasts, and the household can make it again from any browser. Real-phone checks: rows 46–48 of [06-test-checklist.md](06-test-checklist.md).
+
 ### 42. A challenge link carries one score, and the combo never scores
 
 **Status:** By design (v1.3.0)
@@ -461,6 +471,27 @@ The power-cut mode (v1.7.0) was prompted by a Thai stockpiling infographic, whic
 - **What would make them Thai:** a person opening the PRD checklist page in a normal browser (3 L, the radio); MEA (กฟน.) or PEA (กฟภ.) advice on unplugging in a power cut; กรมอนามัย or อย. on fridge and freezer food; a Thai pharmacist or อย. on cold medicine; ปภ. wording on candles and on a can opener in a kit. Add the Thai source beside the international one and mark the lesson ✅ when it says the same. The steps are in [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
 - **Until then,** 5 of the 8 lessons in the `ready` carousel set are ⚠️, and each of those images says "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน". Post that set knowing so ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)).
 
+### 57. The home check and plan card rest partly on international guidance
+
+**Status:** Owner · **Severity:** Medium: review before promoting the check widely
+
+The home check (v1.8.0, `kit.json`) lists 15 things a household may need; 9 of them are ⚠️ `partial`, and the list says "ข้อนี้อยู่ระหว่างตรวจทาน" next to their sources. They rest on the same pages as the power-cut lessons:
+
+| Kit items | What they rest on | Why ⚠️ |
+|---|---|---|
+| `water` (3 L × people × 3 days), `radio` | กรมประชาสัมพันธ์'s 72-hour checklist (`prd-72h`, the 3 L is in its title; the page refuses automated reading), ปภ.'s 3–4 days (`ddpm-amarin`), Ready.gov for the radio | As `s-water` and `s-radio` ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)) |
+| `opener`, `cash`, `baby` (formula, bottles, nappies), `glasses` | Ready.gov "Build A Kit" only (`readygov-kit`) | International only. The source's `note` quotes the basic kit (water, food, a can opener, a flashlight, a radio, batteries). Cash, glasses and baby supplies are on the same page's "Additional Emergency Supplies" list ("Cash or traveler's checks", "Prescription eyeglasses and contact lens solution", "Infant formula, bottles, diapers, wipes and diaper rash cream"), read again on 19 Oct 2026 and quoted in the `note` since v1.8.0 |
+| `medcold`, `device` | Ready.gov "Power Outages" only (`readygov-outage`) | International only, as `s-medcold` |
+| `meds` (at least 7 days) | The MOPH's 2013 statement via news (`moph-7days`), ปภ.'s kit (`ddpm-6kit`) | The 7 days are from 2013, as `p-meds` |
+
+The 6 ✅ items rest on Thai agencies, some cross-checked with Ready.gov: food for 3 days (กรมอนามัย, ปภ., the MOPH), a flashlight each (ปภ.; "every household member" is Ready.gov's), charged phones and a power bank, the first aid kit and the documents in a waterproof bag (ปภ.), and the pet's food and carrier or leash (ปภ., กรมอนามัย).
+
+**The plan card:** the hints of the meeting place and the contact rest on Ready.gov "Make A Plan" alone (`readygov-plan`, added in v1.8.0); no Thai agency page on a family meeting place or a contact plan was found on 19 Oct 2026. Both say ⚠️ on the form. The medicine hint (7 days) is ⚠️ as above. The shelter and "who helps whom" hints are Thai (กรมประชาสัมพันธ์, ปภ., กรมอนามัย), and the second "who helps whom" has no hint.
+
+- **Not in the safety table.** [01-safety-content.md](01-safety-content.md) is generated from `items.json`, so the kit's ⚠️ lines are not among #8's 21 (its source list does count the kit's and the plan card's citations). [KNOWLEDGE §28.3](KNOWLEDGE.md#283-the-list-amounts-and-sources) lists every kit line with its sources.
+- **What would make them Thai:** the same reviews as [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) (the PRD page in a normal browser, กรมอนามัย or อย. on cold medicine), plus ปภ. wording on a family meeting place and keeping cash at home, and กรมอนามัย on supplies for small children.
+- **The kit's Thai and English wording** has had no native-speaker reading ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
+
 ### 47. The season calendar is editorial
 
 **Status:** By design
@@ -512,6 +543,8 @@ The three rooms were drawn for floods: the Return mud layer and the rain are hid
 
 `/?mode=dust` is the app shell with a query, so LINE and Facebook show the same preview as `/` (the default image and title), not a dust one. Pages are static and the previews are fixed per path ([#23](#23-link-previews-are-pre-rendered-not-drawn-per-request)). The game itself reads the link and opens on the right card. Web Analytics doesn't record the query either ([#22](#22-web-analytics-blind-spots)), so count link arrivals with the `view` event's `link` label ([05-metrics](05-metrics.md#event-dictionary)).
 
+The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/?open=plan` preview as the main game. Post them with the picture of a kit or plan card, or link `/ready`, whose page links both.
+
 **When the preview matters,** share the hazard page instead: `/pm25`, `/fire`, `/flood` or `/ready` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
 
 ### 53. The smoke test runs on a pinned date
@@ -536,6 +569,18 @@ The carousel posts (v1.6.1) are 45 JPEG images in four sets (`flood` 12, `pm25` 
 - **Only Thai sets exist.** `carouselSets()` takes a language and `carousel.json` has English text, so English sets can be rendered when an English channel needs them (`share/carousel/en/<slug>/`).
 - **Only the owner's page lists them.** `/posts` is `noindex` and not in the sitemap; the images themselves are public files, like the link previews.
 
+### 59. The home check's code is counted in the start-screen budget and precached
+
+**Status:** By design (v1.8.0)
+
+`kit.js` (about 5.5 KB compressed) and `kitplan.js` (0.8 KB) load only when the check or the plan card opens (`import('./kit.js')` in `main.js`), and `kit.json` (about 4.3 KB) is fetched then.
+
+- **The budget counts them anyway.** The build sums every file in `public/js/` as start-screen weight, so its `budget` line says 208 KB where a first visit fetches about 6 KB less before the start screen. The limit is 500 KB, so the build errs on the safe side; `kit.json` isn't counted.
+- **The service worker downloads them after the page has loaded.** All three are in the precache (44 files), so a visitor whose browser runs the service worker gets about 10.5 KB more in the background, whether or not they open the check; in return the check works offline after the first visit.
+- **Without the files,** offline in a browser with no service worker (the iOS in-app browsers, [#16](#16-no-offline-play-inside-ios-in-app-browsers)) or before the precache finished, the button shows the toast "เปิดไม่ได้ตอนนี้ ลองใหม่เมื่อต่อเน็ตนะ" (`offlineTool`) and the game carries on.
+
+If the check grows, measure it on its own (`gzip -9` of the files) rather than through the budget line.
+
 ---
 
 ## Fixed
@@ -559,12 +604,18 @@ The carousel posts (v1.6.1) are 45 JPEG images in four sets (`flood` 12, `pm25` 
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
 
+### In v1.8.0 (19 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F41 (was #56) | v1.7.0 rewrote the generic texts that said every tip comes from Thai agencies (F39) but missed `ogEn.checklistDesc`, the description of every English checklist preview: "A family checklist from Thai government agency advice. Outside Thailand, follow your local authorities." `/en/checklist/stock` said it too, although four of that checklist's ten lines rest on US guidance | It reads "A family checklist from government agency advice. Outside Thailand, follow your local authorities." The CDC, Ready.gov and the Tokyo Metropolitan Government are government agencies too. The Thai twin, "เช็กลิสต์จากคำแนะนำหน่วยงานรัฐ", names no country and is unchanged. The build regenerated the five `/en/checklist/…` pages; no image changed. |
+
 ### In v1.7.0 (19 Oct 2026)
 
 | # | Problem | Fix |
 |---|---|---|
 | F40 | The build carried on after a content error and crashed with a `TypeError` on a missing `og` string while generating pages, so the message didn't say what was missing | It stops after the content checks when any of them failed (`if (errors.length) finish()`), before it generates a page, and lists every error. |
-| F39 | The generic texts said every tip comes from Thai government agencies: the About text (th/en), the default link preview's title and description (`og`/`ogEn`), the `/learn` titles and heading, `seo.en.llmsSummary`, `seo.en.intlNote`, `index.html`'s meta description and `llms.txt`'s notes. It was already not quite true for `f-alarm` (US source only, v1.5.0) and would have been plainly wrong with the power-cut lessons | They now say every tip has a source, most from Thai agencies, some international and marked. `og/default.png` and its English twin were re-rendered ("น้ำท่วม · ฝุ่น · ไฟไหม้ · ไฟดับ"). One text was missed: the English checklist preview description ([#56](#56-the-english-checklist-preview-still-says-from-thai-government-agency-advice)). Rule: [GUIDELINES rule 55](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit). |
+| F39 | The generic texts said every tip comes from Thai government agencies: the About text (th/en), the default link preview's title and description (`og`/`ogEn`), the `/learn` titles and heading, `seo.en.llmsSummary`, `seo.en.intlNote`, `index.html`'s meta description and `llms.txt`'s notes. It was already not quite true for `f-alarm` (US source only, v1.5.0) and would have been plainly wrong with the power-cut lessons | They now say every tip has a source, most from Thai agencies, some international and marked. `og/default.png` and its English twin were re-rendered ("น้ำท่วม · ฝุ่น · ไฟไหม้ · ไฟดับ"). One text was missed: the English checklist preview description (#56, fixed in v1.8.0 as [F41](#in-v180-19-oct-2026)). Rule: [GUIDELINES rule 55](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit). |
 | F38 | The left room arrow (‹, 44 × 64 px at 44 % of the stage's height) covered part of the item on the fridge, slot `kt-fridge-note`: up to **23 %** of the tap area of `p-numbers` (Prepare) and `f-call` (fire), and **27 %** of the new `s-fridge`, at 390 × 760; 18–20 % at 360 × 640, 6–8 % at 768 × 1024, none at 320 × 460. A tap there turned the room instead of opening the item. It had been there since v1.0 (`p-numbers`) and v1.5 (`f-call`); the smoke test clicked items with `force: true`, which ignores what covers them | The slot moved from y 344 to y 404, below the arrows. Same slot id, so every house and challenge link is unchanged. Worst coverage left: 2 % (window items at the right edge). New smoke check: "the room arrows cover at most 5% of any item's tap area (every mode, 3 houses, 390x760 and 360x640)". `npm run probe`: still 0 % overlaps. Side effects of the lower slot: `p-numbers` now goes under at 43.6 s (was 55.6 s), and the fire smoke no longer reaches `f-call` (it did at 53.7 s). Rule: [GUIDELINES rule 54](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); lesson [D11](LESSONS_LEARNED.md#d-testing-and-verification). |
 
 ### In v1.6.0 (18 Oct 2026)

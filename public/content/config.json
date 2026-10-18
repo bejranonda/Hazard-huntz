@@ -1,5 +1,5 @@
 {
-  "_readme": "rainWarningActive: true = มีเตือนฝน/น้ำกำลังมา หน้าแรกแนะนำโหมด 'ก่อนน้ำมา' จนถึงวัน rainWarningUntil (ปี-เดือน-วัน เวลาไทย นับวันนั้นด้วย หลังจากนั้นปิดเอง) · featuredTopic = หมวดที่กำลังเป็นข่าว ขึ้นหน้าแรกจนถึง featuredTopicUntil (null = ไม่มี) · เปิดสวิตช์เมื่อไร ใส่วันสิ้นสุดด้วยทุกครั้ง · hazards = ชื่อหน้าของแต่ละภัย (/flood /pm25 /fire /ready) ห้ามเปลี่ยนหลังเปิดตัว เพราะลิงก์ที่แชร์ไปแล้วจะเสีย · siteUrl = โดเมนจริงของเกม",
+  "_readme": "rainWarningActive: true = มีเตือนฝน/น้ำกำลังมา หน้าแรกแนะนำโหมด 'ก่อนน้ำมา' จนถึงวัน rainWarningUntil (ปี-เดือน-วัน เวลาไทย นับวันนั้นด้วย หลังจากนั้นปิดเอง) · featuredTopic = หมวดที่กำลังเป็นข่าว ขึ้นหน้าแรกจนถึง featuredTopicUntil (null = ไม่มี) · เปิดสวิตช์เมื่อไร ใส่วันสิ้นสุดด้วยทุกครั้ง · hazards = ชื่อหน้าของแต่ละภัย (/flood /pm25 /fire /ready) tools = ลิงก์เครื่องมือบนหน้านั้น (kit = เช็กบ้าน, plan = การ์ดแผนบ้านรอด) ห้ามเปลี่ยนหลังเปิดตัว เพราะลิงก์ที่แชร์ไปแล้วจะเสีย · siteUrl = โดเมนจริงของเกม",
   "rainWarningActive": true,
   "rainWarningUntil": "2026-11-30",
   "forecastAppUrl": "https://flood.autobahn.bot/",
@@ -18,10 +18,10 @@
     "flood": { "slug": "flood" },
     "dust": { "slug": "pm25" },
     "fire": { "slug": "fire" },
-    "outage": { "slug": "ready" }
+    "outage": { "slug": "ready", "tools": ["kit", "plan"] }
   },
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

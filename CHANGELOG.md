@@ -4,6 +4,50 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.8.0] — 2026-10-19
+
+Two tools for the family at home, built on the power-cut and flood lessons (ROADMAP N15): **"บ้านเราพร้อมแค่ไหน?" / "How ready is our house?"**, a home-kit check that works out what this household needs and how ready it is, and **"แผนบ้านรอดของบ้านเรา" / "Our family safety plan"**, a plan card to keep on every phone. What people answer, tick and type stays on their device. No item, room, slot or `houseVersion` changed, so houses and challenge links are the same and no midnight release is needed.
+
+### Added
+
+- **The home check, `/?open=kit`** (`/en/?open=kit`), in a sheet over the start screen:
+  - **Two questions:** how many people live here (1–10, 3 to start, a − / + stepper with 52 px buttons) and who (any of 👶 small children, 🧓 older or bedridden people, 💊 someone on daily medicine, 🐾 pets). "คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน" sits under them.
+  - **The household's list:** 9 things every home gets, and up to 6 more by answer (15 in all). Amounts follow the household: drinking water 3 L × people × 3 days ("27 ลิตร (3 ลิตร × 3 คน × 3 วัน)"), dry and canned food "enough for 3 days for 3 people", a flashlight each, daily medicine for at least 7 days. Each line names its agencies, and the 9 items that are ⚠️ `partial` say "ข้อนี้อยู่ระหว่างตรวจทาน".
+  - **Ticks and a meter:** "พร้อมแล้ว 33% (มี 3 จาก 9 อย่าง)", and "แก้คำตอบ" to change the answers.
+  - **Share:** a 1080 × 1350 card (`drawKitCard`) with a score ring, the gecko with a torch (cheering from 80 %), "มีแล้ว 3 จาก 9 อย่าง", up to 3 things still missing (everyday items before the household's own) or "ครบทุกอย่างแล้ว!", "บ้านคุณพร้อมแค่ไหน? เช็กฟรี" and the link `/?open=kit`. It uses the game's share sheet (native share, LINE, Facebook, copy, save).
+- **The family plan card, `/?open=plan`** (`/en/?open=plan`): six short fields from `kit.json → plan`: the shelter or evacuation point near home, the family meeting place, who to contact if separated, who helps whom (twice), and medicine and must-haves. 40 characters each (60 for medicine), each with an example, most with a sourced hint ("ยาประจำตัวอย่างน้อย 7 วัน"), and the warning "อย่าใส่เลขบัตรประชาชนหรือข้อมูลส่วนตัวเกินจำเป็น". **สร้างการ์ดแผนบ้านรอด** draws a 1080 × 1350 card (`drawPlanCard`) with the filled fields only, the date, the free helplines 1784 · 199 · 1669 · 1555 · 1130 · 1129 (`helplines.json`, `main`), "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน" and the link `/?open=plan`. Long entries shrink the rows together so all six fit.
+- **Ways in:** a start-screen quick button, 🎒 "บ้านพร้อมไหม?" (`#kit-chip`), which reads "บ้านพร้อม 70%" once the household has checked; a button "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน" on the result screen of the power cut (any mode whose threat is `dark`); two links on `/ready` and `/en/ready` (`config.json → hazards.outage.tools: ["kit", "plan"]`); the two deep links; and a button from the list to the plan card and back.
+- **Files:** `public/content/kit.json` (the answers, the 15 items with their amounts and sources, the 6 plan fields, and 41 interface texts in each language), `public/js/kitplan.js` (pure and unit-tested: `kitPlan`, `kitScore`, `kitMissing`) and `public/js/kit.js` (the sheets, the two cards and sharing). `main.js` loads `kit.js` only when one of them opens (`import('./kit.js')`); if that fails offline, a toast says "เปิดไม่ได้ตอนนี้ ลองใหม่เมื่อต่อเน็ตนะ" (`offlineTool`).
+- **A source, `readygov-plan`** (Ready.gov "Make A Plan", updated 1 Sep 2026, read on 19 Oct 2026, `international`), for the plan card's meeting place and contact. No Thai agency page on a family meeting place was found, so both fields are ⚠️. 73 sources (9 international).
+- **Three anonymous events** in both allowlists (`public/js/analytics.js`, `functions/api/e.js`): `kit_open` (the label says where from), `kit_share` (the channel, with the score in % as the value) and `plan_share` (the channel). No answer, tick or typed text is ever sent.
+- **Build checks for `kit.json`:** every item and every plan hint has sources that exist in `sources.json`; `verify` is `verified` or `partial`; `for` names a real answer; a plan field's `max` is 1–80; every number above 1 in an amount rule (`perPersonPerDay`, `perPerson`, `days`) appears in one of its sources' title or note; Thai and English for every label, hint, example and interface text. A hazard's `tools` may only be `kit` or `plan`, and each needs `seo.<lang>.tool<Kit|Plan>`.
+- **Strings:** `kitChip`, `kitChipScore`, `kitFromResult` and `offlineTool` (233 keys per language, was 229), and `seo.<lang>.toolKit` and `toolPlan` for the hazard page.
+- **Left out on purpose,** because no agency gives them: a fixed interval to re-check the kit ("every 3–6 months"), a 7-day stock target (Tokyo's alone; the check keeps 3 days, and 7 days only for daily medicine, from the MOPH), and the eating order fridge → freezer → canned.
+
+### Changed
+
+- **The quick buttons** under the start screen's modes are now two per row, with the icon beside the label (`min-height` 52 px, labels `clamp(12px, 3.9vw, 14px)`), so the four Thai labels stay on one line instead of breaking mid-word.
+- **The About sheet's privacy text** (th/en) says the home check's answers and the plan card's text stay on the device and are never sent anywhere.
+- `package.json → description` mentions power cuts, the home-kit checker and the family plan card.
+- The service worker precaches 44 files (+ `kit.js`, `kitplan.js`, `kit.json`).
+- **`readygov-kit`'s `note`** now quotes the page's "Additional Emergency Supplies" list (cash, prescription eyeglasses, infant formula, bottles and diapers, pet food and water), which the check's cash, glasses and baby lines rest on (read again on 19 Oct 2026).
+- **`npm run docs`** counts the check's and the plan card's citations in docs/01's source list, so `readygov-plan` is no longer listed as "not cited yet".
+
+### Fixed
+
+- **The English checklist previews no longer say the advice is Thai.** `ogEn.checklistDesc` reads "A family checklist from government agency advice. Outside Thailand, follow your local authorities." The CDC, Ready.gov and the Tokyo Metropolitan Government are government agencies too. The Thai twin is unchanged. Page text only: the five `/en/checklist/…` pages were regenerated, no image changed ([KNOWN_ISSUES F41](docs/KNOWN_ISSUES.md#in-v180-19-oct-2026), was #56).
+
+### Tests
+
+- 26 rule tests (+1): "home check: amounts follow the household, special items follow the answers" (9, 27 and 90 litres of water for 1, 3 and 10 people, a flashlight each, food for 3 days; 0 and 99 people clamped to 1 and 10; each answer adds only its own items; daily medicine for 7 days; 0 % and 100 %; the card lists everyday items first).
+- 93 smoke checks (+7), at 360 × 640 from `/?open=kit`: 4 people with daily medicine give 36 litres of water and list the medicine but not baby items; answers and ticks are kept in `brm:kit`; every control of the questions, the list and the plan form is 44 px or more; the check's card renders at 1080 px with LINE on the first screen; the plan card renders; the typed plan text (a meeting place and a phone number) appears in no `/api/e` body, while `kit_open`, `kit_share` and `plan_share` do; no page errors. New doc screenshots: `docs/screens/17-kit.png` (the list for 3 people at 33 %) and `docs/screens/18-plan-card.png` (a filled plan card).
+
+### Checked
+
+- Build: 81 items (+30 decoys), 73 sources, 121 link-preview pages, 81 lessons on `/learn`, `posts` 4 sets and 45 images, 44 files precached, start screen **208 KB** compressed and first game screen **223 KB** (limit 500 KB), no warnings. The build counts every file in `js/`, so the 8 KB include `kit.js` (about 5.5 KB compressed) and `kitplan.js` (0.8 KB), which the start screen loads only when the check opens ([KNOWN_ISSUES #59](docs/KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)).
+- The plan card with all six fields at their maximum length (40 characters, 60 for medicine), in Thai and in English: every row and every character is drawn (a one-off probe in headless Chromium, 19 Oct 2026).
+- `npm run probe` was not re-run: no item, slot or water setting changed. Houses and challenge links are unchanged.
+
 ## [1.7.0] — 2026-10-19
 
 A fifth mode, **ไฟดับ (Power cut)**: stock up, keep the fridge shut, flashlights not candles. It was prompted by a Thai stockpiling infographic spreading on social media ("72 hours minimum, aim for 7 days", "eat old stock first", "when the power is out eat fridge → freezer → canned", "don't forget a manual can opener"). The infographic is not a source; the mode teaches only what agencies back up. Houses and challenge links in the other four modes are unchanged (a year of houses compared identical).

@@ -253,27 +253,29 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .book-grid li { position: relative; display: flex; align-items: center; justify-content: center; height: 58px; border-radius: 12px; background: var(--miss-bg); border: 2px dashed var(--line); }
 .book-grid svg { width: 44px; height: 38px; filter: grayscale(1) brightness(1.4); opacity: .45; }
 .book-grid span { position: absolute; right: 4px; bottom: 2px; font-size: 13px; }
-.quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+/* Two per row, icon beside the label, so every label stays on one line. */
+.quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .quick-btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 2px;
-  min-height: 64px;
-  padding: 8px;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 52px;
+  padding: 6px 8px;
   border: 2px solid var(--line);
   border-radius: 16px;
   background: var(--paper);
   color: var(--ink);
-  font-size: 14px;
+  font-size: clamp(12px, 3.9vw, 14px);
   font-weight: 600;
   text-decoration: none;
   text-align: center;
   line-height: 1.25;
   cursor: pointer;
 }
-.quick-btn span:first-child { font-size: 22px; }
+.quick-btn span:first-child { font-size: 22px; flex: 0 0 auto; }
+.quick-btn span:last-child { text-align: left; }
 .rooms-soon { margin: 0; text-align: center; font-size: 13px; color: var(--ink-2); opacity: .85; }
 .footer { margin-top: auto; text-align: center; font-size: 13px; color: var(--ink-2); }
 .footer p { margin: 0; }
@@ -778,3 +780,32 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   .tabs { display: none; }
   .hud { padding: 2px 8px 1px; }
 }
+
+/* ---------- the home check (/?open=kit) and the family plan card (/?open=plan) ---------- */
+.kit-q { margin: 14px 0 6px; font-weight: 600; }
+.stepper { display: flex; align-items: center; gap: 14px; }
+.step-btn { width: 52px; height: 52px; border: 2px solid var(--ink); border-radius: 50%; background: var(--sun); font-size: 26px; font-weight: 600; line-height: 1; cursor: pointer; box-shadow: var(--press); }
+.stepper output { min-width: 48px; text-align: center; font-size: 30px; font-weight: 600; }
+.kit-flags { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.kit-flag { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 12px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); cursor: pointer; font-size: 15px; }
+.kit-flag input, .kit-row input { width: 24px; height: 24px; flex: 0 0 24px; accent-color: var(--ok); }
+.kit-flag:has(input:checked) { border-color: var(--ink); background: var(--sun); }
+.kit-privacy { margin: 12px 0; padding: 8px 12px; border-radius: 12px; background: var(--ok-bg); font-size: 14px; }
+.kit-house { margin: 0; color: var(--ink-2); }
+.kit-meter { height: 14px; margin: 8px 0 4px; border-radius: 7px; background: #E3E6F3; overflow: hidden; }
+.kit-meter span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .25s ease; }
+.kit-score { margin: 0 0 4px; font-size: 18px; }
+.kit-list { list-style: none; margin: 6px 0 12px; padding: 0; }
+.kit-row { display: flex; align-items: flex-start; gap: 10px; min-height: 48px; padding: 8px 4px; border-bottom: 1px dashed var(--line); cursor: pointer; }
+.kit-row input { margin-top: 4px; }
+.kit-ico { font-size: 24px; line-height: 1.2; }
+.kit-text { display: flex; flex-direction: column; gap: 2px; font-size: 16px; }
+.kit-qty { color: #1A56B8; font-weight: 600; font-size: 15px; }
+.kit-src { color: var(--ink-2); font-size: 13px; }
+.plan-form { display: grid; gap: 12px; margin: 8px 0 14px; }
+.plan-field { display: grid; gap: 4px; }
+.plan-label { font-weight: 600; }
+.plan-field input { min-height: 48px; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 16px; background: #fff; color: var(--ink); }
+.plan-field input:focus { border-color: var(--ink); outline: none; }
+.plan-field small { color: var(--ink-2); font-size: 13px; }
+#kit-share, #kit-plan, #kit-close, #plan-make, #plan-back, #plan-close, #kit-go { margin-top: 10px; }

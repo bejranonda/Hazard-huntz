@@ -12,6 +12,7 @@ import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
+import { kitPlan, kitScore, kitMissing } from '../public/js/kitplan.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const load = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content', `${f}.json`), 'utf8'));
@@ -299,6 +300,34 @@ test('the start screen recommends a mode, a topic and says why', () => {
   assert.equal(modeLink(cfg, 'fire'), '');
   // Every day of a year gives a mode in the registry.
   for (const day of days) assert.ok(modeList().some((m) => m.id === recommend(C.config, day).mode));
+});
+
+test('home check: amounts follow the household, special items follow the answers', () => {
+  const kit = load('kit');
+  const byId = (p, id) => p.items.find((x) => x.id === id);
+  // Water: 3 L per person per day for 3 days (PRD); food 3 days; a flashlight each.
+  for (const [n, litres] of [[1, 9], [3, 27], [10, 90]]) {
+    const p = kitPlan(kit, { people: n });
+    assert.equal(byId(p, 'water').total, litres, `${n} people`);
+    assert.equal(byId(p, 'torch').total, n);
+    assert.equal(byId(p, 'food').days, 3);
+    assert.ok(!p.items.some((x) => x.item.for), 'no special items without answers');
+  }
+  // Out-of-range answers are clamped to 1–10 people.
+  assert.equal(kitPlan(kit, { people: 0 }).people, 1);
+  assert.equal(kitPlan(kit, { people: 99 }).people, 10);
+  // Each answer adds its own items, and only those.
+  const all = kitPlan(kit, { people: 4, flags: ['baby', 'elder', 'meds', 'pet'] });
+  for (const id of ['baby', 'device', 'glasses', 'meds', 'medcold', 'pet']) assert.ok(byId(all, id), id);
+  const meds = kitPlan(kit, { people: 2, flags: ['meds'] });
+  assert.equal(byId(meds, 'meds').days, 7, 'daily medicine for at least 7 days (MOPH)');
+  assert.ok(!byId(meds, 'baby') && !byId(meds, 'pet'));
+  // Score and the card's "still missing": everyday items before the household's own.
+  const plain = kitPlan(kit, { people: 3 });
+  assert.deepEqual(kitScore(plain, []), { have: 0, total: plain.items.length, pct: 0 });
+  assert.equal(kitScore(plain, plain.items.map((x) => x.id)).pct, 100);
+  assert.ok(kitMissing(all, []).every((x) => !x.item.for), 'the shared card lists everyday items first');
+  assert.equal(kitMissing(plain, plain.items.map((x) => x.id)).length, 0);
 });
 
 test('daily house resets at midnight Bangkok time', () => {

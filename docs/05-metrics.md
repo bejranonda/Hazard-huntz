@@ -25,6 +25,9 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0) | – | the topic (e.g. `health`) or `book` | – |
+| `kit_open` | The home check opened (v1.8.0) | – | `start` (quick button) / `result` (power-cut result) / `link` (`/?open=kit`, also from `/ready`) / `plan` (back from the plan card) | – |
+| `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 (%) |
+| `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
 
 ## The numbers you asked for
 
@@ -135,6 +138,34 @@ GROUP BY week, picked ORDER BY week
 
 **[unverified]** on real data; no players yet.
 
+## The home check and the plan card (v1.8.0)
+
+Three events, and nothing else: no answer, tick, household size or typed text is ever sent ([KNOWLEDGE §28.5](KNOWLEDGE.md#285-what-stays-on-the-device)). So the numbers can say how often the tools are opened and shared, and how ready the households that share are, but never what any household has or wrote.
+
+- **Opening the plan card sends no event.** `/?open=plan` shows as a `view` labelled `direct`, and a made-and-shared card as `plan_share`. A `/?open=kit` arrival is a `direct` view plus `kit_open` with the label `link`.
+- **`kit_share` is sent per channel tapped,** with the score at that moment, so one household that taps LINE and then Save counts twice. Treat it as share actions, not households.
+- **Scores come only from people who share.** The average of `kit_share`'s value is not how ready Thai homes are; it is how ready the households that chose to share were.
+
+**Where the home check is opened from, and how often it is shared:**
+```sql
+SELECT blob1 AS event, blob3 AS label, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 IN ('kit_open','kit_share','plan_share') AND timestamp > NOW() - INTERVAL '7' DAY
+GROUP BY event, label ORDER BY event, n DESC
+```
+
+**The score on shared kit cards, per week:**
+```sql
+SELECT toStartOfInterval(timestamp, INTERVAL '7' DAY) AS week,
+       SUM(_sample_interval * double1) / SUM(_sample_interval) AS avg_pct,
+       SUM(_sample_interval) AS shares
+FROM baanrodmai_events
+WHERE blob1 = 'kit_share' AND timestamp > NOW() - INTERVAL '30' DAY
+GROUP BY week ORDER BY week
+```
+
+Share rate of the check = `kit_share` ÷ `kit_open`; from the power cut = the `result` row of `kit_open` ÷ `round_end` for `stock`. **[unverified]** on real data; no players yet.
+
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
@@ -162,4 +193,4 @@ GROUP BY label
 
 - **Free plan:** 100,000 data points written per day and 10,000 queries per day. Data is kept for 3 months.
 - **Quota math:** one session sends about 4–8 events in a single request. If you approach the limit, set `config.analytics.sampleRate` to `0.5` or `0.2`; the queries above stay correct.
-- **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores and streaks stay in the player's own browser (`localStorage`).
+- **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers and the plan card's text stay in the player's own browser (`localStorage`).

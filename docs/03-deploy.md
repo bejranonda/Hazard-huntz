@@ -33,6 +33,12 @@ Search and AI search:
 - After the first deploy, submit `https://baanrodmai.autobahn.bot/sitemap.xml` in Google Search Console and Bing Webmaster Tools. Bing's index also feeds Copilot and other AI search tools.
 - Leave Cloudflare's "Block AI bots" and managed robots.txt **off** for this hostname. The game is public safety content and should be readable by AI assistants.
 
+The home check and the plan card (v1.8.0):
+
+- **No new pages, no new settings.** `/?open=kit` and `/?open=plan` (and `/en/?open=…`) are the app shell with a query, like `?mode=` links: Pages serves `index.html`, the game opens the sheet, and the link preview is the main game's. They are not in the sitemap. `/ready` and `/en/ready` link both (`config.json → hazards.outage.tools`).
+- **New static files:** `public/content/kit.json`, `public/js/kit.js` and `public/js/kitplan.js`, served and cached like the rest of `/content/` and `/js/`, and precached by the service worker (44 files).
+- **The Function only counts.** `/api/e` accepts three more event names (`kit_open`, `kit_share`, `plan_share`); the allowlist in `functions/api/e.js` must match `public/js/analytics.js`. No answer or typed text is ever sent, so nothing about a household is stored on Cloudflare.
+
 ## Option A: Git integration (recommended: every content edit deploys itself)
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**.

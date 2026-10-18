@@ -1,6 +1,6 @@
 // บ้านรอดไหม? — boot, screens and the game loop.
 
-import { $, $$, esc, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from './util.js';
+import { $, $$, esc, store, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from './util.js';
 import { randomHouseKey, isValidHouseKey } from './rng.js';
 import {
   loadContent, content, t, L, setLang, getLang, pickLine, pickLineFor, rankTitle, sourceList,
@@ -100,6 +100,7 @@ async function boot() {
   else if (new RegExp(`^checklist-(${idsRe()})$`).test(open)) openChecklist(open.split('-')[1]);
   else if (open === 'help') openHelp();
   else if (open === 'about') openAbout();
+  else if (open === 'kit' || open === 'plan') openTool(open, 'link');
 
   const via = state.challenge ? 'challenge' : cl ? 'checklist' : state.start.why === 'link' ? 'link' : 'direct';
   track('view', { mode: via === 'link' ? state.start.mode : '', label: via });
@@ -214,6 +215,11 @@ function renderStart() {
   }
   fl.hidden = !fUrl;
 
+  // The home check: "บ้านพร้อม 70%" once this household has checked (stored on the device).
+  const kitSaved = store.get('kit', null);
+  const kitChip = $('#kit-chip');
+  if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('kitChipScore', { pct: kitSaved.pct }) : t('kitChip');
+
   const vEl = $('#app-version');
   if (vEl && content()?.config?.version) {
     vEl.textContent = `v${content().config.version}`;
@@ -263,6 +269,7 @@ function bindGlobal() {
       if (what === 'checklist') openChecklist(state.defaultMode);
       else if (what === 'help') openHelp();
       else if (what === 'about') openAbout();
+      else if (what === 'kit') openTool('kit', 'start');
     });
   }
   $('#forecast-link-start').addEventListener('click', () => track('forecast_click', { label: 'start' }));
@@ -786,6 +793,7 @@ async function showResult(result) {
     <ul class="help-list">${help}</ul>
     <p class="note">${esc(t('helpNote'))}</p>
     ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
+    ${modeOf(mode)?.threat === 'dark' ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
     <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
@@ -801,6 +809,7 @@ async function showResult(result) {
   $('#btn-random').addEventListener('click', () => startFlow(mode, { kind: 'random' }));
   $('#btn-home').addEventListener('click', () => goHome());
   $('#btn-checklist').addEventListener('click', () => openChecklist(mode));
+  $('#btn-kit')?.addEventListener('click', () => openTool('kit', 'result'));
   $('#btn-forecast')?.addEventListener('click', () => track('forecast_click', { mode, label: 'result' }));
   for (const a of $$('[data-help]', $('#result'))) {
     a.addEventListener('click', () => track('help_click', { mode, label: a.dataset.help }));
@@ -928,6 +937,18 @@ function goHome() {
 }
 
 // ------------------------------------------------------------------ sheets
+
+// The home check and the family plan card load only when opened (kit.js).
+async function openTool(which, from) {
+  try {
+    const m = await import('./kit.js');
+    if (which === 'plan') await m.openPlan(from);
+    else await m.openKit(from);
+  } catch (e) {
+    console.warn('kit failed', e);
+    toast(t('offlineTool'), 2600);
+  }
+}
 
 async function openChecklist(mode) {
   const C = content();

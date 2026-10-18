@@ -495,7 +495,7 @@
       "url": "https://www.ready.gov/kit",
       "date": "2026-07-01",
       "kind": "international",
-      "note": "Read on 18 Oct 2026 (last updated 1 Jul 2026). The basic kit lists water (one gallon per person per day for several days), at least a several-day supply of non-perishable food, a manual can opener, a flashlight, a battery-powered or hand-crank radio and extra batteries. Maintaining it: keep canned food in a cool, dry place; replace expired items as needed; re-think your needs every year."
+      "note": "Read on 18 Oct 2026 (last updated 1 Jul 2026). The basic kit lists water (one gallon per person per day for several days), at least a several-day supply of non-perishable food, a manual can opener, a flashlight, a battery-powered or hand-crank radio and extra batteries. Maintaining it: keep canned food in a cool, dry place; replace expired items as needed; re-think your needs every year. Read again on 19 Oct 2026: its 'Additional Emergency Supplies' list includes cash or traveler's checks, prescription eyeglasses, infant formula, bottles and diapers, and pet food and extra water for your pet."
     },
     "tokyo-bichiku": {
       "agency": "รัฐบาลกรุงโตเกียว",
@@ -511,6 +511,14 @@
       "date": "2023-04-01",
       "kind": "international",
       "note": "Read on 18 Oct 2026 (page last reviewed 1 Apr 2023). 'Use flashlights, not candles, if you have a power outage.' 'Blow out candles when you leave a room or home, or when you go to bed.' 'Keep candles at least 12 inches away from anything that burns.' No Thai agency page on candles in a power cut was found."
+    },
+    "readygov-plan": {
+      "agency": "Ready.gov (FEMA สหรัฐฯ)",
+      "title": "Make A Plan — ตกลงจุดนัดพบของครอบครัวที่ทุกคนรู้จักและหาง่าย และรู้ว่าจะติดต่อกันอย่างไรถ้าพลัดกัน",
+      "url": "https://www.ready.gov/plan",
+      "date": "2026-09-01",
+      "kind": "international",
+      "note": "Read on 19 Oct 2026 (last updated 1 Sep 2026). 'Establish a family meeting place that's familiar and easy to find.' 'Know how you'll contact one another and reconnect if separated.' Tailor the plan to: different ages, school-aged children, disabilities or access and functional needs including devices and equipment, medical needs including prescriptions and equipment, pets or service animals. No Thai agency page on a family plan or meeting place was found; used for the plan card's meeting-place and contact fields, marked as international."
     }
   }
 }

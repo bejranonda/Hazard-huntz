@@ -6,11 +6,12 @@ This file is for any AI coding assistant working on this repository. Claude Code
 
 - **บ้านรอดไหม? (Baan Rod Mai?)** is a 60-second Thai home-safety game for phones, built around the hazards of the Thai year.
   - **Five modes:** ก่อนน้ำมา (prepare the house for a flood), หลังน้ำลด (spot the dangers when moving back), ฝุ่น PM2.5 (shut out the dust), ไฟไหม้ (house fire) and ไฟดับ (getting through a power cut, year-round, v1.7.0). Modes live in a registry (`config.json → modes`, `public/js/modes.js`); see [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode).
+  - **Two tools outside the round (v1.8.0):** บ้านเราพร้อมแค่ไหน? (`/?open=kit`, a home-kit check with amounts for the household) and แผนบ้านรอดของบ้านเรา (`/?open=plan`, a family plan card). Their content is `public/content/kit.json`; what people answer and type stays on the device. See [KNOWLEDGE §28](docs/KNOWLEDGE.md#28-the-home-check-and-the-family-plan-card-v180).
   - **Built to spread:** it is meant to be forwarded in LINE family groups.
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (19 Oct 2026):** v1.7.0, in Thai (`/`) and English (`/en/`), with a page per hazard (`/flood`, `/pm25`, `/fire`, `/ready`), `?mode=` links that open the game on one mode, and image sets for social posts (`/posts`). Most lessons come from Thai agencies; 10 of the 13 power-cut lessons rest partly or wholly on international guidance and are flagged ⚠️ until a Thai review ([KNOWN_ISSUES #55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (19 Oct 2026):** v1.8.0, in Thai (`/`) and English (`/en/`), with a page per hazard (`/flood`, `/pm25`, `/fire`, `/ready`), `?mode=` links that open the game on one mode, image sets for social posts (`/posts`), and the home check and family plan card (`/?open=kit`, `/?open=plan`). Most lessons come from Thai agencies; 10 of the 13 power-cut lessons rest partly or wholly on international guidance and are flagged ⚠️ until a Thai review ([KNOWN_ISSUES #55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)), and so do 9 of the home check's 15 lines ([#57](docs/KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
@@ -29,10 +30,10 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | Command | What it does | When |
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview, lesson and hazard pages and `sw.js`, checks the 500 KB budget, and prints what the start screen recommends today (`start`) | Every change |
-| `npm test` | 25 rule tests, Node only, well under a second | Every change |
-| `npm run smoke` | 86 checks in headless Chromium, on a pinned Bangkok day (18 Oct 2026 by default). Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
+| `npm test` | 26 rule tests, Node only, well under a second | Every change |
+| `npm run smoke` | 93 checks in headless Chromium, on a pinned Bangkok day (18 Oct 2026 by default). Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `SMOKE_DATE=YYYY-MM-DD npm run smoke` | The same checks on another day, to test another season (for example `2026-12-05` for dust, `2027-04-10` for fire) | Changes to seasons, switches or what the start screen recommends |
-| `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
+| `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots 01–12 and 15 (13, 14 and 16–18 were one-off captures). **Look at them.** | Visual changes |
 | `npm run probe` | Measures tap-area overlaps over two years of houses in every mode, plus flood and smoke timings | Slot, size or water-curve changes |
 | `npm run docs` | Regenerates the summary and the safety table in `docs/01` from `items.json` (a normal build warns when it is out of date) | Any `items.json` / `sources.json` change |
 | `npm run check:docs` | Checks every relative link and anchor in the Markdown | Any doc change |
@@ -61,7 +62,7 @@ A change is done when **all** of these are true:
 These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiables).
 
 - **Never invent safety advice, numbers or sources.**
-  - Every correct action needs a source in `public/content/sources.json`.
+  - Every correct action needs a source in `public/content/sources.json`, and so does every line of the home check (`kit.json`), where each number in an amount must appear in a cited source's title or note (the build checks it).
   - Set `verify` honestly (`verified` / `partial` with a `verifyNote`).
   - Leave out numbers that sources disagree on.
   - Advice only a foreign agency gives ships ⚠️ `partial`, says so, and is never described as Thai advice; a viral post is a prompt, not a source ([GUIDELINES rule 55](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
@@ -70,9 +71,9 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
   - no blaming agencies or politicians
   - no political, royal or religious references
   - humour aimed only at the situation
-- **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous.
+- **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous. What players answer or type (the home check, the plan card) stays in `localStorage` and never goes into an event, a URL or a request ([GUIDELINES rule 56](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 - **Tap targets:** every one is at least 44 px, and nothing that floats over the room (the ‹ › arrows) may cover more than 5 % of an item. The smoke test measures items, controls and that overlap; a click with `force: true` can't see it ([GUIDELINES rule 54](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
-- **Weight:** the start screen stays under 500 KB compressed (200 KB today).
+- **Weight:** the start screen stays under 500 KB compressed (208 KB today, counting the home check's code, which loads only when it opens).
 - **Two languages:** every `th` string needs an `en` twin (and every `og` an `ogEn`). Don't hard-code the brand name; use `logoA`/`logoB`. Check `/en/` as well as `/` before calling a change done.
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
 - **Text location:** player-facing text belongs in `public/content/*.json`, not in JS. Every new `og` key needs an English `ogEn` twin (the build fails otherwise); re-render with `npm run images` and commit only the images you meant to change.
@@ -110,12 +111,12 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
   - The session's git proxy refuses branch deletion and tag pushes, so the owner deletes branches and creates `vX.Y.Z` tags (as GitHub Releases) in the GitHub UI.
   - Never work around a denial.
   - The session's remote URL is lowercase (`hazard-huntz`), so `git push` prints "This repository moved". It is harmless.
-- **Scratch work.** Keep one-off probes and screenshots in the session scratchpad. Commit a tool only when it is reusable, like `tools/probe.mjs`.
+- **Scratch work.** Keep one-off probes and screenshots in the session scratchpad, and run probes from there: one run from the repository root put `v16/names-360.png` into the v1.7.0 commit ([LESSONS E8](docs/LESSONS_LEARNED.md#e-process-documentation-and-git)). Read `git status --short` before committing and stage files by name; CI can't catch a stray file once it is committed. Commit a tool only when it is reusable, like `tools/probe.mjs`.
 
 ## 8. What to do next
 
 1. **If the owner gave a launch input** (domain, forecast URL, review results or phone-test results), do the matching **L** task in [docs/ROADMAP.md](docs/ROADMAP.md) first.
-2. **Otherwise** take the top **AI-ready** task under *Later*. (N15 under *Next*, a "how ready is our house?" checker and a family plan card, is planned for v1.8.0; check its status before starting anything that overlaps it.)
+2. **Otherwise** take the top **AI-ready** task under *Later*. (N15, the home check and family plan card, shipped in v1.8.0; its owner reviews are in L5, L6 and L10.)
    - **P7:** heat and summer storms (the next hazard mode; follow [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode))
    - **P8:** earthquake and tsunami
    - **P5:** share-loop ideas (weekly house, QR code, family round-up, themed house)

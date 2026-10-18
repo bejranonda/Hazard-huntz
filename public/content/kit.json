@@ -1,0 +1,473 @@
+{
+  "_readme": "เครื่องเช็ก 'บ้านเราพร้อมแค่ไหน?' (เปิดด้วย /?open=kit) ทุกข้อต้องมี sources ใน sources.json · qty = จำนวนที่คำนวณตามจำนวนคนในบ้าน (perPersonPerDay = ต่อคนต่อวัน, perPerson = ต่อคน, days = จำนวนวัน) ตัวเลขทุกตัวต้องมีอยู่ในชื่อหรือบันทึกของแหล่งที่มา (build ตรวจให้) · for = แสดงเฉพาะบ้านที่ตอบว่ามี (baby, elder, meds, pet) ไม่ใส่ = ทุกบ้าน · verify = verified หรือ partial (partial จะมีป้าย ⚠️) · คำตอบและการติ๊กเก็บในเครื่องผู้เล่นเท่านั้น ไม่ส่งไปที่ไหน · ui = ข้อความในหน้าเช็กและการ์ด · plan = ช่องในการ์ดแผนบ้านรอด (/?open=plan) ข้อความที่ผู้เล่นพิมพ์อยู่ในเครื่องเท่านั้น",
+  "people": {
+    "min": 1,
+    "max": 10,
+    "default": 3
+  },
+  "flags": [
+    {
+      "id": "baby",
+      "icon": "👶",
+      "label": {
+        "th": "มีเด็กเล็ก",
+        "en": "Small children"
+      }
+    },
+    {
+      "id": "elder",
+      "icon": "🧓",
+      "label": {
+        "th": "มีผู้สูงอายุ หรือผู้ป่วยติดเตียง",
+        "en": "Older or bedridden people"
+      }
+    },
+    {
+      "id": "meds",
+      "icon": "💊",
+      "label": {
+        "th": "มีคนกินยาประจำ",
+        "en": "Someone on daily medicine"
+      }
+    },
+    {
+      "id": "pet",
+      "icon": "🐾",
+      "label": {
+        "th": "มีสัตว์เลี้ยง",
+        "en": "Pets"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "water",
+      "icon": "💧",
+      "label": {
+        "th": "น้ำดื่ม",
+        "en": "Drinking water"
+      },
+      "qty": {
+        "perPersonPerDay": 3,
+        "days": 3,
+        "unit": {
+          "th": "ลิตร",
+          "en": "litres"
+        }
+      },
+      "sources": [
+        "prd-72h",
+        "ddpm-amarin"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "food",
+      "icon": "🥫",
+      "label": {
+        "th": "อาหารแห้ง อาหารกระป๋อง",
+        "en": "Dry and canned food"
+      },
+      "qty": {
+        "days": 3,
+        "people": true
+      },
+      "sources": [
+        "anamai-stock",
+        "ddpm-amarin",
+        "moph-7days"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "opener",
+      "icon": "🔧",
+      "label": {
+        "th": "ที่เปิดกระป๋องแบบมือหมุน",
+        "en": "A manual can opener"
+      },
+      "sources": [
+        "readygov-kit"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "torch",
+      "icon": "🔦",
+      "label": {
+        "th": "ไฟฉาย พร้อมถ่านสำรอง",
+        "en": "Flashlights with spare batteries"
+      },
+      "qty": {
+        "perPerson": 1,
+        "unit": {
+          "th": "อัน",
+          "en": ""
+        }
+      },
+      "sources": [
+        "ddpm-6kit",
+        "readygov-outage"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "radio",
+      "icon": "📻",
+      "label": {
+        "th": "วิทยุใส่ถ่าน",
+        "en": "A battery radio"
+      },
+      "sources": [
+        "prd-72h",
+        "readygov-kit"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "power",
+      "icon": "🔋",
+      "label": {
+        "th": "มือถือและพาวเวอร์แบงก์ ชาร์จเต็ม",
+        "en": "Phones and a charged power bank"
+      },
+      "sources": [
+        "ddpm-amarin",
+        "readygov-kit"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "firstaid",
+      "icon": "🩹",
+      "label": {
+        "th": "ชุดปฐมพยาบาล",
+        "en": "A first aid kit"
+      },
+      "sources": [
+        "ddpm-6kit",
+        "readygov-kit"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "docs",
+      "icon": "📄",
+      "label": {
+        "th": "เอกสารสำคัญ ใส่ถุงกันน้ำ",
+        "en": "Important documents in a waterproof bag"
+      },
+      "sources": [
+        "ddpm-noru",
+        "ddpm-6kit"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "cash",
+      "icon": "💵",
+      "label": {
+        "th": "เงินสดติดบ้านไว้บ้าง",
+        "en": "Some cash at home"
+      },
+      "sources": [
+        "readygov-kit"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "meds",
+      "for": "meds",
+      "icon": "💊",
+      "label": {
+        "th": "ยาประจำตัว",
+        "en": "Daily medicine"
+      },
+      "qty": {
+        "days": 7
+      },
+      "sources": [
+        "moph-7days",
+        "ddpm-6kit"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "medcold",
+      "for": "meds",
+      "icon": "🧊",
+      "label": {
+        "th": "แผนสำรองสำหรับยาที่ต้องแช่เย็น",
+        "en": "A plan for medicine that must stay cold"
+      },
+      "sources": [
+        "readygov-outage"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "baby",
+      "for": "baby",
+      "icon": "🍼",
+      "label": {
+        "th": "นมผง ขวดนม ผ้าอ้อม",
+        "en": "Formula, bottles and nappies"
+      },
+      "sources": [
+        "readygov-kit"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "device",
+      "for": "elder",
+      "icon": "🔌",
+      "label": {
+        "th": "แผนไฟสำรอง สำหรับเครื่องมือแพทย์ที่ใช้ไฟ",
+        "en": "A back-up power plan for medical devices"
+      },
+      "sources": [
+        "readygov-outage"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "glasses",
+      "for": "elder",
+      "icon": "👓",
+      "label": {
+        "th": "แว่นตาสำรอง",
+        "en": "Spare glasses"
+      },
+      "sources": [
+        "readygov-kit"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "pet",
+      "for": "pet",
+      "icon": "🐾",
+      "label": {
+        "th": "อาหาร น้ำ และกรงหรือสายจูงของสัตว์เลี้ยง",
+        "en": "Pet food, water, and a carrier or leash"
+      },
+      "sources": [
+        "ddpm-noru",
+        "anamai-pets",
+        "readygov-kit"
+      ],
+      "verify": "verified"
+    }
+  ],
+  "plan": [
+    {
+      "id": "shelter",
+      "icon": "🏫",
+      "label": {
+        "th": "ศูนย์พักพิงหรือจุดอพยพใกล้บ้าน",
+        "en": "The shelter or evacuation point near home"
+      },
+      "hint": {
+        "th": "รู้ไว้ก่อนว่าอยู่ไหน ไปทางไหน แล้วบอกทุกคนในบ้าน",
+        "en": "Know where it is and the way there, and tell everyone at home"
+      },
+      "placeholder": {
+        "th": "เช่น โรงเรียนในซอย",
+        "en": "e.g. the school down the street"
+      },
+      "max": 40,
+      "sources": [
+        "prd-flood",
+        "ddpm-noru"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "meet",
+      "icon": "📍",
+      "label": {
+        "th": "จุดนัดพบของครอบครัว",
+        "en": "Our family meeting place"
+      },
+      "hint": {
+        "th": "ที่ที่ทุกคนรู้จักและหาง่าย",
+        "en": "A place everyone knows and can find easily"
+      },
+      "placeholder": {
+        "th": "เช่น หน้าร้านสะดวกซื้อปากซอย",
+        "en": "e.g. outside the corner shop"
+      },
+      "max": 40,
+      "sources": [
+        "readygov-plan"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "contact",
+      "icon": "📞",
+      "label": {
+        "th": "ถ้าพลัดกัน จะติดต่อใคร",
+        "en": "If we get separated, who do we contact"
+      },
+      "hint": {
+        "th": "ตกลงกันไว้ก่อนว่าจะติดต่อกันอย่างไร",
+        "en": "Agree how you'll reach each other"
+      },
+      "placeholder": {
+        "th": "เช่น น้าแดง 08x-xxx-xxxx",
+        "en": "e.g. Aunt Daeng, 08x-xxx-xxxx"
+      },
+      "max": 40,
+      "sources": [
+        "readygov-plan"
+      ],
+      "verify": "partial"
+    },
+    {
+      "id": "help1",
+      "icon": "🤝",
+      "label": {
+        "th": "ใครช่วยใคร",
+        "en": "Who helps whom"
+      },
+      "hint": {
+        "th": "พาผู้สูงอายุและผู้ป่วยติดเตียงไปที่ปลอดภัยก่อน พร้อมยาและอุปกรณ์",
+        "en": "Move older and bedridden people to safety first, with their medicine and equipment"
+      },
+      "placeholder": {
+        "th": "เช่น พ่อพาคุณยาย",
+        "en": "e.g. Dad takes Grandma"
+      },
+      "max": 40,
+      "sources": [
+        "ddpm-noru",
+        "anamai-elderly"
+      ],
+      "verify": "verified"
+    },
+    {
+      "id": "help2",
+      "icon": "🤝",
+      "label": {
+        "th": "ใครช่วยใคร (อีกคู่)",
+        "en": "Who helps whom (another)"
+      },
+      "placeholder": {
+        "th": "เช่น แม่ดูแลน้องและน้องหมา",
+        "en": "e.g. Mum looks after the kids and the dog"
+      },
+      "max": 40
+    },
+    {
+      "id": "meds",
+      "icon": "💊",
+      "label": {
+        "th": "ยาและของจำเป็น",
+        "en": "Medicine and must-haves"
+      },
+      "hint": {
+        "th": "ยาประจำตัวอย่างน้อย 7 วัน",
+        "en": "Daily medicine for at least 7 days"
+      },
+      "placeholder": {
+        "th": "เช่น ยาความดันคุณตา",
+        "en": "e.g. Grandpa's blood-pressure pills"
+      },
+      "max": 60,
+      "sources": [
+        "moph-7days"
+      ],
+      "verify": "partial"
+    }
+  ],
+  "ui": {
+    "th": {
+      "title": "บ้านเราพร้อมแค่ไหน?",
+      "intro": "ตอบ 2 ข้อ แล้วดูว่าบ้านเราควรมีอะไรบ้าง ถ้าไฟดับหรือต้องอยู่ในบ้าน 3 วัน",
+      "people": "บ้านเรามีกี่คน?",
+      "less": "ลดจำนวนคน",
+      "more": "เพิ่มจำนวนคน",
+      "who": "ในบ้านมีใครบ้าง? (เลือกได้หลายข้อ)",
+      "privacy": "คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน",
+      "show": "ดูรายการของบ้านเรา",
+      "household": "บ้าน {n} คน",
+      "edit": "แก้คำตอบ",
+      "ready": "พร้อมแล้ว {pct}%",
+      "count": "มี {have} จาก {total} อย่าง",
+      "tickHint": "ติ๊กของที่บ้านมีแล้ว",
+      "qtyPerPersonDay": "{total} {unit} ({per} {unit} × {people} คน × {days} วัน)",
+      "qtyPerPerson": "{total} {unit} (คนละ {per})",
+      "qtyDaysPeople": "พอ {days} วัน สำหรับ {people} คน",
+      "qtyDays": "พออย่างน้อย {days} วัน",
+      "partial": "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน",
+      "source": "ที่มา",
+      "share": "📤 แชร์ผลของบ้านเรา",
+      "plan": "📝 ทำแผนบ้านรอดของบ้านเรา",
+      "back": "← กลับไปที่รายการ",
+      "shareTitle": "แชร์ผลเช็กบ้าน",
+      "shareText": "บ้านเราพร้อมรับมือไฟดับ {pct}% 🎒 แล้วบ้านคุณล่ะ? เช็กฟรี 1 นาที 👉 {url} #บ้านรอดไหม",
+      "cardTitle": "บ้านเราพร้อมแค่ไหน?",
+      "cardCount": "มีแล้ว {have} จาก {total} อย่าง",
+      "cardMissing": "ยังขาด",
+      "cardAllSet": "ครบทุกอย่างแล้ว!",
+      "cardCta": "บ้านคุณพร้อมแค่ไหน? เช็กฟรี",
+      "last": "เช็กล่าสุด {date}",
+      "planTitle": "แผนบ้านรอดของบ้านเรา",
+      "planIntro": "กรอกเท่าที่รู้ แล้วสร้างการ์ดเก็บไว้ในมือถือทุกคน",
+      "planPrivacy": "ข้อความอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน อย่าใส่เลขบัตรประชาชนหรือข้อมูลส่วนตัวเกินจำเป็น",
+      "planMake": "สร้างการ์ดแผนบ้านรอด",
+      "planEmpty": "กรอกอย่างน้อย 1 ช่องก่อนนะ",
+      "planShareTitle": "การ์ดแผนบ้านรอด",
+      "planKeep": "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน",
+      "planShareText": "แผนบ้านรอดของบ้านเรา 📝 เซฟไว้ในมือถือทุกคนนะ ทำของบ้านคุณได้ที่ 👉 {url} #บ้านรอดไหม",
+      "planDate": "ทำเมื่อ {date}",
+      "helpLabel": "เบอร์ช่วยเหลือ โทรฟรี",
+      "close": "ปิด"
+    },
+    "en": {
+      "title": "How ready is our house?",
+      "intro": "Answer 2 questions and see what the house needs for a power cut or 3 days at home",
+      "people": "How many people live here?",
+      "less": "One person fewer",
+      "more": "One person more",
+      "who": "Who lives here? (pick any)",
+      "privacy": "Your answers stay on this device and are never sent anywhere",
+      "show": "Show our list",
+      "household": "{n} people at home",
+      "edit": "Change answers",
+      "ready": "{pct}% ready",
+      "count": "{have} of {total} things",
+      "tickHint": "Tick what you already have",
+      "qtyPerPersonDay": "{total} {unit} ({per} {unit} × {people} people × {days} days)",
+      "qtyPerPerson": "{total} (one each)",
+      "qtyDaysPeople": "Enough for {days} days for {people} people",
+      "qtyDays": "At least {days} days' worth",
+      "partial": "⚠️ Still being reviewed",
+      "source": "Source",
+      "share": "📤 Share our result",
+      "plan": "📝 Make our family plan",
+      "back": "← Back to the list",
+      "shareTitle": "Share the home check",
+      "shareText": "Our home is {pct}% ready for a power cut 🎒 How about yours? Free 1-minute check 👉 {url} #BaanRodMai",
+      "cardTitle": "How ready is our house?",
+      "cardCount": "{have} of {total} things ready",
+      "cardMissing": "Still missing",
+      "cardAllSet": "Everything's ready!",
+      "cardCta": "How ready is your house? Check free",
+      "last": "Last checked {date}",
+      "planTitle": "Our family safety plan",
+      "planIntro": "Fill in what you know, then keep the card on everyone's phone",
+      "planPrivacy": "What you type stays on this device and is never sent anywhere. Don't add ID numbers or more personal data than you need.",
+      "planMake": "Make our plan card",
+      "planEmpty": "Fill in at least one box first",
+      "planShareTitle": "Family plan card",
+      "planKeep": "Save it on everyone's phone, and keep a copy in the emergency bag",
+      "planShareText": "Our family safety plan 📝 Save it on your phone. Make one for your home 👉 {url} #BaanRodMai",
+      "planDate": "Made {date}",
+      "helpLabel": "Thai helplines, free to call",
+      "close": "Close"
+    }
+  }
+}

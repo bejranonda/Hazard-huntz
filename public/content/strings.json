@@ -199,7 +199,7 @@
     "aboutTitle": "เกี่ยวกับเกมนี้",
     "aboutIntro": "บ้านรอดไหม? เป็นเกมสั้นเพื่อการเรียนรู้ ช่วยให้ทุกคนดูแลบ้านได้ทั้งปี: เตรียมบ้านก่อนน้ำท่วม ตรวจจุดอันตรายหลังน้ำลด สู้ฝุ่น PM2.5 กันไฟไหม้ และเตรียมของตุนรับไฟดับ ทุกคำแนะนำมีที่มา ส่วนใหญ่จากหน่วยงานรัฐไทย (ตรวจสอบเมื่อ ต.ค. 2569) บางข้อมาจากคำแนะนำของต่างประเทศ เช่น องค์การอนามัยโลก หรือ CDC สหรัฐฯ และมีป้ายบอกไว้ ถ้าสถานการณ์จริงต่างออกไป ให้เชื่อประกาศและเจ้าหน้าที่ในพื้นที่ก่อนเสมอ",
     "aboutPrivacyTitle": "ความเป็นส่วนตัว",
-    "aboutPrivacy": "ไม่ต้องสมัคร ไม่เก็บข้อมูลส่วนบุคคล ไม่ใช้คุกกี้ คะแนนและสถิติเก็บไว้ในเครื่องของคุณเท่านั้น เรานับเฉพาะจำนวนการเล่นและการแชร์แบบไม่ระบุตัวตน (Cloudflare Web Analytics ไม่ใช้คุกกี้) สอดคล้องกับ พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล",
+    "aboutPrivacy": "ไม่ต้องสมัคร ไม่เก็บข้อมูลส่วนบุคคล ไม่ใช้คุกกี้ คะแนน สถิติ คำตอบในเครื่องเช็กบ้าน และข้อความในการ์ดแผนบ้านรอด เก็บไว้ในเครื่องของคุณเท่านั้น ไม่ส่งไปที่ไหน เรานับเฉพาะจำนวนการเล่นและการแชร์แบบไม่ระบุตัวตน (Cloudflare Web Analytics ไม่ใช้คุกกี้) สอดคล้องกับ พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล",
     "aboutSourcesTitle": "ที่มาของข้อมูล",
     "aboutCredits": "ภาพวาดและน้องจกออกแบบขึ้นใหม่สำหรับเกมนี้ · ฟอนต์ Kanit (SIL Open Font License)",
     "clSubtitle": "เก็บไว้ แล้วส่งต่อให้คนที่บ้าน",
@@ -351,6 +351,10 @@
       "ไฟดับนานไป ของเสียแล้ว!"
     ],
     "darkHours": "ไฟดับมา {h} ชม.",
+    "kitChip": "บ้านพร้อมไหม?",
+    "kitChipScore": "บ้านพร้อม {pct}%",
+    "kitFromResult": "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน",
+    "offlineTool": "เปิดไม่ได้ตอนนี้ ลองใหม่เมื่อต่อเน็ตนะ",
     "cheerPerfectStock": [
       "บ้านรอด! ไฟดับทั้งคืนก็อยู่สบาย ของพร้อมครบ 💙"
     ],
@@ -586,7 +590,7 @@
     "aboutTitle": "About this game",
     "aboutIntro": "Baan Rod Mai? is a short learning game for keeping a home safe all year: preparing for a flood, spotting dangers before moving back in, PM2.5 dust, house fire and getting through a power cut. Every tip has a source, mostly Thai government agencies (checked Oct 2026); some come from international guidance such as WHO or the US CDC and are marked as such. If local announcements say otherwise, follow your local officials.",
     "aboutPrivacyTitle": "Privacy",
-    "aboutPrivacy": "No sign-up, no personal data, no cookies. Scores stay on your device. We only count plays and shares anonymously (Cloudflare Web Analytics is cookieless), in line with Thailand's PDPA.",
+    "aboutPrivacy": "No sign-up, no personal data, no cookies. Scores, the home check's answers and the family plan card's text stay on your device and are never sent anywhere. We only count plays and shares anonymously (Cloudflare Web Analytics is cookieless), in line with Thailand's PDPA.",
     "aboutSourcesTitle": "Sources",
     "aboutCredits": "Original illustrations and mascot · Kanit font (SIL Open Font License)",
     "clSubtitle": "Save it and pass it on to your family",
@@ -738,6 +742,10 @@
       "Out too long, it's spoiled!"
     ],
     "darkHours": "Power out {h} h",
+    "kitChip": "Ready at home?",
+    "kitChipScore": "Home {pct}% ready",
+    "kitFromResult": "🎒 Check how ready our home is",
+    "offlineTool": "Can't open this right now. Try again when you're online.",
     "cheerPerfectStock": [
       "The house makes it! A night without power, all covered 💙"
     ],
@@ -854,7 +862,9 @@
       "hazardOutageTitle": "เตรียมบ้านรับไฟดับ ของตุนที่ควรมี {n} ข้อ · บ้านรอดไหม?",
       "hazardOutageDesc": "น้ำดื่มกี่ลิตร ของในตู้เย็นอยู่ได้นานแค่ไหน ไฟฉาย วิทยุ พาวเวอร์แบงก์ ยาที่ต้องแช่เย็น และเครื่องปั่นไฟ อ้างอิงคำแนะนำจากหน่วยงาน พร้อมเช็กลิสต์",
       "hazardOutageH1": "ไฟดับ: ของตุนที่ควรมี และดูแลบ้านอย่างไรเมื่อไม่มีไฟ",
-      "hazardOutageIntro": "ทุกข้อในโหมดไฟดับของเกมบ้านรอดไหม? บอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน หลายข้อมาจากคำแนะนำของต่างประเทศ ซึ่งมีป้ายบอกไว้ อ่านแล้วลองเล่นจริง แล้วส่งต่อให้คนที่บ้าน"
+      "hazardOutageIntro": "ทุกข้อในโหมดไฟดับของเกมบ้านรอดไหม? บอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน หลายข้อมาจากคำแนะนำของต่างประเทศ ซึ่งมีป้ายบอกไว้ อ่านแล้วลองเล่นจริง แล้วส่งต่อให้คนที่บ้าน",
+      "toolKit": "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน (ฟรี 1 นาที)",
+      "toolPlan": "📝 ทำการ์ดแผนบ้านรอดของบ้านเรา"
     },
     "en": {
       "learnIntro": "Every lesson from the Baan Rod Mai? home-safety game, for floods, PM2.5 dust, house fire and power cuts, each with its source.",
@@ -931,7 +941,9 @@
       "hazardOutageTitle": "Ready for a power cut: what to stock at home, {n} lessons · Baan Rod Mai?",
       "hazardOutageDesc": "How much water to store, how long fridge food lasts, flashlights, radios, power banks, cold medicine and generators. From agency guidance, with a checklist.",
       "hazardOutageH1": "Power cuts: what to stock, and how to look after the home without power",
-      "hazardOutageIntro": "Every lesson from the power-cut mode of the Baan Rod Mai? game: what to do, why, and where the advice comes from. Several come from international guidance and are marked as such."
+      "hazardOutageIntro": "Every lesson from the power-cut mode of the Baan Rod Mai? game: what to do, why, and where the advice comes from. Several come from international guidance and are marked as such.",
+      "toolKit": "🎒 Check how ready your home is (free, 1 minute)",
+      "toolPlan": "📝 Make your family plan card"
     }
   },
   "ogEn": {
@@ -961,7 +973,7 @@
     "challengeDescStock": "A 60-second game: a night without power. Is the house ready? The exact same house. Your score?",
     "challengeLineStock": "My friend's power-cut check",
     "checklistTitleStock": "Power cut: 10 things to have at home",
-    "checklistDesc": "A family checklist from Thai government agency advice. Outside Thailand, follow your local authorities.",
+    "checklistDesc": "A family checklist from government agency advice. Outside Thailand, follow your local authorities.",
     "checklistLine2": "Free · from official safety advice",
     "checklistPill": "See all 10",
     "defaultLine1": "Will the house survive?\nA 60-second home-safety game",

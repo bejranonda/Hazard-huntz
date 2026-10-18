@@ -158,8 +158,8 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
 ## 9. Testing
 
-1. **Unit tests** (`npm test`, 25) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset, the version 2 carry-over, since v1.6.0 the switches' end dates and what the start screen recommends, and since v1.7.0 the power cut's fridge at 4 story hours. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 93 checks, run by default as a Thai phone in Bangkok on a pinned day, 18 Oct 2026, which `SMOKE_DATE` changes; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+1. **Unit tests** (`npm test`, 27) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset, the version 2 carry-over, since v1.6.0 the switches' end dates and what the start screen recommends, since v1.7.0 the power cut's fridge at 4 story hours, since v1.8.0 the home check's amounts, and since v1.8.1 the card text wrapping. They run in Node in well under a second.
+2. **Smoke tests** (`npm run smoke`, 96 checks, run by default as a Thai phone in Bangkok on a pinned day, 18 Oct 2026, which `SMOKE_DATE` changes; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -167,7 +167,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
    They also test offline play after the first visit, reduced motion, and the analytics beacon.
 3. **Screenshots** from the same run (`--screens docs/screens`) were *looked at*. Several bugs were found only that way: the lamp behind the wall, the speech bubble covering items, a blue result screen, a date overlapping a pill on the card.
-4. **Real phones were not available.** The 48-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
+4. **Real phones were not available.** The 50-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
 
 ## 10. Scope cuts, said out loud
 
@@ -360,3 +360,15 @@ The plan card is the first place the game asks people to type something of their
 5. **Say it where people decide.** The check says "คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน" under its questions, the plan form "ข้อความอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน" above its fields, and the About sheet's privacy text names both tools.
 6. **Accept the cost in the open.** Nothing on a server means nothing to sync: the list lives in one browser, and LINE's in-app browser is a different one from the phone's ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). The card's own words, "เซฟไว้ในมือถือทุกคน", make the saved picture the copy that lasts.
 7. **The same honesty about sources.** A tool that multiplies numbers spreads a wrong number to every family that uses it, so every number in an amount must be in a cited source, and the build checks it ([GUIDELINES rule 57](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)); lines that rest on foreign guidance say they are under review, as the lessons do.
+
+## 26. The visitor audit loop (v1.8.1)
+
+After v1.8.0 every automated check passed, but nobody had read the whole app as a visitor since the power cut (v1.7.0) and the home check (v1.8.0) were added. Checks look for what they were written for; a visitor reads the words, the pictures and where things go. The loop, as run on 19 Oct 2026:
+
+1. **Walk every surface as a visitor, in both languages, on the smallest screens.** The start screen, each mode's round and result, the share sheets and the cards they make, the checklists, the home check's questions and list, the plan form and its card, `/learn`, the hazard pages, `/posts`, `llms.txt` and the manifest, in Thai and English, at 320 × 460 and 360 × 640. Read every sentence as someone who has never seen the game, and look at every card as a picture.
+2. **Ask what each sentence claims about the whole game.** The tagline still said "ฝุ่น และไฟ", three hazards, after the power cut (v1.7.0) and the home check (v1.8.0) (F42, [LESSONS E9](LESSONS_LEARNED.md#e-process-documentation-and-git)).
+3. **Cross-check numbers and words between surfaces.** The home check, the lessons and the checklists state the same amounts (3 L per person per day for 3 days, a torch each, 7 days of medicine) from the same sources, and no amount needed a change. The words did: "flashlight" beside "torch", "house" beside "home" (F43, F44, [LESSONS B10](LESSONS_LEARNED.md#b-safety-content-and-research)). Where a tool's wording rests on a narrower story than its sources (the home check named only power cuts, though its 3 days come from the flood-era Thai lists), widen the words, not the advice.
+4. **Follow every button to where it goes, and every link to where it should come from.** A back button that named the wrong place (F48); a home check that the flood pages and the flood results didn't offer, though floods are where its amounts come from; tools that `/learn` and `llms.txt` didn't mention. The fix for the second was data, not a new rule in code: the hazard's `tools` list now drives both the page links and the result button.
+5. **Look at the pictures at their real size.** Card text that broke before a "!" (F45), a wordmark into the sun (F46), a plan card with a gap (F49), Thai words broken in a two-column grid at 320 px (F47).
+6. **Fix, then measure.** Each fix got a number or a check where one fits: a unit test that wraps every ending at widths 60–300 (180 bad breaks before, 0 after), three smoke checks (the flood result's 🎒 button, the tool links on `/learn` and in `llms.txt`, "← แก้แผน" back to the form), axe-core on ten screens and pages, and the build's budget (208 / 223 KB, unchanged).
+7. **Walk again.** The second walk, over the same surfaces in both languages, is what says the loop is done; the first walk only says what to fix. What a walk can't show (the app's shortcuts on a real phone, the PRD page that no tool could read) goes to the owner with a task card ([ROADMAP N16](ROADMAP.md#n16-v181-visitor-audit-fixes-and-integration)), not into the release as done.

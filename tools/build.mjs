@@ -368,7 +368,7 @@ const indexLd = {
       applicationCategory: 'GameApplication', operatingSystem: 'Any',
       playMode: 'SinglePlayer', timeRequired: 'PT1M', isAccessibleForFree: true,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
-      about: ['น้ำท่วม', 'Flood safety', 'ฝุ่น PM2.5', 'PM2.5 air pollution', 'ไฟไหม้', 'Home fire safety', 'ไฟดับ', 'Power outage preparedness'].map((name) => ({ '@type': 'Thing', name })),
+      about: ['น้ำท่วม', 'Flood safety', 'ฝุ่น PM2.5', 'PM2.5 air pollution', 'ไฟไหม้', 'Home fire safety', 'ไฟดับ', 'Power cut preparedness'].map((name) => ({ '@type': 'Thing', name })),
       subjectOf: { '@type': 'WebPage', url: `${SITE}/learn` },
       dateModified: seoUpdated,
     },
@@ -379,6 +379,8 @@ const indexLd = {
 // version shows even before the script runs.
 if (config.version !== pkgVersion) err(`config.json version "${config.version}" must equal package.json version "${pkgVersion}"`);
 indexHtml = indexHtml.replace(/(<div class="app-version" id="app-version">)[^<]*(<\/div>)/, `$1v${pkgVersion}$2`);
+// The Thai <title> is generated too, so it names every hazard the game covers.
+indexHtml = indexHtml.replace(/<title>[^<]*<\/title>/, `<title>${esc(og.defaultTitle)}</title>`);
 indexHtml = indexHtml.replace(OG_RE, ogBlock({
   title: og.defaultTitle, desc: og.defaultDesc, image: '/og/default.png', alt: og.defaultAlt, url: `${SITE}/`, ld: indexLd,
   alternates: alt('/', `${EN}/`),
@@ -559,6 +561,8 @@ const hazardList = Object.entries(HAZARDS)
   .filter((h) => h.modes.length);
 const hazardChips = (lang, current) => `<div class="tix" id="hazards"><p><b>${esc((lang === 'en' ? E : S).byHazard)}</b></p><ul>${hazardList.map((h) => `<li><a href="${lang === 'en' ? EN : ''}/${h.slug}"${h.id === current ? ' aria-current="page"' : ''}>${esc((lang === 'en' ? E : S)[`hazard${capM(h.id)}Nav`])}</a></li>`).join('')}</ul></div>`;
 const playLinks = (lang, ids) => `<p class="play">${ids.map((id) => `<a class="cta" href="${lang === 'en' ? EN : ''}/?mode=${id}">${esc(fill((lang === 'en' ? E : S).playMode, { mode: strings[lang][`mode${capM(id)}`], s: config.round[id].seconds }))}</a>`).join(' ')}</p>`;
+// Every tool any hazard offers (/?open=kit, /?open=plan), for /learn and llms.txt.
+const allTools = { tools: [...new Set(hazardList.flatMap((h) => h.tools))] };
 const toolLinks = (lang, h) => h.tools.map((tool) => `<p class="check"><a href="${lang === 'en' ? EN : ''}/?open=${tool}">${esc((lang === 'en' ? E : S)[`tool${capM(tool)}`])}</a></p>`).join('\n');
 // "Check before you go" (FloodWatch, Air4Thai), once per address.
 const checkLinks = (lang, ids) => {
@@ -584,6 +588,7 @@ ${topicIndex('th')}
 ${sectionsTh(MODE_IDS)}
 <h2 id="checklists">${esc(S.checklists)}</h2>
 ${checklistsTh(MODE_IDS)}
+${toolLinks('th', allTools)}
 <h2 id="helplines">${esc(S.helplines)}</h2>
 ${helplineHtml}
 <p><a class="cta" href="/">${esc(S.back)}</a></p>
@@ -629,6 +634,7 @@ ${topicIndex('en')}
 ${sectionsEn(MODE_IDS)}
 <h2 id="checklists">${esc(E.checklists)}</h2>
 ${checklistsEn(MODE_IDS)}
+${toolLinks('en', allTools)}
 <h2 id="helplines">${esc(E.helplines)}</h2>
 ${helplineEn}
 <p>${esc(E.intlNote)}</p>
@@ -801,6 +807,7 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 - Every lesson with its reason and sources: ${LEARN_URL} (Thai, with English) · ${LEARN_EN} (English)
 - One page per hazard, with only its lessons and a link that opens that game mode:
 ${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug} (Thai) · ${SITE}${EN}/${h.slug} (English)`).join('\n')}
+- Two family tools that run on the device; nothing typed is sent: ${allTools.tools.map((tool) => `${md(E[`tool${capM(tool)}`].replace(/^\S+\s/, ''))}: ${SITE}/?open=${tool}`).join(' · ')}
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 

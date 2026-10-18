@@ -31,11 +31,11 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0) |
-| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (48 rows since v1.8.0) |
+| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (50 rows since v1.8.1) |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (now with the eight hazard pages) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
-| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0; the home check's ⚠️ items in v1.8.0) |
+| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0; the home check's ⚠️ items in v1.8.0; the PRD page couldn't be read by tools on 19 Oct 2026) |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
@@ -51,6 +51,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N13 | [Carousel posts for social media](#n13-carousel-posts-for-social-media) | AI-ready | Done (18 Oct 2026, v1.6.1) |
 | N14 | [A power-cut and stockpile mode](#n14-a-power-cut-and-stockpile-mode) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.7.0); Thai review left (L10) |
 | N15 | [How ready is our house? A checker and a family plan card](#n15-how-ready-is-our-house-a-checker-and-a-family-plan-card) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.8.0); Thai review of its wording left (L5, L10) |
+| N16 | [v1.8.1: visitor audit fixes and integration](#n16-v181-visitor-audit-fixes-and-integration) | AI-ready | Done (19 Oct 2026, v1.8.1); the shortcuts on a real phone left (L6) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -124,7 +125,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** Owner + AI · **Status:** Todo · **Issue:** #3
 - **Steps:**
-  1. Run [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok. Since v1.8.0 that includes the home check and the plan card (rows 46–48): open `/?open=kit` and `/?open=plan` from a LINE chat, and check whether the ticks and the plan are still there after reopening, and whether the cards save ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)).
+  1. Run [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok. Since v1.8.0 that includes the home check and the plan card (rows 46–48): open `/?open=kit` and `/?open=plan` from a LINE chat, and check whether the ticks and the plan are still there after reopening, and whether the cards save ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Since v1.8.1 (rows 49–50): add the game to the home screen, then long-press the installed icon: the two shortcuts, "บ้านเราพร้อมแค่ไหน?" and "แผนบ้านรอดของบ้านเรา", should open the check and the plan card (`manifest.webmanifest → shortcuts`, **[unverified]** on any phone); and make a plan card with some fields left empty, which should show dotted lines to fill in by hand.
   2. An assistant records the results in the matrix and turns each ❌ into a KNOWN_ISSUES entry or a fix.
 - **Done when:** the matrix is filled in, and no ❌ remains that blocks sharing or playing.
 
@@ -164,6 +165,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. The owner (or a contact at กรมอนามัย / ปภ.) opens each source, checks the wording, and notes changes.
   3. For the power-cut lessons, look for the Thai statement that would replace or back the international one:
      - open the PRD 72-hour checklist page (`prd-72h`) in a normal browser and confirm "3 litres per person per day" (`s-water`) and the battery radio (`s-radio`); tools can't read it ([#55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance))
+     - **note (19 Oct 2026):** no tool could read prd.go.th that day, not even its home page: `curl` got a 301 from `www.prd.go.th` to `prd.go.th` and then a 404, and headless Chromium a 500 block page. So whether the page still exists is unknown; a search engine's index still shows it with the 3-litre line. Open https://www.prd.go.th/th/content/category/detail/id/35/iid/533126 from a phone or computer in Thailand. If it is gone, find the same checklist on another PRD or ปภ. page and replace `prd-72h` in `p-waterfood`, `s-water`, `s-radio` and the home check's `water` and `radio` lines; until then the 3 L rests on the source's title as recorded
      - ask MEA (กฟน.) or PEA (กฟภ.) whether they advise unplugging appliances in a power cut (`s-plugs`)
      - ask กรมอนามัย or อย. about fridge and freezer food in a power cut (`s-fridge`, `s-leftover`, `s-freezer`), and have a Thai pharmacist or อย. read the cold-medicine wording (`s-medcold`)
      - look for Thai wording on candles in a power cut (ปภ.) and on a manual can opener in a kit (`s-candle`, `s-opener`)
@@ -361,6 +363,29 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - the Thai review of the check's ⚠️ lines and the plan card's meeting place and contact ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [#57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)), and the language check of `kit.json` ([L5](#l5-second-native-reader-for-the-thai-copy))
   - post it when it fits ([04-launch-kit](04-launch-kit.md#the-home-check-and-the-plan-card-v180-any-time-of-year))
 - **Possible next step** (not planned): turn the plan card's longest-input probe into a smoke check ([LESSONS D12](LESSONS_LEARNED.md#d-testing-and-verification)).
+
+### N16. v1.8.1: visitor audit fixes and integration
+
+- **Who:** AI-ready · **Status:** Done (19 Oct 2026, v1.8.1); the app shortcuts on a real phone are left ([L6](#l6-real-phone-test-matrix), row 49) · **Issues:** fixed F42–F50; notes on #52, #55, #57
+- **Why:** after v1.8.0 every check passed, but no one had read the whole app as a visitor since the power cut and the home check were added. Checks look for what they were written for; a visitor reads the words.
+- **How:** every screen, sheet, card and page walked as a visitor in Thai and English at 320 × 460 and 360 × 640, the numbers cross-checked between the home check, the lessons and the checklists, each finding fixed and measured, then the same walk again ([APPROACH §26](APPROACH_AND_METHOD.md#26-the-visitor-audit-loop-v181)).
+- **What was fixed:**
+  - the tagline and the manifest's description still described three hazards (F42)
+  - the English said "flashlight", "power outage" and "Blackout" beside "torch" and "power cut": now British English throughout (F43)
+  - the home check said "house" and "home"; its intro and share text now name floods as well as power cuts (F44)
+  - a card line could start with "!"; closing punctuation and ๆ/ฯ now stay with the word before (F45)
+  - the English wordmark ran into the sun or moon on the result card (F46)
+  - the home check's answers broke Thai words at 320 px (F47)
+  - the plan card's share sheet said "back to the list" but went to the form: now "← แก้แผน" (F48)
+  - the plan card left a gap when fields were empty: now all six, with dotted lines for the empty ones (F49)
+  - opening the plan card wasn't counted: now `plan_open` (F50)
+- **What was tied in:** `config.json → hazards.flood.tools`, so `/flood` and `/en/flood` link the home check and the plan card, and the result screen's 🎒 button follows the hazard's tools (prepare, return and power-cut results show it; dust and fire don't); `/learn`, `/en/learn` and `llms.txt` link both tools; `manifest.webmanifest → shortcuts` for a long-press on the installed icon.
+- **Rule kept:** no item, room or slot changed, so houses and challenge links are unchanged; nothing typed is sent. New rules: [GUIDELINES 58–60](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); lessons [B10 and E9](LESSONS_LEARNED.md#e-process-documentation-and-git).
+- **Done when:** the build has no warnings, 27 unit tests and 96 smoke checks pass, axe-core finds nothing new on the screens it checks, and the walk has been repeated after the fixes. True on 19 Oct 2026 (smoke 96/96 on the pinned day, 18 Oct 2026, and as 5 Dec 2026).
+- **Left for the owner:**
+  - the two shortcuts and a plan card with empty fields on a real phone ([L6](#l6-real-phone-test-matrix), rows 49–50)
+  - open the PRD 72-hour checklist page in a normal browser in Thailand ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons))
+  - the language check now reads one English variety ([L5](#l5-second-native-reader-for-the-thai-copy))
 
 ## Later
 

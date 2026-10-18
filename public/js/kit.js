@@ -34,9 +34,9 @@ function saved() {
   return s && typeof s === 'object' ? s : null;
 }
 
-export async function openKit(from = 'start') {
+export async function openKit(from = 'start', mode = '') {
   await loadKit();
-  track('kit_open', { label: from });
+  track('kit_open', { label: from, mode });
   const s = saved();
   if (s?.answered) showList(s);
   else showQuestions(s || { people: K.people.default, flags: [], have: [] });
@@ -143,8 +143,10 @@ function showList(s) {
 
 // ------------------------------------------------------------------ the plan card
 
-export async function openPlan(from = 'start') {
+// `again`: back from the card to the form, which is not a new arrival.
+export async function openPlan(from = 'start', again = false) {
   await loadKit();
+  if (!again) track('plan_open', { label: from });
   const p = store.get('plan', null) || {};
   openSheet(`
     <h2 id="sheet-title">📝 ${esc(u('planTitle'))}</h2>
@@ -178,14 +180,14 @@ export async function openPlan(from = 'start') {
     const C = content();
     drawPlanCard(canvas, {
       logo: [t('logoA'), t('logoB')], title: u('planTitle'), date: u('planDate', { date: formatHouseDate(date, getLang()) }),
-      rows: K.plan.filter((f) => v[f.id]).map((f) => ({ label: L(f.label), value: v[f.id] })),
+      rows: K.plan.map((f) => ({ label: L(f.label), value: v[f.id] })),
       helpLabel: u('helpLabel'), helpNumbers: C.helplines.filter((h) => h.main).map((h) => h.number).join('  ·  '),
       keep: u('planKeep'), url: pageUrl('plan'), footer: t('cardFooter'),
     }, assets);
     const url = pageUrl('plan');
     shareImage({
       canvas, title: u('planShareTitle'), text: u('planShareText', { url }), url, filename: 'baanrodmai-plan.png',
-      event: 'plan_share', back: () => openPlan(from), backLabel: u('back'),
+      event: 'plan_share', back: () => openPlan(from, true), backLabel: u('backPlan'),
     });
   });
 }
@@ -320,12 +322,13 @@ export function drawPlanCard(canvas, d, a) {
   font(ctx, 32, 400);
   ctx.fillStyle = INK2;
   ctx.fillText(plainText(d.date), 60, 256);
-  // The rows the family filled in, all of them: the largest text that fits
-  // between the header and the helplines (y 320–1010).
+  // Every field, in the largest text that fits between the header and the
+  // helplines (y 320–1010). A field left empty gets a dotted line, so a
+  // printed copy can be filled in by hand.
   const boxW = W - 100;
   const layout = (k, maxLines) => d.rows.map((row) => {
     font(ctx, Math.round(38 * k));
-    const lines = wrapText(ctx, row.value, boxW - 60).slice(0, maxLines);
+    const lines = row.value ? wrapText(ctx, row.value, boxW - 60).slice(0, maxLines) : [''];
     return { row, lines, h: Math.round((58 + lines.length * 46) * k) };
   });
   let k = 1;
@@ -342,7 +345,19 @@ export function drawPlanCard(canvas, d, a) {
     ctx.fillText(plainText(row.label), 80, y + Math.round(38 * k));
     font(ctx, Math.round(38 * k));
     ctx.fillStyle = INK;
-    lines.forEach((ln, i) => ctx.fillText(ln, 80, y + Math.round((84 + i * 46) * k)));
+    if (row.value) lines.forEach((ln, i) => ctx.fillText(ln, 80, y + Math.round((84 + i * 46) * k)));
+    else {
+      ctx.save();
+      ctx.strokeStyle = INK2;
+      ctx.globalAlpha = 0.45;
+      ctx.lineWidth = 3;
+      ctx.setLineDash([4, 10]);
+      ctx.beginPath();
+      ctx.moveTo(80, y + Math.round(88 * k));
+      ctx.lineTo(50 + boxW - 30, y + Math.round(88 * k));
+      ctx.stroke();
+      ctx.restore();
+    }
     y += h + 12;
   }
   // helplines, the reminder and the address

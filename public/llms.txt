@@ -9,6 +9,7 @@
   - PM2.5 dust: a dust-safe home and the people in it: https://baanrodmai.autobahn.bot/pm25 (Thai) · https://baanrodmai.autobahn.bot/en/pm25 (English)
   - House fire: prevent it, and know how to escape the smoke: https://baanrodmai.autobahn.bot/fire (Thai) · https://baanrodmai.autobahn.bot/en/fire (English)
   - Power cuts: what to stock, and how to look after the home without power: https://baanrodmai.autobahn.bot/ready (Thai) · https://baanrodmai.autobahn.bot/en/ready (English)
+- Two family tools that run on the device; nothing typed is sent: Check how ready your home is (free, 1 minute): https://baanrodmai.autobahn.bot/?open=kit · Make your family plan card: https://baanrodmai.autobahn.bot/?open=plan
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: 2026-10-19
 
@@ -96,8 +97,8 @@
 
 - **A generator under the window** (เครื่องปั่นไฟชิดหน้าต่าง): Move it into the open, away from doors and windows. เครื่องปั่นไฟตั้งนอกบ้านในที่โล่งเท่านั้น ห่างประตูและหน้าต่าง [https://baanrodmai.autobahn.bot/learn#s-generator]
 - **Grandma's medicine that must stay cold** (ยาที่ต้องแช่เย็นของคุณยาย): Plan ahead for keeping it cold in a power cut. ยาที่ต้องแช่เย็น หรือเครื่องมือแพทย์ที่ใช้ไฟ ต้องมีแผนสำรองไว้ก่อนไฟดับ [https://baanrodmai.autobahn.bot/learn#s-medcold]
-- **A candle left burning** (เทียนที่จุดทิ้งไว้): Blow it out and use a flashlight. ไฟดับใช้ไฟฉาย ไม่ใช้เทียน ถ้าจุดเทียน ห้ามทิ้งไว้ตอนออกจากห้องหรือนอน [https://baanrodmai.autobahn.bot/learn#s-candle]
-- **A flashlight with flat batteries** (ไฟฉายถ่านหมด): Keep spare batteries with it, and a flashlight for everyone. เก็บไฟฉายกับถ่านสำรองไว้ด้วยกัน มีไฟฉายให้ทุกคนในบ้าน [https://baanrodmai.autobahn.bot/learn#s-torch]
+- **A candle left burning** (เทียนที่จุดทิ้งไว้): Blow it out and use a torch. ไฟดับใช้ไฟฉาย ไม่ใช้เทียน ถ้าจุดเทียน ห้ามทิ้งไว้ตอนออกจากห้องหรือนอน [https://baanrodmai.autobahn.bot/learn#s-candle]
+- **A torch with flat batteries** (ไฟฉายถ่านหมด): Keep spare batteries with it, and a torch for everyone. เก็บไฟฉายกับถ่านสำรองไว้ด้วยกัน มีไฟฉายให้ทุกคนในบ้าน [https://baanrodmai.autobahn.bot/learn#s-torch]
 - **A battery radio** (วิทยุใส่ถ่าน): Turn on a battery radio for official news. เก็บวิทยุใส่ถ่านไว้ ไฟดับ เน็ตช้า ยังฟังประกาศจากทางการได้ [https://baanrodmai.autobahn.bot/learn#s-radio]
 - **A power bank down to one bar** (พาวเวอร์แบงก์ที่แบตเหลือขีดเดียว): Charge the power bank and phones fully now. ชาร์จมือถือและพาวเวอร์แบงก์ให้เต็มไว้ก่อนไฟดับ [https://baanrodmai.autobahn.bot/learn#s-powerbank]
 - **TV and computer still plugged in** (ปลั๊กทีวีกับคอมที่เสียบค้าง): Unplug them in case of a surge when power returns. ไฟดับ ถอดปลั๊กเครื่องใช้ไฟฟ้า กันไฟกระชากตอนไฟกลับมา [https://baanrodmai.autobahn.bot/learn#s-plugs]

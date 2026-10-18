@@ -13,6 +13,7 @@ import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
 import { kitPlan, kitScore, kitMissing } from '../public/js/kitplan.js';
+import { wrapText } from '../public/js/cards.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const load = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content', `${f}.json`), 'utf8'));
@@ -417,6 +418,24 @@ test('share texts fill every placeholder in both languages', () => {
       const used = [...strings[lang][key].matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
       for (const u of used) assert.ok(allowed.includes(u), `${lang}.${key} uses {${u}}`);
       assert.ok(used.includes('url') || !allowed.includes('url'), `${lang}.${key} has no {url}`);
+    }
+  }
+});
+
+test('card text: a wrapped line never starts with closing punctuation (every ending, both languages)', () => {
+  const strings = load('strings');
+  const ctx = { measureText: (s) => ({ width: [...s].length * 10 }) };
+  // At 155 "The house copes" fits and "!" doesn't: the "!" must go down with its word.
+  assert.deepEqual(wrapText(ctx, 'The house copes! Nearly everything is ready', 155).slice(0, 2), ['The house', 'copes! Nearly']);
+  for (const l of ['th', 'en']) {
+    for (const [key, v] of Object.entries(strings[l])) {
+      if (!key.startsWith('cheer') || !Array.isArray(v)) continue;
+      for (const text of v) {
+        for (let w = 60; w <= 300; w += 5) {
+          const bad = wrapText(ctx, text, w).slice(1).find((line) => /^[!?,.:;)\]}%…”’ๆฯ]/.test(line));
+          assert.ok(!bad, `${l}.${key} at ${w}: "${bad}"`);
+        }
+      }
     }
   }
 });

@@ -1,7 +1,7 @@
 {
   "_readme": "ข้อความในเกมทั้งหมด แก้ได้เลย {ชื่อ} คือค่าที่เกมเติมให้อัตโนมัติ ห้ามลบวงเล็บปีกกา",
   "th": {
-    "tagline": "เกม 60 วิ ดูแลบ้านให้รอด จากน้ำท่วม ฝุ่น และไฟ",
+    "tagline": "เกม 60 วิ ดูแลบ้านให้รอด จากน้ำท่วม ฝุ่น ไฟไหม้ และไฟดับ",
     "heroPrepare": "ฝนจะมาอีกระลอก มาเตรียมบ้านกัน!",
     "heroReturn": "น้ำลดแล้ว แต่อย่าเพิ่งวางใจ มาตรวจบ้านกัน",
     "heroDust": "ฝุ่นมาอีกแล้ว มาทำบ้านให้ปลอดฝุ่นกัน!",
@@ -392,7 +392,7 @@
     "topicDoneToast": "🏅 เก็บครบหมวด {topic} แล้ว!"
   },
   "en": {
-    "tagline": "A 60-second game to keep your home safe from floods, dust and fire",
+    "tagline": "A 60-second game to keep your home safe from floods, dust, fire and power cuts",
     "heroPrepare": "More rain is coming. Let's get the house ready!",
     "heroReturn": "The water's gone, but stay sharp. Let's check the house.",
     "heroDust": "The dust is back. Let's make the house dust-safe!",
@@ -725,7 +725,7 @@
     ],
     "geckoStartStock": [
       "Power's out! Check the fridge first",
-      "It's getting dark. Where's the flashlight?"
+      "It's getting dark. Where's the torch?"
     ],
     "resultStock": "Power-cut ready: {score}/10",
     "shareTextStock": "Power-cut ready: {score}/10 🔦 ({house})\nTitle: “{rank}”{streak}\n{grid}\nSharing with care, so every home is ready when the lights go out 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai",
@@ -733,7 +733,7 @@
     "rankStock": [
       "Rookie Stocker",
       "Home Store Manager",
-      "Ready for Any Blackout"
+      "Ready for Any Power Cut"
     ],
     "stFloodedStock": "Went bad first",
     "floodedToastStock": "{name} went bad: the power was out too long. See the summary at the end.",
@@ -939,7 +939,7 @@
       "sectionStock": "Power cuts and home stock",
       "hazardOutageNav": "🔦 Power cuts & stock",
       "hazardOutageTitle": "Ready for a power cut: what to stock at home, {n} lessons · Baan Rod Mai?",
-      "hazardOutageDesc": "How much water to store, how long fridge food lasts, flashlights, radios, power banks, cold medicine and generators. From agency guidance, with a checklist.",
+      "hazardOutageDesc": "How much water to store, how long fridge food lasts, torches, radios, power banks, cold medicine and generators. From agency guidance, with a checklist.",
       "hazardOutageH1": "Power cuts: what to stock, and how to look after the home without power",
       "hazardOutageIntro": "Every lesson from the power-cut mode of the Baan Rod Mai? game: what to do, why, and where the advice comes from. Several come from international guidance and are marked as such.",
       "toolKit": "🎒 Check how ready your home is (free, 1 minute)",

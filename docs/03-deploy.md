@@ -35,9 +35,10 @@ Search and AI search:
 
 The home check and the plan card (v1.8.0):
 
-- **No new pages, no new settings.** `/?open=kit` and `/?open=plan` (and `/en/?open=…`) are the app shell with a query, like `?mode=` links: Pages serves `index.html`, the game opens the sheet, and the link preview is the main game's. They are not in the sitemap. `/ready` and `/en/ready` link both (`config.json → hazards.outage.tools`).
+- **No new pages, no new settings.** `/?open=kit` and `/?open=plan` (and `/en/?open=…`) are the app shell with a query, like `?mode=` links: Pages serves `index.html`, the game opens the sheet, and the link preview is the main game's. They are not in the sitemap. `/ready` and `/en/ready` link both (`config.json → hazards.outage.tools`), and since v1.8.1 so do `/flood` and `/en/flood` (`hazards.flood.tools`), `/learn`, `/en/learn` and `llms.txt`.
 - **New static files:** `public/content/kit.json`, `public/js/kit.js` and `public/js/kitplan.js`, served and cached like the rest of `/content/` and `/js/`, and precached by the service worker (44 files).
-- **The Function only counts.** `/api/e` accepts three more event names (`kit_open`, `kit_share`, `plan_share`); the allowlist in `functions/api/e.js` must match `public/js/analytics.js`. No answer or typed text is ever sent, so nothing about a household is stored on Cloudflare.
+- **The Function only counts.** `/api/e` accepts four more event names (`kit_open`, `kit_share`, `plan_share` and, since v1.8.1, `plan_open`); the allowlist in `functions/api/e.js` must match `public/js/analytics.js`, so a new event goes into both in the same commit. No answer or typed text is ever sent, so nothing about a household is stored on Cloudflare.
+- **App shortcuts (v1.8.1).** `public/manifest.webmanifest` lists two `shortcuts`, shown on a long-press of the installed app's icon where the browser supports them: "บ้านเราพร้อมแค่ไหน?" → `/?open=kit&source=pwa` and "แผนบ้านรอดของบ้านเรา" → `/?open=plan&source=pwa`, each with `/icons/icon-192.png`. They are static: nothing to set in Cloudflare. The service worker fetches the manifest network-first, like the code ([KNOWLEDGE §7](KNOWLEDGE.md#7-offline-the-service-worker)), but a phone may keep an installed app's old shortcuts until the browser updates the installed app, which it does on its own schedule **[unverified]**. Not yet tried on a real phone ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)).
 
 ## Option A: Git integration (recommended: every content edit deploys itself)
 

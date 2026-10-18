@@ -25,8 +25,9 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0) | – | the topic (e.g. `health`) or `book` | – |
-| `kit_open` | The home check opened (v1.8.0) | – | `start` (quick button) / `result` (power-cut result) / `link` (`/?open=kit`, also from `/ready`) / `plan` (back from the plan card) | – |
+| `kit_open` | The home check opened (v1.8.0) | – | `start` (quick button) / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) | – |
 | `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 (%) |
+| `plan_open` | The plan form opened (v1.8.1) | – | `link` (`/?open=plan`, from a post, a hazard page, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) | – |
 | `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
 
 ## The numbers you asked for
@@ -140,9 +141,11 @@ GROUP BY week, picked ORDER BY week
 
 ## The home check and the plan card (v1.8.0)
 
-Three events, and nothing else: no answer, tick, household size or typed text is ever sent ([KNOWLEDGE §28.5](KNOWLEDGE.md#285-what-stays-on-the-device)). So the numbers can say how often the tools are opened and shared, and how ready the households that share are, but never what any household has or wrote.
+Four events, and nothing else (`plan_open` since v1.8.1): no answer, tick, household size or typed text is ever sent ([KNOWLEDGE §28.5](KNOWLEDGE.md#285-what-stays-on-the-device)). So the numbers can say how often the tools are opened and shared, and how ready the households that share are, but never what any household has or wrote.
 
-- **Opening the plan card sends no event.** `/?open=plan` shows as a `view` labelled `direct`, and a made-and-shared card as `plan_share`. A `/?open=kit` arrival is a `direct` view plus `kit_open` with the label `link`.
+- **Opening the plan form sends `plan_open` (v1.8.1).** A `/?open=plan` arrival is a `direct` view plus `plan_open` with the label `link`; from the home check's list it is labelled `kit`. "← แก้แผน" in the card's share sheet goes back to the form without sending it again; going from the plan to the check and back still sends one event each way. Before v1.8.1 the plan sent nothing until it was shared. A `/?open=kit` arrival is a `direct` view plus `kit_open` with the label `link`.
+- **The app's shortcuts (v1.8.1) count as links.** They open `/?open=kit&source=pwa` and `/?open=plan&source=pwa`; the game doesn't read `source`, and Web Analytics doesn't record the query ([KNOWN_ISSUES #22](KNOWN_ISSUES.md#22-web-analytics-blind-spots)), so a shortcut can't be told from a shared link.
+- **`result` no longer means the power cut only.** Since v1.8.1 the Prepare and Return results offer the check too, so `kit_open` from a result carries that mode (`prepare`, `return`, `stock`); split the `result` row by mode.
 - **`kit_share` is sent per channel tapped,** with the score at that moment, so one household that taps LINE and then Save counts twice. Treat it as share actions, not households.
 - **Scores come only from people who share.** The average of `kit_share`'s value is not how ready Thai homes are; it is how ready the households that chose to share were.
 
@@ -150,7 +153,7 @@ Three events, and nothing else: no answer, tick, household size or typed text is
 ```sql
 SELECT blob1 AS event, blob3 AS label, SUM(_sample_interval) AS n
 FROM baanrodmai_events
-WHERE blob1 IN ('kit_open','kit_share','plan_share') AND timestamp > NOW() - INTERVAL '7' DAY
+WHERE blob1 IN ('kit_open','kit_share','plan_open','plan_share') AND timestamp > NOW() - INTERVAL '7' DAY
 GROUP BY event, label ORDER BY event, n DESC
 ```
 
@@ -164,7 +167,7 @@ WHERE blob1 = 'kit_share' AND timestamp > NOW() - INTERVAL '30' DAY
 GROUP BY week ORDER BY week
 ```
 
-Share rate of the check = `kit_share` ÷ `kit_open`; from the power cut = the `result` row of `kit_open` ÷ `round_end` for `stock`. **[unverified]** on real data; no players yet.
+Share rate of the check = `kit_share` ÷ `kit_open`; from the results = the `result` row of `kit_open` ÷ `round_end` for `prepare`, `return` and `stock` together (since v1.8.1; before, `stock` only). Plan cards made per plan form opened ≈ `plan_share` ÷ `plan_open`, both counted per action, not per household. **[unverified]** on real data; no players yet.
 
 ## Thai and English split
 
@@ -194,3 +197,4 @@ GROUP BY label
 - **Free plan:** 100,000 data points written per day and 10,000 queries per day. Data is kept for 3 months.
 - **Quota math:** one session sends about 4–8 events in a single request. If you approach the limit, set `config.analytics.sampleRate` to `0.5` or `0.2`; the queries above stay correct.
 - **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers and the plan card's text stay in the player's own browser (`localStorage`).
+- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both.

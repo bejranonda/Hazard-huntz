@@ -299,7 +299,7 @@
       {
         "icon": "🔦",
         "th": "ไฟฉายให้ทุกคน พร้อมถ่านสำรอง",
-        "en": "A flashlight for everyone, with spare batteries",
+        "en": "A torch for everyone, with spare batteries",
         "sprite": "torchlit"
       },
       {
@@ -335,7 +335,7 @@
       {
         "icon": "⚠️",
         "th": "เครื่องปั่นไฟตั้งนอกบ้านเท่านั้น ใช้ไฟฉายแทนเทียน",
-        "en": "Generators outdoors only; flashlights, not candles",
+        "en": "Generators outdoors only; torches, not candles",
         "sprite": "generator"
       }
     ]

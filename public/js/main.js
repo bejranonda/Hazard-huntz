@@ -793,7 +793,7 @@ async function showResult(result) {
     <ul class="help-list">${help}</ul>
     <p class="note">${esc(t('helpNote'))}</p>
     ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
-    ${modeOf(mode)?.threat === 'dark' ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
+    ${(C.config.hazards?.[modeOf(mode)?.hazard]?.tools || []).includes('kit') ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
     <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
@@ -809,7 +809,7 @@ async function showResult(result) {
   $('#btn-random').addEventListener('click', () => startFlow(mode, { kind: 'random' }));
   $('#btn-home').addEventListener('click', () => goHome());
   $('#btn-checklist').addEventListener('click', () => openChecklist(mode));
-  $('#btn-kit')?.addEventListener('click', () => openTool('kit', 'result'));
+  $('#btn-kit')?.addEventListener('click', () => openTool('kit', 'result', mode));
   $('#btn-forecast')?.addEventListener('click', () => track('forecast_click', { mode, label: 'result' }));
   for (const a of $$('[data-help]', $('#result'))) {
     a.addEventListener('click', () => track('help_click', { mode, label: a.dataset.help }));
@@ -939,11 +939,11 @@ function goHome() {
 // ------------------------------------------------------------------ sheets
 
 // The home check and the family plan card load only when opened (kit.js).
-async function openTool(which, from) {
+async function openTool(which, from, mode = '') {
   try {
     const m = await import('./kit.js');
     if (which === 'plan') await m.openPlan(from);
-    else await m.openKit(from);
+    else await m.openKit(from, mode);
   } catch (e) {
     console.warn('kit failed', e);
     toast(t('offlineTool'), 2600);

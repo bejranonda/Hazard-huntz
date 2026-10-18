@@ -6,11 +6,11 @@
 - **หลังน้ำลด (After the water drops):** spot the dangers before moving back in.
 - **ฝุ่น PM2.5 (PM2.5 dust, v1.5.0):** shut out the dust and look after the people most at risk.
 - **ไฟไหม้ (House fire, v1.5.0):** find the fire risks, and know how to get out of smoke.
-- **ไฟดับ (Power cut, v1.7.0):** stock up and get through a night without power: keep the fridge shut, flashlights not candles. Any time of year.
+- **ไฟดับ (Power cut, v1.7.0):** stock up and get through a night without power: keep the fridge shut, torches, not candles. Any time of year.
 
 The start screen recommends the mode in season: dust in December–March, fire in April, floods from May. The power cut is never the default; it is always one tap away. A post can also link straight to one mode (`/?mode=dust`, `/?mode=stock`) or to a hazard's own page (`/pm25`, `/ready`).
 
-Outside the round, two tools for the family at home (v1.8.0): **บ้านเราพร้อมแค่ไหน?** (`/?open=kit`) works out what this household needs for a power cut or 3 days at home and how ready it is, and **แผนบ้านรอดของบ้านเรา** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom, to keep on every phone. What people answer and type stays on their phone.
+Outside the round, two tools for the family at home (v1.8.0): **บ้านเราพร้อมแค่ไหน?** (`/?open=kit`) works out what this household needs for a flood, a power cut or 3 days indoors and how ready it is, and **แผนบ้านรอดของบ้านเรา** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom, to keep on every phone. What people answer and type stays on their phone. Since v1.8.1 the check is offered on the flood results as well as the power cut's, both tools are linked from `/flood` and `/learn` as well as `/ready`, and a long-press on the installed app's icon opens either.
 
 Every tap teaches one real action with its source. Most come from Thai agencies (ปภ., กฟน., กฟภ., กรมควบคุมโรค, กรมอนามัย…), cross-checked with WHO or the US Fire Administration where they cover the same ground. Where only a foreign agency gives the advice (the smoke alarm; most power-cut lessons, from the US CDC and Ready.gov), the lesson is marked ⚠️ and says so. Every result becomes a card for the family LINE group.
 
@@ -21,14 +21,14 @@ Every tap teaches one real action with its source. Most come from Thai agencies 
 <img src="docs/screens/13-dust.png" width="200" alt="PM2.5 dust mode">
 <img src="docs/screens/14-fire.png" width="200" alt="House fire mode">
 <img src="docs/screens/16-stock.png" width="200" alt="Power-cut mode">
-<img src="docs/screens/17-kit.png" width="200" alt="Home check: how ready is our house?">
+<img src="docs/screens/17-kit.png" width="200" alt="Home check: how ready is our home?">
 <img src="docs/screens/18-plan-card.png" width="200" alt="Family plan card">
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (19 Oct 2026): v1.8.0, live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (19 Oct 2026): v1.8.1, live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
-> - The code is finished and every automated check passes: 26 rule tests and 93 headless-browser checks, plus CI on every push.
+> - The code is finished and every automated check passes: 27 rule tests and 96 headless-browser checks, plus CI on every push. v1.8.1 came from walking the whole app as a visitor in Thai and English on the smallest phones, and fixing what that found.
 > - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).
 > - The water-level button opens **BKK FloodWatch** (`flood.autobahn.bot`), the owner's own Autobahn Bot project.
 > - Before launch it still needs Web Analytics switched on, the sitemap and the eight hazard pages submitted to the search consoles, a review of 21 safety items flagged ⚠️ and a Thai review of the dust, fire and power-cut lessons and of the home check's ⚠️ lines, a native-speaker language check, and a pass on real phones (including the home check and plan card inside LINE).
@@ -38,14 +38,15 @@ Every tap teaches one real action with its source. Most come from Thai agencies 
 
 - **Plain HTML, CSS and JavaScript with SVG art.** No framework and no build dependencies. It runs on the **free Cloudflare Pages plan**.
 - **Thai and English.** Thai at `/`, English at `/en/`; the first visit picks Thai for Thai browsers or Bangkok time and English for everyone else.
-- **Light:** 208 KB compressed to the start screen and 223 KB to the first game screen, counting the home check's code, which loads only when it opens (the limit is 500 KB).
+- **Light:** 209 KB compressed to the start screen and 223 KB to the first game screen, counting the home check's code, which loads only when it opens (the limit is 500 KB).
 - **Findable by search engines and AI assistants, in both languages.** The game draws itself with JavaScript, so the build also writes plain-HTML pages and files that crawlers can read ([details below](#seo-and-ai-search)).
 - **Made to be shared and replayed (v1.3.0).** The result card prints the link to its own house, a friend's challenge can be answered with both scores, a safety book collects the playable lessons by topic (79 in 8 topics today), and a perfect 10 gets its own stamp.
 - **Knowledge by topic (v1.4.0).** Every lesson has a topic: 🦠 health after floods, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, 🎒 plans, and since v1.5.0 😷 dust and smoke and 🔥 fire safety. The topic in the news gets a card on the start screen, and `/learn#t-health` links straight to it.
 - **A game for the whole year (v1.5.0).** Four modes on one mode registry: flood before and after, PM2.5 dust (a thickening haze, the Air4Thai colours, an Air4Thai link) and house fire (smoke falling from the ceiling, helpline 199), each with its own challenge links, previews and 10-item checklist.
 - **Keeps itself current, links straight to a mode, a page per hazard (v1.6.0).** The owner's switches (the rain warning, the topic in the news) have end dates and turn themselves off, so the start screen can't stay on floods into the dust season. `/?mode=dust` opens the game on one mode for posts and campaigns. `/flood`, `/pm25` and `/fire` (and `/en/…`) each show one hazard's lessons, checklists and helplines, with a ▶ button into the game and a link preview of their own. The shared result card now carries the ending that answers "บ้านรอดไหม?".
-- **A night without power (v1.7.0).** A fifth mode, ไฟดับ: the room darkens over 12 story hours, the clock shows the hours without power ("ไฟดับมา 4 ชม."), and the fridge's food goes bad at 4 hours if nobody deals with it (the US CDC's figure). 13 lessons on water, stock, the fridge and freezer, flashlights not candles, a battery radio, power banks, unplugging and generators; a checklist "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ"; and the page `/ready`. It was prompted by a stockpiling infographic going round Thai social media, and teaches only what agencies back: 10 of its lessons rest partly or wholly on international guidance and are marked ⚠️ until a Thai review. Now 79 playable lessons in five modes and 8 topics.
-- **How ready is our house? (v1.8.0).** Two answers (how many people; small children, older people, daily medicine, pets) give the household's own list: up to 15 things with amounts worked out for it (water 3 L × people × 3 days, a flashlight each, 7 days of daily medicine), each with its source and ⚠️ where it is still under review. Ticks fill a meter, and the result is a card to send to the family (the score, the things still missing, the link). A second card, **the family plan**, holds the shelter, the meeting place, who to contact and who helps whom, with the helplines, for every phone in the house. Answers and text stay on the device; only anonymous counts are sent.
+- **A night without power (v1.7.0).** A fifth mode, ไฟดับ: the room darkens over 12 story hours, the clock shows the hours without power ("ไฟดับมา 4 ชม."), and the fridge's food goes bad at 4 hours if nobody deals with it (the US CDC's figure). 13 lessons on water, stock, the fridge and freezer, torches, not candles, a battery radio, power banks, unplugging and generators; a checklist "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ"; and the page `/ready`. It was prompted by a stockpiling infographic going round Thai social media, and teaches only what agencies back: 10 of its lessons rest partly or wholly on international guidance and are marked ⚠️ until a Thai review. Now 79 playable lessons in five modes and 8 topics.
+- **How ready is our home? (v1.8.0).** Two answers (how many people; small children, older people, daily medicine, pets) give the household's own list: up to 15 things with amounts worked out for it (water 3 L × people × 3 days, a torch each, 7 days of daily medicine), each with its source and ⚠️ where it is still under review. Ticks fill a meter, and the result is a card to send to the family (the score, the things still missing, the link). A second card, **the family plan**, holds the shelter, the meeting place, who to contact and who helps whom, with the helplines, for every phone in the house; empty fields get a dotted line to fill in by hand (v1.8.1). Answers and text stay on the device; only anonymous counts are sent.
+- **Checked as a visitor (v1.8.1).** Every screen, card and page was walked in Thai and English at 320 × 460 and 360 × 640. That found a tagline still naming three hazards, "flashlight" beside "torch" (the English is now British throughout), a card line that could start with "!", a wordmark running into the sun, and Thai words breaking at 320 px; all fixed. The flood pages and results now offer the home check and plan card too, and the installed app has shortcuts to both.
 - **Posts that teach on their own (v1.6.1).** Each hazard has a ready-made set of images for a Facebook album, an Instagram carousel or LINE (four sets since v1.7.0): a cover, one page per lesson with its source, the checklists and the game's address. Open [`/posts`](https://baanrodmai.autobahn.bot/posts) on a phone to save them in order and copy the Thai caption ([04-launch-kit](docs/04-launch-kit.md#posting-the-carousels-v161)).
 - **Plays offline after the first visit,** thanks to a service worker.
 - **Works inside the LINE, Facebook and TikTok in-app browsers.** Where an app blocks sharing or downloads, the game falls back to another way.
@@ -91,9 +92,9 @@ Most AI crawlers and link-preview bots don't run JavaScript, so a game that rend
 
 | Output | For |
 |---|---|
-| [`/learn`](https://baanrodmai.autobahn.bot/learn) and [`/en/learn`](https://baanrodmai.autobahn.bot/en/learn) | Every lesson (correct action, tip, reason, sources, ⚠️ where partly verified), every checklist and the helplines: Thai with English, and English-first. Plain HTML, no script. |
-| [`/flood`](https://baanrodmai.autobahn.bot/flood), [`/pm25`](https://baanrodmai.autobahn.bot/pm25), [`/fire`](https://baanrodmai.autobahn.bot/fire), [`/ready`](https://baanrodmai.autobahn.bot/ready) (v1.7.0) and their `/en/` twins (v1.6.0) | One hazard each: its lessons, checklists and helplines, with ▶ buttons that open the game on that mode. Plain HTML, no script. The addresses come from `config.json → hazards` and never change once published. |
-| `/llms.txt` | A Markdown summary for AI assistants ([llmstxt.org](https://llmstxt.org)), listing both languages |
+| [`/learn`](https://baanrodmai.autobahn.bot/learn) and [`/en/learn`](https://baanrodmai.autobahn.bot/en/learn) | Every lesson (correct action, tip, reason, sources, ⚠️ where partly verified), every checklist, links to the home check and plan card (v1.8.1) and the helplines: Thai with English, and English-first. Plain HTML, no script. |
+| [`/flood`](https://baanrodmai.autobahn.bot/flood), [`/pm25`](https://baanrodmai.autobahn.bot/pm25), [`/fire`](https://baanrodmai.autobahn.bot/fire), [`/ready`](https://baanrodmai.autobahn.bot/ready) (v1.7.0) and their `/en/` twins (v1.6.0) | One hazard each: its lessons, checklists and helplines, with ▶ buttons that open the game on that mode; `/flood` and `/ready` also link the home check and plan card. Plain HTML, no script. The addresses come from `config.json → hazards` and never change once published. |
+| `/llms.txt` | A Markdown summary for AI assistants ([llmstxt.org](https://llmstxt.org)), listing both languages, the hazard pages and (v1.8.1) the two family tools |
 | `/sitemap.xml`, `/robots.txt` | Crawler discovery (12 addresses), with `hreflang` pairs. Search and AI crawlers are welcome; only `/api/` is closed. |
 | `<link rel="canonical">`, `hreflang` and JSON-LD | `WebSite` + `VideoGame` on `/` and `/en/`, and `Article` with source citations on `/learn`, the hazard pages and their English twins. The share-preview pages point their canonical at `/` (Thai) or `/en/` (English). |
 | `X-Robots-Tag: noindex` on `*.pages.dev` | Only the custom domain is indexed |
@@ -134,7 +135,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | 3 | [Deploy to Cloudflare Pages](docs/03-deploy.md) | The live setup, Git and Wrangler steps, the free-plan budget, search setup, and why link previews are pre-rendered |
 | 4 | [Launch kit](docs/04-launch-kit.md) | Thai post copy (Facebook, LINE, TikTok), outreach, the Prepare → Return switch, and the seasonal relaunch |
 | 5 | [Metrics plan](docs/05-metrics.md) | Event dictionary and Analytics Engine SQL for every metric |
-| 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix (48 checks across 8 browser and app combinations) and the live-site checks |
+| 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix (50 checks across 8 browser and app combinations) and the live-site checks |
 
 **Reference for maintainers**
 

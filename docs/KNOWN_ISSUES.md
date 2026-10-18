@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.8.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.8.1 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -82,8 +82,9 @@ What a headless test **cannot** show:
 - how the font, notch and home bar look on real screens
 - audio on iOS when the silent switch is on
 - whether the home check's ticks and the plan card's text are still there when the page is opened again inside LINE, and whether the shared kit and plan cards save there (v1.8.0, [#58](#58-the-home-check-and-the-plan-live-in-one-browser))
+- whether a long-press on the installed app's icon offers the two shortcuts to the home check and the plan card (`manifest.webmanifest → shortcuts`, v1.8.1), and which phones show them **[unverified]**
 
-**To do:** run the 48-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 50-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
 
@@ -127,6 +128,8 @@ These sites refused automated access during the check on 6 Oct 2026:
 
 Their wording was taken from the agencies' statements as republished by กรมประชาสัมพันธ์, or from news articles quoting them. `sources.json` records which, under `kind`. Each claim is still traceable, but the agency's own page was not seen.
 
+On 19 Oct 2026 prd.go.th, the fallback for these reposts, refused automated readers too: a 301 and then a 404 to `curl`, and a 500 block page to headless Chromium, even for its home page ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)). Reposts already cited stay cited; a person checks them in a normal browser.
+
 **Fix:** compare the items against the agencies' own infographics in a normal browser, or ask an agency contact.
 
 ### 10. Sources conflict on soaked mattresses
@@ -142,7 +145,9 @@ The mattress is **not in the game**. Decide which advice to follow, or ask ก�
 
 **Status:** Owner (the owner said on 11 Oct 2026 they will provide the language check) · **Severity:** Medium
 
-The English text (`en`, `ogEn`, `seo.en`) was written alongside the Thai and has had no native-English review either. All Thai copy was written in one pass and checked against the guidelines: the tone, the 80-character tip limit and the guardrails. That covers tips, choices, feedback, the gecko's lines, rank titles and the share texts. A second native speaker should still read everything in `strings.json`, `items.json` and `checklists.json` once, ideally an older family member who represents the forwarding audience.
+The English text (`en`, `ogEn`, `seo.en`) was written alongside the Thai and has had no native-English review either. All Thai copy was written in one pass and checked against the guidelines: the tone, the 80-character tip limit and the guardrails. That covers tips, choices, feedback, the gecko's lines, rank titles and the share texts. A second native speaker should still read everything in `strings.json`, `items.json`, `checklists.json` and `kit.json` once, ideally an older family member who represents the forwarding audience.
+
+The English is written in one variety, British ("torch", "power cut", "litres", "nappies"; [GUIDELINES rule 58](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). The v1.8.1 visitor audit found the power-cut lessons and the home check saying "flashlight" beside the flood lessons' "torch", and the home check saying both "house" and "home"; both were aligned ([F43, F44](#in-v181-19-oct-2026)). A native English reader should still read the tone.
 
 ### 12. Analytics SQL and the Fail-open default are unchecked on a live account
 
@@ -470,6 +475,7 @@ The power-cut mode (v1.7.0) was prompted by a Thai stockpiling infographic, whic
 - **Written for other countries.** The US and Tokyo pages were written for their own homes and services. The lessons keep to general actions with no foreign numbers or laws, and whether they fit Thai homes is what the Thai review should confirm.
 - **What would make them Thai:** a person opening the PRD checklist page in a normal browser (3 L, the radio); MEA (กฟน.) or PEA (กฟภ.) advice on unplugging in a power cut; กรมอนามัย or อย. on fridge and freezer food; a Thai pharmacist or อย. on cold medicine; ปภ. wording on candles and on a can opener in a kit. Add the Thai source beside the international one and mark the lesson ✅ when it says the same. The steps are in [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
 - **Until then,** 5 of the 8 lessons in the `ready` carousel set are ⚠️, and each of those images says "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน". Post that set knowing so ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)).
+- **Source health (19 Oct 2026).** The PRD page behind `s-water` and `s-radio` (`prd-72h`, "เช็กลิสต์ถุงยังชีพ เพื่อการเอาตัวรอดใน 72 ชั่วโมงแรก (น้ำดื่มอย่างน้อย 3 ลิตร/คน/วัน)", also cited by `p-waterfood` and the home check, [#57](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)) could not be read by any tool: `curl` got a 301 from `www.prd.go.th` to `prd.go.th` and then a 404, and headless Chromium a 500 block page, even for the site's home page. So prd.go.th blocks automated readers, and whether the page still exists is unknown. A search engine's index still shows the page with the 3-litre line. Nothing was changed: the owner opens the link in a normal browser in Thailand. If it is gone, look for the same checklist on another PRD or ปภ. page and replace the source; the 3 L would otherwise rest on its title alone ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 
 ### 57. The home check and plan card rest partly on international guidance
 
@@ -484,13 +490,15 @@ The home check (v1.8.0, `kit.json`) lists 15 things a household may need; 9 of t
 | `medcold`, `device` | Ready.gov "Power Outages" only (`readygov-outage`) | International only, as `s-medcold` |
 | `meds` (at least 7 days) | The MOPH's 2013 statement via news (`moph-7days`), ปภ.'s kit (`ddpm-6kit`) | The 7 days are from 2013, as `p-meds` |
 
-The 6 ✅ items rest on Thai agencies, some cross-checked with Ready.gov: food for 3 days (กรมอนามัย, ปภ., the MOPH), a flashlight each (ปภ.; "every household member" is Ready.gov's), charged phones and a power bank, the first aid kit and the documents in a waterproof bag (ปภ.), and the pet's food and carrier or leash (ปภ., กรมอนามัย).
+The 6 ✅ items rest on Thai agencies, some cross-checked with Ready.gov: food for 3 days (กรมอนามัย, ปภ., the MOPH), a torch each (ปภ.; "every household member" is Ready.gov's), charged phones and a power bank, the first aid kit and the documents in a waterproof bag (ปภ.), and the pet's food and carrier or leash (ปภ., กรมอนามัย).
 
 **The plan card:** the hints of the meeting place and the contact rest on Ready.gov "Make A Plan" alone (`readygov-plan`, added in v1.8.0); no Thai agency page on a family meeting place or a contact plan was found on 19 Oct 2026. Both say ⚠️ on the form. The medicine hint (7 days) is ⚠️ as above. The shelter and "who helps whom" hints are Thai (กรมประชาสัมพันธ์, ปภ., กรมอนามัย), and the second "who helps whom" has no hint.
 
 - **Not in the safety table.** [01-safety-content.md](01-safety-content.md) is generated from `items.json`, so the kit's ⚠️ lines are not among #8's 21 (its source list does count the kit's and the plan card's citations). [KNOWLEDGE §28.3](KNOWLEDGE.md#283-the-list-amounts-and-sources) lists every kit line with its sources.
 - **What would make them Thai:** the same reviews as [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) (the PRD page in a normal browser, กรมอนามัย or อย. on cold medicine), plus ปภ. wording on a family meeting place and keeping cash at home, and กรมอนามัย on supplies for small children.
 - **The kit's Thai and English wording** has had no native-speaker reading ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
+- **The water line's source could not be read on 19 Oct 2026.** `water` (3 L × people × 3 days) and `radio` cite the PRD 72-hour checklist (`prd-72h`), which answered every automated reader with a 404 or a block page; whether it still exists is unknown until a person opens it ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance), source health). The build's number check still passes, because the 3 is in the source's title as recorded in `sources.json`.
+- **Since v1.8.1 the check also names floods** ("ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน"): its 3-day amounts come from the same flood-era Thai sources, and `/flood` links it. The ⚠️ lines are the same.
 
 ### 47. The season calendar is editorial
 
@@ -543,7 +551,7 @@ The three rooms were drawn for floods: the Return mud layer and the rain are hid
 
 `/?mode=dust` is the app shell with a query, so LINE and Facebook show the same preview as `/` (the default image and title), not a dust one. Pages are static and the previews are fixed per path ([#23](#23-link-previews-are-pre-rendered-not-drawn-per-request)). The game itself reads the link and opens on the right card. Web Analytics doesn't record the query either ([#22](#22-web-analytics-blind-spots)), so count link arrivals with the `view` event's `link` label ([05-metrics](05-metrics.md#event-dictionary)).
 
-The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/?open=plan` preview as the main game. Post them with the picture of a kit or plan card, or link `/ready`, whose page links both.
+The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/?open=plan` preview as the main game. This still holds in v1.8.1, so a post that links `/?open=kit` or `/?open=plan` ([04-launch-kit](04-launch-kit.md)) shows the game's default preview: post it with the picture of a kit or plan card, or link `/ready` or `/flood` (v1.8.1), whose pages link both and have previews of their own. The app's shortcuts (v1.8.1) open the same links but show no preview.
 
 **When the preview matters,** share the hazard page instead: `/pm25`, `/fire`, `/flood` or `/ready` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
 
@@ -603,6 +611,22 @@ If the check grows, measure it on its own (`gzip -9` of the files) rather than t
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.8.1 (19 Oct 2026)
+
+Found by walking every screen, sheet, card and page as a visitor in Thai and English at 320 × 460 and 360 × 640 ([APPROACH §26](APPROACH_AND_METHOD.md#26-the-visitor-audit-loop-v181)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F42 | The start screen's tagline (`strings.json → tagline` and the static text in `index.html`, copied into every generated page) still said "เกม 60 วิ ดูแลบ้านให้รอด จากน้ำท่วม ฝุ่น และไฟ" / "… from floods, dust and fire", and `manifest.webmanifest → description` left out the power cut. Both were written in v1.5.0; v1.7.0's sweep of the texts about the whole game searched for "Thai agencies", not for what the game covers ([LESSONS E9](LESSONS_LEARNED.md#e-process-documentation-and-git)) | "เกม 60 วิ ดูแลบ้านให้รอด จากน้ำท่วม ฝุ่น ไฟไหม้ และไฟดับ" / "A 60-second game to keep your home safe from floods, dust, fire and power cuts"; the manifest adds "รับมือไฟดับ". The Thai `<title>` of `index.html` (hand-written, "…น้ำท่วม ฝุ่น ไฟไหม้") is now generated from `og.defaultTitle`, which already named ไฟดับ, and the index JSON-LD says "Power cut preparedness" (was "outage"). The build regenerated the pages that copy the start screen. Rule: [GUIDELINES rule 59](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit). |
+| F43 | The English mixed American and British words: the power-cut lessons (`s-candle`, `s-torch`, `s-radio`'s why), the home check's `torch` line, the `stock` checklist, `geckoStartStock` and `seo.en.hazardOutageDesc` said "flashlight", `s-candle`'s why "power outage" and the top rank `rankStock` "Ready for Any Blackout", while the rest of the game (`p-torch` "Torch and spare batteries" in the same topic) says "torch", "power cut", "litres" and "nappies" | "torch" or "torches" everywhere, "power cut" in `s-candle`'s why, "Ready for Any Power Cut". No image re-rendered: the English checklist previews draw only titles, the challenge previews no rank, and the carousels are Thai. Rule: [GUIDELINES rule 58](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); lesson [B10](LESSONS_LEARNED.md#b-safety-content-and-research). |
+| F44 | The home check's English title and card said "How ready is our house?", its buttons "home". The intro and share text named only power cuts, though the 3-day amounts come from the flood-era Thai sources (PRD's 72-hour list, ปภ.) | "How ready is our home?", and "How ready is your home? Check for free" on the card. The intro and share text (th/en) name floods too: "ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน", "Our home is {pct}% ready for 3 days of flood or power cut". |
+| F45 | A wrapped card line could start with closing punctuation: `Intl.Segmenter` returns "!" as a segment of its own, so the English result card broke "The house copes" \| "! Nearly…" | `tokens()` in `cards.js` keeps `! ? , . : ; ) ] } % … ” ’` and Thai ๆ ฯ on the word before. A unit test wraps every ending (th/en) at widths 60–300: the old code made 180 bad breaks, the new 0. Rule: [GUIDELINES rule 60](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit). |
+| F46 | On the result card of the themes with a sun or moon at the top right (return, dust, power cut; x 890–1030), the English wordmark "Baan Rod Mai?" ran into the circle | The wordmark's maximum width is W − 440 (640 px) on those themes, W − 160 on the others; the Thai wordmark is drawn as before. |
+| F47 | At 320 px the home check's four answers sat two per row, and their Thai labels broke mid-word ("มีเด็ก\|เล็ก") | `.kit-flags` columns are at least 150 px (was 140), so under about 360 px they stack in one column. |
+| F48 | The plan card's share sheet had "← กลับไปที่รายการ" (back to the list) but went back to the plan form | Its own label, "← แก้แผน" / "← Edit the plan" (`kit.json → ui.backPlan`). Smoke check: it returns to the form with what was typed. |
+| F49 | The plan card drew only the filled fields, so a card with two or three filled had a big empty gap above the helplines | All six fields every time; an empty one gets a dotted line, so a printed copy can be filled in by hand (`drawPlanCard`). |
+| F50 | Opening the plan card sent no event, so plan-card arrivals (from `/?open=plan` or the home check's list) were invisible; only shares were counted | `plan_open`, labelled `link` or `kit`, in both allowlists. Typed text is still never sent; the privacy smoke check now expects `plan_open` too. |
 
 ### In v1.8.0 (19 Oct 2026)
 

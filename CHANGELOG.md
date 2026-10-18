@@ -4,9 +4,48 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.8.1] — 2026-10-19
+
+A whole-app visitor audit after v1.8.0. Every screen, sheet, card and page was walked as a visitor, in Thai and in English, at 320 × 460 and 360 × 640; each finding was fixed, measured and walked again ([APPROACH §26](docs/APPROACH_AND_METHOD.md#26-the-visitor-audit-loop-v181)). The release also ties the home check and the plan card into the flood pages, `/learn`, `llms.txt` and the installed app. No item, room, slot or `houseVersion` changed, so houses and challenge links are the same and no midnight release is needed.
+
+### Fixed
+
+- **The start screen still described three hazards.** The tagline (`strings.json → tagline`, th/en, and the static text in `index.html`, which every generated page copies) still said "จากน้ำท่วม ฝุ่น และไฟ" / "from floods, dust and fire" after the power cut (v1.7.0). It now reads "เกม 60 วิ ดูแลบ้านให้รอด จากน้ำท่วม ฝุ่น ไฟไหม้ และไฟดับ" / "A 60-second game to keep your home safe from floods, dust, fire and power cuts", and `manifest.webmanifest → description` adds "รับมือไฟดับ". The Thai `<title>` of `index.html` was hand-written and missed ไฟดับ; the build now writes it from `og.defaultTitle`. The index JSON-LD `about` says "Power cut preparedness" (was "Power outage") ([KNOWN_ISSUES F42](docs/KNOWN_ISSUES.md#in-v181-19-oct-2026)).
+- **One English, British.** The power-cut lessons and the home check said "flashlight" while the rest of the game says "torch", "power cut", "litres" and "nappies". Now "torch" or "torches" everywhere: `s-candle` (the right choice, both feedbacks, tip and why), `s-torch` (name, context, right choice, feedback, tip and why), `s-radio`'s why, the home check's `torch` line ("Torches with spare batteries"), two lines of the `stock` checklist, `geckoStartStock` ("It's getting dark. Where's the torch?") and `seo.en.hazardOutageDesc`. `s-candle`'s why says "in a power cut", not "in a power outage", and the top power-cut rank (`rankStock`) is "Ready for Any Power Cut" (was "Ready for Any Blackout"). No image needed re-rendering: the English checklist previews draw only titles, the challenge previews draw no rank, and the carousels are Thai (F43).
+- **The home check said "house" and "home" in one sheet.** Its English title and card said "How ready is our house?" and its buttons "home". Now "How ready is our home?" (`ui.en.title`, `cardTitle`), and the card's call to action "How ready is your home? Check for free" (`cardCta`) (F44).
+- **A card line could start with "!".** `tokens()` in `cards.js` takes words from `Intl.Segmenter`, which returns "!" as a segment of its own, so the English result card could break "The house copes" | "! Nearly…". Closing punctuation (`! ? , . : ; ) ] } % … ” ’`) and Thai ๆ and ฯ now stay with the word before. A new unit test wraps every ending, in Thai and English, at widths 60–300: the old code made 180 such breaks, the new code none (F45).
+- **The English wordmark ran into the sun or moon on the result card.** On the themes that draw one at the top right (return, dust and the power cut, x 890–1030), "Baan Rod Mai?" now shrinks to fit W − 440 (640 px) instead of W − 160; the Thai wordmark is drawn as before (F46).
+- **The home check's questions broke Thai words at 320 px.** The four answers sat two per row and wrapped mid-word ("มีเด็ก|เล็ก"). `.kit-flags` columns are now at least 150 px wide (was 140), so under about 360 px they stack in one column (F47).
+- **The plan card's share sheet said "back to the list" but went back to the plan form.** Its button now reads "← แก้แผน" / "← Edit the plan" (`kit.json → ui.backPlan`) and returns to the form with what was typed (F48).
+- **A plan card with a few fields filled had a big empty gap.** The card now draws all six fields every time; an empty one gets a dotted line, so a printed copy can be filled in by hand (`drawPlanCard`, F49).
+
+### Changed
+
+- **The home check names floods as well as power cuts.** Its intro reads "ตอบ 2 ข้อ แล้วดูว่าบ้านเราควรมีอะไรบ้าง ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน" / "Answer 2 questions and see what your home needs for a flood, a power cut or 3 days indoors", and its share text "บ้านเราพร้อมแล้ว {pct}% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 …" / "Our home is {pct}% ready for 3 days of flood or power cut 🎒 …". The same 3-day amounts come from the flood-era Thai sources (กรมประชาสัมพันธ์'s 72-hour list, ปภ.).
+- **The flood hazard has the tools too:** `config.json → hazards.flood.tools: ["kit", "plan"]`. `/flood` and `/en/flood` link the home check and the plan card under the FloodWatch link.
+- **The result screen's 🎒 button follows the hazard's tools,** not the `dark` threat: a result offers "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน" when its mode's hazard lists `kit` in `config.json → hazards.<hazard>.tools`. Prepare, return and power-cut results show it; dust and fire don't.
+- Version 1.8.1 in `package.json`, `package-lock.json` and `config.json`. The build regenerated every page that copies the start screen (the tagline and the version chip) and the pages with the changed lessons.
+
+### Added
+
+- **`plan_open`,** an anonymous event when the plan form opens, labelled where from (`link`, or `kit` from the home check's list), in both allowlists (`public/js/analytics.js`, `functions/api/e.js`); "← แก้แผน" back to the form doesn't send it again. Before, only shares of the plan card were counted. `kit_open` from a result now carries that result's mode. Nothing typed is ever sent, and the smoke test still checks it.
+- **`/learn` and `/en/learn` link both tools** after the checklists, and **`llms.txt`** has a line for them: "Two family tools that run on the device; nothing typed is sent: Check how ready your home is (free, 1 minute): …/?open=kit · Make your family plan card: …/?open=plan".
+- **App shortcuts** in `manifest.webmanifest → shortcuts`: a long-press on the installed app's icon offers "บ้านเราพร้อมแค่ไหน?" (`/?open=kit&source=pwa`) and "แผนบ้านรอดของบ้านเรา" (`/?open=plan&source=pwa`). Not tried on a real phone yet **[unverified]** ([ROADMAP L6](docs/ROADMAP.md#l6-real-phone-test-matrix)).
+- `kit.json → ui.backPlan` (42 interface texts per language, was 41).
+
 ### Tests
 
-- **The smoke test's 44 px check waits for a sheet to finish sliding in.** CI failed once on a docs-only commit (`51defd8`) because the About sheet's 44 px source links measured just under 44 px mid-slide in Chrome 153. `smallControls()` now waits for `#sheet`'s animations to end, allows 0.01 px of rounding and prints two decimals ([LESSONS D13](docs/LESSONS_LEARNED.md)).
+- 27 rule tests (+1): "card text: a wrapped line never starts with closing punctuation (every ending, both languages)": "The house copes! Nearly everything is ready" at 155 px, then every `cheer…` ending in Thai and English at widths 60–300 in steps of 5.
+- 96 smoke checks (+3): "a flood result offers the home check (the hazard lists it in config.json → hazards.flood.tools)", "/learn and llms.txt link the home check and the plan card", and "plan card: "← แก้แผน" goes back to the form, with what was typed". Two checks look further: a hazard page with `tools` must link them (`/flood`, `/ready` and their English twins), and the privacy check expects `plan_open` beside `kit_open`, `kit_share` and `plan_share`.
+- **The smoke test's 44 px check waits for a sheet to finish sliding in** (`ae51b31`). CI failed once on a docs-only commit (`51defd8`) because the About sheet's 44 px source links measured just under 44 px mid-slide in Chrome 153. `smallControls()` now waits for `#sheet`'s animations to end, allows 0.01 px of rounding and prints two decimals ([LESSONS D13](docs/LESSONS_LEARNED.md#d-testing-and-verification)).
+
+### Checked
+
+- Build: 81 items (+30 decoys), 73 sources, 121 link-preview pages, 81 lessons on `/learn`, 44 files precached, start screen **209 KB** compressed and first game screen **223 KB** (limit 500 KB), no warnings.
+- `npm test`: 27 passed. `npm run smoke`: 96 passed on the pinned day, 18 Oct 2026, and 96 passed as 5 Dec 2026 (`SMOKE_DATE=2026-12-05`).
+- axe-core: nothing found on the start screen (except the wordmark's coral half, [KNOWN_ISSUES #51](docs/KNOWN_ISSUES.md#51-the-wordmarks-coral-half-is-low-contrast)), the home check's questions and list, the plan form, a power-cut result, `/ready`, `/en/ready`, `/flood`, `/learn` and `/posts`.
+- `npm run probe` was not re-run: no item, slot or water setting changed. Houses and challenge links are unchanged.
+- **Source health, no code change.** On 19 Oct 2026 `prd.go.th` (`prd-72h`, the 3 L per person per day behind `p-waterfood`, `s-water`, `s-radio` and the home check's water and radio lines) answered `curl` with a 301 to `prd.go.th` and then a 404, and headless Chromium with a 500 block page, even for its home page. It blocks automated readers, so whether the page still exists is unknown; a search engine's index still shows it with the 3-litre line. The owner opens it in a normal browser in Thailand ([ROADMAP L10](docs/ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [KNOWN_ISSUES #55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
 
 ## [1.8.0] — 2026-10-19
 

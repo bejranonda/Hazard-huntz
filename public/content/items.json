@@ -1089,26 +1089,26 @@
       "name": { "th": "เทียนที่จุดทิ้งไว้", "en": "A candle left burning" },
       "context": { "th": "ไฟดับ จุดเทียนไว้บนโต๊ะข้างผ้าม่าน แล้วทุกคนจะเข้านอน", "en": "With the power out, a candle burns on the table by the curtain, and everyone's off to bed" },
       "choices": [
-        { "kind": "off", "correct": true, "label": { "th": "ดับเทียน แล้วใช้ไฟฉายแทน", "en": "Blow it out and use a flashlight" } },
-        { "kind": "leave", "label": { "th": "จุดทิ้งไว้ ห้องจะได้ไม่มืด", "en": "Leave it burning so the room isn't dark" }, "feedback": { "th": "ดับเทียนทุกครั้งเมื่อออกจากห้องหรือเข้านอน และตอนไฟดับให้ใช้ไฟฉายแทนเทียน", "en": "Blow candles out whenever you leave the room or go to bed, and use flashlights, not candles, in a power cut." } },
-        { "kind": "place", "label": { "th": "จุดเพิ่มอีกเล่มให้สว่างขึ้น", "en": "Light another one for more light" }, "feedback": { "th": "ไฟดับให้ใช้ไฟฉาย ถ้าจุดเทียน ต้องวางห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว (ราว 30 ซม.) และห้ามทิ้งไว้", "en": "Use flashlights in a power cut. A candle needs at least 12 inches (about 30 cm) from anything that burns, and never alone." } }
+        { "kind": "off", "correct": true, "label": { "th": "ดับเทียน แล้วใช้ไฟฉายแทน", "en": "Blow it out and use a torch" } },
+        { "kind": "leave", "label": { "th": "จุดทิ้งไว้ ห้องจะได้ไม่มืด", "en": "Leave it burning so the room isn't dark" }, "feedback": { "th": "ดับเทียนทุกครั้งเมื่อออกจากห้องหรือเข้านอน และตอนไฟดับให้ใช้ไฟฉายแทนเทียน", "en": "Blow candles out whenever you leave the room or go to bed, and use torches, not candles, in a power cut." } },
+        { "kind": "place", "label": { "th": "จุดเพิ่มอีกเล่มให้สว่างขึ้น", "en": "Light another one for more light" }, "feedback": { "th": "ไฟดับให้ใช้ไฟฉาย ถ้าจุดเทียน ต้องวางห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว (ราว 30 ซม.) และห้ามทิ้งไว้", "en": "Use torches in a power cut. A candle needs at least 12 inches (about 30 cm) from anything that burns, and never alone." } }
       ],
-      "tip": { "th": "ไฟดับใช้ไฟฉาย ไม่ใช้เทียน ถ้าจุดเทียน ห้ามทิ้งไว้ตอนออกจากห้องหรือนอน", "en": "In a power cut use flashlights, not candles. Never leave a candle burning." },
-      "why": { "th": "US Fire Administration (FEMA สหรัฐฯ) แนะให้ใช้ไฟฉายแทนเทียนเมื่อไฟดับ ดับเทียนทุกครั้งเมื่อออกจากห้องหรือเข้านอน และวางเทียนห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว (ราว 30 ซม.)", "en": "The US Fire Administration says to use flashlights, not candles, in a power outage, to blow candles out when you leave a room or go to bed, and to keep them at least 12 inches from anything that burns." },
+      "tip": { "th": "ไฟดับใช้ไฟฉาย ไม่ใช้เทียน ถ้าจุดเทียน ห้ามทิ้งไว้ตอนออกจากห้องหรือนอน", "en": "In a power cut use torches, not candles. Never leave a candle burning." },
+      "why": { "th": "US Fire Administration (FEMA สหรัฐฯ) แนะให้ใช้ไฟฉายแทนเทียนเมื่อไฟดับ ดับเทียนทุกครั้งเมื่อออกจากห้องหรือเข้านอน และวางเทียนห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว (ราว 30 ซม.)", "en": "The US Fire Administration says to use torches, not candles, in a power cut, to blow candles out when you leave a room or go to bed, and to keep them at least 12 inches from anything that burns." },
       "sources": ["usfa-candle", "readygov-outage"], "verify": "partial", "topic": "fire",
       "verifyNote": "International guidance only (US Fire Administration, Ready.gov); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10)."
     },
     {
       "id": "s-torch", "mode": "stock", "room": "living",
       "sprite": "torchdead", "doneSprite": "torchlit", "size": [52, 40], "slots": ["high", "table"],
-      "name": { "th": "ไฟฉายถ่านหมด", "en": "A flashlight with flat batteries" },
-      "context": { "th": "ไฟดับ หยิบไฟฉายมาเปิด แต่ถ่านหมดพอดี", "en": "The lights go out, and the flashlight's batteries are flat" },
+      "name": { "th": "ไฟฉายถ่านหมด", "en": "A torch with flat batteries" },
+      "context": { "th": "ไฟดับ หยิบไฟฉายมาเปิด แต่ถ่านหมดพอดี", "en": "The lights go out, and the torch's batteries are flat" },
       "choices": [
-        { "kind": "pack", "correct": true, "label": { "th": "เก็บถ่านสำรองไว้กับไฟฉาย และมีไฟฉายให้ทุกคน", "en": "Keep spare batteries with it, and a flashlight for everyone" } },
-        { "kind": "leave", "label": { "th": "ใช้ไฟจากมือถือไปก่อนก็ได้", "en": "Just use phone lights" }, "feedback": { "th": "ปภ. แนะเตรียมไฟฉายพร้อมถ่านสำรองไว้ในถุงยังชีพ และ Ready.gov แนะให้มีไฟฉายให้ทุกคนในบ้าน", "en": "DDPM puts a flashlight with spare batteries in the emergency kit, and Ready.gov says to have one for every household member." } }
+        { "kind": "pack", "correct": true, "label": { "th": "เก็บถ่านสำรองไว้กับไฟฉาย และมีไฟฉายให้ทุกคน", "en": "Keep spare batteries with it, and a torch for everyone" } },
+        { "kind": "leave", "label": { "th": "ใช้ไฟจากมือถือไปก่อนก็ได้", "en": "Just use phone lights" }, "feedback": { "th": "ปภ. แนะเตรียมไฟฉายพร้อมถ่านสำรองไว้ในถุงยังชีพ และ Ready.gov แนะให้มีไฟฉายให้ทุกคนในบ้าน", "en": "DDPM puts a torch with spare batteries in the emergency kit, and Ready.gov says to have one for every household member." } }
       ],
-      "tip": { "th": "เก็บไฟฉายกับถ่านสำรองไว้ด้วยกัน มีไฟฉายให้ทุกคนในบ้าน", "en": "Keep spare batteries with the flashlight, and a flashlight for everyone." },
-      "why": { "th": "ปภ. ให้ไฟฉายพร้อมถ่านสำรองเป็นหนึ่งใน 6 สิ่งที่ต้องมีในถุงยังชีพ และ Ready.gov แนะให้มีไฟฉายสำหรับทุกคนในบ้านเมื่อไฟดับ", "en": "DDPM lists a flashlight with spare batteries among the 6 things every emergency kit needs, and Ready.gov says to have a flashlight for every household member in a power cut." },
+      "tip": { "th": "เก็บไฟฉายกับถ่านสำรองไว้ด้วยกัน มีไฟฉายให้ทุกคนในบ้าน", "en": "Keep spare batteries with the torch, and a torch for everyone." },
+      "why": { "th": "ปภ. ให้ไฟฉายพร้อมถ่านสำรองเป็นหนึ่งใน 6 สิ่งที่ต้องมีในถุงยังชีพ และ Ready.gov แนะให้มีไฟฉายสำหรับทุกคนในบ้านเมื่อไฟดับ", "en": "DDPM lists a torch with spare batteries among the 6 things every emergency kit needs, and Ready.gov says to have a torch for every household member in a power cut." },
       "sources": ["ddpm-6kit", "readygov-outage"], "verify": "verified", "topic": "plan"
     },
     {
@@ -1121,7 +1121,7 @@
         { "kind": "leave", "label": { "th": "ฟังจากข่าวลือในกลุ่มแชตไปก่อน", "en": "Go by what the chat groups say" }, "feedback": { "th": "ฟังประกาศจากทางการ เช็กลิสต์ถุงยังชีพของกรมประชาสัมพันธ์ใส่วิทยุไว้ในของจำเป็น", "en": "Listen for official news. The Thai government's kit checklist includes a radio." } }
       ],
       "tip": { "th": "เก็บวิทยุใส่ถ่านไว้ ไฟดับ เน็ตช้า ยังฟังประกาศจากทางการได้", "en": "Keep a battery radio: official news still gets through when the power is out." },
-      "why": { "th": "เช็กลิสต์ถุงยังชีพ 72 ชั่วโมงของกรมประชาสัมพันธ์มีไฟฉาย วิทยุ มือถือ และแบตสำรอง และ Ready.gov ใส่วิทยุใช้ถ่านหรือแบบมือหมุนไว้ในชุดของจำเป็น", "en": "The Thai government's 72-hour kit checklist (PRD) lists a flashlight, a radio, a phone and a power bank, and Ready.gov lists a battery-powered or hand-crank radio." },
+      "why": { "th": "เช็กลิสต์ถุงยังชีพ 72 ชั่วโมงของกรมประชาสัมพันธ์มีไฟฉาย วิทยุ มือถือ และแบตสำรอง และ Ready.gov ใส่วิทยุใช้ถ่านหรือแบบมือหมุนไว้ในชุดของจำเป็น", "en": "The Thai government's 72-hour kit checklist (PRD) lists a torch, a radio, a phone and a power bank, and Ready.gov lists a battery-powered or hand-crank radio." },
       "sources": ["prd-72h", "readygov-kit"], "verify": "partial", "topic": "plan",
       "verifyNote": "A search summary of the PRD 72-hour checklist lists the radio; the page refuses automated reading, so confirm it there. Ready.gov lists a battery or hand-crank radio."
     },

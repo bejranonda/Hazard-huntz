@@ -15,13 +15,13 @@
   "featuredTopic": "health",
   "featuredTopicUntil": "2026-11-15",
   "hazards": {
-    "flood": { "slug": "flood" },
+    "flood": { "slug": "flood", "tools": ["kit", "plan"] },
     "dust": { "slug": "pm25" },
     "fire": { "slug": "fire" },
     "outage": { "slug": "ready", "tools": ["kit", "plan"] }
   },
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

@@ -103,7 +103,7 @@
 |---|---|
 | Timer | 55 s, covering **12 story hours** without power. The HUD shows both: "ไฟดับมา 4 ชม. · 37 วิ". The room darkens over the round (a deep-blue dim, heavier at the edges; items stay readable). |
 | Losing an item | Only the fridge can go bad: if the player hasn't tapped it by **4 story hours** (about 18 s with no penalties), its food is lost. The number is the US CDC's "a closed fridge keeps food safe about 4 hours". It gets a grey clock badge and "เสียก่อน" / "Went bad first", and 🌑 in the share grid. Every power-cut house includes the fridge. The full freezer lasts about 48 hours, so it never goes bad in the round; that is how the game teaches "the fridge goes first" without an unsourced eating order. |
-| Hazards | Kitchen: the fridge everyone keeps opening, minced pork left after the night, a full freezer, cans with no opener, too little stored water, the food store. Living room: grandma's medicine that must stay cold, a candle left burning, a flashlight with flat batteries, a battery radio, a power bank on one bar, the TV and computer still plugged in. Front: a generator under the window. |
+| Hazards | Kitchen: the fridge everyone keeps opening, minced pork left after the night, a full freezer, cans with no opener, too little stored water, the food store. Living room: grandma's medicine that must stay cold, a candle left burning, a torch with flat batteries, a battery radio, a power bank on one bar, the TV and computer still plugged in. Front: a generator under the window. |
 | Decoys | A closed rice bin, a battery wall clock, books, a potted plant, dishes in the sink. |
 | Gecko | Carries a torch. "ไฟดับแล้ว! ดูตู้เย็นก่อนเลย" / "มืดแล้ว ไฟฉายอยู่ไหนนะ" |
 | Sources | 3 lessons ✅ (Thai agencies, cross-checked with Ready.gov); 10 ⚠️, most on international guidance only (US CDC, Ready.gov, US Fire Administration). The lesson says so ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). |
@@ -116,15 +116,18 @@
 
 | Element | บ้านเราพร้อมแค่ไหน? (`/?open=kit`) | แผนบ้านรอดของบ้านเรา (`/?open=plan`) |
 |---|---|---|
-| Asks | How many people (1–10, a − / + stepper) and who lives there (small children, older or bedridden people, daily medicine, pets) | Six short fields: the shelter near home, the family meeting place, who to contact if separated, who helps whom (×2), medicine and must-haves |
-| Shows | The household's list: 9 things for every home plus up to 6 by answer, with amounts for this household ("27 ลิตร (3 ลิตร × 3 คน × 3 วัน)", a flashlight each), the agencies per line, and "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน" on lines under review. Ticks fill a meter: "พร้อมแล้ว 33% (มี 3 จาก 9 อย่าง)" | Each field with an example and, for most, a sourced hint ("ยาประจำตัวอย่างน้อย 7 วัน"); the warning not to type ID-card numbers |
-| Card (1080 × 1350) | A score ring, the gecko with a torch (its face follows the score), "มีแล้ว 3 จาก 9 อย่าง", up to 3 things still missing, "บ้านคุณพร้อมแค่ไหน? เช็กฟรี" and `/?open=kit` | The filled fields, the date, the free helplines 1784 · 199 · 1669 · 1555 · 1130 · 1129, "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน" and `/?open=plan` |
-| Ways in | The start screen's quick button 🎒 "บ้านพร้อมไหม?" (then "บ้านพร้อม 70%"), the power cut's result screen, `/ready`, the link | From the check's list, `/ready`, the link |
+| Asks | What the household needs "ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน" (floods named since v1.8.1): how many people (1–10, a − / + stepper) and who lives there (small children, older or bedridden people, daily medicine, pets; one column under about 360 px) | Six short fields: the shelter near home, the family meeting place, who to contact if separated, who helps whom (×2), medicine and must-haves |
+| Shows | The household's list: 9 things for every home plus up to 6 by answer, with amounts for this household ("27 ลิตร (3 ลิตร × 3 คน × 3 วัน)", a torch each), the agencies per line, and "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน" on lines under review. Ticks fill a meter: "พร้อมแล้ว 33% (มี 3 จาก 9 อย่าง)" | Each field with an example and, for most, a sourced hint ("ยาประจำตัวอย่างน้อย 7 วัน"); the warning not to type ID-card numbers |
+| Card (1080 × 1350) | A score ring, the gecko with a torch (its face follows the score), "มีแล้ว 3 จาก 9 อย่าง", up to 3 things still missing, "บ้านคุณพร้อมแค่ไหน? เช็กฟรี" and `/?open=kit` | All six fields, with a dotted line for an empty one so a printed copy can be filled in by hand (v1.8.1), the date, the free helplines 1784 · 199 · 1669 · 1555 · 1130 · 1129, "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน" and `/?open=plan` |
+| Ways in | The start screen's quick button 🎒 "บ้านพร้อมไหม?" (then "บ้านพร้อม 70%"), the result screen of the flood and power-cut modes, `/ready`, `/flood`, `/learn`, the link, and the installed app's shortcut (v1.8.1) | From the check's list, `/ready`, `/flood`, `/learn`, the link, and the installed app's shortcut (v1.8.1) |
 | Kept | `brm:kit` on this device | `brm:plan` on this device |
 | Guardrail | No fear and no shame: the score counts things the house has, and the card lists what to get next | Nothing typed leaves the phone except in the picture the family shares; short fields, no names asked |
 
 - **The quick buttons** (checklists, the home check, helplines, the water-level link) sit two per row with the icon beside the label, so the Thai labels don't break mid-word.
-- **Why a score:** a percentage is something to compare in a family group ("บ้านเราพร้อมรับมือไฟดับ 56% 🎒 แล้วบ้านคุณล่ะ?"), like the game's X/10, and the missing things on the card are the next step. The score counts things, not amounts.
+- **Why a score:** a percentage is something to compare in a family group ("บ้านเราพร้อมแล้ว 56% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ?"), like the game's X/10, and the missing things on the card are the next step. The score counts things, not amounts.
+- **Which results offer the check (v1.8.1):** the 🎒 button "เช็กว่าบ้านเราพร้อมแค่ไหน" appears on a result screen when the mode's hazard lists `kit` in `config.json → hazards.<hazard>.tools`: Prepare, Return and the power cut, whose lessons are about what a household keeps at home. Dust and fire don't list it, so their results don't offer it. The same list puts the two links on the hazard's page (`/flood`, `/ready`). A new hazard decides it in data, not in code.
+- **Back where it says (v1.8.1):** the plan card's share sheet goes back with "← แก้แผน" / "← Edit the plan" to the form, still filled in; the plan form opened from the check goes back with "← กลับไปที่รายการ" to the list.
+- **One name in English:** the check is "How ready is our home?" on its title, buttons and card, and the card asks "How ready is your home? Check for free".
 
 ## Playing a round
 
@@ -267,8 +270,8 @@ The share assets, rendered by the same canvas code as the game:
 ## Sharing design
 
 - **Result card** (1080×1350 PNG, drawn on a canvas in the browser):
-  - logo, mode chip, house date, the gecko's face matching the rank, the headline and big score
-  - **the ending** (v1.6.0): the line that answers "บ้านรอดไหม?", the same one the result gecko says, in a white speech bubble left of the gecko (x 30–360, centred at y 462, the tail pointing at the gecko). The text is 38 px and shrinks to 28 px to fit at most 4 lines; emoji are left out on the card, because canvas fonts can draw them as empty boxes. The card's `alt` text ends with the same line.
+  - logo, mode chip, house date, the gecko's face matching the rank, the headline and big score. On the themes with a sun or moon at the top right (Return, dust, the power cut), the English wordmark shrinks to stay clear of it (v1.8.1)
+  - **the ending** (v1.6.0): the line that answers "บ้านรอดไหม?", the same one the result gecko says, in a white speech bubble left of the gecko (x 30–360, centred at y 462, the tail pointing at the gecko). The text is 38 px and shrinks to 28 px to fit at most 4 lines, and no line starts with closing punctuation such as "!" (v1.8.1); emoji are left out on the card, because canvas fonts can draw them as empty boxes. The card's `alt` text ends with the same line.
   - rank pill, a ✓/!/? row (shapes as well as colours), "บ้านหลังเดียวกัน ท้าเลย!" (or, after a challenge, "เพื่อน 3/10 · เรา 8/10 · บ้านหลังเดียวกัน"), **the challenge link for this house** (v1.3.0), the disclaimer
   - a "เต็มสิบไม่หัก!" / "Perfect 10!" stamp for 10/10
   - bright and warm, readable at chat-thumbnail size

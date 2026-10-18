@@ -208,7 +208,7 @@ Rules for these posts: no photos of real blackouts, storms or damage; no blame o
 
 ### The home check and the plan card (v1.8.0, any time of year)
 
-Two tools that end in a picture a family forwards: **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`) works out what this household needs for a power cut or 3 days at home and how ready it is, and **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom. Good moments: next to a power-cut or flood post, before a long holiday, at the start of the rains, or when a family group is already talking about stocking up.
+Two tools that end in a picture a family forwards: **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`) works out what this household needs for a flood, a power cut or 3 days at home and how ready it is, and **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom. Good moments: next to a power-cut or flood post, before a long holiday, at the start of the rains, or when a family group is already talking about stocking up.
 
 - **Links:** `/?open=kit` and `/?open=plan` (`/en/?open=…` in English) open the tool straight away, but their link preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). Attach a picture, or link `/ready`, which has its own preview and links both tools.
 - **Pictures:** use [17-kit.png](screens/17-kit.png), or a kit card or plan card you make yourself **with the form's example text only**. Never post a real family's plan card: it shows where they meet and who to call.
@@ -251,6 +251,67 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 > แล้วมาทำการ์ดแผนบ้านรอดเก็บไว้ในมือถือทุกคนนะ จะนัดเจอกันที่ไหน ใครดูแลคุณยาย 👉 https://baanrodmai.autobahn.bot/?open=plan
 
 Rules for these posts: never shame a low score ("ยังขาดอีกนิด" is the tone); no lists of what to buy from a shop or a brand; no photos of empty shelves or panic buying.
+
+### Your own post: "ช่วงนี้เห็นคนตื่นตัว…" (v1.8.1, during the rain warning of 18–25 Oct 2026)
+
+Written in the owner's voice, for the owner's own Facebook, LINE family groups and X/Threads. It rides two things people are talking about on 19 Oct 2026: the "ถุงยังชีพ 72 ชั่วโมง" posts going round (the owner saw one; the term is the title of กรมประชาสัมพันธ์'s checklist), and ปภ.'s heavy-rain warning, reported by Thairath on 18 Oct 2026 as "ปภ. ประสาน 35 จังหวัดและ กทม. เตรียมรับมือฝนตกหนัก เสี่ยงน้ำท่วม 18-25 ต.ค.". We could not measure how big the conversation is; no social-media data was available.
+
+How these were checked:
+
+- **Every claim against the app.** Free; no app to install; no sign-up. The check asks how many people live in the home and who (small children, older or bedridden people, daily medicine, pets), lists what to keep with amounts for that household, and turns ticks into a percentage and a card. The plan card holds the meeting place, contact, who helps whom and medicine, with 1784, 199, 1669, 1555, 1130 and 1129. What people type and tick stays on the phone. Every tip names its source, and tips still under review are marked.
+- **A reader test, simulated, not real people.** The drafts were read as three readers: an aunt of 62 in a LINE family group, a 28-year-old scrolling Facebook and X, and a reader who checks every claim. The fixes it led to:
+  - Say plainly that the site is free, made by the owner, and **not a government site**. Next to "ปภ." it read as an official tool, and an unknown `.bot` link with "answer 2 questions" looks like a quiz scam to an older reader.
+  - Quote the ปภ. warning as reported (35 provinces and Bangkok), not "ปภ. warns of floods".
+  - "มีเบอร์ฉุกเฉินให้ครบ" became the actual numbers.
+  - "ตุนของ" became "เตรียมถุงยังชีพ", because ตุน can read as hoarding (กักตุน).
+  - "ทำทิ้งไว้" became "เคยทำไว้", because "ทิ้ง" sounded abandoned.
+  - "กี่ %" became "กี่เปอร์เซ็นต์", and "เท่าไหร่" became "เท่าไร".
+- **No numbers beyond the app's own.** The posts name no amounts. The check shows each amount with its source, so the posts can't drift from it.
+- **Neutral politeness.** The text uses no ครับ or ค่ะ, so the owner can add their own; "ฝากลองดูหน่อยนะ 🙏" keeps it warm for elders.
+
+Before posting:
+
+- **The rain line goes stale after 25 Oct.** Send the LINE version by about 20–21 Oct, and after the 25th drop the ปภ. sentence (the rest still stands).
+- **Attach a picture.** `/?open=kit` previews as the main game ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). Use [19-kit-card.png](screens/19-kit-card.png), a sample kit card for an example household.
+- **Check that counting works** before a big push, so `kit_open` → `kit_share` after the post can be seen ([05-metrics](05-metrics.md)).
+
+**Facebook (personal post, with `19-kit-card.png`):**
+
+> ช่วงนี้เห็นคนตื่นตัวเรื่องรับมือภัยพิบัติกันเยอะ ทั้งแชร์วิธีเตรียมถุงยังชีพ 72 ชั่วโมง และ ปภ. ก็เพิ่งประสาน 35 จังหวัดและ กทม. ให้เตรียมรับมือฝนตกหนัก เสี่ยงน้ำท่วม 18–25 ต.ค. นี้
+> เลยอยากชวนไปลองเว็บที่เคยทำไว้ก่อนหน้านี้ ใช้ฟรี ไม่ต้องโหลดแอป ไม่ต้องสมัคร 🦎
+>
+> "บ้านรอดไหม?" มี 2 อย่างที่อยากให้ลองเป็นพิเศษ
+> 🎒 เช็กว่าบ้านเราพร้อมแค่ไหน: บอกว่าบ้านมีกี่คน มีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำ หรือสัตว์เลี้ยงไหม แล้วจะได้รายการของจำเป็น พร้อมจำนวนที่คำนวณตามบ้านเรา เช่น น้ำดื่มกี่ลิตร ไฟฉายกี่อัน ติ๊กของที่มีแล้ว จะรู้ว่าพร้อมกี่เปอร์เซ็นต์
+> 📝 การ์ดแผนบ้านรอด: กรอกจุดนัดพบ คนที่ต้องโทรหา ใครดูแลใคร ยาประจำตัว แล้วได้การ์ดไว้ส่งให้ทุกคนในบ้านเซฟ ในการ์ดมีเบอร์ 1784 · 199 · 1669 ด้วย
+> 🎮 และเกม 60 วินาที หาจุดเสี่ยงในบ้าน: ก่อนน้ำมา หลังน้ำลด ฝุ่น PM2.5 ไฟไหม้ ไฟดับ
+>
+> ✅ ไม่ใช่เว็บของหน่วยงานรัฐ แต่ทุกข้อบอกที่มาว่ามาจากไหน ข้อที่ยังรอตรวจทานก็ติดป้ายไว้
+> 🔒 สิ่งที่กรอกและติ๊กอยู่ในมือถือเราเท่านั้น ไม่ส่งไปที่ไหน
+>
+> เช็กบ้านเรา 👉 https://baanrodmai.autobahn.bot/?open=kit
+> เล่นเกม 👉 https://baanrodmai.autobahn.bot
+>
+> ฝากลองดูหน่อยนะ เจออะไรแปลก ๆ หรืออยากให้เพิ่มเรื่องไหน บอกกันได้เลย 🙏
+> #บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ #ถุงยังชีพ
+
+**LINE family group** (send it yourself; one link; by about 20–21 Oct):
+
+> ปภ. ประสาน 35 จังหวัดและ กทม. ให้เตรียมรับมือฝนตกหนัก เสี่ยงน้ำท่วม ถึง 25 ต.ค. นี้ 🌧️
+> ลองเช็กกันหน่อยว่าบ้านเรามีของจำเป็นครบหรือยัง
+> เป็นเว็บที่เราทำเองนะ ใช้ฟรี บอกจำนวนคนในบ้าน กับว่ามีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำไหม แล้วจะรู้ว่าควรมีน้ำ อาหาร ยา และอื่นๆ เท่าไร
+> 👉 https://baanrodmai.autobahn.bot/?open=kit
+> ไม่ต้องโหลดแอป ไม่ต้องสมัคร ที่ติ๊กไว้อยู่ในมือถือเราเท่านั้น
+> เช็กเสร็จแล้วส่งการ์ดกลับมาในกลุ่มด้วยนะ ว่าบ้านใครพร้อมกี่เปอร์เซ็นต์ 😊
+
+**X / Threads:**
+
+> ช่วงนี้คนแชร์เรื่องเตรียมถุงยังชีพ 72 ชม. กันเยอะ เลยปัดฝุ่นเว็บฟรีที่เคยทำไว้ 🦎
+> ใส่จำนวนคนในบ้าน + ติ๊กว่ามีใครบ้าง → ได้รายการของจำเป็น พร้อมจำนวนตามบ้านเรา
+> ไม่ต้องสมัคร ที่กรอกอยู่ในเครื่องเรา
+> 👉 https://baanrodmai.autobahn.bot/?open=kit
+> #เตรียมพร้อมรับมือภัยพิบัติ
+
+**Facebook album or Instagram carousel:** use the flood set from `/posts` (its caption is ready there). Its link `/flood` has its own preview and, since v1.8.1, links the check and the plan card.
 
 ## 3. Outreach (who to send it to, and the ask)
 

@@ -4,18 +4,18 @@
 
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
-npm test                 # rule tests (26 in v1.8.0): a year of daily houses in every mode, flooding, the power cut's fridge at 4 hours, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends, the home check's amounts
-npm run smoke            # browser checks (93 in v1.8.0) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm test                 # rule tests (27 in v1.8.1): a year of daily houses in every mode, flooding, the power cut's fridge at 4 hours, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends, the home check's amounts, card lines that never start with closing punctuation
+npm run smoke            # browser checks (96 in v1.8.1) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 SMOKE_DATE=2026-12-05 npm run smoke   # the same, on another Bangkok day (here: dust season)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
 
-Each run ends with its own count (`26 passed, 0 failed` and `93 passed, 0 failed` in v1.8.0); the number the run prints is the reference, not the one written here.
+Each run ends with its own count (`27 passed, 0 failed` and `96 passed, 0 failed` in v1.8.1); the number the run prints is the reference, not the one written here.
 
 The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by default. Only `Date` is moved; time keeps running. What the start screen should show that day comes from `recommend()` in `modes.js`, so the test never reads the real calendar ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)). It covers:
 
-- Android Chrome: a full Prepare round with a decoy, a wrong answer and the result card.
+- Android Chrome: a full Prepare round with a decoy, a wrong answer and the result card; since v1.8.1 the result offers the home check (🎒), because `config.json → hazards.flood.tools` lists it.
 - An iPhone-SE-sized screen (375×548):
   - item tap areas ≥ 44 px (measured 47.5 px)
   - every button, link and expander ≥ 44 px on the game and result screens
@@ -30,9 +30,9 @@ The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by defau
 - **Offline play after the first visit.**
 - Reduced motion, and analytics beacons.
 - What the start screen recommends (v1.6.0): the pinned day's mode, gecko line, "check before you go" link and featured topic; 5 Dec 2026 recommends dust with the air topic and Air4Thai; `/?mode=fire` opens on fire with no round and counts `view · fire · link`; `/?mode=heat` is ignored; a challenge beats `?mode=`; `/en/?mode=dust`, and a visitor from London keeps the link.
-- The hazard pages (v1.6.0): `/flood`, `/pm25`, `/fire`, `/ready` (v1.7.0) and `/en/…` (heading, canonical, `hreflang`, play links, lesson count, JSON-LD, preview image); `/learn`, the sitemap and `llms.txt` link them; at 320 × 460 every control there and on `/learn` is 44 px or more and the play button is on the first screen; `/pm25` → play → the dust card, no round started.
+- The hazard pages (v1.6.0): `/flood`, `/pm25`, `/fire`, `/ready` (v1.7.0) and `/en/…` (heading, canonical, `hreflang`, play links, lesson count, JSON-LD, preview image, and since v1.8.1 the home check and plan card links on a hazard with `tools`: `/flood`, `/ready` and their twins); `/learn`, the sitemap and `llms.txt` link them, and `/learn` and `llms.txt` link both tools (v1.8.1); at 320 × 460 every control there and on `/learn` is 44 px or more and the play button is on the first screen; `/pm25` → play → the dust card, no round started.
 - The ending on the result screen and in the card's `alt` text (v1.6.0).
-- The home check and the plan card (v1.8.0), at 360 × 640 from `/?open=kit`: 4 people with daily medicine give 36 litres of water and list the medicine but not baby items; answers and ticks are kept in `brm:kit`; every control of the questions, the list and the plan form is 44 px or more; the check's card renders at 1080 px with LINE on the first screen; the plan card renders; the typed plan text is in no `/api/e` body, while `kit_open`, `kit_share` and `plan_share` are sent; no page errors.
+- The home check and the plan card (v1.8.0), at 360 × 640 from `/?open=kit`: 4 people with daily medicine give 36 litres of water and list the medicine but not baby items; answers and ticks are kept in `brm:kit`; every control of the questions, the list and the plan form is 44 px or more; the check's card renders at 1080 px with LINE on the first screen; the plan card renders; "← แก้แผน" in its share sheet goes back to the form with what was typed (v1.8.1); the typed plan text is in no `/api/e` body, while `kit_open`, `kit_share`, `plan_open` (v1.8.1) and `plan_share` are sent; no page errors.
 
 ## Manual matrix (real phones)
 
@@ -88,10 +88,14 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 46 | Home check (`/?open=kit` from a chat, and the 🎒 quick button): the stepper and the four answers are easy to tap; the list shows amounts for your household (3 people: 27 ลิตร); ticks move the meter; the start-screen button then reads "บ้านพร้อม …%"; the shared card shows the score and up to 3 missing things, and saves (long-press in-app) | | | | | | | | |
 | 47 | Plan card (`/?open=plan`): Thai typing works in every field (including the keyboard's suggestions), the keyboard doesn't cover the field being typed, the card shows every filled field and the helplines, and it saves or shares; an older relative understands what to fill in | | | | | | | | |
 | 48 | Where the answers live: make a list and a plan inside LINE, close LINE, open the same link from LINE again (they should still be there), then open it in the phone's browser (expected: empty, a separate browser; [KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Note what you see | | | | | | | | |
+| 49 | App shortcuts (v1.8.1): add the game to the home screen, then touch and hold its icon: "บ้านเราพร้อมแค่ไหน?" opens the home check and "แผนบ้านรอดของบ้านเรา" the plan form. Note which phones show no shortcuts (expected on some browsers; **[unverified]**) | | | n/a³ | n/a³ | n/a³ | n/a³ | n/a³ | n/a³ |
+| 50 | Plan card with blanks (v1.8.1): fill in two or three fields, make the card: every field has its box, the empty ones a dotted line; save it, and print it or show it to an older relative: is it clear what to write on the lines? "← แก้แผน" goes back to the form with the text still there | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
 ² Tap areas no longer overlap in the generator ([KNOWN_ISSUES F10](KNOWN_ISSUES.md#fixed)). If a tap still opens the wrong item, note the room, the two items and the phone.
+
+³ Install from the phone's own browser (Safari or Chrome), not from inside an app: the in-app browsers are not expected to offer "add to home screen" **[unverified]**. If one does, note it.
 
 ## Content and preview checks after each content change
 
@@ -103,9 +107,9 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-The build's `budget` line prints the current numbers. In v1.8.0:
+The build's `budget` line prints the current numbers. In v1.8.1 (the same as in v1.8.0):
 
-- Start screen: **208 KB** compressed (HTML + CSS + JS + content JSON + fonts). It counts every file in `js/`, including the home check's `kit.js` and `kitplan.js` (about 6 KB), which load only when the check opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)).
+- Start screen: **209 KB** compressed (HTML + CSS + JS + content JSON + fonts). It counts every file in `js/`, including the home check's `kit.js` and `kitplan.js` (about 6 KB), which load only when the check opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)).
 - First game screen: **223 KB** (adds the first room and the sprites).
 - Limit: 500 KB.
 
@@ -123,6 +127,7 @@ Run these against https://baanrodmai.autobahn.bot after any change to the build,
 | `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 81 each, and 21 ⚠️ flags (the summary at the top of [01-safety-content.md](01-safety-content.md) has the current counts) |
 | Hazard pages are complete | Count `<article` in `/flood`, `/pm25`, `/fire`, `/ready` and their `/en/` twins | 43, 12, 13 and 13 |
 | Sitemap | Count `<loc>` in `/sitemap.xml` | 12 |
+| Tool links (v1.8.1) | Search `/flood`, `/ready`, `/learn` (and `/en/…`) and `/llms.txt` for `?open=kit` and `?open=plan`; read `/manifest.webmanifest` | Both links on each; the manifest's `description` names "รับมือไฟดับ" and it has two `shortcuts` |
 | Only the custom domain is indexable | `curl -sI` the `*.pages.dev` address and the custom domain | `x-robots-tag: noindex` on `*.pages.dev` only |
 | Phone-sized load | Headless Chromium, 390×760, touch | No console errors; the footer link to `/learn` is ≥ 44 px |
 | Rich Results Test, Search Console, Bing | Owner, in the web tools | Not done yet ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) |

@@ -786,7 +786,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .stepper { display: flex; align-items: center; gap: 14px; }
 .step-btn { width: 52px; height: 52px; border: 2px solid var(--ink); border-radius: 50%; background: var(--sun); font-size: 26px; font-weight: 600; line-height: 1; cursor: pointer; box-shadow: var(--press); }
 .stepper output { min-width: 48px; text-align: center; font-size: 30px; font-weight: 600; }
-.kit-flags { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.kit-flags { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; } /* one column under ~360 px, so Thai labels don't break mid-word */
 .kit-flag { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 12px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); cursor: pointer; font-size: 15px; }
 .kit-flag input, .kit-row input { width: 24px; height: 24px; flex: 0 0 24px; accent-color: var(--ok); }
 .kit-flag:has(input:checked) { border-color: var(--ink); background: var(--sun); }

@@ -21,6 +21,7 @@ if (SCREENS) fs.mkdirSync(SCREENS, { recursive: true });
 const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/config.json'), 'utf8'));
 const STR = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/strings.json'), 'utf8'));
 const ITEMS = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/items.json'), 'utf8')).items;
+const KIT = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/kit.json'), 'utf8'));
 const CAROUSEL = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/carousel.json'), 'utf8'));
 setModes(CFG.modes);
 const capM = (id) => id.charAt(0).toUpperCase() + id.slice(1);
@@ -244,6 +245,7 @@ try {
     });
     check('replay buttons sit above the lessons', order[0] < order[1], order.map((x) => x.toFixed(0)).join(' < '));
     check('safety book counts the new lessons', /\+\d/.test((await page.textContent('#btn-book-new').catch(() => '')) || ''));
+    check('a flood result offers the home check (the hazard lists it in config.json → hazards.flood.tools)', await page.isVisible('#btn-kit'));
     check('no page errors (Android, prepare)', !page.errors.length, page.errors.join(' | '));
     // Events are sent when the page is hidden. Closing the context does not
     // reliably fire that on every runner, so trigger it here.
@@ -650,7 +652,7 @@ try {
   // 10. Hazard pages: /flood, /pm25, /fire and their English twins (v1.6.0).
   // The server falls back to index.html, so check content, not the status.
   {
-    const hz = Object.entries(CFG.hazards).map(([id, v]) => ({ id, slug: v.slug, modes: CFG.modes.filter((m) => m.hazard === id).map((m) => m.id) }));
+    const hz = Object.entries(CFG.hazards).map(([id, v]) => ({ id, slug: v.slug, tools: v.tools || [], modes: CFG.modes.filter((m) => m.hazard === id).map((m) => m.id) }));
     const site = CFG.siteUrl.replace(/\/$/, '');
     for (const h of hz) {
       const n = ITEMS.filter((it) => h.modes.includes(it.mode) && it.enabled !== false).length;
@@ -664,14 +666,17 @@ try {
           && h.modes.every((m) => html.includes(`href="${pre}/?mode=${m}"`))
           && (html.match(/<article /g) || []).length === n
           && ld['@type'] === 'Article' && ld.citation?.length > 0
-          && html.includes(`/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0]}.png`);
-        check(`${pre}/${h.slug}: H1, canonical, hreflang, play links, ${n} lessons, JSON-LD, preview image`, ok);
+          && html.includes(`/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0]}.png`)
+          && h.tools.every((tool) => html.includes(`href="${pre}/?open=${tool}"`));
+        check(`${pre}/${h.slug}: H1, canonical, hreflang, play links, ${n} lessons, JSON-LD, preview image${h.tools.length ? `, ${h.tools.join(' + ')} links` : ''}`, ok);
       }
     }
     const learn = await (await fetch(`${BASE}/learn`)).text();
     const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
     const llms = await (await fetch(`${BASE}/llms.txt`)).text();
     check('/learn, sitemap.xml and llms.txt link every hazard page', hz.every((h) => learn.includes(`href="/${h.slug}"`) && sitemap.includes(`${site}/${h.slug}</loc>`) && sitemap.includes(`${site}/en/${h.slug}</loc>`) && llms.includes(`${site}/${h.slug} `)));
+    const tools = [...new Set(hz.flatMap((h) => h.tools))];
+    check('/learn and llms.txt link the home check and the plan card', tools.length === 2 && tools.every((tool) => learn.includes(`href="/?open=${tool}"`) && llms.includes(`${site}/?open=${tool}`)), tools.join(', '));
 
     // The smallest phone: every control is 44 px and the play button is on the first screen.
     const { ctx, page } = await newPage({ width: 320, height: 460, ua: UA.iphone });
@@ -748,12 +753,16 @@ try {
     await page.waitForFunction(() => document.querySelector('#kit-img')?.naturalWidth === 1080, null, { timeout: 15000 });
     await page.click('[data-k="copy"]');
     check('plan card controls >= 44 px; the card renders', !smallP.length, smallP.join(', '));
+    const backLabel = (await page.textContent('#kit-back')).trim();
+    await page.click('#kit-back');
+    await page.waitForSelector('#plan-make');
+    check('plan card: "← แก้แผน" goes back to the form, with what was typed', backLabel === KIT.ui.th.backPlan && (await page.inputValue('input[name="meet"]')) === 'PRIVATE-MEETING-PLACE', backLabel);
     await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
     await page.waitForTimeout(500);
     const leaked = sent.filter((b) => /PRIVATE|081-234/.test(b));
     const names = new Set(events.map((e) => e[0]));
-    check('the plan text never leaves the device; only counts are sent (kit_open, kit_share, plan_share)',
-      !leaked.length && ['kit_open', 'kit_share', 'plan_share'].every((n) => names.has(n)), `${leaked.length} leaked, events: ${[...names].filter((n) => /kit|plan/.test(n)).join(', ')}`);
+    check('the plan text never leaves the device; only counts are sent (kit_open, kit_share, plan_open, plan_share)',
+      !leaked.length && ['kit_open', 'kit_share', 'plan_open', 'plan_share'].every((n) => names.has(n)), `${leaked.length} leaked, events: ${[...names].filter((n) => /kit|plan/.test(n)).join(', ')}`);
     check('no page errors (home check and plan card)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }

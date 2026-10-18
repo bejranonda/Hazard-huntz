@@ -2,7 +2,7 @@
 
 A reference for anyone maintaining บ้านรอดไหม?. It covers every rule, constant and formula in the game, the content model, the platform facts the design depends on, and the research behind it.
 
-Facts are as of **19 Oct 2026** (v1.8.0). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
+Facts are as of **19 Oct 2026** (v1.8.1). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
 What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
 
@@ -62,8 +62,9 @@ The game teaches the correct action for each of those moments, one tap at a time
 | ไฟดับ | *Power cut*: `mode: "stock"` (v1.7.0, §27), year-round |
 | story hours | The power cut's clock: `round.stock.hours` (12) spread over the 55 s round, shown in the HUD as "ไฟดับมา 4 ชม." |
 | `lostAfter` | An item field (power cut only): the story hour at which the item goes bad if nobody dealt with it. Only the fridge has it (4) |
-| บ้านเราพร้อมแค่ไหน? | *How ready is our house?*: the home check, `/?open=kit` (v1.8.0, §28). Its things to have are "kit items" in `kit.json`, not lessons |
+| บ้านเราพร้อมแค่ไหน? | *How ready is our home?* (the English title since v1.8.1; "house" before): the home check, `/?open=kit` (v1.8.0, §28). Its things to have are "kit items" in `kit.json`, not lessons |
 | แผนบ้านรอด | *Our family safety plan*: the plan card, `/?open=plan` (v1.8.0, §28.4) |
+| `tools` | `config.json → hazards.<hazard>.tools`: the tools (`kit`, `plan`) a hazard offers. They are linked on its page (`/ready` since v1.8.0, `/flood` since v1.8.1), and since v1.8.1 `kit` also puts the 🎒 button on its modes' result screens (§28.2) |
 | `kit` | Two different things: the home check (`kit.json`, `kit.js`, the `kit_open` event, `brm:kit`), and the card-drawing helpers that `cards.js` exports as `kit` (v1.6.1, §26), which `kit.js` imports as `draw` |
 | น้องจก | The mascot, a gecko (จิ้งจก) in yellow rubber boots. In Thai folk belief a gecko's chirp (จิ้งจกทัก) is a friendly warning. |
 | target | An item with a right action. It counts toward the score. |
@@ -253,13 +254,13 @@ Every file is in `public/content/`. The build validates all of them (section 6).
   - `og`: Thai link-preview texts, and `ogEn`: their English twins (the build fails if a key is missing from `ogEn`). Both are used by the build and by the image renderer.
   - `seo`: the text of `/learn`, the hazard pages and `llms.txt` (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`). The hazard pages use `byHazard`, `allLessons`, `playMode`, `hazard<H><Nav|Title|Desc|H1|Intro>` (§25.4) and, for a hazard with `tools`, `toolKit` and `toolPlan` (v1.8.0).
 - **`checklists.json`:** `prepare`, `return`, `dust`, `fire` and `stock` (v1.7.0), each `{title, items: exactly 10 × {icon, th, en, sprite?}}`.
-- **`kit.json`** (v1.8.0, loaded only when the home check or the plan card opens): `people {min, max, default}`, `flags[]` (`{id, icon, label{th,en}}`: `baby`, `elder`, `meds`, `pet`), `items[]` (`{id, for?, icon, label{th,en}, qty?, sources[], verify}`), `plan[]` (`{id, icon, label, hint?, placeholder, max, sources?, verify?}`) and `ui.th` / `ui.en` (41 interface texts each). `qty` is one of `{perPersonPerDay, days, unit}`, `{perPerson, unit}`, `{days, people: true}` or `{days}`. Details in §28.
+- **`kit.json`** (v1.8.0, loaded only when the home check or the plan card opens): `people {min, max, default}`, `flags[]` (`{id, icon, label{th,en}}`: `baby`, `elder`, `meds`, `pet`), `items[]` (`{id, for?, icon, label{th,en}, qty?, sources[], verify}`), `plan[]` (`{id, icon, label, hint?, placeholder, max, sources?, verify?}`) and `ui.th` / `ui.en` (42 interface texts each since v1.8.1, with `backPlan`). `qty` is one of `{perPersonPerDay, days, unit}`, `{perPerson, unit}`, `{days, people: true}` or `{days}`. Details in §28.
 - **`carousel.json`** (v1.6.1, not loaded by the game): `sets.<hazard>` (the lessons per post set, `outage` since v1.7.0) and the frame text in `th` and `en` (§26).
 - **`helplines.json`:** `{number, main, who{th,en}, what{th,en}, source}`. Numbers have 3–5 digits. `main: true` puts the number on the cards.
 - **`config.json`:**
   - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1)
   - `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `version`, `houseVersion`
-  - `modes` (the registry, §22.3), `topics` (§21), `hazards` (the hazard pages' slugs, §25.4, and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage`: links on that page to the home check and the plan card, §28.2)
+  - `modes` (the registry, §22.3), `topics` (§21), `hazards` (the hazard pages' slugs, §25.4, and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2)
   - `round` (section 3; `round.stock.hours` and `round.stock.dark` for the power cut, §27.4)
   - `analytics.endpoint`, `analytics.sampleRate`
   - `features.comboRun`
@@ -307,7 +308,7 @@ A carousel lesson that isn't ✅ verified is no longer a warning (v1.7.0): the `
 
 **4. Service worker.** It fills `tools/sw.template.js` with the precache list (44 files since v1.8.0, including `/en/`, `kit.js`, `kitplan.js` and `kit.json`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **208 KB**, or **223 KB** including the first room and the sprites (v1.8.0; 200 and 215 KB in v1.7.0, 188 and 201 KB in v1.6.1). It counts every file in `js/`, including `kit.js` (about 5.5 KB) and `kitplan.js` (0.8 KB), which the start screen loads only when the home check opens, so most of v1.8.0's 8 KB is code a first visit doesn't fetch ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)); `kit.json` isn't counted. In v1.7.0 the 12 KB were the fifth mode's content, which the start screen loads: mostly its 13 lessons and 5 decoys (`items.json`, about +7 KB compressed), then its strings, sources and checklist; its sprites added about 2 KB more to the first game screen.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **209 KB**, or **223 KB** including the first room and the sprites (v1.8.0; 200 and 215 KB in v1.7.0, 188 and 201 KB in v1.6.1). It counts every file in `js/`, including `kit.js` (about 5.5 KB) and `kitplan.js` (0.8 KB), which the start screen loads only when the home check opens, so most of v1.8.0's 8 KB is code a first visit doesn't fetch ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)); `kit.json` isn't counted. In v1.7.0 the 12 KB were the fifth mode's content, which the start screen loads: mostly its 13 lessons and 5 decoys (`items.json`, about +7 KB compressed), then its strings, sources and checklist; its sprites added about 2 KB more to the first game screen.
 
 **6. `--docs`.** Regenerates the summary (between `<!-- SUMMARY:START -->` and `<!-- SUMMARY:END -->`), the table, the flags and the references in `docs/01-safety-content.md` from `items.json` and `sources.json`. Without `--docs` the build only compares the file with what it would write, and warns if it is out of date (v1.6.0).
 
@@ -377,7 +378,7 @@ Only the Facebook tokens are documented by Meta; the others were taken from real
 - images use `data:` URLs
 - LINE gets `?openExternalBrowser=1`, which opens the phone's browser
 
-**Cards** are drawn on a `<canvas>` by `cards.js`. `svgdraw.js` is a small SVG-to-canvas renderer: Path2D, groups, `use`, text and transforms. Drawing SVG through an `<img>` can taint the canvas in some browsers, blocking the PNG export (older Safari is one), and fonts and `use` render unreliably that way. So the renderer avoids it. Thai lines are wrapped with `Intl.Segmenter('th', {granularity: 'word'})`, because Thai writes no spaces between words.
+**Cards** are drawn on a `<canvas>` by `cards.js`. `svgdraw.js` is a small SVG-to-canvas renderer: Path2D, groups, `use`, text and transforms. Drawing SVG through an `<img>` can taint the canvas in some browsers, blocking the PNG export (older Safari is one), and fonts and `use` render unreliably that way. So the renderer avoids it. Thai lines are wrapped with `Intl.Segmenter('th', {granularity: 'word'})`, because Thai writes no spaces between words. The segmenter returns punctuation as words of its own, so since v1.8.1 `tokens()` joins closing punctuation (`! ? , . : ; ) ] } % … ” ’`) and Thai ๆ and ฯ to the word before: no line starts with one ([GUIDELINES rule 60](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 
 ## 9. Analytics and privacy
 
@@ -388,8 +389,8 @@ Only the Facebook tokens are documented by Meta; the others were taken from real
   - `POST /api/e` takes at most 4,096 bytes and 25 events, cleans every field to `[\w\-.:]` and writes one Analytics Engine data point per event: `indexes: [name]`, `blobs: [name, mode, label, lang]`, `doubles: [value]`.
 - **Sampling:** `config.analytics.sampleRate` decides once per page load whether this player is counted. The SQL uses `SUM(_sample_interval)`, so totals stay correct.
 - **Language in the numbers:** since 13 Oct 2026 every event carries the player's language (`th` or `en`, stored as `blob4`; [KNOWN_ISSUES F22](KNOWN_ISSUES.md#after-v122-13-oct-2026)). Cloudflare Web Analytics also counts `/en/…` paths separately from `/…` paths ([05-metrics.md](05-metrics.md)).
-- **How a visit arrived:** `view` is labelled `direct`, `challenge`, `checklist` or, since v1.6.0, `link` (a `?mode=` link, with the mode; §25.3). A `/?open=kit` arrival is a `direct` view plus `kit_open` with the label `link` (§28.6).
-- **The home check and plan card (v1.8.0)** add three events, `kit_open`, `kit_share` (the score in % as the value) and `plan_share`. Their answers, ticks and typed text never leave the device; a smoke check reads every `/api/e` body to prove it (§28.5).
+- **How a visit arrived:** `view` is labelled `direct`, `challenge`, `checklist` or, since v1.6.0, `link` (a `?mode=` link, with the mode; §25.3). A `/?open=kit` or `/?open=plan` arrival is a `direct` view plus `kit_open` or `plan_open` with the label `link` (§28.6).
+- **The home check and plan card (v1.8.0)** add four events: `kit_open`, `kit_share` (the score in % as the value), `plan_share` and, since v1.8.1, `plan_open`. Their answers, ticks and typed text never leave the device; a smoke check reads every `/api/e` body to prove it (§28.5).
 - **No IP, user agent, ID, cookie or location is stored.** Scores, the home check's answers and the plan card's text stay in `localStorage`. There is nothing to ask consent for under the PDPA. The About sheet says this in Thai and English.
 
 ## 10. Cloudflare platform facts
@@ -602,9 +603,9 @@ What the build does for search, why, and how sure we are. Facts about *this site
 
 | File or tag | Where it comes from | Notes |
 |---|---|---|
-| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 81 articles (one per item, ordered by mode then room) after a "By hazard" row of links (v1.6.0) and an index by topic (`#t-health` and so on), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 21 partly verified items carry "⚠️ under review". About 167 KB, 32 KB gzipped (v1.7.0). No script. |
-| `/flood`, `/pm25`, `/fire` (v1.6.0), `/ready` (v1.7.0) | the same files, one hazard each | Only that hazard's lessons (43, 12, 13, 13), its checklists and the helplines, with ▶ play buttons to `/?mode=<id>`. No script. See §25.4. |
-| `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
+| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 81 articles (one per item, ordered by mode then room) after a "By hazard" row of links (v1.6.0) and an index by topic (`#t-health` and so on), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 21 partly verified items carry "⚠️ under review". After the checklists, since v1.8.1, links to the home check and the plan card. About 167 KB, 32 KB gzipped (v1.7.0). No script. |
+| `/flood`, `/pm25`, `/fire` (v1.6.0), `/ready` (v1.7.0) | the same files, one hazard each | Only that hazard's lessons (43, 12, 13, 13), its checklists and the helplines, with ▶ play buttons to `/?mode=<id>`; `/ready` (v1.8.0) and `/flood` (v1.8.1) also link the home check and the plan card. No script. See §25.4. |
+| `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). Since v1.8.1 one line names the two family tools and their links: "Two family tools that run on the device; nothing typed is sent: …/?open=kit · …/?open=plan". It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
 | `/sitemap.xml` | 12 addresses: `/`, `/learn`, `/flood`, `/pm25`, `/fire`, `/ready` and their `/en/` twins, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
 | `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
 | `<link rel="canonical">` and `hreflang` | the OG block, and the page template for `/learn` and the hazard pages | Each indexable page points at itself (`/`, `/learn`, `/pm25`, `/en/`, `/en/learn`, `/en/pm25` and so on); the 60 Thai share pages → `/` and the 60 English ones → `/en/`. Each indexable page lists its twin with `hreflang` (§18). |
@@ -685,9 +686,11 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 - 61 English preview images in `public/og/en/` (default, 55 challenge scores, 5 checklists; v1.7.0), drawn by the same canvas code from `strings.json → ogEn`. The wordmark follows the language: Thai "บ้านรอดไหม?" or English "Baan Rod Mai?" (`strings.json → logoA/logoB`), on the start screen, the result card, the checklist image and every preview image; the canvas shrinks it to fit. The English default image reads *"Will the house survive? A 60-second home-safety game"* under it; the Thai one lists "น้ำท่วม · ฝุ่น · ไฟไหม้ · ไฟดับ" (v1.7.0).
 - English share texts carry `#BaanRodMai #FloodSafety`; the Thai ones keep `#บ้านรอดไหม`.
 
+**One English: British.** The English text is British English: "torch", "power cut", "litres", "nappies", "colour". Agency names keep their own spelling (World Health Organization, Centers for Disease Control and Prevention), and a source's `note` quotes it as written. v1.7.0–1.8.0 had let the American pages behind the power-cut lessons bring in "flashlight", "power outage" and "Blackout"; v1.8.1 aligned them ([KNOWN_ISSUES F43](KNOWN_ISSUES.md#in-v181-19-oct-2026), [GUIDELINES rule 58](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). The JSON-LD `about` in `tools/build.mjs` still names "Power outage preparedness" for the power cut.
+
 **Honesty for an international audience.** Most advice comes from Thai agencies, some from international guidance (marked ⚠️, §27.2), and the hotlines are Thai numbers. The English help sheet, `/en/learn`, the checklist preview and `llms.txt` say so and tell people outside Thailand to follow their local authorities and emergency number. Since v1.7.0 they no longer say *every* tip is from Thai agencies ([KNOWN_ISSUES F39](KNOWN_ISSUES.md#in-v170-19-oct-2026)), and since v1.8.0 neither does the English checklist preview ([F41](KNOWN_ISSUES.md#in-v180-19-oct-2026)). **No foreign numbers were added**, because none were verified.
 
-**The wordmark.** The two-colour title is drawn from `strings.json → logoA/logoB` in the page, on the result card, on the checklist image and on every preview image (`cards.js → logo()`; the canvas shrinks it to fit when the English words are wider than the space). The static `/en/` page carries the English text, so it never flashes Thai.
+**The wordmark.** The two-colour title is drawn from `strings.json → logoA/logoB` in the page, on the result card, on the checklist image and on every preview image (`cards.js → logo()`; the canvas shrinks it to fit when the English words are wider than the space). On the result card of the themes with a sun or moon at the top right (return, dust and the power cut, x 890–1030), the space is W − 440 (640 px) instead of W − 160, so "Baan Rod Mai?" stays clear of the circle; the Thai wordmark is drawn as before (v1.8.1). The static `/en/` page carries the English text, so it never flashes Thai.
 
 **How to add a language** (what it would take; only Thai and English exist): add a table next to `th`/`en` in `strings.json` and every `*.en` object in the content files, an `og` twin and `seo` block, agency names, a `logoA/logoB` pair, a path prefix and `hreflang` entries in `build.mjs`, preview images in `tools/render.html`, and rows in the test matrix. See [KNOWN_ISSUES #37](KNOWN_ISSUES.md#37-the-international-version-is-english-only-with-thai-advice-and-hotlines).
 
@@ -932,7 +935,7 @@ The power cut (`stock`, v1.7.0) has no `months`, so rule 3 never picks it: it is
 | outage (v1.7.0) | `ready` | `/ready` | `/en/ready` | stock | 13 | none | `og/checklist-stock.png` |
 
 - **Generated** by `tools/build.mjs` into `public/<slug>.html` and `public/en/<slug>.html`; never edit them by hand. Cloudflare Pages serves `/pm25` from `pm25.html` and redirects `/pm25.html` to `/pm25` with a 308, as it does for the challenge pages (§8).
-- **Order on the page:** the top links (the game, all lessons, the other language), the H1, the ▶ play button to `/?mode=<id>` (`seo.playMode`, with the mode's name and round length; one per mode, so two on `/flood`), the intro (the English pages add that the advice and helplines are Thai), the "check before you go" link, the date updated, the lessons by mode, the hazard's checklists, the helplines, the play buttons again, the "อ่านตามภัย / By hazard" row (this page marked with `aria-current`), and the disclaimer.
+- **Order on the page:** the top links (the game, all lessons, the other language), the H1, the ▶ play button to `/?mode=<id>` (`seo.playMode`, with the mode's name and round length; one per mode, so two on `/flood`), the intro (the English pages add that the advice and helplines are Thai), the "check before you go" link, the links to the home check and the plan card for a hazard with `tools` (`/ready` since v1.8.0, `/flood` since v1.8.1), the date updated, the lessons by mode, the hazard's checklists, the helplines, the play buttons again, the "อ่านตามภัย / By hazard" row (this page marked with `aria-current`), and the disclaimer.
 - **Search signals:** a canonical link to itself, `hreflang` th / en / x-default, `og:url`, the preview image of the hazard's first mode's checklist (`/og/` or `/og/en/`; no new images), and `Article` JSON-LD whose `citation` lists the sources of its lessons. Both languages are in the sitemap and `llms.txt`, and `/learn` and `/en/learn` link them from the same "By hazard" row.
 - **Slugs** live in `config.json → hazards`. The build stops unless each one is lowercase letters, digits or "-", is unique, isn't a reserved site path (`c`, `checklist`, `en`, `learn`, `api`, `js`, `css`, `content`, `art`, `fonts`, `icons`, `og`, `share`, `index`, `sw`, `robots`, `sitemap`, `llms`, `manifest`, `posts`) and doesn't match an existing `public/<slug>`; every hazard in the registry needs one. A slug must never change once published, because shared links and search results point at it.
 - **Strings** in `seo.th` and `seo.en`: `byHazard`, `allLessons`, `playMode`, and `hazard<Flood|Dust|Fire|Outage><Nav|Title|Desc|H1|Intro>`. The build stops when one is missing. The text is a draft for the language check ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)). It adds no advice or numbers, and the descriptions name no agencies, so it can't drift from the lessons. The `/ready` intro says that several lessons come from international guidance and are marked.
@@ -1002,8 +1005,8 @@ Read on 18 Oct 2026. Each new source's `note` in `sources.json` quotes what was 
 | At least **3 litres** of drinking water per person per day, for **at least 3 days** | กรมประชาสัมพันธ์'s 72-hour checklist (`prd-72h`, the figure is in its title; the page refuses automated reading), ปภ. 3–4 days (`ddpm-amarin`) | ⚠️ (`s-water`) |
 | Everyday stockpiling: buy a little extra of what you eat, use it, restock, replace what's expired | กรมอนามัย 3–5 days of dry and canned food (`anamai-stock`, via news); Tokyo Metropolitan Government, Tokyo Stockpiling Navi (`tokyo-bichiku`); Ready.gov kit (`readygov-kit`) | ⚠️ mixed (`s-pantry`) |
 | A plan for medicine that must stay cold, or a medical device on power | Ready.gov (`readygov-outage`); 7 days of daily medicine is the MOPH's (`moph-7days`, checklist only) | ⚠️ international only (`s-medcold`) |
-| Flashlights, not candles; never leave a candle burning | US Fire Administration, "Candle Fire Safety", reviewed 1 Apr 2023 (`usfa-candle`); Ready.gov | ⚠️ international only (`s-candle`) |
-| Spare batteries with the flashlight, a flashlight for everyone | ปภ.'s 6-item kit (`ddpm-6kit`); Ready.gov | ✅ (`s-torch`) |
+| Torches, not candles; never leave a candle burning | US Fire Administration, "Candle Fire Safety", reviewed 1 Apr 2023 (`usfa-candle`); Ready.gov | ⚠️ international only (`s-candle`) |
+| Spare batteries with the torch, a torch for everyone | ปภ.'s 6-item kit (`ddpm-6kit`); Ready.gov | ✅ (`s-torch`) |
 | A battery radio for official news | `prd-72h` (seen in a search summary of the page); Ready.gov kit | ⚠️ (`s-radio`) |
 | Charge phones and power banks before the power goes | ปภ. (`ddpm-amarin`); Ready.gov | ✅ (`s-powerbank`) |
 | Unplug appliances against a surge when the power returns | Ready.gov (`readygov-outage`) | ⚠️ international only (`s-plugs`) |
@@ -1049,8 +1052,8 @@ Foreign numbers appear only where they are the source's own and are named as suc
 | | `s-water` stored water | At least 3 L per person per day (two bottles will do) |
 | | `s-pantry` the food store | Eat as usual, restock, replace what's expired (dry food never goes off; buy as much as fits) |
 | Living room | `s-medcold` grandma's cold medicine | Plan ahead for keeping it cold (leave it in the fridge and don't worry; keep using it whatever the label says) |
-| | `s-candle` a candle left burning | Blow it out, use a flashlight (leave it; light another) |
-| | `s-torch` a flashlight with flat batteries | Spare batteries with it, one for everyone (phone lights) |
+| | `s-candle` a candle left burning | Blow it out, use a torch (leave it; light another) |
+| | `s-torch` a torch with flat batteries | Spare batteries with it, one for everyone (phone lights) |
 | | `s-radio` a battery radio | Turn it on for official news (go by the chat groups) |
 | | `s-powerbank` one bar left | Charge everything now (when the power's back) |
 | | `s-plugs` TV and computer plugged in | Unplug against a surge (leave them in) |
@@ -1059,7 +1062,7 @@ Foreign numbers appear only where they are the source's own and are named as suc
 - **Topics:** 💧 `food` 6, 🎒 `plan` 3, ⚡ `power` 2, 🦠 `health` 1 (`s-medcold`), 🔥 `fire` 1 (`s-candle`). The mode's own topic is `food`. Across the game the topics now hold: home 12, power 11, health 11, plan 9, food 10, critters 4, air 10, fire 14.
 - **Decoys:** a closed rice bin, a battery wall clock, books on the shelf, a potted plant, dishes in the sink.
 - **The family** appears as in the other modes (grandma's medicine that must stay cold), and the gecko carries a torch: "ไฟดับแล้ว! ดูตู้เย็นก่อนเลย", "มืดแล้ว ไฟฉายอยู่ไหนนะ".
-- **Ranks:** มือใหม่หัดตุนของ → ผู้จัดการคลังบ้าน → บ้านนี้พร้อมทุกไฟดับ. **Endings:** "บ้านรอด! ไฟดับทั้งคืนก็อยู่สบาย ของพร้อมครบ 💙" (10/10) down to "คืนนี้ลำบากหน่อย แต่ตอนนี้รู้แล้วว่าต้องตุนอะไร" (0–4).
+- **Ranks:** มือใหม่หัดตุนของ → ผู้จัดการคลังบ้าน → บ้านนี้พร้อมทุกไฟดับ (English "Rookie Stocker → Home Store Manager → Ready for Any Power Cut"; the last was "Ready for Any Blackout" before v1.8.1). **Endings:** "บ้านรอด! ไฟดับทั้งคืนก็อยู่สบาย ของพร้อมครบ 💙" (10/10) down to "คืนนี้ลำบากหน่อย แต่ตอนนี้รู้แล้วว่าต้องตุนอะไร" (0–4).
 
 ### 27.6 The house rule
 
@@ -1072,13 +1075,13 @@ Foreign numbers appear only where they are the source's own and are named as suc
 1. 💧 drinking water, 3 L per person per day, for 3 days
 2. 🥫 dry and canned food for at least 3 days; eat it and restock
 3. 🔧 a manual can opener, kept with the food
-4. 🔦 a flashlight for everyone, with spare batteries
+4. 🔦 a torch for everyone, with spare batteries
 5. 📻 a battery radio for official news
 6. 🔋 phones and power banks kept charged
 7. 💊 at least 7 days of daily medicine (MOPH, `moph-7days`); a plan for cold medicine
 8. 🧊 keep the fridge shut: about 4 hours for fresh food
 9. 🔌 unplug appliances against surges
-10. ⚠️ generators outdoors only; flashlights, not candles
+10. ⚠️ generators outdoors only; torches, not candles
 
 ### 27.8 The hazard page and posts
 
@@ -1108,32 +1111,40 @@ A tap on the covered part turned the room. The slot moved to y 404, below the ar
 
 Built 19 Oct 2026 (ROADMAP N15). Two tools outside the round, for a family at home: **"บ้านเราพร้อมแค่ไหน?" / "How ready is our house?"** (`/?open=kit`) and **"แผนบ้านรอดของบ้านเรา" / "Our family safety plan"** (`/?open=plan`). No item, room, slot or `houseVersion` changed, so houses and challenge links are the same.
 
+v1.8.1 (19 Oct 2026, ROADMAP N16) renamed the English title "How ready is our home?", named floods next to power cuts in the check's intro and share text, linked both tools from `/flood`, `/learn` and `llms.txt` and from the installed app's shortcuts, put the 🎒 button on the flood results, counts the plan form's opens (`plan_open`), and draws every field on the plan card. Houses and challenge links are still the same.
+
 ### 28.1 Why
 
-The power cut (§27) teaches what to stock, one lesson at a time, in a house that isn't the player's. A family then has to turn "3 L per person per day for 3 days" into its own number and find out what it is still missing. The check does that sum for the household and keeps the ticks, and its card is something to send to the family group, with the text "บ้านเราพร้อมรับมือไฟดับ 56% 🎒 แล้วบ้านคุณล่ะ?". The plan card does the same for the flood lessons about who does what (`p-plan`: older and bedridden people first; `p-poster`: the way to the shelter): the family writes its own answers and keeps them on every phone.
+The power cut (§27) teaches what to stock, one lesson at a time, in a house that isn't the player's. A family then has to turn "3 L per person per day for 3 days" into its own number and find out what it is still missing. The check does that sum for the household and keeps the ticks, and its card is something to send to the family group, with the text "บ้านเราพร้อมแล้ว 56% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ?" (v1.8.1; it said "พร้อมรับมือไฟดับ" before). The same 3-day amounts are in the flood lessons' Thai sources (กรมประชาสัมพันธ์'s 72-hour list, ปภ.), so since v1.8.1 the check names floods as well as power cuts. The plan card does the same for the flood lessons about who does what (`p-plan`: older and bedridden people first; `p-poster`: the way to the shelter): the family writes its own answers and keeps them on every phone.
 
 ### 28.2 The flow
 
 **The home check** (`openKit()` in `kit.js`):
 
-1. **Questions** (first time, or after "แก้คำตอบ"): "บ้านเรามีกี่คน?" with a − / + stepper (1–10, 3 to start; the buttons are 52 px circles) and "ในบ้านมีใครบ้าง? (เลือกได้หลายข้อ)" with four answers: 👶 มีเด็กเล็ก, 🧓 มีผู้สูงอายุ หรือผู้ป่วยติดเตียง, 💊 มีคนกินยาประจำ, 🐾 มีสัตว์เลี้ยง. Under them: "🔒 คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน".
+1. **Questions** (first time, or after "แก้คำตอบ"), under the intro "ตอบ 2 ข้อ แล้วดูว่าบ้านเราควรมีอะไรบ้าง ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน" ("Answer 2 questions and see what your home needs for a flood, a power cut or 3 days indoors"): "บ้านเรามีกี่คน?" with a − / + stepper (1–10, 3 to start; the buttons are 52 px circles) and "ในบ้านมีใครบ้าง? (เลือกได้หลายข้อ)" with four answers: 👶 มีเด็กเล็ก, 🧓 มีผู้สูงอายุ หรือผู้ป่วยติดเตียง, 💊 มีคนกินยาประจำ, 🐾 มีสัตว์เลี้ยง, in a grid whose columns are at least 150 px wide, so on phones under about 360 px they stack in one column and the Thai labels don't break mid-word (v1.8.1; at 140 px "มีเด็ก|เล็ก" broke). Under them: "🔒 คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน".
 2. **The list** ("ดูรายการของบ้านเรา"): "บ้าน 3 คน · แก้คำตอบ", a meter and "พร้อมแล้ว 33% (มี 3 จาก 9 อย่าง)", then one row per thing: a checkbox, the icon, the label, the amount for this household where there is one, and "ที่มา: <agencies>" with "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน" on `partial` items ([17-kit.png](screens/17-kit.png)). Agencies come from `sources.json`, with their English names on `/en/` (`seo.en.agencies`). A tick updates the meter and is saved at once.
-3. **Share** ("📤 แชร์ผลของบ้านเรา"): draws the kit card (§28.7) and opens a share sheet like the game's: native share where the browser has it, LINE, Facebook, copy, and save where downloads work (otherwise the long-press hint). There is no X button. The text is "บ้านเราพร้อมรับมือไฟดับ {pct}% 🎒 แล้วบ้านคุณล่ะ? เช็กฟรี 1 นาที 👉 {url} #บ้านรอดไหม" (English "Our home is {pct}% ready for a power cut 🎒 …").
+3. **Share** ("📤 แชร์ผลของบ้านเรา"): draws the kit card (§28.7) and opens a share sheet like the game's: native share where the browser has it, LINE, Facebook, copy, and save where downloads work (otherwise the long-press hint). There is no X button. The text is "บ้านเราพร้อมแล้ว {pct}% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ? เช็กฟรี 1 นาที 👉 {url} #บ้านรอดไหม" (English "Our home is {pct}% ready for 3 days of flood or power cut 🎒 How about yours? Free 1-minute check 👉 {url} #BaanRodMai"; before v1.8.1 both named only the power cut).
 4. "📝 ทำแผนบ้านรอดของบ้านเรา" opens the plan card, with "← กลับไปที่รายการ" back to the list.
 
 A returning visitor goes straight to the list with their answers and ticks. If they change the answers so a thing no longer applies (no more pets), its tick is dropped.
 
-**The plan card** (`openPlan()`): a form of six fields (§28.4), each with its label, an example, and a hint with its agencies where there is one; "🔒 ข้อความอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน อย่าใส่เลขบัตรประชาชนหรือข้อมูลส่วนตัวเกินจำเป็น" above them. "สร้างการ์ดแผนบ้านรอด" needs at least one field ("กรอกอย่างน้อย 1 ช่องก่อนนะ") and draws the card ([18-plan-card.png](screens/18-plan-card.png)); its share text is "แผนบ้านรอดของบ้านเรา 📝 เซฟไว้ในมือถือทุกคนนะ ทำของบ้านคุณได้ที่ 👉 {url} #บ้านรอดไหม".
+**The plan card** (`openPlan()`): a form of six fields (§28.4), each with its label, an example, and a hint with its agencies where there is one; "🔒 ข้อความอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน อย่าใส่เลขบัตรประชาชนหรือข้อมูลส่วนตัวเกินจำเป็น" above them. "สร้างการ์ดแผนบ้านรอด" needs at least one field ("กรอกอย่างน้อย 1 ช่องก่อนนะ") and draws the card ([18-plan-card.png](screens/18-plan-card.png)); its share text is "แผนบ้านรอดของบ้านเรา 📝 เซฟไว้ในมือถือทุกคนนะ ทำของบ้านคุณได้ที่ 👉 {url} #บ้านรอดไหม". The share sheet's back button, "← แก้แผน" / "← Edit the plan" (`ui.backPlan`, v1.8.1; it said "← กลับไปที่รายการ" before), returns to the form with what was typed.
 
 **Ways in:**
 
-| From | What | `kit_open` label |
+| From | What | Label (`kit_open` for the check, `plan_open` for the plan) |
 |---|---|---|
 | The start screen | Quick button 🎒 "บ้านพร้อมไหม?" (`#kit-chip`, `data-open="kit"`); once checked it reads "บ้านพร้อม {pct}%" from `brm:kit` | `start` |
-| The result of a power cut | "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน" (`#btn-kit`), on any mode whose threat is `dark` | `result` |
-| A link | `/?open=kit` and `/?open=plan` (`/en/…` in English), read in `boot()` | `link` (the check only) |
-| `/ready`, `/en/ready` | "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน (ฟรี 1 นาที)" and "📝 ทำการ์ดแผนบ้านรอดของบ้านเรา", from `config.json → hazards.outage.tools` and `seo.<lang>.toolKit` / `toolPlan` | `link` (the check only) |
-| The plan card's back button | Back to the list | `plan` |
+| A result screen | "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน" (`#btn-kit`) when the mode's hazard lists `kit` in `config.json → hazards.<hazard>.tools`: prepare, return and the power cut, not dust or fire (v1.8.1; before, any mode whose threat is `dark`, so only the power cut) | `result` |
+| A link | `/?open=kit` and `/?open=plan` (`/en/…` in English), read in `boot()` | `link` |
+| `/ready`, `/flood` and their English twins | "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน (ฟรี 1 นาที)" and "📝 ทำการ์ดแผนบ้านรอดของบ้านเรา", from `config.json → hazards.<hazard>.tools` (`outage` since v1.8.0, `flood` since v1.8.1) and `seo.<lang>.toolKit` / `toolPlan` | `link` |
+| `/learn`, `/en/learn` (v1.8.1) | The same two links, after the checklists (every tool any hazard lists) | `link` |
+| `llms.txt` (v1.8.1) | One line with both links, for AI assistants | `link` |
+| The installed app (v1.8.1) | A long-press on the home-screen icon: "บ้านเราพร้อมแค่ไหน?" (short "เช็กบ้าน") → `/?open=kit&source=pwa` and "แผนบ้านรอดของบ้านเรา" (short "แผนบ้าน") → `/?open=plan&source=pwa`, from `manifest.webmanifest → shortcuts` (both with the 192 px icon). The game doesn't read `source`, so these count like any link | `link` |
+| The check's list | "📝 ทำแผนบ้านรอดของบ้านเรา" | `kit` (`plan_open`) |
+| The plan form's back button | "← กลับไปที่รายการ", back to the list (only when the plan was opened from it) | `plan` (`kit_open`) |
+
+- **The shortcuts** appear only once the game is installed (added to the home screen), and only in browsers that support manifest shortcuts. Which phones show them, and whether iPhones do at all, has not been tried **[unverified]** ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix), row 49). The manifest has one language, so the shortcuts' names are Thai on an English install too; the page then picks its language as for any link to `/` (§18).
 
 The quick buttons became two per row with the icon beside the label (52 px tall, labels `clamp(12px, 3.9vw, 14px)`), so the four Thai labels ("เช็กลิสต์ 10 ข้อ", "บ้านพร้อมไหม?", "เบอร์ช่วยเหลือ", "เช็กระดับน้ำ") don't break mid-word.
 
@@ -1168,7 +1179,7 @@ The 15 things, in the order shown:
 | `glasses` | 🧓 older or bedridden | แว่นตาสำรอง | — | `readygov-kit` | ⚠️ international only |
 | `pet` | 🐾 pets | อาหาร น้ำ และกรงหรือสายจูงของสัตว์เลี้ยง | — | `ddpm-noru`, `anamai-pets`, `readygov-kit` | ✅ |
 
-- **Where the numbers come from:** the 3 L per person per day is in the title of กรมประชาสัมพันธ์'s 72-hour checklist (`prd-72h`); 3 days are its 72 hours and the shared floor of ปภ.'s 3–4 days (`ddpm-amarin`), กรมอนามัย's 3–5 days (`anamai-stock`) and the MOPH's "at least 3 days" (`moph-7days`); 7 days of daily medicine are the MOPH's (`moph-7days`, a 2013 statement); a flashlight for every household member is Ready.gov's (`readygov-outage`). The same numbers are in the power-cut lessons (§27.2) and its checklist (§27.7).
+- **Where the numbers come from:** the 3 L per person per day is in the title of กรมประชาสัมพันธ์'s 72-hour checklist (`prd-72h`); 3 days are its 72 hours and the shared floor of ปภ.'s 3–4 days (`ddpm-amarin`), กรมอนามัย's 3–5 days (`anamai-stock`) and the MOPH's "at least 3 days" (`moph-7days`); 7 days of daily medicine are the MOPH's (`moph-7days`, a 2013 statement); a torch for every household member is Ready.gov's (`readygov-outage`, "Have flashlights for every household member"). The same numbers are in the power-cut lessons (§27.2) and its checklist (§27.7).
 - **9 ⚠️, 6 ✅.** Why each is ⚠️, and what would make it Thai: [KNOWN_ISSUES #57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance). The cash, glasses and baby lines rest on the "Additional Emergency Supplies" list of Ready.gov's "Build A Kit", which the `readygov-kit` note quotes (read again on 19 Oct 2026).
 - **The score** (`kitScore`) is the share of this household's things ticked, rounded: `round(100 × have ÷ total)`. A household with every answer has 15 things, one with none has 9. The score counts things, not amounts: a tick means "we have this", not "we have 27 L".
 - **"Still missing" on the card** (`kitMissing`, at most 3) lists the everyday things before the household's own, in list order.
@@ -1201,7 +1212,7 @@ The rule: what a family answers, ticks or types is theirs, and the game never ne
 | `brm:plan` | `{shelter, meet, contact, help1, help2, meds, date}`: the six fields as typed (trimmed and cut to `max`) and the date | When a field changes, and when the card is made |
 
 - **Nothing typed is sent.** The cards are drawn on a `<canvas>` in the browser; the image leaves the phone only when the person shares or saves it. The analytics events carry a label from a fixed list (where from, or the share channel) and, for `kit_share`, the score, and `/api/e` cleans every field to `[\w\-.:]` anyway (§9).
-- **Proved by a test.** The smoke check types "PRIVATE-MEETING-PLACE" and "PRIVATE 081-234-5678" into the plan, makes and shares the card, fires `pagehide`, and fails if any `/api/e` body contains "PRIVATE" or "081-234", or if `kit_open`, `kit_share` or `plan_share` is missing.
+- **Proved by a test.** The smoke check types "PRIVATE-MEETING-PLACE" and "PRIVATE 081-234-5678" into the plan, makes and shares the card, fires `pagehide`, and fails if any `/api/e` body contains "PRIVATE" or "081-234", or if `kit_open`, `kit_share`, `plan_open` (v1.8.1) or `plan_share` is missing.
 - **Less to leak.** Six short fields with a `maxlength` (40, or 60 for medicine), `autocomplete="off"`, and the line "อย่าใส่เลขบัตรประชาชนหรือข้อมูลส่วนตัวเกินจำเป็น" on the form. The examples are a place, a name with a pattern number, and "Dad takes Grandma".
 - **Said where people read it.** The About sheet's privacy text (th/en) names the home check's answers and the plan card's text among what stays on the device.
 - **The limits** (one browser, cleared with site data, LINE's in-app browser separate from the phone's browser): [KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser).
@@ -1212,25 +1223,29 @@ The rule: what a family answers, ticks or types is theirs, and the game never ne
 |---|---|---|---|---|
 | `kit_open` | The home check opens | – | `start` / `result` / `link` / `plan` (§28.2) | – |
 | `kit_share` | A channel in the check's share sheet is tapped | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 |
+| `plan_open` (v1.8.1) | The plan form opens | – | `link` / `kit` (§28.2) | – |
 | `plan_share` | A channel in the plan card's share sheet is tapped | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
 
-Opening the plan card sends no event of its own, so a `/?open=plan` arrival shows only as a `direct` view; the made cards show as `plan_share`. The queries are in [05-metrics](05-metrics.md#the-home-check-and-the-plan-card-v180).
+- **`plan_open` counts arrivals at the form.** "← แก้แผน" in the card's share sheet reopens the form without sending it again (`openPlan(from, true)`); the check's list button and the plan form's back button still send one event each way. `kit_open` from a result carries the mode (`prepare`, `return`, `stock`). Before v1.8.1 opening the plan sent nothing, so a `/?open=plan` arrival showed only as a `direct` view.
+- **No answer or typed text** is in any of them (§28.5). The queries are in [05-metrics](05-metrics.md#the-home-check-and-the-plan-card-v180).
 
 ### 28.7 The two cards (1080 × 1350)
 
 Both are drawn in `kit.js` with the card helpers `cards.js` exports as `kit` (here `draw`), in the power cut's `stock` theme.
 
 - **The kit card** (`drawKitCard`): the blue-violet background and waves; the wordmark at the top, kept clear of the moon; the title "บ้านเราพร้อมแค่ไหน?"; a score ring (radius 160, a grey track and the game's blue "correct" colour from the top, clockwise) with the percentage in 120 px; the gecko with a torch on the left, cheering from 80 %, happy from 40 %, thinking below; "มีแล้ว 3 จาก 9 อย่าง"; "ยังขาด:" with up to three things (one line each) or "ครบทุกอย่างแล้ว!"; then "บ้านคุณพร้อมแค่ไหน? เช็กฟรี", the address `…/?open=kit` and the disclaimer on the waves.
-- **The plan card** (`drawPlanCard`): a header band in the theme's colour with the wordmark, the title "แผนบ้านรอดของบ้านเรา", "ทำเมื่อ 19 ต.ค. 69" and the gecko; one white box per filled field (label above, value below; empty fields are left out); a dark box with the helplines; "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน", the address `…/?open=plan` and the disclaimer.
-  - **All rows fit.** The boxes share the space between y 320 and 1010. The code lays them out at full size with up to two lines per value, and while they don't fit it shrinks the whole block in steps of 6 % (never below 64 %); below 80 % each value keeps its first line only. Six one-line rows fit at 76 %, so every filled field is always on the card; a value too long for one line at that size would lose the rest of its text. The first version dropped the sixth row instead ([LESSONS D12](LESSONS_LEARNED.md#d-testing-and-verification)).
+- **The plan card** (`drawPlanCard`): a header band in the theme's colour with the wordmark, the title "แผนบ้านรอดของบ้านเรา", "ทำเมื่อ 19 ต.ค. 69" and the gecko; one white box per field, all six every time (label above, value below; since v1.8.1 an empty field gets a dotted line where its value would be, so the card has no gap and a printed copy can be filled in by hand; before, empty fields were left out and a card with two or three filled had a large empty space); a dark box with the helplines; "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน", the address `…/?open=plan` and the disclaimer.
+  - **All rows fit.** The boxes share the space between y 320 and 1010. The code lays them out at full size with up to two lines per value, and while they don't fit it shrinks the whole block in steps of 6 % (never below 64 %); below 80 % each value keeps its first line only. Six one-line rows fit at 76 %, so every field is always on the card; a value too long for one line at that size would lose the rest of its text. The first version dropped the sixth row instead ([LESSONS D12](LESSONS_LEARNED.md#d-testing-and-verification)).
   - **Measured on 19 Oct 2026** with a one-off probe in headless Chromium: all six fields at their maximum length (40 characters, 60 for medicine), in Thai and in English, drew every row and every character; the English medicine line took two lines.
 
 ### 28.8 Build checks and tests
 
 - **`tools/build.mjs`** stops on a `kit.json` item with no sources, an unknown source, a duplicate id, a `verify` other than `verified` or `partial`, or a `for` that isn't one of the answers; on a plan field whose `max` isn't 1–80, or whose hint has no or unknown sources; on any label, hint, example or interface text without Thai and English; on a `unit` without Thai; and on a hazard `tools` entry other than `kit` or `plan`, or one without its `seo.<lang>.tool<Kit|Plan>` string.
-- **Numbers must be in the source.** Every whole number above 1 in `perPersonPerDay`, `perPerson` and `days` must appear, as a number on its own, in the title or `note` of one of the item's sources, so an amount can't be made up. It shows that the number is there, not what it means there: `days: 3` on the water passes on "3 ลิตร" as well as on "3–4 วัน", so a person still reads the source. `perPerson: 1` (a flashlight each) is not checked, since a 1 is in almost any text.
-- **Unit test** "home check: amounts follow the household, special items follow the answers": 9, 27 and 90 litres for 1, 3 and 10 people; a flashlight each; food for 3 days; 0 and 99 people clamped to 1 and 10; each answer adds only its items; daily medicine 7 days; 0 % and 100 %; the card's missing list starts with everyday things.
-- **Smoke section 11** (7 checks, 360 × 640): 4 people with daily medicine → 36 litres, medicine listed, baby items not; answers and ticks in `brm:kit`; controls of the questions, list and plan form ≥ 44 px; the kit card at 1080 px with LINE on the first screen; the plan card renders; the typed text in no `/api/e` body and the three events present; no page errors.
+- **Numbers must be in the source.** Every whole number above 1 in `perPersonPerDay`, `perPerson` and `days` must appear, as a number on its own, in the title or `note` of one of the item's sources, so an amount can't be made up. It shows that the number is there, not what it means there: `days: 3` on the water passes on "3 ลิตร" as well as on "3–4 วัน", so a person still reads the source. `perPerson: 1` (a torch each) is not checked, since a 1 is in almost any text.
+- **Unit test** "home check: amounts follow the household, special items follow the answers": 9, 27 and 90 litres for 1, 3 and 10 people; a torch each; food for 3 days; 0 and 99 people clamped to 1 and 10; each answer adds only its items; daily medicine 7 days; 0 % and 100 %; the card's missing list starts with everyday things.
+- **Smoke section 11** (8 checks since v1.8.1, 360 × 640): 4 people with daily medicine → 36 litres, medicine listed, baby items not; answers and ticks in `brm:kit`; controls of the questions, list and plan form ≥ 44 px; the kit card at 1080 px with LINE on the first screen; the plan card renders; "← แก้แผน" goes back to the form with what was typed (v1.8.1); the typed text in no `/api/e` body and the four events present; no page errors.
+- **Elsewhere in the smoke test (v1.8.1):** a Prepare result offers the 🎒 button (section 1); each hazard page with `tools` links them, and `/learn` and `llms.txt` link both tools (section 10).
+- **Card text** (v1.8.1, not only the kit's cards): the unit test "card text: a wrapped line never starts with closing punctuation (every ending, both languages)".
 
 ### 28.9 Code and loading
 

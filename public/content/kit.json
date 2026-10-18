@@ -96,7 +96,7 @@
       "icon": "🔦",
       "label": {
         "th": "ไฟฉาย พร้อมถ่านสำรอง",
-        "en": "Flashlights with spare batteries"
+        "en": "Torches with spare batteries"
       },
       "qty": {
         "perPerson": 1,
@@ -385,7 +385,7 @@
   "ui": {
     "th": {
       "title": "บ้านเราพร้อมแค่ไหน?",
-      "intro": "ตอบ 2 ข้อ แล้วดูว่าบ้านเราควรมีอะไรบ้าง ถ้าไฟดับหรือต้องอยู่ในบ้าน 3 วัน",
+      "intro": "ตอบ 2 ข้อ แล้วดูว่าบ้านเราควรมีอะไรบ้าง ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน",
       "people": "บ้านเรามีกี่คน?",
       "less": "ลดจำนวนคน",
       "more": "เพิ่มจำนวนคน",
@@ -406,8 +406,9 @@
       "share": "📤 แชร์ผลของบ้านเรา",
       "plan": "📝 ทำแผนบ้านรอดของบ้านเรา",
       "back": "← กลับไปที่รายการ",
+      "backPlan": "← แก้แผน",
       "shareTitle": "แชร์ผลเช็กบ้าน",
-      "shareText": "บ้านเราพร้อมรับมือไฟดับ {pct}% 🎒 แล้วบ้านคุณล่ะ? เช็กฟรี 1 นาที 👉 {url} #บ้านรอดไหม",
+      "shareText": "บ้านเราพร้อมแล้ว {pct}% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ? เช็กฟรี 1 นาที 👉 {url} #บ้านรอดไหม",
       "cardTitle": "บ้านเราพร้อมแค่ไหน?",
       "cardCount": "มีแล้ว {have} จาก {total} อย่าง",
       "cardMissing": "ยังขาด",
@@ -427,8 +428,8 @@
       "close": "ปิด"
     },
     "en": {
-      "title": "How ready is our house?",
-      "intro": "Answer 2 questions and see what the house needs for a power cut or 3 days at home",
+      "title": "How ready is our home?",
+      "intro": "Answer 2 questions and see what your home needs for a flood, a power cut or 3 days indoors",
       "people": "How many people live here?",
       "less": "One person fewer",
       "more": "One person more",
@@ -449,13 +450,14 @@
       "share": "📤 Share our result",
       "plan": "📝 Make our family plan",
       "back": "← Back to the list",
+      "backPlan": "← Edit the plan",
       "shareTitle": "Share the home check",
-      "shareText": "Our home is {pct}% ready for a power cut 🎒 How about yours? Free 1-minute check 👉 {url} #BaanRodMai",
-      "cardTitle": "How ready is our house?",
+      "shareText": "Our home is {pct}% ready for 3 days of flood or power cut 🎒 How about yours? Free 1-minute check 👉 {url} #BaanRodMai",
+      "cardTitle": "How ready is our home?",
       "cardCount": "{have} of {total} things ready",
       "cardMissing": "Still missing",
       "cardAllSet": "Everything's ready!",
-      "cardCta": "How ready is your house? Check free",
+      "cardCta": "How ready is your home? Check for free",
       "last": "Last checked {date}",
       "planTitle": "Our family safety plan",
       "planIntro": "Fill in what you know, then keep the card on everyone's phone",

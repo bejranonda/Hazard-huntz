@@ -63,7 +63,16 @@ function drawSprite(ctx, assets, id, x, y, w, h) {
 const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter('th', { granularity: 'word' }) : null;
 
 function tokens(text) {
-  if (segmenter) return Array.from(segmenter.segment(text), (s) => s.segment);
+  if (segmenter) {
+    // Keep closing punctuation (and Thai ๆ) on the word before it, so a line
+    // never starts with "!", "?", "," or ")".
+    const out = [];
+    for (const { segment } of segmenter.segment(text)) {
+      if (out.length && /^[!?,.:;)\]}%…”’ๆฯ]+$/.test(segment) && /\S$/.test(out[out.length - 1])) out[out.length - 1] += segment;
+      else out.push(segment);
+    }
+    return out;
+  }
   // Fallback: split on spaces, keep Thai combining marks with their base.
   return text.split(/(\s+)/);
 }
@@ -233,7 +242,8 @@ export function drawResultCard(canvas, d, assets) {
   background(ctx, W, H, d.mode);
   waves(ctx, W, 1110, ...theme(d.mode).waves);
 
-  logo(ctx, W / 2, 150, 104, d.logo, W - 160);
+  // Themes with a sun or moon (top right, x 890–1030) keep the wordmark clear of it.
+  logo(ctx, W / 2, 150, 104, d.logo, theme(d.mode).sun ? W - 440 : W - 160);
   const chipFill = theme(d.mode).chip;
   pill(ctx, W / 2, 192, d.modeLabel, { size: 40, fill: chipFill, lw: 4 });
 

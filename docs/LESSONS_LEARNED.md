@@ -75,7 +75,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* 9 items were official at their core but had one inferred or dated detail.
 - *Do this:* mark them `partial` with a `verifyNote`, and treat the review as a launch task. Never ship `unverified`.
-- *Encoded in:* the build's validation, [KNOWN_ISSUES #8](KNOWN_ISSUES.md#8-11-safety-items-are-only-partially-verified).
+- *Encoded in:* the build's validation, [KNOWN_ISSUES #8](KNOWN_ISSUES.md#8-21-safety-items-are-only-partially-verified).
 
 **B5. One source of truth for the game and the review table.**
 
@@ -404,3 +404,15 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the carousel's frame text first went into `strings.json` and its drawing code into `cards.js`, both downloaded by every visitor before the start screen. The build's budget line went from 188 to 191 KB for words and code no player ever uses.
 - *Do this:* read the budget line after every change. Put text for posts, tools or pages outside the game in its own file that the game doesn't fetch and the service worker doesn't precache, and put tool-only code in `tools/`.
 - *Encoded in:* `public/content/carousel.json` (left out of the precache in `tools/build.mjs`), `tools/carousel-draw.mjs`, [GUIDELINES rule 53](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**B9. A viral infographic is a prompt, not a source.**
+
+- *What happened:* the owner shared a Thai stockpiling infographic that was spreading on social media ("72 hours minimum, aim for 7 days", "eat old stock first", "when the power is out eat fridge → freezer → canned", "a manual can opener"). It named no agency. Checked claim by claim: the 3 days matched Thai agencies (PRD, ปภ., กรมอนามัย); the can opener, the fridge and freezer times and "replace what's expired" were found only at foreign agencies (Ready.gov, the US CDC, Tokyo); the 7 days were Tokyo's alone; and no agency gave the eating order or a 3–6-month check. The generic texts also turned out to say "every tip comes from Thai agencies", which these lessons would have made plainly false.
+- *Do this:* keep what an agency backs, flag what only a foreign agency backs (⚠️, with the reason in `verifyNote` and on the carousel image), and drop the rest, however widely it is shared. Where the post's idea is right but has no source (an eating order), teach the sourced fact that leads to it (the fridge is lost at 4 hours, the freezer lasts 48). Then re-read every sentence that describes the game as a whole.
+- *Encoded in:* the power-cut lessons and their `verifyNote`s, [KNOWLEDGE §27.2–27.3](KNOWLEDGE.md#273-what-was-left-out-and-why), [GUIDELINES rule 55](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance).
+
+**D11. A forced click can't see what covers the button.**
+
+- *What happened:* from v1.0 the ‹ room arrow covered part of the item on the fridge: up to 23 % of `p-numbers` and later `f-call`, and 27 % of the new fridge in v1.7.0, at 390 × 760. A player who tapped that part turned the room instead. Every smoke check passed in every release from v1.0 to v1.6.1, because the test clicked items with Playwright's `force: true`, which skips the check that the element would receive the click. The tap-size checks measured each item, never what lay on top of it. It was found while building the power-cut mode, whose fridge uses the same slot.
+- *Do this:* treat `force: true` as a known blind spot. For tap targets under floating controls, measure the overlap (the boxes of the overlay and of the item's hit area) or click without `force`, in every mode and room on the small screens people use. When the fix is moving a slot, keep its id so houses don't change, and re-run the probe, because a new height changes when water or smoke arrives.
+- *Encoded in:* the smoke check "the room arrows cover at most 5% of any item's tap area (every mode, 3 houses, 390x760 and 360x640)", [GUIDELINES rule 54](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES F38](KNOWN_ISSUES.md#in-v170-19-oct-2026).

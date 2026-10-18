@@ -12,15 +12,15 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | Event | When | mode | label | value |
 |---|---|---|---|---|
 | `view` | Page opened | – (the linked mode for `link`) | `direct` / `challenge` / `checklist` / `link` (a `?mode=` link such as `/?mode=dust`, v1.6.0) | – |
-| `mode_select` | Mode button tapped | prepare / return / dust / fire | `default` (the recommended mode) / `link` (the mode a `?mode=` link asked for, v1.6.0) / `other` | – |
+| `mode_select` | Mode button tapped | prepare / return / dust / fire / stock (v1.7.0) | `default` (the recommended mode) / `link` (the mode a `?mode=` link asked for, v1.6.0) / `other` | – |
 | `round_start` | Round begins | mode | `daily` / `challenge` / `random` | – |
 | `round_end` | Round finished (all found or time up) | mode | same as above | score 0–10 |
 | `share_open` | Share or challenge button tapped | mode | `result` / `challenge` / `challenge-back` (reply after playing a friend's challenge, v1.3.0) | – |
 | `share_click` | Share channel used | mode | `native` / `line` / `facebook` / `x` / `copy` / `save` / `challenge-native` / `challenge-back-native` | – |
 | `challenge_open` | Opened a challenge link | mode | – | friend's score |
 | `challenge_play` | Accepted the challenge | mode | – | friend's score |
-| `checklist_open` | Checklist sheet opened | prepare / return / dust / fire | – | – |
-| `checklist_save` | Checklist shared or saved | prepare / return / dust / fire | `native` / `line` / `facebook` / `copy` / `save` | – |
+| `checklist_open` | Checklist sheet opened | prepare / return / dust / fire / stock | – | – |
+| `checklist_save` | Checklist shared or saved | prepare / return / dust / fire / stock | `native` / `line` / `facebook` / `copy` / `save` | – |
 | `help_click` | Helpline tapped (tel:) | mode or – | the number, e.g. `1784` | – |
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
@@ -115,8 +115,25 @@ GROUP BY mode, step
 ```
 
 - The query string isn't in Web Analytics ([KNOWN_ISSUES #22](KNOWN_ISSUES.md#22-web-analytics-blind-spots)), so these events are the only count of `?mode=` arrivals.
-- The hazard pages (`/flood`, `/pm25`, `/fire`) run no script and send no events. Their visits should show as page views in Web Analytics by path once it is switched on **[unverified]**; their ▶ buttons then arrive as `link` views.
+- The hazard pages (`/flood`, `/pm25`, `/fire`, `/ready`) run no script and send no events. Their visits should show as page views in Web Analytics by path once it is switched on **[unverified]**; their ▶ buttons then arrive as `link` views.
 - **[unverified]** on real data; no players yet.
+
+## The power cut (v1.7.0)
+
+The power-cut mode sends the same events with the mode `stock`; no event was added. Two things differ from the other modes:
+
+- **It is never the default.** Its `months` is empty, so `mode_select` for `stock` is `link` (from `/?mode=stock` or a `/ready` ▶ button) or `other` (a tap on its small card), never `default`. The badge query above shows how many find it by themselves.
+- **The fridge going bad isn't an event.** A lost item shows only in the score (`round_end`'s value) and on the player's screen. The learning signal for this mode is its average `round_end` score, as for the others.
+
+**How people reach the power cut, by week:**
+```sql
+SELECT toStartOfInterval(timestamp, INTERVAL '7' DAY) AS week, blob3 AS picked, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 = 'mode_select' AND blob2 = 'stock' AND timestamp > NOW() - INTERVAL '30' DAY
+GROUP BY week, picked ORDER BY week
+```
+
+**[unverified]** on real data; no players yet.
 
 ## Thai and English split
 

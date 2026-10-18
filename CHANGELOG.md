@@ -4,6 +4,54 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.7.0] — 2026-10-19
+
+A fifth mode, **ไฟดับ (Power cut)**: stock up, keep the fridge shut, flashlights not candles. It was prompted by a Thai stockpiling infographic spreading on social media ("72 hours minimum, aim for 7 days", "eat old stock first", "when the power is out eat fridge → freezer → canned", "don't forget a manual can opener"). The infographic is not a source; the mode teaches only what agencies back up. Houses and challenge links in the other four modes are unchanged (a year of houses compared identical).
+
+### Added
+
+- **The power-cut mode** in the registry: `{ id: 'stock', hazard: 'outage', code: 's', threat: 'dark', prop: 'torch', emoji: '🔦', months: [], topic: 'food' }`. Thai "ไฟดับ" ("เตรียมของตุน รับมือไฟดับทั้งคืน"), English "Power cut" ("Stock up for a night without power"). It is **year-round**: never the season's default, reached by its start card, `/?mode=stock`, `/ready` and posts. Round: 55 s, 12 story hours.
+- **A new threat, `dark`.** The room darkens over the round (`round.stock.dark` keyframes 0.1 → 0.38 → 0.56 → 0.66; a deep blue layer with a heavier edge, so items stay readable) and the HUD shows the story's hours, then the seconds: "ไฟดับมา 4 ชม. · 37 วิ" (`darkHours`). `Round.darkLevel` (0–1) and `Round.hoursOut` (progress × `round.stock.hours`).
+  - An item with `lostAfter: <hours>` goes bad once the power has been out that long: status `flooded`, shown as "เสียก่อน" / "Went bad first", a grey clock badge, 🌑 in the share grid. Only `s-fridge` has it, `lostAfter: 4`, from the US CDC ("a closed fridge keeps food safe up to 4 hours"). With no penalties that is about 18 s into the round. The freezer never goes bad in the 12-hour round (CDC: about 48 hours full, 24 half full). So the game teaches "the fridge goes first" from sourced times, not from the infographic's eating order.
+  - `house.js`: every power-cut house includes one item with `lostAfter`. The rule applies only when the mode's threat is `dark`, so other modes' houses are unchanged.
+- **13 lessons** (`s-…`), 5 decoys (rice bin, battery clock, books, potted plant, dishes) and 16 new symbols in `art/sprites.svg` (12 objects and 4 "done" states such as the shut fridge and the lit flashlight; the generator reuses the flood sprite):
+  - kitchen: `s-fridge` (keep the door shut), `s-leftover` (minced pork after a night without power: throw it out, never taste to check), `s-freezer` (a full freezer, about 48 h), `s-opener` (a manual can opener with the cans), `s-water` (at least 3 L per person per day for at least 3 days), `s-pantry` (everyday stockpiling: eat as usual, restock, replace what has expired)
+  - living room: `s-medcold` (a plan for medicine that must stay cold, or medical devices on power), `s-candle` (flashlights, not candles; never leave one burning), `s-torch` (spare batteries, a flashlight for everyone), `s-radio` (a battery radio for official news), `s-powerbank` (charge before the power goes), `s-plugs` (unplug against a surge when the power returns)
+  - front: `s-generator` (outdoors in the open, away from doors and windows)
+  - 3 are ✅ verified (`s-torch`, `s-powerbank`, `s-generator`) and 10 are ⚠️ partial, each with a `verifyNote` that says why ([docs/01](docs/01-safety-content.md#flags-please-review-these)).
+- **5 sources, all `international`,** each with a `note` quoting what was read on 18 Oct 2026: `cdc-food-outage` (US CDC, "Keep Food Safe After a Disaster or Emergency", 24 Nov 2025), `readygov-outage` (Ready.gov "Power Outages", updated 4 Jun 2026), `readygov-kit` (Ready.gov "Build A Kit", updated 1 Jul 2026), `tokyo-bichiku` (Tokyo Metropolitan Government, Tokyo Stockpiling Navi, "Why Stockpiling Matters") and `usfa-candle` (US Fire Administration, "Candle Fire Safety", reviewed 1 Apr 2023). Their English agency names are in `seo.en.agencies`. Thai sources already in the game carry the Thai parts: PRD's 72-hour checklist (3 L), DDPM's kits, the Department of Health's 3–5 days, the DDC's generator advice and the MOPH's 7 days of medicine.
+- **Left out on purpose,** because no agency says it or sources disagree: the infographic's eating order (fridge → freezer → canned), "check every 3–6 months", and the 7-day target (Tokyo's alone; the game keeps "at least 3 days", which Thai agencies also give).
+- **Checklist** `stock`: "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ" / "10 things for a 3-day power cut", at `/checklist/stock` and `/en/checklist/stock`.
+- **A hazard page, `/ready`** (and `/en/ready`), from `config.json → hazards.outage.slug`: the 13 lessons, the checklist, the helplines and ▶ buttons to `/?mode=stock`. No "check before you go" link. Its preview is the power-cut checklist image.
+- **Challenge links and previews** `/c/s0`–`/c/s10` and `/en/c/s…`, a card theme `stock` (blue-violet waves) and a blue-violet card colour (`#DCE1F5`) and gauge.
+- **Strings:** every per-mode key with the `Stock` suffix (mode name and description, hero, challenge, how-to, gecko lines, result, share text, checklist tab, ranks "มือใหม่หัดตุนของ → ผู้จัดการคลังบ้าน → บ้านนี้พร้อมทุกไฟดับ", the lost-item status and toast, four endings), the `og`/`ogEn` challenge and checklist texts, `seo.<lang>.sectionStock` and `hazardOutage{Nav,Title,Desc,H1,Intro}`, and `darkHours`. 229 keys per language (was 210).
+- **A carousel set for the power cut,** `share/carousel/ready/` (11 images): `s-water`, `s-pantry`, `s-opener`, `s-fridge`, `s-torch`, `s-powerbank`, `s-candle`, `s-generator`. Five of the eight are ⚠️, and their pages say "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน". The build's `posts` line now lists lessons under review ("lessons under review: outage 5 ⚠️") instead of warning about each one.
+- **Build checks for the new threat:** it stops when a `dark` mode has no `round.<mode>.hours`, when `lostAfter` is outside (0, hours) or used in a mode whose threat isn't `dark`, and warns when a `dark` mode has no item with `lostAfter`.
+
+### Changed
+
+- **The generic texts no longer say every tip comes from Thai agencies.** The About text (th/en), the default link preview's title and description (`og`/`ogEn`), the `/learn` titles and heading, `seo.en.llmsSummary`, `seo.en.intlNote`, `index.html`'s meta description and `llms.txt`'s notes now say every tip has a source, most from Thai agencies, some international and marked. The default preview image `og/default.png` (and its English twin) reads "น้ำท่วม · ฝุ่น · ไฟไหม้ · ไฟดับ" and was re-rendered.
+- The index JSON-LD's `about` lists all four hazards in Thai and English; since v1.5.0 it had listed floods only.
+- **The start screen** has five modes: the recommended one as the big card, the other four in one row (`--cols` up to 4; the static grid in `index.html` is `--cols: 4`). Small-card names are `clamp(12px, 3.9vw, 16px)` with 2 px side padding, so every Thai name fits on one line at 320 px; English names wrap to two lines.
+- The sitemap lists 12 addresses (adds `/ready`, `/en/ready`); `llms.txt`, `/learn` and the "By hazard" row link the new page.
+- `strings.json → seo.updated` is `2026-10-19`.
+
+### Fixed
+
+- **The left room arrow covered the item on the fridge.** The ‹ arrow (44 × 64 px, at 44 % of the stage's height) covered up to **23 %** of the tap area of `p-numbers` (Prepare) and `f-call` (fire), and 27 % of the new fridge, all on the slot `kt-fridge-note`, measured at 390 × 760 (18–20 % at 360 × 640, 6–8 % at 768 × 1024, none at 320 × 460). A tap there turned the room instead. The slot moved from y 344 to y 404, below the arrows. It keeps its id, so every house and challenge link is unchanged; the worst coverage left is 2 % (window items at the right edge). Side effects, measured with `npm run probe`: in Prepare `p-numbers` now goes under at 43.6 s instead of 55.6 s, and in fire the smoke no longer reaches `f-call` (it did at 53.7 s). The smoke test had always clicked items with `force: true`, which is why it never noticed ([KNOWN_ISSUES F38](docs/KNOWN_ISSUES.md#in-v170-19-oct-2026)).
+- **The build stops after content errors** before it generates any page. It used to crash with a `TypeError` on a missing `og` string instead of listing what was missing (F40).
+
+### Tests
+
+- 25 rule tests (+2): the existing per-mode test now also generates a year of power-cut houses, each with an item that goes bad; a new test "power cut: fridge food goes bad at 4 story hours, the freezer never does in 12".
+- 86 smoke checks (+5): a power-cut round in the loop over the non-flood modes; `/ready` and `/en/ready`; "stock: at 4 hours without power the fridge food is lost, the room is darker and the clock says so"; "the room arrows cover at most 5% of any item's tap area (every mode, 3 houses, 390x760 and 360x640)". New doc screenshot `docs/screens/16-stock.png` (the kitchen at 6 hours without power).
+
+### Checked
+
+- `npm run probe`: 0 % tap overlaps over 3,650 houses (5 modes × 730 days).
+- The houses of the four older modes are identical to v1.6.1 over a year.
+- Build: start screen **200 KB** compressed, first game screen **215 KB** (limit 500 KB), 41 files precached, 121 link-preview pages, 81 lessons on `/learn`, sitemap 12 addresses, `posts` 4 sets and 45 images (`ready` 11), no warnings.
+
 ## [1.6.1] — 2026-10-18
 
 Posts that teach on their own: a ready-made set of images for each hazard, for Facebook albums, Instagram carousels and LINE. Nothing in the game changes; houses and challenge links stay the same.

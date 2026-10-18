@@ -102,7 +102,7 @@ Notes for English posts:
 
 - Say plainly that the advice and the hotlines (1784, 1669, 1555, 1130, 1129) are Thai. Tell people elsewhere to follow their local authorities.
 - Good channels: expat and migrant-worker groups in Thailand, Thailand-focused travel and Facebook groups, X and LinkedIn for disaster-risk and education people, and the Autobahn Bot / BKK FloodWatch audience (see [ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
-- Share `/en/` links (not `/`) so the preview and the page are English from the first tap. For one hazard, link `/en/flood`, `/en/pm25` or `/en/fire`.
+- Share `/en/` links (not `/`) so the preview and the page are English from the first tap. For one hazard, link `/en/flood`, `/en/pm25`, `/en/fire` or `/en/ready`.
 - Have a native English reader check any new English copy first ([KNOWN_ISSUES #11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
 
 ### When diseases after floods are in the news (v1.4.0)
@@ -128,6 +128,7 @@ Each hazard has a ready-made set of images: a cover, one page per lesson, the ch
 | Early December, then every 2–3 weeks while Air4Thai shows orange or red | `pm25` | Pin it to the page for the season |
 | A rain warning, or the week before the monsoon (May) | `flood` | Pair with the FloodWatch link |
 | March–April, or after a house fire in the news | `fire` | Keep it about prevention; no photos of real fires |
+| Any time of year: a planned power cut in the area, a storm warning, or a quiet week (v1.7.0) | `ready` | 5 of its 8 lessons are still under review (⚠️) and their pages say "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน"; the caption says some advice is international. Post it as it is, or wait for the Thai review ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)) |
 
 Rules: post the images as they are (the sources are printed on them); don't crop off the page numbers or the address; if a lesson's text changes, wait for the re-rendered set ([KNOWN_ISSUES #54](KNOWN_ISSUES.md#54-carousel-images-are-committed-and-thai-only)).
 
@@ -171,11 +172,45 @@ From April the start screen recommends ไฟไหม้ by itself. After a fir
 > อ่านครบทุกข้อ 👉 https://baanrodmai.autobahn.bot/fire
 > ลองเล่นโหมดไฟไหม้ 👉 https://baanrodmai.autobahn.bot/?mode=fire
 
+### Power cuts and home stock (v1.7.0, any time of year)
+
+The power-cut mode (ไฟดับ) is year-round: the start screen never recommends it by itself, so posts are how people find it. Good moments: a planned power cut announced for the area, a storm warning, after a long cut in the news, or any quiet week between seasons. A post about stocking water and food also fits next to the flood posts.
+
+Links for power-cut posts:
+
+- **To read,** link `/ready` (`/en/ready` in English). It has its own preview (title, description and the power-cut checklist image), all 13 lessons, the checklist and ▶ play buttons.
+- **To play,** link `/?mode=stock`: the game opens with the power cut as the big card and the 💧 water-and-food topic. Its preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)), so put it after the `/ready` link.
+- Also share `/checklist/stock` ("ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ") and a `/c/s…` challenge, and the `ready` carousel set from `/posts`.
+
+**Be open about the sources.** 10 of the 13 lessons are ⚠️: most rest on international guidance (the US CDC, Ready.gov, the US Fire Administration) until a Thai review ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). Name the source next to a foreign number, as below, and never present it as a Thai agency's advice.
+
+> ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม? 🔦
+>
+> เล่น "บ้านรอดไหม?" โหมดไฟดับ เกม 55 วินาที (ในเกมคือ 12 ชั่วโมงที่ไม่มีไฟ)
+> ✅ น้ำดื่มสำรองอย่างน้อย 3 ลิตร ต่อคน ต่อวัน ให้พอ 3 วัน
+> ✅ ไฟฉายให้ทุกคนในบ้าน เก็บถ่านสำรองไว้ด้วยกัน
+> ✅ เครื่องปั่นไฟตั้งนอกบ้านในที่โล่งเท่านั้น
+> ✅ ไฟดับ ปิดตู้เย็นไว้ ของสดอยู่ได้ราว 4 ชั่วโมง (คำแนะนำของ CDC สหรัฐฯ)
+> อ้างอิงคำแนะนำจาก กรมประชาสัมพันธ์ ปภ. กรมควบคุมโรค และหน่วยงานต่างประเทศ (ข้อที่มาจากต่างประเทศ มีป้ายบอกไว้ในเกม)
+>
+> เก็บเช็กลิสต์ "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ" ไว้ แล้วส่งต่อให้คนที่บ้านนะ 💙
+>
+> อ่านครบทุกข้อ 👉 https://baanrodmai.autobahn.bot/ready
+> ลองเล่นโหมดไฟดับ 👉 https://baanrodmai.autobahn.bot/?mode=stock
+> #บ้านรอดไหม #ไฟดับ
+
+**LINE family groups** (attach `public/share/checklist-stock.png`):
+
+> ส่งต่อด้วยความห่วงใย 💛 เช็กลิสต์ "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ" น้ำ อาหาร ไฟฉาย วิทยุ ยาประจำตัว เก็บไว้นะ
+> ลองเล่นเกม 60 วิได้ที่ 👉 https://baanrodmai.autobahn.bot/?mode=stock
+
+Rules for these posts: no photos of real blackouts, storms or damage; no blame on the electricity authorities or anyone else for a power cut; keep it about getting ready, not about how bad a cut could be.
+
 ## 3. Outreach (who to send it to, and the ask)
 
 Give every partner the same **ready-to-forward kit**:
 
-- the checklist images for the hazard (flood: Prepare and Return; dust; fire)
+- the checklist images for the hazard (flood: Prepare and Return; dust; fire; power cut)
 - a result card
 - the two-line message above
 - the link
@@ -222,12 +257,12 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 ## 6. Launch-day checklist
 
 - [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
-- [ ] Sitemap (10 addresses since v1.6.0) submitted in Google Search Console and Bing Webmaster Tools, and the six hazard pages submitted for indexing; `/learn` and `/pm25` JSON-LD pass the Rich Results Test
+- [ ] Sitemap (12 addresses since v1.7.0) submitted in Google Search Console and Bing Webmaster Tools, and the eight hazard pages submitted for indexing; `/learn` and `/pm25` JSON-LD pass the Rich Results Test
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
-- [ ] Hazard pages `/flood`, `/pm25` and `/fire` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE
+- [ ] Hazard pages `/flood`, `/pm25`, `/fire` and `/ready` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE
 - [ ] Switch end dates set: the build's `start` line shows the mode and topic you expect today, with no warning about a missing or past end date
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on
 - [ ] Real-phone pass of [06-test-checklist.md](06-test-checklist.md) in LINE, Facebook and TikTok in-app browsers
-- [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md)
+- [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md), including the 10 power-cut lessons before the `ready` set is posted widely
 - [ ] Posts scheduled for the 06:00 / 12:00 / 20:00 slots; partner kit sent

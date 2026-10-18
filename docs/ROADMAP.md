@@ -29,13 +29,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L1 | [Create the Cloudflare Pages project](#l1-create-the-cloudflare-pages-project) | Owner | Mostly done: Web Analytics left |
 | L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
-| L4 | [Review the 11 flagged (⚠️) safety items](#l4-review-the-11-flagged-safety-items) | Owner + AI | Todo |
+| L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
-| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (now with the six hazard pages) |
+| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (now with the eight hazard pages) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
-| L10 | [Thai review of the dust and fire lessons](#l10-thai-review-of-the-dust-and-fire-lessons) | Owner + AI | Todo |
+| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0) |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
@@ -49,6 +49,8 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N11 | [The visitor funnel: next step always on the first screen](#n11-the-visitor-funnel-next-step-always-on-the-first-screen) | AI-ready | Done (15 Oct 2026, v1.5.2) |
 | N12 | [A start screen that keeps itself current, mode links and hazard pages](#n12-a-start-screen-that-keeps-itself-current-mode-links-and-hazard-pages) | AI-ready | Done (18 Oct 2026, v1.6.0) |
 | N13 | [Carousel posts for social media](#n13-carousel-posts-for-social-media) | AI-ready | Done (18 Oct 2026, v1.6.1) |
+| N14 | [A power-cut and stockpile mode](#n14-a-power-cut-and-stockpile-mode) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.7.0); Thai review left (L10) |
+| N15 | [How ready is our house? A checker and a family plan card](#n15-how-ready-is-our-house-a-checker-and-a-family-plan-card) | AI-ready | Planned (v1.8.0) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -100,15 +102,16 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. Optionally set `forecastStatusUrl`. Its endpoint must send CORS headers and answer `{"rainWarning": true|false}` within 1.5 s.
 - **Done when:** the build no longer warns about the placeholder, and the "เช็กระดับน้ำล่วงหน้า" buttons appear and open the app.
 
-### L4. Review the 11 flagged safety items
+### L4. Review the 21 flagged safety items
 
-- **Who:** Owner + AI · **Status:** Todo · **Issues:** #8, #9, #10
+- **Who:** Owner + AI · **Status:** Todo · **Issues:** #8, #9, #10, #55
 - **Steps:**
   1. An assistant prepares a review sheet from [01-safety-content.md](01-safety-content.md#flags-please-review-these). Ask the owner before publishing it anywhere.
   2. The owner or an agency contact confirms or corrects each item.
   3. An assistant applies the answers in `items.json` and `sources.json`, sets `verify`, and runs `npm run docs`.
 - **Done when:** every playable item is `verified`, or the owner has knowingly accepted it as `partial`, and the table is regenerated.
 - **Note (v1.5.0):** the eleventh is `f-alarm` (smoke alarms), backed only by the US Fire Administration.
+- **Note (v1.7.0):** ten more are power-cut lessons (`s-…`), most of them backed only by international guidance. Their review is the power-cut part of [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
 
 ### L5. Second native reader for the Thai copy
 
@@ -134,9 +137,9 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** Owner + AI · **Status:** Todo · **Issues:** #30, #32
 - **Steps:**
-  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`. Since v1.6.0 it lists 10 addresses: `/`, `/learn`, `/flood`, `/pm25` and `/fire`, each with its `/en/` twin. If the sitemap was submitted before 18 Oct 2026, submit it again, and ask for the six new pages to be indexed (URL Inspection → Request indexing in Google; URL Submission in Bing).
+  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`. Since v1.7.0 it lists 12 addresses: `/`, `/learn`, `/flood`, `/pm25`, `/fire` and `/ready`, each with its `/en/` twin. If the sitemap was submitted before 19 Oct 2026, submit it again, and ask for the hazard pages to be indexed (URL Inspection → Request indexing in Google; URL Submission in Bing): the six from v1.6.0 and `/ready` and `/en/ready` from v1.7.0.
   2. Run `/`, `/learn` and one hazard page (`/pm25`) through Google's Rich Results Test and fix anything it reports in the JSON-LD (`tools/build.mjs`).
-  3. Paste a challenge link, `/learn`, `/pm25` and `/fire` into the Facebook Sharing Debugger and a LINE chat. The hazard pages should show their own title and the checklist image.
+  3. Paste a challenge link, `/learn`, `/pm25`, `/fire` and `/ready` into the Facebook Sharing Debugger and a LINE chat. The hazard pages should show their own title and the checklist image.
   4. After about two weeks, search the game's Thai name, "เตรียมบ้านก่อนน้ำท่วม" and "ป้องกันฝุ่น PM2.5 ในบ้าน" in Google and Bing, and ask two AI assistants about it. Record what appears, and whether the hazard pages or `/learn` come up.
   5. Record the result in [KNOWN_ISSUES #32](KNOWN_ISSUES.md#32-search-and-ai-search-results-cant-be-guaranteed), and adjust the `/learn` headings and `seo` copy if the Thai queries find nothing.
   6. Repeat steps 2 and 3 for `/en/`, `/en/learn` and an English challenge link (`/en/c/p7`), and check that the `hreflang` pairs show no errors in Search Console. Search in English for "flood safety game Thailand".
@@ -151,15 +154,20 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   3. After two weeks, check whether Web Analytics shows referrals from `flood.autobahn.bot`.
 - **Done when:** both sites link to each other and the referrals show in Web Analytics.
 
-### L10. Thai review of the dust and fire lessons
+### L10. Thai review of the dust, fire and power-cut lessons
 
-- **Who:** Owner + AI · **Status:** Todo · **Issues:** #45, #46
-- **Why:** the 25 new lessons (v1.5.0) quote the Department of Health, DDPM and MEA through news reports, because the agency sites refuse automated access. A person should read the agency pages themselves before the dust season (December).
+- **Who:** Owner + AI · **Status:** Todo (the power-cut lessons were added in v1.7.0) · **Issues:** #45, #46, #55
+- **Why:** the 25 dust and fire lessons (v1.5.0) quote the Department of Health, DDPM and MEA through news reports, because the agency sites refuse automated access. A person should read the agency pages themselves before the dust season (December). The 13 power-cut lessons (v1.7.0) go further: 10 are ⚠️, and 7 of those rest on international guidance only (the US CDC, Ready.gov, the US Fire Administration). Their `verifyNote` points here.
 - **Steps:**
-  1. An assistant prints the dust and fire rows of [01-safety-content.md](01-safety-content.md) with their source links as a review sheet.
+  1. An assistant prints the dust, fire and power-cut rows of [01-safety-content.md](01-safety-content.md) with their source links as a review sheet.
   2. The owner (or a contact at กรมอนามัย / ปภ.) opens each source, checks the wording, and notes changes.
-  3. An assistant applies them, upgrades sources to `official` where an agency page is found, and runs `npm run docs`.
-- **Done when:** every dust and fire lesson is confirmed or corrected by a person, and the decision on `f-alarm` (keep as ⚠️, or drop) is recorded.
+  3. For the power-cut lessons, look for the Thai statement that would replace or back the international one:
+     - open the PRD 72-hour checklist page (`prd-72h`) in a normal browser and confirm "3 litres per person per day" (`s-water`) and the battery radio (`s-radio`); tools can't read it ([#55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance))
+     - ask MEA (กฟน.) or PEA (กฟภ.) whether they advise unplugging appliances in a power cut (`s-plugs`)
+     - ask กรมอนามัย or อย. about fridge and freezer food in a power cut (`s-fridge`, `s-leftover`, `s-freezer`), and have a Thai pharmacist or อย. read the cold-medicine wording (`s-medcold`)
+     - look for Thai wording on candles in a power cut (ปภ.) and on a manual can opener in a kit (`s-candle`, `s-opener`)
+  4. An assistant applies them, upgrades sources to `official` where an agency page is found, adds the Thai source next to the international one, sets `verify`, and runs `npm run docs`. Post an "UPDATE:" if the advice changes.
+- **Done when:** every dust, fire and power-cut lesson is confirmed or corrected by a person; the decision on `f-alarm` (keep as ⚠️, or drop) is recorded; and each power-cut lesson either has a Thai source or the owner has knowingly kept it as international guidance, flagged.
 
 ## Next (v1.1, AI-ready)
 
@@ -310,6 +318,32 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **What was built:** one set of 1080 × 1350 images per hazard (cover, up to 8 lessons, the checklists, the game's address and helplines), drawn by the card code from `items.json`; `/posts` with the images and a Thai caption to copy; a fingerprint that makes the build warn when the images are older than the text. See [CHANGELOG 1.6.1](../CHANGELOG.md) and [KNOWLEDGE §26](KNOWLEDGE.md#26-carousel-posts-v161).
 - **Done when:** the build has no warnings, 23 unit tests and 81 smoke checks pass, and every image has been looked at. All true on 18 Oct 2026.
 - **Left for the owner:** post the dust set in early December and the fire set in March ([04-launch-kit §2](04-launch-kit.md#posting-the-carousels-v161)); have the cover titles and captions read in the language check ([L5](#l5-second-native-reader-for-the-thai-copy)). English sets can be rendered from the same code when wanted.
+
+### N14. A power-cut and stockpile mode
+
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** Done (19 Oct 2026, v1.7.0); the Thai review is left ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons))
+- **Why:** the Thai stockpiling infographic behind N13 ("72 hours minimum, aim for 7 days", "eat old stock first", "when the power is out eat fridge → freezer → canned", "a manual can opener") was spreading on Thai social media. The game had no lesson on stocking a home or getting through a power cut, and the infographic itself cites no agency.
+- **What was built:**
+  - a fifth mode, `stock` (ไฟดับ / Power cut), year-round, code `s`, with a new threat `dark`: the room darkens over 12 story hours, the HUD counts them ("ไฟดับมา 4 ชม. · 37 วิ"), and an item with `lostAfter` goes bad at that hour (the fridge at 4 hours, from the US CDC)
+  - 13 lessons in three rooms, 5 decoys, a 10-item checklist "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ", challenge links `/c/s0`–`/c/s10`, the hazard page `/ready` and a carousel set
+  - 5 international sources (US CDC, Ready.gov ×2, Tokyo Metropolitan Government, US Fire Administration); 10 lessons flagged ⚠️, each saying why
+  - generic texts that no longer say every tip is from Thai agencies; a start screen with four small cards in one row
+  - on the way: the left room arrow no longer covers the item on the fridge (F38), and the build stops cleanly on content errors (F40)
+
+  See [CHANGELOG 1.7.0](../CHANGELOG.md) and [KNOWLEDGE §27](KNOWLEDGE.md#27-power-cuts-and-home-stock-v170).
+- **Rule kept:** only what an agency backs is taught. The infographic's eating order, "check every 3–6 months" and the 7-day target were left out. The four older modes' houses and challenge links are unchanged (a year of houses compared).
+- **Done when:** the build has no warnings, 25 unit tests and 86 smoke checks pass, the probe reports 0 % over 3,650 houses, the four older modes' houses are identical, and `16-stock.png` has been looked at. All true on 19 Oct 2026.
+- **Left for the owner:**
+  - the Thai review of the 10 ⚠️ power-cut lessons, including the PRD page check for 3 L and the radio, MEA/PEA on unplugging, and กรมอนามัย/อย. on fridge food and cold medicine ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [#55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance))
+  - play `/?mode=stock` and read `/ready` on a phone ([L6](#l6-real-phone-test-matrix)), and submit `/ready` with the sitemap ([L8](#l8-search-consoles-and-ai-search-check))
+  - the power-cut strings and the `/ready` text in the language check ([L5](#l5-second-native-reader-for-the-thai-copy))
+  - post the `ready` carousel set when it fits ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)); 5 of its 8 lessons say on the image that they are under review
+
+### N15. How ready is our house? A checker and a family plan card
+
+- **Who:** AI-ready · **Status:** Planned (v1.8.0); not part of v1.7.0. Check this card before starting related work, as it may be under way.
+- **What:** a "how ready is our house?" checker and a family plan card. The scope, steps and "done when" are written here when the work starts.
+- **Rules that apply:** every item it asks about has a source ([GUIDELINES rule 55](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) for international ones), nothing personal leaves the phone, every control is 44 px or more, and both languages.
 
 ## Later
 

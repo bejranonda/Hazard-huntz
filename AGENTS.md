@@ -5,12 +5,12 @@ This file is for any AI coding assistant working on this repository. Claude Code
 ## 1. The project in brief
 
 - **บ้านรอดไหม? (Baan Rod Mai?)** is a 60-second Thai home-safety game for phones, built around the hazards of the Thai year.
-  - **Four modes:** ก่อนน้ำมา (prepare the house for a flood), หลังน้ำลด (spot the dangers when moving back), ฝุ่น PM2.5 (shut out the dust) and ไฟไหม้ (house fire). Modes live in a registry (`config.json → modes`, `public/js/modes.js`); see [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode).
+  - **Five modes:** ก่อนน้ำมา (prepare the house for a flood), หลังน้ำลด (spot the dangers when moving back), ฝุ่น PM2.5 (shut out the dust), ไฟไหม้ (house fire) and ไฟดับ (getting through a power cut, year-round, v1.7.0). Modes live in a registry (`config.json → modes`, `public/js/modes.js`); see [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode).
   - **Built to spread:** it is meant to be forwarded in LINE family groups.
 - **Stack:** plain HTML, CSS and ES modules with hand-made SVG.
   - Static hosting on Cloudflare Pages Free, plus one tiny Pages Function for anonymous counts.
   - No framework and no runtime npm packages.
-- **State (18 Oct 2026):** v1.6.1, in Thai (`/`) and English (`/en/`), with a page per hazard (`/flood`, `/pm25`, `/fire`) `?mode=` links that open the game on one mode, and image sets for social posts (`/posts`). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
+- **State (19 Oct 2026):** v1.7.0, in Thai (`/`) and English (`/en/`), with a page per hazard (`/flood`, `/pm25`, `/fire`, `/ready`), `?mode=` links that open the game on one mode, and image sets for social posts (`/posts`). Most lessons come from Thai agencies; 10 of the 13 power-cut lessons rest partly or wholly on international guidance and are flagged ⚠️ until a Thai review ([KNOWN_ISSUES #55](docs/KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). The code is complete and passes every automated check, and it is **live at https://baanrodmai.autobahn.bot** (Cloudflare Pages project `baanrodmai`). It is **not tested on real phones** and not yet launched.
   - The remaining launch work needs the owner: Web Analytics, search-console submission, a safety review and a phone test.
   - See [HANDOFF.md](HANDOFF.md).
 - **Branches:** `main` is production. Pushes to `main` deploy by themselves (verified 10 Oct 2026, live in about two minutes). Check the live site after a push.
@@ -29,8 +29,8 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | Command | What it does | When |
 |---|---|---|
 | `node tools/build.mjs` | Validates every content file, then generates the preview, lesson and hazard pages and `sw.js`, checks the 500 KB budget, and prints what the start screen recommends today (`start`) | Every change |
-| `npm test` | 23 rule tests, Node only, well under a second | Every change |
-| `npm run smoke` | 81 checks in headless Chromium, on a pinned Bangkok day (18 Oct 2026 by default). Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
+| `npm test` | 25 rule tests, Node only, well under a second | Every change |
+| `npm run smoke` | 86 checks in headless Chromium, on a pinned Bangkok day (18 Oct 2026 by default). Needs `npm install` and Chromium (see §7). | UI, CSS, sharing or service-worker changes |
 | `SMOKE_DATE=YYYY-MM-DD npm run smoke` | The same checks on another day, to test another season (for example `2026-12-05` for dust, `2027-04-10` for fire) | Changes to seasons, switches or what the start screen recommends |
 | `npm run smoke -- --screens docs/screens` | Same, and refreshes the doc screenshots. **Look at them.** | Visual changes |
 | `npm run probe` | Measures tap-area overlaps over two years of houses in every mode, plus flood and smoke timings | Slot, size or water-curve changes |
@@ -64,22 +64,23 @@ These are short versions of [GUIDELINES §1](docs/GUIDELINES.md#1-non-negotiable
   - Every correct action needs a source in `public/content/sources.json`.
   - Set `verify` honestly (`verified` / `partial` with a `verifyNote`).
   - Leave out numbers that sources disagree on.
+  - Advice only a foreign agency gives ships ⚠️ `partial`, says so, and is never described as Thai advice; a viral post is a prompt, not a source ([GUIDELINES rule 55](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 - **Content guardrails:**
   - no drowning, deaths, injuries or photos of real damage
   - no blaming agencies or politicians
   - no political, royal or religious references
   - humour aimed only at the situation
 - **Privacy:** no personal data, no cookies, no new third-party scripts. Events stay anonymous.
-- **Tap targets:** every one is at least 44 px. The smoke test measures items and controls.
-- **Weight:** the start screen stays under 500 KB compressed (188 KB today).
+- **Tap targets:** every one is at least 44 px, and nothing that floats over the room (the ‹ › arrows) may cover more than 5 % of an item. The smoke test measures items, controls and that overlap; a click with `force: true` can't see it ([GUIDELINES rule 54](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Weight:** the start screen stays under 500 KB compressed (200 KB today).
 - **Two languages:** every `th` string needs an `en` twin (and every `og` an `ogEn`). Don't hard-code the brand name; use `logoA`/`logoB`. Check `/en/` as well as `/` before calling a change done.
 - **Tips:** at most 80 characters, in both Thai and English. Exactly one correct choice per item.
 - **Text location:** player-facing text belongs in `public/content/*.json`, not in JS. Every new `og` key needs an English `ogEn` twin (the build fails otherwise); re-render with `npm run images` and commit only the images you meant to change.
 - **Search and AI search:** `/learn`, the hazard pages, `/llms.txt`, `/sitemap.xml`, `/robots.txt`, the canonical link and the JSON-LD are all generated from the content JSON. Don't hand-write lesson text anywhere else, or it will drift from `items.json`.
 - **Cloudflare token:** it is in `.env` (git-ignored). Load it with `set -a; . ./.env; set +a` and never print it. `wrangler.toml` manages the Pages project, so the site address comes from `config.json → siteUrl`, not a dashboard variable.
-- **Generated files** are never edited by hand: `public/sw.js`, `public/js/version.js`, `public/c/*.html`, `public/checklist/*.html`, the English pages (`public/en/`), the SEO files (`public/learn.html`, `robots.txt`, `sitemap.xml`, `llms.txt`), the hazard pages (`public/<slug>.html` and `public/en/<slug>.html`: `flood`, `pm25`, `fire`), `public/posts.html`, and the OG block in `index.html`. The carousel images (`public/share/carousel/`) and their `manifest.json` come from `npm run images`. Bump `strings.json → seo.updated` when the lessons change. Never change a hazard slug (`config.json → hazards`) once published.
+- **Generated files** are never edited by hand: `public/sw.js`, `public/js/version.js`, `public/c/*.html`, `public/checklist/*.html`, the English pages (`public/en/`), the SEO files (`public/learn.html`, `robots.txt`, `sitemap.xml`, `llms.txt`), the hazard pages (`public/<slug>.html` and `public/en/<slug>.html`: `flood`, `pm25`, `fire`, `ready`), `public/posts.html`, and the OG block in `index.html`. The carousel images (`public/share/carousel/`) and their `manifest.json` come from `npm run images`. Bump `strings.json → seo.updated` when the lessons change. Never change a hazard slug (`config.json → hazards`) once published.
 - **Hand-set switches get an end date.** `rainWarningActive` needs `rainWarningUntil` and `featuredTopic` needs `featuredTopicUntil` (Bangkok dates, that day included). Tests never read the calendar: pin the date and derive the expectation from `recommend()` ([GUIDELINES rules 51–52](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
-- **Changes that reshuffle houses.** Adding, removing or disabling items, or moving slots, changes today's house and old challenge links. Say so in the commit, and ship such changes around midnight Bangkok time.
+- **Changes that reshuffle houses.** Adding, removing or disabling items, or adding, removing or retagging slots, changes today's house and old challenge links. Say so in the commit, and ship such changes around midnight Bangkok time. Moving a slot's `x`/`y` with the same id and tags changes no house, but changes when water or smoke reaches it (re-run `npm run probe`).
 - **Correcting published advice** requires an "UPDATE:" post. Note it for the owner.
 
 ## 6. How the owner works
@@ -114,7 +115,7 @@ These were learned in Claude Code cloud sessions and similar sandboxes.
 ## 8. What to do next
 
 1. **If the owner gave a launch input** (domain, forecast URL, review results or phone-test results), do the matching **L** task in [docs/ROADMAP.md](docs/ROADMAP.md) first.
-2. **Otherwise** take the top **AI-ready** task under *Later*:
+2. **Otherwise** take the top **AI-ready** task under *Later*. (N15 under *Next*, a "how ready is our house?" checker and a family plan card, is planned for v1.8.0; check its status before starting anything that overlaps it.)
    - **P7:** heat and summer storms (the next hazard mode; follow [GUIDELINES §10](docs/GUIDELINES.md#10-adding-a-hazard-mode))
    - **P8:** earthquake and tsunami
    - **P5:** share-loop ideas (weekly house, QR code, family round-up, themed house)

@@ -1,10 +1,12 @@
 # Game design: บ้านรอดไหม?
 
-> **A 60-second house, two moments of truth.** Before the flood you race the rising water to save what matters. After the flood you spot what can still hurt you. Every tap teaches one real action from a Thai agency, and every result is built to be forwarded to the family LINE group.
+> **A 60-second house, two moments of truth.** Before the flood you race the rising water to save what matters. After the flood you spot what can still hurt you. Every tap teaches one real action with its source, almost always a Thai agency, and every result is built to be forwarded to the family LINE group.
+>
+> Since v1.5.0 the same house also faces PM2.5 dust and house fire, and since v1.7.0 a night without power (ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม?): five modes in all.
 
 ## Design pillars
 
-1. **Useful first.** Every target is a real action with an official source behind it (see [01-safety-content.md](01-safety-content.md)). Every player leaves with the full lesson, including the items they missed.
+1. **Useful first.** Every target is a real action with an official source behind it (see [01-safety-content.md](01-safety-content.md)); the few that rest on a foreign agency only are flagged ⚠️ and say so. Every player leaves with the full lesson, including the items they missed.
 2. **Fun in 60 seconds.** A tense but forgiving loop: scan → tap → choose → instant feedback. The timer pauses while you read, so learning is never punished.
 3. **Respectful.** Humour is aimed at the situation (mud, a rope that looks like a snake, the gecko's faces), never at people. No drowning, injuries, real photos, politics or blame. Wrong answers get *"ไม่เป็นไร รู้แล้วรอดของจริง"*, never a buzzer.
 4. **Built to spread.** A daily house that is the same for everyone (a Wordle-style shared puzzle), a spoiler-free emoji grid, a flattering rank title, challenge links that rebuild the exact same house, and checklist images styled like the greeting pictures Thai families already forward.
@@ -44,7 +46,7 @@
 - **Six rooms:** หน้าบ้าน, ห้องนั่งเล่น, ครัว, ห้องน้ำ, ห้องนอน, โรงรถ.
   - The **MVP ships หน้าบ้าน + ห้องนั่งเล่น + ครัว** in both modes; those three hold every priority item.
   - The other rooms are listed in `rooms.json` with `enabled: false`. Their safety content already exists in `items.json`; adding art and flipping the flag unlocks them.
-- **One illustration per room, reused by both modes.** The Return look is a `mud` layer inside the same SVG: a high-water stain, a muddy floor, puddles and debris. The window shows rain clouds before the flood and sunshine after.
+- **One illustration per room, reused by every mode.** The Return look is a `mud` layer inside the same SVG: a high-water stain, a muddy floor, puddles and debris. The window shows rain clouds before the flood and sunshine after. Dust, fire and the power cut hide the mud and the rain and draw their threat on top (haze, smoke, the dark).
 - **Layout:** rooms sit side by side in a swipeable strip (CSS scroll-snap), with tabs showing how many targets are left in each room and ‹ › arrows for people who don't think to swipe.
 - **Seeded placement:** each room defines *slots* (bottom-centre anchors with tags such as `floor`, `table`, `breaker`). Each item lists the slot tags it fits.
   - A seed (mode + house key) picks **5–7 targets** and **3–4 decoys**.
@@ -86,10 +88,24 @@
 
 | Element | Rule |
 |---|---|
-| Timer | 55 s. Smoke falls from the ceiling; an item is lost when the smoke reaches its centre, so the smoke alarm goes first (about 22 s), then the pan and the 199 note near the end. At `lowY` the gecko says "crawl low". |
+| Timer | 55 s. Smoke falls from the ceiling; an item is lost when the smoke reaches its centre, so the smoke alarm goes first (about 22 s), then the pan (about 50 s). Since v1.7.0 the 199 note sits lower on the fridge, below the room arrow, and the smoke no longer reaches it. At `lowY` the gecko says "crawl low". |
 | Hazards | Chained power strips, a hot cracked lamp cord, a phone charging on the sofa, a chirping smoke alarm, a towel (wet cloth, crawl low), a pan left on the stove, the gas valve, sprays by the stove, an extinguisher buried in a cupboard, the 199 note, smoke under the front door, burning leaves in wind, a cigarette end. |
 | Gecko | Wears a red helmet. "ใกล้พื้นอากาศดีกว่า จำไว้นะ" |
 | Guardrail | Smoke, cords and pans only. No flames on people, no injuries. |
+
+## Mode 5: ไฟดับ (Power cut, v1.7.0)
+
+**The story:** "ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม?" (A night without power: will the house cope?). The power has gone out for the night; the family has to keep the food safe, light the house safely and get by on what is stocked. Year-round: never the season's default, played from its card, `/?mode=stock`, `/ready` or a post.
+
+| Element | Rule |
+|---|---|
+| Timer | 55 s, covering **12 story hours** without power. The HUD shows both: "ไฟดับมา 4 ชม. · 37 วิ". The room darkens over the round (a deep-blue dim, heavier at the edges; items stay readable). |
+| Losing an item | Only the fridge can go bad: if the player hasn't tapped it by **4 story hours** (about 18 s with no penalties), its food is lost. The number is the US CDC's "a closed fridge keeps food safe about 4 hours". It gets a grey clock badge and "เสียก่อน" / "Went bad first", and 🌑 in the share grid. Every power-cut house includes the fridge. The full freezer lasts about 48 hours, so it never goes bad in the round; that is how the game teaches "the fridge goes first" without an unsourced eating order. |
+| Hazards | Kitchen: the fridge everyone keeps opening, minced pork left after the night, a full freezer, cans with no opener, too little stored water, the food store. Living room: grandma's medicine that must stay cold, a candle left burning, a flashlight with flat batteries, a battery radio, a power bank on one bar, the TV and computer still plugged in. Front: a generator under the window. |
+| Decoys | A closed rice bin, a battery wall clock, books, a potted plant, dishes in the sink. |
+| Gecko | Carries a torch. "ไฟดับแล้ว! ดูตู้เย็นก่อนเลย" / "มืดแล้ว ไฟฉายอยู่ไหนนะ" |
+| Sources | 3 lessons ✅ (Thai agencies, cross-checked with Ready.gov); 10 ⚠️, most on international guidance only (US CDC, Ready.gov, US Fire Administration). The lesson says so ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). |
+| Guardrail | No fear about the dark: the room stays readable, the gecko stays cheerful, and nothing about injuries. Food and medicine advice is general and names its source. |
 
 
 - **Tap a target:** the timer pauses and a bottom sheet shows 3 choices.
@@ -103,6 +119,7 @@
   - หลังน้ำลด: มือใหม่หัดกู้บ้าน → ช่างไฟประจำซอย → เซียนกู้บ้าน
   - ฝุ่น PM2.5: มือใหม่หัดสู้ฝุ่น → นักอุดรอยรั่ว → บ้านนี้หายใจโล่ง
   - ไฟไหม้: มือใหม่หัดกันไฟ → สารวัตรปลั๊กพ่วง → บ้านนี้ปลอดภัยจากไฟ
+  - ไฟดับ: มือใหม่หัดตุนของ → ผู้จัดการคลังบ้าน → บ้านนี้พร้อมทุกไฟดับ
 - **Replay:**
   - **Daily house** per mode, the same for everyone, resetting at midnight Bangkok time.
   - A **streak** counter.
@@ -112,15 +129,15 @@
 
 ## Mode selection
 
-- One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in a row. The gecko's line, prop and the featured topic change to match.
+- One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in one row, four of them since v1.7.0. Their names shrink with the screen (`clamp(12px, 3.9vw, 16px)`), so every Thai name stays on one line at 320 px; English names wrap to two lines. The gecko's line, prop and the featured topic change to match.
 - **What is recommended** comes from one pure function, `recommend()` in `modes.js` (v1.6.0; [KNOWLEDGE §25.2](KNOWLEDGE.md#252-what-the-start-screen-recommends)), in this order:
   1. a `?mode=` link (`/?mode=dust`): that mode, with its own topic featured
   2. a rain warning: Prepare. That is `config.json → rainWarningActive: true` until its end date `rainWarningUntil` (now 30 Nov 2026), or the forecast app's live answer when there is one
-  3. the mode in season (`modes[].months`, Bangkok month): dust December–March, fire April
+  3. the mode in season (`modes[].months`, Bangkok month): dust December–March, fire April. The power cut has no months, so it is never picked here.
   4. otherwise Return
-- **`?mode=` links** are for posts and campaigns. Only the four mode ids count (any letter case); `/?mode=heat` is ignored, a friend's challenge link wins over it, and it never starts a round by itself. Visitors from abroad get `/en/?mode=…`.
+- **`?mode=` links** are for posts and campaigns. Only the five mode ids count (`prepare`, `return`, `dust`, `fire`, `stock`, any letter case); `/?mode=heat` is ignored, a friend's challenge link wins over it, and it never starts a round by itself. Visitors from abroad get `/en/?mode=…`.
 - **The forecast app** can answer through `forecastStatusUrl` with `{ "rainWarning": true|false }` within 1.5 s; its answer beats the manual switch both ways. If the call fails, the manual switch is used.
-- **The hazard pages** (`/flood`, `/pm25`, `/fire`, v1.6.0) are another way in: plain pages with that hazard's lessons and a ▶ button to `/?mode=<id>`.
+- **The hazard pages** (`/flood`, `/pm25`, `/fire`, v1.6.0, and `/ready`, v1.7.0) are another way in: plain pages with that hazard's lessons and a ▶ button to `/?mode=<id>`.
 
 ## Feel
 
@@ -138,7 +155,7 @@
 - **End of the round by score** (v1.3.0): 10/10 gets a bigger fanfare, a second confetti burst and a stamp; 8–9 the fanfare and confetti; lower scores a soft chime. A small gecko on the result screen says a line that fits (`cheerPerfect`/`cheerHigh`/`cheerMid`/`cheerLow`), always warm.
 - **Combo, for feel only:** three or more right in a row show "🔥 3 ข้อติด!" near the top of the room and play a rising run. No points.
 - **More sound:** a splash when water reaches the floor, a tick for each of the last five seconds, a blip when sound is switched on.
-- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (66 playable lessons, grouped in 8 topics). Locked lessons show as grey tiles, so there is something to find in random houses. The book is grouped by **topic** (🦠 health, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, car & belongings, 🎒 plans & go-bag, and since v1.5.0 😷 dust and smoke and 🔥 fire safety) with a progress bar each and a 🏅 badge for a full set; it links to `/learn`, where every answer is readable without playing.
+- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (79 playable lessons since v1.7.0, grouped in 8 topics). Locked lessons show as grey tiles, so there is something to find in random houses. The book is grouped by **topic** (🦠 health, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, car & belongings, 🎒 plans & go-bag, and since v1.5.0 😷 dust and smoke and 🔥 fire safety) with a progress bar each and a 🏅 badge for a full set; it links to `/learn`, where every answer is readable without playing.
 - **Topic in the news** (v1.4.0): `config.featuredTopic` adds a card under the daily line: "📰 เรื่องที่ควรรู้ช่วงนี้ · 🦠 โรคหลังน้ำท่วม" with "read all" (→ `/learn#t-health`) and "book n/8". Since v1.6.0 it ends by itself after `featuredTopicUntil` (now 15 Nov 2026); without a news topic, the recommended mode's own topic is featured (dust → 😷, fire → 🔥).
 - **Motion:** gentle hops and sparkles, no flashing. `prefers-reduced-motion` turns animations into instant state changes.
 - **Copy voice:** casual, warm, native Thai, like a helpful neighbour. Short sentences, particles used naturally (นะ, จ้า, เลย). No jargon, no blame. English mirrors the tone (toggle at top right).
@@ -212,6 +229,10 @@ Low-fidelity layouts below. Real screenshots from the built game, captured by `n
 | English | [10-english.png](screens/10-english.png) |
 | Challenge back (share sheet with the versus card) | [11-challenge-back.png](screens/11-challenge-back.png) |
 | Safety book (by topic) | [12-book.png](screens/12-book.png) |
+| PM2.5 dust (v1.5.0) | [13-dust.png](screens/13-dust.png) |
+| House fire (v1.5.0) | [14-fire.png](screens/14-fire.png) |
+| Hazard page (v1.6.0) | [15-hazard-page.png](screens/15-hazard-page.png) |
+| Power cut: the kitchen at 6 hours without power, the fridge gone bad (v1.7.0) | [16-stock.png](screens/16-stock.png) |
 
 The share assets, rendered by the same canvas code as the game:
 
@@ -235,8 +256,8 @@ The share assets, rendered by the same canvas code as the game:
   - In LINE, Facebook and TikTok in-app browsers, downloads usually fail. The card is shown as an `<img>` with *"กดค้างที่รูป แล้วเลือกบันทึกรูปภาพ"*, and LINE also gets an *open in browser* link (`openExternalBrowser=1`).
 - **Challenge link:** `/c/p8?h=20261007` encodes the mode, the score to beat and the house seed. The friend sees a banner ("เพื่อนเตรียมบ้านทัน 8/10") and plays the identical house. The result compares scores and invites a challenge back.
 - **English:** the same cards, text and links exist in English. In English the share text ends `#FloodSafety`, challenge links are `/en/c/p8?h=…`, and the wordmark on cards and checklists is "Baan Rod Mai?" (`strings.json → logoA/logoB`, shrunk to fit by `logo()` in `cards.js`).
-- **Link previews:** each `/c/{p|r|d|f}{0–10}` URL is its own static HTML page. Each has Open Graph tags and a pre-rendered 1200×630 PNG showing the score, so LINE and Facebook show "เพื่อนเตรียมบ้านทัน 8/10" in the preview. See [03-deploy.md](03-deploy.md#why-the-link-preview-images-are-pre-rendered) for why these are pre-rendered rather than rendered per request.
-- **Family-group checklists:** four 1080×1920 images, *เตรียมบ้านก่อนน้ำมา 10 ข้อ*, *ก่อนกลับเข้าบ้าน 10 ข้อ*, and since v1.5.0 *ห้องปลอดฝุ่น 10 ข้อ* and *บ้านปลอดภัยจากไฟ 10 ข้อ*. They have big text, an icon per item, the helpline numbers and "ส่งต่อด้วยความห่วงใย ♥". They are available in-game and at `/checklist/prepare`, `/checklist/return`, `/checklist/dust` and `/checklist/fire`, which have their own previews for people who never play. The hazard pages show the same lists as text.
+- **Link previews:** each `/c/{p|r|d|f|s}{0–10}` URL is its own static HTML page. Each has Open Graph tags and a pre-rendered 1200×630 PNG showing the score, so LINE and Facebook show "เพื่อนเตรียมบ้านทัน 8/10" in the preview. See [03-deploy.md](03-deploy.md#why-the-link-preview-images-are-pre-rendered) for why these are pre-rendered rather than rendered per request.
+- **Family-group checklists:** five 1080×1920 images, *เตรียมบ้านก่อนน้ำมา 10 ข้อ*, *ก่อนกลับเข้าบ้าน 10 ข้อ*, since v1.5.0 *ห้องปลอดฝุ่น 10 ข้อ* and *บ้านปลอดภัยจากไฟ 10 ข้อ*, and since v1.7.0 *ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ*. They have big text, an icon per item, the helpline numbers and "ส่งต่อด้วยความห่วงใย ♥". They are available in-game and at `/checklist/prepare`, `/checklist/return`, `/checklist/dust`, `/checklist/fire` and `/checklist/stock`, which have their own previews for people who never play. The hazard pages show the same lists as text.
 
 ## Version 2: combined run (structured, not built)
 
@@ -256,13 +277,13 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── index.html          start screen markup (works before JS runs)
 │   ├── css/app.css
 │   ├── js/
-│   │   ├── main.js         boot (pickStart → state.start), screens, game loop, result, sharing UI
+│   │   ├── main.js         boot (pickStart → state.start), screens (mode grid --cols ≤ 4), game loop, HUD (story hours in a power cut), result, sharing UI
 │   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend (pure, unit-tested)
-│   │   ├── house.js        seeded house generation (pure, unit-tested)
-│   │   ├── round.js        timer, water / smoke / haze, choices, score (pure, unit-tested)
+│   │   ├── house.js        seeded house generation; a power-cut house always gets an item with lostAfter (pure, unit-tested)
+│   │   ├── round.js        timer, water / smoke / haze / dark (darkLevel, hoursOut, lostAfter), choices, score (pure, unit-tested)
 │   │   ├── run.js          v1 single round / v2 combo structure
-│   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke, haze, badges
-│   │   ├── cards.js        canvas: result card (with the ending bubble), checklists, link previews
+│   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke, haze, the dark (_dark), badges (wet, smoked, spoiled)
+│   │   ├── cards.js        canvas: result card (with the ending bubble), checklists, link previews; a theme per mode (THEMES, stock since v1.7.0)
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
@@ -275,7 +296,8 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── en/                 generated English start page, learn and hazard pages, c/ and checklist/ (npm run build)
 │   ├── c/  checklist/      generated link-preview pages (npm run build)
 │   ├── learn.html llms.txt sitemap.xml robots.txt   generated SEO / AI-search files (npm run build)
-│   ├── flood.html pm25.html fire.html   generated hazard pages (slugs: config.json → hazards)
+│   ├── flood.html pm25.html fire.html ready.html   generated hazard pages (slugs: config.json → hazards)
+│   ├── posts.html          generated carousel page for whoever posts (noindex); images in share/carousel/
 │   ├── sw.js  js/version.js   generated service worker (offline) and version guard
 │   ├── _headers _routes.json manifest.webmanifest
 ├── functions/api/e.js      Pages Function: anonymous event counter → Analytics Engine

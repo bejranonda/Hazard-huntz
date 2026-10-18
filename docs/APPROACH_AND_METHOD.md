@@ -134,6 +134,7 @@ Several requirements are numbers, and numbers get measured.
 | Controls (≥ 44 px) | Every visible `button`, `a[href]`, `summary` and `[role=button]` on the game, result, checklist, help and about screens is measured. Source links inside a line of text are checked by height. | `tests/smoke.mjs` (`smallControls`) |
 | Tap areas on other screen sizes | The same measurement at 320×460 … 390×664 (one-off probe; results in [KNOWN_ISSUES F21](KNOWN_ISSUES.md#fixed)) | Re-run by changing the smoke test's viewport |
 | Overlapping tap areas | Generate two years of daily houses in every mode and intersect the hit boxes in each room | `npm run probe` |
+| Controls over items (v1.7.0) | Intersect the room arrows' boxes with every item's hit box, in every mode, room and three houses, at 390 × 760 and 360 × 640 | `tests/smoke.mjs` |
 | Flood timings | Invert the water curve for each item's possible slots | `npm run probe` |
 | Determinism and rules | 365 daily houses per mode. Each must have: 5–7 targets, at least one target per room, a critical item in Prepare, no slot used twice, tap areas ≥ `MIN_HIT`, and exactly one correct answer. Across the year, every playable item must appear at least once. | `npm test` |
 
@@ -157,8 +158,8 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
 ## 9. Testing
 
-1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset, the version 2 carry-over, and since v1.6.0 the switches' end dates and what the start screen recommends. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 81 checks, run by default as a Thai phone in Bangkok on a pinned day, 18 Oct 2026, which `SMOKE_DATE` changes; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+1. **Unit tests** (`npm test`, 25) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset, the version 2 carry-over, since v1.6.0 the switches' end dates and what the start screen recommends, and since v1.7.0 the power cut's fridge at 4 story hours. They run in Node in well under a second.
+2. **Smoke tests** (`npm run smoke`, 86 checks, run by default as a Thai phone in Bangkok on a pinned day, 18 Oct 2026, which `SMOKE_DATE` changes; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -166,7 +167,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
    They also test offline play after the first visit, reduced motion, and the analytics beacon.
 3. **Screenshots** from the same run (`--screens docs/screens`) were *looked at*. Several bugs were found only that way: the lamp behind the wall, the speech bubble covering items, a blue result screen, a date overlapping a pill on the card.
-4. **Real phones were not available.** The 43-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
+4. **Real phones were not available.** The 45-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
 
 ## 10. Scope cuts, said out loud
 
@@ -335,3 +336,15 @@ The owner's switches were right in October and would have been wrong in December
 4. **Prove a template refactor changes nothing before adding to it.** The `/learn` template was turned into one `seoPage()` function for every plain page. Before any hazard page was added, the build's output had to be byte-identical (`git diff --quiet` on the generated files). Only then did the new pages go in, so any later difference in `/learn` is a deliberate one. This is the same move as the mode registry in v1.5.0 ([§20](#20-from-one-hazard-to-a-year-of-hazards-v150)).
 5. **Generate the numbers a document states.** The safety table's counts are now a generated summary at the top of docs/01, and the build warns when that file is out of date. Hand-written counts elsewhere had drifted (43 items for 68, 10 partial for 11, a 35-row matrix with 40 rows); they were corrected, and where a doc gives a test count, the run's own output is the reference ([KNOWN_ISSUES F34](KNOWN_ISSUES.md#in-v160-18-oct-2026)).
 6. **Keep the real date where it belongs.** A test on a pinned date can't see that today's switch has expired; the build, which runs on every deploy on the real date, can. Each check covers the part it can see ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)).
+
+## 24. From a viral infographic to sourced lessons (v1.7.0)
+
+A stockpiling infographic was spreading on Thai social media, and the owner shared it. It was useful and popular, and it cited nobody. The method for turning it into the power-cut mode:
+
+1. **Treat the post as a list of claims, not a source.** Each claim ("72 hours", "aim for 7 days", "eat old stock first", "fridge → freezer → canned", "a manual can opener") was looked up at an agency. Thai agencies agreed on 3 days. The fridge and freezer times, the can opener, candles, unplugging and cold medicine were found only at foreign agencies (the US CDC, Ready.gov, the US Fire Administration, Tokyo); the 7 days were Tokyo's alone; no agency gave the eating order or a 3–6-month check.
+2. **Keep, flag, drop.** Keep what a Thai agency says (✅). Flag what only a foreign agency says (⚠️, with the reason in `verifyNote`, on `/learn` and on the carousel image), and read and quote those pages in full. Drop what nobody says, however widely it is shared ([KNOWLEDGE §27.3](KNOWLEDGE.md#273-what-was-left-out-and-why)).
+3. **Deviate from the brief in the open.** The brief asked for Thai agencies only. Ten flagged lessons depart from that; the docs say so in the summary, the issue list and the release notes, and the owner decides after a Thai review ([LESSONS E7](LESSONS_LEARNED.md#e-process-documentation-and-git), [KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
+4. **Re-read what the whole game says about itself.** Adding international lessons made the About text, the previews, `/learn`'s titles and `llms.txt` untrue ("every tip comes from Thai agencies"). They were rewritten in the same release. A search for "Thai government" across the strings, done while documenting the release, found one that was missed ([KNOWN_ISSUES #56](KNOWN_ISSUES.md#56-the-english-checklist-preview-still-says-from-thai-government-agency-advice)): search the strings, not only the texts you remember.
+5. **Build the story mechanic from a sourced number.** The infographic's eating order has no source, but the CDC's "a closed fridge keeps food safe about 4 hours" does. A 12-hour night in story hours with the fridge lost at hour 4 (`lostAfter`) teaches the same lesson, the fridge goes first, from a number someone can check; the freezer's 48 hours keep it safe through the night, as the source says.
+6. **Measure what lies over a target.** The new fridge went on a slot that the ‹ room arrow partly covered. Measuring the overlap, rather than the item's size, showed it had covered up to 23 % of the item there since v1.0, unseen because the smoke test clicked with `force: true`. The slot moved below the arrow with its id kept, so no house changed, and a smoke check now measures arrow coverage in every mode ([LESSONS D11](LESSONS_LEARNED.md#d-testing-and-verification)).
+7. **Prove the old modes didn't change.** A year of houses in each of the four older modes was compared with v1.6.1 and is identical, as in v1.5.0 ([§20](#20-from-one-hazard-to-a-year-of-hazards-v150)).

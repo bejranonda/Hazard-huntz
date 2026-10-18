@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.6.0 (18 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.7.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -17,7 +17,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | # | Issue | Status | Severity |
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 8 | [11 safety items are only partially verified](#8-11-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
+| 56 | [The English checklist preview still says "from Thai government agency advice"](#56-the-english-checklist-preview-still-says-from-thai-government-agency-advice) | Open | Low |
+| 8 | [21 safety items are only partially verified](#8-21-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
 | 11 | [Thai and English copy need a second native reader](#11-thai-and-english-copy-need-a-second-native-reader) | Owner | Medium |
@@ -49,9 +50,10 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 44 | [The featured topic is switched by hand](#44-the-featured-topic-is-switched-by-hand) | By design | — |
 | 45 | [The smoke-alarm lesson has no Thai source](#45-the-smoke-alarm-lesson-has-no-thai-source) | Owner | Medium |
 | 46 | [Dust and fire advice is quoted through news reports](#46-dust-and-fire-advice-is-quoted-through-news-reports) | Owner | Medium |
+| 55 | [The power-cut lessons rest largely on international guidance](#55-the-power-cut-lessons-rest-largely-on-international-guidance) | Owner | **Medium (review before posting widely)** |
 | 47 | [The season calendar is editorial](#47-the-season-calendar-is-editorial) | By design | — |
-| 48 | [Haze and smoke are untested on low-end phones](#48-haze-and-smoke-are-untested-on-low-end-phones) | Owner | Low |
-| 49 | [Dust and fire use the flood house](#49-dust-and-fire-use-the-flood-house) | By design | — |
+| 48 | [Haze, smoke and the dark are untested on low-end phones](#48-haze-smoke-and-the-dark-are-untested-on-low-end-phones) | Owner | Low |
+| 49 | [Dust, fire and the power cut use the flood house](#49-dust-fire-and-the-power-cut-use-the-flood-house) | By design | — |
 | 50 | [The v1.5.1 service worker reloads open pages once](#50-the-v151-service-worker-reloads-open-pages-once) | By design | — |
 | 51 | [The wordmark's coral half is low contrast](#51-the-wordmarks-coral-half-is-low-contrast) | By design | — |
 | 52 | [A `?mode=` link previews as the main game](#52-a-mode-link-previews-as-the-main-game) | By design | — |
@@ -78,17 +80,25 @@ What a headless test **cannot** show:
 - how the font, notch and home bar look on real screens
 - audio on iOS when the silent switch is on
 
-**To do:** run the 43-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 45-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+
+### 56. The English checklist preview still says "from Thai government agency advice"
+
+**Status:** Open · **Severity:** Low
+
+v1.7.0 rewrote the generic texts that said every tip comes from Thai agencies (F39). One was missed: `strings.json → ogEn.checklistDesc`, the description of every English checklist preview, reads "A family checklist from Thai government agency advice. Outside Thailand, follow your local authorities." It is shared by all five checklists, so `/en/checklist/stock` says it too, although four of that checklist's ten lines rest on US guidance (the fridge's 4 hours, the manual can opener, unplugging, flashlights instead of candles). The Thai twin (`og.checklistDesc`, "เช็กลิสต์จากคำแนะนำหน่วยงานรัฐ") names no country, so it stays true.
+
+**Fix:** reword `ogEn.checklistDesc` (for example "A family checklist from agency advice, mostly Thai. Outside Thailand, follow your local authorities."), or give the power-cut checklist its own description. It is page text only: no image changes, and the build regenerates the pages.
 
 ---
 
 ## Needs the owner
 
-### 8. 11 safety items are only partially verified
+### 8. 21 safety items are only partially verified
 
 **Status:** Owner · **Severity:** High: review before launch
 
-Eleven items are marked ⚠️ `partial`, ten in the flood modes and one in fire. The summary at the top of [01-safety-content.md](01-safety-content.md) is generated from `items.json`, so it always has the current count.
+Twenty-one items are marked ⚠️ `partial`: ten in the flood modes, one in fire and ten in the power cut (v1.7.0). The summary at the top of [01-safety-content.md](01-safety-content.md) is generated from `items.json`, so it always has the current count.
 
 - **Nine flood items with one uncertain detail:** `p-phone`, `p-car`, `p-meds`, `p-numbers`, `p-chem`, `p-drain`, `p-toilet`, `p-fuel` and `r-sag`. For each one, the core advice is official, but one detail is:
   - an inference (for example "charge fully")
@@ -96,8 +106,9 @@ Eleven items are marked ⚠️ `partial`, ten in the flood modes and one in fire
   - or common practice rather than official wording (a sandbag in the toilet bowl)
 - **`r-stagnant`** (EM balls, after the flood) rests on academic sources, not an agency ([#43](#43-the-em-ball-lesson-rests-on-academic-sources-not-an-agency)).
 - **`f-alarm`** (smoke alarms) rests only on the US Fire Administration ([#45](#45-the-smoke-alarm-lesson-has-no-thai-source)).
+- **Ten power-cut lessons** (v1.7.0): `s-fridge`, `s-leftover`, `s-freezer`, `s-opener`, `s-medcold`, `s-candle` and `s-plugs` rest on international guidance only (US CDC, Ready.gov, US Fire Administration); `s-pantry` mixes the Department of Health's 3–5 days with Tokyo's everyday stockpiling and Ready.gov's "replace what's expired"; `s-water` and `s-radio` rest on a PRD checklist page that tools can't read ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)).
 
-Each reason is listed under *Flags* in [01-safety-content.md](01-safety-content.md). `p-toilet` and `p-fuel` are in rooms that are not playable yet, so 9 of the 11 are in play.
+Each reason is listed under *Flags* in [01-safety-content.md](01-safety-content.md). `p-toilet` and `p-fuel` are in rooms that are not playable yet, so 19 of the 21 are in play.
 
 **Fix:**
 
@@ -271,7 +282,7 @@ Game events go to Analytics Engine through `/api/e`, which covers what Web Analy
 
 **Status:** By design
 
-There are only 98 preview images: 49 Thai and 49 English, each being 4 modes × 11 scores, plus the default and the four checklists. Each is a static page and a PNG. The hazard pages (`/flood`, `/pm25`, `/fire`, v1.6.0) reuse the checklist images, so they add none.
+There are only 122 preview images: 61 Thai and 61 English, each being 5 modes × 11 scores, plus the default and the five checklists. Each is a static page and a PNG. The hazard pages (`/flood`, `/pm25`, `/fire`, v1.6.0, and `/ready`, v1.7.0) reuse the checklist images, so they add none.
 
 A Pages Function that drew previews per request would face two limits:
 
@@ -292,8 +303,10 @@ A house is generated from the seed `mode|houseKey|v<houseVersion>` **and the cur
 
 - adding, removing or disabling an item or decoy
 - changing an item's `slots`, `size` or `room`
-- changing a room's slots
+- changing a room's slots: adding or removing one, or changing its id, tags or `excludes`
 - bumping `houseVersion`
+
+Moving a slot's `x`/`y` while keeping its id, tags and exclusions picks the same items for the same slots, so houses and challenge links stay the same; only where the item is drawn changes, and with it when water or smoke reaches it. v1.7.0 moved `kt-fridge-note` this way ([F38](#in-v170-19-oct-2026)).
 
 After such a deploy:
 
@@ -322,7 +335,8 @@ Penalties (−4 s for a wrong answer, −2 s for the first tap on each decoy) mo
 
 - `public/index.html` (its Open Graph block, canonical link and JSON-LD)
 - `public/learn.html`, `public/llms.txt`, `public/sitemap.xml`, `public/robots.txt`
-- the hazard pages `public/flood.html`, `public/pm25.html`, `public/fire.html` (v1.6.0)
+- the hazard pages `public/flood.html`, `public/pm25.html`, `public/fire.html` (v1.6.0) and `public/ready.html` (v1.7.0)
+- `public/posts.html` (v1.6.1)
 - `public/c/*.html`
 - `public/checklist/*.html`
 - the English set under `public/en/`
@@ -353,7 +367,7 @@ A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; an
 
 **Status:** By design
 
-`/learn` and `/llms.txt` repeat every lesson so that crawlers without JavaScript can read them. Since v1.6.0 the hazard pages (`/flood`, `/pm25`, `/fire` and their `/en/` twins) repeat them a second time, each with only its hazard's lessons, so a search for one hazard lands on a short page. All of them are generated from the same JSON as the game, so the text can't drift, and a build that changes a lesson changes every page. Two things are not automatic:
+`/learn` and `/llms.txt` repeat every lesson so that crawlers without JavaScript can read them. Since v1.6.0 the hazard pages (`/flood`, `/pm25`, `/fire`, since v1.7.0 `/ready`, and their `/en/` twins) repeat them a second time, each with only its hazard's lessons, so a search for one hazard lands on a short page. All of them are generated from the same JSON as the game, so the text can't drift, and a build that changes a lesson changes every page. Two things are not automatic:
 
 - `strings.json → seo.updated` (the pages' "last updated" date, and the sitemap's `lastmod`) is a value someone sets when lessons change. It is not derived from git.
 - The English lesson text is the English already in `items.json`; the pages' own headings, titles, descriptions and intros are in `seo.en` and `seo.th`. The hazard pages' text adds no advice or numbers and names no agencies, so it can't contradict the lessons, but it is still a draft for the language check ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
@@ -371,7 +385,7 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 **Status:** By design (v1.2.0)
 
 - **One extra language.** `/en/` adds English. Other languages would need their own `strings.json` table, `ogEn`-style preview text and images; the build only knows Thai and English.
-- **Thai advice and numbers.** Every lesson is sourced from Thai agencies, and the hotlines (1784, 199, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
+- **Thai advice and numbers.** Most lessons are sourced from Thai agencies; a few rest on international guidance and are flagged ⚠️ (the smoke alarm, and most of the power-cut lessons, [#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)). The hotlines (1784, 199, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
 - **The wordmark is romanised in English** ("Baan Rod Mai?", from `strings.json → logoA/logoB`), so English players don't see Thai script as the brand; the Thai name still appears in the Thai pages' titles and `alternateName`.
 - **The English text has had no native-speaker review** of tone; it was written alongside the Thai ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
 - **Preview caches:** Facebook and LINE cache per URL, so a previously shared `/c/…` link keeps its Thai preview.
@@ -413,7 +427,7 @@ When no topic is in the news, the start screen features the topic of the recomme
 
 **Status:** Owner · **Severity:** Medium
 
-`f-alarm` (test smoke alarms monthly, change a low battery) rests only on the US Fire Administration (`usfa-alarm-2569`, kind `international`) and is flagged ⚠️ `partial`. No Thai agency page about home smoke alarms was found on 15 Oct 2026, and few Thai homes have one. Keep it as a nudge, or drop it, after the owner's review ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-and-fire-lessons)). Dropping it reshuffles fire houses only.
+`f-alarm` (test smoke alarms monthly, change a low battery) rests only on the US Fire Administration (`usfa-alarm-2569`, kind `international`) and is flagged ⚠️ `partial`. No Thai agency page about home smoke alarms was found on 15 Oct 2026, and few Thai homes have one. Keep it as a nudge, or drop it, after the owner's review ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)). Dropping it reshuffles fire houses only.
 
 ### 46. Dust and fire advice is quoted through news reports
 
@@ -424,19 +438,44 @@ The Department of Health, DDPM and MEA advice in v1.5.0 comes from news reports 
 - The DDPM "10 ways to survive a fire" article of 2026 (`ddpm-fire10-2569`) shows no date on the page; related stories are from July 2026. The 2020 version (`ddpm-fire10-2563`) says the same.
 - PPTV (2022) gives PM2.5 colour ranges from before Thailand's 2023 change. The game uses only the colour order and "red: at-risk groups stay in", which both scales share.
 
-A person should read the agency pages before December ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-and-fire-lessons)).
+A person should read the agency pages before December ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+
+### 55. The power-cut lessons rest largely on international guidance
+
+**Status:** Owner · **Severity:** Medium: review before posting the power-cut set widely
+
+The power-cut mode (v1.7.0) was prompted by a Thai stockpiling infographic, which is not a source. Its 13 lessons rest on what agencies could be read on 18 Oct 2026, and for most of them that was not a Thai agency:
+
+| Lessons | What they rest on | Status |
+|---|---|---|
+| `s-torch`, `s-powerbank`, `s-generator` | ปภ. kits, the DDC's generator advice, cross-checked with Ready.gov | ✅ |
+| `s-water`, `s-radio` | กรมประชาสัมพันธ์'s 72-hour checklist (`prd-72h`). The 3 L per person per day is in the page's title, and the radio was seen only in a search summary: the page refuses automated reading. Ready.gov lists the radio too | ⚠️ |
+| `s-pantry` | The Department of Health's 3–5 days (via a news report), Tokyo's everyday stockpiling, Ready.gov's "replace what's expired" | ⚠️ |
+| `s-fridge`, `s-leftover`, `s-freezer` | The US CDC only (4 hours for a closed fridge, 48 / 24 hours for a full / half-full freezer, never taste to check); `s-fridge` also Ready.gov | ⚠️ |
+| `s-opener`, `s-plugs`, `s-medcold` | Ready.gov only | ⚠️ |
+| `s-candle` | The US Fire Administration and Ready.gov only | ⚠️ |
+
+- **Why:** no Thai agency page on fridge food in a power cut, unplugging against surges, candles, a manual can opener or cold medicine was found. The international pages were read in full and quoted in each source's `note`. Each ⚠️ lesson's `verifyNote` says which part is international, and `/learn`, the hazard page and the carousel mark them as under review.
+- **What the game does with the numbers:** only the CDC's 4 hours drives play (`lostAfter: 4` on the fridge); the 48 hours keep the freezer safe through the 12-hour round. Numbers no agency shares are left out: the infographic's eating order, "check every 3–6 months" and the 7-day aim (Tokyo's alone).
+- **Written for other countries.** The US and Tokyo pages were written for their own homes and services. The lessons keep to general actions with no foreign numbers or laws, and whether they fit Thai homes is what the Thai review should confirm.
+- **What would make them Thai:** a person opening the PRD checklist page in a normal browser (3 L, the radio); MEA (กฟน.) or PEA (กฟภ.) advice on unplugging in a power cut; กรมอนามัย or อย. on fridge and freezer food; a Thai pharmacist or อย. on cold medicine; ปภ. wording on candles and on a can opener in a kit. Add the Thai source beside the international one and mark the lesson ✅ when it says the same. The steps are in [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
+- **Until then,** 5 of the 8 lessons in the `ready` carousel set are ⚠️, and each of those images says "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน". Post that set knowing so ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)).
 
 ### 47. The season calendar is editorial
 
 **Status:** By design
 
-`config.modes[].months` (dust December–March, fire April, flood May–November) was chosen by us from the general pattern (Bangkok's dust peaks December–February and the North's February–April; dry, windy months raise fire risk). No Thai agency publishes a month-by-month hazard calendar that we could find **[unverified]**. The North's dust season runs later than Bangkok's, so a northern player in April sees fire recommended, not dust. The owner can change the months, and `rainWarningActive` still overrides them until `rainWarningUntil` (now 30 Nov 2026).
+`config.modes[].months` (dust December–March, fire April, flood May–November; the power cut, v1.7.0, has none) was chosen by us from the general pattern (Bangkok's dust peaks December–February and the North's February–April; dry, windy months raise fire risk). No Thai agency publishes a month-by-month hazard calendar that we could find **[unverified]**. The North's dust season runs later than Bangkok's, so a northern player in April sees fire recommended, not dust. The owner can change the months, and `rainWarningActive` still overrides them until `rainWarningUntil` (now 30 Nov 2026).
 
 The south floods later, in the November–January monsoon. The model has one calendar for the whole country, so it doesn't cover that: once the rain switch ends on 30 Nov, the start screen recommends dust from December. Campaigns for the south use `/?mode=prepare`, which opens the game on flood preparation whatever the date, or `/flood`, the flood lessons with play buttons. Extending `rainWarningUntil` instead would change the start screen for the whole country.
 
-### 48. Haze and smoke are untested on low-end phones
+**The power cut is year-round, never the default.** Its `months` is empty, so `seasonalMode()` never picks it, and the start screen never recommends it by itself; it is always one of the small cards. People reach it through its card, `/?mode=stock`, the `/ready` page and posts. Power cuts and storms don't follow a calendar we could source, so a post after a planned cut or a storm is the way to feature it ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)). For a week, `featuredTopic: "food"` with an end date puts the 💧 water-and-food topic on the start screen (6 of its 10 lessons are power-cut lessons since v1.7.0).
+
+### 48. Haze, smoke and the dark are untested on low-end phones
 
 **Status:** Owner · **Severity:** Low
+
+The power cut's dark layer (v1.7.0: a group of two full-room rectangles, the body and a wide edge stroke) was not measured; the table below is from v1.5.0, before it existed. Like the haze, it changes one attribute per room each frame (the group's `opacity`), so it should cost no more, but that is **[unverified]**.
 
 The haze (a full-room rectangle and 46 specks per room) and the smoke (a translucent band) are redrawn by changing one attribute per room each frame. Measured on 15 Oct 2026 in headless Chromium at 360 × 640, 2× pixels, half-way through a round, with the CPU slowed 6× (Chrome's "low-end mobile" setting):
 
@@ -461,11 +500,11 @@ axe-core flags "รอดไหม?" in the start-screen wordmark: coral `#FF7A5
 
 When the v1.5.1 service worker replaces one from before v1.5.1, it reloads the open pages once so they don't keep running old code (F27). A visitor in the middle of a round at that moment is sent back to the start screen. It happens once per browser, only at that upgrade; later releases fetch code network-first and need no reload.
 
-### 49. Dust and fire use the flood house
+### 49. Dust, fire and the power cut use the flood house
 
 **Status:** By design
 
-The three rooms were drawn for floods: the Return mud layer is hidden for dust and fire, but the window and yard are the same, and the smoke can cover the alarm early (about 22 s). New rooms (P1) and a coast scene (P8) would give each hazard its own look. Items don't overlap: the probe reports 0% over 2,920 houses in all four modes.
+The three rooms were drawn for floods: the Return mud layer and the rain are hidden for dust, fire and the power cut, but the window and yard are the same, and the smoke can cover the alarm early (about 22 s). In the power cut the window still shows the sun, dimmed by the dark layer ([16-stock.png](screens/16-stock.png)); the darkness is a tint over the whole room, not a night scene. New rooms (P1) and a coast scene (P8) would give each hazard its own look. Items don't overlap: the probe reports 0% over 3,650 houses in all five modes (v1.7.0).
 
 ### 52. A `?mode=` link previews as the main game
 
@@ -473,7 +512,7 @@ The three rooms were drawn for floods: the Return mud layer is hidden for dust a
 
 `/?mode=dust` is the app shell with a query, so LINE and Facebook show the same preview as `/` (the default image and title), not a dust one. Pages are static and the previews are fixed per path ([#23](#23-link-previews-are-pre-rendered-not-drawn-per-request)). The game itself reads the link and opens on the right card. Web Analytics doesn't record the query either ([#22](#22-web-analytics-blind-spots)), so count link arrivals with the `view` event's `link` label ([05-metrics](05-metrics.md#event-dictionary)).
 
-**When the preview matters,** share the hazard page instead: `/pm25`, `/fire` or `/flood` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
+**When the preview matters,** share the hazard page instead: `/pm25`, `/fire`, `/flood` or `/ready` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
 
 ### 53. The smoke test runs on a pinned date
 
@@ -489,10 +528,11 @@ The three rooms were drawn for floods: the Return mud layer is hidden for dust a
 
 **Status:** By design (content)
 
-The carousel posts (v1.6.1) are 34 JPEG images, 4.5 MB, committed under `public/share/carousel/`. They are rendered by `npm run images`, like the link previews, because Cloudflare's build has no browser.
+The carousel posts (v1.6.1) are 45 JPEG images in four sets (`flood` 12, `pm25` 11, `fire` 11 and, since v1.7.0, `ready` 11), about 6 MB, committed under `public/share/carousel/`. They are rendered by `npm run images`, like the link previews, because Cloudflare's build has no browser.
 
 - **They go stale when the text changes.** A lesson's wording, a caption or the site address can change after the last render. The build warns when the fingerprint in `share/carousel/manifest.json` no longer matches; run `npm run images -- --only share/carousel` and commit the images.
-- **Each re-render adds about 4.5 MB to the repository's history.** Re-render when the text changed, not on every release.
+- **Each full re-render adds about 6 MB to the repository's history.** Re-render when the text changed, not on every release.
+- **Lessons under review are posted as such.** 5 of the 8 lessons in the `ready` set are ⚠️ ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)), and their pages say "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน". Since v1.7.0 the build lists them on its `posts` line ("lessons under review: outage 5 ⚠️") rather than warning about each one, so a real warning isn't lost among them. When a review changes a lesson, re-render the set.
 - **Only Thai sets exist.** `carouselSets()` takes a language and `carousel.json` has English text, so English sets can be rendered when an English channel needs them (`share/carousel/en/<slug>/`).
 - **Only the owner's page lists them.** `/posts` is `noindex` and not in the sitemap; the images themselves are public files, like the link previews.
 
@@ -518,6 +558,14 @@ The carousel posts (v1.6.1) are 34 JPEG images, 4.5 MB, committed under `public/
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.7.0 (19 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F40 | The build carried on after a content error and crashed with a `TypeError` on a missing `og` string while generating pages, so the message didn't say what was missing | It stops after the content checks when any of them failed (`if (errors.length) finish()`), before it generates a page, and lists every error. |
+| F39 | The generic texts said every tip comes from Thai government agencies: the About text (th/en), the default link preview's title and description (`og`/`ogEn`), the `/learn` titles and heading, `seo.en.llmsSummary`, `seo.en.intlNote`, `index.html`'s meta description and `llms.txt`'s notes. It was already not quite true for `f-alarm` (US source only, v1.5.0) and would have been plainly wrong with the power-cut lessons | They now say every tip has a source, most from Thai agencies, some international and marked. `og/default.png` and its English twin were re-rendered ("น้ำท่วม · ฝุ่น · ไฟไหม้ · ไฟดับ"). One text was missed: the English checklist preview description ([#56](#56-the-english-checklist-preview-still-says-from-thai-government-agency-advice)). Rule: [GUIDELINES rule 55](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit). |
+| F38 | The left room arrow (‹, 44 × 64 px at 44 % of the stage's height) covered part of the item on the fridge, slot `kt-fridge-note`: up to **23 %** of the tap area of `p-numbers` (Prepare) and `f-call` (fire), and **27 %** of the new `s-fridge`, at 390 × 760; 18–20 % at 360 × 640, 6–8 % at 768 × 1024, none at 320 × 460. A tap there turned the room instead of opening the item. It had been there since v1.0 (`p-numbers`) and v1.5 (`f-call`); the smoke test clicked items with `force: true`, which ignores what covers them | The slot moved from y 344 to y 404, below the arrows. Same slot id, so every house and challenge link is unchanged. Worst coverage left: 2 % (window items at the right edge). New smoke check: "the room arrows cover at most 5% of any item's tap area (every mode, 3 houses, 390x760 and 360x640)". `npm run probe`: still 0 % overlaps. Side effects of the lower slot: `p-numbers` now goes under at 43.6 s (was 55.6 s), and the fire smoke no longer reaches `f-call` (it did at 53.7 s). Rule: [GUIDELINES rule 54](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); lesson [D11](LESSONS_LEARNED.md#d-testing-and-verification). |
 
 ### In v1.6.0 (18 Oct 2026)
 

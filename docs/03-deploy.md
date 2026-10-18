@@ -27,8 +27,8 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
 Search and AI search:
 
 - `node tools/build.mjs` writes `/learn` (every lesson as plain HTML), `/robots.txt`, `/sitemap.xml` and `/llms.txt`, plus the canonical link and JSON-LD in each page's OG block.
-- Since v1.6.0 it also writes one page per hazard: `public/flood.html`, `public/pm25.html` and `public/fire.html`, and `public/en/flood.html`, `public/en/pm25.html` and `public/en/fire.html`. Pages serves them as `/flood`, `/pm25`, `/fire` and `/en/…`, and redirects `/pm25.html` to `/pm25` with a 308. They are generated (never edit them by hand), listed in the sitemap, and their names come from `config.json → hazards`; never change a name once it is published.
-- Since v1.6.1 it writes `public/posts.html` (`/posts`): the carousel images with their captions, for whoever posts for the game. It has `noindex` in the page and in `_headers`, and isn't in the sitemap. The images themselves come from `npm run images` and are committed, like the link previews; the build warns when they are older than the lesson text.
+- Since v1.6.0 it also writes one page per hazard: `public/flood.html`, `public/pm25.html`, `public/fire.html` and, since v1.7.0, `public/ready.html`, each with its twin under `public/en/`. Pages serves them as `/flood`, `/pm25`, `/fire`, `/ready` and `/en/…`, and redirects `/pm25.html` to `/pm25` with a 308. They are generated (never edit them by hand), listed in the sitemap, and their names come from `config.json → hazards`; never change a name once it is published.
+- Since v1.6.1 it writes `public/posts.html` (`/posts`): the carousel images with their captions, for whoever posts for the game (four sets since v1.7.0: `flood`, `pm25`, `fire`, `ready`). It has `noindex` in the page and in `_headers`, and isn't in the sitemap. The images themselves come from `npm run images` and are committed, like the link previews; the build warns when they are older than the lesson text.
 - `_headers` adds `X-Robots-Tag: noindex` on `*.pages.dev`, so only the custom domain is indexed.
 - After the first deploy, submit `https://baanrodmai.autobahn.bot/sitemap.xml` in Google Search Console and Bing Webmaster Tools. Bing's index also feeds Copilot and other AI search tools.
 - Leave Cloudflare's "Block AI bots" and managed robots.txt **off** for this hostname. The game is public safety content and should be readable by AI assistants.
@@ -98,7 +98,7 @@ Any static server also works (`npx serve public`), apart from the `/c/p8` pretty
 
 | Piece | Free-plan cost |
 |---|---|
-| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn` and the hazard pages, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
+| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn`, the hazard pages and `/posts`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
 | `/api/e` event counter | 1 Function request per page session (events are batched and sent with `sendBeacon` when the page is hidden). Shares the 100,000 requests/day quota. |
 | Workers Analytics Engine | 100,000 data points/day written free. Each event is one data point. |
 | Cloudflare Web Analytics | Free, cookieless. |
@@ -109,7 +109,7 @@ If the game goes very viral, lower `config.json → analytics.sampleRate` (e.g. 
 
 You asked for a dynamic OG image rendered by a Pages Function. I built the same visible result in a way that suits the free plan better:
 
-- Every challenge link has its own **static** HTML page (`/c/p0` … `/c/p10`, `/c/r0` … `/c/r10`, and since v1.5.0 `/c/d…` and `/c/f…`) with Open Graph tags.
+- Every challenge link has its own **static** HTML page (`/c/p0` … `/c/p10`, `/c/r0` … `/c/r10`, since v1.5.0 `/c/d…` and `/c/f…`, and since v1.7.0 `/c/s0` … `/c/s10`) with Open Graph tags. Each checklist has one too (`/checklist/prepare` … `/checklist/stock`).
 - Each page points at a matching **pre-rendered** 1200×630 PNG drawn by the game's own card renderer.
 - Crawlers from LINE, Facebook and X never run JavaScript, and they get the score in the preview either way.
 - The `?h=20261007` house key stays in the shared URL, and the pages omit `og:url`, so clicking the preview opens the friend's exact house.
@@ -118,7 +118,7 @@ The reasons:
 
 1. **CPU limit.** Workers Free allows **10 ms CPU** per request. Rendering a PNG with Thai text (satori/resvg) takes far longer, and the needed WASM is several MB.
 2. **Quota.** A viral challenge link served by a Function counts against the **100,000/day** Functions quota. Past that it would fail (or, with fail-open, lose its preview). Static pages are unlimited.
-3. **The set is small and fixed:** 4 modes × 11 scores, plus the default and four checklists, in two languages: 98 images (49 Thai, 49 English) and 97 generated pages. Pre-rendering costs nothing and the previews are cached and instant.
+3. **The set is small and fixed:** 5 modes × 11 scores, plus the default and five checklists, in two languages: 122 images (61 Thai, 61 English) and 121 generated pages (v1.7.0). Pre-rendering costs nothing and the previews are cached and instant.
 
 If you later move to Workers Paid and want per-player text (for example a nickname, which would need a privacy review), a Function can rewrite the same tags with `HTMLRewriter`.
 

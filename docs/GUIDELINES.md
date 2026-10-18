@@ -9,8 +9,8 @@ These rules are for anyone changing this game's content, art or code, people and
 These come from the original brief. A change that breaks one of them is not finished, however good it looks.
 
 1. **Safety facts are real.**
-   - Every action the game calls correct traces to an official Thai source in `sources.json`.
-   - Never invent advice, numbers or sources.
+   - Every action the game calls correct traces to an official source in `sources.json`: a Thai agency wherever one says it. Where only a foreign agency does (the smoke alarm, most power-cut lessons), the lesson is ⚠️ `partial`, says so, and waits for a Thai review (rule 55).
+   - Never invent advice, numbers or sources. A viral post or infographic is a prompt, not a source.
    - Mark how sure you are (`verify`), and flag anything you could not confirm.
 2. **Content guardrails:**
    - No drowning, deaths, injured people or photos of real damage.
@@ -29,7 +29,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - Nothing flashes, and `prefers-reduced-motion` is respected.
    - Every control is reachable by keyboard and readable by a screen reader.
 5. **Fast:**
-   - The start screen stays **under 500 KB** compressed. It is 188 KB today (201 KB with the first game screen).
+   - The start screen stays **under 500 KB** compressed. It is 200 KB today (215 KB with the first game screen).
    - No frameworks and no runtime npm packages.
 6. **Works where people share it.** It must work in the LINE, Facebook and TikTok in-app browsers on Android and iOS, in iOS Safari and in Android Chrome. Every feature that a platform may lack has a fallback (see [KNOWLEDGE §11](KNOWLEDGE.md#11-browser-and-in-app-facts)).
 7. **The disclaimer and help numbers are always there.**
@@ -46,7 +46,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - **`government`:** the agency's statement republished by กรมประชาสัมพันธ์ (prd.go.th).
    - **`secondary`:** a news article that directly quotes the agency. Use this only when the first two can't be reached, and say so in `note`.
    - **`academic`:** a peer-reviewed study or an academic statement. Flag the item ⚠️ `partial`.
-   - **`international`:** a UN, WHO or foreign agency page (WHO Europe, the US Fire Administration). Use it to cross-check Thai advice. When it is the *only* source, the item is ⚠️ `partial` with a `verifyNote` that says so (today: `f-alarm`).
+   - **`international`:** a UN, WHO or foreign agency page (WHO Europe, the US Fire Administration, the US CDC, Ready.gov, the Tokyo Metropolitan Government). Use it to cross-check Thai advice. When it is the *only* source, the item is ⚠️ `partial` with a `verifyNote` that says so (today: `f-alarm` and seven power-cut lessons; the list is under *Flags* in [01-safety-content.md](01-safety-content.md#flags-please-review-these)). Quote what you read in the source's `note`, with the date you read it.
 2. **Write the item in `items.json`** (field reference: [KNOWLEDGE §5](KNOWLEDGE.md#5-content-model)):
    - **One correct choice**, using the agency's action in plain words.
    - **One or two wrong choices** that are *common real mistakes*. Each has gentle `feedback` that says why it's risky.
@@ -62,7 +62,7 @@ These come from the original brief. A change that breaks one of them is not fini
 ### 2.2 Numbers
 
 - **Verify every number** against its source: phone numbers, distances, days, ratios and temperatures.
-- **When sources disagree, leave the number out of the game** and record the conflict under *Flags* in 01-safety-content.md. Current exclusions: sandbag fill, bleach dilution, boiling time, mattress disposal.
+- **When sources disagree, leave the number out of the game** and record the conflict under *Flags* in 01-safety-content.md. Current exclusions: sandbag fill, bleach dilution, boiling time, mattress disposal, and from the stockpiling infographic (v1.7.0) the 7-day target, a 3–6-month check and an eating order for the fridge, freezer and cans ([KNOWLEDGE §27.3](KNOWLEDGE.md#273-what-was-left-out-and-why)).
 - Re-check every **hotline** before each season. A wrong number that was deliberately left out: 192 (use 1784). 199 (fire) was left out of the flood version because only news reports cited it; the fire mode (v1.5.0) added it, quoting DDPM through a news report.
 
 ### 2.3 Wrong answers and feedback
@@ -106,8 +106,8 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - fear-mongering
   - AI-generated or realistic disaster imagery
 - **English** mirrors the tone. It is written for visitors from outside Thailand and for helpers, not as a separate voice.
-  - Every player-facing string has a `th` and an `en` value with the same keys (210 each), and every `og` key has an `ogEn` twin. The build fails otherwise.
-  - Say plainly that the advice and hotlines are Thai. Don't add foreign numbers or laws that no source backs.
+  - Every player-facing string has a `th` and an `en` value with the same keys (229 each), and every `og` key has an `ogEn` twin. The build fails otherwise.
+  - Say plainly that the hotlines are Thai and that most advice comes from Thai agencies; never say *all* of it does (rule 55). Don't add foreign numbers or laws that no source backs.
   - Agency names appear in English in `seo.en.agencies`.
   - The wordmark is `logoA` + `logoB` in each language ("Baan " + "Rod Mai?" in English; a space at the end of `logoA` is intentional). Never hard-code the name in HTML or canvas code.
 - **Formatting:**
@@ -169,7 +169,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - SVG items use `role="button"`, `tabindex="0"` and an `aria-label`, and Enter and Space work on them.
   - Sheets trap focus and close with Esc.
   - Motion goes through CSS animations that the reduced-motion query turns off.
-- **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/js/version.js`, `public/c/*.html`, `public/checklist/*.html`, the English pages under `public/en/`, the SEO files `public/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt`, the hazard pages `public/<slug>.html` and `public/en/<slug>.html` (`/flood`, `/pm25`, `/fire`; edit `tools/build.mjs`, `strings.json → seo` or the content JSON), and the `<!--OG:START-->` block in `index.html`, which also holds the canonical link and JSON-LD.
+- **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/js/version.js`, `public/c/*.html`, `public/checklist/*.html`, the English pages under `public/en/`, the SEO files `public/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt`, the hazard pages `public/<slug>.html` and `public/en/<slug>.html` (`/flood`, `/pm25`, `/fire`, `/ready`; edit `tools/build.mjs`, `strings.json → seo` or the content JSON), `public/posts.html`, and the `<!--OG:START-->` block in `index.html`, which also holds the canonical link and JSON-LD.
 - **Search and AI search.**
   - The lessons on `/learn`, the hazard pages and `/llms.txt` come from the content JSON. Never hand-write lesson text elsewhere.
   - A hazard page's address is its slug in `config.json → hazards`. **Never change a slug once published:** shared links and search results point at it. Hazard pages have their own canonical link and are in the sitemap, like `/learn`.
@@ -178,15 +178,15 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - Add structured data only for things that exist on the page. No `FAQPage`, `HowTo`, ratings or reviews unless the page really has them.
   - Share-preview pages (`/c/*`, `/checklist/*`) keep a canonical link to `/` and stay out of the sitemap.
   - Keep `/api/` the only path `robots.txt` closes, and leave Cloudflare's AI-bot blocking off for this host.
-- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 188 KB.
+- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 200 KB (each mode's content adds to it, about 12 KB for the power cut).
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 
 ## 6. Testing
 
 | When | Run |
 |---|---|
-| Every change | `node tools/build.mjs` and `npm test` (23 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over, the switches' end dates and what the start screen recommends) |
-| UI, CSS or sharing changes | `npm run smoke` (81 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline, reduced motion, `?mode=` links and the hazard pages). It plays on a pinned Bangkok day, 18 Oct 2026 by default; add `SMOKE_DATE=YYYY-MM-DD` before the command to play another season. Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| Every change | `node tools/build.mjs` and `npm test` (25 rule tests: a year of daily houses in every mode, flooding, the power cut's 4-hour fridge, scoring, bonus, challenge links, midnight reset, version 2 carry-over, the switches' end dates and what the start screen recommends) |
+| UI, CSS or sharing changes | `npm run smoke` (86 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline, reduced motion, `?mode=` links, the hazard pages, the power cut and what covers each item's tap area). It plays on a pinned Bangkok day, 18 Oct 2026 by default; add `SMOKE_DATE=YYYY-MM-DD` before the command to play another season. Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |
@@ -199,7 +199,7 @@ Rules:
 - **Measure, don't assume.**
   - `npm run probe` covers overlaps and flood timings.
   - The build reports the bundle size.
-  - The smoke test measures tap sizes.
+  - The smoke test measures tap sizes, and since v1.7.0 how much of each item the room arrows cover (rule 54).
   - For anything else, write a short probe and record the numbers (see [APPROACH_AND_METHOD §7](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming)).
 - **Report results as they are.** A skipped check is reported as skipped.
 
@@ -288,6 +288,8 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 51. **A hand-set switch has an end date.** `rainWarningActive` and `featuredTopic` were switched on in mid-October with no end, and would have kept the flood warning and the diseases topic on the start screen into December's dust season. Every switch someone turns on by hand gets the last day it should show (`rainWarningUntil`, `featuredTopicUntil`: a Bangkok date, that day included). The build stops on a date that isn't real, and warns about a switch with no end date or a past one. A new hand-set switch gets an end date and the same checks.
 52. **Tests never read the calendar.** The smoke test once expected FloodWatch and read `config.featuredTopic`, so it would have failed by itself when the season changed. Pin the date the test runs on (`SMOKE_DATE`, by shifting `Date` only, not the timers the rounds use), and take the expected result from the same pure function the game uses (`recommend()`), not from a copy of its rules. Unit tests pass the day in (`dayKey`) and check the date rules against a fixed config, not against `config.json`'s live dates.
 53. **What the game never uses stays out of what the game loads.** The carousel's text first went into `strings.json` and its drawing code into `cards.js`, and the start screen grew from 188 to 191 KB for words and code no player uses. Text for posts, tools or pages outside the game goes in its own file (`carousel.json`), which the game doesn't fetch and the service worker doesn't precache; code goes in `tools/` (`carousel-draw.mjs` imports the card helpers `cards.js` exports as `kit`). Images made from the content carry a fingerprint (`share/carousel/manifest.json`), so the build warns when they are older than the text.
+54. **Measure what covers a tap target, not only its size.** The ‹ room arrow sat over the item on the fridge from v1.0: up to 23 % of `p-numbers` and `f-call`, and 27 % of the power cut's fridge, at 390 × 760, so a tap there turned the room. Every item was 44 px or more and every check passed, because the smoke test clicked items with `force: true`, which clicks through whatever lies on top. Anything that floats over the room (arrows, the gecko's bubble, toasts, the HUD) must leave each item's tap area uncovered: the smoke check fails above 5 % in any mode and room, at 390 × 760 and 360 × 640. Click without `force` where a real tap matters, or measure the overlap with `getBoundingClientRect()`. When a slot moves to clear an overlay, keep its id so houses don't change, and re-run `npm run probe`: a lower slot changes when water or smoke reaches the item.
+55. **International-only advice ships flagged, never as Thai advice.** When no Thai agency source can be found and a foreign agency's is used (the US CDC's 4 hours for the fridge, Ready.gov on unplugging), the lesson is ⚠️ `partial`, its `verifyNote` names the foreign source and says no Thai one was found, its "ทำไม?" names the foreign agency, and its carousel page says it is under review. The texts about the whole game must stay true too: v1.7.0 found the About text, the link previews, `/learn`'s titles and `llms.txt` saying *every* tip comes from Thai agencies, which the smoke-alarm lesson already broke. Say "every tip has a source, most from Thai agencies, some international and marked". Never add a foreign number the source doesn't give, and leave out what only a viral post says.
 
 ## 9. Working with AI assistants
 
@@ -300,15 +302,16 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 
 ## 10. Adding a hazard mode
 
-The registry (`config.json → modes`, defaults in `public/js/modes.js`) makes a new hazard mostly data. Dust and fire (v1.5.0) were added this way. The build fails on anything missing.
+The registry (`config.json → modes`, defaults in `public/js/modes.js`) makes a new hazard mostly data. Dust and fire (v1.5.0) and the power cut (v1.7.0) were added this way. The build fails on anything missing.
 
-1. **Research first.** At least one Thai agency source per correct action (see §2.1), cross-checked with an international one where possible. Record what the sources disagree on and leave it out.
-2. **Registry entry** in `config.json → modes`: `id` (a–z), a new one-letter `code` (never reuse one; `h` is kept for heat), `hazard`, `threat` (`water`, `smoke`, `haze` or `null`), `prop` (in `mascot.js`), `emoji`, optional `icon`, `months` (Bangkok months it is in season), `topic`, optional `link` (https). Mirror it in `modes.js` `DEFAULTS`.
-3. **Round settings:** `round.<id>.seconds` and the threat's keyframes (`water` + `floorWetY`, `smoke` + `lowY`, or `haze`). Check the timings with `npm run probe`.
+1. **Research first.** At least one Thai agency source per correct action (see §2.1), cross-checked with an international one where possible. Where only an international one exists, flag the lesson ⚠️ (rule 55). Record what the sources disagree on and leave it out. If a post or infographic started the idea, check each of its claims at an agency; it is not a source itself.
+2. **Registry entry** in `config.json → modes`: `id` (a–z), a new one-letter `code` (never reuse one; `p`, `r`, `d`, `f` and `s` are taken, `h` is kept for heat), `hazard`, `threat` (`water`, `smoke`, `haze`, `dark` or `null`), `prop` (in `mascot.js`), `emoji`, optional `icon`, `months` (Bangkok months it is in season; empty for a year-round mode that is never the default, like the power cut), `topic`, optional `link` (https). Mirror it in `modes.js` `DEFAULTS`.
+3. **Round settings:** `round.<id>.seconds` and the threat's keyframes (`water` + `floorWetY`, `smoke` + `lowY`, `haze`, or `dark` + `hours`). A `dark` mode needs `round.<id>.hours` (the story's length), and its items may use `lostAfter: <hours>` (between 0 and `hours`) to go bad at that hour; give at least one item a sourced time, or the build warns, and every house of the mode will include one. `lostAfter` in a mode whose threat isn't `dark` stops the build. Check the timings with `npm run probe`.
 4. **Strings** in `th` and `en`: `mode`, `mode<Mode>Desc`, `hero`, `challenge`, `howto`, `howtoTitle`, `geckoStart`, `result`, `shareText`, `checklistTab`, `rank` (3), and the endings `cheerPerfect`, `cheerHigh`, `cheerMid`, `cheerLow` (a unit test checks them), each as `<base><Mode>`. Optional overrides that fall back to the shared key: `floodedToast`, `geckoFlood`, `geckoWet`, `stFlooded`, `forecastShort`, `forecastLong`, `forecastIcon`. Plus `og`/`ogEn` `challengeTitle`, `challengeDesc`, `challengeLine`, `checklistTitle`, and `seo.th/en.section<Mode>`.
 5. **A new hazard needs a page.** If the mode brings a new `hazard` (not a second flood mode), add `config.json → hazards.<hazard>.slug`: lowercase letters, digits or "-", unique, and not a site path (`c`, `checklist`, `en`, `learn`, `api`, `js` and the other reserved names in `tools/build.mjs`) or an existing file in `public/`. Pick it with care, because it can never change once published. Add the `seo` strings `hazard<H>Nav`, `hazard<H>Title`, `hazard<H>Desc`, `hazard<H>H1` and `hazard<H>Intro` in `th` and `en` (`<H>` is the hazard id with a capital, for example `hazardHeatH1`). The build then writes `/<slug>` and `/en/<slug>` and adds them to the sitemap, `llms.txt` and the "By hazard" row; it stops if the slug or a string is missing. Keep the page text free of advice, numbers and agency names; the lessons carry those.
 6. **Content:** 10–13 items across the three drawn rooms (at least one per room), 5 decoys, a 10-item checklist with sprites, a `topic_<id>` string pair and the topic in `config.topics`.
-7. **Start button:** add a static `data-mode` button to `index.html` (the JS rebuilds the grid from the registry; the static one avoids a jump on first paint). Card colours in `app.css` (`.mode-btn.mode-<id>`, `.is-<id>` layers).
+7. **Start button:** add a static `data-mode` button to `index.html` (the JS rebuilds the grid from the registry; the static one avoids a jump on first paint). Card colours in `app.css` (`.mode-btn.mode-<id>`, `.is-<id>` layers, and hide `.mud` and `.sky-rain` for a non-flood mode). The small cards share one row of up to four (`--cols` in `main.js`, and the static `--cols` in `index.html`); with five modes all four small names fit on one line at 320 px in Thai. A sixth mode needs a new layout, checked at 320 px in both languages.
 8. **Card theme** in `cards.js → THEMES`, then `SITE_URL=… npm run images` and commit only the new images.
-9. **Check:** build, `npm test`, `npm run probe`, `npm run smoke`, a visitor pass at 320 px and on a tablet in both languages (including `/?mode=<id>` and the new hazard page), and compare flood houses before and after (they must not change). If the mode has `months`, also run the smoke test with `SMOKE_DATE` set to a day in its season.
+9. **Check:** build, `npm test`, `npm run probe`, `npm run smoke`, a visitor pass at 320 px and on a tablet in both languages (including `/?mode=<id>` and the new hazard page), and compare every other mode's houses before and after over a year (they must not change). If the mode has `months`, also run the smoke test with `SMOKE_DATE` set to a day in its season. If its sprites sit on a slot near the room arrows, look at the arrow check (rule 54).
+10. **Carousel and posts:** add `carousel.json → sets.<hazard>` (at most 8 playable lessons of the hazard) with `cover<H>Title`, `cover<H>Sub` and `caption<H>` in both languages, render with `npm run images -- --only share/carousel`, and add a post to [04-launch-kit.md](04-launch-kit.md).
 

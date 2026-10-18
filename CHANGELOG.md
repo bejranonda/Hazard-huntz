@@ -4,6 +4,10 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Tests
+
+- **The smoke test's 44 px check waits for a sheet to finish sliding in.** CI failed once on a docs-only commit (`51defd8`) because the About sheet's 44 px source links measured just under 44 px mid-slide in Chrome 153. `smallControls()` now waits for `#sheet`'s animations to end, allows 0.01 px of rounding and prints two decimals ([LESSONS D13](docs/LESSONS_LEARNED.md)).
+
 ## [1.8.0] — 2026-10-19
 
 Two tools for the family at home, built on the power-cut and flood lessons (ROADMAP N15): **"บ้านเราพร้อมแค่ไหน?" / "How ready is our house?"**, a home-kit check that works out what this household needs and how ready it is, and **"แผนบ้านรอดของบ้านเรา" / "Our family safety plan"**, a plan card to keep on every phone. What people answer, tick and type stays on their device. No item, room, slot or `houseVersion` changed, so houses and challenge links are the same and no midnight release is needed.

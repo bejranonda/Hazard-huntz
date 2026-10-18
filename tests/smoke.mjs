@@ -110,7 +110,14 @@ async function newPage({ width = 390, height = 760, ua = UA.android, reducedMoti
 // Visible buttons, links and expanders under 44 px (the smaller of width and
 // height). Source links inside a line of text ("ที่มา: ปภ. · …") fall under
 // WCAG's inline-text exception, so only their padded height is checked.
+// Measure once an open sheet has finished sliding in: mid-slide, a control
+// laid out at exactly 44 px measured 43.5-44 px in CI's Chrome 153 (51defd8).
+// The 0.01 px allowance covers floating-point rounding only.
 async function smallControls(page) {
+  await page.waitForFunction(() => {
+    const sheet = document.querySelector('#sheet');
+    return !sheet || sheet.hidden || sheet.getAnimations().every((a) => a.playState !== 'running');
+  });
   return page.$$eval('button, a[href], summary, [role="button"]:not(.item)', (els) => els
     .filter((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden')
     .map((e) => {
@@ -118,8 +125,8 @@ async function smallControls(page) {
       const size = e.closest('.src') ? r.height : Math.min(r.width, r.height);
       return { size, name: (e.id || e.textContent.trim()).slice(0, 16) };
     })
-    .filter((c) => c.size < 44)
-    .map((c) => `${c.name}: ${c.size.toFixed(0)} px`));
+    .filter((c) => c.size < 43.99)
+    .map((c) => `${c.name}: ${c.size.toFixed(2)} px`));
 }
 
 async function shot(page, name) {

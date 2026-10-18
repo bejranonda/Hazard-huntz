@@ -1,6 +1,7 @@
 {
-  "_readme": "rainWarningActive: true = ช่วงที่มีเตือนฝน/น้ำกำลังมา หน้าแรกจะแนะนำโหมด 'ก่อนน้ำมา' ก่อน, false = แนะนำ 'หลังน้ำลด'. แก้ forecastAppUrl ก่อนเปิดตัว (siteUrl = โดเมนจริงของเกม)",
+  "_readme": "rainWarningActive: true = มีเตือนฝน/น้ำกำลังมา หน้าแรกแนะนำโหมด 'ก่อนน้ำมา' จนถึงวัน rainWarningUntil (ปี-เดือน-วัน เวลาไทย นับวันนั้นด้วย หลังจากนั้นปิดเอง) · featuredTopic = หมวดที่กำลังเป็นข่าว ขึ้นหน้าแรกจนถึง featuredTopicUntil (null = ไม่มี) · เปิดสวิตช์เมื่อไร ใส่วันสิ้นสุดด้วยทุกครั้ง · hazards = ชื่อหน้าของแต่ละภัย (/flood /pm25 /fire) ห้ามเปลี่ยนหลังเปิดตัว เพราะลิงก์ที่แชร์ไปแล้วจะเสีย · siteUrl = โดเมนจริงของเกม",
   "rainWarningActive": true,
+  "rainWarningUntil": "2026-11-30",
   "forecastAppUrl": "https://flood.autobahn.bot/",
   "forecastStatusUrl": null,
   "modes": [
@@ -11,8 +12,14 @@
   ],
   "topics": ["health", "power", "food", "critters", "home", "plan", "air", "fire"],
   "featuredTopic": "health",
+  "featuredTopicUntil": "2026-11-15",
+  "hazards": {
+    "flood": { "slug": "flood" },
+    "dust": { "slug": "pm25" },
+    "fire": { "slug": "fire" }
+  },
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

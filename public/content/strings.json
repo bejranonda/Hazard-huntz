@@ -295,7 +295,7 @@
       "ยังมีอันตรายซ่อนอยู่ ค่อยๆ ตรวจอีกรอบนะ"
     ],
     "cheerLowReturn": [
-      "บ้านยังไม่พร้อม อ่านข้อที่พลาดด้านล่าง แล้วลองใหม่นะ"
+      "บ้านยังไม่พร้อม ตรวจให้ครบอีกรอบ ก่อนกลับเข้าบ้านนะ"
     ],
     "cheerPerfectDust": [
       "บ้านรอดจากฝุ่น! อากาศในบ้านสะอาด ทุกคนหายใจสบาย 💙"
@@ -316,7 +316,7 @@
       "บ้านเกือบปลอดภัยจากไฟ เหลืออีกจุดสองจุด"
     ],
     "cheerMidFire": [
-      "ยังมีจุดเสี่ยงไฟอยู่ อ่านข้อที่พลาดด้านล่างนะ"
+      "ยังมีจุดเสี่ยงไฟอยู่ ลองหาให้ครบอีกรอบนะ"
     ],
     "cheerLowFire": [
       "จุดเสี่ยงยังเยอะ แต่ตอนนี้เรารู้แล้ว ลองอีกรอบ!"
@@ -640,7 +640,7 @@
       "Some dangers are still hiding. Check again, slowly"
     ],
     "cheerLowReturn": [
-      "Not ready yet. Read what you missed below, then try again"
+      "Not ready yet. Check it all again before moving back in"
     ],
     "cheerPerfectDust": [
       "The house beat the dust! Clean air for everyone inside 💙"
@@ -661,7 +661,7 @@
       "Almost fire-safe. Just one or two left"
     ],
     "cheerMidFire": [
-      "Some fire risks remain. Read the ones you missed below"
+      "Some fire risks remain. Find them all next round"
     ],
     "cheerLowFire": [
       "Lots of risks left, but now you know. Try again!"
@@ -722,7 +722,7 @@
   },
   "seo": {
     "_readme": "ข้อความสำหรับหน้าสรุปความรู้ /learn, /llms.txt และข้อมูลโครงสร้าง (JSON-LD) ที่ tools/build.mjs สร้างให้ ไม่แสดงในเกม {n} = จำนวนข้อ updated = วันที่แก้เนื้อหาล่าสุด (YYYY-MM-DD) แก้เมื่อแก้ items.json",
-    "updated": "2026-10-15",
+    "updated": "2026-10-18",
     "th": {
       "learnTitle": "วิธีดูแลบ้านให้ปลอดภัย น้ำท่วม ฝุ่น PM2.5 ไฟไหม้ {n} ข้อ · บ้านรอดไหม?",
       "learnDesc": "สรุปทุกบทเรียนจากเกมบ้านรอดไหม? ก่อนน้ำมา หลังน้ำลด ฝุ่น PM2.5 และไฟไหม้ อ้างอิงคำแนะนำจากหน่วยงานรัฐ พร้อมเบอร์ช่วยเหลือ",
@@ -742,7 +742,25 @@
       "helplines": "เบอร์ช่วยเหลือ",
       "updated": "ปรับปรุงล่าสุด",
       "back": "กลับไปเล่นเกม",
-      "topicsTitle": "ค้นตามหมวด"
+      "topicsTitle": "ค้นตามหมวด",
+      "byHazard": "อ่านตามภัย",
+      "allLessons": "บทเรียนทั้งหมด {n} ข้อ",
+      "playMode": "▶ เล่นโหมด{mode} ฟรี {s} วิ",
+      "hazardFloodNav": "🌊 น้ำท่วม",
+      "hazardFloodTitle": "เตรียมบ้านรับน้ำท่วม และกลับบ้านหลังน้ำลด {n} ข้อ · บ้านรอดไหม?",
+      "hazardFloodDesc": "ก่อนน้ำมาต้องยกอะไร ปิดอะไร หลังน้ำลดต้องระวังอะไรก่อนกลับเข้าบ้าน อ้างอิงคำแนะนำจากหน่วยงานรัฐ พร้อมเช็กลิสต์และเบอร์ช่วยเหลือ",
+      "hazardFloodH1": "น้ำท่วม: เตรียมบ้านก่อนน้ำมา กลับบ้านอย่างปลอดภัยหลังน้ำลด",
+      "hazardFloodIntro": "ทุกข้อในโหมดน้ำท่วมของเกมบ้านรอดไหม? บอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน อ่านแล้วลองเล่นจริง แล้วส่งต่อให้คนที่บ้าน",
+      "hazardDustNav": "😷 ฝุ่น PM2.5",
+      "hazardDustTitle": "วิธีป้องกันฝุ่น PM2.5 ในบ้าน {n} ข้อ · บ้านรอดไหม?",
+      "hazardDustDesc": "ปิดบ้านกันฝุ่น ทำความสะอาดไม่ให้ฝุ่นฟุ้ง ใส่หน้ากากให้ถูก ดูแลเด็ก ผู้สูงอายุ และคนที่มียาประจำตัวช่วงฝุ่นสูง อ้างอิงคำแนะนำจากหน่วยงานรัฐ พร้อมเช็กลิสต์",
+      "hazardDustH1": "ฝุ่น PM2.5: ทำบ้านให้ปลอดฝุ่น ดูแลคนในบ้าน",
+      "hazardDustIntro": "ทุกข้อในโหมดฝุ่นของเกมบ้านรอดไหม? บอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน อ่านแล้วลองเล่นจริง แล้วส่งต่อให้คนที่บ้าน",
+      "hazardFireNav": "🔥 ไฟไหม้",
+      "hazardFireTitle": "ป้องกันไฟไหม้ในบ้าน และวิธีหนีควัน {n} ข้อ · บ้านรอดไหม?",
+      "hazardFireDesc": "ปลั๊กพ่วง สายไฟ ที่ชาร์จมือถือ เตาแก๊ส เครื่องจับควัน และวิธีหนีควันเมื่อไฟไหม้ อ้างอิงคำแนะนำจากหน่วยงาน พร้อมเช็กลิสต์และเบอร์ 199",
+      "hazardFireH1": "ไฟไหม้ในบ้าน: ป้องกันไฟ และรู้วิธีหนีควัน",
+      "hazardFireIntro": "ทุกข้อในโหมดไฟไหม้ของเกมบ้านรอดไหม? บอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน อ่านแล้วลองเล่นจริง แล้วส่งต่อให้คนที่บ้าน"
     },
     "en": {
       "learnIntro": "Every lesson from the Baan Rod Mai? home-safety game, for floods, PM2.5 dust and house fire, each with its source.",
@@ -792,7 +810,25 @@
         "องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป": "World Health Organization (WHO), Regional Office for Europe",
         "U.S. Fire Administration (FEMA)": "U.S. Fire Administration (FEMA)"
       },
-      "topicsTitle": "By topic"
+      "topicsTitle": "By topic",
+      "byHazard": "By hazard",
+      "allLessons": "All {n} lessons",
+      "playMode": "▶ Play “{mode}” free, {s} seconds",
+      "hazardFloodNav": "🌊 Floods",
+      "hazardFloodTitle": "Flood safety at home, before and after the water: {n} lessons · Baan Rod Mai?",
+      "hazardFloodDesc": "What to lift and switch off before a flood, and what to check before moving back in after it. From Thai government guidance, with checklists and helplines.",
+      "hazardFloodH1": "Floods: get the house ready, then move back in safely",
+      "hazardFloodIntro": "Every lesson from the flood modes of the Baan Rod Mai? game: what to do, why, and where the advice comes from.",
+      "hazardDustNav": "😷 PM2.5 dust",
+      "hazardDustTitle": "Keeping PM2.5 dust out of the home: {n} lessons · Baan Rod Mai?",
+      "hazardDustDesc": "Seal the house, clean without stirring dust up, wear a mask that fits, and look after children, older people and anyone on daily medicine when the dust is high. From Thai government guidance, with a checklist.",
+      "hazardDustH1": "PM2.5 dust: a dust-safe home and the people in it",
+      "hazardDustIntro": "Every lesson from the dust mode of the Baan Rod Mai? game: what to do, why, and where the advice comes from.",
+      "hazardFireNav": "🔥 House fire",
+      "hazardFireTitle": "Preventing house fires and escaping smoke: {n} lessons · Baan Rod Mai?",
+      "hazardFireDesc": "Power strips, hot cords, phone chargers, the gas stove, smoke alarms and how to get out under the smoke. From agency guidance, with a checklist and the Thai fire number 199.",
+      "hazardFireH1": "House fire: prevent it, and know how to escape the smoke",
+      "hazardFireIntro": "Every lesson from the fire mode of the Baan Rod Mai? game: what to do, why, and where the advice comes from."
     }
   },
   "ogEn": {

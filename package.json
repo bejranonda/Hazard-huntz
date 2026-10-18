@@ -1,8 +1,8 @@
 {
   "name": "baanrodmai",
   "private": true,
-  "version": "1.5.3",
-  "description": "บ้านรอดไหม? (Baan Rod Mai?) — a 60-second Thai flood-safety hazard-hunt web game for Cloudflare Pages",
+  "version": "1.6.0",
+  "description": "บ้านรอดไหม? (Baan Rod Mai?) — a 60-second Thai home-safety hazard-hunt web game (floods, PM2.5 dust, house fire) for Cloudflare Pages",
   "homepage": "https://github.com/bejranonda/Hazard-huntz#readme",
   "repository": {
     "type": "git",

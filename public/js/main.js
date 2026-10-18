@@ -6,7 +6,7 @@ import {
   loadContent, content, t, L, setLang, getLang, pickLine, pickLineFor, rankTitle, sourceList,
   siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
 } from './content.js';
-import { modeList, modeIds, modeOf, mk, cap, idsRe, seasonalMode } from './modes.js';
+import { modeList, modeIds, modeOf, mk, cap, idsRe, recommend } from './modes.js';
 import { APP_VERSION } from './version.js';
 import { generateHouse, playableRooms } from './house.js';
 import { Round, STATUS } from './round.js';
@@ -17,7 +17,7 @@ import { unlockAudio, play, haptic, isMuted, setMuted } from './audio.js';
 import { sparkle, floatText, confetti } from './fx.js';
 import { showScreen, openSheet, closeSheet, sheetOpen, toast, say, hideBubble, setLoading } from './ui.js';
 import { actionIcon, spriteIcon } from './icons.js';
-import { loadCardAssets, drawResultCard, drawChecklist, canvasToBlob } from './cards.js';
+import { loadCardAssets, drawResultCard, drawChecklist, canvasToBlob, plainText } from './cards.js';
 import {
   challengeUrl, parseChallenge, nativeShare, canNativeShare, copyText, shareChannel,
   canDownload, downloadBlob, lineExternalUrl, imageSrc,
@@ -44,6 +44,7 @@ const state = {
   result: null,
   share: null,
   updateReady: false,
+  start: null, // { mode, topic, why } from pickStart()
 };
 let heroGecko = null;
 let gameGecko = null;
@@ -84,9 +85,9 @@ async function boot() {
   state.challenge = parseChallenge();
   if (state.challenge && !isValidHouseKey(state.challenge.houseKey)) state.challenge.houseKey = bangkokDateKey();
 
-  const defaultMode = await pickDefaultMode(C);
+  state.start = await pickStart(C);
   renderModes();
-  renderStart(defaultMode);
+  renderStart();
   bindGlobal();
 
   const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 600));
@@ -100,28 +101,32 @@ async function boot() {
   else if (open === 'help') openHelp();
   else if (open === 'about') openAbout();
 
-  track('view', { label: state.challenge ? 'challenge' : cl ? 'checklist' : 'direct' });
+  const via = state.challenge ? 'challenge' : cl ? 'checklist' : state.start.why === 'link' ? 'link' : 'direct';
+  track('view', { mode: via === 'link' ? state.start.mode : '', label: via });
   if (state.challenge) track('challenge_open', { mode: state.challenge.mode, value: state.challenge.score });
   registerServiceWorker();
 }
 
-// The default mode: a rain warning (manual flag, or the forecast app through
-// config.forecastStatusUrl → { "rainWarning": true }) means flood preparation;
-// otherwise the mode in season this Bangkok month (config.json → modes[].months).
-async function pickDefaultMode(C) {
-  let warning = !!C.config.rainWarningActive;
+// What the start screen recommends (modes.js → recommend): a ?mode= link
+// (ignored on a friend's challenge), else a rain warning means flood
+// preparation, else the mode in season this Bangkok month. The warning is the
+// forecast app's answer (config.forecastStatusUrl → { "rainWarning": true })
+// when it gives one, else the manual switch until its end date.
+async function pickStart(C) {
+  const want = state.challenge ? null : new URLSearchParams(location.search).get('mode');
+  let live = null;
   const url = C.config.forecastStatusUrl;
-  if (url) {
+  if (url && !want) {
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 1500);
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
       const data = await res.json();
-      if (typeof data.rainWarning === 'boolean') warning = data.rainWarning;
-    } catch { /* keep the manual flag */ }
+      if (typeof data.rainWarning === 'boolean') live = data.rainWarning;
+    } catch { /* keep the manual switch */ }
   }
-  return seasonalMode(Number(bangkokDateKey().slice(4, 6)), warning);
+  return recommend(C.config, bangkokDateKey(), { want, live });
 }
 
 // The brand name in the current language ("บ้านรอดไหม?" / "Baan Rod Mai?").
@@ -157,7 +162,8 @@ function renderModes() {
       </button>`).join('');
 }
 
-function renderStart(defaultMode) {
+function renderStart() {
+  const defaultMode = state.start.mode;
   state.defaultMode = defaultMode;
   for (const btn of $$('.mode-btn')) {
     const isDefault = btn.dataset.mode === defaultMode;
@@ -176,10 +182,10 @@ function renderStart(defaultMode) {
   $('#daily-line').innerHTML = parts.join(' · ');
 
   const book = bookCounts();
-  // A topic in the news (config.featuredTopic): read every answer now, or
-  // collect it in the safety book by playing.
-  // Without one, the season's mode brings its own topic (dust → air, fire → fire).
-  const feat = content().config.featuredTopic || modeOf(defaultMode)?.topic || null;
+  // A topic in the news (config.featuredTopic, until featuredTopicUntil): read
+  // every answer now, or collect it in the safety book by playing. Without one,
+  // or after a ?mode= link, the mode brings its own topic (dust → air, fire → fire).
+  const feat = state.start.topic;
   const ft = feat && book.topics.find((tp) => tp.id === feat);
   const featEl = $('#featured');
   if (ft) {
@@ -247,7 +253,8 @@ function bindGlobal() {
   $('#modes').addEventListener('click', (e) => {
     const btn = e.target.closest('.mode-btn');
     if (!btn) return;
-    track('mode_select', { mode: btn.dataset.mode, label: btn.dataset.mode === state.defaultMode ? 'default' : 'other' });
+    const pick = btn.dataset.mode !== state.defaultMode ? 'other' : state.start.why === 'link' ? 'link' : 'default';
+    track('mode_select', { mode: btn.dataset.mode, label: pick });
     startFlow(btn.dataset.mode, { kind: 'daily' });
   });
   for (const b of $$('[data-open]')) {
@@ -267,7 +274,7 @@ function bindGlobal() {
     track('lang', { label: getLang() });
     $('#btn-lang').textContent = t('langSwitch');
     applyStaticStrings();
-    renderStart(state.defaultMode);
+    renderStart();
   });
 
   const soundBtn = $('#btn-sound');
@@ -717,6 +724,8 @@ async function showResult(result) {
     })() : '';
   const perfect = me === 10;
   const cheerKey = perfect ? 'cheerPerfect' : ['cheerLow', 'cheerMid', 'cheerHigh'][result.tier] || 'cheerMid';
+  // The ending answers "บ้านรอดไหม?": the same line on the screen and on the card.
+  const ending = pickLineFor(cheerKey, mode);
 
   const lessons = state.house.targets.map((p) => {
     const rec = result.records.find((r) => r.pid === p.pid);
@@ -743,12 +752,12 @@ async function showResult(result) {
 
   $('#result').innerHTML = `
     <div class="card-wrap">
-      <img class="card-preview" id="card-img" alt="${esc(t(headlineKey, { score: result.score10 }))} · ${esc(rank)}">
+      <img class="card-preview" id="card-img" alt="${esc(t(headlineKey, { score: result.score10 }))} · ${esc(rank)} · ${esc(plainText(ending))}">
       <p class="card-sub-hint">👆 ${esc(t('cardTapHint'))}</p>
     </div>
     <div class="result-cheer">
       <div class="gecko-host" id="result-gecko"></div>
-      <p class="bubble">${esc(pickLineFor(cheerKey, mode))}</p>
+      <p class="bubble">${esc(ending)}</p>
     </div>
     <h1 id="result-title" class="sr-only">${esc(t(headlineKey, { score: result.score10 }))}</h1>
     <div class="stats">
@@ -813,6 +822,7 @@ async function showResult(result) {
       perfect: perfect ? t('perfectStamp') : null,
       footer: t('cardFooter'),
       houseLabel: run.kind === 'random' ? t('cardRandomHouse') : t('cardHouse', { date: houseLabel(run.houseKey) }),
+      ending,
     }, state.cardAssets);
     const blob = await canvasToBlob(canvas);
     state.share.blob = blob;
@@ -910,7 +920,7 @@ function goHome() {
   state.challenge = state.run?.kind === 'challenge' ? null : state.challenge;
   app.classList.remove(...modeIds().map((id) => `is-${id}`));
   showScreen('start');
-  renderStart(state.defaultMode);
+  renderStart();
   if (state.updateReady) toast(t('updateReady'), 3200);
 }
 

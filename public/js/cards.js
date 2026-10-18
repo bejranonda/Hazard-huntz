@@ -280,7 +280,67 @@ export function drawResultCard(canvas, d, assets) {
   ctx.fillStyle = INK2;
   ctx.fillText(d.houseLabel, W / 2, 300);
 
+  if (d.ending) endingBubble(ctx, d.ending, 30, 462, 330, 300);
   if (d.perfect) stamp(ctx, W - 200, 470, d.perfect);
+}
+
+// Canvas fonts may draw emoji as empty boxes, so the card leaves them out.
+export const plainText = (text) => String(text ?? '')
+  .replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, '')
+  .replace(/\s+/g, ' ').trim();
+
+// The ending ("บ้านรอด! …") in a speech bubble left of the gecko, so a forwarded
+// card answers "บ้านรอดไหม?" too. x, w: the bubble; cy: its middle; maxH: its
+// tallest. The text shrinks from 38 to 28 px to fit at most 4 lines.
+function endingBubble(ctx, text, x, cy, w, maxH) {
+  const clean = plainText(text);
+  if (!clean) return;
+  const pad = 22;
+  // The largest size that fits; better still, one that leaves no lone short
+  // word on the last line (Thai breaks between words, e.g. "เต็ม|สิบ").
+  let fit = null;
+  for (let s = 38; s >= 28; s -= 2) {
+    font(ctx, s, 400);
+    const ls = wrapText(ctx, clean, w - pad * 2);
+    if (ls.length > 4 || ls.length * s * 1.3 + pad * 2 > maxH) continue;
+    const widow = ls.length > 1 && ctx.measureText(ls[ls.length - 1]).width < (w - pad * 2) * 0.3;
+    fit = fit || { s, ls };
+    if (!widow) { fit = { s, ls }; break; }
+  }
+  if (!fit) {
+    font(ctx, 28, 400);
+    fit = { s: 28, ls: wrapText(ctx, clean, w - pad * 2).slice(0, 4) };
+  }
+  const size = fit.s;
+  const lines = fit.ls;
+  font(ctx, size, 400);
+  const lh = size * 1.3;
+  const h = lines.length * lh + pad * 2;
+  const top = cy - h / 2;
+  const r = 24;
+  // One path for the box and its tail, which points right at the gecko.
+  ctx.beginPath();
+  ctx.moveTo(x + r, top);
+  ctx.arcTo(x + w, top, x + w, top + h, r);
+  ctx.lineTo(x + w, cy - 14);
+  ctx.lineTo(x + w + 36, cy + 4);
+  ctx.lineTo(x + w, cy + 18);
+  ctx.arcTo(x + w, top + h, x, top + h, r);
+  ctx.arcTo(x, top + h, x, top, r);
+  ctx.arcTo(x, top, x + w, top, r);
+  ctx.closePath();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fill();
+  ctx.lineWidth = 5;
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = INK;
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  lines.forEach((line, i) => ctx.fillText(line, x + pad, top + pad + lh * (i + 0.5)));
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
 }
 
 // A tilted "rubber stamp" for a perfect round.

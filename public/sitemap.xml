@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url><loc>https://baanrodmai.autobahn.bot/</loc><lastmod>2026-10-15</lastmod>
+  <url><loc>https://baanrodmai.autobahn.bot/</loc><lastmod>2026-10-18</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/"/>
   </url>
-  <url><loc>https://baanrodmai.autobahn.bot/en/</loc><lastmod>2026-10-15</lastmod>
+  <url><loc>https://baanrodmai.autobahn.bot/en/</loc><lastmod>2026-10-18</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/"/>
   </url>
-  <url><loc>https://baanrodmai.autobahn.bot/learn</loc><lastmod>2026-10-15</lastmod>
+  <url><loc>https://baanrodmai.autobahn.bot/learn</loc><lastmod>2026-10-18</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/learn"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/learn"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/learn"/>
   </url>
-  <url><loc>https://baanrodmai.autobahn.bot/en/learn</loc><lastmod>2026-10-15</lastmod>
+  <url><loc>https://baanrodmai.autobahn.bot/en/learn</loc><lastmod>2026-10-18</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/learn"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/learn"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/learn"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/flood</loc><lastmod>2026-10-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/flood"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/flood"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/flood"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/flood</loc><lastmod>2026-10-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/flood"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/flood"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/flood"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/pm25</loc><lastmod>2026-10-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/pm25"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/pm25"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/pm25"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/pm25</loc><lastmod>2026-10-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/pm25"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/pm25"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/pm25"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/fire</loc><lastmod>2026-10-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/fire"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/fire"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/fire"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/fire</loc><lastmod>2026-10-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/fire"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/fire"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/fire"/>
   </url>
 </urlset>

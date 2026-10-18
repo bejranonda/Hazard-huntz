@@ -10,7 +10,7 @@ import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
-import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk } from '../public/js/modes.js';
+import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -235,6 +235,44 @@ test('mode registry: unique codes, links round-trip, season picks a mode', () =>
   for (let month = 1; month <= 12; month++) assert.ok(modes.some((m) => m.id === seasonalMode(month, false)));
 });
 
+test('hand-set switches end by themselves on their end date (Bangkok, inclusive)', () => {
+  assert.equal(switchOn(true, '2026-11-30', '20261130'), true);
+  assert.equal(switchOn(true, '2026-11-30', '20261201'), false);
+  assert.equal(switchOn(true, null, '20991231'), true);
+  assert.equal(switchOn('health', '2026-11-15', '20261115'), true);
+  assert.equal(switchOn(false, '2026-11-30', '20261001'), false);
+  assert.equal(switchOn(null, null, '20261001'), false);
+});
+
+test('the start screen recommends a mode, a topic and says why', () => {
+  // A fixed config, so the test never depends on today's date or on config.json.
+  const cfg = {
+    rainWarningActive: true, rainWarningUntil: '2026-11-30',
+    featuredTopic: 'health', featuredTopicUntil: '2026-11-15',
+    forecastAppUrl: 'https://flood.example/',
+  };
+  const r = (day, opt) => recommend(cfg, day, opt);
+  assert.deepEqual(r('20261018'), { mode: 'prepare', topic: 'health', why: 'warning' });
+  assert.deepEqual(r('20261116'), { mode: 'prepare', topic: null, why: 'warning' });
+  assert.deepEqual(r('20261201'), { mode: 'dust', topic: 'air', why: 'season' });
+  assert.deepEqual(r('20270410'), { mode: 'fire', topic: 'fire', why: 'season' });
+  assert.deepEqual(r('20270615'), { mode: 'return', topic: null, why: 'season' });
+  // The forecast app's answer beats the manual switch, both ways.
+  assert.deepEqual(r('20261201', { live: true }), { mode: 'prepare', topic: null, why: 'live' });
+  assert.deepEqual(r('20261018', { live: false }), { mode: 'return', topic: 'health', why: 'season' });
+  // A ?mode= link wins and brings its own topic first; unknown ids are ignored.
+  assert.deepEqual(r('20261018', { want: 'Dust' }), { mode: 'dust', topic: 'air', why: 'link' });
+  assert.deepEqual(r('20261018', { want: 'return' }), { mode: 'return', topic: 'health', why: 'link' });
+  assert.deepEqual(r('20261018', { want: 'heat' }), r('20261018'));
+  // "Check before you go": dust → Air4Thai, flood modes → the forecast app, fire → none.
+  assert.match(modeLink(cfg, 'dust'), /air4thai/);
+  assert.equal(modeLink(cfg, 'prepare'), 'https://flood.example/');
+  assert.equal(modeLink(cfg, 'return'), 'https://flood.example/');
+  assert.equal(modeLink(cfg, 'fire'), '');
+  // Every day of a year gives a mode in the registry.
+  for (const day of days) assert.ok(modeList().some((m) => m.id === recommend(C.config, day).mode));
+});
+
 test('daily house resets at midnight Bangkok time', () => {
   assert.equal(bangkokDateKey(Date.UTC(2026, 9, 6, 16, 59)), '20261006');
   assert.equal(bangkokDateKey(Date.UTC(2026, 9, 6, 17, 0)), '20261007');
@@ -299,6 +337,8 @@ test('every mode answers "will the house survive?" at each score level, in both 
       for (const l of ['th', 'en']) {
         const v = strings[l][`${base}${M}`];
         assert.ok(Array.isArray(v) && v.length && v.every((x) => typeof x === 'string' && x.length > 0 && x.length <= 60), `${l}.${base}${M}`);
+        // The ending is printed on the shared card too, where there is no list "below".
+        assert.ok(v.every((x) => !/ด้านล่าง|below/i.test(x)), `${l}.${base}${M} points at the screen`);
       }
     }
   }

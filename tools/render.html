@@ -104,6 +104,7 @@ window.renderAll = async (site) => {
     mode: 'prepare', tier: 2, modeLabel: th.modePrepare, headline: 'เตรียมบ้านทัน', scoreText: '8/10',
     rankTitle: th.rankPrepare[2], grid: ['correct', 'correct', 'learned', 'correct', 'correct', 'correct'],
     cta: th.cardChallenge, url: `${url}/c/p8?h=20261007`, footer: th.cardFooter, houseLabel: 'บ้านวันที่ 7 ต.ค. 69',
+    ending: th.cheerHighPrepare[0],
   }, assets);
   out['share/sample-result-prepare.png'] = c.toDataURL('image/png');
   c = canvas();
@@ -113,6 +114,7 @@ window.renderAll = async (site) => {
     rankTitle: th.rankReturn[2], grid: ['correct', 'correct', 'correct', 'correct', 'correct', 'correct', 'correct'],
     cta: th.cardVersus.replace('{them}', '9/10').replace('{me}', '10/10'), url: `${url}/c/r10?h=20261007`,
     perfect: th.perfectStamp, footer: th.cardFooter, houseLabel: 'บ้านวันที่ 7 ต.ค. 69',
+    ending: th.cheerPerfectReturn[0],
   }, assets);
   out['share/sample-result-return.png'] = c.toDataURL('image/png');
 

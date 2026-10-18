@@ -48,3 +48,37 @@ export function seasonalMode(month, rainWarning) {
   const inSeason = MODES.find((m) => m.hazard !== 'flood' && (m.months || []).includes(month));
   return inSeason ? inSeason.id : (modeOf('return') ? 'return' : MODES[0].id);
 }
+
+// A hand-set switch (rainWarningActive, featuredTopic) with an optional end
+// date: on while dayKey (YYYYMMDD, Bangkok) is on or before until ("YYYY-MM-DD",
+// inclusive). A switch nobody turns off ends by itself.
+export function switchOn(value, until, dayKey) {
+  if (!value) return false;
+  if (!until) return true;
+  return dayKey <= String(until).replace(/-/g, '');
+}
+
+// The "check before you go" link: the mode's own link (dust → Air4Thai), else
+// the flood forecast app for flood modes, else none.
+export function modeLink(config, id) {
+  const m = MODES.find((x) => x.id === id);
+  if (!m) return config.forecastAppUrl || '';
+  return m.link ?? (m.hazard === 'flood' ? config.forecastAppUrl || '' : '');
+}
+
+// What the start screen recommends on a Bangkok day:
+//   want  a mode id from a ?mode= link (ignored unless it is in the registry)
+//   live  the forecast app's rain warning, when it answered (true/false)
+// Returns { mode, topic, why } with why = link | live | warning | season.
+export function recommend(config, dayKey, { want = null, live = null } = {}) {
+  const linked = want ? MODES.find((m) => m.id === String(want).toLowerCase()) : null;
+  const warning = typeof live === 'boolean' ? live : switchOn(config.rainWarningActive, config.rainWarningUntil, dayKey);
+  const mode = linked ? linked.id : seasonalMode(Number(String(dayKey).slice(4, 6)), warning);
+  const news = switchOn(config.featuredTopic, config.featuredTopicUntil, dayKey) ? config.featuredTopic : null;
+  const own = MODES.find((m) => m.id === mode)?.topic || null;
+  const topic = linked ? own || news : news || own;
+  let why = 'season';
+  if (linked) why = 'link';
+  else if (mode === 'prepare' && warning) why = typeof live === 'boolean' ? 'live' : 'warning';
+  return { mode, topic, why };
+}

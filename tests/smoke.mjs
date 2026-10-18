@@ -1,6 +1,7 @@
 // Browser smoke test in headless Chromium, mimicking Cloudflare Pages routing.
 //   node tests/smoke.mjs                 run checks
 //   node tests/smoke.mjs --screens DIR   also save screenshots for the docs
+//   SMOKE_DATE=2026-12-05 node tests/smoke.mjs   play on another Bangkok day
 // Needs playwright-core and a Chromium (set CHROME_PATH if needed).
 
 import http from 'node:http';
@@ -9,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
+import { setModes, recommend, modeLink } from '../public/js/modes.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
@@ -16,15 +18,34 @@ const screensArg = process.argv.indexOf('--screens');
 const SCREENS = screensArg > 0 ? path.resolve(process.argv[screensArg + 1]) : null;
 if (SCREENS) fs.mkdirSync(SCREENS, { recursive: true });
 
+const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/config.json'), 'utf8'));
+const STR = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/strings.json'), 'utf8'));
+const ITEMS = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/items.json'), 'utf8')).items;
+setModes(CFG.modes);
+const capM = (id) => id.charAt(0).toUpperCase() + id.slice(1);
+
+// The test plays on a fixed Bangkok day (default 18 Oct 2026), so the season,
+// the rain switch and the featured topic never depend on the calendar. What the
+// start screen should recommend that day comes from the same pure function.
+const SMOKE_DATE = process.env.SMOKE_DATE || '2026-10-18';
+if (!/^\d{4}-\d{2}-\d{2}$/.test(SMOKE_DATE)) throw new Error(`SMOKE_DATE must be YYYY-MM-DD, not ${SMOKE_DATE}`);
+const dayKey = (d) => d.replace(/-/g, '');
+const START = recommend(CFG, dayKey(SMOKE_DATE));
+
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain' };
 let beacons = 0;
+const events = []; // every [name, mode, label, value, lang] the pages sent
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/api/e') {
     beacons++;
-    req.resume();
-    res.writeHead(204);
-    res.end();
+    let body = '';
+    req.on('data', (c) => { body += c; });
+    req.on('end', () => {
+      try { events.push(...JSON.parse(body).e); } catch { /* counted anyway */ }
+      res.writeHead(204);
+      res.end();
+    });
     return;
   }
   let p = decodeURIComponent(url.pathname);
@@ -45,13 +66,33 @@ const UA = {
 };
 
 const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
+
+// Move the page's clock to 10:00 on a Bangkok day. Only Date changes and time
+// keeps running: rounds use performance.now() and requestAnimationFrame, which
+// Playwright's clock would freeze.
+async function pinDate(ctx, day = SMOKE_DATE) {
+  await ctx.addInitScript((target) => {
+    const Real = Date;
+    const offset = target - Real.now();
+    function Pinned(...a) {
+      if (!new.target) return new Real(Real.now() + offset).toString();
+      return a.length ? new Real(...a) : new Real(Real.now() + offset);
+    }
+    Pinned.prototype = Real.prototype;
+    Pinned.now = () => Real.now() + offset;
+    Pinned.parse = Real.parse;
+    Pinned.UTC = Real.UTC;
+    globalThis.Date = Pinned;
+  }, Date.parse(`${day}T10:00:00+07:00`));
+}
 const results = [];
 const check = (name, ok, detail = '') => results.push({ name, ok: !!ok, detail });
 
 // Players default to a Thai phone in Bangkok (the main audience); the
 // international test passes its own locale and time zone.
-async function newPage({ width = 390, height = 760, ua = UA.android, reducedMotion = 'no-preference', locale = 'th-TH', timezoneId = 'Asia/Bangkok' } = {}) {
+async function newPage({ width = 390, height = 760, ua = UA.android, reducedMotion = 'no-preference', locale = 'th-TH', timezoneId = 'Asia/Bangkok', day = SMOKE_DATE } = {}) {
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: ua, reducedMotion, serviceWorkers: 'block', locale, timezoneId });
+  await pinDate(ctx, day);
   // Desktop Chrome on Windows/macOS has Web Share, which opens the OS dialog
   // instead of our share sheet; the cloud Chromium has none. Hide it so every
   // platform tests the same in-page fallback.
@@ -155,9 +196,15 @@ try {
     const raw = resp.reduce((a, r) => a + r.raw, 0);
     check('start screen download < 500 KB (compressed, as served)', bytes < 500 * 1024, `${(bytes / 1024).toFixed(0)} KB compressed, ${(raw / 1024).toFixed(0)} KB raw`);
     await shot(page, '01-start');
-    const fHref = await page.getAttribute('#forecast-link-start', 'href');
-    check('forecast button is visible and opens FloodWatch', (await page.isVisible('#forecast-link-start')) && fHref === 'https://flood.autobahn.bot/', String(fHref));
-    check('default mode badge shown', await page.isVisible('.mode-btn.is-default .mode-badge'));
+    const start = await page.evaluate(() => ({
+      mode: document.querySelector('.mode-btn.is-default')?.dataset.mode,
+      badge: !!document.querySelector('.mode-btn.is-default .mode-badge:not([hidden])'),
+      hero: document.querySelector('#hero-bubble').textContent,
+      link: document.querySelector('#forecast-link-start').hidden ? null : document.querySelector('#forecast-link-start').getAttribute('href'),
+    }));
+    check(`${SMOKE_DATE}: the start screen recommends ${START.mode} (${START.why}) with its badge and gecko line`, start.mode === START.mode && start.badge && start.hero === STR.th[`hero${capM(START.mode)}`], `${start.mode} · ${start.hero}`);
+    const wantLink = modeLink(CFG, START.mode) || null;
+    check(`its "check before you go" link: ${wantLink || 'none'}`, start.link === wantLink, String(start.link));
     const shownVersion = (await page.textContent('#app-version')).trim();
     check('start screen shows the package.json version', shownVersion === `v${JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version}`, shownVersion);
     await playRound(page, 'prepare', {
@@ -167,6 +214,10 @@ try {
     await shot(page, '05-result');
     const card = await page.evaluate(() => document.querySelector('#card-img').naturalWidth);
     check('result card is 1080 px wide', card === 1080, String(card));
+    const ending = await page.evaluate(() => [document.querySelector('#result .bubble').textContent, document.querySelector('#card-img').alt]);
+    const endings = ['cheerPerfectPrepare', 'cheerHighPrepare', 'cheerMidPrepare', 'cheerLowPrepare'].flatMap((k) => STR.th[k]);
+    const plain = ending[0].replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, '').replace(/\s+/g, ' ').trim();
+    check('the ending on the result screen is a prepare ending, and the shared card carries it (alt text)', endings.includes(ending[0]) && ending[1].endsWith(plain), ending.join(' | '));
     check('lessons list has every target', (await page.$$('.lesson')).length >= 5);
     check('help numbers listed', (await page.$$eval('.help-list .num', (n) => n.map((x) => x.textContent))).join() .includes('1784'));
     await page.click('#btn-share');
@@ -348,16 +399,19 @@ try {
     await shot(page, '12-book');
     await page.click('#book-close');
     await page.waitForTimeout(400);
-    // The topic in the news: a card on the start screen that links to every answer
-    if (cfg.featuredTopic) {
+    // The featured topic (the news topic until its end date, else the mode's
+    // own): a card on the start screen that links to every answer.
+    if (START.topic) {
       const href = await page.getAttribute('#featured-read', 'href');
-      check('start screen features the topic in the news', (await page.isVisible('#featured')) && href === `/learn#t-${cfg.featuredTopic}`, String(href));
+      check(`start screen features "${START.topic}" on ${SMOKE_DATE}`, (await page.isVisible('#featured')) && href === `/learn#t-${START.topic}`, String(href));
       const learn = await (await fetch(`${BASE}/learn`)).text();
-      check('/learn has an anchor for that topic', learn.includes(`id="t-${cfg.featuredTopic}"`));
+      check('/learn has an anchor for that topic', learn.includes(`id="t-${START.topic}"`));
       await page.click('#featured-book');
       await page.waitForSelector('.book-topic');
       const first = await page.$eval('.book-topic', (el) => el.id);
-      check('featured topic opens first in the safety book', first === `book-${cfg.featuredTopic}`, first);
+      check('featured topic opens first in the safety book', first === `book-${START.topic}`, first);
+    } else {
+      check(`no featured topic on ${SMOKE_DATE}`, await page.isHidden('#featured'));
     }
     check('no page errors (safety book)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
@@ -397,6 +451,7 @@ try {
   // 6. Offline after first visit (service worker)
   {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 760 }, isMobile: true, hasTouch: true, locale: 'th-TH', timezoneId: 'Asia/Bangkok' });
+    await pinDate(ctx);
     const page = await ctx.newPage();
     await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
     await page.waitForFunction(() => navigator.serviceWorker?.controller || navigator.serviceWorker.ready.then(() => true), null, { timeout: 15000 });
@@ -466,6 +521,107 @@ try {
     check('no page errors (international)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
+  // 9. What the start screen recommends, by date and by link (v1.6.0)
+  {
+    const startOf = (page) => page.evaluate(() => ({
+      mode: document.querySelector('.mode-btn.is-default')?.dataset.mode,
+      hero: document.querySelector('#hero-bubble').textContent,
+      feat: document.querySelector('#featured').hidden ? null : document.querySelector('#featured-read')?.getAttribute('href'),
+      link: document.querySelector('#forecast-link-start').hidden ? null : document.querySelector('#forecast-link-start').getAttribute('href'),
+      playing: !!window.__brm?.state.round,
+      screen: document.querySelector('.screen.active')?.id,
+      why: window.__brm?.state.start?.why,
+      lang: document.documentElement.lang,
+      path: location.pathname + location.search,
+    }));
+    // December: the rain switch has ended by itself, so dust season leads.
+    let { ctx, page } = await newPage({ day: '2026-12-05' });
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    let st = await startOf(page);
+    check('5 Dec 2026: dust is recommended (the rain switch ended on 30 Nov), with the air topic and Air4Thai',
+      st.mode === 'dust' && st.hero === STR.th.heroDust && st.feat === '/learn#t-air' && /air4thai/.test(st.link || ''), JSON.stringify(st));
+    await ctx.close();
+
+    // A campaign link opens the start screen on that mode; nothing starts by itself.
+    ({ ctx, page } = await newPage());
+    await page.goto(`${BASE}/?mode=fire&debug=1`, { waitUntil: 'networkidle' });
+    st = await startOf(page);
+    check('/?mode=fire: fire is the big card, its topic is featured, no round starts',
+      st.mode === 'fire' && st.why === 'link' && st.feat === '/learn#t-fire' && !st.playing && st.screen === 'screen-start', JSON.stringify(st));
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(400);
+    check('a link visit is counted as view · fire · link', events.some((e) => e[0] === 'view' && e[1] === 'fire' && e[2] === 'link'), JSON.stringify(events.filter((e) => e[0] === 'view').slice(-3)));
+    await page.goto(`${BASE}/?mode=heat&debug=1`, { waitUntil: 'networkidle' });
+    st = await startOf(page);
+    check('/?mode=heat (not a mode) is ignored', st.mode === START.mode && st.why !== 'link', JSON.stringify(st));
+    await page.goto(`${BASE}/c/d7?h=20261016&mode=fire&debug=1`, { waitUntil: 'networkidle' });
+    st = await startOf(page);
+    check('a friend\'s challenge beats ?mode=', (await page.isVisible('#btn-accept')) && st.why !== 'link', JSON.stringify(st));
+    await page.goto(`${BASE}/en/?mode=dust&debug=1`, { waitUntil: 'networkidle' });
+    st = await startOf(page);
+    check('/en/?mode=dust opens the English start screen on dust', st.mode === 'dust' && st.lang === 'en' && st.hero === STR.en.heroDust, JSON.stringify(st));
+    await ctx.close();
+
+    ({ ctx, page } = await newPage({ locale: 'en-GB', timezoneId: 'Europe/London' }));
+    await page.goto(`${BASE}/?mode=dust`, { waitUntil: 'networkidle' });
+    st = await startOf(page);
+    check('a visitor from abroad keeps the link: /?mode=dust → /en/?mode=dust', st.path === '/en/?mode=dust' && st.mode === 'dust', JSON.stringify(st));
+    await ctx.close();
+  }
+
+  // 10. Hazard pages: /flood, /pm25, /fire and their English twins (v1.6.0).
+  // The server falls back to index.html, so check content, not the status.
+  {
+    const hz = Object.entries(CFG.hazards).map(([id, v]) => ({ id, slug: v.slug, modes: CFG.modes.filter((m) => m.hazard === id).map((m) => m.id) }));
+    const site = CFG.siteUrl.replace(/\/$/, '');
+    for (const h of hz) {
+      const n = ITEMS.filter((it) => h.modes.includes(it.mode) && it.enabled !== false).length;
+      for (const lang of ['th', 'en']) {
+        const pre = lang === 'en' ? '/en' : '';
+        const html = await (await fetch(`${BASE}${pre}/${h.slug}`)).text();
+        const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] || '{}');
+        const ok = html.includes(`<h1>${STR.seo[lang][`hazard${capM(h.id)}H1`]}</h1>`)
+          && html.includes(`<link rel="canonical" href="${site}${pre}/${h.slug}">`)
+          && ['th', 'en', 'x-default'].every((hl) => html.includes(`hreflang="${hl}"`))
+          && h.modes.every((m) => html.includes(`href="${pre}/?mode=${m}"`))
+          && (html.match(/<article /g) || []).length === n
+          && ld['@type'] === 'Article' && ld.citation?.length > 0
+          && html.includes(`/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0]}.png`);
+        check(`${pre}/${h.slug}: H1, canonical, hreflang, play links, ${n} lessons, JSON-LD, preview image`, ok);
+      }
+    }
+    const learn = await (await fetch(`${BASE}/learn`)).text();
+    const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
+    const llms = await (await fetch(`${BASE}/llms.txt`)).text();
+    check('/learn, sitemap.xml and llms.txt link every hazard page', hz.every((h) => learn.includes(`href="/${h.slug}"`) && sitemap.includes(`${site}/${h.slug}</loc>`) && sitemap.includes(`${site}/en/${h.slug}</loc>`) && llms.includes(`${site}/${h.slug} `)));
+
+    // The smallest phone: every control is 44 px and the play button is on the first screen.
+    const { ctx, page } = await newPage({ width: 320, height: 460, ua: UA.iphone });
+    const bad = [];
+    for (const p of [...hz.flatMap((h) => [`/${h.slug}`, `/en/${h.slug}`]), '/learn', '/en/learn']) {
+      await page.goto(`${BASE}${p}`, { waitUntil: 'networkidle' });
+      const small = await smallControls(page);
+      if (small.length) bad.push(`${p}: ${small.join(', ')}`);
+      if (p !== '/learn' && p !== '/en/learn') {
+        const bottom = await page.$eval('.play a', (a) => a.getBoundingClientRect().bottom);
+        if (bottom > 460) bad.push(`${p}: play button at ${Math.round(bottom)} px`);
+      }
+    }
+    check('hazard pages and /learn on 320x460: controls >= 44 px, play button on the first screen', !bad.length, bad.join(' | '));
+    await ctx.close();
+
+    // From a search result to the game: /pm25 → its play button → the dust card.
+    const small = await newPage({ width: 360, height: 640 });
+    await small.page.goto(`${BASE}/pm25`, { waitUntil: 'networkidle' });
+    await shot(small.page, '13-hazard-page');
+    await Promise.all([small.page.waitForURL(/\?mode=dust/), small.page.click('.play a')]);
+    await small.page.waitForSelector('.mode-btn.is-default');
+    const st = await small.page.evaluate(() => [document.querySelector('.mode-btn.is-default').dataset.mode, document.querySelector('.screen.active')?.id]);
+    check('/pm25 → play button → the start screen on dust, no round started', st[0] === 'dust' && st[1] === 'screen-start', st.join());
+    check('no page errors (links and hazard pages)', !small.page.errors.length, small.page.errors.join(' | '));
+    await small.ctx.close();
+  }
+
   check('analytics beacons received', beacons > 0, String(beacons));
 } finally {
   await browser.close();

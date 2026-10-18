@@ -13,6 +13,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import { setModes, recommend, modeLink } from '../public/js/modes.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
@@ -40,6 +41,7 @@ const itemsFile = readJSON('content/items.json');
 // string below is derived from it.
 const MODES = config.modes || [];
 const MODE_IDS = MODES.map((m) => m.id);
+setModes(MODES);
 const capM = (id) => id.charAt(0).toUpperCase() + id.slice(1);
 const roomsFile = readJSON('content/rooms.json');
 const sourcesFile = readJSON('content/sources.json');
@@ -126,6 +128,20 @@ for (const tp of config.topics || []) {
   if (!itemsFile.items.some((it) => it.topic === tp)) warn(`config.json: topic "${tp}" has no items`);
 }
 if (config.featuredTopic != null && !(config.topics || []).includes(config.featuredTopic)) err(`config.json: featuredTopic "${config.featuredTopic}" must be null or one of the topics`);
+// Hand-set switches end by themselves on their end date (modes.js → switchOn),
+// so a forgotten one can't keep a flood warning on the start screen in December.
+const realDay = (s) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s || '')) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+};
+const TODAY = new Date(Date.now() + 7 * 3600 * 1000).toISOString().slice(0, 10); // Bangkok
+for (const [flag, until] of [['rainWarningActive', 'rainWarningUntil'], ['featuredTopic', 'featuredTopicUntil']]) {
+  const u = config[until];
+  if (u != null && !realDay(u)) err(`config.json: ${until} must be a real date YYYY-MM-DD (found ${JSON.stringify(u)})`);
+  else if (config[flag] && u == null) warn(`config.json: ${flag} is on with no ${until}, so it stays on until someone turns it off`);
+  else if (config[flag] && u < TODAY) warn(`config.json: ${until} (${u}) has passed, so ${flag} is off; turn it off or give a new end date`);
+}
 for (const d of itemsFile.decoys) {
   thing(d, `items.json decoy ${d.id}`, 'decoy');
   text(d.note, `items.json decoy ${d.id} note`);
@@ -149,6 +165,22 @@ for (const m of MODES) {
   if (m.link && !/^https:\/\//.test(m.link)) err(`config.json: mode ${m.id} link must start with https://`);
   // The start screen's static buttons (first paint) must match the registry.
   if (!fs.readFileSync(path.join(PUB, 'index.html'), 'utf8').includes(`data-mode="${m.id}"`)) err(`index.html: no start button for mode "${m.id}"`);
+}
+
+// Every hazard has a page at /<slug> (+ /en/<slug>). Slugs end up in shared
+// links and search results, so they never change once published.
+const HAZARDS = config.hazards || {};
+const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts']);
+const slugSeen = new Set();
+for (const h of new Set(MODES.map((m) => m.hazard))) if (!HAZARDS[h]) err(`config.json: hazards.${h} is missing (every hazard needs a page slug)`);
+for (const [h, v] of Object.entries(HAZARDS)) {
+  const slug = v?.slug || '';
+  if (!MODES.some((m) => m.hazard === h)) err(`config.json: hazards.${h} has no mode`);
+  if (!/^[a-z0-9][a-z0-9-]{1,30}$/.test(slug)) err(`config.json: hazards.${h}.slug must be lowercase letters, digits or "-"`);
+  else if (slugSeen.has(slug)) err(`config.json: hazards slug "${slug}" is used twice`);
+  else if (RESERVED.has(slug) || fs.existsSync(path.join(PUB, slug))) err(`config.json: hazards slug "${slug}" clashes with a site path`);
+  slugSeen.add(slug);
+  for (const l of LANGS) for (const k of ['Nav', 'Title', 'Desc', 'H1', 'Intro']) if (!strings.seo?.[l]?.[`hazard${capM(h)}${k}`]) err(`strings.json: seo.${l}.hazard${capM(h)}${k} is missing`);
 }
 
 for (const mode of MODE_IDS) {
@@ -374,9 +406,6 @@ ${(config.topics || []).map((tp) => {
 }).join('\n')}`;
 const nLessons = allLessons.length;
 const learnTitle = fill(S.learnTitle, { n: nLessons });
-const checklistHtml = MODE_IDS.filter((m) => checklists[m]).map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
-<ol>${checklists[m].items.map((c) => `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}</li>`).join('')}</ol>`).join('\n');
-const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
 const usedSources = [...new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]))].filter((id) => sources[id]);
 const learnLd = {
   '@context': 'https://schema.org',
@@ -388,66 +417,101 @@ const learnLd = {
   isAccessibleForFree: true,
   citation: usedSources.map((id) => sources[id].url),
 };
-const learnHtml = `<!doctype html>
-<html lang="th">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#FFF4E3">
-<title>${esc(learnTitle)}</title>
-<meta name="description" content="${esc(S.learnDesc)}">
-<link rel="canonical" href="${LEARN_URL}">
-${alt('/learn', `${EN}/learn`).map(([hl, href]) => `<link rel="alternate" hreflang="${hl}" href="${href}">`).join('\n')}
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="${esc(og.siteName)}">
-<meta property="og:title" content="${esc(learnTitle)}">
-<meta property="og:description" content="${esc(S.learnDesc)}">
-<meta property="og:image" content="${SITE}/og/default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="th_TH">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:url" content="${LEARN_URL}">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
-${jsonLd(learnLd)}
-<style>
-body{margin:0;background:#FFF4E3;color:#2b2118;font:17px/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
+// One template for every plain page (/learn, the hazard pages, both languages).
+const SEO_CSS = `body{margin:0;background:#FFF4E3;color:#2b2118;font:17px/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
 main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
 h1{font-size:1.6em;line-height:1.3;margin:.3em 0}h2{margin-top:2em;border-bottom:3px solid #f2c48d}
 h3{margin:0 0 .2em;font-size:1.1em}article{background:#fff;border-radius:14px;padding:14px 16px;margin:14px 0}
 article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{display:inline;margin-left:.3em}
 .room{color:#8a6d4f;font-size:.85em;margin:0}.tip{background:#fff4e3;border-radius:10px;padding:6px 10px}
 .src{font-size:.85em;color:#6b5a4a}.flag{white-space:nowrap}a{color:#9a4a00}
-.cta{display:inline-block;background:#e8742a;color:#fff;font-weight:600;text-decoration:none;border-radius:999px;padding:12px 24px;min-height:44px;box-sizing:border-box}
+.cta{display:inline-block;background:#FFC83D;color:#3E2A1E;box-shadow:0 4px 0 rgba(62,42,30,.22);font-weight:600;text-decoration:none;border-radius:999px;padding:12px 24px;min-height:44px;box-sizing:border-box}
 .src a,.help a{display:inline-block;min-height:44px;line-height:44px}
-.src a{min-width:44px;text-align:center}
+.src a,.help a{min-width:44px;text-align:center}
 .tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .tix li{margin:0}.tix a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
+.top a,.check a{display:inline-flex;align-items:center;min-height:44px}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}`;
+const seoPage = ({ lang, title, desc, url, thPath, enPath, image, ld, main }) => `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFF4E3">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${url}">
+${alt(thPath, enPath).map(([hl, href]) => `<link rel="alternate" hreflang="${hl}" href="${href}">`).join('\n')}
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="${esc((lang === 'en' ? ogEn : og).siteName)}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:image" content="${SITE}${image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="${lang === 'en' ? 'en_US' : 'th_TH'}">
+<meta property="og:locale:alternate" content="${lang === 'en' ? 'th_TH' : 'en_US'}">
+<meta property="og:url" content="${url}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+${jsonLd(ld)}
+<style>
+${SEO_CSS}
 </style>
 </head>
 <body>
-<main>
-<p><a href="/">${esc(og.siteName)}</a> · <a href="${EN}/learn" lang="en" hreflang="en">English</a></p>
+${main}
+</body>
+</html>
+`;
+// English pages must not show Thai outside Thai-tagged spans (link addresses
+// and the JSON-LD excepted).
+const thaiLeak = (html) => /[฀-๿]/.test(html.replace(/lang="th"[^>]*>[^<]*</g, '').replace(/<script[\s\S]*?<\/script>/g, '').replace(/href="[^"]*"/g, ''));
+
+// Shared blocks: lessons by mode, the modes' checklists and the helplines.
+const sectionsTh = (ids) => ids.map((id) => `<h2 id="${id}">${esc(S[`section${capM(id)}`])} <span class="en" lang="en">${esc(E[`section${capM(id)}`])}</span></h2>
+${lessonsBy[id].map(lessonHtml).join('\n')}`).join('\n');
+const checklistsTh = (ids) => ids.filter((m) => checklists[m]).map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
+<ol>${checklists[m].items.map((c) => `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}</li>`).join('')}</ol>`).join('\n');
+const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
+
+// Hazard pages (/flood, /pm25, /fire and /en/…): one page per hazard with only
+// its lessons, so a search such as "ป้องกันฝุ่น PM2.5 ในบ้าน" lands on the answer,
+// next to a button that opens that mode (/?mode=dust). Slugs: config.json → hazards.
+const hazardList = Object.entries(HAZARDS)
+  .map(([id, v]) => ({ id, slug: v.slug, modes: MODES.filter((m) => m.hazard === id).map((m) => m.id) }))
+  .filter((h) => h.modes.length);
+const hazardChips = (lang, current) => `<div class="tix" id="hazards"><p><b>${esc((lang === 'en' ? E : S).byHazard)}</b></p><ul>${hazardList.map((h) => `<li><a href="${lang === 'en' ? EN : ''}/${h.slug}"${h.id === current ? ' aria-current="page"' : ''}>${esc((lang === 'en' ? E : S)[`hazard${capM(h.id)}Nav`])}</a></li>`).join('')}</ul></div>`;
+const playLinks = (lang, ids) => `<p class="play">${ids.map((id) => `<a class="cta" href="${lang === 'en' ? EN : ''}/?mode=${id}">${esc(fill((lang === 'en' ? E : S).playMode, { mode: strings[lang][`mode${capM(id)}`], s: config.round[id].seconds }))}</a>`).join(' ')}</p>`;
+// "Check before you go" (FloodWatch, Air4Thai), once per address.
+const checkLinks = (lang, ids) => {
+  const seen = new Set();
+  const str = (base, id) => strings[lang][`${base}${capM(id)}`] ?? strings[lang][base];
+  return ids.map((id) => [id, modeLink(config, id)])
+    .filter(([, u]) => u && !isPlaceholder(u) && !seen.has(u) && seen.add(u))
+    .map(([id, u]) => `<p class="check"><a href="${esc(u)}">${esc(str('forecastIcon', id))} ${esc(str('forecastLong', id))}</a></p>`).join('\n');
+};
+
+writeSeo('learn.html', seoPage({
+  lang: 'th', title: learnTitle, desc: S.learnDesc, url: LEARN_URL, thPath: '/learn', enPath: `${EN}/learn`,
+  image: '/og/default.png', ld: learnLd,
+  main: `<main>
+<p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="${EN}/learn" lang="en" hreflang="en">English</a></p>
 <h1>${esc(S.learnH1)}</h1>
 <p>${esc(S.learnIntro)}</p>
 <p class="en" lang="en">${esc(E.learnIntro)}</p>
 <p><a class="cta" href="/">${esc(S.playCta)}</a></p>
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+${hazardChips('th')}
 ${topicIndex('th')}
-${MODE_IDS.map((id) => `<h2 id="${id}">${esc(S[`section${capM(id)}`])} <span class="en" lang="en">${esc(E[`section${capM(id)}`])}</span></h2>
-${lessonsBy[id].map(lessonHtml).join('\n')}`).join('\n')}
+${sectionsTh(MODE_IDS)}
 <h2 id="checklists">${esc(S.checklists)}</h2>
-${checklistHtml}
+${checklistsTh(MODE_IDS)}
 <h2 id="helplines">${esc(S.helplines)}</h2>
 ${helplineHtml}
 <p><a class="cta" href="/">${esc(S.back)}</a></p>
 <footer><p>${esc(strings.th.disclaimer)}</p></footer>
-</main>
-</body>
-</html>
-`;
-writeSeo('learn.html', learnHtml);
+</main>`,
+}));
 
 // /en/learn: the same lessons, English first, for international search and
 // AI assistants. It says plainly that the advice and hotlines are Thai.
@@ -466,45 +530,105 @@ ${wet ? `<p><b>${esc(E.ifWet)}:</b> ${esc(wet.label.en)}${it.wet.tip?.en ? ` · 
 <p class="src">${esc(E.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])], 'en')}${it.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc(E.partialNote)}</span>` : ''}</p>
 </article>`;
 };
+const sectionsEn = (ids) => ids.map((id) => `<h2 id="${id}">${esc(E[`section${capM(id)}`])}</h2>
+${lessonsBy[id].map(enLesson).join('\n')}`).join('\n');
+const checklistsEn = (ids) => ids.filter((m) => checklists[m]).map((m) => `<h3>${esc(checklists[m].title.en)}</h3>\n<ol>${checklists[m].items.map((c) => `<li>${esc(c.en)}</li>`).join('')}</ol>`).join('\n');
+const helplineEn = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${esc(h.who.en)}: ${esc(h.what.en)}</li>`).join('')}</ul>`;
 const learnTitleEn = fill(E.learnTitle, { n: nLessons });
-const learnEnHtml = learnHtml
-  .replace('<html lang="th">', '<html lang="en">')
-  .replace(/<title>[^<]*<\/title>/, `<title>${esc(learnTitleEn)}</title>`)
-  .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(E.learnDesc)}">`)
-  .replace(`<link rel="canonical" href="${LEARN_URL}">`, `<link rel="canonical" href="${LEARN_EN}">`)
-  .replace(`<meta property="og:site_name" content="${esc(og.siteName)}">`, `<meta property="og:site_name" content="${esc(ogEn.siteName)}">`)
-  .replace(`<meta property="og:title" content="${esc(learnTitle)}">`, `<meta property="og:title" content="${esc(learnTitleEn)}">`)
-  .replace(`<meta property="og:description" content="${esc(S.learnDesc)}">`, `<meta property="og:description" content="${esc(E.learnDesc)}">`)
-  .replace(`${SITE}/og/default.png">`, `${SITE}/og/en/default.png">`)
-  .replace('<meta property="og:locale" content="th_TH">\n<meta property="og:locale:alternate" content="en_US">', '<meta property="og:locale" content="en_US">\n<meta property="og:locale:alternate" content="th_TH">')
-  .replace(`<meta property="og:url" content="${LEARN_URL}">`, `<meta property="og:url" content="${LEARN_EN}">`)
-  .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, jsonLd({ ...learnLd, '@id': `${LEARN_EN}#article`, url: LEARN_EN, mainEntityOfPage: LEARN_EN, headline: E.learnH1, name: learnTitleEn, description: E.learnDesc, inLanguage: 'en', image: `${SITE}/og/en/default.png` }))
-  .replace(/<main>[\s\S]*<\/main>/, `<main>
-<p><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="/learn" lang="th" hreflang="th">ภาษาไทย</a></p>
+const learnEnHtml = seoPage({
+  lang: 'en', title: learnTitleEn, desc: E.learnDesc, url: LEARN_EN, thPath: '/learn', enPath: `${EN}/learn`,
+  image: '/og/en/default.png',
+  ld: { ...learnLd, '@id': `${LEARN_EN}#article`, url: LEARN_EN, mainEntityOfPage: LEARN_EN, headline: E.learnH1, name: learnTitleEn, description: E.learnDesc, inLanguage: 'en', image: `${SITE}/og/en/default.png` },
+  main: `<main>
+<p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="/learn" lang="th" hreflang="th">ภาษาไทย</a></p>
 <h1>${esc(E.learnH1)}</h1>
 <p>${esc(E.learnIntro)}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 <p><a class="cta" href="${EN}/">${esc(E.playCta)}</a></p>
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+${hazardChips('en')}
 ${topicIndex('en')}
-${MODE_IDS.map((id) => `<h2 id="${id}">${esc(E[`section${capM(id)}`])}</h2>
-${lessonsBy[id].map(enLesson).join('\n')}`).join('\n')}
+${sectionsEn(MODE_IDS)}
 <h2 id="checklists">${esc(E.checklists)}</h2>
-${MODE_IDS.filter((m) => checklists[m]).map((m) => `<h3>${esc(checklists[m].title.en)}</h3>\n<ol>${checklists[m].items.map((c) => `<li>${esc(c.en)}</li>`).join('')}</ol>`).join('\n')}
+${checklistsEn(MODE_IDS)}
 <h2 id="helplines">${esc(E.helplines)}</h2>
-<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${esc(h.who.en)}: ${esc(h.what.en)}</li>`).join('')}</ul>
+${helplineEn}
 <p>${esc(E.intlNote)}</p>
 <p><a class="cta" href="${EN}/">${esc(E.back)}</a></p>
 <footer><p>${esc(strings.en.disclaimer)}</p></footer>
-</main>`);
+</main>`,
+});
 fs.mkdirSync(path.join(PUB, 'en'), { recursive: true });
 writeSeo('en/learn.html', learnEnHtml);
-if (/[\u0E00-\u0E7F]/.test(learnEnHtml.replace(/lang="th"[^>]*>[^<]*</g, '').replace(/<script[\s\S]*?<\/script>/g, '').replace(/href="[^"]*"/g, '')))
-  warn('en/learn.html contains Thai text outside Thai-tagged spans (link addresses excepted)');
+if (thaiLeak(learnEnHtml)) warn('en/learn.html contains Thai text outside Thai-tagged spans (link addresses excepted)');
+
+for (const h of hazardList) {
+  const H = capM(h.id);
+  const its = h.modes.flatMap((id) => lessonsBy[id]);
+  const n = its.length;
+  const cites = [...new Set(its.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]))].filter((id) => sources[id]).map((id) => sources[id].url);
+  const ld = (lang, url, title) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${url}#article`, url, mainEntityOfPage: url,
+    headline: (lang === 'en' ? E : S)[`hazard${H}H1`], name: title, description: (lang === 'en' ? E : S)[`hazard${H}Desc`],
+    inLanguage: lang, dateModified: seoUpdated, image: `${SITE}/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0]}.png`,
+    isPartOf: { '@id': `${SITE}${lang === 'en' ? EN : ''}/#website` }, about: { '@id': `${SITE}/#game` },
+    isAccessibleForFree: true,
+    citation: cites,
+  });
+  const thUrl = `${SITE}/${h.slug}`;
+  const titleTh = fill(S[`hazard${H}Title`], { n });
+  writeSeo(`${h.slug}.html`, seoPage({
+    lang: 'th', title: titleTh, desc: S[`hazard${H}Desc`], url: thUrl, thPath: `/${h.slug}`, enPath: `${EN}/${h.slug}`,
+    image: `/og/checklist-${h.modes[0]}.png`, ld: ld('th', thUrl, titleTh),
+    main: `<main>
+<p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/${h.slug}" lang="en" hreflang="en">English</a></p>
+<h1>${esc(S[`hazard${H}H1`])}</h1>
+${playLinks('th', h.modes)}
+<p>${esc(S[`hazard${H}Intro`])}</p>
+${checkLinks('th', h.modes)}
+<p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+${sectionsTh(h.modes)}
+<h2 id="checklists">${esc(S.checklists)}</h2>
+${checklistsTh(h.modes)}
+<h2 id="helplines">${esc(S.helplines)}</h2>
+${helplineHtml}
+${playLinks('th', h.modes)}
+${hazardChips('th', h.id)}
+<footer><p>${esc(strings.th.disclaimer)}</p></footer>
+</main>`,
+  }));
+  const enUrl = `${SITE}${EN}/${h.slug}`;
+  const titleEn = fill(E[`hazard${H}Title`], { n });
+  const enHtml = seoPage({
+    lang: 'en', title: titleEn, desc: E[`hazard${H}Desc`], url: enUrl, thPath: `/${h.slug}`, enPath: `${EN}/${h.slug}`,
+    image: `/og/en/checklist-${h.modes[0]}.png`, ld: ld('en', enUrl, titleEn),
+    main: `<main>
+<p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a> · <a href="/${h.slug}" lang="th" hreflang="th">ภาษาไทย</a></p>
+<h1>${esc(E[`hazard${H}H1`])}</h1>
+${playLinks('en', h.modes)}
+<p>${esc(E[`hazard${H}Intro`])}</p>
+<p class="tip">${esc(E.intlNote)}</p>
+${checkLinks('en', h.modes)}
+<p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+${sectionsEn(h.modes)}
+<h2 id="checklists">${esc(E.checklists)}</h2>
+${checklistsEn(h.modes)}
+<h2 id="helplines">${esc(E.helplines)}</h2>
+${helplineEn}
+${playLinks('en', h.modes)}
+${hazardChips('en', h.id)}
+<footer><p>${esc(strings.en.disclaimer)}</p></footer>
+</main>`,
+  });
+  writeSeo(`en/${h.slug}.html`, enHtml);
+  if (thaiLeak(enHtml)) warn(`en/${h.slug}.html contains Thai text outside Thai-tagged spans`);
+}
 
 // robots.txt: everyone, including AI search and AI assistants, may read the
 // public pages; only the event endpoint is off limits.
-writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): a public flood-safety game.
+writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): a public home-safety game.
 # Search engines and AI assistants are welcome to read and cite it.
 # Generated by tools/build.mjs; do not edit by hand.
 User-agent: *
@@ -515,7 +639,7 @@ Sitemap: ${SITE}/sitemap.xml
 `);
 
 // Each page lists its other-language version (hreflang), as Google asks.
-const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`]];
+const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`])];
 writeSeo('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${sitemapPairs.flatMap(([th, en]) => [th, en].map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${seoUpdated}</lastmod>
@@ -536,6 +660,8 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 
 - Play in Thai: ${SITE}/ · in English: ${SITE}${EN}/
 - Every lesson with its reason and sources: ${LEARN_URL} (Thai, with English) · ${LEARN_EN} (English)
+- One page per hazard, with only its lessons and a link that opens that game mode:
+${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug} (Thai) · ${SITE}${EN}/${h.slug} (English)`).join('\n')}
 - The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 
@@ -601,8 +727,11 @@ const sprites = fs.readFileSync(path.join(PUB, 'art/sprites.svg'));
 const gameStart = gz + zlib.gzipSync(firstRoom).length + zlib.gzipSync(sprites).length;
 if (gz > 500 * 1024) err(`initial load is ${(gz / 1024).toFixed(0)} KB compressed (budget 500 KB)`);
 
-// ---------------------------------------------------------------- docs (optional)
-if (process.argv.includes('--docs')) {
+// ---------------------------------------------------------------- docs
+// docs/01 holds a summary, the table, the flags and the references, all
+// generated from the content. `npm run docs` writes them; a normal build only
+// warns when the file is out of date, so the counts in it can't drift.
+{
   const docPath = path.join(ROOT, 'docs/01-safety-content.md');
   if (fs.existsSync(docPath)) {
     const roomName = (id) => roomById.get(id)?.name?.th || id;
@@ -635,12 +764,23 @@ if (process.argv.includes('--docs')) {
       .join('\n');
     const notes = itemsFile.items.filter((it) => it.verifyNote)
       .map((it) => `- ${flag[it.verify]} **${it.name.th}** (\`${it.id}\`): ${it.verifyNote}`).join('\n');
-    const doc = fs.readFileSync(docPath, 'utf8')
+    const count = (f) => itemsFile.items.filter(f).length;
+    const playable = count((it) => roomById.get(it.room)?.enabled && it.enabled !== false);
+    const summary = `**${itemsFile.items.length} items in ${MODES.length} modes and ${(config.topics || []).length} topics:** `
+      + `${MODES.map((m) => `${count((it) => it.mode === m.id)} ${strings.th[`mode${capM(m.id)}`]} (${capM(m.id)})`).join(', ')}. `
+      + `${playable} are playable now; ${itemsFile.items.length - playable} wait for a room that is not open yet. `
+      + `${count((it) => it.verify === 'verified')} ✅ verified, ${count((it) => it.verify === 'partial')} ⚠️ partial, ${count((it) => it.verify === 'unverified')} ❓ unverified, `
+      + `from ${Object.keys(sources).length} sources. Generated by \`npm run docs\` from \`items.json\`.`;
+    const before = fs.readFileSync(docPath, 'utf8');
+    const doc = before
+      .replace(/<!-- SUMMARY:START -->[\s\S]*?<!-- SUMMARY:END -->/, `<!-- SUMMARY:START -->\n${summary}\n<!-- SUMMARY:END -->`)
       .replace(/<!-- TABLE:START -->[\s\S]*?<!-- TABLE:END -->/, `<!-- TABLE:START -->\n${table}\n<!-- TABLE:END -->`)
       .replace(/<!-- NOTES:START -->[\s\S]*?<!-- NOTES:END -->/, `<!-- NOTES:START -->\n${notes}\n<!-- NOTES:END -->`)
       .replace(/<!-- REFS:START -->[\s\S]*?<!-- REFS:END -->/, `<!-- REFS:START -->\n${refs}\n<!-- REFS:END -->`);
-    fs.writeFileSync(docPath, doc);
-    console.log('docs/01-safety-content.md table refreshed');
+    if (process.argv.includes('--docs')) {
+      fs.writeFileSync(docPath, doc);
+      console.log('docs/01-safety-content.md summary, table, flags and references refreshed');
+    } else if (doc !== before) warn('docs/01-safety-content.md is out of date with the content: run npm run docs');
   }
 }
 
@@ -654,7 +794,10 @@ function finish() {
     process.exit(1);
   }
   if (typeof version !== 'undefined') {
+    const pick = recommend(config, TODAY.replace(/-/g, ''));
+    const until = (k) => (config[k] ? ` until ${config[k]}` : '');
     console.log(`site      ${SITE}`);
+    console.log(`start     ${TODAY}: ${pick.mode} (${pick.why}${pick.why === 'warning' ? until('rainWarningUntil') : ''}) · featured ${pick.topic || 'none'}${pick.topic && pick.topic === config.featuredTopic ? until('featuredTopicUntil') : ''}`);
     console.log(`items     ${itemsFile.items.length} (+${itemsFile.decoys.length} decoys), sources ${Object.keys(sources).length}`);
     console.log(`pages     ${written.length} link-preview pages`);
     console.log(`seo       ${seoFiles.join(', ')} (${nLessons} lessons on /learn)`);

@@ -4,8 +4,12 @@
 
 - Play in Thai: https://baanrodmai.autobahn.bot/ · in English: https://baanrodmai.autobahn.bot/en/
 - Every lesson with its reason and sources: https://baanrodmai.autobahn.bot/learn (Thai, with English) · https://baanrodmai.autobahn.bot/en/learn (English)
+- One page per hazard, with only its lessons and a link that opens that game mode:
+  - Floods: get the house ready, then move back in safely: https://baanrodmai.autobahn.bot/flood (Thai) · https://baanrodmai.autobahn.bot/en/flood (English)
+  - PM2.5 dust: a dust-safe home and the people in it: https://baanrodmai.autobahn.bot/pm25 (Thai) · https://baanrodmai.autobahn.bot/en/pm25 (English)
+  - House fire: prevent it, and know how to escape the smoke: https://baanrodmai.autobahn.bot/fire (Thai) · https://baanrodmai.autobahn.bot/en/fire (English)
 - The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
-- Last content update: 2026-10-15
+- Last content update: 2026-10-18
 
 ## Before the flood (ก่อนน้ำมา: เตรียมบ้านให้ทัน)
 

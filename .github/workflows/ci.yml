@@ -24,7 +24,10 @@ jobs:
       - name: Build (validates content, checks the 500 KB budget)
         run: node tools/build.mjs
       - name: Generated files are committed and current
-        run: git diff --exit-code -- public/index.html public/c public/checklist public/en public/learn.html public/sitemap.xml public/llms.txt public/robots.txt
+        run: |
+          git diff --exit-code -- 'public/*.html' public/c public/checklist public/en public/sitemap.xml public/llms.txt public/robots.txt public/sw.js public/js/version.js
+          new=$(git ls-files --others --exclude-standard public)
+          if [ -n "$new" ]; then echo "Generated but not committed:"; echo "$new"; exit 1; fi
       - run: npm test
       - run: npm run check:docs
 

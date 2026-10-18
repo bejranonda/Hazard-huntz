@@ -809,3 +809,50 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .plan-field input:focus { border-color: var(--ink); outline: none; }
 .plan-field small { color: var(--ink-2); font-size: 13px; }
 #kit-share, #kit-plan, #kit-close, #plan-make, #plan-back, #plan-close, #kit-go { margin-top: 10px; }
+
+/* ---------- the start screen's tools (v1.9.0): what to do, what to keep, the family plan ---------- */
+.hub { align-self: stretch; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 4px; text-align: left; }
+.hub-btn { display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
+.hub-btn:active { transform: translateY(2px); box-shadow: none; }
+.hub-main { grid-column: 1 / -1; min-height: 64px; border-color: var(--ink); background: var(--sun); box-shadow: var(--press); }
+.hub-ico { flex: 0 0 auto; font-size: 26px; line-height: 1; }
+.hub-text { display: flex; flex-direction: column; min-width: 0; }
+.hub-text b { font-size: clamp(15px, 4.4vw, 18px); line-height: 1.25; }
+.hub-text small { color: var(--ink-2); font-size: clamp(12px, 3.5vw, 13px); line-height: 1.3; }
+.hub-main .hub-text { flex: 1; }
+.hub-main .hub-text small { color: var(--ink); }
+.hub-go { font-size: 26px; font-weight: 600; }
+.game-label { align-self: stretch; margin: 10px 0 0; color: var(--ink-2); font-size: 15px; font-weight: 600; text-align: left; }
+.alert-card { align-self: stretch; margin: 4px 0 2px; }
+.alert-btn { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 8px 12px; border: 2px solid var(--warn); border-radius: 14px; background: var(--warn-bg); color: var(--ink); font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+.alert-btn span:nth-child(2) { flex: 1; }
+.has-challenge .hub, .has-challenge .game-label, .has-challenge .alert-card { display: none; }
+/* the guide picker and a guide */
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin: 10px 0 14px; }
+.guide-tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 84px; padding: 8px 6px; border: 2px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); font: inherit; font-size: 15px; font-weight: 600; line-height: 1.25; text-align: center; cursor: pointer; }
+.guide-tile.is-now { border-color: var(--warn); background: var(--warn-bg); }
+.guide-ico { font-size: 30px; line-height: 1; }
+.guide-now { position: absolute; top: -9px; right: 6px; padding: 1px 8px; border-radius: 999px; background: var(--warn); color: #fff; font-size: 12px; }
+.phase { margin: 14px 0 0; font-size: 16px; color: var(--ink-2); }
+.phase-during { color: #9A4A05; }
+.check-list .partial { font-size: 14px; }
+.guide-actions { display: grid; gap: 8px; margin: 10px 0 4px; }
+.guide-actions .btn { margin: 0; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+
+/* ---------- printing: only #print-area, as a plain A4 list ---------- */
+#print-area { display: none; }
+@media print {
+  @page { size: A4; margin: 14mm; }
+  body > *:not(#print-area) { display: none !important; }
+  html, body { background: #fff !important; height: auto !important; overflow: visible !important; }
+  #print-area { display: block; color: #000; font-size: 13pt; line-height: 1.45; }
+  #print-area .p-brand { margin: 0; font-weight: 600; color: #444; }
+  #print-area h1 { margin: 2mm 0 1mm; font-size: 20pt; }
+  #print-area h2 { margin: 5mm 0 1mm; font-size: 14pt; }
+  #print-area .p-sub { margin: 0 0 3mm; }
+  #print-area ul { list-style: none; margin: 0; padding: 0; }
+  #print-area li { display: flex; gap: 3mm; padding: 2mm 0; border-bottom: 0.3mm solid #bbb; break-inside: avoid; }
+  #print-area .p-box { flex: 0 0 5mm; height: 5mm; margin-top: 1mm; border: 0.5mm solid #000; border-radius: 1mm; }
+  #print-area small { display: block; color: #555; font-size: 9.5pt; }
+  #print-area .p-foot { margin: 3mm 0 0; font-size: 10pt; color: #333; }
+}

@@ -60,6 +60,16 @@ export function switchOn(value, until, dayKey) {
   return dayKey <= String(until).replace(/-/g, '');
 }
 
+// The owner's alert (config.json → alert: { guide, until }): when something is
+// in the news (a quake, a storm, a heatwave), its "what to do" guide goes to
+// the top of the start screen until the end date. Off without an end date: a
+// hand-set switch always ends by itself.
+export function activeAlert(config, dayKey) {
+  const a = config?.alert;
+  if (!a?.guide || !a.until) return null;
+  return switchOn(a.guide, a.until, dayKey) ? a.guide : null;
+}
+
 // The "check before you go" link: the mode's own link (dust → Air4Thai), else
 // the flood forecast app for flood modes, else none.
 export function modeLink(config, id) {

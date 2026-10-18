@@ -30,12 +30,12 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L2 | [Set the domain and re-render the images](#l2-set-the-domain-and-re-render-the-images) | Owner + AI | Done: preview-debugger check left |
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
-| L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0) |
-| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (50 rows since v1.8.1) |
+| L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0; the hub, the guides and the new pages in v1.9.0) |
+| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (54 rows since v1.9.0) |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
-| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (now with the eight hazard pages) |
+| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (24 addresses since v1.9.0: sixteen hazard pages, `/kit` and `/plan`) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
-| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0; the home check's ⚠️ items in v1.8.0; the PRD page couldn't be read by tools on 19 Oct 2026) |
+| L10 | [Thai review of the dust, fire and power-cut lessons](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) | Owner + AI | Todo (power cut added in v1.7.0; the home check's ⚠️ items in v1.8.0; the PRD page couldn't be read by tools on 19 Oct 2026; the four new guides, 40 lines, in v1.9.0) |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
 | N2 | [Move hard-coded text into JSON and settle the `install` event](#n2-move-hard-coded-text-into-json-and-settle-the-install-event) | AI-ready | Done (10 Oct 2026) |
 | N3 | [Add CI on GitHub](#n3-add-ci-on-github) | AI-ready | Done (10 Oct 2026) |
@@ -52,17 +52,20 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N14 | [A power-cut and stockpile mode](#n14-a-power-cut-and-stockpile-mode) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.7.0); Thai review left (L10) |
 | N15 | [How ready is our house? A checker and a family plan card](#n15-how-ready-is-our-house-a-checker-and-a-family-plan-card) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.8.0); Thai review of its wording left (L5, L10) |
 | N16 | [v1.8.1: visitor audit fixes and integration](#n16-v181-visitor-audit-fixes-and-integration) | AI-ready | Done (19 Oct 2026, v1.8.1); the shortcuts on a real phone left (L6) |
+| N17 | [Tools first and a guide for every hazard](#n17-tools-first-and-a-guide-for-every-hazard) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.9.0); the Thai review of the four guides (L10), the language check (L5) and the phone checks (L6) left |
+| N18 | [Keep source notes out of what the game loads](#n18-keep-source-notes-out-of-what-the-game-loads) | AI-ready | Todo |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
 | P4 | [More languages](#p4-more-languages) | Owner + AI | Todo (optional) |
 | P5 | [Share-loop ideas not built yet](#p5-share-loop-ideas-not-built-yet) | AI-ready / Owner + AI | Todo (optional) |
 | P6 | [More lessons for the remaining disease groups](#p6-more-lessons-for-the-remaining-disease-groups) | Owner + AI | Todo (optional) |
-| P7 | [Heat and summer storms](#p7-heat-and-summer-storms) | AI-ready (research) + Owner review | Todo |
-| P8 | [Earthquake and tsunami](#p8-earthquake-and-tsunami) | AI-ready (research) + Owner review | Todo |
+| P7 | [Heat and summer storms](#p7-heat-and-summer-storms) | AI-ready (research) + Owner review | Guides done (v1.9.0); game modes Todo |
+| P8 | [Earthquake and tsunami](#p8-earthquake-and-tsunami) | AI-ready (research) + Owner review | Guide done (v1.9.0, the tsunami line ⚠️); game mode Todo |
 | P9 | [A safety calendar: one hazard week at a time](#p9-a-safety-calendar-one-hazard-week-at-a-time) | Owner + AI | Todo |
 | V1 | [Version 2: the combined Prepare → Return run](#v1-version-2-the-combined-prepare--return-run) | AI-ready | Todo |
 | S1 | [Seasonal relaunch (every April–May)](#s1-seasonal-relaunch-every-aprilmay) | Owner + AI | Recurring |
+| S2 | [When something is in the news: the alert and the guide posts](#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts) | Owner (+ AI for a new guide) | Recurring (since v1.9.0) |
 | H1 | [Housekeeping](#h1-housekeeping) | Owner | Partly done |
 
 ---
@@ -114,18 +117,20 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Note (v1.5.0):** the eleventh is `f-alarm` (smoke alarms), backed only by the US Fire Administration.
 - **Note (v1.7.0):** ten more are power-cut lessons (`s-…`), most of them backed only by international guidance. Their review is the power-cut part of [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
 - **Note (v1.8.0):** the home check's 9 ⚠️ lines and the plan card's 3 ⚠️ hints are in `kit.json`, not among these 21 lessons. They are reviewed with [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) ([#57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)).
+- **Note (v1.9.0):** the four guides with no game have 5 ⚠️ lines of their own in `checklists.json` (3 landslide, 1 storm, 1 quake), also outside these 21; they are reviewed with [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) ([#60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies)).
 
 ### L5. Second native reader for the Thai copy
 
 - **Who:** Owner + AI · **Status:** Todo (the owner said on 11 Oct 2026 they will provide a language check, Thai and English) · **Issue:** #11
 - **Steps:** a native speaker reads `strings.json` (`th`, `en`, `ogEn`, `seo`), `items.json`, `checklists.json` and, since v1.8.0, `kit.json` (the home check's labels and amounts, the plan card's labels, hints and examples, and its `ui` texts), ideally an older relative for the Thai and a native English reader for the `en` and `ogEn` text. An assistant applies the edits. Tips stay at 80 characters or fewer, and placeholders stay as they are.
+- **New in v1.9.0:** the start screen's tagline ("เตรียมบ้านให้พร้อมทุกภัย รู้ว่าต้องทำอะไร และมีเกม 60 วิ ช่วยจำ") and hub (`hub…`, `gameLabel`, `alertCard`), the guide picker and sheet (`guide…`, `phase…`, `printBtn`, `printNote`, `partialItem`), the four new guides' 40 lines in `checklists.json` (keep each Thai line within about 45 characters, two lines on the picture), the new hazard pages and the `/kit` and `/plan` pages (`seo.<lang>.hazard<Landslide|Storm|Quake|Heat>…`, `kitPage…`, `planPage…`), the new preview texts (`og`/`ogEn` `default…`, `checklistTitle<…>`, `kit…`, `plan…`), the About intro, `llmsSummary`, the manifest's name and description, and the `/posts` caption (`carousel.json → guideCaption`). Also read the renamed `ogEn.siteName` ("Baan Rod Mai? Home safety") and `aboutTitle` ("เกี่ยวกับบ้านรอดไหม?"). The draft post in [04-launch-kit](04-launch-kit.md#your-own-post-the-tools-first-relaunch-v190-draft) needs the owner's own voice.
 - **Done when:** the edits are committed and the images re-rendered where the copy appears in them.
 
 ### L6. Real-phone test matrix
 
 - **Who:** Owner + AI · **Status:** Todo · **Issue:** #3
 - **Steps:**
-  1. Run [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok. Since v1.8.0 that includes the home check and the plan card (rows 46–48): open `/?open=kit` and `/?open=plan` from a LINE chat, and check whether the ticks and the plan are still there after reopening, and whether the cards save ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Since v1.8.1 (rows 49–50): add the game to the home screen, then long-press the installed icon: the two shortcuts, "บ้านเราพร้อมแค่ไหน?" and "แผนบ้านรอดของบ้านเรา", should open the check and the plan card (`manifest.webmanifest → shortcuts`, **[unverified]** on any phone); and make a plan card with some fields left empty, which should show dotted lines to fill in by hand.
+  1. Run [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok. Since v1.8.0 that includes the home check and the plan card (rows 46–48): open `/?open=kit` and `/?open=plan` from a LINE chat, and check whether the ticks and the plan are still there after reopening, and whether the cards save ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Since v1.8.1 (rows 49–50): add the game to the home screen, then long-press the installed icon: the two shortcuts, "บ้านเราพร้อมแค่ไหน?" and "แผนบ้านรอดของบ้านเรา", should open the check and the plan card (`manifest.webmanifest → shortcuts`, **[unverified]** on any phone); and make a plan card with some fields left empty, which should show dotted lines to fill in by hand. Since v1.9.0 (rows 51–54): the start screen's hub on a real phone (the three tools first, the game still easy to find), the alert card, printing a guide and the home check's list from Chrome and Safari, and the guide picker and a guide inside LINE.
   2. An assistant records the results in the matrix and turns each ❌ into a KNOWN_ISSUES entry or a fix.
 - **Done when:** the matrix is filled in, and no ❌ remains that blocks sharing or playing.
 
@@ -139,7 +144,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** Owner + AI · **Status:** Todo · **Issues:** #30, #32
 - **Steps:**
-  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`. Since v1.7.0 it lists 12 addresses: `/`, `/learn`, `/flood`, `/pm25`, `/fire` and `/ready`, each with its `/en/` twin. If the sitemap was submitted before 19 Oct 2026, submit it again, and ask for the hazard pages to be indexed (URL Inspection → Request indexing in Google; URL Submission in Bing): the six from v1.6.0 and `/ready` and `/en/ready` from v1.7.0.
+  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`. Since v1.9.0 it lists 24 addresses: `/`, `/learn`, the hazard pages `/flood`, `/pm25`, `/fire`, `/ready`, `/landslide`, `/storm`, `/quake` and `/heat`, and `/kit` and `/plan`, each with its `/en/` twin (12 in v1.7.0–1.8.1). If the sitemap was submitted before 19 Oct 2026, submit it again, and ask for the hazard pages to be indexed (URL Inspection → Request indexing in Google; URL Submission in Bing): the six from v1.6.0, `/ready` and `/en/ready` from v1.7.0, and the twelve from v1.9.0 (`/landslide`, `/storm`, `/quake`, `/heat`, `/kit`, `/plan` and their twins).
   2. Run `/`, `/learn` and one hazard page (`/pm25`) through Google's Rich Results Test and fix anything it reports in the JSON-LD (`tools/build.mjs`).
   3. Paste a challenge link, `/learn`, `/pm25`, `/fire` and `/ready` into the Facebook Sharing Debugger and a LINE chat. The hazard pages should show their own title and the checklist image.
   4. After about two weeks, search the game's Thai name, "เตรียมบ้านก่อนน้ำท่วม" and "ป้องกันฝุ่น PM2.5 ในบ้าน" in Google and Bing, and ask two AI assistants about it. Record what appears, and whether the hazard pages or `/learn` come up.
@@ -158,7 +163,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L10. Thai review of the dust, fire and power-cut lessons
 
-- **Who:** Owner + AI · **Status:** Todo (the power-cut lessons were added in v1.7.0, the home check and plan card in v1.8.0) · **Issues:** #45, #46, #55, #57
+- **Who:** Owner + AI · **Status:** Todo (the power-cut lessons were added in v1.7.0, the home check and plan card in v1.8.0, the four guides with no game in v1.9.0) · **Issues:** #45, #46, #55, #57, #60
 - **Why:** the 25 dust and fire lessons (v1.5.0) quote the Department of Health, DDPM and MEA through news reports, because the agency sites refuse automated access. A person should read the agency pages themselves before the dust season (December). The 13 power-cut lessons (v1.7.0) go further: 10 are ⚠️, and 7 of those rest on international guidance only (the US CDC, Ready.gov, the US Fire Administration). Their `verifyNote` points here.
 - **Steps:**
   1. An assistant prints the dust, fire and power-cut rows of [01-safety-content.md](01-safety-content.md) with their source links as a review sheet.
@@ -170,8 +175,9 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
      - ask กรมอนามัย or อย. about fridge and freezer food in a power cut (`s-fridge`, `s-leftover`, `s-freezer`), and have a Thai pharmacist or อย. read the cold-medicine wording (`s-medcold`)
      - look for Thai wording on candles in a power cut (ปภ.) and on a manual can opener in a kit (`s-candle`, `s-opener`)
   4. For the home check and plan card (v1.8.0, [#57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)): 9 of its 15 lines are ⚠️. The PRD and cold-medicine checks above cover `water`, `radio`, `meds` and `medcold`. Also look for Thai wording on keeping some cash at home, supplies for small children (กรมอนามัย), spare glasses, a back-up plan for powered medical devices, and a family meeting place and contact plan (ปภ.; the plan card's `meet` and `contact` rest on Ready.gov alone). Read the amounts as a family would: "27 ลิตร (3 ลิตร × 3 คน × 3 วัน)".
-  5. An assistant applies them, upgrades sources to `official` where an agency page is found, adds the Thai source next to the international one, sets `verify` (in `items.json` and `kit.json`), and runs `npm run docs`. Post an "UPDATE:" if the advice changes.
-- **Done when:** every dust, fire and power-cut lesson is confirmed or corrected by a person; the decision on `f-alarm` (keep as ⚠️, or drop) is recorded; each power-cut lesson and each ⚠️ line of the home check and plan card either has a Thai source or the owner has knowingly kept it as international guidance, flagged.
+  5. For the four guides with no game (v1.9.0, [#60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies)): 40 lines, 5 ⚠️. The Thai agencies were read through Thai news reports quoting them (27 of the 36 new sources; the others are TMD's tsunami paper and 8 international pages used to cross-check). Open the agency pages behind them (ปภ., กรมทรัพยากรธรณี, กรมทรัพยากรน้ำ, กรมอุตุนิยมวิทยา, กรมอนามัย, กรมควบคุมโรค, กฟน., กฟภ., กทม.) and confirm each line; look for Thai wording on not crossing flowing water or mud and on staying away from a slide until officials say so (`landslide` #9–#10, Ready.gov only), on checking whether one's own home is at risk (`landslide` #1), on checking the electrics after a storm (`storm` #10), and on the sea pulling back before a tsunami (`quake` #6; a fully verified fallback is in its `verifyNote`). [KNOWLEDGE §29.3](KNOWLEDGE.md#293-the-four-new-guides-and-their-sources) has every line with its sources.
+  6. An assistant applies them, upgrades sources to `official` where an agency page is found, adds the Thai source next to the international one, sets `verify` (in `items.json`, `kit.json` and `checklists.json`), and runs `npm run docs`; a changed guide line also needs `npm run images -- --only share/checklist-<id>,og/checklist-<id>,og/en/checklist-<id>`. Post an "UPDATE:" if the advice changes.
+- **Done when:** every dust, fire and power-cut lesson is confirmed or corrected by a person; the decision on `f-alarm` (keep as ⚠️, or drop) is recorded; each power-cut lesson and each ⚠️ line of the home check and plan card either has a Thai source or the owner has knowingly kept it as international guidance, flagged; every line of the four guides with no game has been read against its agency's own page or confirmed by a contact.
 
 ## Next (v1.1, AI-ready)
 
@@ -387,6 +393,40 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - open the PRD 72-hour checklist page in a normal browser in Thailand ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons))
   - the language check now reads one English variety ([L5](#l5-second-native-reader-for-the-thai-copy))
 
+### N17. Tools first and a guide for every hazard
+
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** Done (19 Oct 2026, v1.9.0); the Thai review of the four guides ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)), the language check ([L5](#l5-second-native-reader-for-the-thai-copy)) and the phone checks ([L6](#l6-real-phone-test-matrix), rows 51–54) are left · **Issues:** #60–#65; fixed F51–F54
+- **Why:** the owner, 19 Oct 2026: "We do not know which topics can hit now; prepare for all possibilities; some trends happen spontaneously. เตรียมบ้าน can be general for all catastrophes. People like to know what they should prepare or do. The game can be the option to make it more understandable or help them not read so much text. It should not force everyone to play the game; it is a tool to help them." Until v1.8.1 the start screen led with the game, and a hazard without a game mode (an earthquake, a heatwave, a storm) had nothing to send.
+- **What was built:**
+  - **the hub** on the start screen: an optional alert card, then "📋 ต้องทำอะไร เมื่อเกิดภัย", "🎒 เช็กของจำเป็น" and "📝 แผนครอบครัว", then "🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน" and the game; a challenge link hides the hub
+  - **nine guides** (`config.json → guides`): the five game checklists and **four new guides with no game**, น้ำป่า ดินถล่ม, พายุ ลมแรง ฟ้าผ่า, แผ่นดินไหว and อากาศร้อนจัด, 10 lines each by phase (before, during, after), a source on every line, 35 ✅ and 5 ⚠️, from 36 new sources researched in parallel, Thai agencies first; what sources disagree on was left out and recorded
+  - **the guide picker and sheet**, `/?open=guide`, `/checklist/<id>` for every guide, the guide's 1080 × 1920 picture, ▶ into the game where there is one, the hazard page, print
+  - **the alert switch** `config.json → alert: { guide, until }`, always with an end date (now `landslide` until 25 Oct 2026)
+  - **print** of any guide and of the home check's list as a plain A4 list (not in in-app browsers)
+  - **pages:** `/landslide`, `/storm`, `/quake`, `/heat` (guide first), `/kit` and `/plan` with their own previews (the kit and plan cards now link them), every guide on `/learn` and in `llms.txt`, a sitemap of 24 addresses, and the nine guide pictures with captions on `/posts`
+  - **the words about the whole app** rewritten (rule 59), and the start screen's static Thai text generated from `strings.json`
+  - **events:** `guide_open`, `print`, and labels on `checklist_open`
+
+  See [CHANGELOG 1.9.0](../CHANGELOG.md) and [KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190).
+- **Rule kept:** every guide line has a source and an honest `verify`; nothing sources disagree on; the game is never required to get the advice. No item, room or slot changed, so houses and challenge links are unchanged. New rules: [GUIDELINES 61–65](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+- **Done when:** the build has no warnings, 29 unit tests and 117 smoke checks pass, axe-core finds nothing new on the picker, the guide sheets and the new pages, the three tools are on the first screen at 320 × 460 and 360 × 640, and `20-start-tools.png`, `21-guide-picker.png` and `22-guide-quake.png` have been looked at. All true on 19 Oct 2026 (smoke 117/117 on the pinned day, 18 Oct 2026, and as 5 Dec 2026).
+- **Left for the owner:**
+  - the Thai review of the four guides ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons), [#60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies))
+  - clear or renew the alert after 25 Oct 2026 ([#64](KNOWN_ISSUES.md#64-the-alert-must-be-cleared-or-renewed-by-hand), [S2](#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts))
+  - the hub, the alert card, print and the picker inside LINE on a real phone ([L6](#l6-real-phone-test-matrix), rows 51–54)
+  - the language check of the new copy and the draft relaunch post ([L5](#l5-second-native-reader-for-the-thai-copy))
+- **Possible next steps** (not planned): game modes for the new hazards ([P7](#p7-heat-and-summer-storms), [P8](#p8-earthquake-and-tsunami)); a guide for a hazard still without one (a chemical or gas leak, a fire in a high-rise) on the same model; keep source notes out of the client ([N18](#n18-keep-source-notes-out-of-what-the-game-loads)).
+
+### N18. Keep source notes out of what the game loads
+
+- **Who:** AI-ready · **Status:** Todo · **Issue:** #62
+- **Why:** the game never shows a source's `note`, but it loads all of `sources.json`; the notes are about 14 KB of its 23.8 KB compressed since v1.9.0, most of the start screen's growth from 209 to 232 KB ([GUIDELINES rule 53](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Steps:**
+  1. Keep one file to edit by hand. Either the build writes a slim copy for the client (only `agency`, `title`, `url`, `date`, `kind`) and the full file moves out of `public/`, or the notes move to a second file beside it that the build, `npm run docs` and the tests read. Check every reader first: `content.js`, `kit.js` (agencies), `tools/build.mjs` (validation, the kit number check, `/learn`, the hazard pages, `llms.txt`, `--docs`), `tests/run.mjs` and `tests/smoke.mjs`.
+  2. Update the service worker's precache list if a file name changes, and [KNOWLEDGE §5](KNOWLEDGE.md#5-content-model).
+  3. Compare the generated pages before and after (`git diff --quiet public/`), apart from `sw.js`.
+- **Done when:** the build's `budget` line drops by the notes' weight, every generated page is unchanged, and the tests pass.
+
 ## Later
 
 ### P1. Bathroom, bedroom and garage
@@ -438,17 +478,19 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### P7. Heat and summer storms
 
-- **Who:** AI-ready (research and build) + Owner (review) · **Status:** Todo
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** The guides are done (v1.9.0): อากาศร้อนจัด (`heat`, 10 ✅) and พายุ ลมแรง ฟ้าผ่า (`storm`, 9 ✅, 1 ⚠️), with the pages `/heat` and `/storm` ([N17](#n17-tools-first-and-a-guide-for-every-hazard), [KNOWLEDGE §29.3](KNOWLEDGE.md#293-the-four-new-guides-and-their-sources)). The game modes are Todo.
+- **A game mode now starts from its guide:** its lessons can only teach what the guide's sources back. Two candidates below were researched for v1.9.0 and **left out**: unplugging in lightning (ปภ. says unplug, the US NWS says don't) and tying down roof sheets (no source found); don't add them as lessons without a source that settles it ([KNOWLEDGE §29.4](KNOWLEDGE.md#294-what-was-left-out-and-why)).
 - **Season:** March–May (`months: [3, 4, 5]`), next to fire. Reserve code `h` for heat.
 - **Why:** heat illness and summer storms (พายุฤดูร้อน: wind, hail, lightning) hit in the same dry months as fire, and DDPM and the DOH publish advice every year.
-- **Candidate lessons** (each needs its own source): water for elders and children, never leave a child or pet in a parked car, tie down loose roof sheets and signs, stay away from big trees and billboards in a storm, unplug in lightning, call 1669 for heatstroke.
-- **Sources to try:** DDPM summer-storm advice (via PRD or news), DOH heat advice, TMD warnings (1182), WHO heat-health guidance (international).
+- **Candidate lessons** (each needs its own source): water for elders and children, never leave a child or pet in a parked car (v1.9.0 found no Thai source for pets), tie down loose roof sheets and signs (no source found in v1.9.0), stay away from big trees and billboards in a storm, unplug in lightning (sources disagree), call 1669 for heatstroke.
+- **Sources to try:** DDPM summer-storm advice (via PRD or news), DOH heat advice, TMD warnings (1182), WHO heat-health guidance (international). Since v1.9.0, 21 of them are in `sources.json` with notes (`ddpm-storm6`, `ddc-heatstroke-2568`, `who-heat` and others).
 - **Art:** a heat shimmer threat (`haze` with a warm tint) or a storm layer; a sun-hat prop for the gecko.
 - **Done when:** the mode passes [GUIDELINES §10](GUIDELINES.md#10-adding-a-hazard-mode) and a person has reviewed the advice.
 
 ### P8. Earthquake and tsunami
 
-- **Who:** AI-ready (research and build) + Owner (review) · **Status:** Todo
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** The guide is done (v1.9.0): แผ่นดินไหว (`quake`, 9 ✅, 1 ⚠️: the tsunami line), with the page `/quake` ([N17](#n17-tools-first-and-a-guide-for-every-hazard)). The game mode is Todo.
+- **Before a mode:** settle with a Thai reviewer what the tsunami line should say (the sudden ebb as a signal is read from TMD's technical paper; the `verifyNote` keeps a fully verified fallback) and whether "leave a tall building" waits for the shaking to stop: the sources disagree, so the guide's stairs line gives no timing ([KNOWLEDGE §29.4](KNOWLEDGE.md#294-what-was-left-out-and-why)).
 - **Season:** any time; feature it around 26 December (the 2004 tsunami anniversary) and after quakes in the news (Bangkok felt the March 2025 Myanmar quake).
 - **Why:** rare but high-impact; people in high-rise condos and on the Andaman coast need a few clear actions.
 - **Candidate lessons:** drop, cover, hold on; stay away from windows and tall furniture; secure shelves; after shaking, use the stairs not the lift; on the coast, a strong quake or the sea pulling back means go to high ground at once; know the evacuation route signs.
@@ -489,6 +531,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   5. Run all the tests and the real-phone matrix. Run the smoke test once with `SMOKE_DATE` set to a day in the coming season as well.
   6. Post the relaunch, following [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every-rainy-season).
 - **Each season (and each news wave), set the switches with end dates:** `rainWarningActive: true` with `rainWarningUntil` before a rain wave, and `featuredTopic` with `featuredTopicUntil` while a topic is in the news. Pick the last day the switch should show (a Bangkok date, included); it turns itself off after that. Check the build's `start` line, which shows what visitors see today, and its warnings ([KNOWN_ISSUES #44](KNOWN_ISSUES.md#44-the-featured-topic-is-switched-by-hand)).
+
+### S2. When something is in the news: the alert and the guide posts
+
+- **Who:** Owner (+ AI for a new guide) · **Status:** Recurring (since v1.9.0) · **Issues:** #52, #64
+- **Why:** hazards don't follow a calendar we can source: a quake abroad, a storm warning, a heatwave or a flash flood can be the topic of the day without notice. The guides and the alert switch let the owner answer within minutes, without a code change.
+- **Steps:** the 5-minute playbook in [04-launch-kit](04-launch-kit.md#when-something-happens-the-5-minute-playbook): set `config.json → alert` with an end date and push; save the guide's picture and caption from `/posts`; post with `/checklist/<id>` or the hazard page; clear the alert after.
+- **When there is no guide for it:** ask an assistant for one, following [GUIDELINES §10](GUIDELINES.md#10-adding-a-hazard-mode) step 0 (a guide first): research, 10 sourced lines by phase, the hazard page, the pictures. That takes a release, not five minutes; meanwhile post the closest guide or the home check (`/kit`).
+- **Each time:** read the build's `start` line after the push; after the end date, clear the alert or set a new date (the build warns until you do).
 
 ### H1. Housekeeping
 

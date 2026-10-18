@@ -53,8 +53,9 @@ try {
   const images = await page.evaluate((s) => window.renderAll(s), site);
   // --only <path>: keep every other image as it is (re-encoding them changes
   // their bytes, which would make unrelated diffs).
-  const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1] : null;
-  for (const rel of Object.keys(images)) if (only && !rel.startsWith(only)) delete images[rel];
+  // Several paths at once: --only og/kit,og/en/kit
+  const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
+  for (const rel of Object.keys(images)) if (only && !only.some((p) => rel.startsWith(p))) delete images[rel];
   let total = 0;
   for (const [rel, dataUrl] of Object.entries(images)) {
     const buf = Buffer.from(dataUrl.split(',')[1], 'base64');
@@ -73,7 +74,7 @@ try {
     const hash = await carouselHash(C, site || 'https://[DOMAIN]');
     fs.writeFileSync(path.join(PUB, 'share/carousel/manifest.json'), `${JSON.stringify({ hash, site: site || null }, null, 2)}\n`);
   }
-  console.log(`wrote ${Object.keys(images).length} images (${(total / 1024).toFixed(0)} KB)${only ? ` under ${only}` : ''} + icons/icon.svg`);
+  console.log(`wrote ${Object.keys(images).length} images (${(total / 1024).toFixed(0)} KB)${only ? ` under ${only.join(', ')}` : ''} + icons/icon.svg`);
 } finally {
   await browser.close();
   server.close();

@@ -5,10 +5,12 @@
 > Since v1.5.0 the same house also faces PM2.5 dust and house fire, and since v1.7.0 a night without power (ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม?): five modes in all.
 >
 > Since v1.8.0 two tools outside the round turn the lessons into the family's own: **บ้านเราพร้อมแค่ไหน?** (a home-kit check) and **แผนบ้านรอดของบ้านเรา** (a family plan card).
+>
+> **Since v1.9.0 the app is tools first and the game is optional.** The start screen opens on what to do when something happens (a short sourced guide for each of nine hazards, four of them with no game), what to keep at home, and the family plan; the 60-second game sits below them as the easier way to remember ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).
 
 ## Design pillars
 
-1. **Useful first.** Every target is a real action with an official source behind it (see [01-safety-content.md](01-safety-content.md)); the few that rest on a foreign agency only are flagged ⚠️ and say so. Every player leaves with the full lesson, including the items they missed.
+1. **Useful first.** Since v1.9.0 that starts on the start screen: what to do, what to keep and who does what come before the game, and no advice is behind a round. Every target is a real action with an official source behind it (see [01-safety-content.md](01-safety-content.md)); the few that rest on a foreign agency only are flagged ⚠️ and say so. Every player leaves with the full lesson, including the items they missed.
 2. **Fun in 60 seconds.** A tense but forgiving loop: scan → tap → choose → instant feedback. The timer pauses while you read, so learning is never punished.
 3. **Respectful.** Humour is aimed at the situation (mud, a rope that looks like a snake, the gecko's faces), never at people. No drowning, injuries, real photos, politics or blame. Wrong answers get *"ไม่เป็นไร รู้แล้วรอดของจริง"*, never a buzzer.
 4. **Built to spread.** A daily house that is the same for everyone (a Wordle-style shared puzzle), a spoiler-free emoji grid, a flattering rank title, challenge links that rebuild the exact same house, and checklist images styled like the greeting pictures Thai families already forward.
@@ -119,15 +121,53 @@
 | Asks | What the household needs "ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน" (floods named since v1.8.1): how many people (1–10, a − / + stepper) and who lives there (small children, older or bedridden people, daily medicine, pets; one column under about 360 px) | Six short fields: the shelter near home, the family meeting place, who to contact if separated, who helps whom (×2), medicine and must-haves |
 | Shows | The household's list: 9 things for every home plus up to 6 by answer, with amounts for this household ("27 ลิตร (3 ลิตร × 3 คน × 3 วัน)", a torch each), the agencies per line, and "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน" on lines under review. Ticks fill a meter: "พร้อมแล้ว 33% (มี 3 จาก 9 อย่าง)" | Each field with an example and, for most, a sourced hint ("ยาประจำตัวอย่างน้อย 7 วัน"); the warning not to type ID-card numbers |
 | Card (1080 × 1350) | A score ring, the gecko with a torch (its face follows the score), "มีแล้ว 3 จาก 9 อย่าง", up to 3 things still missing, "บ้านคุณพร้อมแค่ไหน? เช็กฟรี" and `/?open=kit` | All six fields, with a dotted line for an empty one so a printed copy can be filled in by hand (v1.8.1), the date, the free helplines 1784 · 199 · 1669 · 1555 · 1130 · 1129, "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน" and `/?open=plan` |
-| Ways in | The start screen's quick button 🎒 "บ้านพร้อมไหม?" (then "บ้านพร้อม 70%"), the result screen of the flood and power-cut modes, `/ready`, `/flood`, `/learn`, the link, and the installed app's shortcut (v1.8.1) | From the check's list, `/ready`, `/flood`, `/learn`, the link, and the installed app's shortcut (v1.8.1) |
+| Ways in | The start screen's hub "🎒 เช็กของจำเป็น" (then "บ้านเราพร้อม 70%"; a quick button "บ้านพร้อมไหม?" until v1.8.1), `/kit` (v1.9.0), the result screen of the flood and power-cut modes, `/ready`, `/flood`, `/learn`, the link, and the installed app's shortcut (v1.8.1) | The start screen's hub "📝 แผนครอบครัว" (v1.9.0), `/plan` (v1.9.0), the check's list, `/ready`, `/flood`, `/learn`, the link, and the installed app's shortcut (v1.8.1) |
 | Kept | `brm:kit` on this device | `brm:plan` on this device |
 | Guardrail | No fear and no shame: the score counts things the house has, and the card lists what to get next | Nothing typed leaves the phone except in the picture the family shares; short fields, no names asked |
 
-- **The quick buttons** (checklists, the home check, helplines, the water-level link) sit two per row with the icon beside the label, so the Thai labels don't break mid-word.
+- **The quick buttons** sit two per row with the icon beside the label, so the Thai labels don't break mid-word. Since v1.9.0 they hold only the helplines and the water-level link: the checklists and the home check moved up into the hub (below).
 - **Why a score:** a percentage is something to compare in a family group ("บ้านเราพร้อมแล้ว 56% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ?"), like the game's X/10, and the missing things on the card are the next step. The score counts things, not amounts.
 - **Which results offer the check (v1.8.1):** the 🎒 button "เช็กว่าบ้านเราพร้อมแค่ไหน" appears on a result screen when the mode's hazard lists `kit` in `config.json → hazards.<hazard>.tools`: Prepare, Return and the power cut, whose lessons are about what a household keeps at home. Dust and fire don't list it, so their results don't offer it. The same list puts the two links on the hazard's page (`/flood`, `/ready`). A new hazard decides it in data, not in code.
 - **Back where it says (v1.8.1):** the plan card's share sheet goes back with "← แก้แผน" / "← Edit the plan" to the form, still filled in; the plan form opened from the check goes back with "← กลับไปที่รายการ" to the list.
 - **One name in English:** the check is "How ready is our home?" on its title, buttons and card, and the card asks "How ready is your home? Check for free".
+
+## Tools first: the start screen and the guides (v1.9.0)
+
+**The idea:** nobody knows which hazard comes next, so the app answers "what do we do?" for any of them in a minute of reading, and keeps the game as the easier way to remember, never a gate. Details, sources and measurements: [KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190).
+
+```
+ START (v1.9.0)                     GUIDE PICKER (sheet)               A GUIDE (sheet)
+┌────────────────────────┐        ┌────────────────────────┐        ┌────────────────────────┐
+│              [EN] [🔊] │        │ 📋 ต้องทำอะไร เมื่อเกิดภัย  │        │ 🏚️ แผ่นดินไหว ทำอะไร 10 ข้อ │
+│       บ้านรอดไหม?        │        │ เลือกเรื่องที่อยากรู้ …       │        │ ก่อนเกิด                 │
+│ เตรียมบ้านให้พร้อมทุกภัย …  │        │ ┌ช่วงนี้┐                  │        │ ① ยึดเครื่องใช้หนักๆ …     │
+│┌⛰️ ช่วงนี้: น้ำป่า ดินถล่ม ›┐│        │ [⛰️ ] [🌊 ] [⛈️ ]        │        │ ขณะเกิด                  │
+│└────────────────────────┘│        │ [🧹 ] [🏚️ ] [🔥 ]        │        │ ⑥ ริมทะเล … ⚠️            │
+│┌📋 ต้องทำอะไร เมื่อเกิดภัย ›┐│        │ [🔦 ] [🌡️ ] [😷 ]        │        │ หลังเกิด                 │
+│└────────────────────────┘│        │ [        ปิด        ]   │        │ ⑦ … ⑩                   │
+│┌🎒 เช็กของจำเป็น┐┌📝 แผนครอบครัว┐│        └────────────────────────┘        │ ที่มา: ปภ. · กรมทรัพยากรธรณี │
+│└──────────────┘└────────────┘│                                          │ [▶ เล่นเกมเรื่องนี้] (game only) │
+│ 🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน │                                          │ [📖 อ่านเหตุผลและที่มา]      │
+│ bubble ……………… 🦎          │                                          │ ส่งต่อเป็นรูป: LINE … [รูป]  │
+│┌[แนะนำช่วงนี้] 🏠 ก่อนน้ำมา ▶┐│                                          │ [🖨️ พิมพ์] [← เรื่องอื่น] [ปิด] │
+│ [🧹][😷][🔥][🔦]          │                                          └────────────────────────┘
+│ [☎️ เบอร์ช่วยเหลือ][🌧️ ระดับน้ำ]│
+└────────────────────────┘
+```
+
+| Element | What it does |
+|---|---|
+| **Alert card** (optional) | "ช่วงนี้: {guide} · ดูว่าต้องทำอะไร ›" while `config.json → alert` is on (an owner-set guide with an end date); opens that guide |
+| **Hub** | "📋 ต้องทำอะไร เมื่อเกิดภัย" (the guide picker), "🎒 เช็กของจำเป็น" (the home check; shows "บ้านเราพร้อม 64%" once checked), "📝 แผนครอบครัว" (the plan card). All three on the first screen at 320 × 460 and 360 × 640 |
+| **"🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"** | The label above the gecko and the mode cards, which work as before |
+| **Guide picker** | The nine guides as tiles, in `config.json → guides` order (🌊 น้ำกำลังมา, ⛰️ น้ำป่า ดินถล่ม, ⛈️ พายุ ฟ้าผ่า, 🧹 หลังน้ำลด, 🏚️ แผ่นดินไหว, 🔥 ไฟไหม้, 🔦 ไฟดับ, 🌡️ อากาศร้อนจัด, 😷 ฝุ่น PM2.5), the alert's first with "ช่วงนี้" |
+| **A guide** | 10 lines, grouped "ก่อนเกิด / ขณะเกิด / หลังเกิด" where they have phases, ⚠️ on lines under review, the agencies; ▶ the game when there is one; 📖 the hazard page with every line's sources; the picture to share; 🖨️ print; ← the other guides |
+| **A friend's challenge** | Hides the alert, the hub and the game label: the challenge is why they came |
+
+- **Guides with a game and without.** Prepare, Return, dust, fire and the power cut keep their 10-item checklists as their guides, and ▶ starts the round. Flash floods and landslides, storms and lightning, earthquakes and extreme heat have guides only: every line carries its own sources and a phase, and their hazard pages lead with the guide.
+- **The result screen's "📋 เช็กลิสต์ 10 ข้อ"** opens that mode's guide; "← เรื่องอื่น" leads to the rest. The old checklist tabs are gone.
+- **Print:** a guide or the home check's list prints as a plain A4 list with tick boxes, for the fridge door or an older relative; the button is hidden in in-app browsers, which can't print.
+- **Guardrails:** the guides follow the same content rules as the lessons: sourced, no deaths or injuries, no blame, calm wording ("รีบอพยพทันที" is an action, not a threat). What sources disagree on is left out.
 
 ## Playing a round
 
@@ -152,6 +192,7 @@
 
 ## Mode selection
 
+- Since v1.9.0 the mode cards sit below the hub and "🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"; on 320 × 460 and 360 × 640 the recommended card is below the first screen, by design ([KNOWN_ISSUES #61](KNOWN_ISSUES.md#61-the-game-card-is-below-the-first-screen-on-small-phones)).
 - One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in one row, four of them since v1.7.0. Their names shrink with the screen (`clamp(12px, 3.9vw, 16px)`), so every Thai name stays on one line at 320 px; English names wrap to two lines. The gecko's line, prop and the featured topic change to match.
 - **What is recommended** comes from one pure function, `recommend()` in `modes.js` (v1.6.0; [KNOWLEDGE §25.2](KNOWLEDGE.md#252-what-the-start-screen-recommends)), in this order:
   1. a `?mode=` link (`/?mode=dust`): that mode, with its own topic featured
@@ -193,7 +234,7 @@
 
 ## Wireframes
 
-Low-fidelity layouts below. Real screenshots from the built game, captured by `npm run smoke -- --screens docs/screens`, are in [`docs/screens/`](screens/).
+Low-fidelity layouts below, drawn for v1.0 (the start screen of v1.9.0, with the hub above the game, is in the section above and in [20-start-tools.png](screens/20-start-tools.png)). Real screenshots from the built game, captured by `npm run smoke -- --screens docs/screens`, are in [`docs/screens/`](screens/).
 
 ```
  START / MODE SELECT            ROOM (Prepare)                  ACTION CHOICE (sheet)
@@ -258,8 +299,12 @@ Low-fidelity layouts below. Real screenshots from the built game, captured by `n
 | Power cut: the kitchen at 6 hours without power, the fridge gone bad (v1.7.0) | [16-stock.png](screens/16-stock.png) |
 | The home check: the list for 3 people, 33 % ready (v1.8.0) | [17-kit.png](screens/17-kit.png) |
 | The family plan card, filled in (v1.8.0) | [18-plan-card.png](screens/18-plan-card.png) |
+| A sample kit card (v1.8.1) | [19-kit-card.png](screens/19-kit-card.png) |
+| The start screen, tools first: the alert card and the hub above the game (v1.9.0) | [20-start-tools.png](screens/20-start-tools.png) |
+| The guide picker, the alert's guide first (v1.9.0) | [21-guide-picker.png](screens/21-guide-picker.png) |
+| The earthquake guide, by phase (v1.9.0) | [22-guide-quake.png](screens/22-guide-quake.png) |
 
-`npm run smoke -- --screens docs/screens` refreshes 01–12 and 15. The others (13, 14, 16, 17, 18) were captured once, by one-off probes in their releases, and are not refreshed by that run.
+`npm run smoke -- --screens docs/screens` refreshes 01–12 and 15. The others (13, 14, 16–22) were captured once, by one-off probes in their releases, and are not refreshed by that run. That run was repeated for v1.9.0 (19 Oct 2026), so `01-start.png` shows the start screen with the hub and `09-checklist.png` a guide sheet (text first, no tabs).
 
 The share assets, rendered by the same canvas code as the game:
 
@@ -304,21 +349,22 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── index.html          start screen markup (works before JS runs)
 │   ├── css/app.css
 │   ├── js/
-│   │   ├── main.js         boot (pickStart → state.start), screens (mode grid --cols ≤ 4), game loop, HUD (story hours in a power cut), result, sharing UI
-│   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend (pure, unit-tested)
+│   │   ├── main.js         boot (pickStart → state.start; ?open=guide, /checklist/<id>), start screen (the alert card and the hub, renderStart), the guide picker and a guide (openGuides, guideSections, openChecklist), screens (mode grid --cols ≤ 4), game loop, HUD (story hours in a power cut), result, sharing UI
+│   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend, activeAlert (the owner's alert, v1.9.0) (pure, unit-tested)
 │   │   ├── house.js        seeded house generation; a power-cut house always gets an item with lostAfter (pure, unit-tested)
 │   │   ├── round.js        timer, water / smoke / haze / dark (darkLevel, hoursOut, lostAfter), choices, score (pure, unit-tested)
 │   │   ├── run.js          v1 single round / v2 combo structure
 │   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke, haze, the dark (_dark), badges (wet, smoked, spoiled)
-│   │   ├── cards.js        canvas: result card (with the ending bubble), checklists, link previews; a theme per mode (THEMES, stock since v1.7.0)
+│   │   ├── cards.js        canvas: result card (with the ending bubble), checklists (a plain layout for guides without sprites, v1.9.0), link previews; a theme per mode and guide (THEMES: stock since v1.7.0; landslide, storm, quake, heat since v1.9.0)
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
-│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing (loaded on open, v1.8.0)
+│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing, print (loaded on open, v1.8.0); the cards link /kit and /plan (v1.9.0)
 │   │   ├── kitplan.js      the household's list, score and missing things from kit.json (pure, unit-tested)
 │   │   ├── mascot.js       น้องจก (SVG, faces, props)
-│   │   ├── audio.js fx.js icons.js ui.js content.js progress.js analytics.js rng.js util.js
-│   ├── content/            ← EDITABLE: items, rooms, strings, config, sources, checklists, helplines, kit (home check + plan card), carousel
+│   │   ├── ui.js           screens, the bottom sheet, toasts; canPrint and printList (an A4 list for a guide or the kit, v1.9.0)
+│   │   ├── audio.js fx.js icons.js content.js progress.js analytics.js rng.js util.js
+│   ├── content/            ← EDITABLE: items, rooms, strings, config (modes, guides, alert, hazards), sources, checklists (one per guide), helplines, kit (home check + plan card), carousel
 │   ├── art/                rooms/*.svg (front, living, kitchen) + sprites.svg
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)
 │   ├── og/  share/  icons/ pre-rendered images (npm run images); og/en/ holds the English previews
@@ -326,6 +372,8 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── c/  checklist/      generated link-preview pages (npm run build)
 │   ├── learn.html llms.txt sitemap.xml robots.txt   generated SEO / AI-search files (npm run build)
 │   ├── flood.html pm25.html fire.html ready.html   generated hazard pages (slugs: config.json → hazards)
+│   ├── landslide.html storm.html quake.html heat.html   generated guide-only hazard pages (v1.9.0)
+│   ├── kit.html plan.html  generated pages for the home check and the plan card, with their own previews (v1.9.0)
 │   ├── posts.html          generated carousel page for whoever posts (noindex); images in share/carousel/
 │   ├── sw.js  js/version.js   generated service worker (offline) and version guard
 │   ├── _headers _routes.json manifest.webmanifest

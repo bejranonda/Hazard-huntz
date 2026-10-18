@@ -4,14 +4,14 @@
 
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
-npm test                 # rule tests (27 in v1.8.1): a year of daily houses in every mode, flooding, the power cut's fridge at 4 hours, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends, the home check's amounts, card lines that never start with closing punctuation
-npm run smoke            # browser checks (96 in v1.8.1) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm test                 # rule tests (29 in v1.9.0): a year of daily houses in every mode, flooding, the power cut's fridge at 4 hours, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends, the home check's amounts, card lines that never start with closing punctuation, the alert switch, the guides with no game
+npm run smoke            # browser checks (117 in v1.9.0) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 SMOKE_DATE=2026-12-05 npm run smoke   # the same, on another Bangkok day (here: dust season)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
 
-Each run ends with its own count (`27 passed, 0 failed` and `96 passed, 0 failed` in v1.8.1); the number the run prints is the reference, not the one written here.
+Each run ends with its own count (`29 passed, 0 failed` and `117 passed, 0 failed` in v1.9.0, the smoke test on the pinned day and as 5 Dec 2026); the number the run prints is the reference, not the one written here.
 
 The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by default. Only `Date` is moved; time keeps running. What the start screen should show that day comes from `recommend()` in `modes.js`, so the test never reads the real calendar ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)). It covers:
 
@@ -32,6 +32,8 @@ The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by defau
 - What the start screen recommends (v1.6.0): the pinned day's mode, gecko line, "check before you go" link and featured topic; 5 Dec 2026 recommends dust with the air topic and Air4Thai; `/?mode=fire` opens on fire with no round and counts `view · fire · link`; `/?mode=heat` is ignored; a challenge beats `?mode=`; `/en/?mode=dust`, and a visitor from London keeps the link.
 - The hazard pages (v1.6.0): `/flood`, `/pm25`, `/fire`, `/ready` (v1.7.0) and `/en/…` (heading, canonical, `hreflang`, play links, lesson count, JSON-LD, preview image, and since v1.8.1 the home check and plan card links on a hazard with `tools`: `/flood`, `/ready` and their twins); `/learn`, the sitemap and `llms.txt` link them, and `/learn` and `llms.txt` link both tools (v1.8.1); at 320 × 460 every control there and on `/learn` is 44 px or more and the play button is on the first screen; `/pm25` → play → the dust card, no round started.
 - The ending on the result screen and in the card's `alt` text (v1.6.0).
+- The guide-only hazard pages (v1.9.0): `/landslide`, `/storm`, `/quake`, `/heat` and `/en/…` (heading, canonical, `hreflang`, a guide of 10 lines with a source on every line, its picture link, JSON-LD, the preview image, the tool links); at 320 × 460 the first line of the guide **starts** on the first screen; `/kit` and `/plan` (+ `/en/`): their own preview image, every line, a button into the tool, in the sitemap, controls ≥ 44 px; `/posts` lists the nine guide pictures with a caption each.
+- Tools first (v1.9.0), at 320 × 460 and 360 × 640: the three hub buttons are on the first screen; the alert card shows the guide `activeAlert()` gives for the pinned day (on 18 Oct 2026 the landslide guide, on 5 Dec 2026 none); the picker lists every guide in config order, the alert's first; each of the nine guides opens with 10 lines, its 1080 px picture, ▶ only when it has a game, a link to its hazard page, sources on the guides with no game, and 44 px controls; print produces an A4 PDF of 10 boxes with ⚠️ on the lines under review and the app hidden; ▶ in a guide starts its game; `/?open=guide`, `/checklist/quake` and `/en/checklist/heat` open the right sheet; an alert forced to `storm` shows its card and opens the storm guide; a challenge link hides the hub and the alert; `guide_open` and `print` are sent; no page errors.
 - The home check and the plan card (v1.8.0), at 360 × 640 from `/?open=kit`: 4 people with daily medicine give 36 litres of water and list the medicine but not baby items; answers and ticks are kept in `brm:kit`; every control of the questions, the list and the plan form is 44 px or more; the check's card renders at 1080 px with LINE on the first screen; the plan card renders; "← แก้แผน" in its share sheet goes back to the form with what was typed (v1.8.1); the typed plan text is in no `/api/e` body, while `kit_open`, `kit_share`, `plan_open` (v1.8.1) and `plan_share` are sent; no page errors.
 
 ## Manual matrix (real phones)
@@ -90,12 +92,18 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 48 | Where the answers live: make a list and a plan inside LINE, close LINE, open the same link from LINE again (they should still be there), then open it in the phone's browser (expected: empty, a separate browser; [KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)). Note what you see | | | | | | | | |
 | 49 | App shortcuts (v1.8.1): add the game to the home screen, then touch and hold its icon: "บ้านเราพร้อมแค่ไหน?" opens the home check and "แผนบ้านรอดของบ้านเรา" the plan form. Note which phones show no shortcuts (expected on some browsers; **[unverified]**) | | | n/a³ | n/a³ | n/a³ | n/a³ | n/a³ | n/a³ |
 | 50 | Plan card with blanks (v1.8.1): fill in two or three fields, make the card: every field has its box, the empty ones a dotted line; save it, and print it or show it to an older relative: is it clear what to write on the lines? "← แก้แผน" goes back to the form with the text still there | | | | | | | | |
+| 51 | The start screen's hub (v1.9.0): on the first screen you see the tagline, the alert card (while one is set), "📋 ต้องทำอะไร เมื่อเกิดภัย", "🎒 เช็กของจำเป็น" and "📝 แผนครอบครัว"; the Thai labels don't break mid-word; scrolling down, "🎮 หรือเล่นเกม 60 วิ" and the game cards are easy to find; an older relative understands where to start | | | | | | | | |
+| 52 | The alert card (v1.9.0): with an alert set, the card names the topic and opens its guide, and the picker shows that guide first with "ช่วงนี้"; on a friend's challenge link, no hub or alert, and "รับคำท้า!" is on the first screen | | | | | | | | |
+| 53 | Print (v1.9.0): open a guide (and the home check's list) in the phone's browser and tap "🖨️ พิมพ์เก็บไว้": the print preview shows only a plain A4 list (tick boxes, phase headings, ⚠️ notes, sources, helplines, the link and date, the disclaimer), nothing of the app; save as PDF or print. Inside LINE, Facebook and TikTok the button should not appear | | | n/a⁴ | n/a⁴ | n/a⁴ | n/a⁴ | n/a⁴ | n/a⁴ |
+| 54 | The guide picker inside LINE (v1.9.0): open `https://baanrodmai.autobahn.bot/?open=guide` and `/checklist/quake` from a LINE chat: every tile and button is easy to tap, a guide scrolls to its picture, the picture saves with a long-press, "📖" opens the hazard page, "← เรื่องอื่น" goes back; a `/checklist/quake` link previews with the earthquake picture and title | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
 ² Tap areas no longer overlap in the generator ([KNOWN_ISSUES F10](KNOWN_ISSUES.md#fixed)). If a tap still opens the wrong item, note the room, the two items and the phone.
 
-³ Install from the phone's own browser (Safari or Chrome), not from inside an app: the in-app browsers are not expected to offer "add to home screen" **[unverified]**. If one does, note it.
+³ Install from the phone's own browser (Safari or Chrome), not from inside an app: the in-app browsers are not expected to offer "add to home screen" **[unverified]**. If one does, note it. Since v1.9.0 there is a third shortcut, "ต้องทำอะไร เมื่อเกิดภัย", which opens the guide picker.
+
+⁴ The in-app browsers can't print, so the button is hidden there ([KNOWN_ISSUES #63](KNOWN_ISSUES.md#63-printing-isnt-offered-in-in-app-browsers)). If it shows, note it as ❌.
 
 ## Content and preview checks after each content change
 
@@ -107,10 +115,10 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-The build's `budget` line prints the current numbers. In v1.8.1 (the same as in v1.8.0):
+The build's `budget` line prints the current numbers. In v1.9.0:
 
-- Start screen: **209 KB** compressed (HTML + CSS + JS + content JSON + fonts). It counts every file in `js/`, including the home check's `kit.js` and `kitplan.js` (about 6 KB), which load only when the check opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)).
-- First game screen: **223 KB** (adds the first room and the sprites).
+- Start screen: **232 KB** compressed (HTML + CSS + JS + content JSON + fonts; 209 KB in v1.8.0–1.8.1). It counts every file in `js/`, including the home check's `kit.js` and `kitplan.js` (about 6.6 KB), which load only when the check opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)), and `sources.json`, whose notes (about 14 KB) the game never shows ([KNOWN_ISSUES #62](KNOWN_ISSUES.md#62-source-notes-are-downloaded-by-every-visitor)).
+- First game screen: **247 KB** (adds the first room and the sprites; 223 KB in v1.8.0–1.8.1).
 - Limit: 500 KB.
 
 Rooms are fetched while the player is still on the start screen. The service worker precaches 44 files for offline play after the page has loaded (the build's `sw.js` line).
@@ -121,13 +129,13 @@ Run these against https://baanrodmai.autobahn.bot after any change to the build,
 
 | Check | How | Expected |
 |---|---|---|
-| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/en/`, `/en/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/en/pm25`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/en/c/p7`, `/checklist/prepare`, and since v1.8.0 `/js/kit.js`, `/js/kitplan.js`, `/content/kit.json` | 200, right content type; `/pm25.html` answers 308 to `/pm25` |
+| Pages and files exist | `curl -s -o /dev/null -w '%{http_code} %{content_type}' <url>` for `/`, `/learn`, `/en/`, `/en/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/en/pm25`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/c/p7`, `/en/c/p7`, `/checklist/prepare`, and since v1.8.0 `/js/kit.js`, `/js/kitplan.js`, `/content/kit.json`, and since v1.9.0 `/landslide`, `/storm`, `/quake`, `/heat`, `/kit`, `/plan`, `/en/quake`, `/checklist/quake`, `/en/checklist/heat`, `/og/kit.png`, `/share/checklist-quake.png` | 200, right content type; `/pm25.html` answers 308 to `/pm25` |
 | Event endpoint | `curl -X POST -H 'Content-Type: application/json' --data '{"e":[]}' …/api/e` | 204 |
 | Canonical, hreflang and JSON-LD | View source of `/`, `/learn`, `/en/`, `/en/learn` and one hazard page (`/pm25`) | `rel="canonical"` with the live address; th, en and x-default `hreflang` links; one `application/ld+json` block that parses |
-| `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 81 each, and 21 ⚠️ flags (the summary at the top of [01-safety-content.md](01-safety-content.md) has the current counts) |
-| Hazard pages are complete | Count `<article` in `/flood`, `/pm25`, `/fire`, `/ready` and their `/en/` twins | 43, 12, 13 and 13 |
-| Sitemap | Count `<loc>` in `/sitemap.xml` | 12 |
-| Tool links (v1.8.1) | Search `/flood`, `/ready`, `/learn` (and `/en/…`) and `/llms.txt` for `?open=kit` and `?open=plan`; read `/manifest.webmanifest` | Both links on each; the manifest's `description` names "รับมือไฟดับ" and it has two `shortcuts` |
+| `/learn` is complete | Count `<article` in `/learn` and `/en/learn` | 81 each, and 26 ⚠️ flags since v1.9.0: 21 on lessons (the summary at the top of [01-safety-content.md](01-safety-content.md) has the current counts) and 5 on the new guides' lines |
+| Hazard pages are complete | Count `<article` in `/flood`, `/pm25`, `/fire`, `/ready` and their `/en/` twins; on `/landslide`, `/storm`, `/quake`, `/heat` (v1.9.0) count the guide's lines and their source lines | 43, 12, 13 and 13; 10 lines each, every one with "ที่มา" ("Sources") under it |
+| Sitemap | Count `<loc>` in `/sitemap.xml` | 24 (since v1.9.0; 12 before) |
+| Tool links (v1.8.1) | Search `/flood`, `/ready`, the four guide pages (v1.9.0), `/learn` (and `/en/…`) and `/llms.txt` for `?open=kit` and `?open=plan`; read `/manifest.webmanifest` | Both links on each; the manifest's `name` is "บ้านรอดไหม? เตรียมบ้านให้พร้อมทุกภัย" and it has three `shortcuts` (v1.9.0) |
 | Only the custom domain is indexable | `curl -sI` the `*.pages.dev` address and the custom domain | `x-robots-tag: noindex` on `*.pages.dev` only |
 | Phone-sized load | Headless Chromium, 390×760, touch | No console errors; the footer link to `/learn` is ≥ 44 px |
 | Rich Results Test, Search Console, Bing | Owner, in the web tools | Not done yet ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) |

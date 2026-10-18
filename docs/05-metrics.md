@@ -11,23 +11,25 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 
 | Event | When | mode | label | value |
 |---|---|---|---|---|
-| `view` | Page opened | – (the linked mode for `link`) | `direct` / `challenge` / `checklist` / `link` (a `?mode=` link such as `/?mode=dust`, v1.6.0) | – |
-| `mode_select` | Mode button tapped | prepare / return / dust / fire / stock (v1.7.0) | `default` (the recommended mode) / `link` (the mode a `?mode=` link asked for, v1.6.0) / `other` | – |
+| `view` | Page opened | – (the linked mode for `link`) | `direct` / `challenge` / `checklist` (a `/checklist/<id>` link; any of the nine guides since v1.9.0) / `link` (a `?mode=` link such as `/?mode=dust`, v1.6.0) | – |
+| `mode_select` | Mode button tapped, or ▶ in a guide | prepare / return / dust / fire / stock (v1.7.0) | `default` (the recommended mode) / `link` (the mode a `?mode=` link asked for, v1.6.0) / `other` / `guide` (▶ "เล่นเกมเรื่องนี้" in a guide, v1.9.0) | – |
 | `round_start` | Round begins | mode | `daily` / `challenge` / `random` | – |
 | `round_end` | Round finished (all found or time up) | mode | same as above | score 0–10 |
 | `share_open` | Share or challenge button tapped | mode | `result` / `challenge` / `challenge-back` (reply after playing a friend's challenge, v1.3.0) | – |
 | `share_click` | Share channel used | mode | `native` / `line` / `facebook` / `x` / `copy` / `save` / `challenge-native` / `challenge-back-native` | – |
 | `challenge_open` | Opened a challenge link | mode | – | friend's score |
 | `challenge_play` | Accepted the challenge | mode | – | friend's score |
-| `checklist_open` | Checklist sheet opened | prepare / return / dust / fire / stock | – | – |
-| `checklist_save` | Checklist shared or saved | prepare / return / dust / fire / stock | `native` / `line` / `facebook` / `copy` / `save` | – |
+| `checklist_open` | A guide opened (the checklist sheet before v1.9.0) | the guide's id: prepare / return / dust / fire / stock, and since v1.9.0 landslide / storm / quake / heat | since v1.9.0: `picker` (from the guide picker) / `alert` (the start screen's alert card) / `link` (`/checklist/<id>` or `?open=checklist-<id>`) / `result` (the result screen's 📋); empty before | – |
+| `checklist_save` | A guide's picture shared or saved | the guide's id | `native` / `line` / `facebook` / `copy` / `save` | – |
+| `guide_open` (v1.9.0) | The guide picker opened | – | `start` (the hub's "📋 ต้องทำอะไร เมื่อเกิดภัย") / `link` (`/?open=guide`, also the app's shortcut) / `guide` ("← เรื่องอื่น" from a guide) | – |
+| `print` (v1.9.0) | "🖨️ พิมพ์เก็บไว้" tapped (never in in-app browsers, which hide it) | the guide's id, or – for the home check | `guide` / `kit` | – |
 | `help_click` | Helpline tapped (tel:) | mode or – | the number, e.g. `1784` | – |
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
-| `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0) | – | the topic (e.g. `health`) or `book` | – |
-| `kit_open` | The home check opened (v1.8.0) | – | `start` (quick button) / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) | – |
+| `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0), or a hazard page from a guide's "📖" (v1.9.0) | – | the topic (e.g. `health`), `book`, or the guide's id (e.g. `quake`) | – |
+| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) | – |
 | `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 (%) |
-| `plan_open` | The plan form opened (v1.8.1) | – | `link` (`/?open=plan`, from a post, a hazard page, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) | – |
+| `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) | – |
 | `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
 
 ## The numbers you asked for
@@ -169,6 +171,34 @@ GROUP BY week ORDER BY week
 
 Share rate of the check = `kit_share` ÷ `kit_open`; from the results = the `result` row of `kit_open` ÷ `round_end` for `prepare`, `return` and `stock` together (since v1.8.1; before, `stock` only). Plan cards made per plan form opened ≈ `plan_share` ÷ `plan_open`, both counted per action, not per household. **[unverified]** on real data; no players yet.
 
+## Tools first (v1.9.0)
+
+The start screen leads with the tools and the guides; the game is below them ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)). Two new events, `guide_open` and `print`, and a label on `checklist_open` that says where a guide was opened from. Nothing about a household is sent.
+
+- **Which guides are read, and from where:** `checklist_open` by mode (the guide) and label. `alert` shows what the alert card brings; `link` what posts with `/checklist/<id>` bring; `picker` what people choose themselves.
+- **Does anyone still play?** Compare `round_start` per day before and after the release (19 Oct 2026); the game card is below the first screen on small phones now ([KNOWN_ISSUES #61](KNOWN_ISSUES.md#61-the-game-card-is-below-the-first-screen-on-small-phones)). `mode_select` with label `guide` counts rounds started from a guide's ▶.
+- **Do guides reach families?** `checklist_save` (the guide's picture shared or saved) ÷ `checklist_open`, per guide. `print` counts paper copies (only outside in-app browsers).
+- **Hazard pages and `/kit`, `/plan`** run no script: their visits show in Web Analytics by path once it is on **[unverified]**; their buttons arrive as `kit_open`, `plan_open` (label `link`) or a `/checklist/<id>` view.
+- **An alert's effect:** the `alert` row of `checklist_open` per day, between the day the alert was set and its end date.
+
+**Which guides are opened, and from where (last 7 days):**
+```sql
+SELECT blob2 AS guide, blob3 AS opened_from, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 = 'checklist_open' AND timestamp > NOW() - INTERVAL '7' DAY
+GROUP BY guide, opened_from ORDER BY n DESC
+```
+
+**The tools against the game, per day:**
+```sql
+SELECT toStartOfInterval(timestamp, INTERVAL '1' DAY) AS day, blob1 AS event, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 IN ('guide_open','checklist_open','kit_open','plan_open','round_start','print') AND timestamp > NOW() - INTERVAL '30' DAY
+GROUP BY day, event ORDER BY day
+```
+
+Share rate of a guide = its `checklist_save` row ÷ its `checklist_open` row (both counted per action, not per person). **[unverified]** on real data; no players yet.
+
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
@@ -197,4 +227,4 @@ GROUP BY label
 - **Free plan:** 100,000 data points written per day and 10,000 queries per day. Data is kept for 3 months.
 - **Quota math:** one session sends about 4–8 events in a single request. If you approach the limit, set `config.analytics.sampleRate` to `0.5` or `0.2`; the queries above stay correct.
 - **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers and the plan card's text stay in the player's own browser (`localStorage`).
-- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both.
+- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both, and so were `guide_open` and `print` (v1.9.0).

@@ -26,7 +26,7 @@
 <!--OG:START-->
 <link rel="canonical" href="https://baanrodmai.autobahn.bot/en/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Baan Rod Mai? Home-safety game">
+<meta property="og:site_name" content="Baan Rod Mai? Home safety">
 <meta property="og:title" content="My friend got the house ready: 9/10 🏠 Can you beat it?">
 <meta property="og:description" content="A 60-second flood-prep game. The exact same house. How many points will you get?">
 <meta property="og:image" content="https://baanrodmai.autobahn.bot/og/en/p9.png">
@@ -59,7 +59,14 @@
 
     <header class="hero">
       <h1 id="logo-title" class="logo"><span class="logo-a" data-i18n="logoA">Baan </span><span class="logo-b" data-i18n="logoB">Rod Mai?</span></h1>
-      <p class="tagline" data-i18n="tagline">A 60-second game to keep your home safe from floods, dust, fire and power cuts</p>
+      <p class="tagline" data-i18n="tagline">Get your home ready for any disaster: what to do, what to keep, and a 60-second game</p>
+      <div class="alert-card" id="alert-card" hidden></div>
+      <nav class="hub" id="hub" aria-label="Get your home ready" data-i18n-aria="hubLabel">
+        <button class="hub-btn hub-main" type="button" data-open="guide"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b data-i18n="hubGuide">What to do in a disaster</b><small data-i18n="hubGuideSub">Floods, earthquakes, storms, fire and more</small></span><span class="hub-go" aria-hidden="true">›</span></button>
+        <button class="hub-btn" type="button" data-open="kit"><span class="hub-ico" aria-hidden="true">🎒</span><span class="hub-text"><b data-i18n="hubKit">Check your supplies</b><small id="kit-chip" data-i18n="hubKitSub">Sized for your household</small></span></button>
+        <button class="hub-btn" type="button" data-open="plan"><span class="hub-ico" aria-hidden="true">📝</span><span class="hub-text"><b data-i18n="hubPlan">Family plan</b><small data-i18n="hubPlanSub">Where to meet, who helps whom</small></span></button>
+      </nav>
+      <p class="game-label" data-i18n="gameLabel">🎮 Or learn it in a 60-second game</p>
       <div class="hero-mascot">
         <div class="bubble bubble-hero" id="hero-bubble" data-i18n="heroPrepare">More rain is coming. Let's get the house ready!</div>
         <div class="gecko-host gecko-big" id="hero-gecko"></div>
@@ -116,8 +123,6 @@
     <button class="book-chip" type="button" id="btn-book" hidden></button>
 
     <nav class="quick" aria-label="ลิงก์ที่เป็นประโยชน์">
-      <button class="quick-btn" type="button" data-open="checklist"><span aria-hidden="true">📋</span><span data-i18n="checklists">10-step checklists</span></button>
-      <button class="quick-btn" type="button" data-open="kit"><span aria-hidden="true">🎒</span><span id="kit-chip" data-i18n="kitChip">Ready at home?</span></button>
       <button class="quick-btn" type="button" data-open="help"><span aria-hidden="true">☎️</span><span data-i18n="helplines">Helplines</span></button>
       <a class="quick-btn" id="forecast-link-start" href="#" target="_blank" rel="noopener" hidden><span aria-hidden="true">🌧️</span><span data-i18n="forecastShort">Water levels</span></a>
     </nav>
@@ -128,7 +133,7 @@
       <p data-i18n="disclaimer">For learning only. If unsure, ask a technician or the authorities.</p>
       <a class="link" href="/en/learn" data-i18n="learnLink">Read every safety lesson</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">Sources · Privacy</button>
-      <div class="app-version" id="app-version">v1.8.1</div>
+      <div class="app-version" id="app-version">v1.9.0</div>
     </footer>
   </section>
 

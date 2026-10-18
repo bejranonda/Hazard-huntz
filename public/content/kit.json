@@ -139,7 +139,7 @@
     },
     {
       "id": "firstaid",
-      "icon": "🩹",
+      "icon": "⛑️",
       "label": {
         "th": "ชุดปฐมพยาบาล",
         "en": "A first aid kit"
@@ -195,7 +195,7 @@
     {
       "id": "medcold",
       "for": "meds",
-      "icon": "🧊",
+      "icon": "❄️",
       "label": {
         "th": "แผนสำรองสำหรับยาที่ต้องแช่เย็น",
         "en": "A plan for medicine that must stay cold"

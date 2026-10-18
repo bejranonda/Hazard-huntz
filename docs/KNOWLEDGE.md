@@ -2,7 +2,7 @@
 
 A reference for anyone maintaining บ้านรอดไหม?. It covers every rule, constant and formula in the game, the content model, the platform facts the design depends on, and the research behind it.
 
-Facts are as of **19 Oct 2026** (v1.8.1). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
+Facts are as of **19 Oct 2026** (v1.9.0). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
 What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
 
@@ -36,6 +36,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 26. [Carousel posts (v1.6.1)](#26-carousel-posts-v161)
 27. [Power cuts and home stock (v1.7.0)](#27-power-cuts-and-home-stock-v170)
 28. [The home check and the family plan card (v1.8.0)](#28-the-home-check-and-the-family-plan-card-v180)
+29. [Tools first: a guide for every hazard (v1.9.0)](#29-tools-first-a-guide-for-every-hazard-v190)
 
 ---
 
@@ -64,7 +65,11 @@ The game teaches the correct action for each of those moments, one tap at a time
 | `lostAfter` | An item field (power cut only): the story hour at which the item goes bad if nobody dealt with it. Only the fridge has it (4) |
 | บ้านเราพร้อมแค่ไหน? | *How ready is our home?* (the English title since v1.8.1; "house" before): the home check, `/?open=kit` (v1.8.0, §28). Its things to have are "kit items" in `kit.json`, not lessons |
 | แผนบ้านรอด | *Our family safety plan*: the plan card, `/?open=plan` (v1.8.0, §28.4) |
-| `tools` | `config.json → hazards.<hazard>.tools`: the tools (`kit`, `plan`) a hazard offers. They are linked on its page (`/ready` since v1.8.0, `/flood` since v1.8.1), and since v1.8.1 `kit` also puts the 🎒 button on its modes' result screens (§28.2) |
+| `tools` | `config.json → hazards.<hazard>.tools`: the tools (`kit`, `plan`) a hazard offers. They are linked on its page (`/ready` since v1.8.0, `/flood` since v1.8.1, the four guide-only hazards since v1.9.0), and since v1.8.1 `kit` also puts the 🎒 button on its modes' result screens (§28.2). Since v1.9.0 each tool also has its own page, `/kit` and `/plan` (§29.9) |
+| guide | A short "what to do" list for one hazard, 10 lines (v1.9.0, §29): `config.json → guides` (order, icon, hazard) and `checklists.json`. A game mode's checklist is its guide; `landslide`, `storm`, `quake` and `heat` are guides with no game, with a phase, sources and `verify` on every line. Opened from the hub ("📋 ต้องทำอะไร เมื่อเกิดภัย"), `/?open=guide` or `/checklist/<id>` |
+| phase | A guide line's moment: `before` (ก่อนเกิด), `during` (ขณะเกิด) or `after` (หลังเกิด), in that order (§29.2) |
+| alert | `config.json → alert: { guide, until }`: the owner's card at the top of the start screen for the guide in the news, until its end date (§29.5) |
+| hub | The start screen's three tools above the game: what to do, check your supplies, the family plan (v1.9.0, §29.6) |
 | `kit` | Two different things: the home check (`kit.json`, `kit.js`, the `kit_open` event, `brm:kit`), and the card-drawing helpers that `cards.js` exports as `kit` (v1.6.1, §26), which `kit.js` imports as `draw` |
 | น้องจก | The mascot, a gecko (จิ้งจก) in yellow rubber boots. In Thai folk belief a gecko's chirp (จิ้งจกทัก) is a friendly warning. |
 | target | An item with a right action. It counts toward the score. |
@@ -94,6 +99,9 @@ The game teaches the correct action for each of those moments, one tap at a time
 | กปน. / กปภ. | Metropolitan / Provincial Waterworks Authority (MWA / PWA) |
 | กรมประชาสัมพันธ์ | Government Public Relations Department (PRD), which republishes agency statements |
 | กรมธุรกิจพลังงาน | Department of Energy Business (DOEB) |
+| กรมทรัพยากรธรณี | Department of Mineral Resources (DMR): landslides and earthquakes (v1.9.0) |
+| กรมทรัพยากรน้ำ | Department of Water Resources (DWR): flash-flood and landslide warning levels (v1.9.0) |
+| กรมอุตุนิยมวิทยา | Thai Meteorological Department (TMD): weather warnings (1182), the heat index, tsunamis |
 
 ## 3. Round rules and constants
 
@@ -248,19 +256,19 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - **`rooms.json`:** `{id, order, enabled, art, name{th,en}, slots: [{id, x, y, tags[]}]}`. Slots must lie inside the 360×600 scene.
 - **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`.
   - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost), `secondary` (news quoting the agency), `academic` or `international` ([GUIDELINES §2.1](GUIDELINES.md#21-adding-or-changing-an-item)).
-  - Totals: 73 sources, of which 30 official, 9 government, 23 secondary, 2 academic (a university statement and a peer-reviewed study, used only for `r-stagnant` and always flagged ⚠️) and 9 international: WHO Europe and the US Fire Administration (2), used to cross-check dust and fire and as the only source of `f-alarm`; since v1.7.0 the US CDC, Ready.gov (2), the Tokyo Metropolitan Government and a third US Fire Administration page, for the power cut (§27.2); and since v1.8.0 Ready.gov "Make A Plan" (`readygov-plan`), cited only by the plan card (§28.4).
+  - Totals (v1.9.0): 109 sources, of which 31 official, 9 government, 50 secondary, 2 academic and 17 international. The 36 added in v1.9.0 for the four new guides are 27 secondary, 1 official (TMD's tsunami paper) and 8 international (Ready.gov ×4, the US NWS ×2, WHO, the US CDC) (§29.3). Before v1.9.0: 73 sources, of which 30 official, 9 government, 23 secondary, 2 academic (a university statement and a peer-reviewed study, used only for `r-stagnant` and always flagged ⚠️) and 9 international: WHO Europe and the US Fire Administration (2), used to cross-check dust and fire and as the only source of `f-alarm`; since v1.7.0 the US CDC, Ready.gov (2), the Tokyo Metropolitan Government and a third US Fire Administration page, for the power cut (§27.2); and since v1.8.0 Ready.gov "Make A Plan" (`readygov-plan`), cited only by the plan card (§28.4).
 - **`strings.json`:**
-  - `th` and `en` UI strings (233 keys each, the same keys in both; the home check's own texts are in `kit.json`). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
+  - `th` and `en` UI strings (264 keys each since v1.9.0, was 233, the same keys in both; the home check's own texts are in `kit.json`). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
   - `og`: Thai link-preview texts, and `ogEn`: their English twins (the build fails if a key is missing from `ogEn`). Both are used by the build and by the image renderer.
-  - `seo`: the text of `/learn`, the hazard pages and `llms.txt` (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`). The hazard pages use `byHazard`, `allLessons`, `playMode`, `hazard<H><Nav|Title|Desc|H1|Intro>` (§25.4) and, for a hazard with `tools`, `toolKit` and `toolPlan` (v1.8.0).
-- **`checklists.json`:** `prepare`, `return`, `dust`, `fire` and `stock` (v1.7.0), each `{title, items: exactly 10 × {icon, th, en, sprite?}}`.
+  - `seo`: the text of `/learn`, the hazard pages and `llms.txt` (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`). The hazard pages use `byHazard`, `allLessons`, `playMode`, `hazard<H><Nav|Title|Desc|H1|Intro>` (§25.4) and, for a hazard with `tools`, `toolKit` and `toolPlan` (v1.8.0); since v1.9.0 also `guideHeading` and `guidePicture`, and `/kit` and `/plan` use `kitPage<Title|Desc|H1|Intro|Cta|List>`, `planPage…` and the amount rules `kitPerPersonDay`, `kitPerPerson`, `kitDaysPeople`, `kitDays`, `kitIf` (§29.9).
+- **`checklists.json`:** one per guide (§29.2): `prepare`, `return`, `dust`, `fire` and `stock` (v1.7.0), each `{title, items: exactly 10 × {icon, th, en, sprite?}}`, and since v1.9.0 the guides with no game, `landslide`, `storm`, `quake` and `heat`, each `{title, items: exactly 10 × {icon, th, en, phase, sources[], verify, verifyNote?}}`.
 - **`kit.json`** (v1.8.0, loaded only when the home check or the plan card opens): `people {min, max, default}`, `flags[]` (`{id, icon, label{th,en}}`: `baby`, `elder`, `meds`, `pet`), `items[]` (`{id, for?, icon, label{th,en}, qty?, sources[], verify}`), `plan[]` (`{id, icon, label, hint?, placeholder, max, sources?, verify?}`) and `ui.th` / `ui.en` (42 interface texts each since v1.8.1, with `backPlan`). `qty` is one of `{perPersonPerDay, days, unit}`, `{perPerson, unit}`, `{days, people: true}` or `{days}`. Details in §28.
-- **`carousel.json`** (v1.6.1, not loaded by the game): `sets.<hazard>` (the lessons per post set, `outage` since v1.7.0) and the frame text in `th` and `en` (§26).
+- **`carousel.json`** (v1.6.1, not loaded by the game): `sets.<hazard>` (the lessons per post set, `outage` since v1.7.0) and the frame text in `th` and `en` (§26); since v1.9.0 also `guidesTitle`, `guidesIntro` and `guideCaption` for the guide pictures on `/posts` (§29.9).
 - **`helplines.json`:** `{number, main, who{th,en}, what{th,en}, source}`. Numbers have 3–5 digits. `main: true` puts the number on the cards.
 - **`config.json`:**
-  - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1)
+  - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1), and since v1.9.0 `alert: { guide, until }` (§29.5)
   - `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `version`, `houseVersion`
-  - `modes` (the registry, §22.3), `topics` (§21), `hazards` (the hazard pages' slugs, §25.4, and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2)
+  - `modes` (the registry, §22.3), `topics` (§21), `guides` (v1.9.0: the guides in display order, `{id, hazard, icon}`, §29.2), `hazards` (the hazard pages' slugs, §25.4, a hazard needing a mode or, since v1.9.0, a guide; and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`, and since v1.9.0 on `landslide`, `storm`, `quake` and `heat`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2)
   - `round` (section 3; `round.stock.hours` and `round.stock.dark` for the power cut, §27.4)
   - `analytics.endpoint`, `analytics.sampleRate`
   - `features.comboRun`
@@ -282,6 +290,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - `rainWarningUntil` and `featuredTopicUntil` are real `YYYY-MM-DD` dates (v1.6.0)
 - every hazard has a slug in `config.json → hazards` that is valid, unique and not a site path, and its `seo` strings exist in both languages (v1.6.0)
 - a mode whose threat is `dark` has `round.<mode>.hours`; `lostAfter` is used only in such a mode and lies between 0 and its hours (v1.7.0)
+- `config.json → guides` and the guides (v1.9.0, §29.2): each guide's hazard, icon, strings and checklist; every checklist is a guide; a guide with no game has 10 lines, phases in order, existing sources on every line and a valid `verify` (with a `verifyNote` when `partial`); `config.json → alert` names a guide and has a real end date
 - `kit.json` (v1.8.0): every item and plan hint has existing sources, `verify` is `verified` or `partial`, `for` is a real answer, a plan field's `max` is 1–80, every number above 1 in an amount rule appears in one of its sources' title or note, and every text has Thai and English; a hazard's `tools` are only `kit` or `plan`, with their `seo` strings (§28.8)
 
 Since v1.7.0 the build **stops after these checks** when any failed, before it generates a page, and lists every error. Before, it carried on and could crash with a `TypeError` on a missing string ([KNOWN_ISSUES F40](KNOWN_ISSUES.md#in-v170-19-oct-2026)).
@@ -295,6 +304,7 @@ Since v1.7.0 the build **stops after these checks** when any failed, before it g
 - a switch that is on with no end date, or whose end date has passed (v1.6.0)
 - `docs/01-safety-content.md` out of date with the content (v1.6.0)
 - a power-cut mode with no item that has `lostAfter` (v1.7.0)
+- a guide line whose Thai is over 48 characters, and an alert whose end date has passed (v1.9.0)
 - carousel images older than the text, or missing (v1.6.1)
 - Thai text on an English page outside Thai-tagged spans
 
@@ -302,19 +312,19 @@ A carousel lesson that isn't ✅ verified is no longer a warning (v1.7.0): the `
 
 **2. Site URL.** The first of these that is set: `SITE_URL` env → `config.siteUrl` (if not a placeholder) → `CF_PAGES_URL` → `https://[DOMAIN]`. On Cloudflare the `SITE_URL` variable doesn't exist (see §10), so the live value is `config.siteUrl` = `https://baanrodmai.autobahn.bot`.
 
-**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 55 challenge pages (`c/{p,r,d,f,s}{0..10}.html`, *without* `og:url`) and 5 checklist pages, and the English set: `en/index.html` (the app shell in English), 55 `en/c/…` pages and 5 `en/checklist/…` pages. That is 121 generated pages in all (v1.7.0; 97 with four modes).
+**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 55 challenge pages (`c/{p,r,d,f,s}{0..10}.html`, *without* `og:url`) and a checklist page per guide (9 since v1.9.0), and the English set: `en/index.html` (the app shell in English), 55 `en/c/…` pages and 9 `en/checklist/…` pages. That is 129 generated pages in all (v1.9.0; 121 in v1.7.0–1.8.1, 97 with four modes). Since v1.9.0 it also writes the start screen's static Thai text, `<title>` and meta description into `index.html` from `strings.json` (§29.6).
 
-**3b. SEO and AI-search files.** It writes `learn.html`, `en/learn.html`, the hazard pages (`flood.html`, `pm25.html`, `fire.html`, `ready.html` and their `en/` twins, §25.4), `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16, §18), and `posts.html` (§26). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
+**3b. SEO and AI-search files.** It writes `learn.html`, `en/learn.html`, the hazard pages (`flood.html`, `pm25.html`, `fire.html`, `ready.html` and their `en/` twins, §25.4; since v1.9.0 also `landslide.html`, `storm.html`, `quake.html`, `heat.html`, §29.9), `kit.html` and `plan.html` with their `en/` twins (v1.9.0), `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16, §18), and `posts.html` (§26). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
 
 **4. Service worker.** It fills `tools/sw.template.js` with the precache list (44 files since v1.8.0, including `/en/`, `kit.js`, `kitplan.js` and `kit.json`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **209 KB**, or **223 KB** including the first room and the sprites (v1.8.0; 200 and 215 KB in v1.7.0, 188 and 201 KB in v1.6.1). It counts every file in `js/`, including `kit.js` (about 5.5 KB) and `kitplan.js` (0.8 KB), which the start screen loads only when the home check opens, so most of v1.8.0's 8 KB is code a first visit doesn't fetch ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)); `kit.json` isn't counted. In v1.7.0 the 12 KB were the fifth mode's content, which the start screen loads: mostly its 13 lessons and 5 decoys (`items.json`, about +7 KB compressed), then its strings, sources and checklist; its sprites added about 2 KB more to the first game screen.
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **232 KB**, or **247 KB** including the first room and the sprites (v1.9.0, mostly the new sources' notes, §29.13; 209 and 223 KB in v1.8.0–1.8.1, 200 and 215 KB in v1.7.0, 188 and 201 KB in v1.6.1). It counts every file in `js/`, including `kit.js` (about 5.5 KB) and `kitplan.js` (0.8 KB), which the start screen loads only when the home check opens, so most of v1.8.0's 8 KB is code a first visit doesn't fetch ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)); `kit.json` isn't counted. In v1.7.0 the 12 KB were the fifth mode's content, which the start screen loads: mostly its 13 lessons and 5 decoys (`items.json`, about +7 KB compressed), then its strings, sources and checklist; its sprites added about 2 KB more to the first game screen.
 
 **6. `--docs`.** Regenerates the summary (between `<!-- SUMMARY:START -->` and `<!-- SUMMARY:END -->`), the table, the flags and the references in `docs/01-safety-content.md` from `items.json` and `sources.json`. Without `--docs` the build only compares the file with what it would write, and warns if it is out of date (v1.6.0).
 
-**7. The `start` line.** The build prints what the start screen recommends on today's Bangkok date, from the same `recommend()` the game uses (§25.2), for example `start     2026-10-18: prepare (warning until 2026-11-30) · featured health until 2026-11-15`.
+**7. The `start` line.** The build prints what the start screen recommends on today's Bangkok date, from the same `recommend()` the game uses (§25.2), for example `start     2026-10-18: prepare (warning until 2026-11-30) · featured health until 2026-11-15`. Since v1.9.0 it ends with the alert while it is on: `· alert landslide until 2026-10-25` (§29.5).
 
-**Images** (`npm run images` → `tools/render-images.mjs` + `tools/render.html`): drawn with the game's own canvas code in headless Chromium.
+**Images** (`npm run images` → `tools/render-images.mjs` + `tools/render.html`): drawn with the game's own canvas code in headless Chromium. `-- --only <path>` keeps every other image as it is; since v1.9.0 it takes several comma-separated paths (`--only og/kit,og/en/kit`).
 
 | Image | Size |
 |---|---|
@@ -389,8 +399,9 @@ Only the Facebook tokens are documented by Meta; the others were taken from real
   - `POST /api/e` takes at most 4,096 bytes and 25 events, cleans every field to `[\w\-.:]` and writes one Analytics Engine data point per event: `indexes: [name]`, `blobs: [name, mode, label, lang]`, `doubles: [value]`.
 - **Sampling:** `config.analytics.sampleRate` decides once per page load whether this player is counted. The SQL uses `SUM(_sample_interval)`, so totals stay correct.
 - **Language in the numbers:** since 13 Oct 2026 every event carries the player's language (`th` or `en`, stored as `blob4`; [KNOWN_ISSUES F22](KNOWN_ISSUES.md#after-v122-13-oct-2026)). Cloudflare Web Analytics also counts `/en/…` paths separately from `/…` paths ([05-metrics.md](05-metrics.md)).
-- **How a visit arrived:** `view` is labelled `direct`, `challenge`, `checklist` or, since v1.6.0, `link` (a `?mode=` link, with the mode; §25.3). A `/?open=kit` or `/?open=plan` arrival is a `direct` view plus `kit_open` or `plan_open` with the label `link` (§28.6).
+- **How a visit arrived:** `view` is labelled `direct`, `challenge`, `checklist` or, since v1.6.0, `link` (a `?mode=` link, with the mode; §25.3). A `/?open=kit` or `/?open=plan` arrival is a `direct` view plus `kit_open` or `plan_open` with the label `link` (§28.6), and a `/?open=guide` arrival a `direct` view plus `guide_open` (v1.9.0, §29.11).
 - **The home check and plan card (v1.8.0)** add four events: `kit_open`, `kit_share` (the score in % as the value), `plan_share` and, since v1.8.1, `plan_open`. Their answers, ticks and typed text never leave the device; a smoke check reads every `/api/e` body to prove it (§28.5).
+- **The guides (v1.9.0)** add `guide_open` and `print`, and labels on `checklist_open` (where the guide was opened from) (§29.11).
 - **No IP, user agent, ID, cookie or location is stored.** Scores, the home check's answers and the plan card's text stay in `localStorage`. There is nothing to ask consent for under the PDPA. The About sheet says this in Thai and English.
 
 ## 10. Cloudflare platform facts
@@ -585,7 +596,7 @@ Social listening by Wisesight / Zocial Eye, 16–26 Sep 2026 ([Marketeer](https:
 | Identity and social currency drive sharing | Flattering rank titles that never shame (*บ้านนี้เตรียมพร้อม*, *เซียนกู้บ้าน*) |
 | People tag family on their own (สาดไปสมาชิก) | Challenge links that rebuild the exact house: "ท้าเพื่อนเล่นบ้านนี้", "ส่งให้คนที่บ้าน" |
 | Practical value spreads; long documents don't | Every tap teaches one action with a tip of 80 characters or fewer; every result lists all the lessons and the help numbers |
-| 78% mobile, 74% Android, in-app browsers dominate | A light start screen (151 KB at launch, 188 KB in v1.6.0, 200 KB with five modes in v1.7.0, 208 KB counting the home check's lazy code in v1.8.0), no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
+| 78% mobile, 74% Android, in-app browsers dominate | A light start screen (151 KB at launch, 188 KB in v1.6.0, 200 KB with five modes in v1.7.0, 208 KB counting the home check's lazy code in v1.8.0, 232 KB with the guides and their sources in v1.9.0), no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
 | Coping humour works; suffering-as-content backfires | Humour only at the situation (mud, the rope that isn't a snake, the gecko's faces). No real photos, no AI flood images, no people in danger. |
 | Political anger is high | No politicians, agencies blamed, party colours, royal or religious references |
 | Quiet edits cost trust | "UPDATE:" labels for content changes, and dated sources in the About sheet |
@@ -605,13 +616,15 @@ What the build does for search, why, and how sure we are. Facts about *this site
 |---|---|---|
 | `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 81 articles (one per item, ordered by mode then room) after a "By hazard" row of links (v1.6.0) and an index by topic (`#t-health` and so on), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 21 partly verified items carry "⚠️ under review". After the checklists, since v1.8.1, links to the home check and the plan card. About 167 KB, 32 KB gzipped (v1.7.0). No script. |
 | `/flood`, `/pm25`, `/fire` (v1.6.0), `/ready` (v1.7.0) | the same files, one hazard each | Only that hazard's lessons (43, 12, 13, 13), its checklists and the helplines, with ▶ play buttons to `/?mode=<id>`; `/ready` (v1.8.0) and `/flood` (v1.8.1) also link the home check and the plan card. No script. See §25.4. |
-| `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). Since v1.8.1 one line names the two family tools and their links: "Two family tools that run on the device; nothing typed is sent: …/?open=kit · …/?open=plan". It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
-| `/sitemap.xml` | 12 addresses: `/`, `/learn`, `/flood`, `/pm25`, `/fire`, `/ready` and their `/en/` twins, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
+| `/landslide`, `/storm`, `/quake`, `/heat` (v1.9.0) | `checklists.json`, `sources.json` | The hazard's guide first, by phase, with the sources under every line, then the picture link, the tool links and the helplines. No script. See §29.9. |
+| `/kit`, `/plan` (v1.9.0) | `kit.json`, `sources.json` | Every line of the home check or the plan card with its sources, and a button into the tool. JSON-LD `WebPage`. See §29.9. |
+| `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). Since v1.9.0 a section per guide with no game, "What to do: …", lists each line with its source URLs. Since v1.8.1 one line names the two family tools and their links: "Two family tools that run on the device; nothing typed is sent: …/?open=kit · …/?open=plan". It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
+| `/sitemap.xml` | 24 addresses since v1.9.0 (12 before): `/`, `/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/landslide`, `/storm`, `/quake`, `/heat`, `/kit`, `/plan` and their `/en/` twins, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
 | `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
-| `<link rel="canonical">` and `hreflang` | the OG block, and the page template for `/learn` and the hazard pages | Each indexable page points at itself (`/`, `/learn`, `/pm25`, `/en/`, `/en/learn`, `/en/pm25` and so on); the 60 Thai share pages → `/` and the 60 English ones → `/en/`. Each indexable page lists its twin with `hreflang` (§18). |
-| JSON-LD on `/` and `/en/` | `og` / `ogEn` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English). Its `about` lists the four hazards in Thai and English (floods, PM2.5 dust, house fire, power cuts) since v1.7.0; before, it listed floods only. |
+| `<link rel="canonical">` and `hreflang` | the OG block, and the page template for `/learn` and the hazard pages | Each indexable page points at itself (`/`, `/learn`, `/pm25`, `/en/`, `/en/learn`, `/en/pm25` and so on); the 64 Thai share pages → `/` and the 64 English ones → `/en/` (55 challenge and 9 checklist pages each since v1.9.0). Each indexable page lists its twin with `hreflang` (§18). |
+| JSON-LD on `/` and `/en/` | `og` / `ogEn` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English). Its `about` lists every hazard in Thai and English: floods, PM2.5 dust, house fire and power cuts (since v1.7.0; before, floods only), and since v1.9.0 flash floods and landslides, storms and lightning, earthquakes and extreme heat ([KNOWN_ISSUES #65](KNOWN_ISSUES.md#65-loose-ends-from-the-v190-sweep)). |
 | JSON-LD on `/learn` and `/en/learn` | `sources.json` | `Article` with a `citation` list of the 69 source addresses actually used. |
-| JSON-LD on the hazard pages | `sources.json` | `Article` whose `citation` lists the sources of that page's lessons (54 for floods, 4 for dust, 6 for fire, 10 for the power cut). |
+| JSON-LD on the hazard pages | `sources.json` | `Article` whose `citation` lists the sources of that page's lessons (54 for floods, 4 for dust, 6 for fire, 10 for the power cut), and on a guide-only page (v1.9.0) the sources of its guide's lines. |
 | `X-Robots-Tag: noindex` | `_headers` | On `*.pages.dev` addresses only. Confirmed present on `baanrodmai.pages.dev` and absent on the custom domain. |
 | GitHub About | `gh repo edit` | Thai + English description, homepage, 20 topics. |
 
@@ -933,13 +946,14 @@ The power cut (`stock`, v1.7.0) has no `months`, so rule 3 never picks it: it is
 | dust | `pm25` | `/pm25` | `/en/pm25` | dust | 12 | Air4Thai | `og/checklist-dust.png` |
 | fire | `fire` | `/fire` | `/en/fire` | fire | 13 | none | `og/checklist-fire.png` |
 | outage (v1.7.0) | `ready` | `/ready` | `/en/ready` | stock | 13 | none | `og/checklist-stock.png` |
+| landslide, storm, quake, heat (v1.9.0) | same as the id | `/landslide` … | `/en/landslide` … | none: a guide (§29.9) | 10 guide lines each | none | `og/checklist-<id>.png` |
 
 - **Generated** by `tools/build.mjs` into `public/<slug>.html` and `public/en/<slug>.html`; never edit them by hand. Cloudflare Pages serves `/pm25` from `pm25.html` and redirects `/pm25.html` to `/pm25` with a 308, as it does for the challenge pages (§8).
 - **Order on the page:** the top links (the game, all lessons, the other language), the H1, the ▶ play button to `/?mode=<id>` (`seo.playMode`, with the mode's name and round length; one per mode, so two on `/flood`), the intro (the English pages add that the advice and helplines are Thai), the "check before you go" link, the links to the home check and the plan card for a hazard with `tools` (`/ready` since v1.8.0, `/flood` since v1.8.1), the date updated, the lessons by mode, the hazard's checklists, the helplines, the play buttons again, the "อ่านตามภัย / By hazard" row (this page marked with `aria-current`), and the disclaimer.
 - **Search signals:** a canonical link to itself, `hreflang` th / en / x-default, `og:url`, the preview image of the hazard's first mode's checklist (`/og/` or `/og/en/`; no new images), and `Article` JSON-LD whose `citation` lists the sources of its lessons. Both languages are in the sitemap and `llms.txt`, and `/learn` and `/en/learn` link them from the same "By hazard" row.
-- **Slugs** live in `config.json → hazards`. The build stops unless each one is lowercase letters, digits or "-", is unique, isn't a reserved site path (`c`, `checklist`, `en`, `learn`, `api`, `js`, `css`, `content`, `art`, `fonts`, `icons`, `og`, `share`, `index`, `sw`, `robots`, `sitemap`, `llms`, `manifest`, `posts`) and doesn't match an existing `public/<slug>`; every hazard in the registry needs one. A slug must never change once published, because shared links and search results point at it.
+- **Slugs** live in `config.json → hazards`. The build stops unless each one is lowercase letters, digits or "-", is unique, isn't a reserved site path (`c`, `checklist`, `en`, `learn`, `api`, `js`, `css`, `content`, `art`, `fonts`, `icons`, `og`, `share`, `index`, `sw`, `robots`, `sitemap`, `llms`, `manifest`, `posts` and, since v1.9.0, `kit` and `plan`) and doesn't match an existing `public/<slug>`; every hazard in the registry needs one. A slug must never change once published, because shared links and search results point at it.
 - **Strings** in `seo.th` and `seo.en`: `byHazard`, `allLessons`, `playMode`, and `hazard<Flood|Dust|Fire|Outage><Nav|Title|Desc|H1|Intro>`. The build stops when one is missing. The text is a draft for the language check ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)). It adds no advice or numbers, and the descriptions name no agencies, so it can't drift from the lessons. The `/ready` intro says that several lessons come from international guidance and are marked.
-- **One template.** `/learn`, `/en/learn` and the eight hazard pages come from one `seoPage()` function. The old `/learn` template was replaced first, and its output checked byte-identical (`git diff --quiet`) before the hazard pages were added.
+- **One template.** `/learn`, `/en/learn` and the hazard pages (eight until v1.8.1, sixteen since v1.9.0, with `/kit` and `/plan` too) come from one `seoPage()` function. The old `/learn` template was replaced first, and its output checked byte-identical (`git diff --quiet`) before the hazard pages were added.
 - **Tap targets:** the helpline `tel:` links (28–38 px wide on `/learn` before v1.6.0) and the source links have `min-width: 44px`; the top links, the check link and the chips are 44 px tall. A smoke check measures every control on all these pages at 320 × 460 (ten since v1.7.0), and checks that each hazard page's play button is on the first screen.
 
 ### 25.5 The ending on the shared card
@@ -1113,6 +1127,8 @@ Built 19 Oct 2026 (ROADMAP N15). Two tools outside the round, for a family at ho
 
 v1.8.1 (19 Oct 2026, ROADMAP N16) renamed the English title "How ready is our home?", named floods next to power cuts in the check's intro and share text, linked both tools from `/flood`, `/learn` and `llms.txt` and from the installed app's shortcuts, put the 🎒 button on the flood results, counts the plan form's opens (`plan_open`), and draws every field on the plan card. Houses and challenge links are still the same.
 
+v1.9.0 (19 Oct 2026, §29) moved both tools into the start screen's hub ("🎒 เช็กของจำเป็น", which shows the saved score as "บ้านเราพร้อม 64%", and "📝 แผนครอบครัว"), gave them their own pages, `/kit` and `/plan`, with their own previews, which the two cards now print and link instead of `/?open=kit` and `/?open=plan`, and added "🖨️ พิมพ์เก็บไว้" to the check's list (§29.10).
+
 ### 28.1 Why
 
 The power cut (§27) teaches what to stock, one lesson at a time, in a house that isn't the player's. A family then has to turn "3 L per person per day for 3 days" into its own number and find out what it is still missing. The check does that sum for the household and keeps the ticks, and its card is something to send to the family group, with the text "บ้านเราพร้อมแล้ว 56% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ?" (v1.8.1; it said "พร้อมรับมือไฟดับ" before). The same 3-day amounts are in the flood lessons' Thai sources (กรมประชาสัมพันธ์'s 72-hour list, ปภ.), so since v1.8.1 the check names floods as well as power cuts. The plan card does the same for the flood lessons about who does what (`p-plan`: older and bedridden people first; `p-poster`: the way to the shelter): the family writes its own answers and keeps them on every phone.
@@ -1134,7 +1150,7 @@ A returning visitor goes straight to the list with their answers and ticks. If t
 
 | From | What | Label (`kit_open` for the check, `plan_open` for the plan) |
 |---|---|---|
-| The start screen | Quick button 🎒 "บ้านพร้อมไหม?" (`#kit-chip`, `data-open="kit"`); once checked it reads "บ้านพร้อม {pct}%" from `brm:kit` | `start` |
+| The start screen | Until v1.8.1 the quick button 🎒 "บ้านพร้อมไหม?" ("บ้านพร้อม {pct}%" once checked). Since v1.9.0 the hub's "🎒 เช็กของจำเป็น" (`data-open="kit"`; its sub-label `#kit-chip` reads "บ้านเราพร้อม {pct}%" from `brm:kit`) and "📝 แผนครอบครัว" (`data-open="plan"`) (§29.6) | `start` |
 | A result screen | "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน" (`#btn-kit`) when the mode's hazard lists `kit` in `config.json → hazards.<hazard>.tools`: prepare, return and the power cut, not dust or fire (v1.8.1; before, any mode whose threat is `dark`, so only the power cut) | `result` |
 | A link | `/?open=kit` and `/?open=plan` (`/en/…` in English), read in `boot()` | `link` |
 | `/ready`, `/flood` and their English twins | "🎒 เช็กว่าบ้านเราพร้อมแค่ไหน (ฟรี 1 นาที)" and "📝 ทำการ์ดแผนบ้านรอดของบ้านเรา", from `config.json → hazards.<hazard>.tools` (`outage` since v1.8.0, `flood` since v1.8.1) and `seo.<lang>.toolKit` / `toolPlan` | `link` |
@@ -1223,7 +1239,7 @@ The rule: what a family answers, ticks or types is theirs, and the game never ne
 |---|---|---|---|---|
 | `kit_open` | The home check opens | – | `start` / `result` / `link` / `plan` (§28.2) | – |
 | `kit_share` | A channel in the check's share sheet is tapped | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 |
-| `plan_open` (v1.8.1) | The plan form opens | – | `link` / `kit` (§28.2) | – |
+| `plan_open` (v1.8.1) | The plan form opens | – | `link` / `kit` (§28.2) / `start` (the hub, v1.9.0) | – |
 | `plan_share` | A channel in the plan card's share sheet is tapped | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
 
 - **`plan_open` counts arrivals at the form.** "← แก้แผน" in the card's share sheet reopens the form without sending it again (`openPlan(from, true)`); the check's list button and the plan form's back button still send one event each way. `kit_open` from a result carries the mode (`prepare`, `return`, `stock`). Before v1.8.1 opening the plan sent nothing, so a `/?open=plan` arrival showed only as a `direct` view.
@@ -1264,3 +1280,284 @@ Both are drawn in `kit.js` with the card helpers `cards.js` exports as `kit` (he
 | "Eat the fridge, then the freezer, then cans" | No agency states the order (§27.3). |
 | Amounts for food, pet food, baby supplies or cash | No source gives one that fits a Thai household; those lines carry no number. |
 | Names, ages or phone numbers in the questions | Not needed for the list; the check asks only a count and four yes/no answers. The plan card's fields are free text kept on the device (§28.5). |
+
+## 29. Tools first: a guide for every hazard (v1.9.0)
+
+Built 18–19 Oct 2026 (ROADMAP N17). The start screen leads with three tools, every hazard has a short "what to do" guide, four of them for hazards the game doesn't cover, and the owner can put one guide on top while it is in the news. No item, room, slot or `houseVersion` changed, so houses and challenge links are the same.
+
+### 29.1 Why tools first
+
+The owner's direction on 19 Oct 2026, in their words: "We do not know which topics can hit now; prepare for all possibilities; some trends happen spontaneously. เตรียมบ้าน can be general for all catastrophes. People like to know what they should prepare or do. The game can be the option to make it more understandable or help them not read so much text. It should not force everyone to play the game; it is a tool to help them."
+
+Until v1.8.1 the app was a game with tools beside it: the start screen led with the mode cards, the checklists were a quick button, and a hazard without a game mode had nothing to offer. When an earthquake, a storm or a heatwave is in the news, people search for what to do now, not for a game. So v1.9.0 turns the order round:
+
+- **What to do comes first,** for any hazard, in a minute of reading: 10 lines, by phase, each with its source.
+- **What to keep and who does what** (the home check and the plan card of v1.8.0, §28) sit next to it, because they are the same for every hazard.
+- **The game is the optional way to remember** ("🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"): it stays for the five hazards it covers, and a guide with a game offers "▶ เล่นเกมเรื่องนี้ 60 วิ".
+- **The owner can follow the news** without a code change: the alert switch (§29.5) and the guides' pictures and captions on `/posts` ([04-launch-kit](04-launch-kit.md#when-something-happens-the-5-minute-playbook)).
+
+### 29.2 The data model: guides, phases, sources, verify
+
+**`config.json → guides`** lists the guides in the order the app shows them, each `{id, hazard, icon}`:
+
+| Order | Id | Icon | Hazard | Name (`guide<Id>`, th / en) | Game | Page |
+|---|---|---|---|---|---|---|
+| 1 | `prepare` | 🌊 | flood | น้ำกำลังมา / A flood is coming | ก่อนน้ำมา | `/flood` |
+| 2 | `landslide` | ⛰️ | landslide | น้ำป่า ดินถล่ม / Flash floods and landslides | — | `/landslide` |
+| 3 | `storm` | ⛈️ | storm | พายุ ฟ้าผ่า / Storms and lightning | — | `/storm` |
+| 4 | `return` | 🧹 | flood | หลังน้ำลด / After a flood | หลังน้ำลด | `/flood` |
+| 5 | `quake` | 🏚️ | quake | แผ่นดินไหว / Earthquake | — | `/quake` |
+| 6 | `fire` | 🔥 | fire | ไฟไหม้ / House fire | ไฟไหม้ | `/fire` |
+| 7 | `stock` | 🔦 | outage | ไฟดับ / Power cut | ไฟดับ | `/ready` |
+| 8 | `heat` | 🌡️ | heat | อากาศร้อนจัด / Extreme heat | — | `/heat` |
+| 9 | `dust` | 😷 | dust | ฝุ่น PM2.5 / PM2.5 dust | ฝุ่น PM2.5 | `/pm25` |
+
+- **A game mode's checklist is its guide.** `checklists.json → prepare`, `return`, `dust`, `fire` and `stock` are unchanged: 10 lines that sum up the mode's sourced lessons, with sprites for the picture, and no phases or sources of their own (the lessons carry them, §27.7).
+- **A guide with no game** (`landslide`, `storm`, `quake`, `heat`) has no lessons behind it, so each line carries its own evidence: `{icon, th, en, phase, sources[], verify, verifyNote?}`. `phase` is `before`, `during` or `after` (shown as "ก่อนเกิด", "ขณะเกิด", "หลังเกิด"); `verify` is `verified` or `partial`, and a `partial` line has a `verifyNote` that says which part is unconfirmed and why. These guides have no sprites, so their picture uses the plain layout (§29.9).
+- **`config.json → hazards`** gains `landslide`, `storm`, `quake` and `heat`, each with a slug (the same word) and `tools: ["kit", "plan"]`. Since v1.9.0 a hazard needs a mode **or** a guide.
+- **Build checks** (`tools/build.mjs`): a guide is listed once, its hazard exists, it has an icon, `strings.<lang>.guide<Id>` and `og`/`ogEn.checklistTitle<Id>`, and a checklist; every checklist is a guide; a guide that is a mode has the mode's hazard. A guide with no game has exactly 10 lines, phases in order (before → during → after), at least one source per line, all of them in `sources.json`, a valid `verify` and, when `partial`, a `verifyNote`; a Thai line over 48 characters is a warning (about 45 fit two lines on the 1080 × 1920 picture). The unit test "guides with no game: 10 lines, before → during → after, a source on every line" checks the same from the shipped files.
+
+### 29.3 The four new guides and their sources
+
+Researched in parallel on 18–19 Oct 2026, one hazard per researcher with the same strict brief: Thai agencies first, cross-checked with international guidance; every line traced to a page actually read, with the sentence quoted in the source's `note`; anything sources disagree on left out and recorded; a line whose core rests on one foreign agency, or whose detail is an inference, marked ⚠️ with the reason. Each line was then read again as an editor against its sources before it went in. Agency sites refuse automated readers ([KNOWN_ISSUES #9](KNOWN_ISSUES.md#9-agency-websites-blocked-automated-checks)), so most Thai agencies were read through Thai news reports that quote them (`kind: secondary`); [#60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies) is the open review.
+
+**Totals:** 40 lines, 35 ✅ and 5 ⚠️, citing 40 sources: the 36 added in v1.9.0 (27 `secondary`, 1 `official`, 8 `international`) and 4 already in `sources.json` (`tmd-warn`, `pea-1348`, `pea-service`, `mea-1130`, for the storm guide's warnings and fallen-line helplines).
+
+**น้ำป่า ดินถล่ม** (`landslide`, "น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ" / "Flash floods and landslides: 10 steps"), 7 ✅, 3 ⚠️:
+
+| # | Phase | Line (th / en) | Sources | |
+|---|---|---|---|---|
+| 1 | before | ดูว่าบ้านติดเขาหรือลำห้วยที่เสี่ยงดินถล่มไหม / Check if your home is by a slope or stream at risk | `dmr-riskvillage-2565`, `dwr-ews-2569` | ⚠️ DMR describes a risk village (2022) but no text read says "check your own home" |
+| 2 | before | ติดตามคำเตือนในแอป THA DISASTER ALERT / Follow warnings on the THA DISASTER ALERT app | `ddpm-app-2569`, `dmr-signs-2568`, `dwr-ews-2569` | ✅ |
+| 3 | before | รู้สัญญาณเตือนหมู่บ้าน และจุดปลอดภัยที่นัดไว้ / Know your village's warning signal and agreed safe spot | `dmr-riskvillage-2565` | ✅ |
+| 4 | before | วางแผนเส้นทางอพยพไปจุดปลอดภัยไว้ก่อน / Plan your evacuation route to the safe spot in advance | `dwr-ews-2569` | ✅ |
+| 5 | before | เตรียมแผนดูแลเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง / Plan how you'll help children, older and bedridden people | `ddpm-mhs-2569`, `ddpm-nan-2568` | ✅ |
+| 6 | during | ฝนตกหนักต่อเนื่อง เตรียมพร้อมอพยพไปที่ปลอดภัย / Heavy rain that won't stop? Get ready to evacuate | `dmr-watch-2567`, `dmr-rain-2568` | ✅ |
+| 7 | during | น้ำห้วยขุ่นข้น เสียงดังผิดปกติ รีบอพยพทันที / Stream turns muddy or a loud odd noise? Leave at once | `dmr-signs-2568`, `dmr-riskvillage-2565`, `dmr-rain-2568` | ✅ |
+| 8 | during | ดินเริ่มมีรอยแยก รีบอพยพไปที่ปลอดภัยทันที / Ground starting to crack? Move to a safe place at once | `dmr-signs-2568`, `readygov-landslide` | ✅ |
+| 9 | during | อย่าข้ามทางที่มีน้ำหรือโคลนไหลผ่าน / Never cross a road with water or mud flowing over it | `readygov-landslide` | ⚠️ Ready.gov only; no Thai text on crossing flowing water could be read |
+| 10 | after | อยู่ห่างจุดดินถล่ม จนเจ้าหน้าที่บอกว่าปลอดภัย / Keep away from the slide until officials say it's safe | `readygov-landslide`, `ddpm-app-2569` | ⚠️ "more slides may follow" is Ready.gov's; ปภ. says only "follow official instructions" and closes risk sites |
+
+**พายุ ลมแรง ฟ้าผ่า** (`storm`, "รับมือพายุ ลมแรง ฟ้าผ่า 10 ข้อ" / "Storms, wind and lightning: 10 steps"), 9 ✅, 1 ⚠️:
+
+| # | Phase | Line (th / en) | Sources | |
+|---|---|---|---|---|
+| 1 | before | ติดตามประกาศเตือนภัยของกรมอุตุฯ และทำตาม / Follow Met Department storm warnings and act on them | `ddpm-storm6`, `tmd-warn`, `tmd-storm-2566`, `mea-storm-2565`, `readygov-storm` | ✅ |
+| 2 | before | ตรวจหลังคา ประตู หน้าต่าง ให้มั่นคงแข็งแรง / Check the roof, doors and windows are secure | `ddpm-storm6`, `ddpm-storm-home`, `ddpm-storm-2561` | ✅ |
+| 3 | before | เก็บของที่ลมพัดปลิวได้ไว้ในที่มิดชิด / Put away anything the wind could blow about | `ddpm-storm-home`, `ddpm-storm-2561` | ✅ |
+| 4 | before | ตัดแต่งกิ่งไม้ใหญ่ใกล้บ้านที่เสี่ยงหักโค่น / Trim weak branches on big trees near the house | `ddpm-storm-home`, `ddpm-storm6`, `mea-storm-2565`, `readygov-storm` | ✅ |
+| 5 | during | อยู่ในอาคารแข็งแรง ปิดประตูหน้าต่างให้มิดชิด / Stay in a sturdy building with doors and windows shut | `ddpm-storm6`, `ddc-rainy-lightning`, `readygov-storm`, `nws-lightning-outdoors` | ✅ |
+| 6 | during | ไม่หลบใต้ต้นไม้ใหญ่ ป้ายโฆษณา หรือเสาไฟฟ้า / Don't shelter under big trees, billboards or power poles | `ddpm-storm6`, `tmd-storm-2566`, `ddc-rainy-lightning`, `mea-storm-2568`, `nws-lightning-outdoors` | ✅ |
+| 7 | during | ฟ้าคะนอง อย่าอยู่บนดาดฟ้า ระเบียง หรือที่โล่ง / In lightning, keep off rooftops, balconies and open ground | `ddpm-storm6`, `ddpm-storm-2561`, `ddc-rainy-lightning`, `nws-lightning-indoors`, `nws-lightning-outdoors` | ✅ |
+| 8 | during | ฟ้าคะนอง งดใช้เครื่องใช้ไฟฟ้าที่เสียบปลั๊ก / In lightning, don't use anything plugged into the mains | `ddpm-storm6`, `ddpm-storm-2561`, `readygov-storm`, `nws-lightning-indoors` | ✅ |
+| 9 | after | สายไฟขาด เสาล้ม อย่าเข้าใกล้ แจ้ง 1130/1129 / Keep away from fallen lines or poles; call 1130 or 1129 | `pea-storm-2569`, `pea-1348`, `pea-service`, `mea-storm-2565`, `mea-1130`, `readygov-storm` | ✅ |
+| 10 | after | หลังพายุ ตรวจอุปกรณ์ไฟฟ้า ถ้าชำรุดรีบซ่อม / After the storm, check electrics and repair any damage | `mea-storm-2565`, `mea-storm-2568` | ⚠️ กฟน. gives it as storm-season advice; "after the storm" is ours. No source read says to inspect the roof afterwards, so the roof is left out |
+
+Line 8 says "don't **use**" what is plugged in, which ปภ., Ready.gov and the US NWS all say; it doesn't say "unplug", where they disagree (§29.4).
+
+**แผ่นดินไหว** (`quake`, "แผ่นดินไหว ทำอะไร 10 ข้อ" / "Earthquake: 10 things to do"), 9 ✅, 1 ⚠️:
+
+| # | Phase | Line (th / en) | Sources | |
+|---|---|---|---|---|
+| 1 | before | ยึดเครื่องใช้หนักๆ ให้แน่นกับผนังหรือพื้น / Fix heavy appliances firmly to the wall or floor | `dmr-quake-2568`, `readygov-quake` | ✅ |
+| 2 | before | ไม่วางของหนักไว้บนชั้นหรือหิ้งสูง / Keep heavy things off high shelves and ledges | `dmr-quake-2568` | ✅ |
+| 3 | before | เตรียมไฟฉาย ถ่านสำรอง และกระเป๋ายาไว้ในบ้าน / Keep a torch, spare batteries and a first-aid kit at home | `dmr-quake-2568`, `doh-quake-2566`, `readygov-quake` | ✅ |
+| 4 | during | หมอบ ป้อง เกาะ ใต้โต๊ะหรือจุดที่แข็งแรง / Drop, cover and hold on under a sturdy table | `ddpm-quake-2568`, `ddpm-quake-2562`, `readygov-quake` | ✅ |
+| 5 | during | อยู่ห่างประตูและหน้าต่างที่เป็นกระจก / Keep away from glass doors and windows | `ddpm-quake-2562`, `doh-quake-2566`, `dmr-quake-2568`, `readygov-quake` | ✅ |
+| 6 | during | ริมทะเล: ไหวหรือน้ำลดฉับพลัน รีบไปที่สูง / By the sea: a quake or a sudden ebb? Go to high ground | `dmr-quake-2568`, `tmd-tsunami`, `readygov-quake` | ⚠️ DMR: move away from the shore in a quake. The sudden ebb as a signal is read from TMD's paper, which describes the sea pulling back before the wave: an inference. Fully verified fallback in the `verifyNote`: "อยู่ชายหาดแล้วแผ่นดินไหว รีบออกห่างฝั่ง" |
+| 7 | after | ออกจากตึกทางบันไดหนีไฟ ห้ามใช้ลิฟต์ / Leave by the fire stairs, never the lift | `dmr-quake-2568`, `ddpm-quake-2562`, `doh-quake-2566` | ✅ (no timing: §29.4) |
+| 8 | after | อย่าเพิ่งกลับเข้าตึก รอตรวจหรือรอคำสั่งทางการ / Don't rush back in; wait for a check or official word | `ddpm-quake-2568`, `ddpm-quake-2562` | ✅ |
+| 9 | after | ได้กลิ่นแก๊ส ปิดวาล์วถัง เปิดประตูหน้าต่าง / Smell gas? Shut the cylinder valve, open doors and windows | `dmr-quake-2568` | ✅ |
+| 10 | after | สวมรองเท้าหุ้มส้น กันเศษแก้วและของมีคม / Wear closed shoes against broken glass and debris | `dmr-quake-2568` | ✅ |
+
+**อากาศร้อนจัด** (`heat`, "อากาศร้อนจัด ดูแลกันได้ 10 ข้อ" / "Extreme heat: 10 ways to look after each other"), 10 ✅:
+
+| # | Phase | Line (th / en) | Sources | |
+|---|---|---|---|---|
+| 1 | before | ดูแลผู้สูงวัย เด็กเล็ก คนท้อง คนมีโรคประจำตัว / Look after elders, young children, pregnant women, the ill | `ddc-heatstroke-2568`, `ddc-heatstroke-pptv-2568`, `doh-heatstroke-2566`, `who-heat`, `readygov-heat`, `cdc-heat-about` | ✅ |
+| 2 | before | ติดตามข่าวเตือนภัยความร้อนและค่าดัชนีความร้อน / Follow heat warnings and the heat index | `bma-heatindex-2569`, `tmd-heatindex-posttoday-2567` | ✅ |
+| 3 | before | วางน้ำใกล้ผู้สูงวัย ชวนจิบบ่อย ไม่รอให้กระหาย / Keep water by elders; have them sip before they feel thirsty | `doh-elders-water-2565`, `tmd-heatindex-posttoday-2567`, `ddc-heatstroke-2568` | ✅ |
+| 4 | before | จัดห้องที่เย็น อากาศถ่ายเท ให้ผู้สูงวัยพัก / Set up a cool, airy room for elders to rest in | `doh-elders-water-2565`, `ddc-heatstroke-2568`, `doh-heatstroke-2566`, `who-heat` | ✅ |
+| 5 | during | ใส่เสื้อผ้าสีอ่อน หลวม ระบายความร้อนได้ดี / Wear light-coloured, loose clothes that breathe | `ddc-heatstroke-2568`, `ddc-heatstroke-pptv-2568`, `doh-elders-water-2565`, `readygov-heat` | ✅ |
+| 6 | during | ย้ายกิจกรรมกลางแจ้งไปทำช่วงเช้าหรือเย็น / Move outdoor activity to the morning or evening | `doh-heatstroke-2566`, `ddc-heatstroke-2568`, `who-heat`, `readygov-heat` | ✅ |
+| 7 | during | เลี่ยงเหล้า เบียร์ ในวันที่อากาศร้อนจัด / Avoid alcohol on very hot days | `ddc-heatstroke-2568`, `ddc-heatstroke-pptv-2568`, `doh-elders-water-2565`, `cdc-heat-about` | ✅ |
+| 8 | during | ห้ามทิ้งเด็กหรือใครไว้ในรถที่จอดกลางแดด / Never leave a child, or anyone, in a car parked in the sun | `ddc-heatstroke-2568`, `ddc-heatstroke-pptv-2568`, `doh-heatstroke-2566`, `who-heat`, `readygov-heat` | ✅ |
+| 9 | after | ตัวร้อนจัด เหงื่อไม่ออก สับสน รีบโทร 1669 / Very hot, not sweating, confused? Call 1669 at once | `doh-heatstroke-2566`, `ddc-heatstroke-2568`, `doh-elders-water-2565`, `readygov-heat` | ✅ |
+| 10 | after | พาเข้าที่ร่ม คลายเสื้อ เช็ดตัวผ้าชุบน้ำเย็น / Into the shade, loosen clothes, wipe with a cool wet cloth | `ddc-heatstroke-2568`, `ddc-heatstroke-pptv-2568`, `doh-heat-illness-2569`, `readygov-heat` | ✅ |
+
+In the heat guide "after" means once someone is unwell; on the page and in the sheet the heading still reads "หลังเกิด" / "After".
+
+**The sources** (the `note` of each quotes what was read; dates are the article's where it shows one):
+
+| Source | Agency | Kind, read via | Date | What it supports | Cited by |
+|---|---|---|---|---|---|
+| `dmr-signs-2568` | กรมทรัพยากรธรณี | secondary, Bangkok Biz News | — (refers to Sep 2025) | follow warnings; muddy stream, odd loud noise, cracking ground → evacuate at once | landslide #2, #7, #8 |
+| `dmr-riskvillage-2565` | กรมทรัพยากรธรณี | secondary, Thansettakij | 2022-06-15 | what a risk village looks like; warning signs; village loudspeaker and agreed safe points | landslide #1, #3, #7 |
+| `dmr-watch-2567` | กรมทรัพยากรธรณี | secondary, Thansettakij | 2024-09-19 | long continuous rain, muddy water; be ready to evacuate | landslide #6 |
+| `dmr-rain-2568` | กรมทรัพยากรธรณี | secondary, Thai PBS | 2025-08-06 | follow rainfall; thick muddy water and floating debris as signs | landslide #6, #7 |
+| `dwr-ews-2569` | กรมทรัพยากรน้ำ | secondary, Bangkok Biz News | — (2026) | the green / yellow / red warning levels: follow news, plan the evacuation route, move when told | landslide #1, #2, #4 |
+| `ddpm-mhs-2569` | ปภ. | secondary, Bangkok Biz News | — (Sep 2026) | a plan for vulnerable household members | landslide #5 |
+| `ddpm-nan-2568` | ปภ. | secondary, Thansettakij | 2025-06-27 | look after young children, older and bedridden people | landslide #5 |
+| `ddpm-app-2569` | ปภ. | secondary, Naewna | 2026-05-28 | the THA DISASTER ALERT app; follow official instructions; risk sites closed | landslide #2, #10 |
+| `readygov-landslide` | Ready.gov (FEMA) | international | — | cracking ground; never cross flowing water or mud; stay away from the slide | landslide #8, #9, #10 |
+| `ddpm-storm6` | ปภ. | secondary, Bangkok Biz News | — | follow forecasts; a sturdy house; shut doors and windows; trim trees; off rooftops and open ground; no devices in lightning | storm #1, #2, #4–#8 |
+| `ddpm-storm-home` | ปภ. | secondary, Bangkok Biz News | — | store what the wind can blow; sturdy doors, windows, roof; trim weak branches | storm #2, #3, #4 |
+| `ddpm-storm-2561` | ปภ. | secondary, Thai Post | 2018-03-07 | the same storm checks; keep off rooftops and balconies; stop using electronics (its "unplug everything" is not used) | storm #2, #3, #7, #8 |
+| `tmd-storm-2566` | กรมอุตุนิยมวิทยา | secondary, Thai PBS | 2023-03-12 | avoid open ground, big trees, weak structures and billboards; follow TMD | storm #1, #6 |
+| `ddc-rainy-lightning` | กรมควบคุมโรค | secondary, Bangkok Biz News | — | shelter in a sturdy building; avoid open ground and rooftops, trees, billboards and poles | storm #5, #6, #7 |
+| `mea-storm-2565` | กฟน. | secondary, MGR Online | 2022-01-22 | away from billboards and trees near lines; check electrics and repair; report to 1130 | storm #1, #4, #9, #10 |
+| `mea-storm-2568` | กฟน. | secondary, Daily News | 2025-05-14 | the same, May 2025 | storm #6, #10 |
+| `pea-storm-2569` | กฟภ. | secondary, Bangkok Biz News | 2026-05-04 | keep away from broken lines and fallen poles; report to 1129 | storm #9 |
+| `readygov-storm` | Ready.gov (FEMA) | international | 2026-05-11 | warnings; trim trees; indoors; avoid plugged-in devices; report fallen lines | storm #1, #4, #5, #8, #9 |
+| `nws-lightning-indoors` | US NWS | international | — | off balconies; don't touch electrical equipment ("do not unplug" is not used) | storm #7, #8 |
+| `nws-lightning-outdoors` | US NWS | international | — | a safe building; avoid open fields and tall isolated trees | storm #5, #6, #7 |
+| `ddpm-quake-2568` | ปภ. | secondary, Bangkok Biz News | 2025-03-28 | drop, cover, hold on; don't rush back in; wait for a check or official word | quake #4, #8 |
+| `ddpm-quake-2562` | ปภ. | secondary, The Bangkok Insight | 2019-11-22 | drop, cover, hold on; away from glass; never the lift; don't go back into weak buildings | quake #4, #5, #7, #8 |
+| `dmr-quake-2568` | กรมทรัพยากรธรณี | secondary, Thansettakij | 2025-03-28 | secure heavy things; nothing heavy up high; torch and medicine kit; away from windows; on a beach move away from the shore; no lift; closed shoes; gas | quake #1–#3, #5–#7, #9, #10 |
+| `doh-quake-2566` | กรมอนามัย | secondary, InfoQuest | 2023-06-21 | away from glass; fire stairs, never the lift; a kit with a torch | quake #3, #5, #7 |
+| `tmd-tsunami` | กรมอุตุนิยมวิทยา | official (a technical paper on earthquake.tmd.go.th) | — | the sea pulling back before a tsunami; leave the shore for high ground | quake #6 |
+| `readygov-quake` | Ready.gov (FEMA) | international | 2026-09-09 | cross-check: secure heavy items, drop-cover-hold, away from windows, high ground after a coastal quake | quake #1, #3–#6 |
+| `ddc-heatstroke-2568` | กรมควบคุมโรค | secondary, Thansettakij | 2025-03-18 | who is at risk; water, no alcohol, light loose clothes, no one left in a parked car; signs; first aid; 1669 | heat #1, #3–#10 |
+| `ddc-heatstroke-pptv-2568` | กรมควบคุมโรค | secondary, PPTV | 2025-03-20 | the same statement (a second link; its headline's death count is not reused) | heat #1, #5, #7, #8, #10 |
+| `doh-elders-water-2565` | กรมอนามัย | secondary, PPTV | 2022-04-09 | water by elders without waiting for thirst; a cool, airy room; light clothes; avoid alcohol; call 1669 | heat #3, #4, #5, #7, #9 |
+| `doh-heatstroke-2566` | กรมอนามัย | secondary, Thansettakij | 2023-04-06 | at-risk groups; activity in the morning or evening; no one left in a closed car; heatstroke signs | heat #1, #4, #6, #8, #9 |
+| `doh-heat-illness-2569` | กรมอนามัย | secondary, Thansettakij | 2026-03-24 | first aid for heat illness: shade, loosen clothes | heat #10 |
+| `bma-heatindex-2569` | กทม. | secondary, InfoQuest | 2026-05-03 | follow heat warnings by heat-index level | heat #2 |
+| `tmd-heatindex-posttoday-2567` | กรมอุตุนิยมวิทยา | secondary, Post Today | 2024-03-11 | the heat index TMD publishes; drink without waiting to feel thirsty | heat #2, #3 |
+| `who-heat` | WHO | international | 2026-07-31 | cross-check: who is vulnerable, the hottest hours, no one in parked vehicles, a cool home | heat #1, #4, #6, #8 |
+| `readygov-heat` | Ready.gov (FEMA) | international | 2026-07-16 | cross-check: at-risk groups, clothing, midday, closed cars, heat-stroke signs and first aid | heat #1, #5, #6, #8–#10 |
+| `cdc-heat-about` | US CDC | international | 2026-07-20 | cross-check: higher-risk groups; limit alcohol | heat #1, #7 |
+
+Already in `sources.json` and cited by the storm guide: `tmd-warn` (TMD warnings, 1182), `pea-1348` (PEA: keep away from a fallen line, 1129), `pea-service` (PEA's area and 1129) and `mea-1130` (MEA Call Center 1130, via PRD).
+
+English agency names were added to `seo.en.agencies`: กรมทรัพยากรธรณี → Department of Mineral Resources (DMR), กรมทรัพยากรน้ำ → Department of Water Resources (DWR), องค์การอนามัยโลก (WHO) → World Health Organization (WHO), กรมอุตุนิยมวิทยาสหรัฐฯ (NWS) → US National Weather Service (NWS).
+
+### 29.4 What was left out, and why
+
+| Left out | Why | Where it is recorded |
+|---|---|---|
+| Unplug appliances during lightning | ปภ. (2018) says unplug everything; the US NWS says don't unplug during a thunderstorm, because you could be struck. The guide keeps what both say: don't use what is plugged in (storm #8) | `ddpm-storm-2561`, `nws-lightning-indoors` |
+| No mobile phones in lightning | ปภ. and a TMD warning (via Thai PBS) say stop using communication devices; the NWS says mobile and cordless phones are fine indoors | `ddpm-storm-2561`, `tmd-storm-2566`, `nws-lightning-indoors` |
+| How much water to drink in the heat | กรมอนามัย's article gives at least 8 glasses a day; WHO gives a different amount (rule: a number sources disagree on stays out). The guide says "sip often, before you feel thirsty" | `doh-elders-water-2565`, `who-heat` |
+| Fans and windows in the heat | กรมอนามัย: a fan set away from the body, open doors and windows; WHO: shut windows and block sun by day, fans heat the body above 40 °C; the CDC: fans only below 90 °F; Ready.gov: cover windows, don't rely on a fan. The guide says "a cool, airy room" | `doh-elders-water-2565`, `who-heat`, `cdc-heat-about`, `readygov-heat` |
+| Temperatures (body heat, heat-index bands, how fast a parked car heats) | กรมอนามัย's 40 °C and Ready.gov's 103 °F differ; the heat-index bands and hours change with the agency; the 10–20 minutes for a car are not needed for the advice | `doh-heat-illness-2569`, `readygov-heat`, `bma-heatindex-2569`, `ddc-heatstroke-2568` |
+| Pets in a parked car | WHO and Ready.gov name animals or pets; no Thai source read does. The guide says "a child, or anyone" | `who-heat`, `readygov-heat` |
+| Leave a tall building at once, or wait until the shaking stops | ปภ. (2025) says evacuate high-rises at once and กรมอนามัย ties leaving to continued strong shaking; ปภ. (2019) and กรมทรัพยากรธรณี say leave after the shaking stops. The stairs line (quake #7) is in "after" and gives no timing | `ddpm-quake-2568`, `doh-quake-2566`, `ddpm-quake-2562`, `dmr-quake-2568` |
+| A walking time to safety from the shore | TMD's tsunami paper gives a walking-time figure in the sentence the guide uses; not used ("15 minutes" in the research brief) | `tmd-tsunami` |
+| Landslide warning minutes ("5–10 minutes") and the 100 mm-a-day rain threshold | The minutes came up in research without a source that settles them; the 100 mm is กรมทรัพยากรธรณี's monitoring threshold, not advice for a household | `dmr-riskvillage-2565`, `dmr-rain-2568` (100 mm); research notes (minutes) |
+| Trees or poles starting to tilt as a landslide sign | No Thai source found (Ready.gov lists other slow signs) | research notes |
+| Tie down roof sheets before a storm | No source found; ROADMAP P7 had it as a candidate | research notes; [ROADMAP P7](ROADMAP.md#p7-heat-and-summer-storms) |
+| Check the roof after a storm | No source read says so; storm #10 keeps the electrics only | storm #10 `verifyNote` |
+| Wait 30 minutes after the last thunder | The NWS says so; no Thai source checked does | `nws-lightning-outdoors` |
+| A death count from a heatstroke headline | A guardrail: no deaths in player-facing text | `ddc-heatstroke-pptv-2568` |
+
+### 29.5 The alert switch
+
+| Key | Now | Meaning |
+|---|---|---|
+| `config.json → alert.guide` | `"landslide"` | The guide to put first: the card on the start screen and the first tile in the picker, with a "ช่วงนี้" badge |
+| `config.json → alert.until` | `"2026-10-25"` | Its last day (Bangkok date, that day included) |
+
+- **Why landslide, until 25 Oct:** ปภ.'s warning of 18 Oct 2026 of heavy rain with flash floods and mudslides, 18–25 Oct, as reported by Thairath that day.
+- **`activeAlert(config, dayKey)`** in `modes.js` (pure) returns the guide while `switchOn(guide, until, dayKey)` is on, and `null` without a guide **or without an end date**: unlike the older switches, an alert with no `until` never shows. The unit test "the alert switch: one guide on top until its end date, never without one" checks the last day, the day after, no date and no guide, and that the shipped config names a real guide with a real date.
+- **The card:** "⛰️ ช่วงนี้: น้ำป่า ดินถล่ม · ดูว่าต้องทำอะไร ›" (`alertCard`, the guide's icon and `guide<Id>` name), a 48 px button with the warning colours, above the hub. It opens that guide (`checklist_open`, label `alert`). Hidden on a challenge link and when the guide has no checklist.
+- **The build** stops when `alert.guide` isn't a guide or `alert.until` isn't a real date, warns after the date has passed ("clear it or give a new end date"), and its `start` line ends with "· alert landslide until 2026-10-25" while it is on.
+- **The smoke test** expects the card from `activeAlert()` on `SMOKE_DATE` (on 18 Oct 2026 it shows, on 5 Dec 2026 it doesn't) and forces an alert (`storm`, until 2099) in one check by changing the `config.json` the test server sends to that page ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)).
+- **How the owner uses it:** [04-launch-kit](04-launch-kit.md#when-something-happens-the-5-minute-playbook); its limits: [KNOWN_ISSUES #64](KNOWN_ISSUES.md#64-the-alert-must-be-cleared-or-renewed-by-hand).
+
+### 29.6 The start screen
+
+From the top: the language and sound buttons, the wordmark, the tagline "เตรียมบ้านให้พร้อมทุกภัย รู้ว่าต้องทำอะไร และมีเกม 60 วิ ช่วยจำ", the alert card (when on), the hub, "🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน", the gecko and its bubble, the recommended mode's big card and the four small ones, the house date and streak, the featured topic and the safety book, the quick buttons (☎️ helplines and, where configured, 🌧️ the water level), and the footer ([20-start-tools.png](screens/20-start-tools.png)).
+
+**The hub** (`<nav class="hub">`, two columns, 8 px gaps):
+
+| Button | Label (th / en) | Sub-label | Opens | Size |
+|---|---|---|---|---|
+| 📋 (full width, yellow, ›) | ต้องทำอะไร เมื่อเกิดภัย / What to do in a disaster | น้ำท่วม แผ่นดินไหว พายุ ไฟไหม้ และเรื่องอื่น / Floods, earthquakes, storms, fire and more | the guide picker (`guide_open`, `start`) | ≥ 64 px tall |
+| 🎒 | เช็กของจำเป็น / Check your supplies | ตามจำนวนคนในบ้าน, or "บ้านเราพร้อม {pct}%" from `brm:kit` / Sized for your household, or "Your home: {pct}% ready" | the home check (`kit_open`, `start`) | ≥ 56 px |
+| 📝 | แผนครอบครัว / Family plan | จุดนัดพบ ใครช่วยใคร / Where to meet, who helps whom | the plan card (`plan_open`, `start`) | ≥ 56 px |
+
+The quick buttons "📋 เช็กลิสต์ 10 ข้อ" and "🎒 บ้านพร้อมไหม?" of v1.8.0 were removed: the hub replaces them. A challenge link adds `.has-challenge`, which hides the hub, the game label and the alert, so the friend's challenge and "รับคำท้า!" stay first.
+
+**Measured** (18–19 Oct 2026, headless Chromium): the three hub buttons end at 324, 420 and 420 px on 320 × 460 and at 327, 407 and 407 px on 360 × 640, inside the first screen, as they are at 390 × 844 and 768 × 1024. The recommended game card is below the first screen at 320 × 460 and 360 × 640, by design ([KNOWN_ISSUES #61](KNOWN_ISSUES.md#61-the-game-card-is-below-the-first-screen-on-small-phones)). The smoke test checks the hub at the two small sizes.
+
+**The static Thai text is generated.** The build replaces the text of every `data-i18n` element in `index.html` whose `strings.json → th` value has no `{placeholder}`, and writes the `<title>` from `og.defaultTitle` and the meta description from `og.defaultDesc`, as it already wrote the English page. Thai copy can no longer go stale in `index.html` ([GUIDELINES rule 65](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+
+### 29.7 The guide picker and the guide sheet
+
+**The picker** (`openGuides(from)` in `main.js`): "📋 ต้องทำอะไร เมื่อเกิดภัย", "เลือกเรื่องที่อยากรู้ อ่านจบใน 1 นาที แล้วส่งเป็นรูปให้คนที่บ้านได้", a grid of 84 px tiles (`repeat(auto-fill, minmax(96px, 1fr))` with 8 px gaps inside the sheet's 16 px padding: three columns from 336 px wide, two on a 320 px phone, by the CSS) with the icon and the short name, in `config.json → guides` order with the alert's guide moved first and marked "ช่วงนี้", and "ปิด" ([21-guide-picker.png](screens/21-guide-picker.png)).
+
+**A guide** (`openChecklist(id, from)`; [22-guide-quake.png](screens/22-guide-quake.png)):
+
+1. The icon and the title ("🏚️ แผ่นดินไหว ทำอะไร 10 ข้อ").
+2. The lines: `guideSections()` groups them under "ก่อนเกิด", "ขณะเกิด" (`#9A4A05`) and "หลังเกิด" when they have phases (a game checklist has none, so one list), numbered 1–10 across the groups; ⚠️ after a `partial` line.
+3. "ที่มา: …" with the agencies of every line (from `sources.json`), and "⚠️ ข้อที่มีป้ายนี้ยังรอตรวจทานกับหน่วยงาน" when a line is ⚠️.
+4. "▶ เล่นเกมเรื่องนี้ 60 วิ" when the guide is a mode (starts the daily house, `mode_select` with label `guide`), and "📖 อ่านเหตุผลและที่มาทีละข้อ", a link to the hazard page (`/quake`, or `/en/quake`).
+5. "ส่งต่อเป็นรูป": the share buttons, the save hint and the 1080 × 1920 picture.
+6. "🖨️ พิมพ์เก็บไว้" (§29.10), "← เรื่องอื่น" back to the picker, and "ปิด".
+
+The old per-mode tabs at the top of the checklist sheet are gone. The result screen's "📋 เช็กลิสต์ 10 ข้อ" opens the mode's guide (label `result`). Every control in the picker and in the nine guides is 44 px or more (smoke-checked at 360 × 640).
+
+### 29.8 Deep links
+
+| Link | Opens | Preview |
+|---|---|---|
+| `/?open=guide` (`/en/?open=guide`) | the picker | the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)) |
+| `/checklist/<id>` (`/en/checklist/<id>`), any of the nine | that guide | the guide's own (`og/checklist-<id>.png`, title `checklistTitle<Id>`) |
+| `/?open=checklist-<id>` | that guide | the main game's |
+| `/landslide`, `/storm`, `/quake`, `/heat` (`/en/…`) | the hazard page (§29.9) | the guide's |
+| `/kit`, `/plan` (`/en/…`) | a page with a button into the tool | `og/kit.png`, `og/plan.png` |
+
+`langPath()` keeps the language on any `/checklist/<id>`, so the language switch works on the new guides too. The installed app's third shortcut, "ต้องทำอะไร เมื่อเกิดภัย" (short "ต้องทำอะไร"), opens `/?open=guide&source=pwa`.
+
+### 29.9 Pages and pictures
+
+**Hazard pages for the guides** (`tools/build.mjs`, the same `seoPage()` as §25.4):
+
+| Hazard | Slug | Thai / English | Guide | Lines | Preview image |
+|---|---|---|---|---|---|
+| landslide | `landslide` | `/landslide`, `/en/landslide` | `landslide` | 10 | `og/checklist-landslide.png` |
+| storm | `storm` | `/storm`, `/en/storm` | `storm` | 10 | `og/checklist-storm.png` |
+| quake | `quake` | `/quake`, `/en/quake` | `quake` | 10 | `og/checklist-quake.png` |
+| heat | `heat` | `/heat`, `/en/heat` | `heat` | 10 | `og/checklist-heat.png` |
+
+- **Order on a page with no game:** the top links, the H1 (`hazard<H>H1`), then **the guide**: the phases as `<h2>` headings (no separate title), each line in Thai with its English, and under it "ที่มา: …" with a link per source and "⚠️ ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน" on `partial` lines; then "📲 ส่งต่อเป็นรูป: …" (`/checklist/<id>`), the intro, the home check and plan card links, the date updated, the helplines, the "อ่านตามภัย" row and the disclaimer. The English page adds the note that the advice and helplines are Thai. On 320 × 460 the first line starts on the first screen (smoke-checked; [KNOWN_ISSUES F51](KNOWN_ISSUES.md#in-v190-19-oct-2026)).
+- **Title** `hazard<H>Title` with `{n}` = 10 ("แผ่นดินไหว ทำอะไร 10 ข้อ · บ้านรอดไหม?"); **JSON-LD** `Article` whose `citation` lists every guide line's source URL.
+- **Pages with a game** (`/flood`, `/pm25`, `/fire`, `/ready`) are as in §25.4 and gain a "📲 ส่งต่อเป็นรูป" link for each checklist.
+- **`/learn`** lists all nine guides under its checklists, grouped by phase, with the sources under the four new guides' lines; **`llms.txt`** adds a section per new guide, "## What to do: … (…)", with the hazard page, the picture link and each line with its source URLs and "(under review)" on ⚠️ lines.
+- **`/kit` and `/plan`** (`/en/…`): plain pages for the two tools of §28. The H1, a ▶-style button into the tool (`/?open=kit`: "🎒 เริ่มเช็กบ้านเรา ฟรี 1 นาที"; `/?open=plan`: "📝 ทำการ์ดแผนของบ้านเรา"), the intro, the privacy line from `kit.json`, the list ("ของที่ควรมี และที่มา": each kit line with its amount rule, such as "3 ลิตร ต่อคน ต่อวัน × 3 วัน", and "ถ้ามี…" for a household-specific line; or "6 ช่องในการ์ด และที่มา" with each plan field's hint), the sources and ⚠️ under every line, the button again, a link to the other tool's page, the date, the helplines, the "อ่านตามภัย" row and the disclaimer. JSON-LD `WebPage`. The kit card and the plan card print `/kit` and `/plan`, and their share texts link them, so a forwarded card previews as the check or the plan.
+- **The sitemap** has 24 addresses, 12 Thai–English pairs: `/`, `/learn`, the eight hazard pages, `/kit` and `/plan`. `kit` and `plan` are reserved: no hazard can take those slugs.
+- **Link-preview pages:** 129 (110 challenge pages, 18 checklist pages, `en/index.html`).
+- **Pictures** (`npm run images`; `--only` takes comma-separated paths since v1.9.0): for each guide, `og/checklist-<id>.png` and `og/en/checklist-<id>.png` (1200 × 630: the title, "เบอร์ช่วยเหลือ 1784 · 199 · 1669" / "Free · from official safety advice", "ดูครบ 10 ข้อ" / "See all 10") and `share/checklist-<id>.png` (1080 × 1920, Thai); `og/kit.png`, `og/plan.png` and their English twins in the power cut's colours. A guide with no sprites is drawn with the plain layout of `drawChecklist()`: the number at x 92 and the text from x 142 (with sprites: 170 and 216), so lines have 74 px more room. New card themes in `cards.js → THEMES`: `landslide` (earth browns), `storm` (grey-blue), `quake` (warm grey) and `heat` (orange, with a sun).
+- **`/posts`** has a section "รูป "ต้องทำอะไร" ทุกภัย (โพสต์ได้ทันทีเมื่อมีข่าว)" after the carousel sets: each guide's icon and name, its 1080 × 1920 picture, and a caption to copy (`carousel.json → guideCaption`): "{title} 📋 / อ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา / 👉 {url} / #บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ", with `{url}` = `/checklist/<id>`.
+
+### 29.10 Print
+
+`printList(d)` in `ui.js` fills a `#print-area` element and calls `window.print()`; the `@media print` rules hide everything else and lay out an A4 page (14 mm margins, 13 pt text): the wordmark, the title, the household line for the home check ("บ้าน 3 คน"), the phase headings, one row per line with an empty tick box, and under a line the note ("⚠️ ข้อนี้ยังรอตรวจทานกับหน่วยงาน" on a guide's `partial` line; "ที่มา: …" and the ⚠️ on each home-check line), then the guide's agencies, "เบอร์ช่วยเหลือ โทรฟรี: 1784 · 199 · 1669 · 1555 · 1130 · 1129", "พิมพ์จาก baanrodmai.autobahn.bot/checklist/quake เมื่อ 19 ต.ค. 69" (`printNote`) and the disclaimer.
+
+- **Where:** every guide sheet and the home check's list ("🖨️ พิมพ์เก็บไว้"); event `print` with label `guide` (and the guide's id as the mode) or `kit`.
+- **Not in in-app browsers.** `canPrint()` is false in LINE, Facebook and Messenger, Instagram and TikTok, which have no print, so the button isn't shown ([KNOWN_ISSUES #63](KNOWN_ISSUES.md#63-printing-isnt-offered-in-in-app-browsers)).
+- **Checked** by the smoke test as a PDF in headless Chromium (the earthquake guide: 10 boxes, 1 ⚠️, the app hidden); not yet from a phone.
+
+### 29.11 Analytics
+
+| Event | When | mode | label |
+|---|---|---|---|
+| `guide_open` (new) | The picker opens | – | `start` (the hub) / `link` (`/?open=guide`, the app shortcut) / `guide` (← เรื่องอื่น) |
+| `checklist_open` | A guide opens | the guide's id | `picker` / `alert` / `link` (`/checklist/<id>`, `?open=checklist-<id>`) / `result` (the result screen's 📋) |
+| `print` (new) | "🖨️ พิมพ์เก็บไว้" is tapped | the guide's id (none for the kit) | `guide` / `kit` |
+| `mode_select` | ▶ in a guide | the mode | `guide` (new value) |
+| `learn_open` | "📖" in a guide | – | the guide's id (new value) |
+| `checklist_save` | A share channel under the guide's picture | the guide's id | the channel |
+
+The hub's 🎒 and 📝 send `kit_open` and `plan_open` with the label `start` (for `plan_open` a new value). Both allowlists (`public/js/analytics.js`, `functions/api/e.js`) have `guide_open` and `print`. Nothing about the household is sent. Queries: [05-metrics](05-metrics.md#tools-first-v190).
+
+### 29.12 Emoji
+
+The guides' icons are emoji in the page and the sheet (the pictures draw sprites or numbers, never emoji). Emoji newer than Unicode 11 (2018) show as empty boxes on older Android phones and older iOS, which the audience still uses. The new guides' first drafts used 🪟 🪜 🪧 🪴 🪨 (Unicode 13) and 🟤 🧊 (Unicode 12); they were replaced by older ones before release ([GUIDELINES rule 64](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). Five older icons in the game checklists and the home check that were also newer than Unicode 11 were replaced in the same release (🚪 🏥 ❄️ ⛑️ ❄️), and a scan found no others ([KNOWN_ISSUES #65](KNOWN_ISSUES.md#65-loose-ends-from-the-v190-sweep)).
+
+### 29.13 Budget, code and tests
+
+- **Budget:** start screen 232 KB compressed (was 209), first game screen 247 KB (was 223), limit 500 KB. `sources.json` grew from 12.0 to 23.8 KB compressed, about 14 KB of it the sources' `note`s, which the game never shows ([KNOWN_ISSUES #62](KNOWN_ISSUES.md#62-source-notes-are-downloaded-by-every-visitor), [ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads)); `checklists.json` +4.1 KB, `strings.json` +4.2 KB, code and CSS about +3 KB. 44 files are precached, as before.
+- **Code:** `main.js` (`guideList()`, `guideIds()`, `guideOf()`, `openGuides()`, `guideSections()`, `openChecklist()`, the alert in `renderStart()`), `modes.js` (`activeAlert()`), `ui.js` (`canPrint()`, `printList()`), `kit.js` (print, `/kit` and `/plan` links), `cards.js` (themes, the plain checklist layout), `content.js` (`langPath()`), `tools/build.mjs` (guide checks, the guide-only hazard pages, `/kit`, `/plan`, `/posts`, `llms.txt`, the sitemap, the start screen's Thai text), `tools/render.html` and `render-images.mjs`.
+- **Tests:** 29 rule tests (the alert switch; guides with no game) and 117 smoke checks; the new section "tools first" is listed in [06-test-checklist](06-test-checklist.md#automated-run-before-every-release).

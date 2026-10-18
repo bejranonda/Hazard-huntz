@@ -38,7 +38,15 @@ The home check and the plan card (v1.8.0):
 - **No new pages, no new settings.** `/?open=kit` and `/?open=plan` (and `/en/?open=…`) are the app shell with a query, like `?mode=` links: Pages serves `index.html`, the game opens the sheet, and the link preview is the main game's. They are not in the sitemap. `/ready` and `/en/ready` link both (`config.json → hazards.outage.tools`), and since v1.8.1 so do `/flood` and `/en/flood` (`hazards.flood.tools`), `/learn`, `/en/learn` and `llms.txt`.
 - **New static files:** `public/content/kit.json`, `public/js/kit.js` and `public/js/kitplan.js`, served and cached like the rest of `/content/` and `/js/`, and precached by the service worker (44 files).
 - **The Function only counts.** `/api/e` accepts four more event names (`kit_open`, `kit_share`, `plan_share` and, since v1.8.1, `plan_open`); the allowlist in `functions/api/e.js` must match `public/js/analytics.js`, so a new event goes into both in the same commit. No answer or typed text is ever sent, so nothing about a household is stored on Cloudflare.
-- **App shortcuts (v1.8.1).** `public/manifest.webmanifest` lists two `shortcuts`, shown on a long-press of the installed app's icon where the browser supports them: "บ้านเราพร้อมแค่ไหน?" → `/?open=kit&source=pwa` and "แผนบ้านรอดของบ้านเรา" → `/?open=plan&source=pwa`, each with `/icons/icon-192.png`. They are static: nothing to set in Cloudflare. The service worker fetches the manifest network-first, like the code ([KNOWLEDGE §7](KNOWLEDGE.md#7-offline-the-service-worker)), but a phone may keep an installed app's old shortcuts until the browser updates the installed app, which it does on its own schedule **[unverified]**. Not yet tried on a real phone ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)).
+- **App shortcuts (v1.8.1).** Since v1.9.0 there are three: "ต้องทำอะไร เมื่อเกิดภัย" → `/?open=guide&source=pwa` sits between the two below. `public/manifest.webmanifest` lists two `shortcuts`, shown on a long-press of the installed app's icon where the browser supports them: "บ้านเราพร้อมแค่ไหน?" → `/?open=kit&source=pwa` and "แผนบ้านรอดของบ้านเรา" → `/?open=plan&source=pwa`, each with `/icons/icon-192.png`. They are static: nothing to set in Cloudflare. The service worker fetches the manifest network-first, like the code ([KNOWLEDGE §7](KNOWLEDGE.md#7-offline-the-service-worker)), but a phone may keep an installed app's old shortcuts until the browser updates the installed app, which it does on its own schedule **[unverified]**. Not yet tried on a real phone ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)).
+
+Tools first and the guides (v1.9.0):
+
+- **New pages, all static and generated** (never edit them by hand): the guide-only hazard pages `public/landslide.html`, `storm.html`, `quake.html` and `heat.html` (served as `/landslide`, `/storm`, `/quake`, `/heat`, with `/en/…` twins), `public/kit.html` and `public/plan.html` (`/kit`, `/plan`, `/en/…`), and `public/checklist/{landslide,storm,quake,heat}.html` with their English twins. Pages serves them like the other pages. The sitemap lists 24 addresses. `kit` and `plan` are reserved names, so no hazard slug can take them; the new slugs, like the old ones, never change once published.
+- **New images, committed** (from `npm run images`): `og/checklist-{landslide,storm,quake,heat}.png`, `og/en/checklist-…`, `share/checklist-{landslide,storm,quake,heat}.png`, `og/kit.png`, `og/plan.png` and their `og/en/` twins; `og/default.png` and `og/en/default.png` were re-rendered with the new default texts. To re-render only some, pass comma-separated paths: `SITE_URL=https://baanrodmai.autobahn.bot npm run images -- --only og/kit,og/en/kit,og/plan,og/en/plan`.
+- **The alert switch is a content edit, like the rain warning.** In `public/content/config.json`, set `"alert": { "guide": "quake", "until": "YYYY-MM-DD" }` (a guide id from `guides`, and the last day it should show, a Bangkok date, that day included) and commit; Cloudflare rebuilds and the card is live in about a minute or two. The build stops if the guide isn't one of the nine or the date isn't real (the previous version stays live), and its `start` line ends with "· alert quake until …". After the date the card disappears by itself, and every build warns until you set `"alert": { "guide": null, "until": null }` or a new date. The full routine is in [04-launch-kit](04-launch-kit.md#when-something-happens-the-5-minute-playbook).
+- **The Function** accepts two more events, `guide_open` and `print` (both allowlists, `functions/api/e.js` and `public/js/analytics.js`).
+- **The start screen's Thai text** in `public/index.html` is now written by the build from `strings.json`, so `index.html` changes in the same commit as a string edit; that is expected.
 
 ## Option A: Git integration (recommended: every content edit deploys itself)
 
@@ -72,6 +80,7 @@ The home check and the plan card (v1.8.0):
 From now on:
 
 - **Editing content** (fixing a tip, switching the default mode): edit the JSON in `public/content/` on GitHub and commit. Cloudflare rebuilds and publishes in about a minute.
+- **Putting a guide on the start screen (v1.9.0):** set `"alert": { "guide": "<id>", "until": "YYYY-MM-DD" }` (see above), and clear it after.
 - **Switching the recommended mode:** set `"rainWarningActive": true` with an end date, `"rainWarningUntil": "YYYY-MM-DD"` (a Bangkok date, that day included), before a rain wave. It turns itself off after that day; set it to `false` earlier if the water recedes sooner. The same goes for `featuredTopic` and `featuredTopicUntil`. The build's `start` line shows what the start screen recommends today, and it warns about a switch with no end date.
 - **Rollback:** Pages → Deployments → pick an earlier one → *Rollback*.
 
@@ -105,7 +114,7 @@ Any static server also works (`npx serve public`), apart from the `/c/p8` pretty
 
 | Piece | Free-plan cost |
 |---|---|
-| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn`, the hazard pages and `/posts`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
+| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn`, the hazard pages, `/kit`, `/plan` and `/posts`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
 | `/api/e` event counter | 1 Function request per page session (events are batched and sent with `sendBeacon` when the page is hidden). Shares the 100,000 requests/day quota. |
 | Workers Analytics Engine | 100,000 data points/day written free. Each event is one data point. |
 | Cloudflare Web Analytics | Free, cookieless. |
@@ -116,7 +125,7 @@ If the game goes very viral, lower `config.json → analytics.sampleRate` (e.g. 
 
 You asked for a dynamic OG image rendered by a Pages Function. I built the same visible result in a way that suits the free plan better:
 
-- Every challenge link has its own **static** HTML page (`/c/p0` … `/c/p10`, `/c/r0` … `/c/r10`, since v1.5.0 `/c/d…` and `/c/f…`, and since v1.7.0 `/c/s0` … `/c/s10`) with Open Graph tags. Each checklist has one too (`/checklist/prepare` … `/checklist/stock`).
+- Every challenge link has its own **static** HTML page (`/c/p0` … `/c/p10`, `/c/r0` … `/c/r10`, since v1.5.0 `/c/d…` and `/c/f…`, and since v1.7.0 `/c/s0` … `/c/s10`) with Open Graph tags. Each checklist has one too (`/checklist/prepare` … `/checklist/stock`, and since v1.9.0 every guide: `/checklist/landslide`, `storm`, `quake`, `heat`).
 - Each page points at a matching **pre-rendered** 1200×630 PNG drawn by the game's own card renderer.
 - Crawlers from LINE, Facebook and X never run JavaScript, and they get the score in the preview either way.
 - The `?h=20261007` house key stays in the shared URL, and the pages omit `og:url`, so clicking the preview opens the friend's exact house.
@@ -125,7 +134,7 @@ The reasons:
 
 1. **CPU limit.** Workers Free allows **10 ms CPU** per request. Rendering a PNG with Thai text (satori/resvg) takes far longer, and the needed WASM is several MB.
 2. **Quota.** A viral challenge link served by a Function counts against the **100,000/day** Functions quota. Past that it would fail (or, with fail-open, lose its preview). Static pages are unlimited.
-3. **The set is small and fixed:** 5 modes × 11 scores, plus the default and five checklists, in two languages: 122 images (61 Thai, 61 English) and 121 generated pages (v1.7.0). Pre-rendering costs nothing and the previews are cached and instant.
+3. **The set is small and fixed:** 5 modes × 11 scores, plus the default and five checklists, in two languages: 122 images (61 Thai, 61 English) and 121 generated pages (v1.7.0). v1.9.0 added four guides' previews and `/kit` and `/plan`'s, in both languages (12 more previews), and 8 checklist pages: 129 generated pages. Pre-rendering costs nothing and the previews are cached and instant.
 
 If you later move to Workers Paid and want per-player text (for example a nickname, which would need a privacy review), a Function can rewrite the same tags with `HTMLRewriter`.
 

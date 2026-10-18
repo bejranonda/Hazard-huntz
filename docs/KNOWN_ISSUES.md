@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.8.1 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.9.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -52,6 +52,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 46 | [Dust and fire advice is quoted through news reports](#46-dust-and-fire-advice-is-quoted-through-news-reports) | Owner | Medium |
 | 55 | [The power-cut lessons rest largely on international guidance](#55-the-power-cut-lessons-rest-largely-on-international-guidance) | Owner | **Medium (review before posting widely)** |
 | 57 | [The home check and plan card rest partly on international guidance](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance) | Owner | Medium |
+| 60 | [The four new guides rest on news reports quoting the agencies](#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies) | Owner | **Medium (review before posting widely)** |
 | 47 | [The season calendar is editorial](#47-the-season-calendar-is-editorial) | By design | — |
 | 48 | [Haze, smoke and the dark are untested on low-end phones](#48-haze-smoke-and-the-dark-are-untested-on-low-end-phones) | Owner | Low |
 | 49 | [Dust, fire and the power cut use the flood house](#49-dust-fire-and-the-power-cut-use-the-flood-house) | By design | — |
@@ -61,6 +62,11 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 53 | [The smoke test runs on a pinned date](#53-the-smoke-test-runs-on-a-pinned-date) | By design | — |
 | 54 | [Carousel images are committed and Thai only](#54-carousel-images-are-committed-and-thai-only) | By design | — |
 | 59 | [The home check's code is counted in the start-screen budget and precached](#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached) | By design | — |
+| 61 | [The game card is below the first screen on small phones](#61-the-game-card-is-below-the-first-screen-on-small-phones) | By design | — |
+| 62 | [Source notes are downloaded by every visitor](#62-source-notes-are-downloaded-by-every-visitor) | Open | Low |
+| 63 | [Printing isn't offered in in-app browsers](#63-printing-isnt-offered-in-in-app-browsers) | Platform | — |
+| 64 | [The alert must be cleared or renewed by hand](#64-the-alert-must-be-cleared-or-renewed-by-hand) | By design | — |
+| 65 | [Loose ends from the v1.9.0 sweep](#65-loose-ends-from-the-v190-sweep) | Fixed in v1.9.0 | Low |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -82,9 +88,11 @@ What a headless test **cannot** show:
 - how the font, notch and home bar look on real screens
 - audio on iOS when the silent switch is on
 - whether the home check's ticks and the plan card's text are still there when the page is opened again inside LINE, and whether the shared kit and plan cards save there (v1.8.0, [#58](#58-the-home-check-and-the-plan-live-in-one-browser))
-- whether a long-press on the installed app's icon offers the two shortcuts to the home check and the plan card (`manifest.webmanifest → shortcuts`, v1.8.1), and which phones show them **[unverified]**
+- whether a long-press on the installed app's icon offers the two shortcuts to the home check and the plan card (`manifest.webmanifest → shortcuts`, v1.8.1), and which phones show them **[unverified]**; since v1.9.0 there are three, with "ต้องทำอะไร เมื่อเกิดภัย"
+- how the start screen's hub (v1.9.0) reads on a real phone: whether people see the three tools first and still find the game below, and whether the alert card is noticed
+- whether "🖨️ พิมพ์เก็บไว้" prints a clean A4 list from Chrome and Safari on a phone, and whether the guide picker and the guide sheets work inside LINE (v1.9.0)
 
-**To do:** run the 50-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 54-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
 
@@ -106,7 +114,7 @@ Twenty-one items are marked ⚠️ `partial`: ten in the flood modes, one in fir
 
 Each reason is listed under *Flags* in [01-safety-content.md](01-safety-content.md). `p-toilet` and `p-fuel` are in rooms that are not playable yet, so 19 of the 21 are in play.
 
-The home check (v1.8.0) has ⚠️ lines of its own, outside this count: they are things to have at home in `kit.json`, not lessons in `items.json` ([#57](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)).
+The home check (v1.8.0) has ⚠️ lines of its own, outside this count: they are things to have at home in `kit.json`, not lessons in `items.json` ([#57](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)). So do the four guides with no game (v1.9.0): 5 of their 40 lines are ⚠️, in `checklists.json` ([#60](#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies)).
 
 **Fix:**
 
@@ -148,6 +156,8 @@ The mattress is **not in the game**. Decide which advice to follow, or ask ก�
 The English text (`en`, `ogEn`, `seo.en`) was written alongside the Thai and has had no native-English review either. All Thai copy was written in one pass and checked against the guidelines: the tone, the 80-character tip limit and the guardrails. That covers tips, choices, feedback, the gecko's lines, rank titles and the share texts. A second native speaker should still read everything in `strings.json`, `items.json`, `checklists.json` and `kit.json` once, ideally an older family member who represents the forwarding audience.
 
 The English is written in one variety, British ("torch", "power cut", "litres", "nappies"; [GUIDELINES rule 58](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). The v1.8.1 visitor audit found the power-cut lessons and the home check saying "flashlight" beside the flood lessons' "torch", and the home check saying both "house" and "home"; both were aligned ([F43, F44](#in-v181-19-oct-2026)). A native English reader should still read the tone.
+
+v1.9.0 added much new copy in both languages: the hub and the guide picker, the four new guides' 40 lines, the new hazard pages and the `/kit` and `/plan` pages (`seo.<lang>`), the new link-preview texts and the rewritten tagline, About intro, default preview and `llmsSummary` ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
 
 ### 12. Analytics SQL and the Fail-open default are unchecked on a live account
 
@@ -438,6 +448,8 @@ The home check's answers, ticks and score (`brm:kit`) and the plan card's text (
 
 When no topic is in the news, the start screen features the topic of the recommended mode (dust → 😷 `air` in December–March, fire → 🔥 `fire` in April). A `?mode=` link brings that mode's own topic first. In the flood months nothing is featured unless the owner sets a topic. Leaving a topic on for months makes it wallpaper, so the owner still decides when to end it early or extend it.
 
+The alert card of v1.9.0 (`config.json → alert`) is the third hand-set switch and follows the same rule ([#64](#64-the-alert-must-be-cleared-or-renewed-by-hand)).
+
 ### 45. The smoke-alarm lesson has no Thai source
 
 **Status:** Owner · **Severity:** Medium
@@ -510,6 +522,8 @@ The south floods later, in the November–January monsoon. The model has one cal
 
 **The power cut is year-round, never the default.** Its `months` is empty, so `seasonalMode()` never picks it, and the start screen never recommends it by itself; it is always one of the small cards. People reach it through its card, `/?mode=stock`, the `/ready` page and posts. Power cuts and storms don't follow a calendar we could source, so a post after a planned cut or a storm is the way to feature it ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)). For a week, `featuredTopic: "food"` with an end date puts the 💧 water-and-food topic on the start screen (6 of its 10 lessons are power-cut lessons since v1.7.0).
 
+**Hazards with a guide and no game (v1.9.0)** have no season either: flash floods and landslides, storms, earthquakes and extreme heat are brought forward by the owner's alert, which puts one guide on top of the start screen until an end date ([#64](#64-the-alert-must-be-cleared-or-renewed-by-hand)), not by `months`.
+
 ### 48. Haze, smoke and the dark are untested on low-end phones
 
 **Status:** Owner · **Severity:** Low
@@ -553,6 +567,8 @@ The three rooms were drawn for floods: the Return mud layer and the rain are hid
 
 The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/?open=plan` preview as the main game. This still holds in v1.8.1, so a post that links `/?open=kit` or `/?open=plan` ([04-launch-kit](04-launch-kit.md)) shows the game's default preview: post it with the picture of a kit or plan card, or link `/ready` or `/flood` (v1.8.1), whose pages link both and have previews of their own. The app's shortcuts (v1.8.1) open the same links but show no preview.
 
+**Since v1.9.0** the home check and the plan card have pages of their own, `/kit` and `/plan` (`/en/…`), with their own previews (`og/kit.png`, `og/plan.png`) and a button into the tool; the kit and plan cards print and link these addresses. Post `/kit` or `/plan`, not `/?open=kit` or `/?open=plan`. The guide picker's link, **`/?open=guide`, still previews as the main game**: in a post, link one guide's `/checklist/<id>` (its preview is that guide's picture and title) or its hazard page (`/quake`, `/heat`…) instead. The app's third shortcut opens `/?open=guide` but shows no preview.
+
 **When the preview matters,** share the hazard page instead: `/pm25`, `/fire`, `/flood` or `/ready` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
 
 ### 53. The smoke test runs on a pinned date
@@ -561,7 +577,8 @@ The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/
 
 `npm run smoke` plays on a fixed Bangkok day, `SMOKE_DATE` (default `2026-10-18`), and takes what the start screen should show from `recommend()`. So it passes on any real date, and it can't catch a problem that depends on today's date, such as a switch whose end date has passed or a season that starts tomorrow.
 
-- **Today's state shows in the build,** not the smoke test: `node tools/build.mjs` prints a `start` line (what visitors see today) and warns about a switch with no end date or a past one. Read it after every release and at the start of each month.
+- **Today's state shows in the build,** not the smoke test: `node tools/build.mjs` prints a `start` line (what visitors see today, and since v1.9.0 the alert while it is on) and warns about a switch with no end date or a past one. Read it after every release and at the start of each month.
+- **The alert (v1.9.0)** is expected from `activeAlert()` on `SMOKE_DATE`, like the mode from `recommend()`: on 18 Oct 2026 the card shows the landslide guide, on 5 Dec 2026 it is hidden. A separate check forces an alert (`storm`, until 2099) by changing the `config.json` the test server sends to that page only, so the card is tested whatever the shipped date.
 - **To test another season,** run `SMOKE_DATE=2026-12-05 npm run smoke` (dust) or `SMOKE_DATE=2027-04-10 npm run smoke` (fire); both passed 79/79 on 18 Oct 2026.
 - **Only `Date` is shifted,** by an init script, and time keeps running. Playwright's clock API would also fake the timers and `requestAnimationFrame` that the rounds use, so it isn't used ([LESSONS D10](LESSONS_LEARNED.md#d-testing-and-verification)).
 
@@ -581,13 +598,76 @@ The carousel posts (v1.6.1) are 45 JPEG images in four sets (`flood` 12, `pm25` 
 
 **Status:** By design (v1.8.0)
 
-`kit.js` (about 5.5 KB compressed) and `kitplan.js` (0.8 KB) load only when the check or the plan card opens (`import('./kit.js')` in `main.js`), and `kit.json` (about 4.3 KB) is fetched then.
+`kit.js` (about 5.5 KB compressed, 5.8 KB since v1.9.0 added printing) and `kitplan.js` (0.8 KB) load only when the check or the plan card opens (`import('./kit.js')` in `main.js`), and `kit.json` (about 4.3 KB) is fetched then.
 
-- **The budget counts them anyway.** The build sums every file in `public/js/` as start-screen weight, so its `budget` line says 208 KB where a first visit fetches about 6 KB less before the start screen. The limit is 500 KB, so the build errs on the safe side; `kit.json` isn't counted.
+- **The budget counts them anyway.** The build sums every file in `public/js/` as start-screen weight, so its `budget` line (208 KB in v1.8.0, 232 KB in v1.9.0) counts about 6.6 KB that a first visit doesn't fetch before the start screen. The limit is 500 KB, so the build errs on the safe side; `kit.json` isn't counted.
 - **The service worker downloads them after the page has loaded.** All three are in the precache (44 files), so a visitor whose browser runs the service worker gets about 10.5 KB more in the background, whether or not they open the check; in return the check works offline after the first visit.
 - **Without the files,** offline in a browser with no service worker (the iOS in-app browsers, [#16](#16-no-offline-play-inside-ios-in-app-browsers)) or before the precache finished, the button shows the toast "เปิดไม่ได้ตอนนี้ ลองใหม่เมื่อต่อเน็ตนะ" (`offlineTool`) and the game carries on.
 
 If the check grows, measure it on its own (`gzip -9` of the files) rather than through the budget line.
+
+### 60. The four new guides rest on news reports quoting the agencies
+
+**Status:** Owner · **Severity:** Medium: review before posting the guides widely
+
+The four guides with no game (v1.9.0: น้ำป่า ดินถล่ม, พายุ ลมแรง ฟ้าผ่า, แผ่นดินไหว, อากาศร้อนจัด) have 40 lines: 35 ✅ and 5 ⚠️. Every line has a source, but the Thai agencies were read through Thai news reports that quote them (`kind: secondary`), because the agency sites refuse automated access ([#9](#9-agency-websites-blocked-automated-checks)). Of the 36 sources added for them, 27 are such news reports, 1 is an agency paper (TMD's tsunami paper, `tmd-tsunami`) and 8 are international pages used to cross-check; the storm guide's line on fallen power lines also cites the PEA, MEA and TMD pages already in `sources.json`.
+
+| Guide | ✅ / ⚠️ | The ⚠️ lines, and why |
+|---|---|---|
+| น้ำป่า ดินถล่ม (`landslide`) | 7 / 3 | #1 "check if your home is by a slope or stream at risk": กรมทรัพยากรธรณี lists what a risk village looks like (2022 data) but no text read says "check your own home"; #9 "never cross a road with water or mud flowing over it" and the core of #10 "keep away from the slide until officials say it's safe": Ready.gov only, no Thai text found |
+| พายุ ลมแรง ฟ้าผ่า (`storm`) | 9 / 1 | #10 "after the storm, check electrics and repair any damage": กฟน. asks people to check their electrics and repair damage as storm-season advice; tying it to "after the storm" is ours |
+| แผ่นดินไหว (`quake`) | 9 / 1 | #6 "by the sea: a quake or a sudden ebb? Go to high ground": กรมทรัพยากรธรณี says move away from the shore in a quake; the sudden ebb as a signal is read from TMD's technical paper, an inference. The `verifyNote` keeps a fully verified fallback: "อยู่ชายหาดแล้วแผ่นดินไหว รีบออกห่างฝั่ง" |
+| อากาศร้อนจัด (`heat`) | 10 / 0 | — |
+
+- **Dates.** Several reports are older (ปภ. on storms 2018, กรมทรัพยากรธรณี's risk villages 2022, กรมอนามัย on elders and water 2022) or show no date on the page; each `note` says so.
+- **What would close it:** a person opens the agency pages (or asks an agency contact) and confirms each line, as for the dust and fire lessons ([#46](#46-dust-and-fire-advice-is-quoted-through-news-reports)); a Thai source for the three Ready.gov-only landslide points; and ปภ. or กรมทรัพยากรธรณี wording on the sea pulling back before a tsunami. Steps: [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
+- **Not in the safety table.** [01-safety-content.md](01-safety-content.md) is generated from `items.json`; the guides' lines are in `checklists.json`, and [KNOWLEDGE §29.3](KNOWLEDGE.md#293-the-four-new-guides-and-their-sources) lists them with their sources. What was left out because sources disagree is in [§29.4](KNOWLEDGE.md#294-what-was-left-out-and-why).
+
+### 61. The game card is below the first screen on small phones
+
+**Status:** By design (v1.9.0)
+
+The start screen now puts the alert card and the three tools above the game. Measured on 18–19 Oct 2026: the three tools are on the first screen at 320 × 460 (their bottoms at 324, 420 and 420 px), 360 × 640 (327, 407 and 407 px), 390 × 844 and 768 × 1024, and the smoke test checks the first two. The recommended game card is no longer on the first screen at 320 × 460 and 360 × 640: a player scrolls past "🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน" and the gecko to reach it.
+
+- **Why it stays:** the owner's direction is tools first, and the game is optional ([KNOWLEDGE §29.1](KNOWLEDGE.md#291-why-tools-first)). v1.5.2's rule that the next step is on the first screen ([GUIDELINES rule 49](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)) now applies to the tools.
+- **Where the game is still first:** a friend's challenge link hides the hub, the label and the alert, so "รับคำท้า!" stays on the first screen at 320 × 460; a `?mode=` link still makes its mode the big card (below the tools); ▶ in a guide and the hazard pages' ▶ buttons start or open the game directly.
+- **Watch:** `mode_select` and `round_start` per day before and after v1.9.0 ([05-metrics](05-metrics.md#tools-first-v190)). If plays fall and the tools aren't used either, revisit the order with the owner.
+
+### 62. Source notes are downloaded by every visitor
+
+**Status:** Open · **Severity:** Low
+
+`sources.json` holds each source's `note`: what was read and quoted, for reviewers, the build and docs/01. The game never shows a note, but `content.js` loads the whole file before the start screen. The 36 sources of v1.9.0 have long notes, so `sources.json` grew from 12.0 to 23.8 KB compressed; about 14 KB of it is notes (about 9.6 KB from the new ones). That is most of the start screen's growth from 209 to 232 KB (the rest: the guides in `checklists.json`, +4.1 KB; new strings, +4.2 KB; code and CSS, about +3 KB).
+
+- **The fix,** AI-ready: keep the notes out of what the client loads, for example in a second file the build, `npm run docs` and the tests read (or the build writes a slim `sources.json` without notes for `public/`), and let `content.js` load only `agency`, `title`, `url`, `date` and `kind` ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads)). Keep one file to edit by hand, so a source can't drift from its note.
+- **Not urgent:** 232 KB is far under the 500 KB limit. It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
+
+### 63. Printing isn't offered in in-app browsers
+
+**Status:** Platform
+
+"🖨️ พิมพ์เก็บไว้" (v1.9.0) prints a guide or the home check's list as a plain A4 list. The LINE, Facebook, Instagram and TikTok in-app browsers have no print, so the button isn't shown there (`canPrint()` in `ui.js`: `window.print` exists and `inAppBrowser()` is false). In those apps, people save the guide's picture instead, or open the link in the phone's browser (LINE's "เปิดในเบราว์เซอร์"). The print layout was checked as a PDF in headless Chromium (10 boxes, ⚠️ on lines under review, the app hidden); printing from Chrome and Safari on a real phone hasn't been tried **[unverified]** ([06-test-checklist](06-test-checklist.md) row 53).
+
+### 64. The alert must be cleared or renewed by hand
+
+**Status:** By design (v1.9.0)
+
+`config.json → alert: { guide, until }` puts one guide at the top of the start screen and first in the picker. It is set by the owner, never from the news: on 19 Oct 2026, `landslide` until `2026-10-25`, for ปภ.'s warning of heavy rain, flash floods and mudslides on 18–25 Oct (reported by Thairath on 18 Oct 2026).
+
+- **It ends by itself.** `activeAlert()` shows it while today's Bangkok date is on or before `until`, that day included, and never without an end date; the build stops on a date that isn't real.
+- **After the date, it stays in the file.** The card is gone, but the build warns ("alert.until … has passed, so the alert is off; clear it or give a new end date") on every build until the owner sets `"alert": { "guide": null, "until": null }` or a new date. On 26 Oct 2026 the warning appears.
+- **One at a time.** Only one guide can be on top. When two things are in the news, pick the more urgent and post the other's `/checklist/<id>` link ([04-launch-kit](04-launch-kit.md#when-something-happens-the-5-minute-playbook)).
+
+### 65. Loose ends from the v1.9.0 sweep
+
+**Status:** Fixed in v1.9.0, before release · **Severity:** Low
+
+Found while documenting v1.9.0, after its first checks had passed, and fixed in the same release (the build, `npm test` 29/29 and the smoke run were repeated afterwards):
+
+- **The index JSON-LD `about`** (in `tools/build.mjs`) listed four hazards; it now lists all eight, in Thai and English (adds flash floods and landslides, storms and lightning, earthquakes, extreme heat). [GUIDELINES rule 59](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+- **Five older icons newer than Unicode 11** ([GUIDELINES rule 64](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)) were replaced: 🪟 → 🚪 (the `dust` checklist's line 2), 🩺 → 🏥 (`dust` line 9), 🧊 → ❄️ (`stock` line 8) in `checklists.json`; 🩹 → ⛑️ (`firstaid`) and 🧊 → ❄️ (`medcold`) in `kit.json`. A scan of every content file, `index.html`, `main.js`, `kit.js`, `build.mjs` and the manifest found no other emoji newer than Unicode 11. The pictures draw sprites, not these icons, so no image changed.
+- **docs/01's reference list** marked the guides' sources "not cited yet": `npm run docs` now counts the citations in `checklists.json` too.
+- **Texts that called the whole app a game:** `ogEn.siteName` is now "Baan Rod Mai? Home safety" and `aboutTitle` "เกี่ยวกับบ้านรอดไหม?" / "About Baan Rod Mai?".
 
 ---
 
@@ -611,6 +691,17 @@ If the check grows, measure it on its own (`gzip -9` of the files) rather than t
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.9.0 (19 Oct 2026)
+
+Found by walking the new hub, the guide picker, every guide sheet, the new hazard pages, `/kit` and `/plan` as a visitor, in Thai and English, at 320 × 460 and 360 × 640, and by looking at every new image, before release.
+
+| # | Problem | Fix |
+|---|---|---|
+| F51 | On a 320 × 460 phone, the hazard pages with no game (`/landslide`, `/storm`, `/quake`, `/heat` and `/en/…`) showed no advice on the first screen: the guide's first line came after the page's intro and links. The smoke check written for it first measured the bottom of the first item, which sits under the line's source links, instead of where the line starts ([LESSONS D14](LESSONS_LEARNED.md#d-testing-and-verification)) | The guide comes first, under the H1, with the phases ("ก่อนเกิด", "ขณะเกิด", "หลังเกิด") as its headings and no separate title; the intro, the picture link, the tool links and the date follow. The smoke check measures where the first line starts (its top, plus 48 px for one line) on the first screen |
+| F52 | In the first render of the new link previews, some second lines ran past the image's edge | The texts were shortened and the images re-rendered and looked at |
+| F53 | axe-core: the guide sheet's "ขณะเกิด" (during) heading, in the warning orange, was under 4.5:1 on the sheet's background | `.phase-during { color: #9A4A05 }`; axe-core finds nothing on the picker and the guide sheets |
+| F54 | The English plan-card preview (`og/en/plan.png`): its text ran into the pill | The English lines now clear the pill (`ogEn.planLine2` reads "Where to meet, and who to call"); re-rendered and looked at |
 
 ### In v1.8.1 (19 Oct 2026)
 

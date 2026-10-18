@@ -149,7 +149,7 @@
         "sprite": "aqiphone"
       },
       {
-        "icon": "🪟",
+        "icon": "🚪",
         "th": "วันฝุ่นสูง ปิดประตูหน้าต่างให้สนิท อุดรอยรั่วตามขอบ",
         "en": "High-dust day: shut doors and windows, seal the gaps",
         "sprite": "winclosed"
@@ -191,7 +191,7 @@
         "sprite": "inhaler"
       },
       {
-        "icon": "🩺",
+        "icon": "🏥",
         "th": "ไอบ่อย หายใจลำบาก แน่นหน้าอก รีบไปพบแพทย์",
         "en": "Frequent cough, hard breathing or tight chest: see a doctor",
         "sprite": "tissues"
@@ -321,7 +321,7 @@
         "sprite": "medcold"
       },
       {
-        "icon": "🧊",
+        "icon": "❄️",
         "th": "ไฟดับ ปิดตู้เย็นไว้ ของสดอยู่ได้ราว 4 ชม.",
         "en": "Keep the fridge shut: about 4 hours for fresh food",
         "sprite": "fridgeopen-done"
@@ -337,6 +337,525 @@
         "th": "เครื่องปั่นไฟตั้งนอกบ้านเท่านั้น ใช้ไฟฉายแทนเทียน",
         "en": "Generators outdoors only; torches, not candles",
         "sprite": "generator"
+      }
+    ]
+  },
+  "landslide": {
+    "title": {
+      "th": "น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ",
+      "en": "Flash floods and landslides: 10 steps"
+    },
+    "items": [
+      {
+        "icon": "🗺️",
+        "phase": "before",
+        "th": "ดูว่าบ้านติดเขาหรือลำห้วยที่เสี่ยงดินถล่มไหม",
+        "en": "Check if your home is by a slope or stream at risk",
+        "sources": [
+          "dmr-riskvillage-2565",
+          "dwr-ews-2569"
+        ],
+        "verify": "partial",
+        "verifyNote": "DMR (as reported) lists what a landslide-risk village looks like (near hills and streams, old slide scars, ground cracks, frequent flash floods, boulders in the stream) and says people living there should take special care; DWR names at-risk villages. No agency text read says 'check your own home' in those words, and the DMR risk list quoted is from 2022."
+      },
+      {
+        "icon": "📲",
+        "phase": "before",
+        "th": "ติดตามคำเตือนในแอป THA DISASTER ALERT",
+        "en": "Follow warnings on the THA DISASTER ALERT app",
+        "sources": [
+          "ddpm-app-2569",
+          "dmr-signs-2568",
+          "dwr-ews-2569"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "📢",
+        "phase": "before",
+        "th": "รู้สัญญาณเตือนหมู่บ้าน และจุดปลอดภัยที่นัดไว้",
+        "en": "Know your village's warning signal and agreed safe spot",
+        "sources": [
+          "dmr-riskvillage-2565"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🧭",
+        "phase": "before",
+        "th": "วางแผนเส้นทางอพยพไปจุดปลอดภัยไว้ก่อน",
+        "en": "Plan your evacuation route to the safe spot in advance",
+        "sources": [
+          "dwr-ews-2569"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "👵",
+        "phase": "before",
+        "th": "เตรียมแผนดูแลเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง",
+        "en": "Plan how you'll help children, older and bedridden people",
+        "sources": [
+          "ddpm-mhs-2569",
+          "ddpm-nan-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🌧️",
+        "phase": "during",
+        "th": "ฝนตกหนักต่อเนื่อง เตรียมพร้อมอพยพไปที่ปลอดภัย",
+        "en": "Heavy rain that won't stop? Get ready to evacuate",
+        "sources": [
+          "dmr-watch-2567",
+          "dmr-rain-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🌊",
+        "phase": "during",
+        "th": "น้ำห้วยขุ่นข้น เสียงดังผิดปกติ รีบอพยพทันที",
+        "en": "Stream turns muddy or a loud odd noise? Leave at once",
+        "sources": [
+          "dmr-signs-2568",
+          "dmr-riskvillage-2565",
+          "dmr-rain-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "⚠️",
+        "phase": "during",
+        "th": "ดินเริ่มมีรอยแยก รีบอพยพไปที่ปลอดภัยทันที",
+        "en": "Ground starting to crack? Move to a safe place at once",
+        "sources": [
+          "dmr-signs-2568",
+          "readygov-landslide"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🚫",
+        "phase": "during",
+        "th": "อย่าข้ามทางที่มีน้ำหรือโคลนไหลผ่าน",
+        "en": "Never cross a road with water or mud flowing over it",
+        "sources": [
+          "readygov-landslide"
+        ],
+        "verify": "partial",
+        "verifyNote": "Only Ready.gov (US FEMA) says this in what was read ('Never cross a road with water or mud flowing'). No Thai agency text on crossing flowing water during flash floods or mudslides could be read (PRD pages returned 404 to automated fetches); international guidance, awaiting a Thai review."
+      },
+      {
+        "icon": "⛔",
+        "phase": "after",
+        "th": "อยู่ห่างจุดดินถล่ม จนเจ้าหน้าที่บอกว่าปลอดภัย",
+        "en": "Keep away from the slide until officials say it's safe",
+        "sources": [
+          "readygov-landslide",
+          "ddpm-app-2569"
+        ],
+        "verify": "partial",
+        "verifyNote": "'Stay away from the slide area; more slides may follow' is Ready.gov (US FEMA) only. The Thai part is DDPM's general 'follow official instructions strictly' and its order to provinces to close risk sites to people; no Thai text read tells residents when to go back after a landslide."
+      }
+    ]
+  },
+  "storm": {
+    "title": {
+      "th": "รับมือพายุ ลมแรง ฟ้าผ่า 10 ข้อ",
+      "en": "Storms, wind and lightning: 10 steps"
+    },
+    "items": [
+      {
+        "icon": "📢",
+        "phase": "before",
+        "th": "ติดตามประกาศเตือนภัยของกรมอุตุฯ และทำตาม",
+        "en": "Follow Met Department storm warnings and act on them",
+        "sources": [
+          "ddpm-storm6",
+          "tmd-warn",
+          "tmd-storm-2566",
+          "mea-storm-2565",
+          "readygov-storm"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🏠",
+        "phase": "before",
+        "th": "ตรวจหลังคา ประตู หน้าต่าง ให้มั่นคงแข็งแรง",
+        "en": "Check the roof, doors and windows are secure",
+        "sources": [
+          "ddpm-storm6",
+          "ddpm-storm-home",
+          "ddpm-storm-2561"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "📦",
+        "phase": "before",
+        "th": "เก็บของที่ลมพัดปลิวได้ไว้ในที่มิดชิด",
+        "en": "Put away anything the wind could blow about",
+        "sources": [
+          "ddpm-storm-home",
+          "ddpm-storm-2561"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🌳",
+        "phase": "before",
+        "th": "ตัดแต่งกิ่งไม้ใหญ่ใกล้บ้านที่เสี่ยงหักโค่น",
+        "en": "Trim weak branches on big trees near the house",
+        "sources": [
+          "ddpm-storm-home",
+          "ddpm-storm6",
+          "mea-storm-2565",
+          "readygov-storm"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🚪",
+        "phase": "during",
+        "th": "อยู่ในอาคารแข็งแรง ปิดประตูหน้าต่างให้มิดชิด",
+        "en": "Stay in a sturdy building with doors and windows shut",
+        "sources": [
+          "ddpm-storm6",
+          "ddc-rainy-lightning",
+          "readygov-storm",
+          "nws-lightning-outdoors"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🚧",
+        "phase": "during",
+        "th": "ไม่หลบใต้ต้นไม้ใหญ่ ป้ายโฆษณา หรือเสาไฟฟ้า",
+        "en": "Don't shelter under big trees, billboards or power poles",
+        "sources": [
+          "ddpm-storm6",
+          "tmd-storm-2566",
+          "ddc-rainy-lightning",
+          "mea-storm-2568",
+          "nws-lightning-outdoors"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "⚡",
+        "phase": "during",
+        "th": "ฟ้าคะนอง อย่าอยู่บนดาดฟ้า ระเบียง หรือที่โล่ง",
+        "en": "In lightning, keep off rooftops, balconies and open ground",
+        "sources": [
+          "ddpm-storm6",
+          "ddpm-storm-2561",
+          "ddc-rainy-lightning",
+          "nws-lightning-indoors",
+          "nws-lightning-outdoors"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🔌",
+        "phase": "during",
+        "th": "ฟ้าคะนอง งดใช้เครื่องใช้ไฟฟ้าที่เสียบปลั๊ก",
+        "en": "In lightning, don't use anything plugged into the mains",
+        "sources": [
+          "ddpm-storm6",
+          "ddpm-storm-2561",
+          "readygov-storm",
+          "nws-lightning-indoors"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🚫",
+        "phase": "after",
+        "th": "สายไฟขาด เสาล้ม อย่าเข้าใกล้ แจ้ง 1130/1129",
+        "en": "Keep away from fallen lines or poles; call 1130 or 1129",
+        "sources": [
+          "pea-storm-2569",
+          "pea-1348",
+          "pea-service",
+          "mea-storm-2565",
+          "mea-1130",
+          "readygov-storm"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🔧",
+        "phase": "after",
+        "th": "หลังพายุ ตรวจอุปกรณ์ไฟฟ้า ถ้าชำรุดรีบซ่อม",
+        "en": "After the storm, check electrics and repair any damage",
+        "sources": [
+          "mea-storm-2565",
+          "mea-storm-2568"
+        ],
+        "verify": "partial",
+        "verifyNote": "MEA's storm advisories (Jan 2022, May 2025) ask the public to check electrical equipment and repair damage promptly, but as storm-season advice, not tied to after the storm; the 'after' timing is ours. No source read says to inspect the roof after a storm, so the roof is left out."
+      }
+    ]
+  },
+  "quake": {
+    "title": {
+      "th": "แผ่นดินไหว ทำอะไร 10 ข้อ",
+      "en": "Earthquake: 10 things to do"
+    },
+    "items": [
+      {
+        "icon": "🔩",
+        "phase": "before",
+        "th": "ยึดเครื่องใช้หนักๆ ให้แน่นกับผนังหรือพื้น",
+        "en": "Fix heavy appliances firmly to the wall or floor",
+        "sources": [
+          "dmr-quake-2568",
+          "readygov-quake"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "📚",
+        "phase": "before",
+        "th": "ไม่วางของหนักไว้บนชั้นหรือหิ้งสูง",
+        "en": "Keep heavy things off high shelves and ledges",
+        "sources": [
+          "dmr-quake-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🔦",
+        "phase": "before",
+        "th": "เตรียมไฟฉาย ถ่านสำรอง และกระเป๋ายาไว้ในบ้าน",
+        "en": "Keep a torch, spare batteries and a first-aid kit at home",
+        "sources": [
+          "dmr-quake-2568",
+          "doh-quake-2566",
+          "readygov-quake"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🛡️",
+        "phase": "during",
+        "th": "หมอบ ป้อง เกาะ ใต้โต๊ะหรือจุดที่แข็งแรง",
+        "en": "Drop, cover and hold on under a sturdy table",
+        "sources": [
+          "ddpm-quake-2568",
+          "ddpm-quake-2562",
+          "readygov-quake"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🚪",
+        "phase": "during",
+        "th": "อยู่ห่างประตูและหน้าต่างที่เป็นกระจก",
+        "en": "Keep away from glass doors and windows",
+        "sources": [
+          "ddpm-quake-2562",
+          "doh-quake-2566",
+          "dmr-quake-2568",
+          "readygov-quake"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🌊",
+        "phase": "during",
+        "th": "ริมทะเล: ไหวหรือน้ำลดฉับพลัน รีบไปที่สูง",
+        "en": "By the sea: a quake or a sudden ebb? Go to high ground",
+        "sources": [
+          "dmr-quake-2568",
+          "tmd-tsunami",
+          "readygov-quake"
+        ],
+        "verify": "partial",
+        "verifyNote": "DMR (via news) says: on a beach during a quake, move away from the shore because big waves may come. The sudden ebb as a cue rests on TMD's technical paper, which describes the sea pulling back before the wave and says to leave the shore for high ground; reading it as a go-signal is an inference. 'High ground' is TMD and Ready.gov. Fully verified fallback: 'อยู่ชายหาดแล้วแผ่นดินไหว รีบออกห่างฝั่ง' / 'On the beach in a quake? Move away from the shore'."
+      },
+      {
+        "icon": "🚶",
+        "phase": "after",
+        "th": "ออกจากตึกทางบันไดหนีไฟ ห้ามใช้ลิฟต์",
+        "en": "Leave by the fire stairs, never the lift",
+        "sources": [
+          "dmr-quake-2568",
+          "ddpm-quake-2562",
+          "doh-quake-2566"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🏢",
+        "phase": "after",
+        "th": "อย่าเพิ่งกลับเข้าตึก รอตรวจหรือรอคำสั่งทางการ",
+        "en": "Don't rush back in; wait for a check or official word",
+        "sources": [
+          "ddpm-quake-2568",
+          "ddpm-quake-2562"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "👃",
+        "phase": "after",
+        "th": "ได้กลิ่นแก๊ส ปิดวาล์วถัง เปิดประตูหน้าต่าง",
+        "en": "Smell gas? Shut the cylinder valve, open doors and windows",
+        "sources": [
+          "dmr-quake-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "👟",
+        "phase": "after",
+        "th": "สวมรองเท้าหุ้มส้น กันเศษแก้วและของมีคม",
+        "en": "Wear closed shoes against broken glass and debris",
+        "sources": [
+          "dmr-quake-2568"
+        ],
+        "verify": "verified"
+      }
+    ]
+  },
+  "heat": {
+    "title": {
+      "th": "อากาศร้อนจัด ดูแลกันได้ 10 ข้อ",
+      "en": "Extreme heat: 10 ways to look after each other"
+    },
+    "items": [
+      {
+        "icon": "👵",
+        "phase": "before",
+        "th": "ดูแลผู้สูงวัย เด็กเล็ก คนท้อง คนมีโรคประจำตัว",
+        "en": "Look after elders, young children, pregnant women, the ill",
+        "sources": [
+          "ddc-heatstroke-2568",
+          "ddc-heatstroke-pptv-2568",
+          "doh-heatstroke-2566",
+          "who-heat",
+          "readygov-heat",
+          "cdc-heat-about"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🌡️",
+        "phase": "before",
+        "th": "ติดตามข่าวเตือนภัยความร้อนและค่าดัชนีความร้อน",
+        "en": "Follow heat warnings and the heat index",
+        "sources": [
+          "bma-heatindex-2569",
+          "tmd-heatindex-posttoday-2567"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "💧",
+        "phase": "before",
+        "th": "วางน้ำใกล้ผู้สูงวัย ชวนจิบบ่อย ไม่รอให้กระหาย",
+        "en": "Keep water by elders; have them sip before they feel thirsty",
+        "sources": [
+          "doh-elders-water-2565",
+          "tmd-heatindex-posttoday-2567",
+          "ddc-heatstroke-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🏠",
+        "phase": "before",
+        "th": "จัดห้องที่เย็น อากาศถ่ายเท ให้ผู้สูงวัยพัก",
+        "en": "Set up a cool, airy room for elders to rest in",
+        "sources": [
+          "doh-elders-water-2565",
+          "ddc-heatstroke-2568",
+          "doh-heatstroke-2566",
+          "who-heat"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "👕",
+        "phase": "during",
+        "th": "ใส่เสื้อผ้าสีอ่อน หลวม ระบายความร้อนได้ดี",
+        "en": "Wear light-coloured, loose clothes that breathe",
+        "sources": [
+          "ddc-heatstroke-2568",
+          "ddc-heatstroke-pptv-2568",
+          "doh-elders-water-2565",
+          "readygov-heat"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🌅",
+        "phase": "during",
+        "th": "ย้ายกิจกรรมกลางแจ้งไปทำช่วงเช้าหรือเย็น",
+        "en": "Move outdoor activity to the morning or evening",
+        "sources": [
+          "doh-heatstroke-2566",
+          "ddc-heatstroke-2568",
+          "who-heat",
+          "readygov-heat"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🍺",
+        "phase": "during",
+        "th": "เลี่ยงเหล้า เบียร์ ในวันที่อากาศร้อนจัด",
+        "en": "Avoid alcohol on very hot days",
+        "sources": [
+          "ddc-heatstroke-2568",
+          "ddc-heatstroke-pptv-2568",
+          "doh-elders-water-2565",
+          "cdc-heat-about"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🚗",
+        "phase": "during",
+        "th": "ห้ามทิ้งเด็กหรือใครไว้ในรถที่จอดกลางแดด",
+        "en": "Never leave a child, or anyone, in a car parked in the sun",
+        "sources": [
+          "ddc-heatstroke-2568",
+          "ddc-heatstroke-pptv-2568",
+          "doh-heatstroke-2566",
+          "who-heat",
+          "readygov-heat"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🆘",
+        "phase": "after",
+        "th": "ตัวร้อนจัด เหงื่อไม่ออก สับสน รีบโทร 1669",
+        "en": "Very hot, not sweating, confused? Call 1669 at once",
+        "sources": [
+          "doh-heatstroke-2566",
+          "ddc-heatstroke-2568",
+          "doh-elders-water-2565",
+          "readygov-heat"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "💦",
+        "phase": "after",
+        "th": "พาเข้าที่ร่ม คลายเสื้อ เช็ดตัวผ้าชุบน้ำเย็น",
+        "en": "Into the shade, loosen clothes, wipe with a cool wet cloth",
+        "sources": [
+          "ddc-heatstroke-2568",
+          "ddc-heatstroke-pptv-2568",
+          "doh-heat-illness-2569",
+          "readygov-heat"
+        ],
+        "verify": "verified"
       }
     ]
   }

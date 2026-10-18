@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
-import { setModes, recommend, modeLink } from '../public/js/modes.js';
+import { setModes, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
@@ -33,6 +33,8 @@ const SMOKE_DATE = process.env.SMOKE_DATE || '2026-10-18';
 if (!/^\d{4}-\d{2}-\d{2}$/.test(SMOKE_DATE)) throw new Error(`SMOKE_DATE must be YYYY-MM-DD, not ${SMOKE_DATE}`);
 const dayKey = (d) => d.replace(/-/g, '');
 const START = recommend(CFG, dayKey(SMOKE_DATE));
+const ALERT = activeAlert(CFG, dayKey(SMOKE_DATE));
+const CHECKLISTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/checklists.json'), 'utf8'));
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain' };
 let beacons = 0;
@@ -652,7 +654,7 @@ try {
   // 10. Hazard pages: /flood, /pm25, /fire and their English twins (v1.6.0).
   // The server falls back to index.html, so check content, not the status.
   {
-    const hz = Object.entries(CFG.hazards).map(([id, v]) => ({ id, slug: v.slug, tools: v.tools || [], modes: CFG.modes.filter((m) => m.hazard === id).map((m) => m.id) }));
+    const hz = Object.entries(CFG.hazards).map(([id, v]) => ({ id, slug: v.slug, tools: v.tools || [], modes: CFG.modes.filter((m) => m.hazard === id).map((m) => m.id), guides: CFG.guides.filter((g) => g.hazard === id).map((g) => g.id) }));
     const site = CFG.siteUrl.replace(/\/$/, '');
     for (const h of hz) {
       const n = ITEMS.filter((it) => h.modes.includes(it.mode) && it.enabled !== false).length;
@@ -666,9 +668,11 @@ try {
           && h.modes.every((m) => html.includes(`href="${pre}/?mode=${m}"`))
           && (html.match(/<article /g) || []).length === n
           && ld['@type'] === 'Article' && ld.citation?.length > 0
-          && html.includes(`/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0]}.png`)
-          && h.tools.every((tool) => html.includes(`href="${pre}/?open=${tool}"`));
-        check(`${pre}/${h.slug}: H1, canonical, hreflang, play links, ${n} lessons, JSON-LD, preview image${h.tools.length ? `, ${h.tools.join(' + ')} links` : ''}`, ok);
+          && html.includes(`/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0] || h.guides[0]}.png`)
+          && h.tools.every((tool) => html.includes(`href="${pre}/?open=${tool}"`))
+          // a hazard with no game is its guide: 10 lines, each with a source, and its picture link
+          && (h.modes.length || ((html.match(/<li>/g) || []).length >= 10 && html.includes(`href="${pre}/checklist/${h.guides[0]}"`) && (html.match(/class="src"/g) || []).length >= 10));
+        check(`${pre}/${h.slug}: H1, canonical, hreflang, ${h.modes.length ? `play links, ${n} lessons` : 'its guide with a source on every line'}, JSON-LD, preview image${h.tools.length ? `, ${h.tools.join(' + ')} links` : ''}`, ok);
       }
     }
     const learn = await (await fetch(`${BASE}/learn`)).text();
@@ -681,23 +685,38 @@ try {
     // The smallest phone: every control is 44 px and the play button is on the first screen.
     const { ctx, page } = await newPage({ width: 320, height: 460, ua: UA.iphone });
     const bad = [];
-    for (const p of [...hz.flatMap((h) => [`/${h.slug}`, `/en/${h.slug}`]), '/learn', '/en/learn']) {
+    const guideOnly = new Set(hz.filter((h) => !h.modes.length).flatMap((h) => [`/${h.slug}`, `/en/${h.slug}`]));
+    for (const p of [...hz.flatMap((h) => [`/${h.slug}`, `/en/${h.slug}`]), '/kit', '/en/kit', '/plan', '/en/plan', '/learn', '/en/learn']) {
       await page.goto(`${BASE}${p}`, { waitUntil: 'networkidle' });
       const small = await smallControls(page);
       if (small.length) bad.push(`${p}: ${small.join(', ')}`);
       if (p !== '/learn' && p !== '/en/learn') {
-        const bottom = await page.$eval('.play a', (a) => a.getBoundingClientRect().bottom);
-        if (bottom > 460) bad.push(`${p}: play button at ${Math.round(bottom)} px`);
+        // a guide with no game leads with its first line; the others with a play (or start) button
+        // its first line starts on the first screen (its source links may run on below)
+        const bottom = await page.$eval(guideOnly.has(p) ? 'main ol li' : '.play a', (a, g) => (g ? a.getBoundingClientRect().top + 48 : a.getBoundingClientRect().bottom), guideOnly.has(p));
+        if (bottom > 460) bad.push(`${p}: first ${guideOnly.has(p) ? 'line' : 'button'} at ${Math.round(bottom)} px`);
       }
     }
-    check('hazard pages and /learn on 320x460: controls >= 44 px, play button on the first screen', !bad.length, bad.join(' | '));
+    check('hazard pages, /kit, /plan and /learn on 320x460: controls >= 44 px, the play button (or a guide\'s first line) on the first screen', !bad.length, bad.join(' | '));
+    // /kit and /plan: their own preview, every line with its source, a button into the tool
+    const kitOk = [];
+    for (const [tool, n] of [['kit', KIT.items.length], ['plan', KIT.plan.length]]) {
+      for (const pre of ['', '/en']) {
+        const html = await (await fetch(`${BASE}${pre}/${tool}`)).text();
+        kitOk.push(html.includes(`<link rel="canonical" href="${site}${pre}/${tool}">`) && html.includes(`/og/${pre ? 'en/' : ''}${tool}.png`)
+          && html.includes(`href="${pre}/?open=${tool}"`) && (html.match(/<li>/g) || []).length >= n && sitemap.includes(`${site}${pre}/${tool}</loc>`) && fs.existsSync(path.join(PUB, `og/${pre ? 'en/' : ''}${tool}.png`)));
+      }
+    }
+    check('/kit and /plan (+ /en): own preview image, every line with its source, a button into the tool, in the sitemap', kitOk.every(Boolean), kitOk.join(','));
 
     // /posts: the carousel images and their post text (v1.6.1), for the team only.
     const posts = await (await fetch(`${BASE}/posts`)).text();
-    const imgs = [...posts.matchAll(/<img src="\/([^"]+)"/g)].map((m) => m[1]);
+    const imgs = [...posts.matchAll(/<img src="\/(share\/carousel\/[^"]+)"/g)].map((m) => m[1]);
+    const guideImgs = [...posts.matchAll(/<img src="\/(share\/checklist-[^"]+)"/g)].map((m) => m[1]);
     const wantImgs = hz.reduce((a, h) => a + (CAROUSEL.sets[h.id]?.length ? CAROUSEL.sets[h.id].length + h.modes.length + 2 : 0), 0);
-    check(`/posts lists all ${wantImgs} carousel images, each one exists, with a caption per set; noindex and not in the sitemap`,
-      imgs.length === wantImgs && imgs.every((f) => fs.existsSync(path.join(PUB, f))) && (posts.match(/<textarea /g) || []).length === hz.filter((h) => CAROUSEL.sets[h.id]?.length).length
+    check(`/posts lists all ${wantImgs} carousel images and the ${CFG.guides.length} guide pictures, each one exists, with a caption each; noindex and not in the sitemap`,
+      imgs.length === wantImgs && imgs.every((f) => fs.existsSync(path.join(PUB, f))) && (posts.match(/<textarea /g) || []).length === hz.filter((h) => CAROUSEL.sets[h.id]?.length).length + CFG.guides.length
+      && guideImgs.length === CFG.guides.length && guideImgs.every((f) => fs.existsSync(path.join(PUB, f)))
       && posts.includes('<meta name="robots" content="noindex, nofollow">') && !sitemap.includes('/posts'), `${imgs.length} images`);
     await page.goto(`${BASE}/posts`, { waitUntil: 'networkidle' });
     const smallPosts = await smallControls(page);
@@ -764,6 +783,105 @@ try {
     check('the plan text never leaves the device; only counts are sent (kit_open, kit_share, plan_open, plan_share)',
       !leaked.length && ['kit_open', 'kit_share', 'plan_open', 'plan_share'].every((n) => names.has(n)), `${leaked.length} leaked, events: ${[...names].filter((n) => /kit|plan/.test(n)).join(', ')}`);
     check('no page errors (home check and plan card)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+  }
+
+  // 12. Tools first (v1.9.0): what to do for any hazard, what to keep and the
+  // family plan on the first screen, the game below; the owner's alert puts one
+  // guide on top until its end date; any guide prints as a plain A4 list.
+  {
+    for (const [w, h] of [[320, 460], [360, 640]]) {
+      const { ctx, page } = await newPage({ width: w, height: h });
+      await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+      const pos = await page.evaluate(() => ({
+        hub: [...document.querySelectorAll('.hub-btn')].map((b) => b.getBoundingClientRect().bottom),
+        alert: !document.querySelector('#alert-card').hidden,
+        alertText: document.querySelector('#alert-card').textContent,
+      }));
+      check(`${w}x${h}: "what to do", "check your supplies" and "family plan" are on the first screen`, pos.hub.length === 3 && pos.hub.every((b) => b <= h), pos.hub.map(Math.round).join(','));
+      if (w === 360) check(`${SMOKE_DATE}: the alert card ${ALERT ? `shows ${ALERT}` : 'is hidden'} (config.alert, until its end date)`, pos.alert === !!ALERT && (!ALERT || pos.alertText.includes(STR.th[`guide${capM(ALERT)}`])), pos.alertText.trim());
+      await ctx.close();
+    }
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.addInitScript(() => { window.print = () => { window.__printed = (window.__printed || 0) + 1; }; });
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    await page.click('.hub-main');
+    await page.waitForSelector('.guide-grid');
+    const tiles = await page.$$eval('[data-guide]', (ts) => ts.map((t) => t.dataset.guide));
+    const want = CFG.guides.map((g) => g.id).sort((a, b) => (b === ALERT) - (a === ALERT));
+    check('the guide picker lists every guide in config order (the alert first)', JSON.stringify(tiles) === JSON.stringify(want), tiles.join(','));
+    const smallP = await smallControls(page);
+    const bad = [];
+    for (const id of want) {
+      await page.click(`[data-guide="${id}"]`);
+      await page.waitForSelector('#cl-back');
+      await page.waitForFunction(() => document.querySelector('#cl-img')?.naturalWidth === 1080, null, { timeout: 15000 });
+      const g = await page.evaluate(() => ({
+        title: document.querySelector('#sheet-title').textContent, n: document.querySelectorAll('#sheet .check-list li').length,
+        src: !!document.querySelector('#sheet p.src'), play: !!document.querySelector('#cl-play'), read: document.querySelector('#cl-read')?.getAttribute('href'),
+      }));
+      const isMode = CFG.modes.some((m) => m.id === id);
+      const slug = CFG.hazards[CFG.guides.find((x) => x.id === id).hazard].slug;
+      if (!(g.title.includes(CHECKLISTS[id].title.th) && g.n === 10 && g.play === isMode && g.read === `/${slug}` && (isMode || g.src))) bad.push(`${id}: ${JSON.stringify(g)}`);
+      const small = await smallControls(page);
+      if (small.length) bad.push(`${id}: ${small.join(', ')}`);
+      await page.click('#cl-back');
+      await page.waitForSelector('.guide-grid');
+    }
+    check(`every guide (${want.length}) opens: 10 lines, its picture, ▶ only with a game, a link to its page, sources on the guides with no game, controls >= 44 px`, !bad.length && !smallP.length, [...bad, ...smallP].join(' | '));
+    await page.click('[data-guide="quake"]');
+    await page.waitForSelector('#cl-print');
+    await page.click('#cl-print');
+    await page.emulateMedia({ media: 'print' });
+    const pr = await page.evaluate(() => ({
+      printed: window.__printed, items: document.querySelectorAll('#print-area li').length, flagged: [...document.querySelectorAll('#print-area li small')].length,
+      area: getComputedStyle(document.querySelector('#print-area')).display,
+      hidden: [...document.body.children].filter((e) => e.id !== 'print-area').every((e) => getComputedStyle(e).display === 'none'),
+    }));
+    const pdf = await page.pdf({ format: 'A4' });
+    await page.emulateMedia({ media: 'screen' });
+    const flaggedWant = CHECKLISTS.quake.items.filter((x) => x.verify === 'partial').length;
+    check('print: a guide prints alone as an A4 list (10 boxes, ⚠️ on the lines under review), the app hidden', pr.printed === 1 && pr.items === 10 && pr.flagged === flaggedWant && pr.area === 'block' && pr.hidden && pdf.length > 10000, `${JSON.stringify(pr)} pdf ${pdf.length} B`);
+    await page.click('#cl-back');
+    await page.waitForSelector('.guide-grid');
+    await page.click('[data-guide="prepare"]');
+    await page.waitForSelector('#cl-play');
+    await page.click('#cl-play');
+    // the first round opens the how-to sheet; later ones go straight to the game
+    await page.waitForFunction(() => document.querySelector('#screen-game.active, #howto-go'), null, { timeout: 10000 });
+    check('a guide with a game: ▶ starts that game (or its how-to first)', await page.evaluate(() => !!document.querySelector('#screen-game.active, #howto-go')));
+    // deep links and a forced alert (the config the server sends is changed for this page only)
+    await page.goto(`${BASE}/?open=guide`, { waitUntil: 'networkidle' });
+    const picker = !!(await page.$('.guide-grid'));
+    await page.goto(`${BASE}/checklist/quake`, { waitUntil: 'networkidle' });
+    const quake = (await page.textContent('#sheet-title')).includes(CHECKLISTS.quake.title.th);
+    await page.goto(`${BASE}/en/checklist/heat`, { waitUntil: 'networkidle' });
+    const heatEn = (await page.textContent('#sheet-title')).includes(CHECKLISTS.heat.title.en);
+    check('deep links: /?open=guide opens the picker, /checklist/quake and /en/checklist/heat open those guides', picker && quake && heatEn, `${picker} ${quake} ${heatEn}`);
+    await page.route(/\/content\/config\.json/, async (r) => {
+      const res = await r.fetch();
+      const j = await res.json();
+      j.alert = { guide: 'storm', until: '2099-12-31' };
+      await r.fulfill({ response: res, json: j });
+    });
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    // the page before was English, and the language choice is remembered
+    const card = await page.textContent('#alert-card');
+    const forced = card.includes(STR.th.guideStorm) || card.includes(STR.en.guideStorm);
+    await page.click('#alert-open');
+    await page.waitForSelector('#cl-back');
+    const title = await page.textContent('#sheet-title');
+    const opened = [CHECKLISTS.storm.title.th, CHECKLISTS.storm.title.en].some((x) => x && title.includes(x));
+    check('an alert set to "storm" shows its card, and the card opens the storm guide', forced && opened, `${forced} ${opened}`);
+    await page.unroute(/\/content\/config\.json/);
+    await page.goto(`${BASE}/c/p8?h=20261018`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#btn-accept');
+    check('a challenge link hides the tools and the alert (the friend\'s challenge is why they came)', (await page.isHidden('#hub')) && (await page.isHidden('#alert-card')));
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(400);
+    const names = new Set(events.map((e) => e[0]));
+    check('guide_open and print are counted (anonymous)', names.has('guide_open') && names.has('print'), [...names].filter((n) => /guide|print|checklist/.test(n)).join(', '));
+    check('no page errors (tools first)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
 

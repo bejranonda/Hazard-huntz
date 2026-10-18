@@ -1,6 +1,6 @@
 // Screens, the shared bottom sheet, toasts and the mascot's speech bubble.
 
-import { $, $$ } from './util.js';
+import { $, $$, esc, inAppBrowser } from './util.js';
 
 export function showScreen(name) {
   for (const s of $$('.screen')) s.classList.toggle('active', s.id === `screen-${name}`);
@@ -107,4 +107,28 @@ export function hideBubble() {
 export function setLoading(on) {
   const el = $('#loading');
   if (el) el.hidden = !on;
+}
+
+// ---------- printing (A4) ----------
+// A plain list for the fridge door or an older relative: the screen is hidden
+// while printing (#print-area, see app.css). In-app browsers (LINE, Facebook)
+// can't print, so the button isn't shown there.
+export const canPrint = () => typeof window.print === 'function' && !inAppBrowser();
+
+// d: { title, sub, sections: [{ head, items: [{ text, note }] }], foot: [lines] }
+export function printList(d) {
+  let el = document.getElementById('print-area');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'print-area';
+    document.body.append(el);
+  }
+  el.innerHTML = `
+    <p class="p-brand">${esc(d.brand || '')}</p>
+    <h1>${esc(d.title)}</h1>
+    ${d.sub ? `<p class="p-sub">${esc(d.sub)}</p>` : ''}
+    ${d.sections.map((s) => `${s.head ? `<h2>${esc(s.head)}</h2>` : ''}
+    <ul>${s.items.map((it) => `<li><span class="p-box" aria-hidden="true"></span><span>${esc(it.text)}${it.note ? `<small>${esc(it.note)}</small>` : ''}</span></li>`).join('')}</ul>`).join('')}
+    ${(d.foot || []).map((line) => `<p class="p-foot">${esc(line)}</p>`).join('')}`;
+  window.print();
 }

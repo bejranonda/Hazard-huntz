@@ -2,6 +2,8 @@
 
 **The one message:** *"เล่น 60 วิ รู้วิธีจริง แล้วส่งต่อให้คนที่บ้าน"*: play for a minute, learn the real action, pass it on to family. The game is the hook; the forwarded checklist image and the challenge link do the spreading.
 
+**Since v1.9.0, tools first:** *"รู้ว่าต้องทำอะไร เตรียมอะไร แล้วส่งต่อให้คนที่บ้าน"*. The app opens on what to do for any hazard (nine short guides), what to keep (the home check) and the family plan; the game is the optional way to remember. When something is in the news, post that hazard's guide ([the 5-minute playbook](#when-something-happens-the-5-minute-playbook)).
+
 What the research says about Thai audiences:
 
 - LINE has about 56M monthly users in Thailand, TikTok about 57M adults and Facebook about 52M.
@@ -210,7 +212,7 @@ Rules for these posts: no photos of real blackouts, storms or damage; no blame o
 
 Two tools that end in a picture a family forwards: **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`) works out what this household needs for a flood, a power cut or 3 days at home and how ready it is, and **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom. Good moments: next to a power-cut or flood post, before a long holiday, at the start of the rains, or when a family group is already talking about stocking up.
 
-- **Links:** `/?open=kit` and `/?open=plan` (`/en/?open=…` in English) open the tool straight away, but their link preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). Attach a picture, or link `/ready`, which has its own preview and links both tools.
+- **Links:** since v1.9.0 link **`/kit`** and **`/plan`** (`/en/kit`, `/en/plan`): each has its own preview (the check's or the plan's title and pill) and a button into the tool. `/?open=kit` and `/?open=plan` still open the tool straight away, but their preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). The posts below use the new addresses.
 - **Pictures:** use [17-kit.png](screens/17-kit.png), or a kit card or plan card you make yourself **with the form's example text only**. Never post a real family's plan card: it shows where they meet and who to call.
 - **Numbers:** the posts below name only the 3 days the check is built on (กรมประชาสัมพันธ์'s 72 hours; ปภ. and กรมอนามัย say 3 days or more). Leave the amounts to the check, which shows each one with its source, and don't add an interval, a 7-day target or an eating order: no agency gives them ([KNOWLEDGE §28.10](KNOWLEDGE.md#2810-what-was-left-out-and-why)).
 - **Privacy is part of the message:** the answers and the plan stay on the phone and are never sent. Say so; it is what makes an older relative willing to type a meeting place.
@@ -228,7 +230,7 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 >
 > 🔒 คำตอบอยู่ในมือถือของคุณเท่านั้น ไม่ส่งไปที่ไหน
 >
-> เช็กฟรี 1 นาที 👉 https://baanrodmai.autobahn.bot/?open=kit
+> เช็กฟรี 1 นาที 👉 https://baanrodmai.autobahn.bot/kit
 > #บ้านรอดไหม #ไฟดับ #ของตุน
 
 **Facebook: the plan card** (with a sample plan card):
@@ -241,16 +243,79 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 >
 > 🔒 ข้อความอยู่ในเครื่องของคุณเท่านั้น ไม่ส่งไปที่ไหน และไม่ต้องใส่เลขบัตรประชาชน
 >
-> ทำการ์ดของบ้านเรา 👉 https://baanrodmai.autobahn.bot/?open=plan
+> ทำการ์ดของบ้านเรา 👉 https://baanrodmai.autobahn.bot/plan
 > #บ้านรอดไหม
 
 **LINE family groups** (short, warm, one link each):
 
-> ส่งต่อด้วยความห่วงใย 💛 ลองเช็กกันไหมว่าบ้านเราพร้อมแค่ไหน ถ้าไฟดับ 3 วัน ตอบ 2 ข้อ ได้รายการของบ้านเราเลย 👉 https://baanrodmai.autobahn.bot/?open=kit
+> ส่งต่อด้วยความห่วงใย 💛 ลองเช็กกันไหมว่าบ้านเราพร้อมแค่ไหน ถ้าไฟดับ 3 วัน ตอบ 2 ข้อ ได้รายการของบ้านเราเลย 👉 https://baanrodmai.autobahn.bot/kit
 
-> แล้วมาทำการ์ดแผนบ้านรอดเก็บไว้ในมือถือทุกคนนะ จะนัดเจอกันที่ไหน ใครดูแลคุณยาย 👉 https://baanrodmai.autobahn.bot/?open=plan
+> แล้วมาทำการ์ดแผนบ้านรอดเก็บไว้ในมือถือทุกคนนะ จะนัดเจอกันที่ไหน ใครดูแลคุณยาย 👉 https://baanrodmai.autobahn.bot/plan
 
 Rules for these posts: never shame a low score ("ยังขาดอีกนิด" is the tone); no lists of what to buy from a shop or a brand; no photos of empty shelves or panic buying.
+
+### When something happens: the 5-minute playbook
+
+Hazards don't keep to a calendar: a quake abroad, a storm warning, a heatwave or a flash flood can be the topic of the day without notice. Every hazard has a "what to do" guide, a picture and a page, so the answer takes minutes, not a release ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).
+
+| Guide id | Topic | Its picture link (preview = the guide) | Its page |
+|---|---|---|---|
+| `prepare` | 🌊 น้ำกำลังมา | `/checklist/prepare` | `/flood` |
+| `landslide` | ⛰️ น้ำป่า ดินถล่ม | `/checklist/landslide` | `/landslide` |
+| `storm` | ⛈️ พายุ ลมแรง ฟ้าผ่า | `/checklist/storm` | `/storm` |
+| `return` | 🧹 หลังน้ำลด | `/checklist/return` | `/flood` |
+| `quake` | 🏚️ แผ่นดินไหว | `/checklist/quake` | `/quake` |
+| `fire` | 🔥 ไฟไหม้ | `/checklist/fire` | `/fire` |
+| `stock` | 🔦 ไฟดับ | `/checklist/stock` | `/ready` |
+| `heat` | 🌡️ อากาศร้อนจัด | `/checklist/heat` | `/heat` |
+| `dust` | 😷 ฝุ่น PM2.5 | `/checklist/dust` | `/pm25` |
+
+1. **Put the guide on the start screen.** In `public/content/config.json` (on GitHub: the pencil, then *Commit*), set the alert with an end date, a Bangkok date, that day included, usually the last day of the agency's warning:
+
+   ```json
+   "alert": { "guide": "quake", "until": "2026-11-02" },
+   ```
+
+   Commit to `main`. Cloudflare rebuilds and the card "ช่วงนี้: แผ่นดินไหว · ดูว่าต้องทำอะไร" is live in a minute or two, at the top of the start screen and first in the picker. If the build fails (an id that isn't in the table, a date that isn't real), the site stays as it was; fix the line. Check the build's `start` line, which ends with "· alert quake until …".
+2. **Get the picture and the caption.** On your phone, open https://baanrodmai.autobahn.bot/posts, scroll to "รูป "ต้องทำอะไร" ทุกภัย", press and hold the guide's picture to save it, and tap **คัดลอกข้อความโพสต์** under it. The caption already links `/checklist/<id>`.
+3. **Post.** Attach the picture and paste the caption, or write your own line first. Link `/checklist/<id>` (its preview is the guide's picture and title) or the hazard page (`/quake`: every line with its sources). Don't link `/?open=guide` when the preview matters: it previews as the main game ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). If the news names an agency warning, quote it as reported, with the outlet and date.
+4. **Clear the alert after.** The card disappears by itself after `until`, but every build warns until you set it back: `"alert": { "guide": null, "until": null }`, or a new date if the warning is extended ([KNOWN_ISSUES #64](KNOWN_ISSUES.md#64-the-alert-must-be-cleared-or-renewed-by-hand)). One alert at a time: for a second topic, post its `/checklist/<id>` link without the alert.
+
+**Now (19 Oct 2026):** `landslide` until `2026-10-25`, for ปภ.'s warning of heavy rain, flash floods and mudslides on 18–25 Oct (Thairath, 18 Oct 2026). On 26 Oct set it back to `null` or to the next topic.
+
+**Rules for these posts:** the picture and the guide carry the advice, so add no numbers or tips of your own; the guides' ⚠️ lines say on the page that they are under review (the four new guides rest on news reports quoting the agencies until a Thai review, [KNOWN_ISSUES #60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies)); no photos of real damage, no death tolls, no blame; for a quake abroad, say where it happened and keep the post about getting ready at home. **No guide for it yet?** Post the closest one or the home check (`/kit`), and ask for a new guide ([ROADMAP S2](ROADMAP.md#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts)).
+
+### Your own post: the tools-first relaunch (v1.9.0, draft)
+
+**A draft for the owner's language check** ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)), in the owner's voice, announcing that the app is now tools first. It follows the v1.8.1 post's lessons below: free, no app, no sign-up, **not a government site**, every line sourced, nothing typed leaves the phone, neutral politeness (no ครับ or ค่ะ, so the owner adds their own). It names no numbers, so it can't drift from the guides. Both links preview as the main page, whose preview since v1.9.0 reads "เตรียมบ้านให้พร้อมทุกภัย / ต้องทำอะไร เตรียมอะไร"; attach [20-start-tools.png](screens/20-start-tools.png) or a guide's picture from `/posts`.
+
+**Facebook (personal post):**
+
+> ช่วงนี้เห็นคนตื่นตัวเรื่องรับมือภัยพิบัติกันเยอะ ทั้งน้ำท่วม น้ำป่า พายุ แผ่นดินไหว อากาศร้อน
+> แต่เรื่องไหนจะมาเมื่อไร ไม่มีใครรู้ เลยปรับเว็บ "บ้านรอดไหม?" ที่เคยทำไว้ ให้ใช้ได้กับทุกภัย 🦎
+>
+> เปิดมาเจอเครื่องมือก่อนเลย
+> 📋 ต้องทำอะไร เมื่อเกิดภัย: เลือกเรื่องที่อยากรู้ อ่านสั้นๆ ว่าต้องทำอะไร แล้วส่งเป็นรูปให้คนที่บ้านได้
+> 🎒 เช็กของจำเป็น: บอกว่าบ้านมีกี่คน มีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำ หรือสัตว์เลี้ยงไหม แล้วได้รายการของที่บ้านเราควรมี
+> 📝 แผนครอบครัว: จุดนัดพบ ใครติดต่อใคร ใครช่วยใคร ทำเป็นการ์ดเซฟไว้ในมือถือทุกคน
+> 🎮 ส่วนเกมยังอยู่ ใครอยากจำง่ายๆ ก็เล่นได้ ไม่เล่นก็ใช้ทุกอย่างได้ครบ
+>
+> ✅ ใช้ฟรี ไม่ต้องโหลดแอป ไม่ต้องสมัคร
+> ✅ ไม่ใช่เว็บของหน่วยงานรัฐ แต่ทุกข้อบอกที่มา ส่วนใหญ่จากหน่วยงานไทย ข้อที่ยังรอตรวจทานก็ติดป้ายไว้
+> 🔒 สิ่งที่กรอกอยู่ในมือถือเราเท่านั้น ไม่ส่งไปที่ไหน
+>
+> ดูว่าต้องทำอะไร 👉 https://baanrodmai.autobahn.bot/?open=guide
+> หน้าแรก 👉 https://baanrodmai.autobahn.bot
+>
+> ฝากลองใช้ดูหน่อยนะ อยากให้เพิ่มเรื่องไหน บอกกันได้เลย 🙏
+> #บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ
+
+**LINE family group** (short, one link):
+
+> ลองเปิดดูกันนะ เว็บที่เราทำเอง ใช้ฟรี ไม่ต้องสมัคร มีว่าต้องทำอะไรถ้าเกิดน้ำท่วม น้ำป่า พายุ แผ่นดินไหว อากาศร้อน และเช็กของจำเป็นในบ้านได้ด้วย
+> 👉 https://baanrodmai.autobahn.bot
+
+Before posting: read it aloud in your own words; if a topic is in the news that day, name it in the first line and link its `/checklist/<id>` too (the playbook above).
 
 ### Your own post: "ช่วงนี้เห็นคนตื่นตัว…" (v1.8.1, during the rain warning of 18–25 Oct 2026)
 
@@ -272,6 +337,7 @@ How these were checked:
 Before posting:
 
 - **The rain line goes stale after 25 Oct.** Send the LINE version by about 20–21 Oct, and after the 25th drop the ปภ. sentence (the rest still stands).
+- **Since v1.9.0, link `/kit` instead of `/?open=kit`** in these posts: it has a preview of its own. The rain sentence also has a tools-first successor below ([the relaunch post](#your-own-post-the-tools-first-relaunch-v190-draft)).
 - **Attach a picture.** `/?open=kit` previews as the main game ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). Use [19-kit-card.png](screens/19-kit-card.png), a sample kit card for an example household.
 - **Check that counting works** before a big push, so `kit_open` → `kit_share` after the post can be seen ([05-metrics](05-metrics.md)).
 
@@ -317,7 +383,7 @@ Before posting:
 
 Give every partner the same **ready-to-forward kit**:
 
-- the checklist images for the hazard (flood: Prepare and Return; dust; fire; power cut)
+- the checklist images for the hazard (flood: Prepare and Return; dust; fire; power cut; since v1.9.0 also flash floods and landslides, storms, earthquakes and extreme heat, all on `/posts`)
 - a result card
 - the two-line message above
 - the link
@@ -364,13 +430,15 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 ## 6. Launch-day checklist
 
 - [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
-- [ ] Sitemap (12 addresses since v1.7.0) submitted in Google Search Console and Bing Webmaster Tools, and the eight hazard pages submitted for indexing; `/learn` and `/pm25` JSON-LD pass the Rich Results Test
+- [ ] Sitemap (24 addresses since v1.9.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan` (with their twins) submitted for indexing; `/learn` and `/pm25` JSON-LD pass the Rich Results Test
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
-- [ ] Hazard pages `/flood`, `/pm25`, `/fire` and `/ready` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE
+- [ ] Hazard pages `/flood`, `/pm25`, `/fire` and `/ready` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE; the same for the guide pages `/landslide`, `/storm`, `/quake`, `/heat` and for `/kit`, `/plan` and a `/checklist/<id>` of a new guide
 - [ ] Switch end dates set: the build's `start` line shows the mode and topic you expect today, with no warning about a missing or past end date
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on
 - [ ] Real-phone pass of [06-test-checklist.md](06-test-checklist.md) in LINE, Facebook and TikTok in-app browsers
 - [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md), including the 10 power-cut lessons before the `ready` set is posted widely, and the home check's ⚠️ lines before the check is promoted ([KNOWN_ISSUES #57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance))
 - [ ] `/?open=kit` and `/?open=plan` tried on a phone, inside LINE and in the phone's browser (rows 46–48 of [06-test-checklist.md](06-test-checklist.md))
+- [ ] The start screen's hub, the alert card, the guide picker inside LINE and print from Chrome or Safari tried on a phone (rows 51–54)
+- [ ] The alert set for what is in the news, or cleared: the build's `start` line shows it, with no warning about a past end date
 - [ ] Posts scheduled for the 06:00 / 12:00 / 20:00 slots; partner kit sent

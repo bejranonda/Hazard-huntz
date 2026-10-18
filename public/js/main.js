@@ -6,7 +6,7 @@ import {
   loadContent, content, t, L, setLang, getLang, pickLine, pickLineFor, rankTitle, sourceList,
   siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
 } from './content.js';
-import { modeList, modeIds, modeOf, mk, cap, idsRe, recommend } from './modes.js';
+import { modeList, modeIds, modeOf, mk, cap, recommend, activeAlert } from './modes.js';
 import { APP_VERSION } from './version.js';
 import { generateHouse, playableRooms } from './house.js';
 import { Round, STATUS } from './round.js';
@@ -15,7 +15,7 @@ import { Scene, prefetchHouse, loadSprites } from './scene.js';
 import { Gecko } from './mascot.js';
 import { unlockAudio, play, haptic, isMuted, setMuted } from './audio.js';
 import { sparkle, floatText, confetti } from './fx.js';
-import { showScreen, openSheet, closeSheet, sheetOpen, toast, say, hideBubble, setLoading } from './ui.js';
+import { showScreen, openSheet, closeSheet, sheetOpen, toast, say, hideBubble, setLoading, canPrint, printList } from './ui.js';
 import { actionIcon, spriteIcon } from './icons.js';
 import { loadCardAssets, drawResultCard, drawChecklist, canvasToBlob, plainText } from './cards.js';
 import {
@@ -95,9 +95,11 @@ async function boot() {
 
   // Deep links: /checklist/prepare, ?open=help, etc.
   const open = new URLSearchParams(location.search).get('open') || '';
-  const cl = new RegExp(`^(?:/en)?/checklist/(${idsRe()})/?$`).exec(location.pathname);
-  if (cl) openChecklist(cl[1]);
-  else if (new RegExp(`^checklist-(${idsRe()})$`).test(open)) openChecklist(open.split('-')[1]);
+  const ids = guideIds().join('|');
+  const cl = new RegExp(`^(?:/en)?/checklist/(${ids})/?$`).exec(location.pathname);
+  if (cl) openChecklist(cl[1], 'link');
+  else if (new RegExp(`^checklist-(${ids})$`).test(open)) openChecklist(open.split('-')[1], 'link');
+  else if (open === 'guide') openGuides('link');
   else if (open === 'help') openHelp();
   else if (open === 'about') openAbout();
   else if (open === 'kit' || open === 'plan') openTool(open, 'link');
@@ -215,10 +217,19 @@ function renderStart() {
   }
   fl.hidden = !fUrl;
 
-  // The home check: "บ้านพร้อม 70%" once this household has checked (stored on the device).
+  // The home check: "บ้านเราพร้อม 70%" once this household has checked (stored on the device).
   const kitSaved = store.get('kit', null);
   const kitChip = $('#kit-chip');
-  if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('kitChipScore', { pct: kitSaved.pct }) : t('kitChip');
+  if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('hubKitScore', { pct: kitSaved.pct }) : t('hubKitSub');
+
+  // The owner's alert (config.alert, until its end date): that guide, first.
+  const alertId = activeAlert(content().config, today);
+  const alertEl = $('#alert-card');
+  if (alertId && content().checklists[alertId] && !state.challenge) {
+    alertEl.innerHTML = `<button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(guideOf(alertId)?.icon || '📢')}</span><span>${esc(t('alertCard', { name: t(mk('guide', alertId)) }))}</span><span aria-hidden="true">›</span></button>`;
+    alertEl.hidden = false;
+    $('#alert-open').addEventListener('click', () => openChecklist(alertId, 'alert'));
+  } else alertEl.hidden = true;
 
   const vEl = $('#app-version');
   if (vEl && content()?.config?.version) {
@@ -266,10 +277,10 @@ function bindGlobal() {
   for (const b of $$('[data-open]')) {
     b.addEventListener('click', () => {
       const what = b.dataset.open;
-      if (what === 'checklist') openChecklist(state.defaultMode);
+      if (what === 'guide' || what === 'checklist') openGuides('start');
       else if (what === 'help') openHelp();
       else if (what === 'about') openAbout();
-      else if (what === 'kit') openTool('kit', 'start');
+      else if (what === 'kit' || what === 'plan') openTool(what, 'start');
     });
   }
   $('#forecast-link-start').addEventListener('click', () => track('forecast_click', { label: 'start' }));
@@ -808,7 +819,7 @@ async function showResult(result) {
   $('#btn-other').addEventListener('click', () => startFlow(other, { kind: 'daily' }));
   $('#btn-random').addEventListener('click', () => startFlow(mode, { kind: 'random' }));
   $('#btn-home').addEventListener('click', () => goHome());
-  $('#btn-checklist').addEventListener('click', () => openChecklist(mode));
+  $('#btn-checklist').addEventListener('click', () => openChecklist(mode, 'result'));
   $('#btn-kit')?.addEventListener('click', () => openTool('kit', 'result', mode));
   $('#btn-forecast')?.addEventListener('click', () => track('forecast_click', { mode, label: 'result' }));
   for (const a of $$('[data-help]', $('#result'))) {
@@ -950,26 +961,95 @@ async function openTool(which, from, mode = '') {
   }
 }
 
-async function openChecklist(mode) {
+// "What to do" guides, one per hazard, in config.json → guides (order, icon,
+// hazard). A game mode's checklist is its guide; the hazards with no game yet
+// (quake, heat, storm, landslide) are guides only, with a source on every line.
+const guideList = () => (content().config.guides || []).filter((g) => content().checklists[g.id]);
+const guideIds = () => guideList().map((g) => g.id);
+const guideOf = (id) => guideList().find((g) => g.id === id);
+
+async function openGuides(from = 'start') {
   const C = content();
-  track('checklist_open', { mode });
-  const list = C.checklists[mode];
-  const tabs = modeIds().filter((id) => C.checklists[id]);
+  track('guide_open', { label: from });
+  const now = activeAlert(C.config, bangkokDateKey());
+  const list = guideList().slice().sort((a, b) => (b.id === now) - (a.id === now));
   openSheet(`
-    <h2 id="sheet-title">${esc(t('checklistTitle'))}</h2>
-    <div class="seg${tabs.length > 2 ? ' seg-grid' : ''}" role="group">
-      ${tabs.map((id) => `<button type="button" data-cl="${id}" aria-pressed="${id === mode}">${esc(t(mk('checklistTab', id)))}</button>`).join('')}
+    <h2 id="sheet-title">📋 ${esc(t('guidePickTitle'))}</h2>
+    <p class="sub">${esc(t('guidePickSub'))}</p>
+    <div class="guide-grid">${list.map((g) => `
+      <button class="guide-tile${g.id === now ? ' is-now' : ''}" type="button" data-guide="${g.id}">
+        <span class="guide-ico" aria-hidden="true">${esc(g.icon)}</span>
+        <span class="guide-name">${esc(t(mk('guide', g.id)))}</span>
+        ${g.id === now ? `<span class="guide-now">${esc(t('guideNow'))}</span>` : ''}
+      </button>`).join('')}
     </div>
-    <img class="card-preview" id="cl-img" alt="${esc(L(list.title))}">
+    <button class="btn secondary small" type="button" id="guide-close">${esc(t('close'))}</button>`, { label: t('guidePickTitle') });
+  $('#guide-close').addEventListener('click', () => closeSheet());
+  for (const b of $$('[data-guide]', $('#sheet'))) b.addEventListener('click', () => openChecklist(b.dataset.guide, 'picker'));
+}
+
+// The guide's lines, grouped by phase (before, during, after) when it has them.
+function guideSections(list) {
+  const phases = ['before', 'during', 'after'].filter((p) => list.items.some((it) => it.phase === p));
+  if (!phases.length) return [{ head: '', items: list.items }];
+  return phases.map((p) => ({ head: t(mk('phase', p)), phase: p, items: list.items.filter((it) => it.phase === p) }));
+}
+
+async function openChecklist(mode, from = '') {
+  const C = content();
+  const list = C.checklists[mode];
+  if (!list) return openGuides(from || 'link');
+  track('checklist_open', { mode, label: from });
+  const g = guideOf(mode);
+  const hz = g && C.config.hazards?.[g.hazard];
+  const pre = getLang() === 'en' ? '/en' : '';
+  const row = (it) => `<li><span>${esc(it.icon)} ${esc(L(it))}${it.verify === 'partial' ? ' <span class="partial">⚠️</span>' : ''}</span></li>`;
+  let n = 0;
+  const listHtml = guideSections(list).map((sec) => {
+    const start = n + 1;
+    n += sec.items.length;
+    return `${sec.head ? `<h3 class="phase phase-${sec.phase}">${esc(sec.head)}</h3>` : ''}<ol class="check-list" start="${start}" style="counter-reset: c ${start - 1}">${sec.items.map(row).join('')}</ol>`;
+  }).join('');
+  const agencies = [...new Set(list.items.flatMap((it) => it.sources || []).map((s) => C.sources[s]?.agency).filter(Boolean))];
+  const partial = list.items.some((it) => it.verify === 'partial');
+  openSheet(`
+    <h2 id="sheet-title">${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
+    ${listHtml}
+    ${agencies.length ? `<p class="src">${esc(t('source'))}: ${esc(agencies.join(' · '))}</p>` : ''}
+    ${partial ? `<p class="src">${esc(t('guidePartial'))}</p>` : ''}
+    <div class="guide-actions">
+      ${modeIds().includes(mode) ? `<button class="btn" type="button" id="cl-play">${esc(t('guidePlay'))}</button>` : ''}
+      ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
+    </div>
+    <h3>${esc(t('guideShare'))}</h3>
     <div class="share-grid" id="cl-share"></div>
     <p class="save-hint" id="cl-hint" hidden>💡 ${esc(t('saveHint'))}</p>
-    <h3>${esc(L(list.title))}</h3>
-    <ol class="check-list">${list.items.map((it) => `<li><span>${esc(it.icon)} ${esc(L(it))}</span></li>`).join('')}</ol>
-    <button class="btn secondary small" type="button" id="cl-close">${esc(t('close'))}</button>`);
+    <img class="card-preview" id="cl-img" alt="${esc(L(list.title))}">
+    ${canPrint() ? `<button class="btn secondary small" type="button" id="cl-print">${esc(t('printBtn'))}</button>` : ''}
+    <button class="btn secondary small" type="button" id="cl-back">${esc(t('guideBack'))}</button>
+    <button class="btn secondary small" type="button" id="cl-close">${esc(t('close'))}</button>`, { label: L(list.title) });
   $('#cl-close').addEventListener('click', () => closeSheet());
-  for (const b of $$('[data-cl]', $('#sheet'))) {
-    if (b.dataset.cl !== mode) b.addEventListener('click', () => openChecklist(b.dataset.cl));
-  }
+  $('#cl-back').addEventListener('click', () => openGuides('guide'));
+  $('#cl-play')?.addEventListener('click', () => {
+    closeSheet();
+    track('mode_select', { mode, label: 'guide' });
+    startFlow(mode, { kind: 'daily' });
+  });
+  $('#cl-read')?.addEventListener('click', () => track('learn_open', { label: mode }));
+  $('#cl-print')?.addEventListener('click', () => {
+    track('print', { mode, label: 'guide' });
+    printList({
+      brand: `${t('logoA')}${t('logoB')}`,
+      title: L(list.title),
+      sections: guideSections(list).map((sec) => ({ head: sec.head, items: sec.items.map((it) => ({ text: L(it), note: it.verify === 'partial' ? t('partialItem') : '' })) })),
+      foot: [
+        agencies.length ? `${t('source')}: ${agencies.join(' · ')}` : '',
+        `${t('clHelpLabel')}: ${C.helplines.filter((h) => h.main).map((h) => h.number).join(' · ')}`,
+        t('printNote', { url: `${siteUrl().replace(/^https?:\/\//, '')}${pre}/checklist/${mode}`, date: formatHouseDate(bangkokDateKey(), getLang()) }),
+        t('disclaimer'),
+      ].filter(Boolean),
+    });
+  });
 
   const assets = state.cardAssets || (state.cardAssets = await loadCardAssets());
   const canvas = document.createElement('canvas');
@@ -978,7 +1058,7 @@ async function openChecklist(mode) {
   const img = $('#cl-img');
   if (!img) return; // sheet closed meanwhile
   img.src = await imageSrc(blob);
-  const url = `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/checklist/${mode}`;
+  const url = `${siteUrl()}${pre}/checklist/${mode}`;
   const text = t('shareTextChecklist', { title: L(list.title), url });
   let file = null;
   try { file = new File([blob], `baanrodmai-checklist-${mode}.png`, { type: 'image/png' }); } catch { /* old browser */ }

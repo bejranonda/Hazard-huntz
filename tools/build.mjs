@@ -183,12 +183,15 @@ for (const m of MODES) {
 // links and search results, so they never change once published.
 const HAZARDS = config.hazards || {};
 const carouselPartial = [];
-const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts']);
+const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts', 'kit', 'plan']);
+// "What to do" guides (config.json → guides), in the order the app shows them.
+const GUIDES = config.guides || [];
+const GUIDE_IDS = GUIDES.map((g) => g.id);
 const slugSeen = new Set();
 for (const h of new Set(MODES.map((m) => m.hazard))) if (!HAZARDS[h]) err(`config.json: hazards.${h} is missing (every hazard needs a page slug)`);
 for (const [h, v] of Object.entries(HAZARDS)) {
   const slug = v?.slug || '';
-  if (!MODES.some((m) => m.hazard === h)) err(`config.json: hazards.${h} has no mode`);
+  if (!MODES.some((m) => m.hazard === h) && !GUIDES.some((g) => g.hazard === h)) err(`config.json: hazards.${h} has no mode and no guide`);
   if (!/^[a-z0-9][a-z0-9-]{1,30}$/.test(slug)) err(`config.json: hazards.${h}.slug must be lowercase letters, digits or "-"`);
   else if (slugSeen.has(slug)) err(`config.json: hazards slug "${slug}" is used twice`);
   else if (RESERVED.has(slug) || fs.existsSync(path.join(PUB, slug))) err(`config.json: hazards slug "${slug}" clashes with a site path`);
@@ -215,6 +218,49 @@ for (const [h, v] of Object.entries(HAZARDS)) {
 }
 for (const h of Object.keys(carousel?.sets || {})) if (!HAZARDS[h]) err(`carousel.json: sets.${h} is not a hazard in config.json`);
 for (const l of LANGS) for (const k of ['swipe', 'doLabel', 'whyLabel', 'sourceLabel', 'ctaTitle', 'ctaSub', 'helpLabel', 'postsTitle', 'postsIntro', 'postsCopy', 'postsCopied', 'postsImages']) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
+
+// A game mode's checklist sums up its sourced lessons. A guide with no game yet
+// (quake, heat, storm, landslide) has no lessons behind it, so every line
+// carries its own sources and verify flag, and a phase (before, during, after).
+const guideSeen = new Set();
+for (const g of GUIDES) {
+  const where = `config.json: guides "${g.id}"`;
+  if (guideSeen.has(g.id)) err(`${where} is listed twice`);
+  guideSeen.add(g.id);
+  if (!HAZARDS[g.hazard]) err(`${where}: hazard "${g.hazard}" is not in hazards`);
+  if (!g.icon) err(`${where}: no icon`);
+  const mode = MODES.find((m) => m.id === g.id);
+  if (mode && mode.hazard !== g.hazard) err(`${where}: the mode's hazard is "${mode.hazard}"`);
+  for (const l of LANGS) if (!strings[l]?.[`guide${capM(g.id)}`]) err(`strings.json: ${l}.guide${capM(g.id)} is missing`);
+  if (!strings.og?.[`checklistTitle${capM(g.id)}`] || !strings.ogEn?.[`checklistTitle${capM(g.id)}`]) err(`strings.json: og/ogEn.checklistTitle${capM(g.id)} is missing`);
+  const list = checklists[g.id];
+  if (!list) { err(`checklists.json: "${g.id}" is missing (it is in config.json → guides)`); continue; }
+  if (mode) continue; // checked with the modes below
+  if (list.items.length !== 10) err(`checklists.json: "${g.id}" must have exactly 10 items`);
+  let last = 0;
+  list.items.forEach((x, i) => {
+    const w = `checklists.json ${g.id} #${i + 1}`;
+    text(x, w);
+    if (x.sprite && !spriteIds.has(x.sprite)) err(`${w}: sprite "${x.sprite}" not found`);
+    const ph = ['before', 'during', 'after'].indexOf(x.phase);
+    if (ph < 0) err(`${w}: phase must be before, during or after`);
+    else if (ph < last) err(`${w}: phases go before → during → after`);
+    else last = ph;
+    if (!x.sources?.length) err(`${w}: a guide with no game needs a source on every line`);
+    for (const s of x.sources || []) if (!sources[s]) err(`${w}: unknown source "${s}"`);
+    if (!['verified', 'partial'].includes(x.verify)) err(`${w}: verify must be verified or partial`);
+    else if (x.verify === 'partial' && !x.verifyNote) err(`${w}: partial needs a verifyNote`);
+    if ([...(x.th || '')].length > 48) warn(`${w}: the Thai line is ${[...x.th].length} characters (about 45 fit two lines on the picture)`);
+  });
+}
+for (const id of Object.keys(checklists).filter((k) => !k.startsWith('_'))) if (!GUIDES.some((g) => g.id === id)) err(`checklists.json: "${id}" is not in config.json → guides`);
+// The owner's alert: a guide to the top of the start screen, always with an end date.
+const ALERT = config.alert || {};
+if (ALERT.guide != null) {
+  if (!GUIDE_IDS.includes(ALERT.guide)) err(`config.json: alert.guide "${ALERT.guide}" is not a guide`);
+  if (!realDay(ALERT.until)) err('config.json: alert.until must be a real date YYYY-MM-DD (an alert always ends by itself)');
+  else if (ALERT.until < TODAY) warn(`config.json: alert.until (${ALERT.until}) has passed, so the alert is off; clear it or give a new end date`);
+}
 
 for (const mode of MODE_IDS) {
   const n = itemsFile.items.filter((i) => i.mode === mode && roomById.get(i.room)?.enabled).length;
@@ -329,6 +375,8 @@ const ogBlock = ({ title, desc, image, alt: imgAlt, url, canonical = `${SITE}/`,
 
 const indexPath = path.join(PUB, 'index.html');
 let indexHtml = fs.readFileSync(indexPath, 'utf8');
+// The Thai meta description is generated from og.defaultDesc, like the title (rule 59).
+indexHtml = indexHtml.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(og.defaultDesc)}">`);
 const OG_RE = /<!--OG:START-->[\s\S]*?<!--OG:END-->/;
 if (!OG_RE.test(indexHtml)) err('index.html: OG markers <!--OG:START--> / <!--OG:END--> missing');
 
@@ -368,7 +416,7 @@ const indexLd = {
       applicationCategory: 'GameApplication', operatingSystem: 'Any',
       playMode: 'SinglePlayer', timeRequired: 'PT1M', isAccessibleForFree: true,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
-      about: ['น้ำท่วม', 'Flood safety', 'ฝุ่น PM2.5', 'PM2.5 air pollution', 'ไฟไหม้', 'Home fire safety', 'ไฟดับ', 'Power cut preparedness'].map((name) => ({ '@type': 'Thing', name })),
+      about: ['น้ำท่วม', 'Flood safety', 'ฝุ่น PM2.5', 'PM2.5 air pollution', 'ไฟไหม้', 'Home fire safety', 'ไฟดับ', 'Power cut preparedness', 'น้ำป่า ดินถล่ม', 'Flash floods and landslides', 'พายุ ฟ้าผ่า', 'Storms and lightning', 'แผ่นดินไหว', 'Earthquakes', 'อากาศร้อนจัด', 'Extreme heat'].map((name) => ({ '@type': 'Thing', name })),
       subjectOf: { '@type': 'WebPage', url: `${SITE}/learn` },
       dateModified: seoUpdated,
     },
@@ -379,6 +427,10 @@ const indexLd = {
 // version shows even before the script runs.
 if (config.version !== pkgVersion) err(`config.json version "${config.version}" must equal package.json version "${pkgVersion}"`);
 indexHtml = indexHtml.replace(/(<div class="app-version" id="app-version">)[^<]*(<\/div>)/, `$1v${pkgVersion}$2`);
+// The start screen's static Thai text comes from strings.json, as the English
+// page's does: text edited there can't go stale in index.html (rule 59).
+indexHtml = indexHtml.replace(/(<([a-z0-9]+)\b[^>]*\bdata-i18n="(\w+)"[^>]*>)([^<]*)(<\/\2>)/g,
+  (m, open, tag, key, text, close) => (typeof strings.th[key] === 'string' && !/\{\w+\}/.test(strings.th[key]) ? `${open}${esc(strings.th[key])}${close}` : m));
 // The Thai <title> is generated too, so it names every hazard the game covers.
 indexHtml = indexHtml.replace(/<title>[^<]*<\/title>/, `<title>${esc(og.defaultTitle)}</title>`);
 indexHtml = indexHtml.replace(OG_RE, ogBlock({
@@ -419,11 +471,6 @@ for (const { code: m, id: mode } of MODES) {
       title, desc: og[`challengeDesc${cap}`], image: `/og/${m}${s}.png`, alt: title,
     }), `${title} · บ้านรอดไหม?`));
   }
-  const ct = og[`checklistTitle${cap}`];
-  write(`checklist/${mode}.html`, page(indexHtml, ogBlock({
-    title: ct, desc: og.checklistDesc, image: `/og/checklist-${mode}.png`, alt: ct, url: `${SITE}/checklist/${mode}`,
-    alternates: alt(`/checklist/${mode}`, `${EN}/checklist/${mode}`),
-  }), `${ct} · บ้านรอดไหม?`));
 
   for (let s = 0; s <= 10; s++) {
     const title = fill(ogEn[`challengeTitle${cap}`], { score: s });
@@ -432,10 +479,20 @@ for (const { code: m, id: mode } of MODES) {
       canonical: `${SITE}${EN}/`, lang: 'en',
     }), `${title} · Baan Rod Mai?`));
   }
+}
+// One shareable "what to do" page per guide (/checklist/<id>), game or not:
+// the app opens on that guide, and the link preview is its picture.
+for (const id of GUIDE_IDS) {
+  const cap = capM(id);
+  const ct = og[`checklistTitle${cap}`];
+  write(`checklist/${id}.html`, page(indexHtml, ogBlock({
+    title: ct, desc: og.checklistDesc, image: `/og/checklist-${id}.png`, alt: ct, url: `${SITE}/checklist/${id}`,
+    alternates: alt(`/checklist/${id}`, `${EN}/checklist/${id}`),
+  }), `${ct} · บ้านรอดไหม?`));
   const cte = ogEn[`checklistTitle${cap}`];
-  write(`en/checklist/${mode}.html`, page(enIndexHtml, ogBlock({
-    title: cte, desc: ogEn.checklistDesc, image: `/og/en/checklist-${mode}.png`, alt: cte, url: `${SITE}${EN}/checklist/${mode}`,
-    canonical: `${SITE}${EN}/`, lang: 'en', alternates: alt(`/checklist/${mode}`, `${EN}/checklist/${mode}`),
+  write(`en/checklist/${id}.html`, page(enIndexHtml, ogBlock({
+    title: cte, desc: ogEn.checklistDesc, image: `/og/en/checklist-${id}.png`, alt: cte, url: `${SITE}${EN}/checklist/${id}`,
+    canonical: `${SITE}${EN}/`, lang: 'en', alternates: alt(`/checklist/${id}`, `${EN}/checklist/${id}`),
   }), `${cte} · Baan Rod Mai?`));
 }
 
@@ -450,6 +507,7 @@ const seoFiles = [];
 const writeSeo = (rel, body) => { fs.writeFileSync(path.join(PUB, rel), body); seoFiles.push(rel); };
 const T = (o) => esc(o?.th ?? '');
 const En = (o) => (o?.en ? `<span class="en" lang="en">${esc(o.en)}</span>` : '');
+const L2 = (o, lang) => (lang === 'en' ? o?.en : o?.th) ?? '';
 const LEARN_URL = `${SITE}/learn`;
 const roomOrder = roomsFile.rooms.map((r) => r.id);
 const lessons = (mode) => itemsFile.items
@@ -549,18 +607,29 @@ const thaiLeak = (html) => /[฀-๿]/.test(html.replace(/lang="th"[^>]*>[^<]*</
 // Shared blocks: lessons by mode, the modes' checklists and the helplines.
 const sectionsTh = (ids) => ids.map((id) => `<h2 id="${id}">${esc(S[`section${capM(id)}`])} <span class="en" lang="en">${esc(E[`section${capM(id)}`])}</span></h2>
 ${lessonsBy[id].map(lessonHtml).join('\n')}`).join('\n');
-const checklistsTh = (ids) => ids.filter((m) => checklists[m]).map((m) => `<h3>${T(checklists[m].title)} ${En(checklists[m].title)}</h3>
-<ol>${checklists[m].items.map((c) => `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}</li>`).join('')}</ol>`).join('\n');
+// A checklist, grouped by phase (before, during, after) when it has them. The
+// guides with no game carry a source on every line, shown under the line.
+const phaseGroups = (list) => {
+  const ph = ['before', 'during', 'after'].filter((p) => list.items.some((x) => x.phase === p));
+  return ph.length ? ph.map((p) => ({ p, items: list.items.filter((x) => x.phase === p) })) : [{ p: null, items: list.items }];
+};
+const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(c.sources, lang)}${c.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>` : '');
+// title = false (a hazard page that is its guide): the H1 says it, so the phases are the headings.
+const checklistsTh = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
+  let n = 0;
+  const hp = title ? level + 1 : level;
+  return `${title ? `<h${level} id="cl-${m}">${T(checklists[m].title)} ${En(checklists[m].title)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp}>${esc(strings.th[`phase${capM(g.p)}`])} <span class="en" lang="en">${esc(strings.en[`phase${capM(g.p)}`])}</span></h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}${clSrc(c, 'th')}</li>`)).join('')}</ol>`).join('\n')}`;
+}).join('\n');
 const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
 
 // Hazard pages (/flood, /pm25, /fire and /en/…): one page per hazard with only
 // its lessons, so a search such as "ป้องกันฝุ่น PM2.5 ในบ้าน" lands on the answer,
 // next to a button that opens that mode (/?mode=dust). Slugs: config.json → hazards.
 const hazardList = Object.entries(HAZARDS)
-  .map(([id, v]) => ({ id, slug: v.slug, tools: v.tools || [], modes: MODES.filter((m) => m.hazard === id).map((m) => m.id) }))
-  .filter((h) => h.modes.length);
+  .map(([id, v]) => ({ id, slug: v.slug, tools: v.tools || [], modes: MODES.filter((m) => m.hazard === id).map((m) => m.id), guides: GUIDES.filter((g) => g.hazard === id).map((g) => g.id) }))
+  .filter((h) => h.modes.length || h.guides.length);
 const hazardChips = (lang, current) => `<div class="tix" id="hazards"><p><b>${esc((lang === 'en' ? E : S).byHazard)}</b></p><ul>${hazardList.map((h) => `<li><a href="${lang === 'en' ? EN : ''}/${h.slug}"${h.id === current ? ' aria-current="page"' : ''}>${esc((lang === 'en' ? E : S)[`hazard${capM(h.id)}Nav`])}</a></li>`).join('')}</ul></div>`;
-const playLinks = (lang, ids) => `<p class="play">${ids.map((id) => `<a class="cta" href="${lang === 'en' ? EN : ''}/?mode=${id}">${esc(fill((lang === 'en' ? E : S).playMode, { mode: strings[lang][`mode${capM(id)}`], s: config.round[id].seconds }))}</a>`).join(' ')}</p>`;
+const playLinks = (lang, ids) => !ids.length ? '' : `<p class="play">${ids.map((id) => `<a class="cta" href="${lang === 'en' ? EN : ''}/?mode=${id}">${esc(fill((lang === 'en' ? E : S).playMode, { mode: strings[lang][`mode${capM(id)}`], s: config.round[id].seconds }))}</a>`).join(' ')}</p>`;
 // Every tool any hazard offers (/?open=kit, /?open=plan), for /learn and llms.txt.
 const allTools = { tools: [...new Set(hazardList.flatMap((h) => h.tools))] };
 const toolLinks = (lang, h) => h.tools.map((tool) => `<p class="check"><a href="${lang === 'en' ? EN : ''}/?open=${tool}">${esc((lang === 'en' ? E : S)[`tool${capM(tool)}`])}</a></p>`).join('\n');
@@ -587,7 +656,7 @@ ${hazardChips('th')}
 ${topicIndex('th')}
 ${sectionsTh(MODE_IDS)}
 <h2 id="checklists">${esc(S.checklists)}</h2>
-${checklistsTh(MODE_IDS)}
+${checklistsTh(GUIDE_IDS)}
 ${toolLinks('th', allTools)}
 <h2 id="helplines">${esc(S.helplines)}</h2>
 ${helplineHtml}
@@ -615,7 +684,11 @@ ${wet ? `<p><b>${esc(E.ifWet)}:</b> ${esc(wet.label.en)}${it.wet.tip?.en ? ` · 
 };
 const sectionsEn = (ids) => ids.map((id) => `<h2 id="${id}">${esc(E[`section${capM(id)}`])}</h2>
 ${lessonsBy[id].map(enLesson).join('\n')}`).join('\n');
-const checklistsEn = (ids) => ids.filter((m) => checklists[m]).map((m) => `<h3>${esc(checklists[m].title.en)}</h3>\n<ol>${checklists[m].items.map((c) => `<li>${esc(c.en)}</li>`).join('')}</ol>`).join('\n');
+const checklistsEn = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
+  let n = 0;
+  const hp = title ? level + 1 : level;
+  return `${title ? `<h${level} id="cl-${m}">${esc(checklists[m].title.en)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp}>${esc(strings.en[`phase${capM(g.p)}`])}</h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.en)}${clSrc(c, 'en')}</li>`)).join('')}</ol>`).join('\n')}`;
+}).join('\n');
 const helplineEn = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${esc(h.who.en)}: ${esc(h.what.en)}</li>`).join('')}</ul>`;
 const learnTitleEn = fill(E.learnTitle, { n: nLessons });
 const learnEnHtml = seoPage({
@@ -633,7 +706,7 @@ ${hazardChips('en')}
 ${topicIndex('en')}
 ${sectionsEn(MODE_IDS)}
 <h2 id="checklists">${esc(E.checklists)}</h2>
-${checklistsEn(MODE_IDS)}
+${checklistsEn(GUIDE_IDS)}
 ${toolLinks('en', allTools)}
 <h2 id="helplines">${esc(E.helplines)}</h2>
 ${helplineEn}
@@ -649,14 +722,18 @@ if (thaiLeak(learnEnHtml)) warn('en/learn.html contains Thai text outside Thai-t
 for (const h of hazardList) {
   const H = capM(h.id);
   const its = h.modes.flatMap((id) => lessonsBy[id]);
-  const n = its.length;
-  const cites = [...new Set(its.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]))].filter((id) => sources[id]).map((id) => sources[id].url);
+  // A hazard with no game yet (quake, heat…) is its guide: n counts its lines.
+  const guideOnly = h.guides.filter((g) => !h.modes.includes(g));
+  const n = its.length || guideOnly.reduce((a, g) => a + checklists[g].items.length, 0);
+  const cites = [...new Set([...its.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]), ...guideOnly.flatMap((g) => checklists[g].items.flatMap((x) => x.sources || []))])].filter((id) => sources[id]).map((id) => sources[id].url);
+  const lists = [...h.modes, ...guideOnly];
+  const picture = (lang) => lists.map((g) => `<p class="check"><a href="${lang === 'en' ? EN : ''}/checklist/${g}">${esc(fill((lang === 'en' ? E : S).guidePicture, { title: L2(checklists[g].title, lang) }))}</a></p>`).join('\n');
   const ld = (lang, url, title) => ({
     '@context': 'https://schema.org',
     '@type': 'Article',
     '@id': `${url}#article`, url, mainEntityOfPage: url,
     headline: (lang === 'en' ? E : S)[`hazard${H}H1`], name: title, description: (lang === 'en' ? E : S)[`hazard${H}Desc`],
-    inLanguage: lang, dateModified: seoUpdated, image: `${SITE}/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0]}.png`,
+    inLanguage: lang, dateModified: seoUpdated, image: `${SITE}/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0] || h.guides[0]}.png`,
     isPartOf: { '@id': `${SITE}${lang === 'en' ? EN : ''}/#website` }, about: { '@id': `${SITE}/#game` },
     isAccessibleForFree: true,
     citation: cites,
@@ -665,18 +742,23 @@ for (const h of hazardList) {
   const titleTh = fill(S[`hazard${H}Title`], { n });
   writeSeo(`${h.slug}.html`, seoPage({
     lang: 'th', title: titleTh, desc: S[`hazard${H}Desc`], url: thUrl, thPath: `/${h.slug}`, enPath: `${EN}/${h.slug}`,
-    image: `/og/checklist-${h.modes[0]}.png`, ld: ld('th', thUrl, titleTh),
+    image: `/og/checklist-${h.modes[0] || h.guides[0]}.png`, ld: ld('th', thUrl, titleTh),
     main: `<main>
 <p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/${h.slug}" lang="en" hreflang="en">English</a></p>
 <h1>${esc(S[`hazard${H}H1`])}</h1>
-${playLinks('th', h.modes)}
+${h.modes.length ? `${playLinks('th', h.modes)}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${checkLinks('th', h.modes)}
 ${toolLinks('th', h)}
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${sectionsTh(h.modes)}
 <h2 id="checklists">${esc(S.checklists)}</h2>
-${checklistsTh(h.modes)}
+${checklistsTh(lists)}
+${picture('th')}` : `${checklistsTh(lists, 2, false)}
+${picture('th')}
+<p>${esc(S[`hazard${H}Intro`])}</p>
+${toolLinks('th', h)}
+<p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
 <h2 id="helplines">${esc(S.helplines)}</h2>
 ${helplineHtml}
 ${playLinks('th', h.modes)}
@@ -688,11 +770,11 @@ ${hazardChips('th', h.id)}
   const titleEn = fill(E[`hazard${H}Title`], { n });
   const enHtml = seoPage({
     lang: 'en', title: titleEn, desc: E[`hazard${H}Desc`], url: enUrl, thPath: `/${h.slug}`, enPath: `${EN}/${h.slug}`,
-    image: `/og/en/checklist-${h.modes[0]}.png`, ld: ld('en', enUrl, titleEn),
+    image: `/og/en/checklist-${h.modes[0] || h.guides[0]}.png`, ld: ld('en', enUrl, titleEn),
     main: `<main>
 <p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a> · <a href="/${h.slug}" lang="th" hreflang="th">ภาษาไทย</a></p>
 <h1>${esc(E[`hazard${H}H1`])}</h1>
-${playLinks('en', h.modes)}
+${h.modes.length ? `${playLinks('en', h.modes)}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 ${checkLinks('en', h.modes)}
@@ -700,7 +782,13 @@ ${toolLinks('en', h)}
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${sectionsEn(h.modes)}
 <h2 id="checklists">${esc(E.checklists)}</h2>
-${checklistsEn(h.modes)}
+${checklistsEn(lists)}
+${picture('en')}` : `${checklistsEn(lists, 2, false)}
+${picture('en')}
+<p>${esc(E[`hazard${H}Intro`])}</p>
+<p class="tip">${esc(E.intlNote)}</p>
+${toolLinks('en', h)}
+<p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
 <h2 id="helplines">${esc(E.helplines)}</h2>
 ${helplineEn}
 ${playLinks('en', h.modes)}
@@ -710,6 +798,59 @@ ${hazardChips('en', h.id)}
   });
   writeSeo(`en/${h.slug}.html`, enHtml);
   if (thaiLeak(enHtml)) warn(`en/${h.slug}.html contains Thai text outside Thai-tagged spans`);
+}
+
+// /kit and /plan: plain pages for the home check and the plan card, with their
+// own link preview (a sample card), every line and its sources for search, and
+// a button that opens the tool in the app. Shared cards link here (v1.9.0).
+{
+  const flagLabel = (id, lang) => L2(kitFile.flags.find((f) => f.id === id)?.label, lang);
+  const rule = (x, lang) => {
+    const X = lang === 'en' ? E : S;
+    const q = x.qty || {};
+    const unit = L2(q.unit, lang);
+    const r = q.perPersonPerDay != null ? fill(X.kitPerPersonDay, { per: q.perPersonPerDay, unit, days: q.days })
+      : q.perPerson != null ? fill(X.kitPerPerson, { per: q.perPerson, unit })
+      : q.days != null && q.people ? fill(X.kitDaysPeople, { days: q.days })
+      : q.days != null ? fill(X.kitDays, { days: q.days }) : '';
+    return [r, x.for ? fill(X.kitIf, { who: flagLabel(x.for, lang) }) : ''].filter(Boolean).join(' · ');
+  };
+  const src = (x, lang) => `<span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(x.sources, lang)}${x.verify !== 'verified' ? ` · <span class="flag">⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>`;
+  const tools = { kit: kitFile.items, plan: kitFile.plan };
+  for (const tool of ['kit', 'plan']) {
+    for (const lang of LANGS) {
+      const X = lang === 'en' ? E : S;
+      const pre = lang === 'en' ? EN : '';
+      const url = `${SITE}${pre}/${tool}`;
+      const rows = tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}<br>${src(x, lang)}</li>`).join('\n');
+      const title = X[`${tool}PageTitle`];
+      const html = seoPage({
+        lang, title, desc: X[`${tool}PageDesc`], url, thPath: `/${tool}`, enPath: `${EN}/${tool}`,
+        image: `/og/${lang === 'en' ? 'en/' : ''}${tool}.png`,
+        ld: { '@context': 'https://schema.org', '@type': 'WebPage', '@id': `${url}#page`, url, name: title, description: X[`${tool}PageDesc`], inLanguage: lang, dateModified: seoUpdated, isPartOf: { '@id': `${SITE}${pre}/#website` }, isAccessibleForFree: true },
+        main: `<main>
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a> · ${lang === 'en' ? `<a href="/${tool}" lang="th" hreflang="th">ภาษาไทย</a>` : `<a href="${EN}/${tool}" lang="en" hreflang="en">English</a>`}</p>
+<h1>${esc(X[`${tool}PageH1`])}</h1>
+<p class="play"><a class="cta" href="${pre}/?open=${tool}">${esc(X[`${tool}PageCta`])}</a></p>
+<p>${esc(X[`${tool}PageIntro`])}</p>
+<p class="tip">🔒 ${esc(L2({ th: kitFile.ui.th[tool === 'kit' ? 'privacy' : 'planPrivacy'], en: kitFile.ui.en[tool === 'kit' ? 'privacy' : 'planPrivacy'] }, lang))}</p>
+<h2>${esc(X[`${tool}PageList`])}</h2>
+<ol>
+${rows}
+</ol>
+<p class="play"><a class="cta" href="${pre}/?open=${tool}">${esc(X[`${tool}PageCta`])}</a></p>
+<p class="check"><a href="${pre}/${tool === 'kit' ? 'plan' : 'kit'}">${esc(X[`${tool === 'kit' ? 'plan' : 'kit'}PageTitle`])}</a></p>
+<p class="src">${esc(X.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<h2 id="helplines">${esc(X.helplines)}</h2>
+${lang === 'en' ? helplineEn : helplineHtml}
+${hazardChips(lang)}
+<footer><p>${esc(strings[lang].disclaimer)}</p></footer>
+</main>`,
+      });
+      writeSeo(`${lang === 'en' ? 'en/' : ''}${tool}.html`, html);
+      if (lang === 'en' && thaiLeak(html)) warn(`en/${tool}.html contains Thai text outside Thai-tagged spans`);
+    }
+  }
 }
 
 let postsInfo = '';
@@ -755,6 +896,14 @@ ${sets.map((x) => `<section id="${x.slug}">
 <textarea readonly id="cap-${x.slug}" aria-label="${esc(K.postsCopy)}">${esc(x.caption)}</textarea>
 <button class="cta" type="button" data-copy="cap-${x.slug}">${esc(K.postsCopy)}</button>
 </section>`).join('\n')}
+<section id="guides">
+<h2>${esc(K.guidesTitle)}</h2>
+<p>${esc(K.guidesIntro)}</p>
+${GUIDES.map((g) => `<h3>${esc(g.icon)} ${esc(strings.th[`guide${capM(g.id)}`])}</h3>
+<div class="imgs"><img src="/share/checklist-${g.id}.png" width="1080" height="1920" loading="lazy" alt="${esc(checklists[g.id].title.th)}"></div>
+<textarea readonly id="cap-guide-${g.id}" aria-label="${esc(K.postsCopy)}">${esc(fill(K.guideCaption, { title: checklists[g.id].title.th, url: `${SITE}/checklist/${g.id}` }))}</textarea>
+<button class="cta" type="button" data-copy="cap-guide-${g.id}">${esc(K.postsCopy)}</button>`).join('\n')}
+</section>
 <footer><p>${esc(strings.th.disclaimer)}</p></footer>
 </main>
 <script>
@@ -784,7 +933,7 @@ Sitemap: ${SITE}/sitemap.xml
 `);
 
 // Each page lists its other-language version (hreflang), as Google asks.
-const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`])];
+const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`]), ['/kit', `${EN}/kit`], ['/plan', `${EN}/plan`]];
 writeSeo('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${sitemapPairs.flatMap(([th, en]) => [th, en].map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${seoUpdated}</lastmod>
@@ -814,6 +963,12 @@ ${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug
 ${MODE_IDS.map((id) => `## ${md(E[`section${capM(id)}`])} (${md(S[`section${capM(id)}`])})
 
 ${lessonsBy[id].map(llmsLesson).join('\n')}
+`).join('\n')}
+${GUIDES.filter((g) => !MODE_IDS.includes(g.id)).map((g) => `## What to do: ${md(checklists[g.id].title.en)} (${md(checklists[g.id].title.th)})
+
+A short guide with no game yet: ${SITE}/${HAZARDS[g.hazard].slug} · as a picture: ${SITE}/checklist/${g.id}
+
+${checklists[g.id].items.map((x) => `- ${md(x.en)} (${md(x.th)}) [${(x.sources || []).map((id) => sources[id]?.url).filter(Boolean).join(' ')}]${x.verify === 'partial' ? ' (under review)' : ''}`).join('\n')}
 `).join('\n')}
 ## Thai emergency helplines
 
@@ -903,6 +1058,8 @@ if (gz > 500 * 1024) err(`initial load is ${(gz / 1024).toFixed(0)} KB compresse
     ].join('\n');
     const kindLabel = { official: 'agency site', government: 'government channel (PRD)', secondary: 'news quoting the agency', academic: 'academic statement or peer-reviewed study (not an agency)', international: 'international guidance (cross-check only)' };
     const used = new Set(itemsFile.items.flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]));
+    // the guides with no game cite their own sources (checklists.json)
+    for (const l of Object.values(checklists)) for (const x of l?.items || []) for (const id of x.sources || []) used.add(id);
     for (const h of helplines.helplines) if (h.source) used.add(h.source);
     for (const k of [...(kitFile.items || []), ...(kitFile.plan || [])]) for (const id of k.sources || []) used.add(id);
     const refs = Object.entries(sources)
@@ -944,7 +1101,7 @@ function finish() {
     const pick = recommend(config, TODAY.replace(/-/g, ''));
     const until = (k) => (config[k] ? ` until ${config[k]}` : '');
     console.log(`site      ${SITE}`);
-    console.log(`start     ${TODAY}: ${pick.mode} (${pick.why}${pick.why === 'warning' ? until('rainWarningUntil') : ''}) · featured ${pick.topic || 'none'}${pick.topic && pick.topic === config.featuredTopic ? until('featuredTopicUntil') : ''}`);
+    console.log(`start     ${TODAY}: ${pick.mode} (${pick.why}${pick.why === 'warning' ? until('rainWarningUntil') : ''}) · featured ${pick.topic || 'none'}${pick.topic && pick.topic === config.featuredTopic ? until('featuredTopicUntil') : ''}${ALERT.guide && ALERT.until >= TODAY ? ` · alert ${ALERT.guide} until ${ALERT.until}` : ''}`);
     console.log(`items     ${itemsFile.items.length} (+${itemsFile.decoys.length} decoys), sources ${Object.keys(sources).length}`);
     console.log(`pages     ${written.length} link-preview pages`);
     console.log(`seo       ${seoFiles.join(', ')} (${nLessons} lessons on /learn)`);

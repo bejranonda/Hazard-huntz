@@ -1,7 +1,7 @@
 {
-  "name": "บ้านรอดไหม? เกม 60 วิ ดูแลบ้านให้รอด",
+  "name": "บ้านรอดไหม? เตรียมบ้านให้พร้อมทุกภัย",
   "short_name": "บ้านรอดไหม?",
-  "description": "เตรียมบ้านก่อนน้ำมา ตรวจบ้านหลังน้ำลด สู้ฝุ่น PM2.5 กันไฟไหม้ รับมือไฟดับ เกมสั้นจากคำแนะนำของหน่วยงานรัฐ",
+  "description": "ต้องทำอะไรเมื่อน้ำท่วม พายุ แผ่นดินไหว ไฟไหม้ ไฟดับ อากาศร้อน หรือฝุ่น เช็กของจำเป็น ทำแผนครอบครัว และเกม 60 วิ ช่วยจำ จากคำแนะนำของหน่วยงาน",
   "lang": "th",
   "start_url": "/?source=pwa",
   "scope": "/",
@@ -11,6 +11,7 @@
   "theme_color": "#FFF4E3",
   "shortcuts": [
     { "name": "บ้านเราพร้อมแค่ไหน?", "short_name": "เช็กบ้าน", "url": "/?open=kit&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "ต้องทำอะไร เมื่อเกิดภัย", "short_name": "ต้องทำอะไร", "url": "/?open=guide&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
     { "name": "แผนบ้านรอดของบ้านเรา", "short_name": "แผนบ้าน", "url": "/?open=plan&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ],
   "icons": [

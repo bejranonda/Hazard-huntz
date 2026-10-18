@@ -10,7 +10,7 @@ import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
-import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink } from '../public/js/modes.js';
+import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
 import { kitPlan, kitScore, kitMissing } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
@@ -436,6 +436,38 @@ test('card text: a wrapped line never starts with closing punctuation (every end
           assert.ok(!bad, `${l}.${key} at ${w}: "${bad}"`);
         }
       }
+    }
+  }
+});
+
+test('the alert switch: one guide on top until its end date, never without one', () => {
+  const at = (alert, day) => activeAlert({ alert }, day);
+  assert.equal(at({ guide: 'quake', until: '2026-10-25' }, '20261018'), 'quake');
+  assert.equal(at({ guide: 'quake', until: '2026-10-25' }, '20261025'), 'quake'); // the end date counts
+  assert.equal(at({ guide: 'quake', until: '2026-10-25' }, '20261026'), null);
+  assert.equal(at({ guide: 'quake', until: null }, '20261018'), null); // no end date, no alert
+  assert.equal(at({ guide: null, until: '2026-10-25' }, '20261018'), null);
+  assert.equal(at(undefined, '20261018'), null);
+  // and the shipped config names a real guide with an end date
+  const cfg = load('config');
+  const lists = load('checklists');
+  for (const g of cfg.guides) assert.ok(lists[g.id], `guide ${g.id} has a checklist`);
+  if (cfg.alert?.guide) assert.ok(cfg.guides.some((g) => g.id === cfg.alert.guide) && /^\d{4}-\d{2}-\d{2}$/.test(cfg.alert.until));
+});
+
+test('guides with no game: 10 lines, before → during → after, a source on every line', () => {
+  const cfg = load('config');
+  const lists = load('checklists');
+  const srcs = load('sources').sources;
+  const modes = new Set(cfg.modes.map((m) => m.id));
+  const order = ['before', 'during', 'after'];
+  for (const g of cfg.guides.filter((x) => !modes.has(x.id))) {
+    const items = lists[g.id].items;
+    assert.equal(items.length, 10, g.id);
+    assert.deepEqual(items.map((x) => order.indexOf(x.phase)), items.map((x) => order.indexOf(x.phase)).slice().sort(), `${g.id} phases in order`);
+    for (const x of items) {
+      assert.ok(x.sources?.length && x.sources.every((s) => srcs[s]), `${g.id}: "${x.th}" has real sources`);
+      assert.ok(x.verify === 'verified' || (x.verify === 'partial' && x.verifyNote), `${g.id}: "${x.th}" verify`);
     }
   }
 });

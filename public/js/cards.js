@@ -27,6 +27,11 @@ const THEMES = {
   dust: { sun: 'rgba(240,150,80,.55)', waves: ['#D8CEC1', '#B0A292'], chip: '#E9E2D8', accentDark: '#8A7E70', og: '#EFE8DF' },
   fire: { sun: null, waves: ['#FFCDB0', '#FF9466'], chip: '#FFDCCB', accentDark: '#D9572B', og: '#FFEFE6' },
   stock: { sun: 'rgba(120,135,200,.45)', waves: ['#B9C3EA', '#8C9BD6'], chip: '#DCE1F5', accentDark: '#4B5BA6', og: '#E8ECFA' },
+  // guides with no game yet (v1.9.0): their checklist pictures and link previews
+  landslide: { sun: null, waves: ['#D9C9A8', '#B39B6E'], chip: '#EDE3CF', accentDark: '#7D6237', og: '#F3ECDD' },
+  storm: { sun: null, waves: ['#B7CBE0', '#7F9FC2'], chip: '#DCE7F2', accentDark: '#3D6290', og: '#E9F0F7' },
+  quake: { sun: null, waves: ['#D5C7BB', '#AC9585'], chip: '#ECE3DB', accentDark: '#73574A', og: '#F4EEE9' },
+  heat: { sun: SUN, waves: ['#FFD3A3', '#FFAE5E'], chip: '#FFE7CC', accentDark: '#C4610A', og: '#FFF1E0' },
 };
 const theme = (mode) => THEMES[mode] || THEMES.return;
 const propOf = (mode) => modeOf(mode)?.prop || 'none';
@@ -403,8 +408,10 @@ export function drawChecklist(canvas, d, assets) {
   ctx.fillStyle = INK2;
   ctx.fillText(d.subtitle, 56, 300);
 
-  // rows
+  // rows (a guide with no pictures, like the earthquake guide: number on the left, more room for text)
   const top = 362, rowH = 120;
+  const plain = !d.items.some((it) => it.sprite);
+  const numX = plain ? 92 : 170, textX = plain ? 142 : 216;
   d.items.forEach((it, i) => {
     const y = top + i * rowH;
     if (i % 2 === 0) {
@@ -424,29 +431,29 @@ export function drawChecklist(canvas, d, assets) {
     }
     // number
     ctx.beginPath();
-    ctx.arc(170, y + 56, 25, 0, Math.PI * 2);
+    ctx.arc(numX, y + 56, 25, 0, Math.PI * 2);
     ctx.fillStyle = TEAL;
     ctx.fill();
     ctx.fillStyle = '#fff';
     font(ctx, 30);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(String(i + 1), 170, y + 58);
+    ctx.fillText(String(i + 1), numX, y + 58);
     ctx.textBaseline = 'alphabetic';
     // text, up to two lines
     ctx.textAlign = 'left';
     ctx.fillStyle = INK;
     font(ctx, 40);
-    let lines = wrapText(ctx, it.text, W - 280);
+    let lines = wrapText(ctx, it.text, W - textX - 64);
     let size = 40;
     while (lines.length > 2 && size > 32) {
       size -= 2;
       font(ctx, size);
-      lines = wrapText(ctx, it.text, W - 280);
+      lines = wrapText(ctx, it.text, W - textX - 64);
     }
     const lh = size * 1.32;
     const startY = y + 56 - ((Math.min(lines.length, 2) - 1) * lh) / 2 + size * 0.36;
-    lines.slice(0, 2).forEach((ln, k) => ctx.fillText(ln, 216, startY + k * lh));
+    lines.slice(0, 2).forEach((ln, k) => ctx.fillText(ln, textX, startY + k * lh));
   });
 
   // footer: helplines, link, disclaimer

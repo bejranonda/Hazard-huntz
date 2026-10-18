@@ -1,7 +1,7 @@
 // Loads the editable JSON content and provides translation helpers.
 
 import { store } from './util.js';
-import { setModes, mk, codesRe, idsRe, modeLink } from './modes.js';
+import { setModes, mk, codesRe, modeLink } from './modes.js';
 
 const FILES = ['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'];
 
@@ -56,7 +56,8 @@ export const isBot = (ua = navigator.userAgent) => /bot|crawl|spider|slurp|faceb
 // Paths outside the app shell (e.g. /learn) are returned unchanged.
 export function langPath(pathname, next) {
   const bare = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-  if (!new RegExp(`^/(c/${codesRe()}\\d{1,2}|checklist/(${idsRe()}))?/?$`).test(bare)) return pathname;
+  // Checklists include the guides with no game (/checklist/quake), so any id-shaped name.
+  if (!new RegExp(`^/(c/${codesRe()}\\d{1,2}|checklist/[a-z][a-z0-9-]*)?/?$`).test(bare)) return pathname;
   if (next !== 'en') return bare;
   return bare === '/' ? '/en/' : `/en${bare}`;
 }

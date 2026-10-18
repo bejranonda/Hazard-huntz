@@ -59,7 +59,14 @@
 
     <header class="hero">
       <h1 id="logo-title" class="logo"><span class="logo-a" data-i18n="logoA">บ้าน</span><span class="logo-b" data-i18n="logoB">รอดไหม?</span></h1>
-      <p class="tagline" data-i18n="tagline">เกม 60 วิ ดูแลบ้านให้รอด จากน้ำท่วม ฝุ่น ไฟไหม้ และไฟดับ</p>
+      <p class="tagline" data-i18n="tagline">เตรียมบ้านให้พร้อมทุกภัย รู้ว่าต้องทำอะไร และมีเกม 60 วิ ช่วยจำ</p>
+      <div class="alert-card" id="alert-card" hidden></div>
+      <nav class="hub" id="hub" aria-label="เตรียมบ้านให้พร้อม" data-i18n-aria="hubLabel">
+        <button class="hub-btn hub-main" type="button" data-open="guide"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b data-i18n="hubGuide">ต้องทำอะไร เมื่อเกิดภัย</b><small data-i18n="hubGuideSub">น้ำท่วม แผ่นดินไหว พายุ ไฟไหม้ และเรื่องอื่น</small></span><span class="hub-go" aria-hidden="true">›</span></button>
+        <button class="hub-btn" type="button" data-open="kit"><span class="hub-ico" aria-hidden="true">🎒</span><span class="hub-text"><b data-i18n="hubKit">เช็กของจำเป็น</b><small id="kit-chip" data-i18n="hubKitSub">ตามจำนวนคนในบ้าน</small></span></button>
+        <button class="hub-btn" type="button" data-open="plan"><span class="hub-ico" aria-hidden="true">📝</span><span class="hub-text"><b data-i18n="hubPlan">แผนครอบครัว</b><small data-i18n="hubPlanSub">จุดนัดพบ ใครช่วยใคร</small></span></button>
+      </nav>
+      <p class="game-label" data-i18n="gameLabel">🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน</p>
       <div class="hero-mascot">
         <div class="bubble bubble-hero" id="hero-bubble" data-i18n="heroPrepare">ฝนจะมาอีกระลอก มาเตรียมบ้านกัน!</div>
         <div class="gecko-host gecko-big" id="hero-gecko"></div>
@@ -116,8 +123,6 @@
     <button class="book-chip" type="button" id="btn-book" hidden></button>
 
     <nav class="quick" aria-label="ลิงก์ที่เป็นประโยชน์">
-      <button class="quick-btn" type="button" data-open="checklist"><span aria-hidden="true">📋</span><span data-i18n="checklists">เช็กลิสต์ 10 ข้อ</span></button>
-      <button class="quick-btn" type="button" data-open="kit"><span aria-hidden="true">🎒</span><span id="kit-chip" data-i18n="kitChip">บ้านพร้อมไหม?</span></button>
       <button class="quick-btn" type="button" data-open="help"><span aria-hidden="true">☎️</span><span data-i18n="helplines">เบอร์ช่วยเหลือ</span></button>
       <a class="quick-btn" id="forecast-link-start" href="#" target="_blank" rel="noopener" hidden><span aria-hidden="true">🌧️</span><span data-i18n="forecastShort">เช็กระดับน้ำ</span></a>
     </nav>
@@ -128,7 +133,7 @@
       <p data-i18n="disclaimer">เนื้อหาเพื่อการเรียนรู้ หากไม่แน่ใจให้ติดต่อช่างหรือเจ้าหน้าที่</p>
       <a class="link" href="/learn" data-i18n="learnLink">อ่านสรุปวิธีรับมือทุกข้อ</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">ที่มาของข้อมูล · ความเป็นส่วนตัว</button>
-      <div class="app-version" id="app-version">v1.8.1</div>
+      <div class="app-version" id="app-version">v1.9.0</div>
     </footer>
   </section>
 

@@ -5,7 +5,7 @@
 
 import { $, $$, esc, store, bangkokDateKey, formatHouseDate } from './util.js';
 import { t, L, getLang, siteUrl, content } from './content.js';
-import { openSheet, closeSheet, toast } from './ui.js';
+import { openSheet, closeSheet, toast, canPrint, printList } from './ui.js';
 import { kit as draw, loadCardAssets, canvasToBlob, wrapText } from './cards.js';
 import {
   canNativeShare, nativeShare, shareChannel, copyText, canDownload, downloadBlob, imageSrc,
@@ -22,7 +22,8 @@ async function loadKit() {
 }
 
 const u = (key, vars = {}) => String(K.ui[getLang()]?.[key] ?? K.ui.th[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
-const pageUrl = (open) => `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/?open=${open}`;
+// /kit and /plan are pages with their own link preview (a sample card) that open the tool.
+const pageUrl = (tool) => `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/${tool}`;
 const agencies = (ids = []) => {
   const C = content();
   const en = getLang() === 'en' ? C.strings.seo?.en?.agencies || {} : {};
@@ -105,6 +106,7 @@ function showList(s) {
     </ul>
     <button class="btn" type="button" id="kit-share">${esc(u('share'))}</button>
     <button class="btn secondary" type="button" id="kit-plan">${esc(u('plan'))}</button>
+    ${canPrint() ? `<button class="btn secondary small" type="button" id="kit-print">${esc(t('printBtn'))}</button>` : ''}
     <button class="btn secondary small" type="button" id="kit-close">${esc(u('close'))}</button>`, { label: u('title') });
   const paint = () => {
     const sc = kitScore(plan, s.have);
@@ -122,6 +124,17 @@ function showList(s) {
     });
   }
   $('#kit-edit').addEventListener('click', () => showQuestions(s));
+  // A list to tick on paper: what this household needs, ticked or not, with the sources.
+  $('#kit-print')?.addEventListener('click', () => {
+    track('print', { label: 'kit' });
+    printList({
+      brand: `${t('logoA')}${t('logoB')}`,
+      title: u('title'),
+      sub: u('household', { n: plan.people }),
+      sections: [{ head: '', items: plan.items.map((x) => ({ text: `${L(x.item.label)}${qtyText(x) ? `: ${qtyText(x)}` : ''}`, note: `${u('source')}: ${agencies(x.item.sources)}${x.item.verify !== 'verified' ? ` · ${u('partial')}` : ''}` })) }],
+      foot: [t('printNote', { url: pageUrl('kit').replace(/^https?:\/\//, ''), date: formatHouseDate(bangkokDateKey(), getLang()) }), t('disclaimer')],
+    });
+  });
   $('#kit-close').addEventListener('click', () => closeSheet());
   $('#kit-plan').addEventListener('click', () => openPlan('kit'));
   $('#kit-share').addEventListener('click', async () => {

@@ -1,10 +1,46 @@
 {
   "_readme": "ข้อความในภาพโพสต์หลายรูป (เกมไม่โหลดไฟล์นี้ จึงไม่เพิ่มน้ำหนักหน้าแรก) (share/carousel/<ภัย>/NN.jpg สร้างด้วย npm run images) และหน้า /posts ที่เจ้าของเปิดในมือถือ เพื่อกดค้างเซฟรูปและคัดลอกข้อความโพสต์ {n} = จำนวนบทเรียนในชุด {url} = หน้าความรู้ของภัยนั้น {play} = ลิงก์เปิดเกมโหมดนั้น sets = บทเรียนในแต่ละชุด (ไม่เกิน 8 ข้อ เลือกข้อที่ตรวจแล้ว ✅) เนื้อหาบทเรียนดึงจาก items.json เสมอ ห้ามพิมพ์คำแนะนำใหม่ที่นี่",
   "sets": {
-    "flood": ["p-breaker", "p-docs", "p-waterfood", "p-plan", "r-wire", "r-gas", "r-generator", "r-foodwet"],
-    "dust": ["a-window", "a-mask", "a-app", "a-sweep", "a-purifier", "a-ball", "a-inhaler", "a-leaves"],
-    "fire": ["f-strip", "f-charge", "f-pan", "f-gas", "f-towel", "f-door", "f-call", "f-extinguisher"],
-    "outage": ["s-water", "s-pantry", "s-opener", "s-fridge", "s-torch", "s-powerbank", "s-candle", "s-generator"]
+    "flood": [
+      "p-breaker",
+      "p-docs",
+      "p-waterfood",
+      "p-plan",
+      "r-wire",
+      "r-gas",
+      "r-generator",
+      "r-foodwet"
+    ],
+    "dust": [
+      "a-window",
+      "a-mask",
+      "a-app",
+      "a-sweep",
+      "a-purifier",
+      "a-ball",
+      "a-inhaler",
+      "a-leaves"
+    ],
+    "fire": [
+      "f-strip",
+      "f-charge",
+      "f-pan",
+      "f-gas",
+      "f-towel",
+      "f-door",
+      "f-call",
+      "f-extinguisher"
+    ],
+    "outage": [
+      "s-water",
+      "s-pantry",
+      "s-opener",
+      "s-fridge",
+      "s-torch",
+      "s-powerbank",
+      "s-candle",
+      "s-generator"
+    ]
   },
   "th": {
     "swipe": "ปัดดูทีละข้อ →",
@@ -30,7 +66,10 @@
     "postsImages": "รูป {n} รูป",
     "coverOutageTitle": "ไฟดับ 3 วัน: {n} อย่างที่บ้านควรมี",
     "coverOutageSub": "น้ำ อาหาร ไฟฉาย และของในตู้เย็น จากคำแนะนำของหน่วยงาน",
-    "captionOutage": "ไฟดับทั้งคืน หรือ 3 วัน บ้านเราอยู่ได้ไหม? 🔦\n{n} อย่างที่ควรเตรียม ตั้งแต่น้ำดื่ม ของตุน ตู้เย็น จนถึงเครื่องปั่นไฟ สรุปจากคำแนะนำของหน่วยงาน (บางข้อจากต่างประเทศ มีป้ายบอกไว้) ปัดดูทีละรูป แล้วส่งต่อให้คนที่บ้าน\n\nอ่านครบทุกข้อ พร้อมที่มา: {url}\nลองเล่นเกม 60 วิ ฟรี: {play}\n\n#บ้านรอดไหม #ไฟดับ #ของตุน"
+    "captionOutage": "ไฟดับทั้งคืน หรือ 3 วัน บ้านเราอยู่ได้ไหม? 🔦\n{n} อย่างที่ควรเตรียม ตั้งแต่น้ำดื่ม ของตุน ตู้เย็น จนถึงเครื่องปั่นไฟ สรุปจากคำแนะนำของหน่วยงาน (บางข้อจากต่างประเทศ มีป้ายบอกไว้) ปัดดูทีละรูป แล้วส่งต่อให้คนที่บ้าน\n\nอ่านครบทุกข้อ พร้อมที่มา: {url}\nลองเล่นเกม 60 วิ ฟรี: {play}\n\n#บ้านรอดไหม #ไฟดับ #ของตุน",
+    "guidesTitle": "รูป \"ต้องทำอะไร\" ทุกภัย (โพสต์ได้ทันทีเมื่อมีข่าว)",
+    "guidesIntro": "ภัยไหนกำลังเป็นข่าว กดค้างที่รูปของเรื่องนั้นเพื่อบันทึก แล้วคัดลอกข้อความไปโพสต์ ลิงก์ในข้อความเปิดเรื่องนั้นในแอปได้เลย ถ้าจะให้ขึ้นบนหน้าแรกด้วย ตั้ง alert ใน config.json",
+    "guideCaption": "{title} 📋\nอ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา\n👉 {url}\n#บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ"
   },
   "en": {
     "swipe": "Swipe for each one →",
@@ -56,6 +95,9 @@
     "postsImages": "{n} images",
     "coverOutageTitle": "A 3-day power cut: {n} things to have at home",
     "coverOutageSub": "Water, food, light and the fridge, from agency guidance",
-    "captionOutage": "A night, or three days, without power: will the house cope? 🔦\n{n} things to get ready, from drinking water and stock to the fridge and generators, from agency guidance (some international, marked as such). Swipe through, then pass it on.\n\nEvery lesson with its source: {url}\nPlay the free 60-second game: {play}\n\n#BaanRodMai #PowerCut"
+    "captionOutage": "A night, or three days, without power: will the house cope? 🔦\n{n} things to get ready, from drinking water and stock to the fridge and generators, from agency guidance (some international, marked as such). Swipe through, then pass it on.\n\nEvery lesson with its source: {url}\nPlay the free 60-second game: {play}\n\n#BaanRodMai #PowerCut",
+    "guidesTitle": "\"What to do\" pictures for every hazard (post at once when one is in the news)",
+    "guidesIntro": "Whatever is in the news: press and hold its picture to save it, then copy the text to post. The link opens that guide in the app. To put it on the start screen too, set alert in config.json.",
+    "guideCaption": "{title} 📋\nA minute to read; send it to family. Every line has its source.\n👉 {url}\n#BaanRodMai"
   }
 }

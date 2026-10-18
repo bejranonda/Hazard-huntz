@@ -150,7 +150,7 @@ const learnUrl = (hash = '') => `${getLang() === 'en' ? '/en' : ''}/learn${hash}
 function renderModes() {
   const list = modeList();
   const box = $('#modes');
-  box.style.setProperty('--cols', Math.min(3, Math.max(1, list.length - 1)));
+  box.style.setProperty('--cols', Math.min(4, Math.max(1, list.length - 1)));
   box.innerHTML = list.map((m) => `
       <button class="mode-btn mode-${esc(m.id)}" type="button" data-mode="${esc(m.id)}">
         <span class="mode-icon" aria-hidden="true">${esc(m.icon || m.emoji || '')}</span>
@@ -389,7 +389,7 @@ function nextMode(mode) {
 
 // What the scene draws for the mode's threat (water y, smoke y, haze 0..1).
 function threatLevel(r) {
-  return r.waterLevel ?? r.smokeLevel ?? r.hazeLevel;
+  return r.waterLevel ?? r.smokeLevel ?? r.hazeLevel ?? r.darkLevel;
 }
 
 function loop() {
@@ -426,7 +426,10 @@ function updateHud() {
   if (r.threat === 'haze') $('#gauge').dataset.aqi = String(Math.min(4, Math.floor(r.progress * 5)));
   else delete $('#gauge').dataset.aqi;
   // In a challenge, the friend's score to beat sits next to the clock.
-  const secs = t('seconds', { s: Math.ceil(r.remaining) });
+  // Power cut: the hours without power come first, then the seconds left.
+  const secs = r.threat === 'dark'
+    ? `${t('darkHours', { h: Math.floor(r.hoursOut) })} · ${t('seconds', { s: Math.ceil(r.remaining) })}`
+    : t('seconds', { s: Math.ceil(r.remaining) });
   $('#gauge-label').textContent = state.target != null ? `${secs} · 🏆 ${t('challengeTarget', { score: state.target })}` : secs;
   const done = [...r.records.values()].filter((x) => x.status !== STATUS.PENDING).length;
   $('#hud-score').textContent = t('scoreHud', { done, total: r.records.size });
@@ -678,7 +681,7 @@ function gridOf(result) {
 }
 
 function emojiGrid(mode, grid) {
-  const lost = { water: '💧', smoke: '💨' }[modeOf(mode)?.threat] || '⬜';
+  const lost = { water: '💧', smoke: '💨', dark: '🌑' }[modeOf(mode)?.threat] || '⬜';
   const map = { correct: '✅', learned: '💡', flooded: lost, missed: '⬜' };
   return grid.map((s) => map[s] || '⬜').join('');
 }

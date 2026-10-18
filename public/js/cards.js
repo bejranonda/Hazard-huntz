@@ -26,6 +26,7 @@ const THEMES = {
   return: { sun: SUN, waves: ['#D9C08E', '#B08B62'], chip: '#FFE6B0', accentDark: '#C98A0C', og: '#FFF0CC' },
   dust: { sun: 'rgba(240,150,80,.55)', waves: ['#D8CEC1', '#B0A292'], chip: '#E9E2D8', accentDark: '#8A7E70', og: '#EFE8DF' },
   fire: { sun: null, waves: ['#FFCDB0', '#FF9466'], chip: '#FFDCCB', accentDark: '#D9572B', og: '#FFEFE6' },
+  stock: { sun: 'rgba(120,135,200,.45)', waves: ['#B9C3EA', '#8C9BD6'], chip: '#DCE1F5', accentDark: '#4B5BA6', og: '#E8ECFA' },
 };
 const theme = (mode) => THEMES[mode] || THEMES.return;
 const propOf = (mode) => modeOf(mode)?.prop || 'none';

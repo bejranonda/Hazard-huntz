@@ -159,6 +159,13 @@ for (const m of MODES) {
   if (!/^[a-z]{3,12}$/.test(m.id || '') || !/^[a-z]$/.test(m.code || '')) err(`config.json: mode ${JSON.stringify(m.id)} needs an id (a–z) and a one-letter code`);
   if (!config.round?.[m.id]?.seconds) err(`config.json: round.${m.id}.seconds is missing`);
   if (m.threat && !config.round?.[m.id]?.[m.threat]) err(`config.json: round.${m.id}.${m.threat} keyframes are missing`);
+  // A power cut counts story hours over the round; items go bad after lostAfter hours.
+  if (m.threat === 'dark' && !(config.round?.[m.id]?.hours > 0)) err(`config.json: round.${m.id}.hours (the power cut's length in story hours) is missing`);
+  for (const it of itemsFile.items.filter((x) => x.mode === m.id && x.lostAfter != null)) {
+    if (m.threat !== 'dark') err(`items.json ${it.id}: lostAfter only works in a power-cut mode (threat "dark")`);
+    else if (!(it.lostAfter > 0 && it.lostAfter < config.round[m.id].hours)) err(`items.json ${it.id}: lostAfter must be between 0 and round.${m.id}.hours (${config.round[m.id].hours})`);
+  }
+  if (m.threat === 'dark' && !itemsFile.items.some((x) => x.mode === m.id && x.lostAfter != null)) warn(`config.json: mode ${m.id} has a power cut but no item with lostAfter`);
   for (const l of LANGS) for (const k of PER_MODE_STRINGS) if (strings[l]?.[`${k}${capM(m.id)}`] == null) err(`strings.json: ${l}.${k}${capM(m.id)} is missing`);
   for (const l of LANGS) if (strings[l]?.[`mode${capM(m.id)}Desc`] == null) err(`strings.json: ${l}.mode${capM(m.id)}Desc is missing`);
   for (const [name, tbl] of [['og', strings.og], ['ogEn', strings.ogEn]]) for (const k of PER_MODE_OG) if (!tbl?.[`${k}${capM(m.id)}`]) err(`strings.json: ${name}.${k}${capM(m.id)} is missing`);
@@ -173,6 +180,7 @@ for (const m of MODES) {
 // Every hazard has a page at /<slug> (+ /en/<slug>). Slugs end up in shared
 // links and search results, so they never change once published.
 const HAZARDS = config.hazards || {};
+const carouselPartial = [];
 const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts']);
 const slugSeen = new Set();
 for (const h of new Set(MODES.map((m) => m.hazard))) if (!HAZARDS[h]) err(`config.json: hazards.${h} is missing (every hazard needs a page slug)`);
@@ -192,8 +200,10 @@ for (const [h, v] of Object.entries(HAZARDS)) {
     if (!it) err(`carousel.json: sets.${h}: no item "${id}"`);
     else if (MODES.find((m) => m.id === it.mode)?.hazard !== h) err(`carousel.json: sets.${h}: "${id}" belongs to another hazard`);
     else if (!roomById.get(it.room)?.enabled || it.enabled === false) err(`carousel.json: sets.${h}: "${id}" is not playable`);
-    else if (it.verify !== 'verified') warn(`carousel.json: sets.${h}: "${id}" is ${it.verify}; its image says so`);
   }
+  // Not a warning (it stays until a Thai review): the build's posts line lists them.
+  const unverified = car.filter((id) => itemsFile.items.find((x) => x.id === id)?.verify !== 'verified');
+  if (unverified.length) carouselPartial.push(`${h} ${unverified.length} ⚠️`);
   if (car.length) for (const l of LANGS) for (const k of [`cover${capM(h)}Title`, `cover${capM(h)}Sub`, `caption${capM(h)}`]) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
 }
 for (const h of Object.keys(carousel?.sets || {})) if (!HAZARDS[h]) err(`carousel.json: sets.${h} is not a hazard in config.json`);
@@ -222,6 +232,9 @@ for (const k of keysTh) if (!keysEn.has(k)) warn(`strings.json: "${k}" has no En
 
 const isPlaceholder = (u) => !u || /\[[A-Z_]+\]/.test(u);
 if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is still a placeholder (the forecast button stays hidden)');
+
+// Stop here on content errors: the pages below assume the content is complete.
+if (errors.length) finish();
 
 // ---------------------------------------------------------------- site URL
 const SITE = (process.env.SITE_URL
@@ -307,7 +320,7 @@ const indexLd = {
       applicationCategory: 'GameApplication', operatingSystem: 'Any',
       playMode: 'SinglePlayer', timeRequired: 'PT1M', isAccessibleForFree: true,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
-      about: [{ '@type': 'Thing', name: 'น้ำท่วม' }, { '@type': 'Thing', name: 'Flood safety' }],
+      about: ['น้ำท่วม', 'Flood safety', 'ฝุ่น PM2.5', 'PM2.5 air pollution', 'ไฟไหม้', 'Home fire safety', 'ไฟดับ', 'Power outage preparedness'].map((name) => ({ '@type': 'Thing', name })),
       subjectOf: { '@type': 'WebPage', url: `${SITE}/learn` },
       dateModified: seoUpdated,
     },
@@ -649,7 +662,7 @@ let postsInfo = '';
 {
   const C = { config, strings, carousel, items: itemsFile.items, sources, checklists, helplines: helplines.helplines };
   const K = carousel.th;
-  const sets = carouselSets(C, SITE, 'th').filter((x) => x.ids.length);
+  const sets = carouselSets(C, SITE, 'th');
   const missing = sets.flatMap((x) => x.pages.map((p) => `${x.dir}/${p.file}`)).filter((f) => !fs.existsSync(path.join(PUB, f)));
   if (missing.length) warn(`${missing.length} carousel image(s) missing, e.g. ${missing[0]}: run npm run images -- --only share/carousel`);
   else {
@@ -698,7 +711,7 @@ for (const b of document.querySelectorAll('[data-copy]')) b.addEventListener('cl
 </html>
 `;
   fs.writeFileSync(path.join(PUB, 'posts.html'), postsHtml);
-  postsInfo = `posts.html: ${sets.length} carousel sets, ${sets.reduce((a, x) => a + x.pages.length, 0)} images${missing.length ? ` (${missing.length} missing)` : ''}`;
+  postsInfo = `posts.html: ${sets.length} carousel sets, ${sets.reduce((a, x) => a + x.pages.length, 0)} images${missing.length ? ` (${missing.length} missing)` : ''}${carouselPartial.length ? `; lessons under review: ${carouselPartial.join(', ')}` : ''}`;
 }
 
 // robots.txt: everyone, including AI search and AI assistants, may read the
@@ -737,7 +750,7 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 - Every lesson with its reason and sources: ${LEARN_URL} (Thai, with English) · ${LEARN_EN} (English)
 - One page per hazard, with only its lessons and a link that opens that game mode:
 ${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug} (Thai) · ${SITE}${EN}/${h.slug} (English)`).join('\n')}
-- The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
+- Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 
 ${MODE_IDS.map((id) => `## ${md(E[`section${capM(id)}`])} (${md(S[`section${capM(id)}`])})
@@ -751,7 +764,7 @@ ${helplines.helplines.map((h) => `- ${h.number}: ${md(h.who.en)} (${md(h.who.th)
 ## Notes for AI assistants
 
 - Content is for learning. In an emergency, point people to the helplines above.
-- Every correct action is sourced from Thai agency guidance; the sources are linked on ${LEARN_URL}. Items marked "under review" there are only partially verified.
+- Every correct action has a source, linked on ${LEARN_URL}: mostly Thai agency guidance. Items marked "under review" there are only partially verified or rest on international guidance only.
 - ${md(strings.en.disclaimer)}
 `);
 

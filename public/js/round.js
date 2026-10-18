@@ -7,7 +7,7 @@ export const STATUS = {
   PENDING: 'pending',
   CORRECT: 'correct',   // right action on the first try
   LEARNED: 'learned',   // wrong choice, shown the safe action
-  FLOODED: 'flooded',   // the mode's threat got there first (water rose / smoke fell to it)
+  FLOODED: 'flooded',   // the mode's threat got there first (water rose / smoke fell to it / it went bad in the dark)
   MISSED: 'missed',     // time ran out before it was found
 };
 
@@ -65,6 +65,10 @@ export class Round {
   get smokeLevel() { return this.threat === 'smoke' ? waterY(this.progress, this.modeCfg.smoke) : null; }
   // Haze: how thick the haze over the room is (0..1). Nothing is lost to it.
   get hazeLevel() { return this.threat === 'haze' ? waterY(this.progress, this.modeCfg.haze) : null; }
+  // Dark (a power cut): how dark the room is (0..1), and the story's hours
+  // without power (round.<mode>.hours over the whole round).
+  get darkLevel() { return this.threat === 'dark' ? waterY(this.progress, this.modeCfg.dark) : null; }
+  get hoursOut() { return this.threat === 'dark' ? this.progress * this.modeCfg.hours : null; }
 
   start() {
     this.running = true;
@@ -104,6 +108,20 @@ export class Round {
   }
 
   checkWater() {
+    // A power cut: an item with lostAfter (hours) goes bad once the power has
+    // been out that long, e.g. fridge food after 4 hours.
+    if (this.threat === 'dark') {
+      for (const p of this.house.targets) {
+        const rec = this.records.get(p.pid);
+        if (rec.status === STATUS.PENDING && p.ref.lostAfter != null && this.hoursOut >= p.ref.lostAfter) {
+          rec.status = STATUS.FLOODED;
+          rec.at = this.elapsed;
+          this.on.flood?.(p);
+        }
+      }
+      this.checkAllResolved();
+      return;
+    }
     if (this.threat !== 'water' && this.threat !== 'smoke') return;
     const water = this.threat === 'water';
     const level = water ? this.waterLevel : this.smokeLevel;

@@ -472,6 +472,45 @@
       "date": "2026-09-28",
       "kind": "international",
       "note": "Read on 15 Oct 2026 (page last reviewed 28 Sep 2026). Cooking is by far the leading cause of home fires and injuries; unattended equipment is the leading factor; stand by your pan and turn the burner off if you leave the kitchen; keep a lid nearby to smother a pan fire; keep anything that can burn away from the stovetop."
+    },
+    "cdc-food-outage": {
+      "agency": "ศูนย์ควบคุมและป้องกันโรคสหรัฐฯ (CDC)",
+      "title": "Keep Food Safe After a Disaster or Emergency — ตู้เย็นที่ปิดประตูไว้เก็บอาหารได้ปลอดภัยราว 4 ชั่วโมง ช่องแช่แข็งเต็ม 48 ชั่วโมง (ครึ่งช่อง 24 ชั่วโมง) ห้ามชิมเพื่อตรวจ ไม่แน่ใจให้ทิ้ง",
+      "url": "https://www.cdc.gov/food-safety/foods/keep-food-safe-after-emergency.html",
+      "date": "2025-11-24",
+      "kind": "international",
+      "note": "Read on 18 Oct 2026 (page dated 24 Nov 2025). With the doors closed, food stays safe up to 4 hours in a refrigerator; frozen food lasts 48 hours in a full freezer and 24 hours in a half-full one. Never taste food to know if it is safe to eat. When in doubt, throw it out. Throw out canned foods or containers that are bulging, open or damaged. Its power-outage PSA adds: after 4 hours without power, throw out refrigerated foods like meat, fish, eggs, milk and leftovers. No Thai agency page on food in the fridge during a power cut was found; used as international guidance (partial)."
+    },
+    "readygov-outage": {
+      "agency": "Ready.gov (FEMA สหรัฐฯ)",
+      "title": "Power Outages — ปิดตู้เย็นไว้ มีไฟฉายให้ทุกคน ถอดปลั๊กกันไฟกระชาก เครื่องปั่นไฟใช้นอกบ้านเท่านั้น วางแผนสำรองสำหรับยาที่ต้องแช่เย็นและเครื่องมือแพทย์ที่ใช้ไฟ",
+      "url": "https://www.ready.gov/power-outages",
+      "date": "2026-06-04",
+      "kind": "international",
+      "note": "Read on 18 Oct 2026 (last updated 4 Jun 2026). Keep freezers and refrigerators closed. Have flashlights for every household member. Disconnect appliances and electronics to avoid damage from electrical surges; power may return with momentary surges or spikes. Use a generator ONLY outdoors and away from windows, at least 20 feet from windows, doors and attached garages; carbon monoxide is colourless and odourless. Have alternate plans for refrigerating medicines or using power-dependent medical devices; if the power is out for more than a day, discard medication that should be refrigerated unless the label says otherwise. Lists a portable charger or power bank."
+    },
+    "readygov-kit": {
+      "agency": "Ready.gov (FEMA สหรัฐฯ)",
+      "title": "Build A Kit — ที่เปิดกระป๋องแบบใช้มือ ไฟฉาย วิทยุใช้ถ่านหรือมือหมุน ถ่านสำรอง เปลี่ยนของหมดอายุ ทบทวนชุดของจำเป็นทุกปี",
+      "url": "https://www.ready.gov/kit",
+      "date": "2026-07-01",
+      "kind": "international",
+      "note": "Read on 18 Oct 2026 (last updated 1 Jul 2026). The basic kit lists water (one gallon per person per day for several days), at least a several-day supply of non-perishable food, a manual can opener, a flashlight, a battery-powered or hand-crank radio and extra batteries. Maintaining it: keep canned food in a cool, dry place; replace expired items as needed; re-think your needs every year."
+    },
+    "tokyo-bichiku": {
+      "agency": "รัฐบาลกรุงโตเกียว",
+      "title": "Why Stockpiling Matters (Tokyo Stockpiling Navi) — ตุนอย่างน้อย 3 วันก่อน เผื่อไปถึง 1 สัปดาห์ และ 'ตุนแบบวันต่อวัน' ซื้อของที่ใช้ประจำเพิ่มทีละนิด แล้วกินใช้ตามปกติ",
+      "url": "https://www.bichiku.metro.tokyo.lg.jp/en/why/",
+      "kind": "international",
+      "note": "Read on 18 Oct 2026 (Tokyo Metropolitan Government, Crisis Management Division; no page date). 'Aim for at least three days first … plan stockpiles with one week and beyond in mind.' Everyday stockpiling: 'always keeping a little extra of the food and daily necessities you normally use'; the site's banner adds 'buy a little extra, eat and use it' and a yearly check on Stockpiling Day (19 Nov). The 7-day aim is Tokyo's alone, so the game keeps to 'at least 3 days', which Thai agencies also give."
+    },
+    "usfa-candle": {
+      "agency": "U.S. Fire Administration (FEMA)",
+      "title": "Candle Fire Safety — ไฟดับให้ใช้ไฟฉาย ไม่ใช้เทียน ดับเทียนเมื่อออกจากห้องหรือเข้านอน วางห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว",
+      "url": "https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/candle/",
+      "date": "2023-04-01",
+      "kind": "international",
+      "note": "Read on 18 Oct 2026 (page last reviewed 1 Apr 2023). 'Use flashlights, not candles, if you have a power outage.' 'Blow out candles when you leave a room or home, or when you go to bed.' 'Keep candles at least 12 inches away from anything that burns.' No Thai agency page on candles in a power cut was found."
     }
   }
 }

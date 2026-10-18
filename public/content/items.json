@@ -979,6 +979,192 @@
       "tip": { "th": "ดับก้นบุหรี่ให้สนิทก่อนทิ้ง ไม่สูบใกล้ของที่ติดไฟง่าย", "en": "Put cigarettes out fully before binning; don't smoke near things that burn." },
       "why": { "th": "ปภ. แนะให้ดับไฟก้นบุหรี่ให้สนิทก่อนทิ้ง และหลีกเลี่ยงการสูบบุหรี่ในบริเวณที่มีวัสดุไวไฟ", "en": "DDPM says put cigarette ends out completely before throwing them away, and avoid smoking near flammable material." },
       "sources": ["ddpm-dryfire-2568"], "verify": "verified", "topic": "fire"
+    },
+    {
+      "id": "s-fridge", "mode": "stock", "room": "kitchen", "lostAfter": 4,
+      "sprite": "fridgeopen", "doneSprite": "fridgeopen-done", "size": [46, 57], "slots": ["fridge-note"],
+      "name": { "th": "ตู้เย็นตอนไฟดับ", "en": "The fridge in a power cut" },
+      "context": { "th": "ไฟดับมาสักพัก ทุกคนผลัดกันเปิดตู้เย็นดูว่ายังเย็นอยู่ไหม", "en": "The power is out, and everyone keeps opening the fridge to check it's still cold" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ปิดประตูไว้ เปิดเท่าที่จำเป็น", "en": "Keep the door shut; open it only when you must" } },
+        { "kind": "check", "label": { "th": "เปิดดูบ่อยๆ จะได้รู้ว่ายังเย็นอยู่", "en": "Keep checking it's still cold" }, "feedback": { "th": "ทุกครั้งที่เปิด ความเย็นหนีออกไป ถ้าปิดไว้ ตู้เย็นเก็บอาหารสดได้ราว 4 ชั่วโมง", "en": "Every opening lets the cold out. Kept shut, a fridge keeps food safe for about 4 hours." } },
+        { "kind": "move", "label": { "th": "ย้ายของทั้งหมดออกมาวางนอกตู้", "en": "Take everything out of the fridge" }, "feedback": { "th": "ของนอกตู้จะอุ่นเร็วกว่าในตู้ที่ปิดไว้ ปิดประตูไว้ให้ความเย็นอยู่ได้นานที่สุด", "en": "Food warms up faster outside than in a closed fridge. Keep the door shut so the cold lasts." } }
+      ],
+      "tip": { "th": "ไฟดับ ปิดตู้เย็นไว้ ของสดอยู่ได้ราว 4 ชม. เกินนั้นทิ้งเนื้อ นม ไข่", "en": "Power cut? Keep the fridge shut: about 4 hours safe. Then bin meat, milk, eggs." },
+      "why": { "th": "CDC สหรัฐฯ: ถ้าปิดประตูไว้ ตู้เย็นเก็บอาหารได้ปลอดภัยราว 4 ชั่วโมง ไฟดับนานกว่านั้นให้ทิ้งอาหารแช่เย็น เช่น เนื้อสัตว์ ปลา ไข่ นม และอาหารที่เหลือ ในเกมนี้ ของในตู้เย็นจึงเสียเป็นอย่างแรก เมื่อไฟดับครบ 4 ชั่วโมง", "en": "The US CDC says a closed fridge keeps food safe for up to 4 hours. After 4 hours without power, throw out chilled food such as meat, fish, eggs, milk and leftovers. That's why, in this game, the fridge is the first thing lost, at the 4-hour mark." },
+      "sources": ["cdc-food-outage", "readygov-outage"], "verify": "partial", "topic": "food",
+      "verifyNote": "International guidance only (US CDC, Ready.gov); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10)."
+    },
+    {
+      "id": "s-leftover", "mode": "stock", "room": "kitchen",
+      "sprite": "leftover", "size": [58, 44], "slots": ["counter", "counter-sm"],
+      "name": { "th": "หมูสับหลังไฟดับทั้งคืน", "en": "Minced pork after a night without power" },
+      "context": { "th": "ไฟดับทั้งคืน ตอนเช้าหมูสับในตู้เย็นยังดูปกติดี", "en": "The power was out all night. In the morning the minced pork looks fine" },
+      "choices": [
+        { "kind": "toss", "correct": true, "label": { "th": "ทิ้งไป ไม่ต้องชิม", "en": "Throw it out without tasting it" } },
+        { "kind": "check", "label": { "th": "ชิมนิดเดียวก่อนว่ายังกินได้ไหม", "en": "Taste a little to see if it's OK" }, "feedback": { "th": "อย่าชิมเพื่อเช็กว่ากินได้ไหม ไฟดับเกิน 4 ชั่วโมง CDC แนะให้ทิ้งเนื้อสัตว์ในตู้เย็น", "en": "Never taste food to check it. After 4 hours without power, the CDC says to throw out chilled meat." } },
+        { "kind": "boil", "label": { "th": "ต้มให้สุกนานๆ แล้วกินได้", "en": "Cook it well and eat it" }, "feedback": { "th": "ไฟดับเกิน 4 ชั่วโมง CDC แนะให้ทิ้งเนื้อสัตว์ ปลา ไข่ นม ในตู้เย็น ไม่แน่ใจให้ทิ้ง", "en": "After 4 hours without power, the CDC says to throw out chilled meat, fish, eggs and milk. When in doubt, throw it out." } }
+      ],
+      "tip": { "th": "ไฟดับเกิน 4 ชม. ทิ้งเนื้อ ปลา ไข่ นมในตู้เย็น ห้ามชิมเพื่อเช็ก", "en": "Out over 4 hours? Bin chilled meat, fish, eggs and milk. Never taste to check." },
+      "why": { "th": "CDC สหรัฐฯ: ห้ามชิมอาหารเพื่อดูว่ายังกินได้ไหม ไฟดับเกิน 4 ชั่วโมง ให้ทิ้งอาหารแช่เย็นที่เสียง่าย เช่น เนื้อสัตว์ ปลา ไข่ นม และถ้าไม่แน่ใจ ให้ทิ้ง", "en": "The US CDC: never taste food to find out if it is safe. After 4 hours without power, throw out chilled perishables such as meat, fish, eggs and milk, and when in doubt, throw it out." },
+      "sources": ["cdc-food-outage"], "verify": "partial", "topic": "food",
+      "verifyNote": "International guidance only (US CDC); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10)."
+    },
+    {
+      "id": "s-freezer", "mode": "stock", "room": "kitchen",
+      "sprite": "freezer", "size": [56, 42], "slots": ["high"],
+      "name": { "th": "ช่องแช่แข็งที่แน่นเต็ม", "en": "A full freezer" },
+      "context": { "th": "ไฟดับ ช่องแช่แข็งมีของแน่นเต็ม ทุกคนกลัวของจะละลาย", "en": "The power is out and the freezer is packed full" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ปิดไว้ ช่องที่เต็มเย็นอยู่ได้ราว 2 วัน", "en": "Keep it shut: a full freezer stays frozen about 2 days" } },
+        { "kind": "move", "label": { "th": "รีบเอาของออกมาทำกินให้หมดตอนนี้", "en": "Cook everything in it right now" }, "feedback": { "th": "ไม่ต้องรีบ ช่องแช่แข็งที่เต็มและปิดไว้ เย็นอยู่ได้ราว 48 ชั่วโมง ถ้ามีของครึ่งช่องราว 24 ชั่วโมง", "en": "No need to rush: a full, closed freezer stays frozen about 48 hours, a half-full one about 24." } },
+        { "kind": "check", "label": { "th": "เปิดดูทุกชั่วโมงว่าละลายหรือยัง", "en": "Check it every hour" }, "feedback": { "th": "เปิดบ่อย ความเย็นหนีออก ปิดไว้ให้นานที่สุด", "en": "Every opening lets the cold out. Keep it shut." } }
+      ],
+      "tip": { "th": "ช่องแช่แข็งเต็มและปิดไว้ เย็นอยู่ได้ราว 48 ชม. ครึ่งช่องราว 24 ชม.", "en": "Kept shut, a full freezer holds about 48 hours, a half-full one about 24." },
+      "why": { "th": "CDC สหรัฐฯ: เมื่อปิดประตูไว้ อาหารแช่แข็งอยู่ได้ราว 48 ชั่วโมงในช่องแช่แข็งที่เต็ม และราว 24 ชั่วโมงถ้ามีของครึ่งช่อง ในเกม ไฟดับ 12 ชั่วโมง ช่องแช่แข็งจึงไม่เสีย", "en": "The US CDC: with the door closed, frozen food lasts about 48 hours in a full freezer and about 24 in a half-full one. The game's power cut lasts 12 hours, so the freezer isn't lost." },
+      "sources": ["cdc-food-outage"], "verify": "partial", "topic": "food",
+      "verifyNote": "International guidance only (US CDC); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10)."
+    },
+    {
+      "id": "s-opener", "mode": "stock", "room": "kitchen",
+      "sprite": "cansnoopener", "doneSprite": "opener", "size": [62, 46], "slots": ["counter", "counter-sm"],
+      "name": { "th": "อาหารกระป๋องเต็มตู้", "en": "A shelf full of cans" },
+      "context": { "th": "ตุนอาหารกระป๋องไว้เยอะ แต่บ้านนี้มีแค่ที่เปิดกระป๋องไฟฟ้า", "en": "Plenty of cans in store, but the only can opener is electric" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "เก็บที่เปิดกระป๋องแบบมือหมุนไว้กับอาหาร", "en": "Keep a manual can opener with the food" } },
+        { "kind": "leave", "label": { "th": "รอไฟมาค่อยเปิดกิน", "en": "Wait for the power to come back" }, "feedback": { "th": "ของที่ตุนไว้ต้องเปิดกินได้แม้ไฟยังไม่มา Ready.gov ใส่ที่เปิดกระป๋องแบบใช้มือไว้ในชุดของจำเป็น", "en": "Stored food must be usable while the power is still off. Ready.gov puts a manual can opener in the kit." } }
+      ],
+      "tip": { "th": "ตุนอาหารกระป๋อง ต้องมีที่เปิดกระป๋องแบบมือหมุนไว้ด้วย", "en": "Stocking cans? Keep a manual can opener with them." },
+      "why": { "th": "Ready.gov (FEMA สหรัฐฯ) ใส่ 'ที่เปิดกระป๋องแบบใช้มือ' ไว้ในรายการชุดของจำเป็นสำหรับเหตุฉุกเฉิน คู่กับอาหารที่เก็บได้นาน", "en": "Ready.gov (US FEMA) lists a manual can opener in its emergency kit, next to the non-perishable food." },
+      "sources": ["readygov-kit"], "verify": "partial", "topic": "food",
+      "verifyNote": "International guidance only (Ready.gov); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10)."
+    },
+    {
+      "id": "s-water", "mode": "stock", "room": "kitchen",
+      "sprite": "waterjugs", "size": [60, 50], "slots": ["floor"],
+      "name": { "th": "น้ำดื่มสำรอง", "en": "Stored drinking water" },
+      "context": { "th": "บ้านนี้อยู่กัน 4 คน มีน้ำดื่มสำรองไว้แค่ 2 ขวด", "en": "Four people live here, with just 2 bottles of water put by" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "สำรองให้พอ อย่างน้อย 3 ลิตร ต่อคน ต่อวัน", "en": "Store at least 3 litres per person per day" } },
+        { "kind": "leave", "label": { "th": "2 ขวดก็พอ ไฟดับไม่นานหรอก", "en": "2 bottles will do; power cuts are short" }, "feedback": { "th": "กรมประชาสัมพันธ์แนะน้ำดื่มอย่างน้อย 3 ลิตร ต่อคน ต่อวัน สำหรับ 72 ชั่วโมงแรก บ้าน 4 คน 3 วัน คือ 36 ลิตร", "en": "Thai government advice is at least 3 litres per person per day for the first 72 hours: 36 litres for 4 people over 3 days." } }
+      ],
+      "tip": { "th": "น้ำดื่มสำรองอย่างน้อย 3 ลิตร ต่อคน ต่อวัน ให้พออย่างน้อย 3 วัน", "en": "Store at least 3 litres of drinking water per person per day, for 3 days." },
+      "why": { "th": "เช็กลิสต์ถุงยังชีพ 72 ชั่วโมงแรกของกรมประชาสัมพันธ์ให้มีน้ำดื่มอย่างน้อย 3 ลิตร ต่อคน ต่อวัน และ ปภ. แนะเตรียมอาหารและน้ำไว้อย่างน้อย 3 วัน", "en": "The Thai government's 72-hour kit checklist (PRD) says at least 3 litres of drinking water per person per day, and DDPM advises food and water for at least 3 days." },
+      "sources": ["prd-72h", "ddpm-amarin"], "verify": "partial", "topic": "food",
+      "verifyNote": "The 3 litres per person per day is in the title of the PRD checklist page, which refuses automated reading; confirm the figure on the page. 'At least 3 days' is common to PRD (72 hours), DDPM (3–4 days) and the Department of Health (3–5 days)."
+    },
+    {
+      "id": "s-pantry", "mode": "stock", "room": "kitchen",
+      "sprite": "pantry", "size": [64, 52], "slots": ["cupboard"],
+      "name": { "th": "ตู้ของตุน", "en": "The food store" },
+      "context": { "th": "ซื้อของตุนไว้ทีเดียวเมื่อปีก่อน แล้วไม่เคยแตะอีกเลย", "en": "It was all bought in one go last year and never touched since" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "กินใช้ตามปกติ แล้วซื้อเติม ของหมดอายุเปลี่ยนใหม่", "en": "Eat it as usual, restock, replace what's expired" } },
+        { "kind": "leave", "label": { "th": "เก็บไว้อย่างนั้น ของแห้งไม่มีวันเสีย", "en": "Leave it; dry food never goes off" }, "feedback": { "th": "ของตุนก็หมดอายุได้ Ready.gov แนะให้เปลี่ยนของที่หมดอายุ และทบทวนชุดของจำเป็นทุกปี", "en": "Stored food expires too. Ready.gov says to replace expired items and re-think the kit every year." } },
+        { "kind": "pack", "label": { "th": "ซื้อทีละมากๆ ให้เต็มตู้ไว้ก่อน", "en": "Buy as much as the cupboard will hold" }, "feedback": { "th": "ไม่ต้องซื้อทีละมาก กรุงโตเกียวแนะ 'ตุนแบบวันต่อวัน' ซื้อของที่กินประจำเพิ่มไว้ทีละนิด แล้วกินใช้ตามปกติ", "en": "No need to bulk-buy. Tokyo's 'everyday stockpiling': keep a little extra of what you normally eat, and use it." } }
+      ],
+      "tip": { "th": "ซื้อของที่กินประจำเพิ่มทีละนิด กินแล้วซื้อเติม เช็กวันหมดอายุ", "en": "Buy a bit extra of what you eat, use it, restock, and watch the dates." },
+      "why": { "th": "กรมอนามัยแนะสำรองอาหารแห้งและอาหารกระป๋องอย่างน้อย 3–5 วัน ในภาชนะปิดสนิท กรุงโตเกียวแนะ 'ตุนแบบวันต่อวัน' คือซื้อของที่ใช้ประจำเพิ่มไว้ทีละนิดแล้วกินใช้ตามปกติ และ Ready.gov แนะให้เปลี่ยนของที่หมดอายุ", "en": "The Thai Department of Health advises dry and canned food for at least 3–5 days in sealed containers. Tokyo's 'everyday stockpiling' means keeping a little extra of what you normally use and using it; Ready.gov says to replace expired items." },
+      "sources": ["anamai-stock", "tokyo-bichiku", "readygov-kit"], "verify": "partial", "topic": "food",
+      "verifyNote": "The 3–5 days are Thai (Department of Health, via news). Everyday stockpiling (Tokyo) and replacing expired items (Ready.gov) are international guidance. No source gives how often to check, so the game doesn't."
+    },
+    {
+      "id": "s-medcold", "mode": "stock", "room": "living",
+      "sprite": "medcold", "size": [48, 46], "slots": ["table"],
+      "name": { "th": "ยาที่ต้องแช่เย็นของคุณยาย", "en": "Grandma's medicine that must stay cold" },
+      "context": { "th": "ไฟดับ ยาของคุณยายต้องเก็บไว้ในตู้เย็น", "en": "The power is out, and Grandma's medicine has to be kept cold" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "วางแผนไว้ก่อน ว่าจะเก็บยาให้เย็นอย่างไรเมื่อไฟดับ", "en": "Plan ahead for keeping it cold in a power cut" } },
+        { "kind": "leave", "label": { "th": "ปล่อยไว้ในตู้เย็น ไม่ต้องคิดอะไร", "en": "Leave it in the fridge and don't worry" }, "feedback": { "th": "Ready.gov แนะให้มีแผนสำรองสำหรับยาที่ต้องแช่เย็น และเครื่องมือแพทย์ที่ใช้ไฟ ไว้ก่อนไฟดับ", "en": "Ready.gov says to have a back-up plan for medicine that must be refrigerated and for powered medical devices, before the power goes." } },
+        { "kind": "leave", "label": { "th": "ใช้ต่อไปเรื่อยๆ ไม่ต้องดูฉลาก", "en": "Keep using it; never mind the label" }, "feedback": { "th": "ถ้าไฟดับเกินหนึ่งวัน Ready.gov แนะให้ทิ้งยาที่ต้องแช่เย็น เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้", "en": "If the power is out more than a day, Ready.gov says to discard medicine that should be refrigerated, unless the label says otherwise." } }
+      ],
+      "tip": { "th": "ยาที่ต้องแช่เย็น หรือเครื่องมือแพทย์ที่ใช้ไฟ ต้องมีแผนสำรองไว้ก่อนไฟดับ", "en": "Medicine that must stay cold, or a medical device on power? Plan ahead." },
+      "why": { "th": "Ready.gov (FEMA สหรัฐฯ) แนะให้มีแผนสำรองสำหรับการแช่เย็นยา และการใช้เครื่องมือแพทย์ที่ต้องใช้ไฟ ถ้าไฟดับเกินหนึ่งวัน ให้ทิ้งยาที่ต้องแช่เย็น เว้นแต่ฉลากยาบอกเป็นอย่างอื่น", "en": "Ready.gov (US FEMA) says to have alternate plans for refrigerating medicines and for power-dependent medical devices. If the power is out for more than a day, discard medication that should be refrigerated, unless the label says otherwise." },
+      "sources": ["readygov-outage"], "verify": "partial", "topic": "health",
+      "verifyNote": "International guidance only (Ready.gov); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10). A Thai pharmacist or the Thai FDA should check the wording on refrigerated medicine."
+    },
+    {
+      "id": "s-candle", "mode": "stock", "room": "living",
+      "sprite": "candle", "doneSprite": "torchlit", "size": [40, 54], "slots": ["table"],
+      "name": { "th": "เทียนที่จุดทิ้งไว้", "en": "A candle left burning" },
+      "context": { "th": "ไฟดับ จุดเทียนไว้บนโต๊ะข้างผ้าม่าน แล้วทุกคนจะเข้านอน", "en": "With the power out, a candle burns on the table by the curtain, and everyone's off to bed" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ดับเทียน แล้วใช้ไฟฉายแทน", "en": "Blow it out and use a flashlight" } },
+        { "kind": "leave", "label": { "th": "จุดทิ้งไว้ ห้องจะได้ไม่มืด", "en": "Leave it burning so the room isn't dark" }, "feedback": { "th": "ดับเทียนทุกครั้งเมื่อออกจากห้องหรือเข้านอน และตอนไฟดับให้ใช้ไฟฉายแทนเทียน", "en": "Blow candles out whenever you leave the room or go to bed, and use flashlights, not candles, in a power cut." } },
+        { "kind": "place", "label": { "th": "จุดเพิ่มอีกเล่มให้สว่างขึ้น", "en": "Light another one for more light" }, "feedback": { "th": "ไฟดับให้ใช้ไฟฉาย ถ้าจุดเทียน ต้องวางห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว (ราว 30 ซม.) และห้ามทิ้งไว้", "en": "Use flashlights in a power cut. A candle needs at least 12 inches (about 30 cm) from anything that burns, and never alone." } }
+      ],
+      "tip": { "th": "ไฟดับใช้ไฟฉาย ไม่ใช้เทียน ถ้าจุดเทียน ห้ามทิ้งไว้ตอนออกจากห้องหรือนอน", "en": "In a power cut use flashlights, not candles. Never leave a candle burning." },
+      "why": { "th": "US Fire Administration (FEMA สหรัฐฯ) แนะให้ใช้ไฟฉายแทนเทียนเมื่อไฟดับ ดับเทียนทุกครั้งเมื่อออกจากห้องหรือเข้านอน และวางเทียนห่างของที่ติดไฟได้อย่างน้อย 12 นิ้ว (ราว 30 ซม.)", "en": "The US Fire Administration says to use flashlights, not candles, in a power outage, to blow candles out when you leave a room or go to bed, and to keep them at least 12 inches from anything that burns." },
+      "sources": ["usfa-candle", "readygov-outage"], "verify": "partial", "topic": "fire",
+      "verifyNote": "International guidance only (US Fire Administration, Ready.gov); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10)."
+    },
+    {
+      "id": "s-torch", "mode": "stock", "room": "living",
+      "sprite": "torchdead", "doneSprite": "torchlit", "size": [52, 40], "slots": ["high", "table"],
+      "name": { "th": "ไฟฉายถ่านหมด", "en": "A flashlight with flat batteries" },
+      "context": { "th": "ไฟดับ หยิบไฟฉายมาเปิด แต่ถ่านหมดพอดี", "en": "The lights go out, and the flashlight's batteries are flat" },
+      "choices": [
+        { "kind": "pack", "correct": true, "label": { "th": "เก็บถ่านสำรองไว้กับไฟฉาย และมีไฟฉายให้ทุกคน", "en": "Keep spare batteries with it, and a flashlight for everyone" } },
+        { "kind": "leave", "label": { "th": "ใช้ไฟจากมือถือไปก่อนก็ได้", "en": "Just use phone lights" }, "feedback": { "th": "ปภ. แนะเตรียมไฟฉายพร้อมถ่านสำรองไว้ในถุงยังชีพ และ Ready.gov แนะให้มีไฟฉายให้ทุกคนในบ้าน", "en": "DDPM puts a flashlight with spare batteries in the emergency kit, and Ready.gov says to have one for every household member." } }
+      ],
+      "tip": { "th": "เก็บไฟฉายกับถ่านสำรองไว้ด้วยกัน มีไฟฉายให้ทุกคนในบ้าน", "en": "Keep spare batteries with the flashlight, and a flashlight for everyone." },
+      "why": { "th": "ปภ. ให้ไฟฉายพร้อมถ่านสำรองเป็นหนึ่งใน 6 สิ่งที่ต้องมีในถุงยังชีพ และ Ready.gov แนะให้มีไฟฉายสำหรับทุกคนในบ้านเมื่อไฟดับ", "en": "DDPM lists a flashlight with spare batteries among the 6 things every emergency kit needs, and Ready.gov says to have a flashlight for every household member in a power cut." },
+      "sources": ["ddpm-6kit", "readygov-outage"], "verify": "verified", "topic": "plan"
+    },
+    {
+      "id": "s-radio", "mode": "stock", "room": "living",
+      "sprite": "radio", "size": [58, 44], "slots": ["high", "seat"],
+      "name": { "th": "วิทยุใส่ถ่าน", "en": "A battery radio" },
+      "context": { "th": "ไฟดับ เน็ตมือถือช้ามาก ไม่รู้ว่าข้างนอกเกิดอะไรขึ้น", "en": "The power is out, mobile data crawls, and nobody knows what's going on" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "เปิดวิทยุใส่ถ่าน ฟังประกาศจากทางการ", "en": "Turn on a battery radio for official news" } },
+        { "kind": "leave", "label": { "th": "ฟังจากข่าวลือในกลุ่มแชตไปก่อน", "en": "Go by what the chat groups say" }, "feedback": { "th": "ฟังประกาศจากทางการ เช็กลิสต์ถุงยังชีพของกรมประชาสัมพันธ์ใส่วิทยุไว้ในของจำเป็น", "en": "Listen for official news. The Thai government's kit checklist includes a radio." } }
+      ],
+      "tip": { "th": "เก็บวิทยุใส่ถ่านไว้ ไฟดับ เน็ตช้า ยังฟังประกาศจากทางการได้", "en": "Keep a battery radio: official news still gets through when the power is out." },
+      "why": { "th": "เช็กลิสต์ถุงยังชีพ 72 ชั่วโมงของกรมประชาสัมพันธ์มีไฟฉาย วิทยุ มือถือ และแบตสำรอง และ Ready.gov ใส่วิทยุใช้ถ่านหรือแบบมือหมุนไว้ในชุดของจำเป็น", "en": "The Thai government's 72-hour kit checklist (PRD) lists a flashlight, a radio, a phone and a power bank, and Ready.gov lists a battery-powered or hand-crank radio." },
+      "sources": ["prd-72h", "readygov-kit"], "verify": "partial", "topic": "plan",
+      "verifyNote": "A search summary of the PRD 72-hour checklist lists the radio; the page refuses automated reading, so confirm it there. Ready.gov lists a battery or hand-crank radio."
+    },
+    {
+      "id": "s-powerbank", "mode": "stock", "room": "living",
+      "sprite": "powerlow", "size": [46, 40], "slots": ["seat", "table"],
+      "name": { "th": "พาวเวอร์แบงก์ที่แบตเหลือขีดเดียว", "en": "A power bank down to one bar" },
+      "context": { "th": "พรุ่งนี้มีประกาศดับไฟทั้งซอย แต่พาวเวอร์แบงก์เหลือขีดเดียว", "en": "There's a planned power cut tomorrow, and the power bank shows one bar" },
+      "choices": [
+        { "kind": "check", "correct": true, "label": { "th": "ชาร์จพาวเวอร์แบงก์และมือถือให้เต็มไว้ก่อน", "en": "Charge the power bank and phones fully now" } },
+        { "kind": "leave", "label": { "th": "ไว้ค่อยชาร์จตอนไฟมา", "en": "Charge them when the power's back" }, "feedback": { "th": "ปภ. แนะเตรียมอุปกรณ์ชาร์จไฟและแบตสำรองไว้ให้พร้อมก่อนเกิดเหตุ", "en": "DDPM advises having chargers and a power bank ready before anything happens." } }
+      ],
+      "tip": { "th": "ชาร์จมือถือและพาวเวอร์แบงก์ให้เต็มไว้ก่อนไฟดับ", "en": "Charge phones and power banks fully before the power goes." },
+      "why": { "th": "ปภ. แนะให้เตรียมอุปกรณ์ชาร์จไฟและแบตสำรองไว้ในของจำเป็น และ Ready.gov แนะให้มีแหล่งไฟสำรอง เช่น พาวเวอร์แบงก์", "en": "DDPM lists chargers and a power bank among the things to prepare, and Ready.gov suggests a back-up power source such as a power bank." },
+      "sources": ["ddpm-amarin", "readygov-outage"], "verify": "verified", "topic": "plan"
+    },
+    {
+      "id": "s-plugs", "mode": "stock", "room": "living",
+      "sprite": "plugs", "doneSprite": "plugs-done", "size": [64, 44], "slots": ["floor"],
+      "name": { "th": "ปลั๊กทีวีกับคอมที่เสียบค้าง", "en": "TV and computer still plugged in" },
+      "context": { "th": "ไฟดับ ทีวี คอม และเครื่องใช้ไฟฟ้ายังเสียบปลั๊กค้างไว้", "en": "The power is out, and the TV, computer and appliances are all still plugged in" },
+      "choices": [
+        { "kind": "off", "correct": true, "label": { "th": "ถอดปลั๊กไว้ก่อน กันไฟกระชากตอนไฟกลับมา", "en": "Unplug them in case of a surge when power returns" } },
+        { "kind": "leave", "label": { "th": "เสียบไว้ ไฟมาจะได้ใช้ต่อได้เลย", "en": "Leave them in, ready for when it's back" }, "feedback": { "th": "ไฟอาจกลับมาพร้อมไฟกระชากชั่วขณะ ทำให้เครื่องเสียหายได้ Ready.gov แนะให้ถอดปลั๊กไว้", "en": "Power can come back with a momentary surge that damages equipment. Ready.gov says to unplug." } }
+      ],
+      "tip": { "th": "ไฟดับ ถอดปลั๊กเครื่องใช้ไฟฟ้า กันไฟกระชากตอนไฟกลับมา", "en": "Power cut? Unplug appliances and electronics against a surge when it returns." },
+      "why": { "th": "Ready.gov (FEMA สหรัฐฯ): ถอดปลั๊กเครื่องใช้ไฟฟ้าและอุปกรณ์อิเล็กทรอนิกส์ เพื่อกันความเสียหายจากไฟกระชาก เพราะไฟอาจกลับมาพร้อมไฟกระชากชั่วขณะ", "en": "Ready.gov (US FEMA): disconnect appliances and electronics to avoid damage from electrical surges, because power may return with momentary surges or spikes." },
+      "sources": ["readygov-outage"], "verify": "partial", "topic": "power",
+      "verifyNote": "International guidance only (Ready.gov); no Thai agency statement on this was found. Review with a Thai agency (ROADMAP L10). MEA or PEA guidance on power cuts would make it Thai."
+    },
+    {
+      "id": "s-generator", "mode": "stock", "room": "front",
+      "sprite": "generator", "size": [74, 56], "slots": ["wall", "floor"],
+      "name": { "th": "เครื่องปั่นไฟชิดหน้าต่าง", "en": "A generator under the window" },
+      "context": { "th": "ไฟดับทั้งซอย บ้านนี้ติดเครื่องปั่นไฟไว้ชิดหน้าต่าง", "en": "The whole street is dark, and this generator runs right under a window" },
+      "choices": [
+        { "kind": "move", "correct": true, "label": { "th": "ย้ายไปตั้งนอกบ้านในที่โล่ง ห่างประตูหน้าต่าง", "en": "Move it into the open, away from doors and windows" } },
+        { "kind": "leave", "label": { "th": "เปิดหน้าต่างไว้ ควันจะได้ออก", "en": "Open the window so the fumes can get out" }, "feedback": { "th": "ไอเสียมีคาร์บอนมอนอกไซด์ที่ไม่มีสี ไม่มีกลิ่น ตั้งเครื่องนอกบ้านในที่โล่ง ห่างหน้าต่างและประตู", "en": "Exhaust carries colourless, odourless carbon monoxide. Run it outdoors in the open, away from windows and doors." } },
+        { "kind": "move", "label": { "th": "ยกเข้าไปไว้ในบ้าน กันขโมย", "en": "Bring it inside so it isn't stolen" }, "feedback": { "th": "ห้ามใช้เครื่องปั่นไฟในบ้านหรือที่อับอากาศ กรมควบคุมโรคเตือนว่าไอเสียมีก๊าซพิษ", "en": "Never run a generator indoors or in a closed space. Thailand's Department of Disease Control warns its fumes are toxic." } }
+      ],
+      "tip": { "th": "เครื่องปั่นไฟตั้งนอกบ้านในที่โล่งเท่านั้น ห่างประตูและหน้าต่าง", "en": "Run a generator only outdoors in the open, away from doors and windows." },
+      "why": { "th": "กรมควบคุมโรคเตือนว่าไม่ควรใช้เครื่องปั่นไฟในที่อับอากาศ เพราะเกิดก๊าซพิษ และ Ready.gov แนะให้ตั้งเครื่องนอกบ้าน ห่างหน้าต่าง ประตู และโรงรถที่ติดบ้านอย่างน้อย 20 ฟุต (ราว 6 เมตร) คาร์บอนมอนอกไซด์ไม่มีสี ไม่มีกลิ่น", "en": "Thailand's Department of Disease Control warns against running generators in enclosed spaces because of toxic gas, and Ready.gov says to run them outdoors at least 20 feet (about 6 m) from windows, doors and attached garages. Carbon monoxide has no colour or smell." },
+      "sources": ["ddc-manual", "readygov-outage"], "verify": "verified", "topic": "power"
     }
   ],
   "decoys": [
@@ -1006,6 +1192,11 @@
     { "id": "d-clock-f", "mode": "fire", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวน", "en": "Wall clock" }, "note": { "th": "นาฬิกาไม่ใช่จุดเสี่ยงไฟ ไปดูจุดอื่นต่อ", "en": "The clock isn't a fire risk. Look elsewhere." } },
     { "id": "d-books-f", "mode": "fire", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้น", "en": "Books on the shelf" }, "note": { "th": "หนังสืออยู่บนชั้น ห่างจากปลั๊กและความร้อน ไม่เป็นไร", "en": "Books on a shelf, away from plugs and heat. Fine." } },
     { "id": "d-ricebox-f", "mode": "fire", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": { "th": "ถังข้าวสาร", "en": "Rice bin" }, "note": { "th": "ถังข้าวสารปิดฝา อยู่บนชั้น ไม่ต้องทำอะไร", "en": "A closed rice bin on the shelf. Nothing to do." } },
-    { "id": "d-soap-f", "mode": "fire", "room": "kitchen", "sprite": "soap", "size": [32, 44], "slots": ["counter-sm"], "name": { "th": "สบู่ล้างมือ", "en": "Hand soap" }, "note": { "th": "สบู่ล้างมือ ไม่เกี่ยวกับไฟ", "en": "Hand soap. Nothing to do with fire." } }
+    { "id": "d-soap-f", "mode": "fire", "room": "kitchen", "sprite": "soap", "size": [32, 44], "slots": ["counter-sm"], "name": { "th": "สบู่ล้างมือ", "en": "Hand soap" }, "note": { "th": "สบู่ล้างมือ ไม่เกี่ยวกับไฟ", "en": "Hand soap. Nothing to do with fire." } },
+    { "id": "d-ricebox-s", "mode": "stock", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": { "th": "ถังข้าวสาร", "en": "Rice bin" }, "note": { "th": "ข้าวสารในถังปิดฝา เก็บได้นาน ตุนไว้แบบนี้ดีแล้ว", "en": "Rice in a closed bin keeps well. Good stock as it is." } },
+    { "id": "d-clock-s", "mode": "stock", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวน", "en": "Wall clock" }, "note": { "th": "นาฬิกาใส่ถ่าน ไฟดับก็ยังเดิน ไม่ต้องทำอะไร", "en": "A battery clock keeps going in a power cut. Nothing to do." } },
+    { "id": "d-books-s", "mode": "stock", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้น", "en": "Books on the shelf" }, "note": { "th": "หนังสือไม่เกี่ยวกับไฟดับ อ่านฆ่าเวลาได้ด้วย", "en": "Books have nothing to do with the power cut. Good for passing the time." } },
+    { "id": "d-plant-s", "mode": "stock", "room": "front", "sprite": "plant", "size": [42, 54], "slots": ["pot"], "name": { "th": "กระถางต้นไม้", "en": "Potted plant" }, "note": { "th": "ต้นไม้ไม่ต้องใช้ไฟ ปล่อยไว้แบบนี้ได้เลย", "en": "Plants don't need power. Leave it be." } },
+    { "id": "d-dishes-s", "mode": "stock", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["sink"], "name": { "th": "จานในอ่าง", "en": "Dishes in the sink" }, "note": { "th": "จานล้างทีหลังได้ ไปดูจุดอื่นก่อน", "en": "The dishes can wait. Check the rest first." } }
   ]
 }

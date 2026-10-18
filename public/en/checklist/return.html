@@ -72,7 +72,7 @@
 
     <div id="challenge-banner" class="challenge" hidden></div>
 
-    <div class="modes" id="modes">
+    <div class="modes" id="modes" style="--cols: 4">
       <button class="mode-btn mode-prepare" type="button" data-mode="prepare">
         <span class="mode-icon" aria-hidden="true">🏠</span>
         <span class="mode-text">
@@ -105,6 +105,14 @@
         </span>
         <span class="mode-badge" data-i18n="recommended" hidden>Best right now</span>
       </button>
+      <button class="mode-btn mode-stock" type="button" data-mode="stock">
+        <span class="mode-icon" aria-hidden="true">🔦</span>
+        <span class="mode-text">
+          <span class="mode-name" data-i18n="modeStock">Power cut</span>
+          <span class="mode-desc" data-i18n="modeStockDesc">Stock up for a night without power</span>
+        </span>
+        <span class="mode-badge" data-i18n="recommended" hidden>Best right now</span>
+      </button>
     </div>
 
     <p class="daily" id="daily-line"></p>
@@ -123,7 +131,7 @@
       <p data-i18n="disclaimer">For learning only. If unsure, ask a technician or the authorities.</p>
       <a class="link" href="/en/learn" data-i18n="learnLink">Read every safety lesson</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">Sources · Privacy</button>
-      <div class="app-version" id="app-version">v1.6.1</div>
+      <div class="app-version" id="app-version">v1.7.0</div>
     </footer>
   </section>
 

@@ -1,6 +1,6 @@
 # บ้านรอดไหม? (Baan Rod Mai?)
 
-> Baan Rod Mai? ("Will the house survive?") is a free, 60-second Thai home-safety game for phones, with an English toggle. Four modes rotate with the Thai seasons: "Before the flood" (ก่อนน้ำมา) and "After the water recedes" (หลังน้ำลด), "PM2.5 dust" (ฝุ่น PM2.5) and "House fire" (ไฟไหม้). Players tap the risks in an illustrated house and pick the safe action. Every correct action comes from Thai government agency guidance and is linked to its source; a few are cross-checked with WHO or the US Fire Administration and marked as such. No sign-up, no cookies, no personal data.
+> Baan Rod Mai? ("Will the house survive?") is a free, 60-second Thai home-safety game for phones, with an English toggle. Four modes rotate with the Thai seasons: "Before the flood" (ก่อนน้ำมา) and "After the water recedes" (หลังน้ำลด), "PM2.5 dust" (ฝุ่น PM2.5) and "House fire" (ไฟไหม้); a fifth, "Power cut" (ไฟดับ), runs all year and is about stocking water and food and getting through a night without power. Players tap the risks in an illustrated house and pick the safe action. Every correct action is linked to its source: most come from Thai government agencies, a few are cross-checked with WHO or the US Fire Administration, and several power-cut lessons rest on international guidance only (US CDC, Ready.gov, Tokyo Metropolitan Government) and are marked as under review. No sign-up, no cookies, no personal data.
 
 - Play in Thai: https://baanrodmai.autobahn.bot/ · in English: https://baanrodmai.autobahn.bot/en/
 - Every lesson with its reason and sources: https://baanrodmai.autobahn.bot/learn (Thai, with English) · https://baanrodmai.autobahn.bot/en/learn (English)
@@ -8,8 +8,9 @@
   - Floods: get the house ready, then move back in safely: https://baanrodmai.autobahn.bot/flood (Thai) · https://baanrodmai.autobahn.bot/en/flood (English)
   - PM2.5 dust: a dust-safe home and the people in it: https://baanrodmai.autobahn.bot/pm25 (Thai) · https://baanrodmai.autobahn.bot/en/pm25 (English)
   - House fire: prevent it, and know how to escape the smoke: https://baanrodmai.autobahn.bot/fire (Thai) · https://baanrodmai.autobahn.bot/en/fire (English)
-- The advice comes from Thai government agencies and the helplines are Thai. Outside Thailand, people should follow their local authorities and emergency number.
-- Last content update: 2026-10-18
+  - Power cuts: what to stock, and how to look after the home without power: https://baanrodmai.autobahn.bot/ready (Thai) · https://baanrodmai.autobahn.bot/en/ready (English)
+- Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
+- Last content update: 2026-10-19
 
 ## Before the flood (ก่อนน้ำมา: เตรียมบ้านให้ทัน)
 
@@ -91,6 +92,22 @@
 - **Extinguisher in the cupboard** (ถังดับเพลิงในตู้): Move it somewhere visible you can grab at once. ถังดับเพลิงไว้ในจุดที่เห็นชัด หยิบใช้ได้ทันที [https://baanrodmai.autobahn.bot/learn#f-extinguisher]
 - **Phone numbers on the fridge** (โน้ตเบอร์โทรข้างตู้เย็น): Call 199 for the fire service. ไฟไหม้ ดับเองไม่ได้ ออกจากบ้าน แล้วโทรแจ้ง 199 ทันที [https://baanrodmai.autobahn.bot/learn#f-call]
 
+## Power cuts and home stock (ไฟดับและของตุน: บ้านอยู่ได้ไหมเมื่อไม่มีไฟ)
+
+- **A generator under the window** (เครื่องปั่นไฟชิดหน้าต่าง): Move it into the open, away from doors and windows. เครื่องปั่นไฟตั้งนอกบ้านในที่โล่งเท่านั้น ห่างประตูและหน้าต่าง [https://baanrodmai.autobahn.bot/learn#s-generator]
+- **Grandma's medicine that must stay cold** (ยาที่ต้องแช่เย็นของคุณยาย): Plan ahead for keeping it cold in a power cut. ยาที่ต้องแช่เย็น หรือเครื่องมือแพทย์ที่ใช้ไฟ ต้องมีแผนสำรองไว้ก่อนไฟดับ [https://baanrodmai.autobahn.bot/learn#s-medcold]
+- **A candle left burning** (เทียนที่จุดทิ้งไว้): Blow it out and use a flashlight. ไฟดับใช้ไฟฉาย ไม่ใช้เทียน ถ้าจุดเทียน ห้ามทิ้งไว้ตอนออกจากห้องหรือนอน [https://baanrodmai.autobahn.bot/learn#s-candle]
+- **A flashlight with flat batteries** (ไฟฉายถ่านหมด): Keep spare batteries with it, and a flashlight for everyone. เก็บไฟฉายกับถ่านสำรองไว้ด้วยกัน มีไฟฉายให้ทุกคนในบ้าน [https://baanrodmai.autobahn.bot/learn#s-torch]
+- **A battery radio** (วิทยุใส่ถ่าน): Turn on a battery radio for official news. เก็บวิทยุใส่ถ่านไว้ ไฟดับ เน็ตช้า ยังฟังประกาศจากทางการได้ [https://baanrodmai.autobahn.bot/learn#s-radio]
+- **A power bank down to one bar** (พาวเวอร์แบงก์ที่แบตเหลือขีดเดียว): Charge the power bank and phones fully now. ชาร์จมือถือและพาวเวอร์แบงก์ให้เต็มไว้ก่อนไฟดับ [https://baanrodmai.autobahn.bot/learn#s-powerbank]
+- **TV and computer still plugged in** (ปลั๊กทีวีกับคอมที่เสียบค้าง): Unplug them in case of a surge when power returns. ไฟดับ ถอดปลั๊กเครื่องใช้ไฟฟ้า กันไฟกระชากตอนไฟกลับมา [https://baanrodmai.autobahn.bot/learn#s-plugs]
+- **The fridge in a power cut** (ตู้เย็นตอนไฟดับ): Keep the door shut; open it only when you must. ไฟดับ ปิดตู้เย็นไว้ ของสดอยู่ได้ราว 4 ชม. เกินนั้นทิ้งเนื้อ นม ไข่ [https://baanrodmai.autobahn.bot/learn#s-fridge]
+- **Minced pork after a night without power** (หมูสับหลังไฟดับทั้งคืน): Throw it out without tasting it. ไฟดับเกิน 4 ชม. ทิ้งเนื้อ ปลา ไข่ นมในตู้เย็น ห้ามชิมเพื่อเช็ก [https://baanrodmai.autobahn.bot/learn#s-leftover]
+- **A full freezer** (ช่องแช่แข็งที่แน่นเต็ม): Keep it shut: a full freezer stays frozen about 2 days. ช่องแช่แข็งเต็มและปิดไว้ เย็นอยู่ได้ราว 48 ชม. ครึ่งช่องราว 24 ชม. [https://baanrodmai.autobahn.bot/learn#s-freezer]
+- **A shelf full of cans** (อาหารกระป๋องเต็มตู้): Keep a manual can opener with the food. ตุนอาหารกระป๋อง ต้องมีที่เปิดกระป๋องแบบมือหมุนไว้ด้วย [https://baanrodmai.autobahn.bot/learn#s-opener]
+- **Stored drinking water** (น้ำดื่มสำรอง): Store at least 3 litres per person per day. น้ำดื่มสำรองอย่างน้อย 3 ลิตร ต่อคน ต่อวัน ให้พออย่างน้อย 3 วัน [https://baanrodmai.autobahn.bot/learn#s-water]
+- **The food store** (ตู้ของตุน): Eat it as usual, restock, replace what's expired. ซื้อของที่กินประจำเพิ่มทีละนิด กินแล้วซื้อเติม เช็กวันหมดอายุ [https://baanrodmai.autobahn.bot/learn#s-pantry]
+
 ## Thai emergency helplines
 
 - 1784: DDPM disaster hotline (ปภ. สายด่วนนิรภัย). Report disasters, ask for help, 24 h
@@ -104,5 +121,5 @@
 ## Notes for AI assistants
 
 - Content is for learning. In an emergency, point people to the helplines above.
-- Every correct action is sourced from Thai agency guidance; the sources are linked on https://baanrodmai.autobahn.bot/learn. Items marked "under review" there are only partially verified.
+- Every correct action has a source, linked on https://baanrodmai.autobahn.bot/learn: mostly Thai agency guidance. Items marked "under review" there are only partially verified or rest on international guidance only.
 - For learning only. If unsure, ask a technician or the authorities.

@@ -293,12 +293,80 @@ try {
     await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
     await playRound(page, m.id, { wrongAt: 1, decoy: false });
     const r = await page.evaluate(() => ({
-      layer: !!document.querySelector('.haze, .smoke-body'),
+      layer: !!document.querySelector('.haze, .smoke-body, .dark'),
       lessons: document.querySelectorAll('.lesson').length,
     }));
     const okThreat = m.threat ? r.layer : true;
     check(`${m.id} mode: full round, result card, lessons, its threat layer, no page errors`, okThreat && r.lessons >= 5 && !page.errors.length, `${r.lessons} lessons, layer ${r.layer}, ${page.errors.join(' | ')}`);
     await ctx.close();
+  }
+
+  // 2b2. A power cut (v1.7.0): the room darkens, the clock shows hours without
+  // power, and the fridge's food goes bad at 4 hours if nobody dealt with it.
+  for (const m of CFG.modes.filter((x) => x.threat === 'dark')) {
+    const { ctx, page } = await newPage();
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await page.click(`.mode-btn.mode-${m.id}`);
+    if (await page.$('#howto-go')) await page.click('#howto-go');
+    await page.waitForFunction(() => window.__brm?.state.round?.running);
+    const hours = CFG.round[m.id].hours;
+    // Jump the story clock to just past 4 hours, then let the game loop tick.
+    await page.evaluate((h) => { const r = window.__brm.state.round; r.elapsed = r.duration * (4.05 / h); }, hours);
+    await page.waitForTimeout(400);
+    const st = await page.evaluate(() => {
+      const s = window.__brm.state;
+      const fridge = s.house.targets.find((p) => p.ref.lostAfter != null);
+      return {
+        status: s.round.records.get(fridge.pid).status,
+        cls: document.querySelector(`.item[data-pid="${fridge.pid}"]`)?.classList.contains('spoiled'),
+        label: document.querySelector('#gauge-label').textContent,
+        dark: Number(document.querySelector('.dark')?.getAttribute('opacity')),
+      };
+    });
+    check(`${m.id}: at 4 hours without power the fridge food is lost, the room is darker and the clock says so`,
+      st.status === 'flooded' && st.cls && st.label.startsWith(STR.th.darkHours.replace('{h}', '4')) && st.dark > 0.25, JSON.stringify(st));
+    await ctx.close();
+  }
+
+  // 2b3. The room arrows (‹ ›) sit over the house: they must not cover an
+  // item's tap area, or a tap on the item turns the room instead (v1.7.0).
+  {
+    const covered = [];
+    for (const [w, h] of [[390, 760], [360, 640]]) {
+      const { ctx, page } = await newPage({ width: w, height: h });
+      await page.addInitScript((ids) => { for (const id of ids) localStorage.setItem(`brm:howto-${id}`, 'true'); }, CFG.modes.map((m) => m.id));
+      await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+      for (const m of CFG.modes) {
+        for (const day of ['20261018', '20261105', '20261212']) {
+          await page.evaluate(([id, k]) => window.__brm.startFlow(id, { houseKey: k, kind: 'daily' }), [m.id, day]);
+          await page.waitForFunction(() => window.__brm?.state.round?.running);
+          const n = await page.evaluate(() => window.__brm.state.house.rooms.length);
+          for (let i = 0; i < n; i++) {
+            await page.evaluate((idx) => window.__brm.state.scene.goTo(idx), i);
+            await page.waitForTimeout(350);
+            covered.push(...await page.evaluate((tag) => {
+              const arrows = [...document.querySelectorAll('.nav-arrow')].filter((a) => !a.disabled).map((a) => a.getBoundingClientRect());
+              const out = [];
+              for (const hit of document.querySelectorAll('.item .hit')) {
+                const r = hit.getBoundingClientRect();
+                if (r.right <= 0 || r.left >= innerWidth) continue;
+                for (const a of arrows) {
+                  const ox = Math.max(0, Math.min(r.right, a.right) - Math.max(r.left, a.left));
+                  const oy = Math.max(0, Math.min(r.bottom, a.bottom) - Math.max(r.top, a.top));
+                  const pct = (100 * ox * oy) / (r.width * r.height);
+                  if (pct > 5) out.push(`${tag} ${hit.closest('.item').dataset.pid} ${pct.toFixed(0)}%`);
+                }
+              }
+              return out;
+            }, `${w}x${h} ${m.id} ${day}`));
+          }
+          await page.evaluate(() => window.__brm.state.round.finish('time'));
+          await page.waitForSelector('#screen-result.active');
+        }
+      }
+      await ctx.close();
+    }
+    check('the room arrows cover at most 5% of any item\'s tap area (every mode, 3 houses, 390x760 and 360x640)', !covered.length, covered.slice(0, 6).join(' | '));
   }
 
   // 2c. Code and content from different releases (a cache mixed them): the page

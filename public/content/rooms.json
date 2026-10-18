@@ -46,7 +46,7 @@
       "name": { "th": "ครัว", "en": "Kitchen" },
       "slots": [
         { "id": "kt-lpg", "x": 318, "y": 558, "tags": ["lpg"] },
-        { "id": "kt-fridge-note", "x": 44, "y": 344, "tags": ["fridge-note"] },
+        { "id": "kt-fridge-note", "x": 44, "y": 404, "tags": ["fridge-note"] },
         { "id": "kt-fridge-top", "x": 52, "y": 163, "tags": ["high"] },
         { "id": "kt-shelf", "x": 302, "y": 195, "tags": ["high"] },
         { "id": "kt-counter-sm", "x": 116, "y": 321, "tags": ["counter-sm"], "excludes": ["kt-sink"] },

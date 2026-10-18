@@ -271,5 +271,73 @@
         "sprite": "towel"
       }
     ]
+  },
+  "stock": {
+    "title": {
+      "th": "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ",
+      "en": "10 things for a 3-day power cut"
+    },
+    "items": [
+      {
+        "icon": "💧",
+        "th": "น้ำดื่มอย่างน้อย 3 ลิตร ต่อคน ต่อวัน ให้พอ 3 วัน",
+        "en": "Drinking water: 3 litres per person per day, for 3 days",
+        "sprite": "waterjugs"
+      },
+      {
+        "icon": "🥫",
+        "th": "อาหารแห้ง อาหารกระป๋อง อย่างน้อย 3 วัน กินแล้วซื้อเติม",
+        "en": "Dry and canned food for 3 days; eat it and restock",
+        "sprite": "pantry"
+      },
+      {
+        "icon": "🔧",
+        "th": "ที่เปิดกระป๋องแบบมือหมุน เก็บไว้กับอาหาร",
+        "en": "A manual can opener, kept with the food",
+        "sprite": "opener"
+      },
+      {
+        "icon": "🔦",
+        "th": "ไฟฉายให้ทุกคน พร้อมถ่านสำรอง",
+        "en": "A flashlight for everyone, with spare batteries",
+        "sprite": "torchlit"
+      },
+      {
+        "icon": "📻",
+        "th": "วิทยุใส่ถ่าน ไว้ฟังประกาศจากทางการ",
+        "en": "A battery radio for official news",
+        "sprite": "radio"
+      },
+      {
+        "icon": "🔋",
+        "th": "มือถือและพาวเวอร์แบงก์ ชาร์จเต็มไว้เสมอ",
+        "en": "Phones and power banks kept charged",
+        "sprite": "phone"
+      },
+      {
+        "icon": "💊",
+        "th": "ยาประจำตัวอย่างน้อย 7 วัน ยาแช่เย็นมีแผนสำรอง",
+        "en": "7 days of daily medicine; a plan for cold medicine",
+        "sprite": "medcold"
+      },
+      {
+        "icon": "🧊",
+        "th": "ไฟดับ ปิดตู้เย็นไว้ ของสดอยู่ได้ราว 4 ชม.",
+        "en": "Keep the fridge shut: about 4 hours for fresh food",
+        "sprite": "fridgeopen-done"
+      },
+      {
+        "icon": "🔌",
+        "th": "ถอดปลั๊กเครื่องใช้ไฟฟ้า กันไฟกระชาก",
+        "en": "Unplug appliances against surges",
+        "sprite": "plugs-done"
+      },
+      {
+        "icon": "⚠️",
+        "th": "เครื่องปั่นไฟตั้งนอกบ้านเท่านั้น ใช้ไฟฉายแทนเทียน",
+        "en": "Generators outdoors only; flashlights, not candles",
+        "sprite": "generator"
+      }
+    ]
   }
 }

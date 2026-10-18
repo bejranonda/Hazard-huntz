@@ -68,6 +68,7 @@ for (const mode of C.config.modes.map((m) => m.id)) {
       assert.ok(h.decoys.length >= C.config.round.decoysMin - 1 && h.decoys.length <= C.config.round.decoysMax, `${day}: ${h.decoys.length} decoys`);
       for (const r of roomIds) assert.ok(h.targets.some((p) => p.room === r), `${day}: no target in ${r}`);
       if (mode === 'prepare') assert.ok(h.targets.some((p) => p.ref.critical), `${day}: no critical item`);
+      if (modeList().find((m) => m.id === mode)?.threat === 'dark') assert.ok(h.targets.some((p) => p.ref.lostAfter != null), `${day}: nothing goes bad in the power cut`);
       const slots = new Set();
       for (const p of [...h.targets, ...h.decoys]) {
         assert.ok(!slots.has(p.slot), `${day}: slot ${p.slot} used twice`);
@@ -109,6 +110,33 @@ test('prepare: water rises, low items flood first, floor gets wet', () => {
   assert.equal(res.correct, 0);
   assert.equal(res.score10, 0);
   assert.ok(res.records.every((x) => x.status === STATUS.FLOODED || x.status === STATUS.MISSED));
+});
+
+test('power cut: fridge food goes bad at 4 story hours, the freezer never does in 12', () => {
+  const stock = modeList().find((m) => m.threat === 'dark');
+  assert.ok(stock, 'a power-cut mode exists');
+  const cfg = C.config.round[stock.id];
+  const fridge = C.items.find((i) => i.mode === stock.id && i.lostAfter != null);
+  const freezer = C.items.find((i) => i.mode === stock.id && i.id === 's-freezer');
+  assert.equal(fridge.lostAfter, 4, 'CDC: a closed fridge keeps food safe about 4 hours');
+  assert.equal(freezer.lostAfter, undefined, 'CDC: a full freezer holds about 48 hours, longer than the 12-hour round');
+  // Find a house with the fridge in it and run the clock.
+  const day = days.find((d) => generateHouse(C, stock.id, d).targets.some((p) => p.ref.id === fridge.id));
+  const h = generateHouse(C, stock.id, day);
+  const clock = fakeClock();
+  const lost = [];
+  const r = new Round({ house: h, config: C.config, clock: clock.now, on: { flood: (p) => lost.push([p.ref.id, r.hoursOut]) } });
+  r.start();
+  const hourMs = (cfg.seconds * 1000) / cfg.hours;
+  clock.advance(hourMs * 3.9); r.tick();
+  assert.equal(lost.length, 0, 'nothing lost before 4 hours');
+  assert.ok(r.darkLevel > 0 && r.darkLevel < 1);
+  clock.advance(hourMs * 0.2); r.tick();
+  assert.deepEqual(lost.map((x) => x[0]), [fridge.id], 'the fridge is lost at 4 hours');
+  assert.equal(r.records.get(`t-${fridge.id}`).status, STATUS.FLOODED);
+  clock.advance(hourMs * 7.8); r.tick();
+  assert.equal(lost.length, 1, 'nothing else goes bad');
+  assert.ok(!r.ended || r.endReason === 'time');
 });
 
 test('water keyframes are monotonic and end above the counter', () => {

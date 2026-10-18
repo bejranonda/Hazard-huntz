@@ -22,7 +22,7 @@
 })();
 </script>
 <title>Will the house survive? A 60-second home-safety game</title>
-<meta name="description" content="Get a home ready for floods, PM2.5 dust and fire, and spot the dangers after a flood. Free, no sign-up, one minute, based on Thai government agency advice.">
+<meta name="description" content="Get a home ready for floods, PM2.5 dust, fire and power cuts, and spot the dangers after a flood. Free, no sign-up, one minute, every tip with its source.">
 <!--OG:START-->
 <link rel="canonical" href="https://baanrodmai.autobahn.bot/en/">
 <link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/">
@@ -31,7 +31,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Baan Rod Mai? Home-safety game">
 <meta property="og:title" content="Will the house survive? A 60-second home-safety game">
-<meta property="og:description" content="Get a home ready for floods, PM2.5 dust and fire, and spot the dangers after a flood. Free, no sign-up, one minute, based on Thai government agency advice.">
+<meta property="og:description" content="Get a home ready for floods, PM2.5 dust, fire and power cuts, and spot the dangers after a flood. Free, no sign-up, one minute, every tip with its source.">
 <meta property="og:image" content="https://baanrodmai.autobahn.bot/og/en/default.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
@@ -42,7 +42,7 @@
 <meta property="og:url" content="https://baanrodmai.autobahn.bot/en/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image:alt" content="A gecko in yellow rubber boots invites you to play Baan Rod Mai?, a home-safety game">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://baanrodmai.autobahn.bot/en/#website","url":"https://baanrodmai.autobahn.bot/en/","name":"Baan Rod Mai? Home-safety game","alternateName":["Baan Rod Mai?","บ้านรอดไหม?"],"inLanguage":"en"},{"@type":["VideoGame","WebApplication"],"@id":"https://baanrodmai.autobahn.bot/#game","url":"https://baanrodmai.autobahn.bot/en/","name":"บ้านรอดไหม?","alternateName":"Baan Rod Mai?","description":"Get a home ready for floods, PM2.5 dust and fire, and spot the dangers after a flood. Free, no sign-up, one minute, based on Thai government agency advice.","isPartOf":{"@id":"https://baanrodmai.autobahn.bot/en/#website"},"inLanguage":["th","en"],"image":"https://baanrodmai.autobahn.bot/og/default.png","genre":["Educational game","Serious game"],"gamePlatform":"Web browser","applicationCategory":"GameApplication","operatingSystem":"Any","playMode":"SinglePlayer","timeRequired":"PT1M","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"THB"},"about":[{"@type":"Thing","name":"น้ำท่วม"},{"@type":"Thing","name":"Flood safety"}],"subjectOf":{"@type":"WebPage","url":"https://baanrodmai.autobahn.bot/en/learn"},"dateModified":"2026-10-18"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://baanrodmai.autobahn.bot/en/#website","url":"https://baanrodmai.autobahn.bot/en/","name":"Baan Rod Mai? Home-safety game","alternateName":["Baan Rod Mai?","บ้านรอดไหม?"],"inLanguage":"en"},{"@type":["VideoGame","WebApplication"],"@id":"https://baanrodmai.autobahn.bot/#game","url":"https://baanrodmai.autobahn.bot/en/","name":"บ้านรอดไหม?","alternateName":"Baan Rod Mai?","description":"Get a home ready for floods, PM2.5 dust, fire and power cuts, and spot the dangers after a flood. Free, no sign-up, one minute, every tip with its source.","isPartOf":{"@id":"https://baanrodmai.autobahn.bot/en/#website"},"inLanguage":["th","en"],"image":"https://baanrodmai.autobahn.bot/og/default.png","genre":["Educational game","Serious game"],"gamePlatform":"Web browser","applicationCategory":"GameApplication","operatingSystem":"Any","playMode":"SinglePlayer","timeRequired":"PT1M","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"THB"},"about":[{"@type":"Thing","name":"น้ำท่วม"},{"@type":"Thing","name":"Flood safety"},{"@type":"Thing","name":"ฝุ่น PM2.5"},{"@type":"Thing","name":"PM2.5 air pollution"},{"@type":"Thing","name":"ไฟไหม้"},{"@type":"Thing","name":"Home fire safety"},{"@type":"Thing","name":"ไฟดับ"},{"@type":"Thing","name":"Power outage preparedness"}],"subjectOf":{"@type":"WebPage","url":"https://baanrodmai.autobahn.bot/en/learn"},"dateModified":"2026-10-19"}]}</script>
 <!--OG:END-->
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
@@ -73,7 +73,7 @@
 
     <div id="challenge-banner" class="challenge" hidden></div>
 
-    <div class="modes" id="modes">
+    <div class="modes" id="modes" style="--cols: 4">
       <button class="mode-btn mode-prepare" type="button" data-mode="prepare">
         <span class="mode-icon" aria-hidden="true">🏠</span>
         <span class="mode-text">
@@ -106,6 +106,14 @@
         </span>
         <span class="mode-badge" data-i18n="recommended" hidden>Best right now</span>
       </button>
+      <button class="mode-btn mode-stock" type="button" data-mode="stock">
+        <span class="mode-icon" aria-hidden="true">🔦</span>
+        <span class="mode-text">
+          <span class="mode-name" data-i18n="modeStock">Power cut</span>
+          <span class="mode-desc" data-i18n="modeStockDesc">Stock up for a night without power</span>
+        </span>
+        <span class="mode-badge" data-i18n="recommended" hidden>Best right now</span>
+      </button>
     </div>
 
     <p class="daily" id="daily-line"></p>
@@ -124,7 +132,7 @@
       <p data-i18n="disclaimer">For learning only. If unsure, ask a technician or the authorities.</p>
       <a class="link" href="/en/learn" data-i18n="learnLink">Read every safety lesson</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">Sources · Privacy</button>
-      <div class="app-version" id="app-version">v1.6.1</div>
+      <div class="app-version" id="app-version">v1.7.0</div>
     </footer>
   </section>
 

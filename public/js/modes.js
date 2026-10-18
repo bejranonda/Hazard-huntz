@@ -3,10 +3,11 @@
 // links, routes) working in Node tests before any content is loaded.
 //
 //   id       mode id used everywhere (items.json "mode", strings "<base><Mode>")
-//   hazard   flood | dust | fire  (groups modes on the start screen)
+//   hazard   flood | dust | fire | outage  (groups modes; one page per hazard)
 //   code     one letter for challenge links /c/<code><score>; never reuse one
 //   threat   water (rises from the floor) | smoke (falls from the ceiling) |
-//            haze (thickens over the room) | null
+//            haze (thickens over the room) | dark (the room darkens through a
+//            power cut; items with lostAfter go bad after that many hours) | null
 //   prop     what the gecko wears or holds
 //   months   Bangkok months (1–12) when the mode is recommended
 //   bonus    the "critical items before the floor is wet" bonus (flood only)
@@ -19,6 +20,7 @@ const DEFAULTS = [
   { id: 'return', hazard: 'flood', code: 'r', threat: null, prop: 'torch', emoji: '⚡', icon: '🧹', months: [] },
   { id: 'dust', hazard: 'dust', code: 'd', threat: 'haze', prop: 'mask', emoji: '😷', months: [12, 1, 2, 3], topic: 'air', link: 'https://air4thai.pcd.go.th/webV3/' },
   { id: 'fire', hazard: 'fire', code: 'f', threat: 'smoke', prop: 'firehat', emoji: '🔥', months: [4], topic: 'fire' },
+  { id: 'stock', hazard: 'outage', code: 's', threat: 'dark', prop: 'torch', emoji: '🔦', months: [], topic: 'food' },
 ];
 
 let MODES = DEFAULTS;

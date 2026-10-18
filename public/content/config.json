@@ -1,5 +1,5 @@
 {
-  "_readme": "rainWarningActive: true = มีเตือนฝน/น้ำกำลังมา หน้าแรกแนะนำโหมด 'ก่อนน้ำมา' จนถึงวัน rainWarningUntil (ปี-เดือน-วัน เวลาไทย นับวันนั้นด้วย หลังจากนั้นปิดเอง) · featuredTopic = หมวดที่กำลังเป็นข่าว ขึ้นหน้าแรกจนถึง featuredTopicUntil (null = ไม่มี) · เปิดสวิตช์เมื่อไร ใส่วันสิ้นสุดด้วยทุกครั้ง · hazards = ชื่อหน้าของแต่ละภัย (/flood /pm25 /fire) ห้ามเปลี่ยนหลังเปิดตัว เพราะลิงก์ที่แชร์ไปแล้วจะเสีย · siteUrl = โดเมนจริงของเกม",
+  "_readme": "rainWarningActive: true = มีเตือนฝน/น้ำกำลังมา หน้าแรกแนะนำโหมด 'ก่อนน้ำมา' จนถึงวัน rainWarningUntil (ปี-เดือน-วัน เวลาไทย นับวันนั้นด้วย หลังจากนั้นปิดเอง) · featuredTopic = หมวดที่กำลังเป็นข่าว ขึ้นหน้าแรกจนถึง featuredTopicUntil (null = ไม่มี) · เปิดสวิตช์เมื่อไร ใส่วันสิ้นสุดด้วยทุกครั้ง · hazards = ชื่อหน้าของแต่ละภัย (/flood /pm25 /fire /ready) ห้ามเปลี่ยนหลังเปิดตัว เพราะลิงก์ที่แชร์ไปแล้วจะเสีย · siteUrl = โดเมนจริงของเกม",
   "rainWarningActive": true,
   "rainWarningUntil": "2026-11-30",
   "forecastAppUrl": "https://flood.autobahn.bot/",
@@ -8,7 +8,8 @@
     { "id": "prepare", "hazard": "flood", "code": "p", "threat": "water", "prop": "hood", "emoji": "🏠", "months": [5, 6, 7, 8, 9, 10, 11], "bonus": true },
     { "id": "return", "hazard": "flood", "code": "r", "threat": null, "prop": "torch", "emoji": "⚡", "icon": "🧹", "months": [] },
     { "id": "dust", "hazard": "dust", "code": "d", "threat": "haze", "prop": "mask", "emoji": "😷", "months": [12, 1, 2, 3], "topic": "air", "link": "https://air4thai.pcd.go.th/webV3/" },
-    { "id": "fire", "hazard": "fire", "code": "f", "threat": "smoke", "prop": "firehat", "emoji": "🔥", "months": [4], "topic": "fire" }
+    { "id": "fire", "hazard": "fire", "code": "f", "threat": "smoke", "prop": "firehat", "emoji": "🔥", "months": [4], "topic": "fire" },
+    { "id": "stock", "hazard": "outage", "code": "s", "threat": "dark", "prop": "torch", "emoji": "🔦", "months": [], "topic": "food" }
   ],
   "topics": ["health", "power", "food", "critters", "home", "plan", "air", "fire"],
   "featuredTopic": "health",
@@ -16,10 +17,11 @@
   "hazards": {
     "flood": { "slug": "flood" },
     "dust": { "slug": "pm25" },
-    "fire": { "slug": "fire" }
+    "fire": { "slug": "fire" },
+    "outage": { "slug": "ready" }
   },
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,
@@ -47,6 +49,11 @@
       "seconds": 55,
       "smoke": [[0, -30], [0.35, 60], [0.7, 230], [1, 330]],
       "lowY": 230
+    },
+    "stock": {
+      "seconds": 55,
+      "hours": 12,
+      "dark": [[0, 0.1], [0.33, 0.38], [0.7, 0.56], [1, 0.66]]
     }
   },
   "analytics": {

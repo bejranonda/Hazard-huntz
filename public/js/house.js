@@ -60,6 +60,12 @@ export function generateHouse(content, mode, houseKey, opts = {}) {
   // critical item (documents, medicines or the breaker) so it is reachable.
   const critical = rng.shuffle(pool.filter((i) => i.critical));
   if (modeOf(mode)?.bonus && critical.length) take(critical[0]);
+  // A power cut always has something that goes bad in time (the fridge), so
+  // the clock's hours matter in every house.
+  if (modeOf(mode)?.threat === 'dark') {
+    const perishable = rng.shuffle(pool.filter((i) => i.lostAfter != null));
+    if (perishable.length) take(perishable[0]);
+  }
   for (const item of pool) if (opts.include?.has(item.id)) take(item);
   // Then at least one target per room, then fill up to the wanted count.
   for (const room of rng.shuffle(rooms)) {

@@ -15,7 +15,8 @@ export function carouselSets(C, site, lang = 'th') {
   const host = site.replace(/^https?:\/\//, '');
   const main = C.helplines.filter((h) => h.main).map((h) => h.number).join('  ·  ');
   const agency = (id) => (lang === 'en' ? C.strings.seo?.en?.agencies?.[C.sources[id].agency] : null) || C.sources[id].agency;
-  return Object.entries(C.config.hazards || {}).map(([hazard, h]) => {
+  // Only hazards with a set in carousel.json → sets.
+  return Object.entries(C.config.hazards || {}).filter(([hazard]) => C.carousel?.sets?.[hazard]?.length).map(([hazard, h]) => {
     const H = cap(hazard);
     const modes = C.config.modes.filter((m) => m.hazard === hazard).map((m) => m.id);
     const ids = C.carousel?.sets?.[hazard] || [];

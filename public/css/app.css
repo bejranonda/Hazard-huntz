@@ -187,6 +187,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .mode-btn.mode-return { background: #FFE6B0; }
 .mode-btn.mode-dust { background: #E9E2D8; }
 .mode-btn.mode-fire { background: #FFDCCB; }
+.mode-btn.mode-stock { background: #DCE1F5; }
 .mode-btn.is-default { order: -1; padding-right: 64px; }
 /* A play mark so the big card reads as "tap to play", not as a label. */
 .mode-btn.is-default::after { content: '▶'; position: absolute; right: 14px; top: 50%; width: 40px; height: 40px; margin-top: -20px; border-radius: 50%; background: var(--sun); box-shadow: 0 3px 0 var(--ink); display: flex; align-items: center; justify-content: center; padding-left: 3px; font-size: 17px; line-height: 1; color: var(--ink); }
@@ -195,9 +196,9 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .mode-name { font-size: 23px; font-weight: 600; line-height: 1.2; }
 .mode-desc { font-size: 15px; color: var(--ink-2); }
 /* The other modes: compact cards, icon over name (the description stays for screen readers). */
-.mode-btn:not(.is-default) { flex-direction: column; justify-content: center; gap: 4px; min-height: 78px; padding: 10px 4px; border-radius: 18px; text-align: center; }
+.mode-btn:not(.is-default) { flex-direction: column; justify-content: center; gap: 4px; min-height: 78px; padding: 10px 2px; border-radius: 18px; text-align: center; }
 .mode-btn:not(.is-default) .mode-icon { font-size: 28px; }
-.mode-btn:not(.is-default) .mode-name { font-size: 16px; line-height: 1.25; }
+.mode-btn:not(.is-default) .mode-name { font-size: clamp(12px, 3.9vw, 16px); line-height: 1.25; }
 .mode-btn:not(.is-default) .mode-desc { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .mode-badge {
   position: absolute;
@@ -327,6 +328,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 }
 .is-return .gauge-fill { background: repeating-linear-gradient(-45deg, #FFD15C 0 10px, #FFC83D 10px 20px); }
 .is-fire .gauge-fill { background: repeating-linear-gradient(-45deg, #FF9466 0 10px, #FF7A59 10px 20px); }
+.is-stock .gauge-fill { background: repeating-linear-gradient(-45deg, #8C9BD6 0 10px, #6C7CC4 10px 20px); }
 /* PM2.5: the clock walks through the Air4Thai colours (very good → unhealthy) */
 .is-dust .gauge-fill { background: #3BB3E6; transition: background-color .4s; }
 .is-dust .gauge[data-aqi="1"] .gauge-fill { background: #5CC05C; }
@@ -453,7 +455,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 /* SVG items */
 .is-prepare .mud, .is-prepare .sky-sun { display: none; }
 .is-return .sky-rain { display: none; }
-.is-dust .mud, .is-dust .sky-rain, .is-fire .mud, .is-fire .sky-rain { display: none; }
+.is-dust .mud, .is-dust .sky-rain, .is-fire .mud, .is-fire .sky-rain, .is-stock .mud, .is-stock .sky-rain { display: none; }
 .is-dust .sky-sun { filter: sepia(.55) saturate(.7) brightness(.92); }
 .item { cursor: pointer; }
 .item .hit { fill: transparent; }
@@ -493,6 +495,10 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .smoke-edge { fill: #7A716A; fill-opacity: .55; }
 .haze-body { fill: #A8957A; fill-opacity: .85; }
 .haze-speck { fill: #6E5D49; fill-opacity: .7; }
+/* Power cut: a deep blue dim, heavier at the edges; items stay readable. */
+.dark-body { fill: #141A33; fill-opacity: .85; }
+.dark-edge { stroke: #0B0F22; stroke-opacity: .55; }
+.item.spoiled .sprite { filter: grayscale(.6) brightness(.85) sepia(.3); }
 .item.smoked .sprite { filter: grayscale(.8) brightness(.8); }
 
 .spark { pointer-events: none; }

@@ -537,3 +537,10 @@ export function canvasToBlob(canvas) {
     }
   });
 }
+
+// The drawing helpers, for renderers outside the game (tools/carousel-draw.mjs),
+// so code players never run stays out of what they download.
+export const kit = {
+  INK, INK2, CREAM, TEAL, CORAL, SUN, OK, WARN, font, fitText, wrapText, pill, logo, waves, background,
+  roundRect, statusDot, drawGecko, drawSprite, theme, propOf, plainText,
+};

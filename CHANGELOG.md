@@ -4,6 +4,24 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.6.1] — 2026-10-18
+
+Posts that teach on their own: a ready-made set of images for each hazard, for Facebook albums, Instagram carousels and LINE. Nothing in the game changes; houses and challenge links stay the same.
+
+### Added
+
+- **Carousel posts.** Three sets of 1080 × 1350 JPEG images in `public/share/carousel/<slug>/NN.jpg` (34 images, 4.5 MB): `flood` (12), `pm25` (11) and `fire` (11). Each set is a cover, one page per lesson, the hazard's checklists and a last page with the game's address and the helplines. A lesson page shows the hazard's sprite, the correct action, why, and the agencies it comes from, and says when a lesson is still being reviewed.
+  - `carousel.json → sets.<hazard>` picks at most 8 lessons per hazard; every lesson picked today is ✅ verified. The build stops on a lesson that doesn't exist, belongs to another hazard or isn't playable, and warns about one that isn't verified.
+  - The lesson text always comes from `items.json`. The new `public/content/carousel.json` holds the lesson picks and the frame text (cover titles, labels, post captions) in Thai and English. The game never loads it, and it is left out of the service worker's precache.
+  - `drawCarouselPage()` in `tools/carousel-draw.mjs` draws the pages with the card helpers that `cards.js` now exports as `kit`, so the posts look like the game while the drawing code stays out of the game's download (the start screen is still 188 KB). Thai lines are balanced (`balanced()`), so a title never ends on a lone word.
+- **`/posts`**, a plain page for whoever posts for the game: each set's images in order (touch and hold to save) and a ready-to-paste Thai caption with the page link, the play link and hashtags, plus a copy button. It is not for search: `noindex, nofollow` in the page and an `X-Robots-Tag: noindex` header, and it isn't in the sitemap.
+- **Images that can't go stale.** `npm run images` writes `share/carousel/manifest.json` with a fingerprint of everything the images show. The build compares it with the current content and warns when a lesson's text, a caption or the site address changed after the last render.
+- `npm run images -- --only <path>` renders only the images under a path (for example `share/carousel`), so the other images aren't re-encoded into unrelated diffs.
+
+### Tests
+
+- 81 smoke checks (+2): `/posts` lists every carousel image, each image exists, one caption per set, `noindex` and not in the sitemap; its controls are 44 px or more at 320 × 460. The new doc screenshot is `docs/screens/15-hazard-page.png`.
+
 ## [1.6.0] — 2026-10-18
 
 The start screen keeps itself current, a post can link straight to a mode, and each hazard has its own page for search. Houses, items, rooms, slots and scores are unchanged, so today's houses and old challenge links stay the same and no midnight release is needed.

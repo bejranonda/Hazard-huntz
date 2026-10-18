@@ -14,6 +14,7 @@ import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { setModes, recommend, modeLink } from '../public/js/modes.js';
+import { carouselSets, carouselHash } from './carousel.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
@@ -47,6 +48,8 @@ const roomsFile = readJSON('content/rooms.json');
 const sourcesFile = readJSON('content/sources.json');
 const checklists = readJSON('content/checklists.json');
 const helplines = readJSON('content/helplines.json');
+// Text for the carousel images and /posts only; the game never loads it.
+const carousel = readJSON('content/carousel.json');
 if (errors.length) finish();
 
 const spritesSvg = fs.readFileSync(path.join(PUB, 'art/sprites.svg'), 'utf8');
@@ -181,7 +184,20 @@ for (const [h, v] of Object.entries(HAZARDS)) {
   else if (RESERVED.has(slug) || fs.existsSync(path.join(PUB, slug))) err(`config.json: hazards slug "${slug}" clashes with a site path`);
   slugSeen.add(slug);
   for (const l of LANGS) for (const k of ['Nav', 'Title', 'Desc', 'H1', 'Intro']) if (!strings.seo?.[l]?.[`hazard${capM(h)}${k}`]) err(`strings.json: seo.${l}.hazard${capM(h)}${k} is missing`);
+  // The lessons in the hazard's carousel post (carousel.json → sets; share/carousel/<slug>/NN.jpg).
+  const car = carousel?.sets?.[h] || [];
+  if (car.length > 8) err(`carousel.json: sets.${h} has ${car.length} lessons (at most 8, so a post stays short)`);
+  for (const id of car) {
+    const it = itemsFile.items.find((x) => x.id === id);
+    if (!it) err(`carousel.json: sets.${h}: no item "${id}"`);
+    else if (MODES.find((m) => m.id === it.mode)?.hazard !== h) err(`carousel.json: sets.${h}: "${id}" belongs to another hazard`);
+    else if (!roomById.get(it.room)?.enabled || it.enabled === false) err(`carousel.json: sets.${h}: "${id}" is not playable`);
+    else if (it.verify !== 'verified') warn(`carousel.json: sets.${h}: "${id}" is ${it.verify}; its image says so`);
+  }
+  if (car.length) for (const l of LANGS) for (const k of [`cover${capM(h)}Title`, `cover${capM(h)}Sub`, `caption${capM(h)}`]) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
 }
+for (const h of Object.keys(carousel?.sets || {})) if (!HAZARDS[h]) err(`carousel.json: sets.${h} is not a hazard in config.json`);
+for (const l of LANGS) for (const k of ['swipe', 'doLabel', 'whyLabel', 'sourceLabel', 'ctaTitle', 'ctaSub', 'helpLabel', 'postsTitle', 'postsIntro', 'postsCopy', 'postsCopied', 'postsImages']) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
 
 for (const mode of MODE_IDS) {
   const n = itemsFile.items.filter((i) => i.mode === mode && roomById.get(i.room)?.enabled).length;
@@ -626,6 +642,65 @@ ${hazardChips('en', h.id)}
   if (thaiLeak(enHtml)) warn(`en/${h.slug}.html contains Thai text outside Thai-tagged spans`);
 }
 
+let postsInfo = '';
+// /posts: the carousel images and their post text, for whoever posts on the
+// game's pages. Not for search (noindex, not in the sitemap). Images come from
+// `npm run images`; a missing one is a warning, the page still lists it.
+{
+  const C = { config, strings, carousel, items: itemsFile.items, sources, checklists, helplines: helplines.helplines };
+  const K = carousel.th;
+  const sets = carouselSets(C, SITE, 'th').filter((x) => x.ids.length);
+  const missing = sets.flatMap((x) => x.pages.map((p) => `${x.dir}/${p.file}`)).filter((f) => !fs.existsSync(path.join(PUB, f)));
+  if (missing.length) warn(`${missing.length} carousel image(s) missing, e.g. ${missing[0]}: run npm run images -- --only share/carousel`);
+  else {
+    let seen = null;
+    try { seen = JSON.parse(fs.readFileSync(path.join(PUB, 'share/carousel/manifest.json'), 'utf8')).hash; } catch { /* none yet */ }
+    if (seen !== await carouselHash(C, SITE, 'th')) warn('the carousel images are older than the lesson text or the site address: run npm run images -- --only share/carousel');
+  }
+  const postsHtml = `<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFF4E3">
+<title>${esc(K.postsTitle)}</title>
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<style>
+${SEO_CSS}
+.imgs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.imgs img{display:block;width:100%;height:auto;border-radius:10px;background:#fff}
+textarea{display:block;width:100%;min-height:220px;box-sizing:border-box;font:inherit;font-size:.95em;padding:10px;border:2px solid #f2c48d;border-radius:12px;background:#fff;color:inherit}
+button.cta{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:10px}
+</style>
+</head>
+<body>
+<main>
+<p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a></p>
+<h1>${esc(K.postsTitle)}</h1>
+<p>${esc(K.postsIntro)}</p>
+${sets.map((x) => `<section id="${x.slug}">
+<h2>${esc(S[`hazard${capM(x.hazard)}Nav`])}</h2>
+<p class="src">${esc(fill(K.postsImages, { n: x.pages.length }))} · <a href="/${x.slug}">${esc(SITE.replace(/^https?:\/\//, ''))}/${x.slug}</a></p>
+<div class="imgs">${x.pages.map((p) => `<img src="/${x.dir}/${p.file}" width="1080" height="1350" loading="lazy" alt="${esc(`${p.page}/${p.pages}`)}">`).join('')}</div>
+<textarea readonly id="cap-${x.slug}" aria-label="${esc(K.postsCopy)}">${esc(x.caption)}</textarea>
+<button class="cta" type="button" data-copy="cap-${x.slug}">${esc(K.postsCopy)}</button>
+</section>`).join('\n')}
+<footer><p>${esc(strings.th.disclaimer)}</p></footer>
+</main>
+<script>
+for (const b of document.querySelectorAll('[data-copy]')) b.addEventListener('click', async () => {
+  const t = document.getElementById(b.dataset.copy);
+  try { await navigator.clipboard.writeText(t.value); } catch { t.select(); document.execCommand('copy'); }
+  b.textContent = ${JSON.stringify(K.postsCopied)};
+});
+</script>
+</body>
+</html>
+`;
+  fs.writeFileSync(path.join(PUB, 'posts.html'), postsHtml);
+  postsInfo = `posts.html: ${sets.length} carousel sets, ${sets.reduce((a, x) => a + x.pages.length, 0)} images${missing.length ? ` (${missing.length} missing)` : ''}`;
+}
+
 // robots.txt: everyone, including AI search and AI assistants, may read the
 // public pages; only the event endpoint is off limits.
 writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): a public home-safety game.
@@ -692,7 +767,7 @@ const precache = [
   '/en/',
   '/css/app.css',
   ...listFiles('js').filter((f) => f.endsWith('.js')),
-  ...listFiles('content').filter((f) => f.endsWith('.json')),
+  ...listFiles('content').filter((f) => f.endsWith('.json') && f !== '/content/carousel.json'),
   '/art/sprites.svg',
   ...enabledRooms.map((r) => r.art),
   ...listFiles('fonts').filter((f) => f.endsWith('.woff2')),
@@ -801,6 +876,7 @@ function finish() {
     console.log(`items     ${itemsFile.items.length} (+${itemsFile.decoys.length} decoys), sources ${Object.keys(sources).length}`);
     console.log(`pages     ${written.length} link-preview pages`);
     console.log(`seo       ${seoFiles.join(', ')} (${nLessons} lessons on /learn)`);
+    console.log(`posts     ${postsInfo}`);
     console.log(`sw.js     version ${version}, ${precache.length} files precached`);
     console.log(`budget    start screen ${(gz / 1024).toFixed(0)} KB, first game screen ${(gameStart / 1024).toFixed(0)} KB (compressed; limit 500 KB)`);
   }

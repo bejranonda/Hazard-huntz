@@ -28,6 +28,7 @@ Search and AI search:
 
 - `node tools/build.mjs` writes `/learn` (every lesson as plain HTML), `/robots.txt`, `/sitemap.xml` and `/llms.txt`, plus the canonical link and JSON-LD in each page's OG block.
 - Since v1.6.0 it also writes one page per hazard: `public/flood.html`, `public/pm25.html` and `public/fire.html`, and `public/en/flood.html`, `public/en/pm25.html` and `public/en/fire.html`. Pages serves them as `/flood`, `/pm25`, `/fire` and `/en/…`, and redirects `/pm25.html` to `/pm25` with a 308. They are generated (never edit them by hand), listed in the sitemap, and their names come from `config.json → hazards`; never change a name once it is published.
+- Since v1.6.1 it writes `public/posts.html` (`/posts`): the carousel images with their captions, for whoever posts for the game. It has `noindex` in the page and in `_headers`, and isn't in the sitemap. The images themselves come from `npm run images` and are committed, like the link previews; the build warns when they are older than the lesson text.
 - `_headers` adds `X-Robots-Tag: noindex` on `*.pages.dev`, so only the custom domain is indexed.
 - After the first deploy, submit `https://baanrodmai.autobahn.bot/sitemap.xml` in Google Search Console and Bing Webmaster Tools. Bing's index also feeds Copilot and other AI search tools.
 - Leave Cloudflare's "Block AI bots" and managed robots.txt **off** for this hostname. The game is public safety content and should be readable by AI assistants.

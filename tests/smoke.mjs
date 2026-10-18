@@ -21,6 +21,7 @@ if (SCREENS) fs.mkdirSync(SCREENS, { recursive: true });
 const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/config.json'), 'utf8'));
 const STR = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/strings.json'), 'utf8'));
 const ITEMS = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/items.json'), 'utf8')).items;
+const CAROUSEL = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/carousel.json'), 'utf8'));
 setModes(CFG.modes);
 const capM = (id) => id.charAt(0).toUpperCase() + id.slice(1);
 
@@ -608,12 +609,23 @@ try {
       }
     }
     check('hazard pages and /learn on 320x460: controls >= 44 px, play button on the first screen', !bad.length, bad.join(' | '));
+
+    // /posts: the carousel images and their post text (v1.6.1), for the team only.
+    const posts = await (await fetch(`${BASE}/posts`)).text();
+    const imgs = [...posts.matchAll(/<img src="\/([^"]+)"/g)].map((m) => m[1]);
+    const wantImgs = hz.reduce((a, h) => a + (CAROUSEL.sets[h.id]?.length ? CAROUSEL.sets[h.id].length + h.modes.length + 2 : 0), 0);
+    check(`/posts lists all ${wantImgs} carousel images, each one exists, with a caption per set; noindex and not in the sitemap`,
+      imgs.length === wantImgs && imgs.every((f) => fs.existsSync(path.join(PUB, f))) && (posts.match(/<textarea /g) || []).length === hz.filter((h) => CAROUSEL.sets[h.id]?.length).length
+      && posts.includes('<meta name="robots" content="noindex, nofollow">') && !sitemap.includes('/posts'), `${imgs.length} images`);
+    await page.goto(`${BASE}/posts`, { waitUntil: 'networkidle' });
+    const smallPosts = await smallControls(page);
+    check('/posts controls >= 44 px on 320x460', !smallPosts.length, smallPosts.join(', '));
     await ctx.close();
 
     // From a search result to the game: /pm25 → its play button → the dust card.
     const small = await newPage({ width: 360, height: 640 });
     await small.page.goto(`${BASE}/pm25`, { waitUntil: 'networkidle' });
-    await shot(small.page, '13-hazard-page');
+    await shot(small.page, '15-hazard-page');
     await Promise.all([small.page.waitForURL(/\?mode=dust/), small.page.click('.play a')]);
     await small.page.waitForSelector('.mode-btn.is-default');
     const st = await small.page.evaluate(() => [document.querySelector('.mode-btn.is-default').dataset.mode, document.querySelector('.screen.active')?.id]);

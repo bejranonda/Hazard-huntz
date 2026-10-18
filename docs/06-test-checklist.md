@@ -5,13 +5,13 @@
 ```bash
 node tools/build.mjs     # validates all content JSON; fails on any error
 npm test                 # rule tests (23 in v1.6.0): a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, safety book, share texts, switch end dates, what the start screen recommends
-npm run smoke            # browser checks (79 in v1.6.0) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
+npm run smoke            # browser checks (81 in v1.6.1) in headless Chromium (needs CHROME_PATH or `npx playwright@1.63.0 install chromium`)
 SMOKE_DATE=2026-12-05 npm run smoke   # the same, on another Bangkok day (here: dust season)
 npm run probe            # tap-area overlaps + flood timings, when slots, sizes or the water curve change
 npm run check:docs       # every relative link and anchor in the Markdown resolves
 ```
 
-Each run ends with its own count (`23 passed, 0 failed` and `79 passed, 0 failed` in v1.6.0); the number the run prints is the reference, not the one written here.
+Each run ends with its own count (`23 passed, 0 failed` and `81 passed, 0 failed` in v1.6.1); the number the run prints is the reference, not the one written here.
 
 The smoke test plays on a pinned Bangkok day: `SMOKE_DATE`, 18 Oct 2026 by default. Only `Date` is moved; time keeps running. What the start screen should show that day comes from `recommend()` in `modes.js`, so the test never reads the real calendar ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)). It covers:
 
@@ -79,6 +79,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 40 | New lessons look right on the phone: the EM-ball puddle (front yard), the ORS glass (kitchen), the towel on the sofa (living room) | | | | | | | | |
 | 41 | Open `/pm25` (and `/flood`, `/fire`) from a chat: the preview shows its own title and checklist image, the page reads well, every link is easy to tap, and ▶ opens the game on that mode without starting a round | | | | | | | | |
 | 42 | Open `/?mode=dust` from a chat: the start screen shows dust as the big card with the 😷 topic; in English (`/en/?mode=dust`) the same | | | | | | | | |
+| 43 | Open `/posts` on the phone you post from: touch and hold saves each carousel image; **คัดลอกข้อความโพสต์** copies the caption; post one set as an album and check the order and the text in the feed | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 

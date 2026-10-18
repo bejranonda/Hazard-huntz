@@ -26,7 +26,7 @@
 - **Review and optimisation:** live-site UI/UX evaluation and 3-loop refinement (9.74/10), tap overlaps at 0%, senior-friendly timer copy. Full audit in [review/](review/README.md).
 - **Docs:** the six deliverables plus the maintainer reference and the guidance for AI assistants.
 
-**Checks.** The build passes with no warnings, with its content validation and size budget (start screen **188 KB** compressed, 201 KB with the first game screen, against a 500 KB limit). All **23 rule tests**, **79 browser checks**, the **0% tap-overlap probe** and the docs link check (all relative links) pass locally. The browser checks run on a pinned day (18 Oct 2026) and also pass as 5 Dec 2026 and 10 Apr 2027.
+**Checks.** The build passes with no warnings, with its content validation and size budget (start screen **188 KB** compressed, 201 KB with the first game screen, against a 500 KB limit). All **23 rule tests**, **81 browser checks**, the **0% tap-overlap probe** and the docs link check (all relative links) pass locally. The browser checks run on a pinned day (18 Oct 2026) and also pass as 5 Dec 2026 and 10 Apr 2027.
 
 **What's not done:**
 
@@ -59,7 +59,8 @@ Work through these in order. Each links to the details. Done items are ticked.
 - [ ] **Run the real-phone matrix** in [docs/06-test-checklist.md](docs/06-test-checklist.md): at least one cheap Android and one iPhone, inside LINE, Facebook and TikTok, in Thai and in English ([#3](docs/KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers)).
 - [ ] **Link FloodWatch and the game to each other** (a link from FloodWatch to the game is the owner's side; the game already links to FloodWatch). Link to `https://baanrodmai.autobahn.bot/?mode=prepare` (opens on flood preparation whatever the date) or `/flood` (the flood lessons). Relevant links between two flood sites help both in search ([ROADMAP L9](docs/ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
 - [ ] **Soft launch** to 20–30 people, then follow the phases in [docs/04-launch-kit.md](docs/04-launch-kit.md) (Thai posts first; English posts for international channels).
-- [ ] *(Optional)* **Tag the release:** `v1.6.0` on `main`. The session's git connection refuses tag pushes, so create it in the GitHub Releases page.
+- [ ] **Post the carousels:** open https://baanrodmai.autobahn.bot/posts on your phone, save a set in order and paste its caption. Start with the dust set (`pm25`) in early December, the fire set in March ([04-launch-kit](docs/04-launch-kit.md#posting-the-carousels-v161)).
+- [ ] *(Optional)* **Tag the release:** `v1.6.1` on `main`. The session's git connection refuses tag pushes, so create it in the GitHub Releases page.
 - [ ] *(Optional)* **Confirm the license.** It is MIT, the same as your other repository; change it in `LICENSE` and `package.json` if you prefer.
 
 ## 3. How to run it
@@ -71,7 +72,7 @@ node tools/build.mjs                    # validate content + generate pages (Tha
 npx wrangler@latest pages dev public    # local site + /api/e at http://localhost:8788
 npm test                                # 23 rule tests (Node only, well under a second)
 npm install                             # once: playwright-core for the next three
-npm run smoke                           # 79 browser checks on a pinned day (18 Oct 2026); add  -- --screens docs/screens  to refresh screenshots
+npm run smoke                           # 81 browser checks on a pinned day (18 Oct 2026); add  -- --screens docs/screens  to refresh screenshots
 SMOKE_DATE=2026-12-05 npm run smoke     # the same checks on another Bangkok day (another season)
 npm run images                          # re-render previews (Thai + English), checklists, sample cards, icons (set SITE_URL)
 npm run probe                           # tap-area overlaps + flood timings (Node only)
@@ -314,6 +315,11 @@ All planned work is in [docs/ROADMAP.md](docs/ROADMAP.md) as task cards, each wi
 - `?mode=` links open the game on one mode for posts and campaigns, and each hazard has its own page for search and sharing: `/flood`, `/pm25`, `/fire` and their `/en/` twins. The sitemap grew from 4 to 10 addresses.
 - The ending that answers "บ้านรอดไหม?" is now on the shared card too; two endings that said "below" were reworded.
 - The smoke test plays on a pinned date and takes its expectations from the game's own `recommend()`; it passes as 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027. Stale counts across the docs were corrected, and the safety table's counts are now generated. 23 rule tests, 79 browser checks. Houses and challenge links are unchanged, so no midnight release was needed.
+
+### 18 Oct 2026: v1.6.1, posts that teach on their own
+
+- The owner shared a Thai stockpiling infographic that was spreading on social media, and asked to think further. First step: each hazard now has a ready-made set of images (cover, up to 8 sourced lessons, the checklists, the game's address and helplines), drawn by the card code from `items.json`, and `/posts` to save them and copy a Thai caption. The build warns when the images are older than the lesson text ([KNOWLEDGE §26](docs/KNOWLEDGE.md#26-carousel-posts-v161)).
+- The carousel's text and drawing code first made the start screen 3 KB heavier; both moved out of what the game loads (188 KB again, [LESSONS C17](docs/LESSONS_LEARNED.md#c-engineering-and-platform)).
 
 ## 10. Access, accounts and secrets
 

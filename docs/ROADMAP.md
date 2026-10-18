@@ -48,6 +48,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N10 | [A game for the whole year: PM2.5 dust and house fire](#n10-a-game-for-the-whole-year-pm25-dust-and-house-fire) | AI-ready | Done (15 Oct 2026, v1.5.0) |
 | N11 | [The visitor funnel: next step always on the first screen](#n11-the-visitor-funnel-next-step-always-on-the-first-screen) | AI-ready | Done (15 Oct 2026, v1.5.2) |
 | N12 | [A start screen that keeps itself current, mode links and hazard pages](#n12-a-start-screen-that-keeps-itself-current-mode-links-and-hazard-pages) | AI-ready | Done (18 Oct 2026, v1.6.0) |
+| N13 | [Carousel posts for social media](#n13-carousel-posts-for-social-media) | AI-ready | Done (18 Oct 2026, v1.6.1) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -301,6 +302,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Rule kept:** no change to items, rooms, slots or `houseVersion`, so houses and old challenge links stay the same.
 - **Done when:** build (no warnings), 23 unit tests and 79 smoke checks pass; the smoke test also passes with `SMOKE_DATE=2026-12-05` and `SMOKE_DATE=2027-04-10`; the `/learn` output is byte-identical before the new template gained anything; the six hazard pages and `/learn` have no control under 44 px at 320 × 460. All true on 18 Oct 2026.
 - **Left for the owner:** submit the sitemap again and the six new pages in Search Console and Bing ([L8](#l8-search-consoles-and-ai-search-check)); point FloodWatch at `/?mode=prepare` or `/flood` ([L9](#l9-link-floodwatch-and-the-game-to-each-other)); have the hazard pages' text read in the language check ([L5](#l5-second-native-reader-for-the-thai-copy)).
+
+### N13. Carousel posts for social media
+
+- **Who:** AI-ready · **Status:** Done (18 Oct 2026, v1.6.1)
+- **Why:** the owner saw a Thai stockpiling infographic spreading on social media: people share practical, page-by-page advice. The game's lessons are sourced and short, but they could only be read in the game or on `/learn`.
+- **What was built:** one set of 1080 × 1350 images per hazard (cover, up to 8 lessons, the checklists, the game's address and helplines), drawn by the card code from `items.json`; `/posts` with the images and a Thai caption to copy; a fingerprint that makes the build warn when the images are older than the text. See [CHANGELOG 1.6.1](../CHANGELOG.md) and [KNOWLEDGE §26](KNOWLEDGE.md#26-carousel-posts-v161).
+- **Done when:** the build has no warnings, 23 unit tests and 81 smoke checks pass, and every image has been looked at. All true on 18 Oct 2026.
+- **Left for the owner:** post the dust set in early December and the fire set in March ([04-launch-kit §2](04-launch-kit.md#posting-the-carousels-v161)); have the cover titles and captions read in the language check ([L5](#l5-second-native-reader-for-the-thai-copy)). English sets can be rendered from the same code when wanted.
 
 ## Later
 

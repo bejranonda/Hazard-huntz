@@ -9,6 +9,8 @@
 <p style="font-family:Kanit">บ้านรอดไหม? 0123456789 abc</p>
 <script type="module">
 import { loadCardAssets, drawResultCard, drawChecklist, drawOG } from '/js/cards.js';
+import { drawCarouselPage } from '/__tools/carousel-draw.mjs';
+import { carouselSets } from '/__tools/carousel.mjs';
 import { geckoSVG } from '/js/mascot.js';
 import { parseSvg, drawSvgInto } from '/js/svgdraw.js';
 import { setModes } from '/js/modes.js';
@@ -117,6 +119,18 @@ window.renderAll = async (site) => {
     ending: th.cheerPerfectReturn[0],
   }, assets);
   out['share/sample-result-return.png'] = c.toDataURL('image/png');
+
+  // Carousel posts (Thai): share/carousel/<slug>/NN.jpg. JPEG keeps a set of
+  // about a dozen pages near 2 MB.
+  const [items, sources, carousel] = await Promise.all([get('items'), get('sources'), get('carousel')]);
+  const C = { config, strings, carousel, items: items.items, sources: sources.sources, checklists, helplines: helplines.helplines };
+  for (const set of carouselSets(C, site || 'https://[DOMAIN]', 'th')) {
+    for (const p of set.pages) {
+      c = canvas();
+      drawCarouselPage(c, p, assets);
+      out[`${set.dir}/${p.file}`] = c.toDataURL('image/jpeg', 0.86);
+    }
+  }
 
   out['icons/icon-180.png'] = icon(180);
   out['icons/icon-192.png'] = icon(192);

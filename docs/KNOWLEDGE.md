@@ -33,6 +33,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 23. [The visitor funnel, measured (v1.5.2)](#23-the-visitor-funnel-measured-v152)
 24. [The story: the ending answers the title (v1.5.3)](#24-the-story-the-ending-answers-the-title-v153)
 25. [A start screen that keeps itself current (v1.6.0)](#25-a-start-screen-that-keeps-itself-current-v160)
+26. [Carousel posts (v1.6.1)](#26-carousel-posts-v161)
 
 ---
 
@@ -930,3 +931,21 @@ Built 18 Oct 2026 (ROADMAP N12). Nothing here touches items, rooms, slots or `ho
 
 - `npm run docs` writes the summary between `<!-- SUMMARY:START -->` and `<!-- SUMMARY:END -->` at the top of [01-safety-content.md](01-safety-content.md), as well as the table, flags and references. A normal build warns when the file is out of date with the content.
 - CI's "generated files are committed and current" step diffs `'public/*.html'` (which covers the hazard pages), `public/sw.js` and `public/js/version.js` with the rest of the generated output, and fails when a generated file under `public/` isn't committed.
+
+## 26. Carousel posts (v1.6.1)
+
+A Thai stockpiling infographic shared on social media showed what people forward: practical advice, one page at a time. The game's lessons are sourced and short, so each hazard now has a ready-made set of images for a Facebook album, an Instagram carousel or a LINE post.
+
+- **Files:** `public/share/carousel/<slug>/01.jpg … NN.jpg`, 1080 × 1350 (4:5, the tallest ratio Facebook and Instagram show in the feed without cropping), JPEG quality 0.86, about 130 KB each. Today: `flood` 12, `pm25` 11, `fire` 11; 34 images, 4.5 MB.
+- **Pages, in order** (`carouselSets()` in `tools/carousel.mjs`, shared by the build and the renderer):
+  1. a cover: the mode names, the gecko with the hazard's prop, the title (`carousel.json → cover<H>Title`, with the number of lessons), a subtitle and "ปัดดูทีละข้อ →"
+  2. one page per lesson in `carousel.json → sets.<hazard>` (at most 8): the mode's chip, the item's sprite, its name, **ควรทำ** with the correct action and the game's blue tick, **ทำไม** with the reason, and **ที่มา** with the agencies (English names on English sets); a lesson that isn't ✅ verified says "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน"
+  3. the hazard's checklists (two for floods)
+  4. the game: "ลองเล่นจริง 60 วิ ฟรี", the hazard page's address and the free helplines
+  - Every page shows the page number ("3/12") and, at the bottom, the hazard page's address (`baanrodmai.autobahn.bot/pm25`) and the disclaimer.
+- **Text and code that cost players nothing:** every lesson word comes from `items.json`, so a post can't say something the game doesn't. `public/content/carousel.json` holds the lesson picks and the frame (titles, labels, captions) in Thai and English; the game never loads it, and the service worker doesn't precache it. The drawing code is `drawCarouselPage()` in `tools/carousel-draw.mjs`, which imports the card helpers `cards.js` exports as `kit`; only the renderer's browser loads it.
+- **Lessons picked (all ✅ verified):** floods `p-breaker`, `p-docs`, `p-waterfood`, `p-plan`, `r-wire`, `r-gas`, `r-generator`, `r-foodwet`; dust `a-window`, `a-mask`, `a-app`, `a-sweep`, `a-purifier`, `a-ball`, `a-inhaler`, `a-leaves`; fire `f-strip`, `f-charge`, `f-pan`, `f-gas`, `f-towel`, `f-door`, `f-call`, `f-extinguisher`. The build stops on a lesson that doesn't exist, belongs to another hazard or isn't playable, and warns about one that isn't verified.
+- **Line breaks:** `balanced()` in `tools/carousel-draw.mjs` finds the narrowest width that keeps the same number of lines, so Thai titles break evenly ("น้ำท่วม: 8 เรื่อง | ที่ทำให้บ้านรอด", not "…ทำให้บ้าน | รอด").
+- **Freshness:** `npm run images` writes `share/carousel/manifest.json` with a SHA-256 fingerprint (16 hex characters) of every set's data and the site address. The build computes the same and warns when they differ ([KNOWN_ISSUES #54](KNOWN_ISSUES.md#54-carousel-images-are-committed-and-thai-only)). Render only these images with `npm run images -- --only share/carousel`.
+- **`/posts`** (`public/posts.html`, generated): each set's images in order, the Thai caption in a text box (`carousel.json → caption<H>`, with the page link, the play link `/?mode=…` and hashtags) and a copy button (a few lines of inline script; it falls back to selecting the text). `noindex, nofollow` in the page, `X-Robots-Tag: noindex` in `_headers`, not in the sitemap.
+- **How to post** is in [04-launch-kit](04-launch-kit.md#posting-the-carousels-v161).

@@ -39,3 +39,6 @@ https://:project.pages.dev/*
 
 https://:version.:project.pages.dev/*
   X-Robots-Tag: noindex
+
+/posts
+  X-Robots-Tag: noindex

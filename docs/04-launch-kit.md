@@ -115,6 +115,22 @@ Notes for English posts:
 - Link `/learn#t-health` when people want the answers now; link `/` (or `/?mode=return`, which opens on หลังน้ำลด) when the aim is to play and share.
 - Keep `config.featuredTopic` on `"health"` only while the news lasts. It ends by itself after `featuredTopicUntil` (now 15 Nov 2026); move the date if the news lasts longer, or set `null` sooner.
 
+### Posting the carousels (v1.6.1)
+
+Each hazard has a ready-made set of images: a cover, one page per lesson, the checklists and the game's address. Open **https://baanrodmai.autobahn.bot/posts** on the phone you post from.
+
+1. Touch and hold each image, in order, and save it (or save them all from a computer).
+2. Copy the caption under the set with **คัดลอกข้อความโพสต์**. It already has the hazard page's link, the play link and hashtags.
+3. Post them as one album (Facebook), one carousel (Instagram) or one album in a LINE OpenChat, in the same order.
+
+| When | Set | Note |
+|---|---|---|
+| Early December, then every 2–3 weeks while Air4Thai shows orange or red | `pm25` | Pin it to the page for the season |
+| A rain warning, or the week before the monsoon (May) | `flood` | Pair with the FloodWatch link |
+| March–April, or after a house fire in the news | `fire` | Keep it about prevention; no photos of real fires |
+
+Rules: post the images as they are (the sources are printed on them); don't crop off the page numbers or the address; if a lesson's text changes, wait for the re-rendered set ([KNOWN_ISSUES #54](KNOWN_ISSUES.md#54-carousel-images-are-committed-and-thai-only)).
+
 ### When the dust season starts (v1.5.0, from December)
 
 Nothing needs switching off. The switches end by themselves: the rain warning after `rainWarningUntil` (now 30 Nov 2026) and the news topic after `featuredTopicUntil` (now 15 Nov 2026), so from 1 December the start screen recommends ฝุ่น PM2.5 and features 😷 by itself. Whenever you turn a switch on, give it an end date (the build warns if you don't). To feature the dust topic during a bad week, set `featuredTopic: "air"` with `featuredTopicUntil`.

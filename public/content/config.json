@@ -19,7 +19,7 @@
     "fire": { "slug": "fire" }
   },
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,

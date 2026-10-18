@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.5.3 (15 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.6.0 (18 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -17,7 +17,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | # | Issue | Status | Severity |
 |---|---|---|---|
 | 3 | [Not yet tested on real phones or real in-app browsers](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) | Open | **High (launch blocker)** |
-| 8 | [10 safety items are only partially verified](#8-10-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
+| 8 | [11 safety items are only partially verified](#8-11-safety-items-are-only-partially-verified) | Owner | **High (review before launch)** |
 | 9 | [Agency websites blocked automated checks](#9-agency-websites-blocked-automated-checks) | Owner | Medium |
 | 10 | [Sources conflict on soaked mattresses](#10-sources-conflict-on-soaked-mattresses) | Owner | Low |
 | 11 | [Thai and English copy need a second native reader](#11-thai-and-english-copy-need-a-second-native-reader) | Owner | Medium |
@@ -54,6 +54,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 49 | [Dust and fire use the flood house](#49-dust-and-fire-use-the-flood-house) | By design | — |
 | 50 | [The v1.5.1 service worker reloads open pages once](#50-the-v151-service-worker-reloads-open-pages-once) | By design | — |
 | 51 | [The wordmark's coral half is low contrast](#51-the-wordmarks-coral-half-is-low-contrast) | By design | — |
+| 52 | [A `?mode=` link previews as the main game](#52-a-mode-link-previews-as-the-main-game) | By design | — |
+| 53 | [The smoke test runs on a pinned date](#53-the-smoke-test-runs-on-a-pinned-date) | By design | — |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -75,23 +77,26 @@ What a headless test **cannot** show:
 - how the font, notch and home bar look on real screens
 - audio on iOS when the silent switch is on
 
-**To do:** run the 35-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 42-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
 
 ## Needs the owner
 
-### 8. 10 safety items are only partially verified
+### 8. 11 safety items are only partially verified
 
 **Status:** Owner · **Severity:** High: review before launch
 
-`p-phone`, `p-car`, `p-meds`, `p-numbers`, `p-chem`, `p-drain`, `p-toilet`, `p-fuel` and `r-sag` are marked ⚠️. For each one, the core advice is official, but one detail is:
+Eleven items are marked ⚠️ `partial`, ten in the flood modes and one in fire. The summary at the top of [01-safety-content.md](01-safety-content.md) is generated from `items.json`, so it always has the current count.
 
-- an inference (for example "charge fully")
-- from an older statement (the 2011 police request about parking on bridges, or the 2013 7-day medicine figure)
-- or common practice rather than official wording (a sandbag in the toilet bowl)
+- **Nine flood items with one uncertain detail:** `p-phone`, `p-car`, `p-meds`, `p-numbers`, `p-chem`, `p-drain`, `p-toilet`, `p-fuel` and `r-sag`. For each one, the core advice is official, but one detail is:
+  - an inference (for example "charge fully")
+  - from an older statement (the 2011 police request about parking on bridges, or the 2013 7-day medicine figure)
+  - or common practice rather than official wording (a sandbag in the toilet bowl)
+- **`r-stagnant`** (EM balls, after the flood) rests on academic sources, not an agency ([#43](#43-the-em-ball-lesson-rests-on-academic-sources-not-an-agency)).
+- **`f-alarm`** (smoke alarms) rests only on the US Fire Administration ([#45](#45-the-smoke-alarm-lesson-has-no-thai-source)).
 
-Each reason is listed under *Flags* in [01-safety-content.md](01-safety-content.md). `p-toilet` and `p-fuel` are in rooms that are not playable yet.
+Each reason is listed under *Flags* in [01-safety-content.md](01-safety-content.md). `p-toilet` and `p-fuel` are in rooms that are not playable yet, so 9 of the 11 are in play.
 
 **Fix:**
 
@@ -148,7 +153,7 @@ If `config.json → forecastStatusUrl` is set, the start screen fetches it from 
 - send `Access-Control-Allow-Origin: *` (or this site's origin)
 - answer within **1.5 s** with `{"rainWarning": true|false}`
 
-Otherwise the manual `rainWarningActive` flag is used. Nothing breaks, but the automation silently does nothing.
+Otherwise the manual `rainWarningActive` switch is used, until its end date `rainWarningUntil`. Nothing breaks, but the automation silently does nothing. When it does answer, its answer beats the manual switch both ways (`recommend()` in `modes.js`).
 
 ---
 
@@ -265,7 +270,7 @@ Game events go to Analytics Engine through `/api/e`, which covers what Web Analy
 
 **Status:** By design
 
-There are only 50 preview images: 25 Thai and 25 English, each being 2 modes × 11 scores, plus the default and the two checklists. Each is a static page and a PNG.
+There are only 98 preview images: 49 Thai and 49 English, each being 4 modes × 11 scores, plus the default and the four checklists. Each is a static page and a PNG. The hazard pages (`/flood`, `/pm25`, `/fire`, v1.6.0) reuse the checklist images, so they add none.
 
 A Pages Function that drew previews per request would face two limits:
 
@@ -316,9 +321,11 @@ Penalties (−4 s for a wrong answer, −2 s for the first tap on each decoy) mo
 
 - `public/index.html` (its Open Graph block, canonical link and JSON-LD)
 - `public/learn.html`, `public/llms.txt`, `public/sitemap.xml`, `public/robots.txt`
+- the hazard pages `public/flood.html`, `public/pm25.html`, `public/fire.html` (v1.6.0)
 - `public/c/*.html`
 - `public/checklist/*.html`
-- `public/sw.js`
+- the English set under `public/en/`
+- `public/sw.js` and `public/js/version.js`
 
 So a local run with a different `SITE_URL`, or after editing any precached file (which changes the service-worker version), leaves changes in git. That is expected. Cloudflare runs the same build on every deploy, so the committed copies only need to be valid, not current. See [GUIDELINES.md](GUIDELINES.md#7-git-and-releases) for what to commit.
 
@@ -345,10 +352,10 @@ A version mismatch shows up as "Executable doesn't exist". Set `CHROME_PATH`; an
 
 **Status:** By design
 
-`/learn` and `/llms.txt` repeat every lesson so that crawlers without JavaScript can read them. They are generated from the same JSON as the game, so the text can't drift, and a build that changes a lesson changes them too. Two things are not automatic:
+`/learn` and `/llms.txt` repeat every lesson so that crawlers without JavaScript can read them. Since v1.6.0 the hazard pages (`/flood`, `/pm25`, `/fire` and their `/en/` twins) repeat them a second time, each with only its hazard's lessons, so a search for one hazard lands on a short page. All of them are generated from the same JSON as the game, so the text can't drift, and a build that changes a lesson changes every page. Two things are not automatic:
 
-- `strings.json → seo.updated` (the page's "last updated" date, and the sitemap's `lastmod`) is a value someone sets when lessons change. It is not derived from git.
-- The English text on `/learn` is the English already in `items.json`; the page's own headings and labels are in `seo.en` and `seo.th`.
+- `strings.json → seo.updated` (the pages' "last updated" date, and the sitemap's `lastmod`) is a value someone sets when lessons change. It is not derived from git.
+- The English lesson text is the English already in `items.json`; the pages' own headings, titles, descriptions and intros are in `seo.en` and `seo.th`. The hazard pages' text adds no advice or numbers and names no agencies, so it can't contradict the lessons, but it is still a draft for the language check ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
 
 ### 32. Search and AI-search results can't be guaranteed
 
@@ -363,7 +370,7 @@ Check after about two weeks ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-s
 **Status:** By design (v1.2.0)
 
 - **One extra language.** `/en/` adds English. Other languages would need their own `strings.json` table, `ogEn`-style preview text and images; the build only knows Thai and English.
-- **Thai advice and numbers.** Every lesson is sourced from Thai agencies, and the hotlines (1784, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
+- **Thai advice and numbers.** Every lesson is sourced from Thai agencies, and the hotlines (1784, 199, 1669, 1555, 1130, 1129, 1323) are Thai. English pages say so and point people outside Thailand to their local authorities. No foreign numbers were added, because none were verified. Electrical details (MEA/PEA, breaker behaviour) may differ elsewhere.
 - **The wordmark is romanised in English** ("Baan Rod Mai?", from `strings.json → logoA/logoB`), so English players don't see Thai script as the brand; the Thai name still appears in the Thai pages' titles and `alternateName`.
 - **The English text has had no native-speaker review** of tone; it was written alongside the Thai ([#11](#11-thai-and-english-copy-need-a-second-native-reader)).
 - **Preview caches:** Facebook and LINE cache per URL, so a previously shared `/c/…` link keeps its Thai preview.
@@ -395,9 +402,11 @@ The safety book (`brm:learned`), the streak, best scores and the how-to flags ar
 
 **Status:** By design
 
-`config.featuredTopic` puts one topic on the start screen. Nothing switches it on or off from the news; the owner sets it (now `"health"`, for the disease warnings in September–October 2026) and sets it back to `null` when the news fades, or to another topic. Leaving it on for months makes it wallpaper.
+`config.featuredTopic` puts one topic on the start screen. Nothing switches it on from the news; the owner sets it (now `"health"`, for the disease warnings in September–October 2026).
 
-Since v1.5.0, `null` is no longer blank: the start screen then features the topic of the mode in season (dust → 😷 `air` in December–March, fire → 🔥 `fire` in April). In the flood months nothing is featured unless the owner sets a topic.
+**It ends by itself (v1.6.0).** `config.featuredTopicUntil` is its last day (now `2026-11-15`, Bangkok date, that day included); from the next day the topic is off without anyone touching it. The rain warning works the same way with `rainWarningUntil` (now `2026-11-30`). Before v1.6.0 neither had an end, so a forgotten switch would have kept "ฝนจะมาอีกระลอก" and the diseases-after-floods topic on the start screen into the dust season ([F32](#in-v160-18-oct-2026)). Set an end date every time you turn a switch on; the build warns about a switch with no end date or one whose date has passed, and its `start` line shows what today's visitors see.
+
+When no topic is in the news, the start screen features the topic of the recommended mode (dust → 😷 `air` in December–March, fire → 🔥 `fire` in April). A `?mode=` link brings that mode's own topic first. In the flood months nothing is featured unless the owner sets a topic. Leaving a topic on for months makes it wallpaper, so the owner still decides when to end it early or extend it.
 
 ### 45. The smoke-alarm lesson has no Thai source
 
@@ -420,7 +429,9 @@ A person should read the agency pages before December ([ROADMAP L10](ROADMAP.md#
 
 **Status:** By design
 
-`config.modes[].months` (dust December–March, fire April, flood May–November) was chosen by us from the general pattern (Bangkok's dust peaks December–February and the North's February–April; dry, windy months raise fire risk). No Thai agency publishes a month-by-month hazard calendar that we could find **[unverified]**. The North's dust season runs later than Bangkok's, so a northern player in April sees fire recommended, not dust. The owner can change the months, and `rainWarningActive` still overrides them.
+`config.modes[].months` (dust December–March, fire April, flood May–November) was chosen by us from the general pattern (Bangkok's dust peaks December–February and the North's February–April; dry, windy months raise fire risk). No Thai agency publishes a month-by-month hazard calendar that we could find **[unverified]**. The North's dust season runs later than Bangkok's, so a northern player in April sees fire recommended, not dust. The owner can change the months, and `rainWarningActive` still overrides them until `rainWarningUntil` (now 30 Nov 2026).
+
+The south floods later, in the November–January monsoon. The model has one calendar for the whole country, so it doesn't cover that: once the rain switch ends on 30 Nov, the start screen recommends dust from December. Campaigns for the south use `/?mode=prepare`, which opens the game on flood preparation whatever the date, or `/flood`, the flood lessons with play buttons. Extending `rainWarningUntil` instead would change the start screen for the whole country.
 
 ### 48. Haze and smoke are untested on low-end phones
 
@@ -455,6 +466,24 @@ When the v1.5.1 service worker replaces one from before v1.5.1, it reloads the o
 
 The three rooms were drawn for floods: the Return mud layer is hidden for dust and fire, but the window and yard are the same, and the smoke can cover the alarm early (about 22 s). New rooms (P1) and a coast scene (P8) would give each hazard its own look. Items don't overlap: the probe reports 0% over 2,920 houses in all four modes.
 
+### 52. A `?mode=` link previews as the main game
+
+**Status:** By design
+
+`/?mode=dust` is the app shell with a query, so LINE and Facebook show the same preview as `/` (the default image and title), not a dust one. Pages are static and the previews are fixed per path ([#23](#23-link-previews-are-pre-rendered-not-drawn-per-request)). The game itself reads the link and opens on the right card. Web Analytics doesn't record the query either ([#22](#22-web-analytics-blind-spots)), so count link arrivals with the `view` event's `link` label ([05-metrics](05-metrics.md#event-dictionary)).
+
+**When the preview matters,** share the hazard page instead: `/pm25`, `/fire` or `/flood` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
+
+### 53. The smoke test runs on a pinned date
+
+**Status:** By design (tooling)
+
+`npm run smoke` plays on a fixed Bangkok day, `SMOKE_DATE` (default `2026-10-18`), and takes what the start screen should show from `recommend()`. So it passes on any real date, and it can't catch a problem that depends on today's date, such as a switch whose end date has passed or a season that starts tomorrow.
+
+- **Today's state shows in the build,** not the smoke test: `node tools/build.mjs` prints a `start` line (what visitors see today) and warns about a switch with no end date or a past one. Read it after every release and at the start of each month.
+- **To test another season,** run `SMOKE_DATE=2026-12-05 npm run smoke` (dust) or `SMOKE_DATE=2027-04-10 npm run smoke` (fire); both passed 79/79 on 18 Oct 2026.
+- **Only `Date` is shifted,** by an init script, and time keeps running. Playwright's clock API would also fake the timers and `requestAnimationFrame` that the rounds use, so it isn't used ([LESSONS D10](LESSONS_LEARNED.md#d-testing-and-verification)).
+
 ---
 
 ## Fixed
@@ -477,6 +506,17 @@ The three rooms were drawn for floods: the Return mud layer is hidden for dust a
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.6.0 (18 Oct 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F37 | The play button on `/learn` was white on orange (`#e8742a`, **3.0:1**, below the 4.5:1 WCAG AA needs for its 17 px text), and the new hazard pages copied it; the current-hazard chip was 3.9:1. axe-core flagged both | The plain pages use the game's own button: yellow (`#FFC83D`) with dark text (`#3E2A1E`), and the current chip has dark text. axe-core finds nothing on `/learn`, `/pm25`, `/flood` or `/en/fire`. |
+| F36 | Two endings pointed at the screen: `cheerLowReturn` said "อ่านข้อที่พลาดด้านล่าง" and `cheerMidFire` "อ่านข้อที่พลาดด้านล่างนะ" ("below"). Fine on the result screen, wrong on the shared card, which now carries the ending | Reworded: "บ้านยังไม่พร้อม ตรวจให้ครบอีกรอบ ก่อนกลับเข้าบ้านนะ" and "ยังมีจุดเสี่ยงไฟอยู่ ลองหาให้ครบอีกรอบนะ", and the English twins. A unit test forbids "ด้านล่าง" and "below" in every ending. |
+| F35 | The helpline `tel:` links on `/learn` were **28–38 px** wide | `min-width: 44px` on them, and the top links (the game, the other language) are 44 px tall, on every plain page. Smoke check: every control on `/learn`, `/en/learn` and the six hazard pages is at least 44 px at 320 × 460. |
+| F34 | Counts in the docs had drifted from the code: the safety table described as 43 items (68); #8 said 10 partial items and listed 9 (11); the safety book as 41 lessons in 6 topics (66 in 8); the phone matrix as 35 or 38 rows (40, now 42); the precache list as 39 files (41); the first game screen as 168 KB (201 KB); the strings as 130 keys per language (210); 50 preview images (98); KNOWLEDGE §24 still quoted the two old endings; 02-game-design still had 38–43 px items on 320 px phones; HANDOFF still listed #2 as open (fixed as F21) | Fixed in every doc. The safety table's counts are now a generated summary at the top of docs/01 (`npm run docs`), and a normal build warns when that file is out of date with the content. For test counts, the number the run prints is the reference. |
+| F33 | The smoke test read the real calendar: it expected the FloodWatch link and read `config.featuredTopic`, so it would have failed by itself (and waited 30 s for a missing card) once the topic was switched off or the season moved on | It plays on a pinned Bangkok day (`SMOKE_DATE`, default `2026-10-18`) and takes its expectations from `recommend()`. 79/79 on the default day, on `2026-12-05` and on `2027-04-10`. See [#53](#53-the-smoke-test-runs-on-a-pinned-date). |
+| F32 | `rainWarningActive` and `featuredTopic`, switched on by hand in mid-October, had no end. Forgotten, they would have kept "ฝนจะมาอีกระลอก", Prepare as the big card and the diseases-after-floods topic on the start screen into December's dust season | `rainWarningUntil` (`2026-11-30`) and `featuredTopicUntil` (`2026-11-15`) end them by themselves (`switchOn()` in `modes.js`). The build stops on a date that isn't real, warns about a switch with no end date or a past one, and prints today's `start` line. A unit test covers the last day and the day after. See [#44](#44-the-featured-topic-is-switched-by-hand). |
 
 ### In v1.5.2 (15 Oct 2026): the visitor funnel
 

@@ -17,8 +17,8 @@ What the research says about Thai audiences:
 | Phase | When | Game setting | Focus |
 |---|---|---|---|
 | 0. Soft launch | Day −1 → 0 | `rainWarningActive: true` | Real-phone QA ([06-test-checklist.md](06-test-checklist.md)). Check the domain and images (done 6 Oct 2026), check previews in LINE and Facebook. Send to 20–30 friends and fix the copy. |
-| 1. Prepare first | Now → the next rain wave | `rainWarningActive: true` (Prepare is the default) | Posts lead with ก่อนน้ำมา. Push the *เตรียมบ้านก่อนน้ำมา 10 ข้อ* image. Run a daily "บ้านวันนี้" challenge. |
-| 2. Return as water recedes | When ปภ. reports water receding in most affected provinces, or your forecast shows 3+ dry days | Set `rainWarningActive: false` (Return is the default). Both modes stay available. | Lead with หลังน้ำลด. Push *ก่อนกลับเข้าบ้าน 10 ข้อ*. Target shelters, evacuees and volunteers cleaning houses. |
+| 1. Prepare first | Now → the next rain wave | `rainWarningActive: true` with `rainWarningUntil` set to the last day of the warning (Prepare is the default) | Posts lead with ก่อนน้ำมา. Push the *เตรียมบ้านก่อนน้ำมา 10 ข้อ* image. Run a daily "บ้านวันนี้" challenge. |
+| 2. Return as water recedes | When ปภ. reports water receding in most affected provinces, or your forecast shows 3+ dry days | Set `rainWarningActive: false`, or let `rainWarningUntil` end it (Return is the default in the flood months). Both modes stay available. | Lead with หลังน้ำลด. Push *ก่อนกลับเข้าบ้าน 10 ข้อ*. Target shelters, evacuees and volunteers cleaning houses. |
 | 3. Sustain | 2–6 weeks | Daily house | A weekly "บ้านแห่งสัปดาห์" challenge. Share what players learned, e.g. "73% เลือกเรียกช่างไฟ" from the [metrics](05-metrics.md). Thank volunteers. |
 
 You don't have to pick one region: the "แนะนำช่วงนี้" badge only changes which button comes first. Areas still under water can tap หลังน้ำลด at any time.
@@ -102,7 +102,7 @@ Notes for English posts:
 
 - Say plainly that the advice and the hotlines (1784, 1669, 1555, 1130, 1129) are Thai. Tell people elsewhere to follow their local authorities.
 - Good channels: expat and migrant-worker groups in Thailand, Thailand-focused travel and Facebook groups, X and LinkedIn for disaster-risk and education people, and the Autobahn Bot / BKK FloodWatch audience (see [ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
-- Share `/en/` links (not `/`) so the preview and the page are English from the first tap.
+- Share `/en/` links (not `/`) so the preview and the page are English from the first tap. For one hazard, link `/en/flood`, `/en/pm25` or `/en/fire`.
 - Have a native English reader check any new English copy first ([KNOWN_ISSUES #11](KNOWN_ISSUES.md#11-thai-and-english-copy-need-a-second-native-reader)).
 
 ### When diseases after floods are in the news (v1.4.0)
@@ -112,12 +112,18 @@ Notes for English posts:
 > 👉 https://baanrodmai.autobahn.bot/learn#t-health
 > #บ้านรอดไหม #น้ำท่วม
 
-- Link `/learn#t-health` when people want the answers now; link `/` when the aim is to play and share.
-- Keep `config.featuredTopic` on `"health"` only while the news lasts.
+- Link `/learn#t-health` when people want the answers now; link `/` (or `/?mode=return`, which opens on หลังน้ำลด) when the aim is to play and share.
+- Keep `config.featuredTopic` on `"health"` only while the news lasts. It ends by itself after `featuredTopicUntil` (now 15 Nov 2026); move the date if the news lasts longer, or set `null` sooner.
 
 ### When the dust season starts (v1.5.0, from December)
 
-Set nothing: from December the start screen recommends ฝุ่น PM2.5 by itself (unless `rainWarningActive` is on). Optionally set `featuredTopic: "air"`. Share `/checklist/dust` and a `/c/d…` challenge.
+Nothing needs switching off. The switches end by themselves: the rain warning after `rainWarningUntil` (now 30 Nov 2026) and the news topic after `featuredTopicUntil` (now 15 Nov 2026), so from 1 December the start screen recommends ฝุ่น PM2.5 and features 😷 by itself. Whenever you turn a switch on, give it an end date (the build warns if you don't). To feature the dust topic during a bad week, set `featuredTopic: "air"` with `featuredTopicUntil`.
+
+Links for dust posts:
+
+- **To read,** link `/pm25` (`/en/pm25` in English). It has its own preview (title, description and the dust checklist image), all 12 dust lessons and a ▶ play button.
+- **To play,** link `/?mode=dust`: the game opens with dust as the big card. Its preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)), so put it after the `/pm25` link, or use it where the post already carries a picture.
+- Also share `/checklist/dust` and a `/c/d…` challenge.
 
 > ฝุ่นมาอีกแล้ว 😷 บ้านเราพร้อมสู้ฝุ่นหรือยัง?
 >
@@ -128,10 +134,13 @@ Set nothing: from December the start screen recommends ฝุ่น PM2.5 by its
 > อ้างอิงคำแนะนำจากกรมอนามัย
 >
 > เช็กค่าฝุ่นวันนี้ในแอป Air4Thai แล้วส่งต่อให้คนที่บ้านนะ 💙
+>
+> อ่านครบทุกข้อ 👉 https://baanrodmai.autobahn.bot/pm25
+> ลองเล่นโหมดฝุ่น 👉 https://baanrodmai.autobahn.bot/?mode=dust
 
 ### Fire season (v1.5.0, April, or after a fire in the news)
 
-From April the start screen recommends ไฟไหม้ by itself. After a fire in the news, set `featuredTopic: "fire"` for a week or two. Keep posts about prevention and escape; never use photos of a real fire or its victims.
+From April the start screen recommends ไฟไหม้ by itself. After a fire in the news, set `featuredTopic: "fire"` with `featuredTopicUntil` a week or two ahead. Keep posts about prevention and escape; never use photos of a real fire or its victims. Link `/fire` (`/en/fire`) to read, with its own preview, and `/?mode=fire` to play, as for dust.
 
 > ไฟไหม้เริ่มจากเรื่องเล็กๆ ในบ้าน 🔥
 >
@@ -142,12 +151,15 @@ From April the start screen recommends ไฟไหม้ by itself. After a fir
 > อ้างอิงคำแนะนำจาก ปภ. และ กฟน.
 >
 > เก็บเช็กลิสต์ "บ้านปลอดภัยจากไฟ 10 ข้อ" ไว้ แล้วส่งต่อให้คนที่บ้านนะ 💙
+>
+> อ่านครบทุกข้อ 👉 https://baanrodmai.autobahn.bot/fire
+> ลองเล่นโหมดไฟไหม้ 👉 https://baanrodmai.autobahn.bot/?mode=fire
 
 ## 3. Outreach (who to send it to, and the ask)
 
 Give every partner the same **ready-to-forward kit**:
 
-- the two checklist images
+- the checklist images for the hazard (flood: Prepare and Return; dust; fire)
 - a result card
 - the two-line message above
 - the link
@@ -186,7 +198,7 @@ The game is evergreen: content is in JSON, dates are generic and the daily house
 | **April–May (pre-monsoon)** | **Content refresh:** re-check every source and hotline, then update `sources.json` dates and the help-list note. Bump `config.houseVersion` so daily houses reshuffle. Re-render images (`npm run images`). |
 | **May (season opener)** | **"เช็กบ้านก่อนหน้าฝน"**: Prepare default. Release one new room (ห้องน้ำ → ห้องนอน → โรงรถ) as the news hook. The content for these rooms is already in `items.json`. |
 | **August–October (central and north peak)** | Prepare default during warnings; Return as water recedes (same switch as this year). |
-| **November–December (southern monsoon)** | A push to southern pages and provinces. PEA 1129 covers the south, so put it first in posts. |
+| **November–December (southern monsoon)** | A push to southern pages and provinces. PEA 1129 covers the south, so put it first in posts. Link `/?mode=prepare` (or `/flood`): the rain switch ends on 30 Nov and the season calendar has no southern floods, so from December the plain `/` recommends dust ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). |
 | **Off-season** | The checklist pages stay up and are useful year-round. Share the yearly "what Thais learned" stats. |
 
 When your forecast app is ready, set `forecastStatusUrl` and the recommended mode will follow live rain warnings with no manual switching.
@@ -194,9 +206,11 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 ## 6. Launch-day checklist
 
 - [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
-- [ ] Sitemap submitted in Google Search Console and Bing Webmaster Tools; `/learn` JSON-LD passes the Rich Results Test
+- [ ] Sitemap (10 addresses since v1.6.0) submitted in Google Search Console and Bing Webmaster Tools, and the six hazard pages submitted for indexing; `/learn` and `/pm25` JSON-LD pass the Rich Results Test
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
+- [ ] Hazard pages `/flood`, `/pm25` and `/fire` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE
+- [ ] Switch end dates set: the build's `start` line shows the mode and topic you expect today, with no warning about a missing or past end date
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on
 - [ ] Real-phone pass of [06-test-checklist.md](06-test-checklist.md) in LINE, Facebook and TikTok in-app browsers
 - [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md)

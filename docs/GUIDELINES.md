@@ -29,7 +29,7 @@ These come from the original brief. A change that breaks one of them is not fini
    - Nothing flashes, and `prefers-reduced-motion` is respected.
    - Every control is reachable by keyboard and readable by a screen reader.
 5. **Fast:**
-   - The start screen stays **under 500 KB** compressed. It is 183 KB today (197 KB with the first game screen).
+   - The start screen stays **under 500 KB** compressed. It is 188 KB today (201 KB with the first game screen).
    - No frameworks and no runtime npm packages.
 6. **Works where people share it.** It must work in the LINE, Facebook and TikTok in-app browsers on Android and iOS, in iOS Safari and in Android Chrome. Every feature that a platform may lack has a fallback (see [KNOWLEDGE §11](KNOWLEDGE.md#11-browser-and-in-app-facts)).
 7. **The disclaimer and help numbers are always there.**
@@ -63,7 +63,7 @@ These come from the original brief. A change that breaks one of them is not fini
 
 - **Verify every number** against its source: phone numbers, distances, days, ratios and temperatures.
 - **When sources disagree, leave the number out of the game** and record the conflict under *Flags* in 01-safety-content.md. Current exclusions: sandbag fill, bleach dilution, boiling time, mattress disposal.
-- Re-check every **hotline** before each season. Wrong numbers that were deliberately left out: 192 (use 1784) and 199 (cited only by news).
+- Re-check every **hotline** before each season. A wrong number that was deliberately left out: 192 (use 1784). 199 (fire) was left out of the flood version because only news reports cited it; the fire mode (v1.5.0) added it, quoting DDPM through a news report.
 
 ### 2.3 Wrong answers and feedback
 
@@ -106,7 +106,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - fear-mongering
   - AI-generated or realistic disaster imagery
 - **English** mirrors the tone. It is written for visitors from outside Thailand and for helpers, not as a separate voice.
-  - Every player-facing string has a `th` and an `en` value with the same keys (130 each), and every `og` key has an `ogEn` twin. The build fails otherwise.
+  - Every player-facing string has a `th` and an `en` value with the same keys (210 each), and every `og` key has an `ogEn` twin. The build fails otherwise.
   - Say plainly that the advice and hotlines are Thai. Don't add foreign numbers or laws that no source backs.
   - Agency names appear in English in `seo.en.agencies`.
   - The wordmark is `logoA` + `logoB` in each language ("Baan " + "Rod Mai?" in English; a space at the end of `logoA` is intentional). Never hard-code the name in HTML or canvas code.
@@ -143,7 +143,7 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - No bundler, no transpiler, no framework.
   - The only npm package is the dev-only `playwright-core`, for images and smoke tests.
   - The build uses only Node built-ins.
-- **Logic stays pure.** `house.js`, `round.js`, `rng.js` and `run.js` don't touch the DOM. Tests and the build import them in Node. Keep it that way, and put DOM work in `scene.js`, `ui.js` and `main.js`.
+- **Logic stays pure.** `house.js`, `round.js`, `rng.js`, `run.js` and `modes.js` don't touch the DOM. Tests and the build import them in Node. Keep it that way, and put DOM work in `scene.js`, `ui.js` and `main.js`.
 - **Data, not code.**
   - Tunable numbers go in `config.json`.
   - Text players see goes in `strings.json`, `items.json` and `checklists.json`. A few exceptions remain; see [KNOWN_ISSUES #5](KNOWN_ISSUES.md#fixed), and don't add more.
@@ -169,23 +169,24 @@ Follow the checklist in [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every
   - SVG items use `role="button"`, `tabindex="0"` and an `aria-label`, and Enter and Space work on them.
   - Sheets trap focus and close with Esc.
   - Motion goes through CSS animations that the reduced-motion query turns off.
-- **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/c/*.html`, `public/checklist/*.html`, the SEO files `public/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` (edit `tools/build.mjs` or `strings.json → seo`), and the `<!--OG:START-->` block in `index.html`, which also holds the canonical link and JSON-LD.
+- **Generated files** are never edited by hand: `public/sw.js` (edit `tools/sw.template.js`), `public/js/version.js`, `public/c/*.html`, `public/checklist/*.html`, the English pages under `public/en/`, the SEO files `public/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt`, the hazard pages `public/<slug>.html` and `public/en/<slug>.html` (`/flood`, `/pm25`, `/fire`; edit `tools/build.mjs`, `strings.json → seo` or the content JSON), and the `<!--OG:START-->` block in `index.html`, which also holds the canonical link and JSON-LD.
 - **Search and AI search.**
-  - The lessons on `/learn` and `/llms.txt` come from the content JSON. Never hand-write lesson text elsewhere.
+  - The lessons on `/learn`, the hazard pages and `/llms.txt` come from the content JSON. Never hand-write lesson text elsewhere.
+  - A hazard page's address is its slug in `config.json → hazards`. **Never change a slug once published:** shared links and search results point at it. Hazard pages have their own canonical link and are in the sitemap, like `/learn`.
   - Bump `strings.json → seo.updated` (YYYY-MM-DD) whenever lessons or sources change.
   - Keep every crawl page script-free, and every link or button on it at least 44 px tall.
   - Add structured data only for things that exist on the page. No `FAQPage`, `HowTo`, ratings or reviews unless the page really has them.
   - Share-preview pages (`/c/*`, `/checklist/*`) keep a canonical link to `/` and stay out of the sitemap.
   - Keep `/api/` the only path `robots.txt` closes, and leave Cloudflare's AI-bot blocking off for this host.
-- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 183 KB.
+- **Budget:** read the build's `budget` line after any change that adds files, fonts or JS. The start screen limit is 500 KB, and the aim is to stay near today's 188 KB.
 - **Style:** follow the surrounding code. Two-space indentation, single quotes, semicolons, small functions, and comments that explain *why*.
 
 ## 6. Testing
 
 | When | Run |
 |---|---|
-| Every change | `node tools/build.mjs` and `npm test` (21 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over) |
-| UI, CSS or sharing changes | `npm run smoke` (61 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline and reduced motion). Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
+| Every change | `node tools/build.mjs` and `npm test` (23 rule tests: a year of daily houses in every mode, flooding, scoring, bonus, challenge links, midnight reset, version 2 carry-over, the switches' end dates and what the start screen recommends) |
+| UI, CSS or sharing changes | `npm run smoke` (79 checks in headless Chromium with Android, iPhone, LINE and Facebook user agents, including offline, reduced motion, `?mode=` links and the hazard pages). It plays on a pinned Bangkok day, 18 Oct 2026 by default; add `SMOKE_DATE=YYYY-MM-DD` before the command to play another season. Add `-- --screens docs/screens` to refresh the screenshots, **and look at them**. |
 | Before a release | The relevant rows of the real-phone matrix in [06-test-checklist.md](06-test-checklist.md) |
 | Copy, rank or domain changes | `SITE_URL=… npm run images`, then look at `public/og/` and `public/share/` |
 | Changes to the build's SEO output, `seo` strings or `_headers` | The live-site checks in [06-test-checklist.md](06-test-checklist.md#live-site-checks-search-and-ai-search), after the deploy |
@@ -275,7 +276,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 39. **Every lesson has a topic.** Pick one of `config.topics`; add a topic only with its `topic_<id>` string in both languages. The build checks both.
 40. **Never lock health advice behind play.** Collecting is for fun; anyone who needs the answer now gets it on `/learn`, and the book and the featured card link there.
 41. **A myth needs evidence, not an opinion.** When busting a popular belief (EM balls), cite the strongest source you can read in full, flag it ⚠️ when it isn't an agency, and blame nobody who still uses it.
-42. **A featured topic is temporary.** Switch `config.featuredTopic` on when a topic is in the news and back to `null` after.
+42. **A featured topic is temporary.** Switch `config.featuredTopic` on when a topic is in the news, with `featuredTopicUntil` set to its last day, so it ends by itself (rule 51). End it early with `null` if the news fades sooner.
 43. **Measure what visitors get.** The size check counts compressed bytes; the raw size passed 500 KB in v1.4.0 while visitors download 174 KB.
 44. **Short link text still needs a 44 px target.** "ปภ." is 23 px wide; source links get `min-width: 44px` as well as 44 px of height.
 45. **Teach the order when the numbers moved.** Thailand changed its PM2.5 colour ranges in 2023 and older articles still quote the old ones, so the dust mode teaches blue → green → yellow → orange → red and "red means stay in", not the µg/m³ ranges.
@@ -283,7 +284,9 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 47. **Smoke, not victims.** Fire lessons show smoke, cords, pans and doors. No flames on people, no injuries, no burnt rooms.
 48. **A release must never run on last release's code.** The service worker serves `/js/`, `/css/`, `/content/` and `/art/` network-first, and `main.js` reloads once if `js/version.js` and `config.json` disagree. Test a deploy over an installed older version before changing the caching.
 49. **The next step is on the first screen.** Start, accept a challenge, start the round, next, share, and the share channels must be visible without scrolling at 320 × 460 and 360 × 640 (Android in LINE). Measure where the button is, not only that it exists; the smoke test checks the share button, LINE and the challenge accept button.
-50. **The ending answers "บ้านรอดไหม?".** Every mode has `cheerPerfect`, `cheerHigh`, `cheerMid` and `cheerLow` lines with its own suffix that say how the house came through. Low scores stay kind and point to the next try; never "the house was lost".
+50. **The ending answers "บ้านรอดไหม?".** Every mode has `cheerPerfect`, `cheerHigh`, `cheerMid` and `cheerLow` lines with its own suffix that say how the house came through. Low scores stay kind and point to the next try; never "the house was lost". Since v1.6.0 the ending is also printed on the shared card, so it must make sense without the screen: never "below" or "ด้านล่าง" (a unit test checks this).
+51. **A hand-set switch has an end date.** `rainWarningActive` and `featuredTopic` were switched on in mid-October with no end, and would have kept the flood warning and the diseases topic on the start screen into December's dust season. Every switch someone turns on by hand gets the last day it should show (`rainWarningUntil`, `featuredTopicUntil`: a Bangkok date, that day included). The build stops on a date that isn't real, and warns about a switch with no end date or a past one. A new hand-set switch gets an end date and the same checks.
+52. **Tests never read the calendar.** The smoke test once expected FloodWatch and read `config.featuredTopic`, so it would have failed by itself when the season changed. Pin the date the test runs on (`SMOKE_DATE`, by shifting `Date` only, not the timers the rounds use), and take the expected result from the same pure function the game uses (`recommend()`), not from a copy of its rules. Unit tests pass the day in (`dayKey`) and check the date rules against a fixed config, not against `config.json`'s live dates.
 
 ## 9. Working with AI assistants
 
@@ -302,8 +305,9 @@ The registry (`config.json → modes`, defaults in `public/js/modes.js`) makes a
 2. **Registry entry** in `config.json → modes`: `id` (a–z), a new one-letter `code` (never reuse one; `h` is kept for heat), `hazard`, `threat` (`water`, `smoke`, `haze` or `null`), `prop` (in `mascot.js`), `emoji`, optional `icon`, `months` (Bangkok months it is in season), `topic`, optional `link` (https). Mirror it in `modes.js` `DEFAULTS`.
 3. **Round settings:** `round.<id>.seconds` and the threat's keyframes (`water` + `floorWetY`, `smoke` + `lowY`, or `haze`). Check the timings with `npm run probe`.
 4. **Strings** in `th` and `en`: `mode`, `mode<Mode>Desc`, `hero`, `challenge`, `howto`, `howtoTitle`, `geckoStart`, `result`, `shareText`, `checklistTab`, `rank` (3), and the endings `cheerPerfect`, `cheerHigh`, `cheerMid`, `cheerLow` (a unit test checks them), each as `<base><Mode>`. Optional overrides that fall back to the shared key: `floodedToast`, `geckoFlood`, `geckoWet`, `stFlooded`, `forecastShort`, `forecastLong`, `forecastIcon`. Plus `og`/`ogEn` `challengeTitle`, `challengeDesc`, `challengeLine`, `checklistTitle`, and `seo.th/en.section<Mode>`.
-5. **Content:** 10–13 items across the three drawn rooms (at least one per room), 5 decoys, a 10-item checklist with sprites, a `topic_<id>` string pair and the topic in `config.topics`.
-6. **Start button:** add a static `data-mode` button to `index.html` (the JS rebuilds the grid from the registry; the static one avoids a jump on first paint). Card colours in `app.css` (`.mode-btn.mode-<id>`, `.is-<id>` layers).
-7. **Card theme** in `cards.js → THEMES`, then `SITE_URL=… npm run images` and commit only the new images.
-8. **Check:** build, `npm test`, `npm run probe`, `npm run smoke`, a visitor pass at 320 px and on a tablet in both languages, and compare flood houses before and after (they must not change).
+5. **A new hazard needs a page.** If the mode brings a new `hazard` (not a second flood mode), add `config.json → hazards.<hazard>.slug`: lowercase letters, digits or "-", unique, and not a site path (`c`, `checklist`, `en`, `learn`, `api`, `js` and the other reserved names in `tools/build.mjs`) or an existing file in `public/`. Pick it with care, because it can never change once published. Add the `seo` strings `hazard<H>Nav`, `hazard<H>Title`, `hazard<H>Desc`, `hazard<H>H1` and `hazard<H>Intro` in `th` and `en` (`<H>` is the hazard id with a capital, for example `hazardHeatH1`). The build then writes `/<slug>` and `/en/<slug>` and adds them to the sitemap, `llms.txt` and the "By hazard" row; it stops if the slug or a string is missing. Keep the page text free of advice, numbers and agency names; the lessons carry those.
+6. **Content:** 10–13 items across the three drawn rooms (at least one per room), 5 decoys, a 10-item checklist with sprites, a `topic_<id>` string pair and the topic in `config.topics`.
+7. **Start button:** add a static `data-mode` button to `index.html` (the JS rebuilds the grid from the registry; the static one avoids a jump on first paint). Card colours in `app.css` (`.mode-btn.mode-<id>`, `.is-<id>` layers).
+8. **Card theme** in `cards.js → THEMES`, then `SITE_URL=… npm run images` and commit only the new images.
+9. **Check:** build, `npm test`, `npm run probe`, `npm run smoke`, a visitor pass at 320 px and on a tablet in both languages (including `/?mode=<id>` and the new hazard page), and compare flood houses before and after (they must not change). If the mode has `months`, also run the smoke test with `SMOKE_DATE` set to a day in its season.
 

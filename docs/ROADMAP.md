@@ -33,7 +33,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo |
 | L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
-| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo |
+| L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (now with the six hazard pages) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
 | L10 | [Thai review of the dust and fire lessons](#l10-thai-review-of-the-dust-and-fire-lessons) | Owner + AI | Todo |
 | N1 | [Fix overlapping tap areas](#n1-fix-overlapping-tap-areas) | AI-ready | Done: 0% overlap via slot exclusion |
@@ -47,6 +47,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N9 | [Organise the knowledge by topic, add the news-driven lessons](#n9-organise-the-knowledge-by-topic-add-the-news-driven-lessons) | AI-ready | Done (15 Oct 2026, v1.4.0) |
 | N10 | [A game for the whole year: PM2.5 dust and house fire](#n10-a-game-for-the-whole-year-pm25-dust-and-house-fire) | AI-ready | Done (15 Oct 2026, v1.5.0) |
 | N11 | [The visitor funnel: next step always on the first screen](#n11-the-visitor-funnel-next-step-always-on-the-first-screen) | AI-ready | Done (15 Oct 2026, v1.5.2) |
+| N12 | [A start screen that keeps itself current, mode links and hazard pages](#n12-a-start-screen-that-keeps-itself-current-mode-links-and-hazard-pages) | AI-ready | Done (18 Oct 2026, v1.6.0) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -132,19 +133,19 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** Owner + AI · **Status:** Todo · **Issues:** #30, #32
 - **Steps:**
-  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`.
-  2. Run `/` and `/learn` through Google's Rich Results Test and fix anything it reports in the JSON-LD (`tools/build.mjs`).
-  3. Paste a challenge link and `/learn` into the Facebook Sharing Debugger and a LINE chat.
-  4. After about two weeks, search the game's Thai name and "เตรียมบ้านก่อนน้ำท่วม" in Google and Bing, and ask two AI assistants about it. Record what appears.
+  1. The owner adds the site in Google Search Console and Bing Webmaster Tools and submits `https://baanrodmai.autobahn.bot/sitemap.xml`. Since v1.6.0 it lists 10 addresses: `/`, `/learn`, `/flood`, `/pm25` and `/fire`, each with its `/en/` twin. If the sitemap was submitted before 18 Oct 2026, submit it again, and ask for the six new pages to be indexed (URL Inspection → Request indexing in Google; URL Submission in Bing).
+  2. Run `/`, `/learn` and one hazard page (`/pm25`) through Google's Rich Results Test and fix anything it reports in the JSON-LD (`tools/build.mjs`).
+  3. Paste a challenge link, `/learn`, `/pm25` and `/fire` into the Facebook Sharing Debugger and a LINE chat. The hazard pages should show their own title and the checklist image.
+  4. After about two weeks, search the game's Thai name, "เตรียมบ้านก่อนน้ำท่วม" and "ป้องกันฝุ่น PM2.5 ในบ้าน" in Google and Bing, and ask two AI assistants about it. Record what appears, and whether the hazard pages or `/learn` come up.
   5. Record the result in [KNOWN_ISSUES #32](KNOWN_ISSUES.md#32-search-and-ai-search-results-cant-be-guaranteed), and adjust the `/learn` headings and `seo` copy if the Thai queries find nothing.
   6. Repeat steps 2 and 3 for `/en/`, `/en/learn` and an English challenge link (`/en/c/p7`), and check that the `hreflang` pairs show no errors in Search Console. Search in English for "flood safety game Thailand".
 - **Done when:** both consoles accept the sitemap, the Rich Results Test shows no errors, and the findings are written down.
 
 ### L9. Link FloodWatch and the game to each other
 
-- **Who:** Owner + AI · **Status:** Half done (12 Oct 2026). Game → FloodWatch is live: `forecastAppUrl` is `https://flood.autobahn.bot/`. **Left:** FloodWatch → game. · **Issues:** #6 (fixed), #13
+- **Who:** Owner + AI · **Status:** Half done (12 Oct 2026). Game → FloodWatch is live: `forecastAppUrl` is `https://flood.autobahn.bot/`, and since v1.6.0 the `/flood` page links it too. **Left:** FloodWatch → game. · **Issues:** #6 (fixed), #13
 - **Steps:**
-  1. The owner adds a link from https://flood.autobahn.bot/ to https://baanrodmai.autobahn.bot/ (Thai) and `/en/` (English). The two sites share the parent domain, which helps both.
+  1. The owner adds a link from https://flood.autobahn.bot/ to the game. Since v1.6.0 the best targets are `https://baanrodmai.autobahn.bot/?mode=prepare` (opens the game on flood preparation, whatever the date) for a "play" link, and `https://baanrodmai.autobahn.bot/flood` (the flood lessons, with play buttons) for a "learn" link; `/en/?mode=prepare` and `/en/flood` for English. The two sites share the parent domain, which helps both.
   2. Optional: FloodWatch offers `{"rainWarning": true|false}` with CORS, and the owner sets `forecastStatusUrl` so the game can show a rain banner.
   3. After two weeks, check whether Web Analytics shows referrals from `flood.autobahn.bot`.
 - **Done when:** both sites link to each other and the referrals show in Web Analytics.
@@ -284,6 +285,23 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Done when:** every step's button is on the first screen at 320 × 460 to 1024 × 768, three smoke checks guard it, 61 smoke checks pass. All true on 15 Oct 2026.
 - **Second loop (v1.5.3):** the ending answers "บ้านรอดไหม?" per mode and score; axe, language switch, clipping and bubble checks clean.
 
+### N12. A start screen that keeps itself current, mode links and hazard pages
+
+- **Who:** AI-ready · **Status:** Done (18 Oct 2026, v1.6.0)
+- **Why:** the rain warning and the health topic were switched on by hand in mid-October with no end, so in December the start screen would still have said "ฝนจะมาอีกระลอก" and featured diseases after floods. Posts for dust or fire had no link that opened the right mode, and search had no page per hazard. The smoke test read the real calendar, so it would have failed by itself once the season changed.
+- **What was built:**
+  - end dates for the two switches (`rainWarningUntil`, `featuredTopicUntil`), with build errors, warnings and a `start` line
+  - `recommend()` in `modes.js`, one pure function for the mode, topic and reason the start screen shows
+  - `?mode=` links (`/?mode=dust`) for posts and campaigns
+  - hazard pages `/flood`, `/pm25`, `/fire` and their `/en/` twins, with play buttons, the hazard's lessons, checklists and helplines, and their own search signals
+  - the ending on the shared card, in a speech bubble
+  - a smoke test that plays on a pinned date (`SMOKE_DATE`), and a generated summary at the top of docs/01
+
+  See [CHANGELOG 1.6.0](../CHANGELOG.md) and [KNOWLEDGE §25](KNOWLEDGE.md#25-a-start-screen-that-keeps-itself-current-v160).
+- **Rule kept:** no change to items, rooms, slots or `houseVersion`, so houses and old challenge links stay the same.
+- **Done when:** build (no warnings), 23 unit tests and 79 smoke checks pass; the smoke test also passes with `SMOKE_DATE=2026-12-05` and `SMOKE_DATE=2027-04-10`; the `/learn` output is byte-identical before the new template gained anything; the six hazard pages and `/learn` have no control under 44 px at 320 × 460. All true on 18 Oct 2026.
+- **Left for the owner:** submit the sitemap again and the six new pages in Search Console and Bing ([L8](#l8-search-consoles-and-ai-search-check)); point FloodWatch at `/?mode=prepare` or `/flood` ([L9](#l9-link-floodwatch-and-the-game-to-each-other)); have the hazard pages' text read in the language check ([L5](#l5-second-native-reader-for-the-thai-copy)).
+
 ## Later
 
 ### P1. Bathroom, bedroom and garage
@@ -359,7 +377,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Why:** year-round engagement works best with fixed dates people expect (the Great ShakeOut drill, Ready.gov's monthly themes). A Thai calendar could be: dust week (December), fire week (April), flood week (May, before the rains), tsunami day (26 December).
 - **Steps:**
   1. The owner picks the weeks and who to partner with (schools, district offices).
-  2. An assistant adds `config.weeks` (start, end, mode, featured topic), so the start screen and the featured card switch by themselves; the season default stays as the fallback.
+  2. An assistant adds `config.weeks` (start, end, mode, featured topic), so the start screen and the featured card switch by themselves; the season default stays as the fallback. Since v1.6.0 the switches have end dates and the choice is one pure function, `recommend()` in `modes.js`, so a week would be one more rule there, tested on a fixed date like the others.
   3. A launch-kit post per week in [04-launch-kit.md](04-launch-kit.md).
 - **Done when:** each week switches the start screen without a code change, and the posts are written.
 
@@ -383,8 +401,9 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   2. Update the dates, including the About date.
   3. Bump `config.houseVersion`.
   4. Re-render the images.
-  5. Run all the tests and the real-phone matrix.
+  5. Run all the tests and the real-phone matrix. Run the smoke test once with `SMOKE_DATE` set to a day in the coming season as well.
   6. Post the relaunch, following [04-launch-kit.md §5](04-launch-kit.md#5-relaunch-every-rainy-season).
+- **Each season (and each news wave), set the switches with end dates:** `rainWarningActive: true` with `rainWarningUntil` before a rain wave, and `featuredTopic` with `featuredTopicUntil` while a topic is in the news. Pick the last day the switch should show (a Bangkok date, included); it turns itself off after that. Check the build's `start` line, which shows what visitors see today, and its warnings ([KNOWN_ISSUES #44](KNOWN_ISSUES.md#44-the-featured-topic-is-switched-by-hand)).
 
 ### H1. Housekeeping
 

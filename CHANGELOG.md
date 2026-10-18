@@ -4,9 +4,61 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.6.0] — 2026-10-18
+
+The start screen keeps itself current, a post can link straight to a mode, and each hazard has its own page for search. Houses, items, rooms, slots and scores are unchanged, so today's houses and old challenge links stay the same and no midnight release is needed.
+
+### Added
+
+- **Switches that end by themselves.** `config.json` gained `rainWarningUntil` (now `2026-11-30`) and `featuredTopicUntil` (now `2026-11-15`). They are Bangkok dates and include that day; after it, the switch is off by itself. The rain warning and the health topic were switched on by hand in mid-October with no end, so in December's dust season the start screen would still have said "ฝนจะมาอีกระลอก" and featured diseases after floods.
+  - The build stops on an end date that isn't a real `YYYY-MM-DD` date. It warns when a switch is on with no end date, or when its end date has passed.
+  - A new build line shows what the start screen recommends today: `start     2026-10-18: prepare (warning until 2026-11-30) · featured health until 2026-11-15`.
+  - The Thai `_readme` in `config.json` explains the end dates.
+- **`?mode=` links.** `/?mode=dust` (or `prepare`, `return`, `fire`) opens the start screen with that mode as the big recommended card and its topic featured, for posts and campaigns.
+  - Only mode ids from the registry count, in any letter case; anything else is ignored (`/?mode=heat` does nothing).
+  - A friend's challenge link wins over it, and it never starts a round by itself.
+  - Visitors from abroad go to `/en/?mode=dust`; the redirect keeps the link.
+- **A page per hazard:** `/flood`, `/pm25` and `/fire`, plus `/en/flood`, `/en/pm25` and `/en/fire`, generated from the content like `/learn`.
+  - Each page: the top links, the heading, a ▶ play button to `/?mode=<id>` on the first screen (two on `/flood`, one per flood mode), the intro (the English pages add that the advice and helplines are Thai), the "check before you go" link (FloodWatch for floods, Air4Thai for dust, none for fire), only that hazard's lessons (43, 12 and 13), its checklists, the helplines, the play buttons again, a "อ่านตามภัย / By hazard" row of links, and the disclaimer.
+  - For search: its own canonical link, `hreflang` pairs (th, en, x-default), `og:url`, and `Article` JSON-LD that cites its lessons' sources. The preview reuses the checklist image (`/og/checklist-<mode>.png`, or `/og/en/…`), so there are no new images.
+  - `/learn` and `/en/learn` gained the same "By hazard" row (44 px links). `sitemap.xml` grew from 4 to 10 addresses, and `llms.txt` lists the pages.
+  - The address of each page comes from `config.json → hazards` (`flood → flood`, `dust → pm25`, `fire → fire`). The build stops on a slug that isn't lowercase letters, digits or "-", is used twice, or clashes with a site path, and on a hazard without a slug or a missing `seo` string. Slugs never change once published.
+  - New `seo` strings in both languages: `byHazard`, `allLessons`, `playMode` and `hazard<Flood|Dust|Fire><Nav|Title|Desc|H1|Intro>`. The page text is a draft for the language check ([ROADMAP L5](docs/ROADMAP.md#l5-second-native-reader-for-the-thai-copy)); it adds no advice or numbers, and the descriptions name no agencies, so they can't drift from the lessons.
+- **The ending on the shared card.** In v1.5.3 the line that answers "บ้านรอดไหม?" was on the result screen only. The card now carries the same line in a speech bubble left of the gecko, so a forwarded picture answers the question too.
+  - The text is 38 px and shrinks to 28 px to fit at most 4 lines, preferring a size that leaves no lone short word on the last line.
+  - Emoji are left out on the card, because canvas fonts can draw them as empty boxes.
+  - The card's `alt` text ends with the same line.
+  - The sample cards `public/share/sample-result-prepare.png` and `-return.png` were re-rendered; no other image changed.
+- **The safety table's counts can't drift.** `npm run docs` also writes a summary at the top of [docs/01](docs/01-safety-content.md) (68 items in 4 modes and 8 topics, 66 playable, 57 ✅ and 11 ⚠️, 67 sources), and a normal build warns when that file is out of date with the content.
+
+### Changed
+
+- **Two endings pointed at the screen.** "…ด้านล่าง" / "below" was fine on the result screen but wrong on a forwarded card:
+  - `cheerLowReturn`: "บ้านยังไม่พร้อม ตรวจให้ครบอีกรอบ ก่อนกลับเข้าบ้านนะ" / "Not ready yet. Check it all again before moving back in"
+  - `cheerMidFire`: "ยังมีจุดเสี่ยงไฟอยู่ ลองหาให้ครบอีกรอบนะ" / "Some fire risks remain. Find them all next round"
+- **The smoke test plays on a fixed Bangkok day:** `SMOKE_DATE`, `2026-10-18` by default. An init script shifts only `Date`, and time keeps running. Playwright's clock API isn't used, because it also fakes the timers and `requestAnimationFrame` that the rounds run on. What the start screen should show comes from the game's own `recommend()`, so the test never reads the real calendar.
+- **Code:** `modes.js` gained the pure functions `switchOn()`, `modeLink()` and `recommend()` (which returns `{ mode, topic, why }`). In `main.js`, `pickDefaultMode` became `pickStart()`, kept in `state.start`. The forecast app's live answer (`forecastStatusUrl`) still beats the manual switch, both ways.
+- **One template for the plain pages.** The `/learn` template became `seoPage()` in `tools/build.mjs`. Its output was checked byte for byte against the old one (`git diff --quiet`) before anything was added.
+- **Analytics, with no new event names:** `view` gets the label `link`, with the mode, and `mode_select` is labelled `link`, `default` or `other`.
+- **CI** checks that every generated `public/*.html` page (the hazard pages too), `sw.js` and `js/version.js` are committed and current, and fails when a generated file under `public/` is not committed.
+- `robots.txt` and the `package.json` description say "home-safety game" (floods, PM2.5 dust and house fire). `strings.json → seo.updated` is `2026-10-18`.
+
+### Fixed
+
+- The helpline `tel:` links on `/learn` were 28–38 px wide; they now have `min-width: 44px`, and the top links are 44 px tall.
+- The play button on `/learn` was white on orange (3.0:1, below WCAG AA). The plain pages now use the game's yellow button with dark text, and the current-hazard chip has dark text; axe-core finds nothing on `/learn` and the hazard pages.
+- Stale counts in the docs (the safety table's item count, the test matrix size, the playable lessons and topics, the precache list, the string keys, issue #2 still listed as open). [KNOWN_ISSUES F32–F37](docs/KNOWN_ISSUES.md#in-v160-18-oct-2026) lists everything fixed in this release.
+
 ### Checked
 
 - Frame times with the CPU slowed 6× (360 × 640, 2× pixels): 40–46 fps in all four modes; the haze and smoke cost no more than the flood modes. Unthrottled, 60 fps. KNOWN_ISSUES #48 updated with the table.
+- The smoke test also passes as another season: `SMOKE_DATE=2026-12-05` (dust, Air4Thai, the air topic) and `SMOKE_DATE=2027-04-10` (fire, no check link, the fire topic), 79/79 each.
+- Build: start screen 188 KB compressed, first game screen 201 KB (limit 500 KB), 41 files precached, 97 link-preview pages.
+
+### Tests
+
+- 23 rule tests (+2: a switch ends on its end date and not before; what the start screen recommends on five days of the year, with the forecast app's answer and with `?mode=` links, and each mode's "check before you go" link). The endings test also forbids "ด้านล่าง" and "below".
+- 79 smoke checks (+18): dust recommended on 5 Dec 2026 with the air topic and Air4Thai; `/?mode=fire` (the fire card and topic, no round, a `view · fire · link` event); `/?mode=heat` ignored; a challenge beats `?mode=`; `/en/?mode=dust`, and a visitor from London keeps the link; each of the six hazard pages (heading, canonical, `hreflang`, play links, lesson count, JSON-LD, preview image); `/learn`, the sitemap and `llms.txt` link every hazard page; every control on the hazard pages and `/learn` is 44 px or more at 320 × 460, with the play button on the first screen; `/pm25` → play → the dust card with no round started; the ending on the result screen and in the card's `alt` text.
 
 ## [1.5.3] — 2026-10-15
 

@@ -32,6 +32,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 22. [A game for the whole year (v1.5.0)](#22-a-game-for-the-whole-year-v150)
 23. [The visitor funnel, measured (v1.5.2)](#23-the-visitor-funnel-measured-v152)
 24. [The story: the ending answers the title (v1.5.3)](#24-the-story-the-ending-answers-the-title-v153)
+25. [A start screen that keeps itself current (v1.6.0)](#25-a-start-screen-that-keeps-itself-current-v160)
 
 ---
 
@@ -205,8 +206,8 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 | Field | Type | Notes |
 |---|---|---|
-| `id` | string | `p-…` (Prepare) or `r-…` (Return). Unique across items and decoys. |
-| `mode` | `"prepare"` / `"return"` | |
+| `id` | string | `p-…` (Prepare), `r-…` (Return), `a-…` (dust) or `f-…` (fire). Unique across items and decoys. |
+| `mode` | a mode id | `prepare`, `return`, `dust` or `fire` (the registry, §22.3) |
 | `room` | room id | Must exist in `rooms.json` |
 | `critical` | bool | Prepare bonus item |
 | `pair` | item id | Version 2 link from a Prepare item to its Return counterpart (`p-tv → r-tv`, `p-car → r-carmud`, `p-lpg → r-gas`, `p-breaker → r-breaker`, `p-waterfood → r-foodwet`) |
@@ -233,16 +234,18 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 - **`rooms.json`:** `{id, order, enabled, art, name{th,en}, slots: [{id, x, y, tags[]}]}`. Slots must lie inside the 360×600 scene.
 - **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`.
-  - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost) or `secondary` (news quoting the agency).
-  - Totals: 57 sources, of which 30 official, 9 government, 16 secondary and 2 academic (a university statement and a peer-reviewed study, used only for `r-stagnant` and always flagged ⚠️).
+  - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost), `secondary` (news quoting the agency), `academic` or `international` ([GUIDELINES §2.1](GUIDELINES.md#21-adding-or-changing-an-item)).
+  - Totals: 67 sources, of which 30 official, 9 government, 23 secondary, 2 academic (a university statement and a peer-reviewed study, used only for `r-stagnant` and always flagged ⚠️) and 3 international (WHO Europe and the US Fire Administration, used to cross-check dust and fire).
 - **`strings.json`:**
-  - `th` and `en` UI strings (130 keys each, the same keys in both). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
+  - `th` and `en` UI strings (210 keys each, the same keys in both). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
   - `og`: Thai link-preview texts, and `ogEn`: their English twins (the build fails if a key is missing from `ogEn`). Both are used by the build and by the image renderer.
-  - `seo`: the lessons pages and `llms.txt` text (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`).
-- **`checklists.json`:** `prepare` and `return`, each `{title, items: exactly 10 × {icon, th, en, sprite?}}`.
+  - `seo`: the text of `/learn`, the hazard pages and `llms.txt` (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`). The hazard pages use `byHazard`, `allLessons`, `playMode` and `hazard<H><Nav|Title|Desc|H1|Intro>` (§25.4).
+- **`checklists.json`:** `prepare`, `return`, `dust` and `fire`, each `{title, items: exactly 10 × {icon, th, en, sprite?}}`.
 - **`helplines.json`:** `{number, main, who{th,en}, what{th,en}, source}`. Numbers have 3–5 digits. `main: true` puts the number on the cards.
 - **`config.json`:**
-  - `rainWarningActive`, `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `houseVersion`
+  - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1)
+  - `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `version`, `houseVersion`
+  - `modes` (the registry, §22.3), `topics` (§21), `hazards` (the hazard pages' slugs, §25.4)
   - `round` (section 3)
   - `analytics.endpoint`, `analytics.sampleRate`
   - `features.comboRun`
@@ -261,6 +264,8 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - each checklist has exactly 10 items, and their sprites exist
 - helpline numbers are 3–5 digits with known sources
 - source URLs are `http(s)`
+- `rainWarningUntil` and `featuredTopicUntil` are real `YYYY-MM-DD` dates (v1.6.0)
+- every hazard has a slug in `config.json → hazards` that is valid, unique and not a site path, and its `seo` strings exist in both languages (v1.6.0)
 
 **Warnings only:**
 
@@ -268,18 +273,23 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - `unverified` items
 - too few playable items
 - placeholder URLs
+- a switch that is on with no end date, or whose end date has passed (v1.6.0)
+- `docs/01-safety-content.md` out of date with the content (v1.6.0)
+- Thai text on an English page outside Thai-tagged spans
 
 **2. Site URL.** The first of these that is set: `SITE_URL` env → `config.siteUrl` (if not a placeholder) → `CF_PAGES_URL` → `https://[DOMAIN]`. On Cloudflare the `SITE_URL` variable doesn't exist (see §10), so the live value is `config.siteUrl` = `https://baanrodmai.autobahn.bot`.
 
-**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 22 challenge pages (`c/{p,r}{0..10}.html`, *without* `og:url`) and 2 checklist pages, and the English set: `en/index.html` (the app shell in English), 22 `en/c/…` pages and 2 `en/checklist/…` pages. That is 49 generated pages in all.
+**3. Link-preview pages.** It rewrites the Open Graph block between `<!--OG:START-->` and `<!--OG:END-->` in `index.html`. That block now also holds the `<link rel="canonical">` and, on `index.html`, the JSON-LD. It then writes 44 challenge pages (`c/{p,r,d,f}{0..10}.html`, *without* `og:url`) and 4 checklist pages, and the English set: `en/index.html` (the app shell in English), 44 `en/c/…` pages and 4 `en/checklist/…` pages. That is 97 generated pages in all.
 
-**3b. SEO and AI-search files.** It writes `learn.html`, `en/learn.html`, `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16, §18). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
+**3b. SEO and AI-search files.** It writes `learn.html`, `en/learn.html`, the hazard pages (`flood.html`, `pm25.html`, `fire.html` and their `en/` twins, §25.4), `robots.txt`, `sitemap.xml` and `llms.txt` from the content JSON (§16, §18). The build fails if `strings.json → seo` is incomplete or `seo.updated` isn't `YYYY-MM-DD`.
 
-**4. Service worker.** It fills `tools/sw.template.js` with the precache list (39 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
+**4. Service worker.** It fills `tools/sw.template.js` with the precache list (41 files, including `/en/`) and a version: the first 10 hex characters of the SHA-256 of those files.
 
-**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **183 KB**, or **197 KB** including the first room and the sprites (v1.5.0).
+**5. Budget.** It sums the gzipped start-screen files (fonts counted as-is) and fails above 500 KB. Currently **188 KB**, or **201 KB** including the first room and the sprites (v1.6.0).
 
-**6. `--docs`.** Regenerates the table, flags and references in `docs/01-safety-content.md` from `items.json` and `sources.json`.
+**6. `--docs`.** Regenerates the summary (between `<!-- SUMMARY:START -->` and `<!-- SUMMARY:END -->`), the table, the flags and the references in `docs/01-safety-content.md` from `items.json` and `sources.json`. Without `--docs` the build only compares the file with what it would write, and warns if it is out of date (v1.6.0).
+
+**7. The `start` line.** The build prints what the start screen recommends on today's Bangkok date, from the same `recommend()` the game uses (§25.2), for example `start     2026-10-18: prepare (warning until 2026-11-30) · featured health until 2026-11-15`.
 
 **Images** (`npm run images` → `tools/render-images.mjs` + `tools/render.html`): drawn with the game's own canvas code in headless Chromium.
 
@@ -313,7 +323,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 
 ## 8. Sharing system
 
-**Challenge URL.** `/c/{p|r}{score}?h={houseKey}`, for example `/c/p8?h=20261007` (English players use `/en/c/p8?h=20261007`; `parseChallenge()` accepts both, and the house is identical). `parseChallenge()` reads the mode, score and key, and ignores any extra query such as `fbclid`. Pages serves `/c/p8` from `c/p8.html` with a 200, and redirects `/c/p8.html` and `/c/p8/` with a 308 that keeps the query.
+**Challenge URL.** `/c/{p|r|d|f}{score}?h={houseKey}`, for example `/c/p8?h=20261007` (English players use `/en/c/p8?h=20261007`; `parseChallenge()` accepts both, and the house is identical). `parseChallenge()` reads the mode, score and key, and ignores any extra query such as `fbclid`. Pages serves `/c/p8` from `c/p8.html` with a 200, and redirects `/c/p8.html` and `/c/p8/` with a 308 that keeps the query.
 
 **Share text** (`strings.json → shareTextPrepare / shareTextReturn`):
 
@@ -351,9 +361,10 @@ Only the Facebook tokens are documented by Meta; the others were taken from real
 - **Game events:**
   - `track(name, {mode, label, value})` queues events allowed by the allowlist.
   - `flush()` sends them with `sendBeacon` (falling back to `fetch` with keepalive) when the page is hidden, on `pagehide`, or after 20 queued events.
-  - `POST /api/e` takes at most 4,096 bytes and 25 events, cleans every field to `[\w\-.:]` and writes one Analytics Engine data point per event: `indexes: [name]`, `blobs: [name, mode, label]`, `doubles: [value]`.
+  - `POST /api/e` takes at most 4,096 bytes and 25 events, cleans every field to `[\w\-.:]` and writes one Analytics Engine data point per event: `indexes: [name]`, `blobs: [name, mode, label, lang]`, `doubles: [value]`.
 - **Sampling:** `config.analytics.sampleRate` decides once per page load whether this player is counted. The SQL uses `SUM(_sample_interval)`, so totals stay correct.
-- **Language in the numbers:** only the `lang` event (label `th` / `en`) records language, when someone toggles it. Events don't say which address a visit came through. Cloudflare Web Analytics counts `/en/…` paths separately from `/…` paths, which is the simplest split of English and Thai traffic ([05-metrics.md](05-metrics.md)).
+- **Language in the numbers:** since 13 Oct 2026 every event carries the player's language (`th` or `en`, stored as `blob4`; [KNOWN_ISSUES F22](KNOWN_ISSUES.md#after-v122-13-oct-2026)). Cloudflare Web Analytics also counts `/en/…` paths separately from `/…` paths ([05-metrics.md](05-metrics.md)).
+- **How a visit arrived:** `view` is labelled `direct`, `challenge`, `checklist` or, since v1.6.0, `link` (a `?mode=` link, with the mode; §25.3).
 - **No IP, user agent, ID, cookie or location is stored.** Scores stay in `localStorage`. There is nothing to ask consent for under the PDPA. The About sheet says this in Thai and English.
 
 ## 10. Cloudflare platform facts
@@ -417,7 +428,7 @@ Seen on the live account, 6 Oct 2026 (observed, not from the docs):
 
 ## 13. Safety domain knowledge
 
-The full table of 43 items with their sources is in [01-safety-content.md](01-safety-content.md). These are the rules that shaped the game mechanics:
+The full table of 68 items with their sources is in [01-safety-content.md](01-safety-content.md); this section covers the flood items, and §22.4–22.5 the dust and fire ones. These are the rules that shaped the game mechanics:
 
 - **Electricity is the top killer in both modes.**
   - **Before the flood:** turn off the main breaker while your body and the ground are dry, wearing rubber shoes (MEA). **Never** touch switches while wet or standing in water (PEA).
@@ -444,6 +455,7 @@ The full table of 43 items with their sources is in [01-safety-content.md](01-sa
 | Number | Who |
 |---|---|
 | 1784 | ปภ. disaster hotline, 24 h |
+| 199 | Fire (added in v1.5.0, from DDPM's fire advice as reported by Krungthep Turakij) |
 | 1669 | Medical emergency (สพฉ.) |
 | 1555 | Bangkok (BMA), also via Traffy Fondue |
 | 1130 | MEA (Bangkok, Nonthaburi, Samut Prakan) |
@@ -453,7 +465,7 @@ The full table of 43 items with their sources is in [01-safety-content.md](01-sa
 Left out on purpose:
 
 - **192** looks wrong; use 1784.
-- **199** (fire) is cited only by news.
+- **199** (fire) was left out of the flood version because only news reports cited it; the fire mode (v1.5.0) added it with DDPM's advice as quoted in the news (§22.5).
 
 **Kept out because sources disagree:**
 
@@ -547,7 +559,7 @@ Social listening by Wisesight / Zocial Eye, 16–26 Sep 2026 ([Marketeer](https:
 | Identity and social currency drive sharing | Flattering rank titles that never shame (*บ้านนี้เตรียมพร้อม*, *เซียนกู้บ้าน*) |
 | People tag family on their own (สาดไปสมาชิก) | Challenge links that rebuild the exact house: "ท้าเพื่อนเล่นบ้านนี้", "ส่งให้คนที่บ้าน" |
 | Practical value spreads; long documents don't | Every tap teaches one action with a tip of 80 characters or fewer; every result lists all the lessons and the help numbers |
-| 78% mobile, 74% Android, in-app browsers dominate | 151 KB start, no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
+| 78% mobile, 74% Android, in-app browsers dominate | A light start screen (151 KB at launch, 188 KB in v1.6.0), no login, works in LINE/FB/TikTok with fallbacks, offline after the first visit |
 | Coping humour works; suffering-as-content backfires | Humour only at the situation (mud, the rope that isn't a snake, the gecko's faces). No real photos, no AI flood images, no people in danger. |
 | Political anger is high | No politicians, agencies blamed, party colours, royal or religious references |
 | Quiet edits cost trust | "UPDATE:" labels for content changes, and dated sources in the About sheet |
@@ -565,13 +577,15 @@ What the build does for search, why, and how sure we are. Facts about *this site
 
 | File or tag | Where it comes from | Notes |
 |---|---|---|
-| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 43 articles (one per enabled item, ordered by mode then room) after an index by topic (`#t-health` and so on), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 9 partly verified items carry "⚠️ under review". About 50 KB, 17 KB gzipped. No script. |
+| `/learn` | `items.json`, `rooms.json`, `sources.json`, `checklists.json`, `helplines.json`, `strings.json → seo` | 68 articles (one per enabled item, ordered by mode then room) after a "By hazard" row of links (v1.6.0) and an index by topic (`#t-health` and so on), each with the correct action, tip, reason, the wet-house variant, and linked sources. The 11 partly verified items carry "⚠️ under review". About 140 KB, 28 KB gzipped. No script. |
+| `/flood`, `/pm25`, `/fire` (v1.6.0) | the same files, one hazard each | Only that hazard's lessons (43, 12, 13), its checklists and the helplines, with ▶ play buttons to `/?mode=<id>`. No script. See §25.4. |
 | `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
-| `/sitemap.xml` | `/`, `/en/`, `/learn`, `/en/learn`, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
+| `/sitemap.xml` | 10 addresses: `/`, `/learn`, `/flood`, `/pm25`, `/fire` and their `/en/` twins, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
 | `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
-| `<link rel="canonical">` and `hreflang` | the OG block | `/` → `/`, `/learn` → `/learn`, `/en/` → `/en/`, `/en/learn` → `/en/learn`; the 24 Thai share pages → `/` and the 24 English ones → `/en/`. Each indexable page lists its twin with `hreflang` (§18). |
+| `<link rel="canonical">` and `hreflang` | the OG block, and the page template for `/learn` and the hazard pages | Each indexable page points at itself (`/`, `/learn`, `/pm25`, `/en/`, `/en/learn`, `/en/pm25` and so on); the 48 Thai share pages → `/` and the 48 English ones → `/en/`. Each indexable page lists its twin with `hreflang` (§18). |
 | JSON-LD on `/` and `/en/` | `og` / `ogEn` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English, about flood safety). |
-| JSON-LD on `/learn` and `/en/learn` | `sources.json` | `Article` with a `citation` list of the 51 sources actually used. |
+| JSON-LD on `/learn` and `/en/learn` | `sources.json` | `Article` with a `citation` list of the 64 source addresses actually used. |
+| JSON-LD on the hazard pages | `sources.json` | `Article` whose `citation` lists the sources of that page's lessons (54 for floods, 4 for dust, 6 for fire). |
 | `X-Robots-Tag: noindex` | `_headers` | On `*.pages.dev` addresses only. Confirmed present on `baanrodmai.pages.dev` and absent on the custom domain. |
 | GitHub About | `gh repo edit` | Thai + English description, homepage, 20 topics. |
 
@@ -621,6 +635,8 @@ Added in v1.2.0 (11 Oct 2026), with the wordmark fix in v1.2.2. Everything below
 | `/learn` | `/en/learn` | `/en/learn` is English-first: every lesson's action, tip and reason in English, agency names in English (`seo.en.agencies`), and a note that the advice and hotlines are Thai. |
 | `/c/p8?h=…` | `/en/c/p8?h=…` | English players share `/en/c/…`, so the friend's preview is English. Both rebuild the same house. |
 | `/checklist/prepare` | `/en/checklist/prepare` | |
+| `/pm25` (and `/flood`, `/fire`) | `/en/pm25` | Hazard pages (v1.6.0, §25.4). The English page is English-first and says the advice and helplines are Thai. |
+| `/?mode=dust` | `/en/?mode=dust` | Opens the start screen on that mode (v1.6.0, §25.3). The redirect for visitors from abroad keeps the query. |
 
 **Which language a visitor gets** (`content.js`):
 
@@ -633,15 +649,15 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 
 **Search signals**
 
-- `hreflang` links on `/`, `/en/`, `/learn`, `/en/learn` and the checklist pages: `th`, `en`, and `x-default` → English (for people whose language is neither).
-- `sitemap.xml` lists the four indexable pages, each with its `xhtml:link` alternates, as Google documents for multilingual sites.
+- `hreflang` links on `/`, `/en/`, `/learn`, `/en/learn`, the hazard pages and the checklist pages: `th`, `en`, and `x-default` → English (for people whose language is neither).
+- `sitemap.xml` lists the ten indexable pages (`/`, `/learn` and the three hazard pages, in both languages), each with its `xhtml:link` alternates, as Google documents for multilingual sites.
 - Separate JSON-LD for the English pages (`inLanguage: en`, English description).
 - The English share pages' canonical is `/en/`; the Thai ones' is `/`.
 
 **Social previews**
 
 - `og:locale` (`th_TH` or `en_US`) plus `og:locale:alternate`, and `twitter:image:alt` on every page.
-- 25 English preview images in `public/og/en/` (default, 22 challenge scores, 2 checklists), drawn by the same canvas code from `strings.json → ogEn`. The wordmark follows the language: Thai "บ้านรอดไหม?" or English "Baan Rod Mai?" (`strings.json → logoA/logoB`), on the start screen, the result card, the checklist image and every preview image; the canvas shrinks it to fit. The English default image reads *"Will the house survive? A 60-second flood game"* under it.
+- 49 English preview images in `public/og/en/` (default, 44 challenge scores, 4 checklists), drawn by the same canvas code from `strings.json → ogEn`. The wordmark follows the language: Thai "บ้านรอดไหม?" or English "Baan Rod Mai?" (`strings.json → logoA/logoB`), on the start screen, the result card, the checklist image and every preview image; the canvas shrinks it to fit. The English default image reads *"Will the house survive? A 60-second flood game"* under it.
 - English share texts carry `#BaanRodMai #FloodSafety`; the Thai ones keep `#บ้านรอดไหม`.
 
 **Honesty for an international audience.** The advice comes from Thai agencies and the hotlines are Thai numbers. The English help sheet, `/en/learn`, the checklist preview and `llms.txt` say so and tell people outside Thailand to follow their local authorities and emergency number. **No foreign numbers were added**, because none were verified.
@@ -653,9 +669,9 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 ## 19. The water-level link (BKK FloodWatch)
 
 - `config.json → forecastAppUrl` is `https://flood.autobahn.bot/`: **BKK FloodWatch**, canal and river water levels across Thailand, the owner's own Autobahn Bot project (confirmed 11 Oct 2026).
-- The "เช็กระดับน้ำล่วงหน้า" / "Water levels" button shows on the start screen, the result screen and the help sheet, only when this is a real `https://` address (`forecastUrl()` in `content.js`). It opens in a new tab and is counted as `forecast_click`.
+- The "เช็กระดับน้ำล่วงหน้า" / "Water levels" button shows on the start screen, the result screen and the help sheet, only when this is a real `https://` address (`forecastUrl()` in `content.js`, which takes the address from `modeLink()` in `modes.js`; since v1.6.0 the `/flood` page links it too). It opens in a new tab and is counted as `forecast_click`.
 - `flood.autobahn.bot` is a different live site: **never redirect it to the game**. Both sites sit on `autobahn.bot` and can link to each other.
-- Optional and not set: `forecastStatusUrl`, a small endpoint returning `{"rainWarning": true|false}` with CORS, so the start screen could pick the recommended mode from live data ([KNOWN_ISSUES #13](KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)).
+- Optional and not set: `forecastStatusUrl`, a small endpoint returning `{"rainWarning": true|false}` with CORS, so the start screen could pick the recommended mode from live data ([KNOWN_ISSUES #13](KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)). When it answers, its answer beats the manual switch both ways (`recommend()`, §25.2).
 
 ## 20. Fun and sharing features (v1.3.0)
 
@@ -698,7 +714,7 @@ Built 15 Oct 2026 (ROADMAP N9).
 
 - **Safety book:** grouped by topic in `config.topics` order (the featured or asked-for topic first), each with `n/total`, a progress bar and a 🏅 badge when full. `collection.js → topicProgress()` and `completedTopics()` are pure and unit-tested; a full set after a round shows `topicDoneToast`. Playable lessons: 41 (17 Prepare, 24 Return).
 - **Locked lessons are never hidden for good:** the book links to `/learn` (`bookReadAll`). For health topics in particular, nobody should have to play to read the answer.
-- **Featured topic:** `config.featuredTopic` (`"health"` now, or `null`). The start-screen card links to `/learn#t-<topic>` (event `learn_open`) and opens the book on the topic; the book's "play" button picks the mode with the most lessons left to find in that topic.
+- **Featured topic:** `config.featuredTopic` (`"health"` now, or `null`), until `featuredTopicUntil` since v1.6.0 (§25.1). The start-screen card links to `/learn#t-<topic>` (event `learn_open`) and opens the book on the topic; the book's "play" button picks the mode with the most lessons left to find in that topic.
 - **`/learn`:** an index by topic (`<div class="tix" id="t-<topic>">`, chips of at least 44 px) before the mode sections; each article names its topic.
 
 **EM balls (`r-stagnant`).**
@@ -736,7 +752,7 @@ The review and the IFRC document were read through their summaries; the numbers 
 | March–May | Heat, summer storms | not built (P7) | — |
 | Any time, 26 Dec anniversary | Earthquake, tsunami | not built (P8) | — |
 
-The month table is ours, not an agency's ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). `seasonalMode(month, rainWarning)` in `modes.js`: a rain warning → `prepare`; else the first non-flood mode whose `months` include the month; else `return`.
+The month table is ours, not an agency's ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). `seasonalMode(month, rainWarning)` in `modes.js`: a rain warning → `prepare`; else the first non-flood mode whose `months` include the month; else `return`. Since v1.6.0 the start screen calls it through `recommend()`, which adds the switches' end dates and `?mode=` links (§25.2).
 
 ### 22.3 The mode registry
 
@@ -814,10 +830,103 @@ Now the gecko on the result screen answers the question for the mode just played
 | Mode | 10/10 | 8–9 | 5–7 | 0–4 |
 |---|---|---|---|---|
 | ก่อนน้ำมา | บ้านรอดแน่นอน! ของสำคัญปลอดภัยครบทุกชิ้น 🎉 | บ้านรอด! ของสำคัญเกือบครบ อีกนิดเดียวเต็มสิบ | บ้านรอดครึ่งๆ ของบางชิ้นยังเสี่ยงโดนน้ำ ลองอีกรอบนะ | น้ำมาเร็วกว่าเรา แต่ตอนนี้รู้แล้วว่าต้องทำอะไร ลองใหม่นะ |
-| หลังน้ำลด | บ้านรอด! ปลอดภัย พร้อมกลับเข้าอยู่แล้ว 🏠 | เกือบพร้อมกลับเข้าบ้านแล้ว เหลืออีกนิดเดียว | ยังมีอันตรายซ่อนอยู่ ค่อยๆ ตรวจอีกรอบนะ | บ้านยังไม่พร้อม อ่านข้อที่พลาดด้านล่าง แล้วลองใหม่นะ |
+| หลังน้ำลด | บ้านรอด! ปลอดภัย พร้อมกลับเข้าอยู่แล้ว 🏠 | เกือบพร้อมกลับเข้าบ้านแล้ว เหลืออีกนิดเดียว | ยังมีอันตรายซ่อนอยู่ ค่อยๆ ตรวจอีกรอบนะ | บ้านยังไม่พร้อม ตรวจให้ครบอีกรอบ ก่อนกลับเข้าบ้านนะ |
 | ฝุ่น PM2.5 | บ้านรอดจากฝุ่น! อากาศในบ้านสะอาด ทุกคนหายใจสบาย 💙 | บ้านเกือบปลอดฝุ่นแล้ว คุณตาคุณยายหายใจสบายขึ้นเยอะ | ฝุ่นยังเล็ดลอดเข้าบ้านบ้าง ลองปิดจุดที่พลาดดูนะ | ฝุ่นยังเข้าบ้านอยู่ แต่ตอนนี้เรารู้วิธีแล้ว ลองอีกรอบ! |
-| ไฟไหม้ | บ้านรอดจากไฟ! จุดเสี่ยงเรียบร้อยทุกจุด นอนหลับสบายได้ 💙 | บ้านเกือบปลอดภัยจากไฟ เหลืออีกจุดสองจุด | ยังมีจุดเสี่ยงไฟอยู่ อ่านข้อที่พลาดด้านล่างนะ | จุดเสี่ยงยังเยอะ แต่ตอนนี้เรารู้แล้ว ลองอีกรอบ! |
+| ไฟไหม้ | บ้านรอดจากไฟ! จุดเสี่ยงเรียบร้อยทุกจุด นอนหลับสบายได้ 💙 | บ้านเกือบปลอดภัยจากไฟ เหลืออีกจุดสองจุด | ยังมีจุดเสี่ยงไฟอยู่ ลองหาให้ครบอีกรอบนะ | จุดเสี่ยงยังเยอะ แต่ตอนนี้เรารู้แล้ว ลองอีกรอบ! |
+
+Two endings changed in v1.6.0 (หลังน้ำลด 0–4, ไฟไหม้ 5–7): they said "ด้านล่าง" (below), which is wrong on the shared card that now carries the ending (§25.5).
 
 **Rules we kept.** The endings are narrative, not safety advice, so they need no source; they never say the house or anyone was lost (guardrail), and a low score always ends on "now you know, try again". The score tiers are the same as the ranks (0–4, 5–7, 8–9, 10). Keys are `cheer<Level><Mode>`; `pickLineFor()` in `content.js` falls back to the shared `cheer<Level>` lines, so a new mode works before its endings are written (the unit test then fails until they are).
 
-**Story ideas not built** (for the owner to choose): a named family on the start screen ("บ้านคุณยายมาลี"), a one-line intro per mode on the how-to sheet ("คุณตามีโรคประจำตัว วันนี้ฝุ่นสีแดง…"), and the ending line on the shared card. Each adds text to read before or after a 60-second game, so test them on real players first.
+**Story ideas not built** (for the owner to choose): a named family on the start screen ("บ้านคุณยายมาลี") and a one-line intro per mode on the how-to sheet ("คุณตามีโรคประจำตัว วันนี้ฝุ่นสีแดง…"). Each adds text to read before or after a 60-second game, so test them on real players first. The third idea, the ending line on the shared card, was built in v1.6.0 (§25.5).
+
+## 25. A start screen that keeps itself current (v1.6.0)
+
+Built 18 Oct 2026 (ROADMAP N12). Nothing here touches items, rooms, slots or `houseVersion`, so houses and challenge links are unchanged.
+
+### 25.1 Switches with end dates
+
+| Switch | End date | Now | What it does |
+|---|---|---|---|
+| `rainWarningActive` | `rainWarningUntil` | `true` until `2026-11-30` | Recommends ก่อนน้ำมา (Prepare) first |
+| `featuredTopic` | `featuredTopicUntil` | `"health"` until `2026-11-15` | Puts that topic's card on the start screen |
+
+- `switchOn(value, until, dayKey)` in `modes.js` (pure): off when `value` is empty; on when there is no `until`; otherwise on while `dayKey` (`YYYYMMDD`, the Bangkok date from `bangkokDateKey()`) is on or before `until`. So `2026-11-30` is on for all of 30 Nov in Bangkok and off from 00:00 on 1 Dec.
+- The build stops if an `*Until` value isn't a real `YYYY-MM-DD` date. It warns when a switch is on with no end date, or when its end date has passed (the switch is then already off), and prints a `start` line for today (§6).
+- The Thai `_readme` in `config.json` explains the dates for people who edit it on GitHub.
+
+### 25.2 What the start screen recommends
+
+`recommend(config, dayKey, { want, live })` in `modes.js` returns `{ mode, topic, why }`. At boot, `pickStart()` in `main.js` calls it with `want` from `?mode=` (none on a friend's challenge) and `live` from `forecastStatusUrl` (fetched only when there is no link, 1.5 s timeout). The result is kept in `state.start`, and `renderStart()` reads it.
+
+| Order | Rule | Mode | `why` |
+|---|---|---|---|
+| 1 | `want` is a mode id in the registry, in any letter case | that mode | `link` |
+| 2 | The rain warning is on: the forecast app's answer when it gave one (`true` or `false`), otherwise `switchOn(rainWarningActive, rainWarningUntil, dayKey)` | `prepare` | `live` or `warning` |
+| 3 | The first non-flood mode whose `months` include the Bangkok month (`seasonalMode()`, §22.2) | `dust` (Dec–Mar), `fire` (Apr) | `season` |
+| 4 | Otherwise | `return` | `season` |
+
+**The topic.** After a link: the linked mode's own `topic`, else the news topic. Otherwise: the news topic (`featuredTopic`, while `switchOn` says so), else the recommended mode's own topic. The flood modes have no topic of their own, so in the flood months only a news topic is featured.
+
+**Examples** from the unit test, on a fixed config (rain warning until 30 Nov 2026, `health` until 15 Nov 2026):
+
+| Day | Input | Mode | Topic | `why` |
+|---|---|---|---|---|
+| 18 Oct 2026 | | `prepare` | `health` | `warning` |
+| 16 Nov 2026 | | `prepare` | none | `warning` |
+| 1 Dec 2026 | | `dust` | `air` | `season` |
+| 10 Apr 2027 | | `fire` | `fire` | `season` |
+| 15 Jun 2027 | | `return` | none | `season` |
+| 1 Dec 2026 | `live: true` | `prepare` | none | `live` |
+| 18 Oct 2026 | `live: false` | `return` | `health` | `season` |
+| 18 Oct 2026 | `want: 'Dust'` | `dust` | `air` | `link` |
+| 18 Oct 2026 | `want: 'return'` | `return` | `health` | `link` |
+| 18 Oct 2026 | `want: 'heat'` | ignored: the same as no link | | |
+
+**The "check before you go" link.** `modeLink(config, id)`: the mode's own `link` (dust → Air4Thai), else `forecastAppUrl` for flood modes (BKK FloodWatch), else none (fire). `forecastUrl()` in `content.js` and the hazard pages both use it.
+
+### 25.3 `?mode=` links
+
+- `/?mode=prepare`, `return`, `dust` or `fire` (any letter case) opens the start screen with that mode as the big recommended card and its topic featured. It never starts a round; the visitor still taps the card.
+- Ignored: an id that isn't in the registry (`/?mode=heat`), and any `?mode=` on a friend's challenge link, where the challenge comes first.
+- Visitors from abroad: the inline language redirect keeps the query, so `/?mode=dust` becomes `/en/?mode=dust`.
+- **Analytics,** with no new event names: `view` gets `label: link` and the mode; `mode_select` is `link` when the tapped card is the linked mode, `default` when it is the recommended mode without a link, and `other` for any other card ([05-metrics](05-metrics.md#event-dictionary)).
+- The link previews as the main game, because it is the app shell ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). When the preview matters, share the hazard page.
+
+### 25.4 Hazard pages
+
+| Hazard | Slug | Thai | English | Modes | Lessons | Check link | Preview image |
+|---|---|---|---|---|---|---|---|
+| flood | `flood` | `/flood` | `/en/flood` | prepare, return | 43 | BKK FloodWatch | `og/checklist-prepare.png` |
+| dust | `pm25` | `/pm25` | `/en/pm25` | dust | 12 | Air4Thai | `og/checklist-dust.png` |
+| fire | `fire` | `/fire` | `/en/fire` | fire | 13 | none | `og/checklist-fire.png` |
+
+- **Generated** by `tools/build.mjs` into `public/<slug>.html` and `public/en/<slug>.html`; never edit them by hand. Cloudflare Pages serves `/pm25` from `pm25.html` and redirects `/pm25.html` to `/pm25` with a 308, as it does for the challenge pages (§8).
+- **Order on the page:** the top links (the game, all lessons, the other language), the H1, the ▶ play button to `/?mode=<id>` (`seo.playMode`, with the mode's name and round length; one per mode, so two on `/flood`), the intro (the English pages add that the advice and helplines are Thai), the "check before you go" link, the date updated, the lessons by mode, the hazard's checklists, the helplines, the play buttons again, the "อ่านตามภัย / By hazard" row (this page marked with `aria-current`), and the disclaimer.
+- **Search signals:** a canonical link to itself, `hreflang` th / en / x-default, `og:url`, the preview image of the hazard's first mode's checklist (`/og/` or `/og/en/`; no new images), and `Article` JSON-LD whose `citation` lists the sources of its lessons. Both languages are in the sitemap and `llms.txt`, and `/learn` and `/en/learn` link them from the same "By hazard" row.
+- **Slugs** live in `config.json → hazards`. The build stops unless each one is lowercase letters, digits or "-", is unique, isn't a reserved site path (`c`, `checklist`, `en`, `learn`, `api`, `js`, `css`, `content`, `art`, `fonts`, `icons`, `og`, `share`, `index`, `sw`, `robots`, `sitemap`, `llms`, `manifest`, `posts`) and doesn't match an existing `public/<slug>`; every hazard in the registry needs one. A slug must never change once published, because shared links and search results point at it.
+- **Strings** in `seo.th` and `seo.en`: `byHazard`, `allLessons`, `playMode`, and `hazard<Flood|Dust|Fire><Nav|Title|Desc|H1|Intro>`. The build stops when one is missing. The text is a draft for the language check ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)). It adds no advice or numbers, and the descriptions name no agencies, so it can't drift from the lessons.
+- **One template.** `/learn`, `/en/learn` and the six hazard pages come from one `seoPage()` function. The old `/learn` template was replaced first, and its output checked byte-identical (`git diff --quiet`) before the hazard pages were added.
+- **Tap targets:** the helpline `tel:` links (28–38 px wide on `/learn` before v1.6.0) and the source links have `min-width: 44px`; the top links, the check link and the chips are 44 px tall. A smoke check measures every control on all eight pages at 320 × 460, and checks that each hazard page's play button is on the first screen.
+
+### 25.5 The ending on the shared card
+
+- `showResult()` in `main.js` picks the ending once (`pickLineFor(cheerKey, mode)`), shows it in the result gecko's bubble and passes it to `drawResultCard()`, so the screen and the card say the same line.
+- `endingBubble()` in `cards.js` draws a white speech bubble with a 5 px ink outline and a tail pointing right at the gecko: x 30–360 on the 1080 × 1350 card, centred at y 462, at most 300 px tall.
+- The text starts at 38 px and shrinks in 2 px steps to 28 px, at most 4 lines (line height 1.3). It takes the largest size that fits, and prefers a size where the last line isn't a lone short word (under 30 % of the width), because Thai breaks between words.
+- `plainText()` strips emoji (pictographs, variation selectors and joiners) on the card only, because canvas fonts can draw them as empty boxes. The screen keeps them.
+- The card preview's `alt` text ends with the same line, without emoji.
+- An ending must make sense without the screen: a unit test forbids "ด้านล่าง" and "below" (§24).
+
+### 25.6 The smoke test runs on a pinned date
+
+- `SMOKE_DATE` (default `2026-10-18`) sets the Bangkok day. `pinDate()` in `tests/smoke.mjs` adds an init script that replaces `Date` with one moved to 10:00 Bangkok time on that day; time keeps running from there. Some checks pin their own day (5 Dec 2026 for the dust check).
+- Playwright's clock API isn't used, because it also fakes the timers and `requestAnimationFrame`, and the rounds run on `performance.now()` and `requestAnimationFrame`.
+- The expected mode, topic and link come from `recommend()` and `modeLink()`, the functions the game uses, so the test never reads the real calendar and never keeps a second copy of the rules.
+- Other seasons: `SMOKE_DATE=2026-12-05 npm run smoke` (dust, Air4Thai, the air topic) and `SMOKE_DATE=2027-04-10 npm run smoke` (fire, no check link, the fire topic) both passed 79/79 on 18 Oct 2026.
+- What it can't see is today's real state. The build's `start` line and warnings cover that ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)).
+
+### 25.7 Docs and generated files that can't drift
+
+- `npm run docs` writes the summary between `<!-- SUMMARY:START -->` and `<!-- SUMMARY:END -->` at the top of [01-safety-content.md](01-safety-content.md), as well as the table, flags and references. A normal build warns when the file is out of date with the content.
+- CI's "generated files are committed and current" step diffs `'public/*.html'` (which covers the hazard pages), `public/sw.js` and `public/js/version.js` with the rest of the generated output, and fails when a generated file under `public/` isn't committed.

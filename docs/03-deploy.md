@@ -9,7 +9,7 @@ The game is a static site in `public/`, plus one tiny Pages Function (`functions
 | `[DOMAIN]` | `public/content/config.json → siteUrl` (**set to `https://baanrodmai.autobahn.bot`**), or the `SITE_URL` environment variable when the project is *not* managed by `wrangler.toml` | e.g. `https://baanrodmai.pages.dev` or your custom domain. Used in share links, link-preview tags, the SEO files and the images. |
 | `[FORECAST_APP_URL]` | `public/content/config.json → forecastAppUrl` (**set to `https://flood.autobahn.bot/`**, BKK FloodWatch) | Your water-level app. The "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until this is a real `https://` link. |
 
-Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends the right mode automatically; if the call fails or times out, `rainWarningActive` is used.
+Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends the right mode automatically; if the call fails or times out, `rainWarningActive` is used until its end date `rainWarningUntil`.
 
 ## The live setup
 
@@ -27,6 +27,7 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
 Search and AI search:
 
 - `node tools/build.mjs` writes `/learn` (every lesson as plain HTML), `/robots.txt`, `/sitemap.xml` and `/llms.txt`, plus the canonical link and JSON-LD in each page's OG block.
+- Since v1.6.0 it also writes one page per hazard: `public/flood.html`, `public/pm25.html` and `public/fire.html`, and `public/en/flood.html`, `public/en/pm25.html` and `public/en/fire.html`. Pages serves them as `/flood`, `/pm25`, `/fire` and `/en/…`, and redirects `/pm25.html` to `/pm25` with a 308. They are generated (never edit them by hand), listed in the sitemap, and their names come from `config.json → hazards`; never change a name once it is published.
 - `_headers` adds `X-Robots-Tag: noindex` on `*.pages.dev`, so only the custom domain is indexed.
 - After the first deploy, submit `https://baanrodmai.autobahn.bot/sitemap.xml` in Google Search Console and Bing Webmaster Tools. Bing's index also feeds Copilot and other AI search tools.
 - Leave Cloudflare's "Block AI bots" and managed robots.txt **off** for this hostname. The game is public safety content and should be readable by AI assistants.
@@ -63,7 +64,7 @@ Search and AI search:
 From now on:
 
 - **Editing content** (fixing a tip, switching the default mode): edit the JSON in `public/content/` on GitHub and commit. Cloudflare rebuilds and publishes in about a minute.
-- **Switching the recommended mode:** set `"rainWarningActive": false` in `config.json` when the water recedes, and back to `true` before the next rain wave.
+- **Switching the recommended mode:** set `"rainWarningActive": true` with an end date, `"rainWarningUntil": "YYYY-MM-DD"` (a Bangkok date, that day included), before a rain wave. It turns itself off after that day; set it to `false` earlier if the water recedes sooner. The same goes for `featuredTopic` and `featuredTopicUntil`. The build's `start` line shows what the start screen recommends today, and it warns about a switch with no end date.
 - **Rollback:** Pages → Deployments → pick an earlier one → *Rollback*.
 
 ## Option B: Wrangler direct upload (from your computer)
@@ -96,7 +97,7 @@ Any static server also works (`npx serve public`), apart from the `/c/p8` pretty
 
 | Piece | Free-plan cost |
 |---|---|
-| Pages, images, link-preview pages `/c/*` and `/checklist/*`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
+| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn` and the hazard pages, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
 | `/api/e` event counter | 1 Function request per page session (events are batched and sent with `sendBeacon` when the page is hidden). Shares the 100,000 requests/day quota. |
 | Workers Analytics Engine | 100,000 data points/day written free. Each event is one data point. |
 | Cloudflare Web Analytics | Free, cookieless. |
@@ -107,7 +108,7 @@ If the game goes very viral, lower `config.json → analytics.sampleRate` (e.g. 
 
 You asked for a dynamic OG image rendered by a Pages Function. I built the same visible result in a way that suits the free plan better:
 
-- Every challenge link has its own **static** HTML page (`/c/p0` … `/c/p10`, `/c/r0` … `/c/r10`) with Open Graph tags.
+- Every challenge link has its own **static** HTML page (`/c/p0` … `/c/p10`, `/c/r0` … `/c/r10`, and since v1.5.0 `/c/d…` and `/c/f…`) with Open Graph tags.
 - Each page points at a matching **pre-rendered** 1200×630 PNG drawn by the game's own card renderer.
 - Crawlers from LINE, Facebook and X never run JavaScript, and they get the score in the preview either way.
 - The `?h=20261007` house key stays in the shared URL, and the pages omit `og:url`, so clicking the preview opens the friend's exact house.
@@ -116,7 +117,7 @@ The reasons:
 
 1. **CPU limit.** Workers Free allows **10 ms CPU** per request. Rendering a PNG with Thai text (satori/resvg) takes far longer, and the needed WASM is several MB.
 2. **Quota.** A viral challenge link served by a Function counts against the **100,000/day** Functions quota. Past that it would fail (or, with fail-open, lose its preview). Static pages are unlimited.
-3. **The set is tiny and fixed:** 2 modes × 11 scores, plus default and checklists, in two languages: 50 images (25 Thai, 25 English) and 49 generated pages. Pre-rendering costs nothing and the previews are cached and instant.
+3. **The set is small and fixed:** 4 modes × 11 scores, plus the default and four checklists, in two languages: 98 images (49 Thai, 49 English) and 97 generated pages. Pre-rendering costs nothing and the previews are cached and instant.
 
 If you later move to Workers Paid and want per-player text (for example a nickname, which would need a privacy review), a Function can rewrite the same tags with `HTMLRewriter`.
 

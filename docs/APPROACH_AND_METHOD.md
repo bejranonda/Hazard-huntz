@@ -157,8 +157,8 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
 ## 9. Testing
 
-1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset and the version 2 carry-over. They run in Node in well under a second.
-2. **Smoke tests** (`npm run smoke`, 61 checks, run by default as a Thai phone in Bangkok; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
+1. **Unit tests** (`npm test`) cover only the pure modules: seeding, house rules, water, scoring, the wet breaker, ranks, challenge links, the midnight reset, the version 2 carry-over, and since v1.6.0 the switches' end dates and what the start screen recommends. They run in Node in well under a second.
+2. **Smoke tests** (`npm run smoke`, 79 checks, run by default as a Thai phone in Bangkok on a pinned day, 18 Oct 2026, which `SMOKE_DATE` changes; the English checks use their own locale and time zone, for example a visitor from London) run real headless Chromium against a server that copies Pages routing (`/c/p8` → `c/p8.html`, SPA fallback). They use the user agents of:
    - Android Chrome
    - an iPhone SE-sized Safari
    - LINE's Android in-app browser
@@ -166,7 +166,7 @@ All four are now fixed and checked automatically. The lesson: measure the whole 
 
    They also test offline play after the first visit, reduced motion, and the analytics beacon.
 3. **Screenshots** from the same run (`--screens docs/screens`) were *looked at*. Several bugs were found only that way: the lamp behind the wall, the speech bubble covering items, a blue result screen, a date overlapping a pill on the card.
-4. **Real phones were not available.** The 35-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
+4. **Real phones were not available.** The 42-row manual matrix in [06-test-checklist.md](06-test-checklist.md) is the plan, and [KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers) keeps it visible as a launch blocker.
 
 ## 10. Scope cuts, said out loud
 
@@ -214,10 +214,10 @@ The brief for going live was: put the app on a suitable subdomain of `autobahn.b
 
 1. **Find the real problem before choosing tactics.** The game is a JavaScript app, and link-preview bots don't run JavaScript. Fetching the live start page showed what a crawler sees: a title, a description and one `<noscript>` line. Everything the game teaches was invisible. That decided the plan: put the substance into plain HTML.
 2. **Reuse the content, don't rewrite it.** Safety advice is the one thing in this project that must not drift. `/learn`, `/llms.txt` and the JSON-LD are generated from the same JSON as the game, so a corrected tip corrects every surface, and `seo.updated` is the single value to bump.
-3. **Be honest about uncertainty on the page.** The partly verified items (10 since v1.4.0) appear on `/learn` with "⚠️ under review", the same flag the game's docs use. Crawlers and assistants shouldn't see more certainty than a reviewer would give.
+3. **Be honest about uncertainty on the page.** The partly verified items (11 since v1.5.0) appear on `/learn` with "⚠️ under review", the same flag the game's docs use. Crawlers and assistants shouldn't see more certainty than a reviewer would give.
 4. **Add only what is true.** There is no FAQ, HowTo, rating or review markup, because the page has none of those. `llms.txt` is included knowing it is an informal proposal that no major engine is confirmed to use ([KNOWLEDGE §16](KNOWLEDGE.md#16-search-and-ai-search-facts)); it costs nothing.
 5. **Choose the address on evidence.** `baanrodmai.autobahn.bot` was weighed against a shorter name. Length wasn't the problem: the name matches the game, follows the zone's other subdomains, and rendered fully on the 1200×630 previews and the checklist image. Those images were re-rendered and looked at, not assumed. The one existing name that would have been shorter (`flood`) was already in use by another service, so it was left alone.
-6. **Keep the duplicates out of the index.** The 49 share pages (Thai and English, a few of them `/learn` and `/en/learn` excluded) are copies of the app shell, so they canonicalise to `/` and stay out of the sitemap, and `*.pages.dev` gets `noindex` so only the custom domain competes.
+6. **Keep the duplicates out of the index.** The share pages (49 at the time, 97 since v1.5.0, Thai and English) are copies of the app shell, so they canonicalise to `/` and stay out of the sitemap, and `*.pages.dev` gets `noindex` so only the custom domain competes.
 7. **Test the part you can measure; say what you can't.** The build, tests and a phone-sized browser run were checked on the live site. Indexing, ranking and AI citation can't be measured on day one, so they became a roadmap task with a date ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) and a known issue (#32).
 8. **Run the existing guard rails on new work.** The new footer link failed the 44 px check at 41 px, and a smoke-test hang on Windows Chrome was reproduced on untouched `HEAD` before anyone blamed the new code. Both are in [LESSONS D7, D8](LESSONS_LEARNED.md#d-testing-and-verification).
 9. **Deployment surfaced two account-level prerequisites** (a repository Cloudflare could see, and Analytics Engine enabled) that no code change could fix. They are recorded as lessons ([F6, F7](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox)) and in [03-deploy.md](03-deploy.md#the-live-setup), so the next deploy starts with them.
@@ -324,3 +324,14 @@ The owner asked whether the home page gets people playing, whether the game gets
 ## 22. The second loop: checks that look for different things (v1.5.3)
 
 A repeated loop is only worth it if it looks somewhere new. The second pass used tools the first did not: **axe-core** for accessibility across every view, a **language-switch** check, a **clipped-text** scan, and a **bubble-over-item** measure across 48 houses. Only one finding (the logo's coral, exempt). The bigger gain came from reading the game as a story: the title asks a question the ending never answered, so the ending now does ([KNOWLEDGE §24](KNOWLEDGE.md#24-the-story-the-ending-answers-the-title-v153)).
+
+## 23. Things that depend on the date, and docs that can't drift (v1.6.0)
+
+The owner's switches were right in October and would have been wrong in December, and nothing would have said so: the tests read the same config on the same day. The fix and the method behind it:
+
+1. **Give every hand-set state an end.** A switch that someone must remember to turn off will be forgotten. `rainWarningUntil` and `featuredTopicUntil` end the two switches by themselves, the build warns about a switch with no end date or a past one, and its `start` line shows what visitors see today ([KNOWLEDGE §25.1](KNOWLEDGE.md#251-switches-with-end-dates)).
+2. **Put the date logic in one pure function.** What the start screen shows on a given day is `recommend(config, dayKey, …)` in `modes.js`. It takes the day as an argument and touches no DOM, so a unit test can ask about 18 Oct, 16 Nov, 1 Dec, 10 Apr and 15 Jun against a fixed config, in the same run as the other rule tests.
+3. **Pin the date in the browser test, and derive the expectation.** The smoke test plays on `SMOKE_DATE` and asks `recommend()` what to expect, instead of reading today's date or keeping a second copy of the rules. Only `Date` is moved, because the rounds need real timers and `requestAnimationFrame`. Running it again with a December or April date tests another season in one command ([LESSONS D10](LESSONS_LEARNED.md#d-testing-and-verification)).
+4. **Prove a template refactor changes nothing before adding to it.** The `/learn` template was turned into one `seoPage()` function for every plain page. Before any hazard page was added, the build's output had to be byte-identical (`git diff --quiet` on the generated files). Only then did the new pages go in, so any later difference in `/learn` is a deliberate one. This is the same move as the mode registry in v1.5.0 ([§20](#20-from-one-hazard-to-a-year-of-hazards-v150)).
+5. **Generate the numbers a document states.** The safety table's counts are now a generated summary at the top of docs/01, and the build warns when that file is out of date. Hand-written counts elsewhere had drifted (43 items for 68, 10 partial for 11, a 35-row matrix with 40 rows); they were corrected, and where a doc gives a test count, the run's own output is the reference ([KNOWN_ISSUES F34](KNOWN_ISSUES.md#in-v160-18-oct-2026)).
+6. **Keep the real date where it belongs.** A test on a pinned date can't see that today's switch has expired; the build, which runs on every deploy on the real date, can. Each check covers the part it can see ([KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date)).

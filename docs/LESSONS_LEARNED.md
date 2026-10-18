@@ -75,7 +75,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* 9 items were official at their core but had one inferred or dated detail.
 - *Do this:* mark them `partial` with a `verifyNote`, and treat the review as a launch task. Never ship `unverified`.
-- *Encoded in:* the build's validation, [KNOWN_ISSUES #8](KNOWN_ISSUES.md#8-10-safety-items-are-only-partially-verified).
+- *Encoded in:* the build's validation, [KNOWN_ISSUES #8](KNOWN_ISSUES.md#8-11-safety-items-are-only-partially-verified).
 
 **B5. One source of truth for the game and the review table.**
 
@@ -330,7 +330,7 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 **C11. Grow the content and the way to find it together.**
 
 - *What happened:* v1.4.0 added three lessons on request (EM balls, diarrhoea, eye infections) and the owner asked to organise the knowledge for a better journey. A flat list of 43 lessons is hard to browse, and a collection that locks health answers would be wrong during a disease warning.
-- *Do this:* give every lesson a topic, show progress per topic (fun), and keep every answer one tap away on `/learn` (safety). Put the topic in the news on the start screen, and take it down when the news fades.
+- *Do this:* give every lesson a topic, show progress per topic (fun), and keep every answer one tap away on `/learn` (safety). Put the topic in the news on the start screen, and take it down when the news fades (since v1.6.0 with an end date, so it goes by itself; see C16).
 - *Encoded in:* `config.topics`, `config.featuredTopic`, GUIDELINES rules 39–42, smoke checks for the topic book and the featured card.
 
 **C12. A placement can bring back a fixed bug.**
@@ -386,3 +386,15 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* for five versions every smoke check passed while the result's share button, the main goal of the game, sat below the fold on every phone (738 px down on a 664 px LINE screen). The checks asked whether the button existed and was 44 px, never where it was.
 - *Do this:* for each step of the funnel, measure the next button's position against the screen height on small and in-app sizes (320 × 460, 360 × 640, 390 × 664), and add a check for the ones that matter.
 - *Encoded in:* three smoke checks (share button, LINE in the share sheet, challenge accept), [GUIDELINES rule 49](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWLEDGE §23](KNOWLEDGE.md#23-the-visitor-funnel-measured-v152).
+
+**C16. A manual switch needs an end date.**
+
+- *What happened:* in mid-October the rain warning (`rainWarningActive`) and the news topic (`featuredTopic: "health"`) were switched on by hand. Neither had an end. Nobody would have noticed in December: the start screen would still have said "ฝนจะมาอีกระลอก", put the flood mode first and featured diseases after floods, in the middle of the dust season. No check would have caught it: the tests read the same config, and nothing compared the switches with the date.
+- *Do this:* give every hand-set switch the last day it should show (`rainWarningUntil`, `featuredTopicUntil`, a Bangkok date, that day included), so a forgotten switch ends by itself. Let the build warn about a switch with no end date or a past one, and print what visitors see today.
+- *Encoded in:* `switchOn()` and `recommend()` in `modes.js`, the build's checks and its `start` line, a unit test for the last day and the day after, [GUIDELINES rule 51](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES #44](KNOWN_ISSUES.md#44-the-featured-topic-is-switched-by-hand).
+
+**D10. A test that reads the calendar fails by itself.**
+
+- *What happened:* the smoke test ran on the real date with the live config. It expected the FloodWatch link, which is right only while a flood mode is recommended, and checked whatever `config.featuredTopic` said. Once the rain switch ended or the topic was switched off, it would have failed (and waited 30 s for a missing card) with nothing wrong in the game: only the calendar or the config had moved on. Faking the clock with Playwright's clock API was not an option, because it also fakes the timers and `requestAnimationFrame` that the rounds run on.
+- *Do this:* pin the date a test runs on, and take the expected result from the same pure function the game uses, so the test and the game can't disagree about the rules. Shift only `Date` in the page (time keeps running). To check another season, run the test again with another date. Keep real-date problems (an expired switch) in the build, which runs on the real date.
+- *Encoded in:* `SMOKE_DATE` and `pinDate()` in `tests/smoke.mjs`, `recommend()` in `modes.js`, [GUIDELINES rule 52](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES #53](KNOWN_ISSUES.md#53-the-smoke-test-runs-on-a-pinned-date).

@@ -113,8 +113,14 @@
 ## Mode selection
 
 - One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in a row. The gecko's line, prop and the featured topic change to match.
-- `config.json → rainWarningActive: true` makes Prepare the default. When it is `false`, the mode in season is recommended (`modes[].months`, Bangkok month): dust December–March, fire April, otherwise Return.
-- Later, `forecastStatusUrl` can point at your forecast app, returning `{ "rainWarning": true|false }` within 1.5 s. If the call fails, the manual flag is used.
+- **What is recommended** comes from one pure function, `recommend()` in `modes.js` (v1.6.0; [KNOWLEDGE §25.2](KNOWLEDGE.md#252-what-the-start-screen-recommends)), in this order:
+  1. a `?mode=` link (`/?mode=dust`): that mode, with its own topic featured
+  2. a rain warning: Prepare. That is `config.json → rainWarningActive: true` until its end date `rainWarningUntil` (now 30 Nov 2026), or the forecast app's live answer when there is one
+  3. the mode in season (`modes[].months`, Bangkok month): dust December–March, fire April
+  4. otherwise Return
+- **`?mode=` links** are for posts and campaigns. Only the four mode ids count (any letter case); `/?mode=heat` is ignored, a friend's challenge link wins over it, and it never starts a round by itself. Visitors from abroad get `/en/?mode=…`.
+- **The forecast app** can answer through `forecastStatusUrl` with `{ "rainWarning": true|false }` within 1.5 s; its answer beats the manual switch both ways. If the call fails, the manual switch is used.
+- **The hazard pages** (`/flood`, `/pm25`, `/fire`, v1.6.0) are another way in: plain pages with that hazard's lessons and a ▶ button to `/?mode=<id>`.
 
 ## Feel
 
@@ -128,20 +134,19 @@
   - All synthesised with Web Audio (0 KB of audio files), and only started after the first tap.
   - Vibration on Android only (iOS has none).
 - **Result screen layout** (v1.5.2): the card preview takes at most 58 % of the screen and the main action (share, or challenge back) sticks to the bottom, so it is always on the first screen. The share sheet lists the channels before the card. On a challenge link the gecko steps aside so the challenge and its button come first. The recommended mode card shows a ▶ play mark.
-- **The ending** (v1.5.3): the result gecko answers the title, "บ้านรอดไหม?", for the mode and score (`cheer<Level><Mode>`, [KNOWLEDGE §24](KNOWLEDGE.md#24-the-story-the-ending-answers-the-title-v153)).
+- **The ending** (v1.5.3): the result gecko answers the title, "บ้านรอดไหม?", for the mode and score (`cheer<Level><Mode>`, [KNOWLEDGE §24](KNOWLEDGE.md#24-the-story-the-ending-answers-the-title-v153)). Since v1.6.0 the shared card carries the same line (see *Sharing design*), so an ending never says "below".
 - **End of the round by score** (v1.3.0): 10/10 gets a bigger fanfare, a second confetti burst and a stamp; 8–9 the fanfare and confetti; lower scores a soft chime. A small gecko on the result screen says a line that fits (`cheerPerfect`/`cheerHigh`/`cheerMid`/`cheerLow`), always warm.
 - **Combo, for feel only:** three or more right in a row show "🔥 3 ข้อติด!" near the top of the room and play a rising run. No points.
 - **More sound:** a splash when water reaches the floor, a tick for each of the last five seconds, a blip when sound is switched on.
-- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (41 playable lessons, grouped in 6 topics). Locked lessons show as grey tiles, so there is something to find in random houses. The book is grouped by **topic** (🦠 health, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, car & belongings, 🎒 plans & go-bag) with a progress bar each and a 🏅 badge for a full set; it links to `/learn`, where every answer is readable without playing.
-- **Topic in the news** (v1.4.0): `config.featuredTopic` adds a card under the daily line: "📰 เรื่องที่ควรรู้ช่วงนี้ · 🦠 โรคหลังน้ำท่วม" with "read all" (→ `/learn#t-health`) and "book n/8".
+- **Safety book (สมุดบ้านรอด):** every lesson answered correctly is kept on the device; the start-screen chip and the result screen show the count (66 playable lessons, grouped in 8 topics). Locked lessons show as grey tiles, so there is something to find in random houses. The book is grouped by **topic** (🦠 health, ⚡ power & gas, 💧 water & food, 🐍 snakes & sharp things, 🏠 home, car & belongings, 🎒 plans & go-bag, and since v1.5.0 😷 dust and smoke and 🔥 fire safety) with a progress bar each and a 🏅 badge for a full set; it links to `/learn`, where every answer is readable without playing.
+- **Topic in the news** (v1.4.0): `config.featuredTopic` adds a card under the daily line: "📰 เรื่องที่ควรรู้ช่วงนี้ · 🦠 โรคหลังน้ำท่วม" with "read all" (→ `/learn#t-health`) and "book n/8". Since v1.6.0 it ends by itself after `featuredTopicUntil` (now 15 Nov 2026); without a news topic, the recommended mode's own topic is featured (dust → 😷, fire → 🔥).
 - **Motion:** gentle hops and sparkles, no flashing. `prefers-reduced-motion` turns animations into instant state changes.
 - **Copy voice:** casual, warm, native Thai, like a helpful neighbour. Short sentences, particles used naturally (นะ, จ้า, เลย). No jargon, no blame. English mirrors the tone (toggle at top right).
 
 ## Accessibility
 
-- **Tap areas:** at least 64 scene units. That measures **47.5 px** on a 375×548 screen (iPhone SE in Safari) and 48.7 px at 360×560.
-- **Controls:** every button, link and expander is at least 44 px. The smoke test checks this on the game, result, checklist, help and about screens.
-- **Exception:** phones only 320 px wide get 38–43 px item tap areas (see [KNOWN_ISSUES.md](KNOWN_ISSUES.md)).
+- **Tap areas:** at least 64 scene units. That measures **47.5 px** on a 375×548 screen (iPhone SE in Safari) and 48.7 px at 360×560. On a 320×460 phone the room tabs hide, so items measure **44.1 px** ([KNOWN_ISSUES F21](KNOWN_ISSUES.md#after-v122-13-oct-2026)).
+- **Controls:** every button, link and expander is at least 44 px. The smoke test checks this on the game, result, checklist, help and about screens, and on `/learn` and the hazard pages.
 - Results use **colour and shape**: blue ✓ correct, orange ! learned, grey ~/? missed. There is no red/green pairing anywhere.
 - Every target is a focusable SVG `role="button"` with a Thai or English label, operable with Enter or Space. Sheets trap focus and support Esc. Text is 15–19 px with Thai-friendly line height.
 - No flashing effects. Rain streaks drift slowly and stop under reduced motion.
@@ -218,6 +223,7 @@ The share assets, rendered by the same canvas code as the game:
 
 - **Result card** (1080×1350 PNG, drawn on a canvas in the browser):
   - logo, mode chip, house date, the gecko's face matching the rank, the headline and big score
+  - **the ending** (v1.6.0): the line that answers "บ้านรอดไหม?", the same one the result gecko says, in a white speech bubble left of the gecko (x 30–360, centred at y 462, the tail pointing at the gecko). The text is 38 px and shrinks to 28 px to fit at most 4 lines; emoji are left out on the card, because canvas fonts can draw them as empty boxes. The card's `alt` text ends with the same line.
   - rank pill, a ✓/!/? row (shapes as well as colours), "บ้านหลังเดียวกัน ท้าเลย!" (or, after a challenge, "เพื่อน 3/10 · เรา 8/10 · บ้านหลังเดียวกัน"), **the challenge link for this house** (v1.3.0), the disclaimer
   - a "เต็มสิบไม่หัก!" / "Perfect 10!" stamp for 10/10
   - bright and warm, readable at chat-thumbnail size
@@ -229,8 +235,8 @@ The share assets, rendered by the same canvas code as the game:
   - In LINE, Facebook and TikTok in-app browsers, downloads usually fail. The card is shown as an `<img>` with *"กดค้างที่รูป แล้วเลือกบันทึกรูปภาพ"*, and LINE also gets an *open in browser* link (`openExternalBrowser=1`).
 - **Challenge link:** `/c/p8?h=20261007` encodes the mode, the score to beat and the house seed. The friend sees a banner ("เพื่อนเตรียมบ้านทัน 8/10") and plays the identical house. The result compares scores and invites a challenge back.
 - **English:** the same cards, text and links exist in English. In English the share text ends `#FloodSafety`, challenge links are `/en/c/p8?h=…`, and the wordmark on cards and checklists is "Baan Rod Mai?" (`strings.json → logoA/logoB`, shrunk to fit by `logo()` in `cards.js`).
-- **Link previews:** each `/c/{p|r}{0–10}` URL is its own static HTML page. Each has Open Graph tags and a pre-rendered 1200×630 PNG showing the score, so LINE and Facebook show "เพื่อนเตรียมบ้านทัน 8/10" in the preview. See [03-deploy.md](03-deploy.md#why-the-link-preview-images-are-pre-rendered) for why these are pre-rendered rather than rendered per request.
-- **Family-group checklists:** two 1080×1920 images, *เตรียมบ้านก่อนน้ำมา 10 ข้อ* and *ก่อนกลับเข้าบ้าน 10 ข้อ*. They have big text, an icon per item, the helpline numbers and "ส่งต่อด้วยความห่วงใย ♥". They are available in-game and at `/checklist/prepare` and `/checklist/return`, which have their own previews for people who never play.
+- **Link previews:** each `/c/{p|r|d|f}{0–10}` URL is its own static HTML page. Each has Open Graph tags and a pre-rendered 1200×630 PNG showing the score, so LINE and Facebook show "เพื่อนเตรียมบ้านทัน 8/10" in the preview. See [03-deploy.md](03-deploy.md#why-the-link-preview-images-are-pre-rendered) for why these are pre-rendered rather than rendered per request.
+- **Family-group checklists:** four 1080×1920 images, *เตรียมบ้านก่อนน้ำมา 10 ข้อ*, *ก่อนกลับเข้าบ้าน 10 ข้อ*, and since v1.5.0 *ห้องปลอดฝุ่น 10 ข้อ* and *บ้านปลอดภัยจากไฟ 10 ข้อ*. They have big text, an icon per item, the helpline numbers and "ส่งต่อด้วยความห่วงใย ♥". They are available in-game and at `/checklist/prepare`, `/checklist/return`, `/checklist/dust` and `/checklist/fire`, which have their own previews for people who never play. The hazard pages show the same lists as text.
 
 ## Version 2: combined run (structured, not built)
 
@@ -250,13 +256,13 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── index.html          start screen markup (works before JS runs)
 │   ├── css/app.css
 │   ├── js/
-│   │   ├── main.js         boot, screens, game loop, result, sharing UI
-│   │   ├── modes.js        mode registry: codes, threats, props, seasons (pure, unit-tested)
+│   │   ├── main.js         boot (pickStart → state.start), screens, game loop, result, sharing UI
+│   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend (pure, unit-tested)
 │   │   ├── house.js        seeded house generation (pure, unit-tested)
 │   │   ├── round.js        timer, water / smoke / haze, choices, score (pure, unit-tested)
 │   │   ├── run.js          v1 single round / v2 combo structure
 │   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke, haze, badges
-│   │   ├── cards.js        canvas: result card, checklists, link previews
+│   │   ├── cards.js        canvas: result card (with the ending bubble), checklists, link previews
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
@@ -266,10 +272,11 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── art/                rooms/*.svg (front, living, kitchen) + sprites.svg
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)
 │   ├── og/  share/  icons/ pre-rendered images (npm run images); og/en/ holds the English previews
-│   ├── en/                 generated English start page, learn page, c/ and checklist/ (npm run build)
+│   ├── en/                 generated English start page, learn and hazard pages, c/ and checklist/ (npm run build)
 │   ├── c/  checklist/      generated link-preview pages (npm run build)
 │   ├── learn.html llms.txt sitemap.xml robots.txt   generated SEO / AI-search files (npm run build)
-│   ├── sw.js               generated service worker (offline)
+│   ├── flood.html pm25.html fire.html   generated hazard pages (slugs: config.json → hazards)
+│   ├── sw.js  js/version.js   generated service worker (offline) and version guard
 │   ├── _headers _routes.json manifest.webmanifest
 ├── functions/api/e.js      Pages Function: anonymous event counter → Analytics Engine
 ├── tools/                  build.mjs (validate + generate), render-images.mjs, sw.template.js, probe.mjs, check-docs.mjs

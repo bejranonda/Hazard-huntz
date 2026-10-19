@@ -1008,6 +1008,9 @@ try {
     const startUrl = page.url();
     await page.click('[data-open="guide"]');
     await page.waitForSelector('[data-guide]');
+    // The sheet's history entry comes a task later (settleHistory in ui.js). A person
+    // can't press Back that fast, but a test can: on a busy CI runner Back left the app.
+    await page.waitForFunction(() => history.state?.brm === 1);
     await page.goBack();
     await page.waitForTimeout(400);
     check('the phone\'s back button closes a sheet and stays in the app', (await page.isHidden('#sheet')) && page.url() === startUrl, page.url());

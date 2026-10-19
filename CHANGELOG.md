@@ -34,6 +34,7 @@ Reported by the owner from the live v1.10.0 ([KNOWN_ISSUES "In v1.10.1"](docs/KN
 ### Tests
 
 - 39 rule tests (unchanged).
+- **The Back test waits for the sheet's history entry** before pressing Back. The entry comes a task after the sheet opens (`settleHistory` in `ui.js`); on a busy CI runner the test's Back came first and left the app, so the first push of v1.10.1 failed CI's smoke job (it passed in the sandbox). Reproduced by holding the app's zero-delay timers back, which fails it every time without the wait ([LESSONS D23](docs/LESSONS_LEARNED.md#d-testing-and-verification)). No app change: a person can't press Back that fast.
 - **159 smoke checks** (+2): "fridge: nothing is counted until a time is tapped (no "1 นาที" out of nowhere); 9 times to tap" and "dust: the five colours come first, on the first screen; the number is behind "รู้ตัวเลข?"". The fridge checks were rewritten for the taps: "3 ชม." gives the fridge ⏳ nearly at 4 hours with about 1 hour left and a full freezer about 45 hours, and the tapped button stays chosen; the answer is on screen after the tap (360 × 640); "6 ชม." with half a freezer and cold medicine gives the fridge food out (meat, fish, eggs, milk, leftovers), the freezer about 18 h and a day for the medicine in about 18 h; the start, `picked`, the freezer and the medicine tick are kept on the device; the start tile says "⏱️ ไฟดับมาเกิน 6 ชม.แล้ว". The dust checks open "รู้ตัวเลข?" before typing a number.
 
 ### Checked

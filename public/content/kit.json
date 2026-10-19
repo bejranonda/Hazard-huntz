@@ -383,7 +383,7 @@
     }
   ],
   "fridge": {
-    "_readme": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม? (/fridge, /?open=fridge) ชั่วโมงทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ) แหล่งเป็นต่างประเทศ จึงเป็น partial",
+    "_readme": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม? (/fridge, /?open=fridge) แตะเวลาที่ไฟดับ (quick, ชั่วโมง) แล้วแต่ละช่องบอกสถานะสั้นๆ (say) กับรายละเอียด (ok / over / note) ชั่วโมงทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ) แหล่งเป็นต่างประเทศ จึงเป็น partial",
     "maxHours": 72,
     "freezer": [
       {
@@ -396,8 +396,8 @@
       {
         "id": "half",
         "label": {
-          "th": "ราวครึ่งช่อง",
-          "en": "About half full"
+          "th": "ครึ่งช่อง",
+          "en": "Half full"
         }
       }
     ],
@@ -406,17 +406,31 @@
         "id": "fridge",
         "icon": "🥛",
         "label": {
-          "th": "ของในตู้เย็น (ช่องธรรมดา)",
+          "th": "ของในตู้เย็น",
           "en": "Food in the fridge"
         },
         "hours": 4,
-        "ok": {
-          "th": "ถ้าไม่เปิดประตูตู้",
+        "say": {
+          "ok": {
+            "th": "ยังกินได้",
+            "en": "Still safe"
+          },
+          "soon": {
+            "th": "ใกล้ครบ {h} ชม.",
+            "en": "Nearly {h} hours"
+          },
+          "over": {
+            "th": "เกิน {h} ชม.แล้ว",
+            "en": "Over {h} hours"
+          }
+        },
+        "cond": {
+          "th": "ถ้าไม่เปิดตู้",
           "en": "if the door stays shut"
         },
         "over": {
-          "th": "เกิน {h} ชม.แล้ว: ทิ้งเนื้อสัตว์ ปลา ไข่ นม และอาหารที่เหลือ",
-          "en": "Over {h} hours: throw out meat, fish, eggs, milk and leftovers"
+          "th": "ทิ้งเนื้อสัตว์ ปลา ไข่ นม และอาหารที่เหลือ",
+          "en": "Throw out meat, fish, eggs, milk and leftovers"
         },
         "sources": [
           "cdc-food-outage"
@@ -434,13 +448,27 @@
           "full": 48,
           "half": 24
         },
-        "ok": {
+        "say": {
+          "ok": {
+            "th": "ยังเก็บได้",
+            "en": "Still safe"
+          },
+          "soon": {
+            "th": "ใกล้ครบเวลา",
+            "en": "Nearly time"
+          },
+          "over": {
+            "th": "เกิน {h} ชม.แล้ว",
+            "en": "Over {h} hours"
+          }
+        },
+        "cond": {
           "th": "ถ้าไม่เปิดช่องแช่แข็ง",
           "en": "if it stays shut"
         },
         "over": {
-          "th": "เกิน {h} ชม.แล้ว: ห้ามชิมเพื่อดูว่าเสียไหม ไม่แน่ใจให้ทิ้ง",
-          "en": "Over {h} hours: never taste it to check; when in doubt, throw it out"
+          "th": "ห้ามชิมเพื่อดู ไม่แน่ใจให้ทิ้ง",
+          "en": "Never taste it to check; if in doubt, throw it out"
         },
         "sources": [
           "cdc-food-outage"
@@ -456,17 +484,31 @@
           "en": "Medicine that must be kept cold"
         },
         "days": 1,
-        "left": {
-          "th": "อีกราว {left} จะครบ 1 วัน",
-          "en": "About {left} until it has been a day"
+        "say": {
+          "ok": {
+            "th": "ยังไม่ถึง 1 วัน",
+            "en": "Under a day so far"
+          },
+          "soon": {
+            "th": "ใกล้ครบ 1 วัน",
+            "en": "Nearly a day"
+          },
+          "over": {
+            "th": "เกิน 1 วันแล้ว",
+            "en": "Over a day"
+          }
         },
         "ok": {
-          "th": "ถ้าไฟดับเกิน 1 วัน Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากบอกว่าเก็บนอกตู้ได้",
-          "en": "if the power is off over a day, Ready.gov says throw it out unless the label says otherwise"
+          "th": "อีกราว {left} จะครบ 1 วัน",
+          "en": "About {left} until a day"
+        },
+        "note": {
+          "th": "ถ้าไฟดับเกิน 1 วัน Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้",
+          "en": "If the power is off over a day, Ready.gov says throw it out unless the label says it can be kept out of the fridge"
         },
         "over": {
-          "th": "ไฟดับเกิน 1 วันแล้ว: Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้",
-          "en": "Off for over a day: Ready.gov says throw it out unless the label says it can be kept out of the fridge"
+          "th": "Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้",
+          "en": "Ready.gov says throw it out unless the label says it can be kept out of the fridge"
         },
         "sources": [
           "readygov-outage"
@@ -478,8 +520,8 @@
       {
         "icon": "🚪",
         "text": {
-          "th": "เปิดตู้เย็นเท่าที่จำเป็น ความเย็นจะอยู่ได้นานที่สุด",
-          "en": "Open the fridge and freezer only when you must, so the cold lasts"
+          "th": "เปิดตู้เย็นให้น้อยที่สุด ความเย็นจะอยู่ได้นานขึ้น",
+          "en": "Open the fridge as little as you can, so the cold lasts"
         },
         "sources": [
           "cdc-food-outage",
@@ -491,7 +533,7 @@
         "icon": "🚫",
         "text": {
           "th": "ห้ามชิมเพื่อดูว่าอาหารเสียไหม ไม่แน่ใจให้ทิ้ง",
-          "en": "Never taste food to see if it has gone off; when in doubt, throw it out"
+          "en": "Never taste food to check it; if in doubt, throw it out"
         },
         "sources": [
           "cdc-food-outage"
@@ -501,7 +543,7 @@
       {
         "icon": "🥫",
         "text": {
-          "th": "กระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม ทิ้งไป",
+          "th": "กระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม ให้ทิ้ง",
           "en": "Throw out cans that are dented, bulging, leaking or rusty"
         },
         "sources": [
@@ -510,6 +552,17 @@
         ],
         "verify": "verified"
       }
+    ],
+    "quick": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      12,
+      24,
+      48
     ]
   },
   "air": {
@@ -518,8 +571,8 @@
       {
         "id": "pm",
         "label": {
-          "th": "PM2.5 (มคก./ลบ.ม.)",
-          "en": "PM2.5 (µg/m³)"
+          "th": "ตัวเลข PM2.5 (มคก./ลบ.ม.)",
+          "en": "PM2.5 number (µg/m³)"
         },
         "step": 0.1,
         "max": 999
@@ -527,8 +580,8 @@
       {
         "id": "aqi",
         "label": {
-          "th": "AQI ของไทย",
-          "en": "Thailand's AQI"
+          "th": "ตัวเลข AQI (แอปของไทย)",
+          "en": "AQI number (Thai apps)"
         },
         "step": 1,
         "max": 500
@@ -546,8 +599,8 @@
         },
         "all": [
           {
-            "th": "ทุกคนใช้ชีวิตได้ตามปกติ",
-            "en": "Everyone can go about life as normal",
+            "th": "ใช้ชีวิตได้ตามปกติ",
+            "en": "Go about life as normal",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -568,7 +621,7 @@
         },
         "all": [
           {
-            "th": "ทำกิจกรรมกลางแจ้งได้ตามปกติ",
+            "th": "ทำกิจกรรมนอกบ้านได้ตามปกติ",
             "en": "Outdoor activities as normal",
             "sources": [
               "pcd-aqi-2566",
@@ -578,8 +631,8 @@
         ],
         "risk": [
           {
-            "th": "สังเกตอาการผิดปกติ เช่น ไอบ่อย หายใจลำบาก หายใจมีเสียงวี้ด แน่นหน้าอก ใจสั่น เวียนหัว",
-            "en": "Watch for unusual symptoms: frequent cough, hard breathing, wheeze, a tight chest, palpitations, dizziness",
+            "th": "คอยดูอาการ เช่น ไอบ่อย หายใจไม่สะดวก หายใจมีเสียงวี้ด แน่นหน้าอก ใจสั่น เวียนหัว",
+            "en": "Watch for symptoms: coughing a lot, hard breathing, wheezing, a tight chest, a racing heart, dizziness",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -599,8 +652,8 @@
         },
         "all": [
           {
-            "th": "ลดเวลาทำกิจกรรมหรือออกกำลังกายกลางแจ้งที่ใช้แรงมาก",
-            "en": "Spend less time on hard outdoor activity or exercise",
+            "th": "ออกกำลังหนักๆ นอกบ้านให้น้อยลง",
+            "en": "Do less hard exercise or work outdoors",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -609,24 +662,24 @@
         ],
         "risk": [
           {
-            "th": "ใส่หน้ากากป้องกัน PM2.5 ทุกครั้งที่ออกนอกอาคาร",
-            "en": "Wear a PM2.5 mask every time you go outside",
+            "th": "ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้งที่ออกนอกบ้าน",
+            "en": "Wear a PM2.5 mask every time you go out",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "ลดเวลาทำกิจกรรมหรือออกกำลังกายกลางแจ้งที่ใช้แรงมาก",
-            "en": "Spend less time on hard outdoor activity or exercise",
+            "th": "ออกกำลังหนักๆ นอกบ้านให้น้อยลง",
+            "en": "Do less hard exercise or work outdoors",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "มีอาการผิดปกติ รีบปรึกษาแพทย์",
-            "en": "Any unusual symptoms: see a doctor promptly",
+            "th": "ถ้ามีอาการผิดปกติ รีบปรึกษาหมอ",
+            "en": "If you feel unwell, talk to a doctor soon",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -641,29 +694,29 @@
         "aqi": 200,
         "colour": "#F28C28",
         "label": {
-          "th": "ส้ม · เริ่มมีผลกระทบต่อสุขภาพ",
+          "th": "ส้ม · เริ่มมีผลต่อสุขภาพ",
           "en": "Orange · starting to affect health"
         },
         "all": [
           {
-            "th": "ใส่หน้ากากป้องกัน PM2.5 ทุกครั้งที่ออกนอกอาคาร",
-            "en": "Wear a PM2.5 mask every time you go outside",
+            "th": "ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้งที่ออกนอกบ้าน",
+            "en": "Wear a PM2.5 mask every time you go out",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "จำกัดเวลาทำกิจกรรมหรือออกกำลังกายกลางแจ้งที่ใช้แรงมาก",
-            "en": "Limit hard outdoor activity or exercise",
+            "th": "ออกกำลังหนักๆ นอกบ้านให้สั้นลง",
+            "en": "Keep hard exercise or work outdoors short",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "สังเกตอาการผิดปกติ เช่น ไอ หายใจลำบาก ระคายเคืองตา",
-            "en": "Watch for symptoms such as a cough, hard breathing or sore eyes",
+            "th": "คอยดูอาการ เช่น ไอ หายใจไม่สะดวก แสบตา",
+            "en": "Watch for symptoms such as coughing, hard breathing or sore eyes",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -672,24 +725,24 @@
         ],
         "risk": [
           {
-            "th": "ใส่หน้ากากป้องกัน PM2.5 ทุกครั้งที่ออกนอกอาคาร",
-            "en": "Wear a PM2.5 mask every time you go outside",
+            "th": "ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้งที่ออกนอกบ้าน",
+            "en": "Wear a PM2.5 mask every time you go out",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "เลี่ยงกิจกรรมหรือออกกำลังกายกลางแจ้งที่ใช้แรงมาก",
-            "en": "Avoid hard outdoor activity or exercise",
+            "th": "เลี่ยงการออกกำลังหนักๆ นอกบ้าน",
+            "en": "Avoid hard exercise or work outdoors",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "ทำตามคำแนะนำของแพทย์ มีอาการผิดปกติ รีบไปพบแพทย์",
-            "en": "Follow the doctor's advice; any unusual symptoms, see a doctor promptly",
+            "th": "ทำตามที่หมอแนะนำ ถ้ามีอาการผิดปกติ รีบไปหาหมอ",
+            "en": "Follow your doctor's advice; if you feel unwell, see a doctor soon",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -698,8 +751,8 @@
         ],
         "chronic": [
           {
-            "th": "เตรียมยาและอุปกรณ์ที่จำเป็นให้พร้อม",
-            "en": "Have the medicine and equipment you need ready",
+            "th": "เตรียมยาและอุปกรณ์ที่ต้องใช้ให้พร้อม",
+            "en": "Have your medicine and equipment ready",
             "sources": [
               "doh-aqi-2566"
             ]
@@ -712,12 +765,12 @@
         "aqi": null,
         "colour": "#E5372E",
         "label": {
-          "th": "แดง · มีผลกระทบต่อสุขภาพ",
+          "th": "แดง · มีผลต่อสุขภาพ",
           "en": "Red · affects health"
         },
         "all": [
           {
-            "th": "งดกิจกรรมกลางแจ้ง",
+            "th": "งดทำกิจกรรมนอกบ้าน",
             "en": "No outdoor activities",
             "sources": [
               "pcd-aqi-2566",
@@ -725,7 +778,7 @@
             ]
           },
           {
-            "th": "ถ้าจำเป็นต้องออกไป ใส่หน้ากากป้องกัน PM2.5 ทุกครั้ง",
+            "th": "ถ้าต้องออกไป ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้ง",
             "en": "If you must go out, always wear a PM2.5 mask",
             "sources": [
               "pcd-aqi-2566",
@@ -733,16 +786,16 @@
             ]
           },
           {
-            "th": "มีอาการผิดปกติ รีบไปพบแพทย์",
-            "en": "Any unusual symptoms: see a doctor promptly",
+            "th": "ถ้ามีอาการผิดปกติ รีบไปหาหมอ",
+            "en": "If you feel unwell, see a doctor soon",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
             ]
           },
           {
-            "th": "อยู่ในห้องปลอดฝุ่น",
-            "en": "Stay in a dust-free room",
+            "th": "อยู่ในห้องที่กันฝุ่นได้",
+            "en": "Stay in a room that keeps the dust out",
             "sources": [
               "doh-aqi-2566"
             ]
@@ -751,8 +804,8 @@
         "risk": [],
         "chronic": [
           {
-            "th": "อยู่ในพื้นที่ปลอดภัยจากมลพิษทางอากาศ เตรียมยาและอุปกรณ์ที่จำเป็นให้พร้อม ทำตามคำแนะนำของแพทย์อย่างเคร่งครัด",
-            "en": "Stay in a room kept safe from air pollution, with the medicine and equipment you need ready, and follow the doctor's advice strictly",
+            "th": "อยู่ในห้องที่กันฝุ่นได้ เตรียมยาและอุปกรณ์ให้พร้อม และทำตามที่หมอแนะนำอย่างเคร่งครัด",
+            "en": "Stay in a room that keeps the dust out, with your medicine and equipment ready, and follow your doctor's advice closely",
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
@@ -780,8 +833,8 @@
         "icon": "🧓",
         "from": "elder",
         "label": {
-          "th": "คนอายุเกิน 60",
-          "en": "People over 60"
+          "th": "ผู้สูงอายุ",
+          "en": "Older people"
         },
         "short": {
           "th": "ผู้สูงอายุ",
@@ -806,8 +859,8 @@
         "from": "meds",
         "chronic": true,
         "label": {
-          "th": "คนมีโรคหัวใจ ปอด หรือโรคประจำตัว",
-          "en": "Heart, lung or long-term illness"
+          "th": "คนมีโรคประจำตัว เช่น หัวใจ ปอด",
+          "en": "Long-term illness, e.g. heart or lung"
         },
         "short": {
           "th": "คนมีโรคประจำตัว",
@@ -861,23 +914,17 @@
       "helpLabel": "เบอร์ช่วยเหลือ โทรฟรี",
       "close": "ปิด",
       "fridgeTitle": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?",
-      "fridgeIntro": "บอกว่าไฟดับมานานแค่ไหน แล้วดูว่าของในตู้เย็นยังเก็บได้อีกกี่ชั่วโมง",
-      "fridgeHours": "ไฟดับมานานแค่ไหนแล้ว?",
-      "fridgeLess": "ลดหนึ่งชั่วโมง",
-      "fridgeMore": "เพิ่มหนึ่งชั่วโมง",
-      "fridgeNow": "⏱️ ไฟเพิ่งดับ เริ่มนับจากตอนนี้",
-      "fridgeSince": "นับจากราว {time} ระบบนับต่อให้เองแม้ปิดหน้านี้",
+      "fridgeIntro": "แตะว่าไฟดับมานานเท่าไร แล้วดูคำตอบด้านล่าง",
+      "fridgeHours": "ไฟดับมานานเท่าไรแล้ว?",
       "fridgeElapsed": "{h} ชม. {m} นาที",
-      "fridgeFreezer": "ช่องแช่แข็งมีของแค่ไหน?",
+      "fridgeFreezer": "ช่องแช่แข็งมีของ",
       "fridgeMed": "มียาที่ต้องเก็บในตู้เย็น",
-      "fridgeNowHead": "ตอนนี้",
-      "fridgeLeft": "ยังเก็บได้อีกราว {left} {cond}",
-      "fridgeUntil": "ถึงราว {at}",
-      "fridgeAlways": "ไม่ว่าไฟดับนานแค่ไหน",
+      "fridgeNowHead": "คำตอบ",
+      "fridgeAlways": "จำไว้",
       "fridgeIntl": "ตัวเลขชั่วโมงมาจาก CDC และ Ready.gov ของสหรัฐฯ ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานไทย",
-      "fridgeReset": "ไฟมาแล้ว: ล้างเวลา",
+      "fridgeReset": "ไฟมาแล้ว",
       "fridgeShare": "📤 ส่งให้คนที่บ้าน",
-      "fridgeShareHead": "ไฟดับมา {elapsed} แล้ว",
+      "fridgeShareHead": "ไฟดับมาแล้ว {elapsed}",
       "fridgeShareTail": "เช็กของบ้านคุณ: {url}",
       "fridgeKit": "🎒 เช็กของจำเป็นสำหรับไฟดับ",
       "hours": "{n} ชม.",
@@ -886,26 +933,25 @@
       "medCalc": "ยาพอกี่วัน? ลองคำนวณ",
       "medLeft": "ยาเหลือกี่เม็ด",
       "medPerDay": "กินวันละกี่เม็ด",
-      "medHint": "ใส่ทีละตัวยา ดูว่าพออย่างน้อย {target} วันไหม",
-      "medEnough": "✅ พอ {days} วัน ถึง {target} วันแล้ว",
-      "medShort": "⏳ พอ {days} วัน ให้พอ {target} วัน ต้องมีอีก {need} เม็ด",
+      "medHint": "ใส่ทีละตัวยา แล้วดูว่าพออย่างน้อย {target} วันไหม",
+      "medEnough": "✅ พออีก {days} วัน ครบ {target} วันแล้ว",
+      "medShort": "⏳ พออีก {days} วัน ต้องมีเพิ่ม {need} เม็ด จะพอ {target} วัน",
       "airTitle": "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?",
-      "airIntro": "ใส่ค่าฝุ่นจากแอป แล้วดูว่าทุกคนในบ้าน และคนที่ต้องระวังเป็นพิเศษ ควรทำอะไร",
-      "airUnit": "ตัวเลขที่เห็นเป็นแบบไหน?",
-      "airValue": "ค่าฝุ่นตอนนี้",
-      "airOr": "หรือเลือกสีที่เห็นในแอป",
-      "airAvg": "สีของกรมควบคุมมลพิษใช้ค่าเฉลี่ย 24 ชั่วโมง AQI ในนี้คือ AQI ของไทย แอปต่างประเทศใช้ AQI คนละแบบ ให้ใส่ค่า PM2.5 แทน",
+      "airIntro": "ดูสีค่าฝุ่นในแอป เช่น Air4Thai แล้วแตะสีเดียวกันด้านล่าง",
+      "airUnit": "ตัวเลขนี้เป็นแบบไหน?",
+      "airValue": "ตัวเลข",
+      "airAvg": "ใช้ตัวเลขจากแอปของไทย เช่น Air4Thai แอปต่างประเทศใช้ AQI คนละแบบ ให้ใส่ตัวเลข PM2.5 แทน สีตามเกณฑ์ใช้ค่าเฉลี่ย 24 ชั่วโมง",
       "airCheck": "🌐 ดูค่าฝุ่นใน Air4Thai",
       "airWho": "ในบ้านมีใครต้องระวังเป็นพิเศษไหม?",
-      "airLevel": "ระดับ{name}",
+      "airLevel": "สี{name}",
       "airRange": "{lo}–{hi} {unit}",
       "airRangeTop": "{lo} {unit} ขึ้นไป",
       "airAll": "ทุกคนในบ้าน",
       "airRisk": "สำหรับ{who}",
       "airChronic": "เพิ่มเติมสำหรับคนมีโรคประจำตัว",
-      "airRiskHint": "กลุ่มเสี่ยง (เด็กเล็ก ผู้สูงอายุ คนท้อง คนเป็นโรคหัวใจหรือโรคทางเดินหายใจ) ต้องระวังมากกว่านี้ ติ๊กด้านบนถ้าในบ้านมี",
-      "airNone": "ใส่ตัวเลข หรือเลือกสี แล้วคำแนะนำจะขึ้นที่นี่",
-      "airSame": "ทำแบบเดียวกับทุกคนในบ้าน",
+      "airRiskHint": "ถ้าในบ้านมีเด็กเล็ก ผู้สูงอายุ คนท้อง หรือคนมีโรคประจำตัว ติ๊กด้านบน จะเห็นคำแนะนำเพิ่ม",
+      "airNone": "แตะสีด้านบน แล้วคำแนะนำจะขึ้นตรงนี้",
+      "airSame": "ทำแบบเดียวกับทุกคน",
       "airShare": "📤 ส่งให้คนที่บ้าน",
       "airShareHead": "ฝุ่นตอนนี้ {value} สี{name}",
       "airShareColour": "ฝุ่นตอนนี้ สี{name}",
@@ -913,7 +959,15 @@
       "airGuide": "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ",
       "airPrivacy": "คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน",
       "airBy": "({agency})",
-      "fridgeAt": "(ราว {at})"
+      "fridgeJust": "เพิ่งดับ",
+      "fridgeDay": "1 วัน",
+      "fridgeDays": "{n} วัน",
+      "fridgeCounting": "⏱️ ไฟดับมาแล้ว {elapsed} แอปจะนับเวลาต่อให้ ปิดแล้วเปิดใหม่ได้",
+      "fridgePick": "แตะเวลาด้านบน แล้วคำตอบจะขึ้นตรงนี้",
+      "fridgeCleared": "ล้างเวลาแล้ว",
+      "fridgeLeft": "เหลืออีกราว {left} {cond}",
+      "airColourQ": "ค่าฝุ่นตอนนี้เป็นสีอะไร?",
+      "airNumber": "รู้ตัวเลข? ใส่ตัวเลขแทน"
     },
     "en": {
       "title": "Check your supplies: how ready is our home?",
@@ -959,21 +1013,15 @@
       "helpLabel": "Thai helplines, free to call",
       "close": "Close",
       "fridgeTitle": "Power cut: is the food in the fridge still safe?",
-      "fridgeIntro": "Say how long the power has been off, and see how much longer the food in the fridge stays safe.",
+      "fridgeIntro": "Tap how long the power has been off, and see the answer below.",
       "fridgeHours": "How long has the power been off?",
-      "fridgeLess": "One hour less",
-      "fridgeMore": "One hour more",
-      "fridgeNow": "⏱️ It has just gone off: start counting now",
-      "fridgeSince": "Counting from about {time}; it keeps counting even if you close this",
       "fridgeElapsed": "{h} h {m} min",
-      "fridgeFreezer": "How full is the freezer?",
+      "fridgeFreezer": "The freezer is",
       "fridgeMed": "There is medicine that must be kept cold",
-      "fridgeNowHead": "Right now",
-      "fridgeLeft": "Safe for about {left} more, {cond}",
-      "fridgeUntil": "until about {at}",
-      "fridgeAlways": "However long the power is off",
+      "fridgeNowHead": "The answer",
+      "fridgeAlways": "Remember",
       "fridgeIntl": "The hours come from the US CDC and Ready.gov; no Thai agency advice on this was found.",
-      "fridgeReset": "The power's back: clear the time",
+      "fridgeReset": "The power's back",
       "fridgeShare": "📤 Send to the family",
       "fridgeShareHead": "The power has been off for {elapsed}",
       "fridgeShareTail": "Check yours: {url}",
@@ -985,14 +1033,13 @@
       "medLeft": "Pills left",
       "medPerDay": "Pills a day",
       "medHint": "One medicine at a time: see if it lasts at least {target} days",
-      "medEnough": "✅ Enough for {days} days: {target} or more",
-      "medShort": "⏳ Enough for {days} days; for {target} days you need {need} more",
+      "medEnough": "✅ Lasts {days} more days: {target} or more",
+      "medShort": "⏳ Lasts {days} more days; {need} more pills make {target} days",
       "airTitle": "Dust today: what should we do at home?",
-      "airIntro": "Put in the dust reading from an app, and see what everyone at home, and the people who need extra care, should do.",
-      "airUnit": "What kind of number is it?",
-      "airValue": "The reading now",
-      "airOr": "or pick the colour the app shows",
-      "airAvg": "The PCD's colours are for the 24-hour average. The AQI here is Thailand's AQI; apps from abroad use a different AQI, so put in the PM2.5 figure instead.",
+      "airIntro": "Look at the dust colour in an app such as Air4Thai, and tap the same colour below.",
+      "airUnit": "Which number is it?",
+      "airValue": "The number",
+      "airAvg": "Use the number from a Thai app such as Air4Thai. Apps from abroad use a different AQI, so put in the PM2.5 number instead. The colours are for the 24-hour average.",
       "airCheck": "🌐 See the reading on Air4Thai",
       "airWho": "Is anyone at home who needs extra care?",
       "airLevel": "{name}",
@@ -1001,9 +1048,9 @@
       "airAll": "Everyone at home",
       "airRisk": "For {who}",
       "airChronic": "Also, for people with a long-term illness",
-      "airRiskHint": "People at risk (young children, older people, pregnant women, people with heart or breathing disease) need more care than this; tick above if anyone at home is one.",
-      "airNone": "Put in the number or pick a colour, and the advice shows here.",
-      "airSame": "The same as everyone at home",
+      "airRiskHint": "If anyone at home is a young child, older, pregnant or has a long-term illness, tick above to see more advice.",
+      "airNone": "Tap a colour above and the advice shows here.",
+      "airSame": "The same as everyone",
       "airShare": "📤 Send to the family",
       "airShareHead": "The dust now: {value}, {name}",
       "airShareColour": "The dust now: {name}",
@@ -1011,7 +1058,15 @@
       "airGuide": "😷 10 ways to keep dust out of the house",
       "airPrivacy": "Your answers stay on this device; nothing is sent.",
       "airBy": "— {agency}",
-      "fridgeAt": "(about {at})"
+      "fridgeJust": "Just now",
+      "fridgeDay": "1 day",
+      "fridgeDays": "{n} days",
+      "fridgeCounting": "⏱️ Off for {elapsed} so far. The app keeps counting, even if you close it.",
+      "fridgePick": "Tap a time above and the answer shows here.",
+      "fridgeCleared": "Time cleared",
+      "fridgeLeft": "About {left} left, {cond}",
+      "airColourQ": "What colour is the dust now?",
+      "airNumber": "Know the number? Put it in instead"
     }
   }
 }

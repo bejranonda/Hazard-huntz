@@ -358,8 +358,10 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
     for (const x of F.freezer || []) text(x.label, `kit.json fridge.freezer ${x.id}`);
     for (const p of F.parts || []) {
       const where = `kit.json fridge part ${p.id}`;
-      for (const k of ['label', 'ok', 'over']) text(p[k], `${where} ${k}`);
-      if (p.left) text(p.left, `${where} left`);
+      for (const k of ['label', 'over']) text(p[k], `${where} ${k}`);
+      for (const k of ['ok', 'soon', 'over']) text(p.say?.[k], `${where} say.${k}`);
+      if (!p.cond && !p.ok) err(`${where}: needs cond (the condition, e.g. "if the door stays shut") or ok (its own line)`);
+      for (const k of ['cond', 'ok', 'note']) if (p[k]) text(p[k], `${where} ${k}`);
       if (p.if && p.if !== 'med') err(`${where}: "if" can only be med`);
       if (!['verified', 'partial'].includes(p.verify)) err(`${where}: verify must be verified or partial`);
       if (!(p.sources || []).length) err(`${where}: needs sources`);
@@ -965,13 +967,13 @@ ${hazardChips('en', h.id)}
   const F = kitFile.fridge;
   const keeps = (p, lang) => {
     const X = lang === 'en' ? E : S;
-    if (p.left) return lang === 'en' ? L2(p.ok, lang).replace(/^./, (c) => c.toUpperCase()) : L2(p.ok, lang);
+    if (!p.cond) return L2(p.note || p.ok, lang);
     const sep = lang === 'en' ? ', ' : ' ';
-    if (p.hoursBy) return `${F.freezer.map((z) => `${L2(z.label, lang)}: ${fill(X.fridgeKeeps, { h: p.hoursBy[z.id] })}`).join(' · ')}${sep}${L2(p.ok, lang)}`;
-    return `${fill(X.fridgeKeeps, { h: p.hours })}${sep}${L2(p.ok, lang)}`;
+    if (p.hoursBy) return `${F.freezer.map((z) => `${L2(z.label, lang)}: ${fill(X.fridgeKeeps, { h: p.hoursBy[z.id] })}`).join(' · ')}${sep}${L2(p.cond, lang)}`;
+    return `${fill(X.fridgeKeeps, { h: p.hours })}${sep}${L2(p.cond, lang)}`;
   };
   const fridgeRows = (lang) => [
-    ...F.parts.map((p) => `<li><b>${esc(p.icon)} ${esc(L2(p.label, lang))}</b> · ${esc(keeps(p, lang))}${p.hours || p.hoursBy ? `<br>${esc((lang === 'en' ? E : S).fridgeAfter)} ${esc(L2(p.over, lang).replace(/^[^:]*:\s*/, ''))}` : ''}<br>${src(p, lang)}</li>`),
+    ...F.parts.map((p) => `<li><b>${esc(p.icon)} ${esc(L2(p.label, lang))}</b> · ${esc(keeps(p, lang))}${p.cond ? `<br>${esc((lang === 'en' ? E : S).fridgeAfter)} ${esc(lang === 'en' ? L2(p.over, lang).replace(/^./, (c) => c.toLowerCase()) : L2(p.over, lang))}` : ''}<br>${src(p, lang)}</li>`),
     ...F.always.map((a) => `<li><b>${esc(a.icon)} ${esc(L2(a.text, lang))}</b><br>${src(a, lang)}</li>`),
   ].join('\n');
   // Dust today (v1.10.0): each colour with its band and what each group does.

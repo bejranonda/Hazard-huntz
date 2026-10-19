@@ -812,33 +812,36 @@ try {
     await ctx.close();
   }
 
-  // 11b. The fridge in a power cut (v1.10.0): how long each part keeps, live,
-  // from the time the power went off; the time stays on the device.
+  // 11b. The fridge in a power cut (v1.10.0; one tap since v1.10.1): tap how long
+  // the power has been off, then one card per part; the time stays on the device.
   {
     const { ctx, page } = await newPage({ width: 360, height: 640 });
-    const start = await page.evaluate(() => Date.now() - 3.5 * 3600e3 + 20e3); // 20 s to spare for the minutes
-    await page.addInitScript((st) => localStorage.setItem('brm:fridge', JSON.stringify({ start: st, freezer: 'full', med: true })), start);
     await page.goto(`${BASE}/?open=fridge&debug=1`, { waitUntil: 'networkidle' });
-    await page.waitForSelector('#fr-list .fr-row');
-    const rows = () => page.$$eval('#fr-list .fr-row', (els) => els.map((e) => ({ s: e.querySelector('.fr-status').className.replace('fr-status ', ''), t: e.querySelector('.fr-status').textContent })));
-    const r1 = await rows();
-    check('fridge: 3 h 30 min off → the fridge has about 30 min (soon), a full freezer 44 h 30 min, cold medicine 20 h 30 min',
-      r1.length === 3 && r1[0].s === 'is-soon' && /30 นาที/.test(r1[0].t) && r1[1].s === 'is-ok' && /44 ชม\. 30 นาที/.test(r1[1].t) && /20 ชม\. 30 นาที/.test(r1[2].t), JSON.stringify(r1));
-    const firstRow = await page.evaluate(() => document.querySelector('#fr-list').getBoundingClientRect().top < innerHeight - 80);
-    check('fridge: the answer starts on the first screen (360x640)', firstRow);
-    await page.click('#fr-plus'); // 4 h
-    await page.click('.kit-flag:has(input[value="half"])');
-    const r2 = await rows();
-    check('fridge: + adds an hour (4 h 30 min): the fridge food is out (meat, fish, eggs, milk, leftovers); half a freezer has 19 h 30 min of its 24 h',
-      r2[0].s === 'is-over' && r2[0].t.includes(KIT.fridge.parts[0].over.th.replace('{h}', 4)) && /19 ชม\. 30 นาที/.test(r2[1].t) && (await page.textContent('#fr-h')).trim() === '4 ชม. 30 นาที', JSON.stringify(r2));
+    await page.waitForSelector('.fr-time');
+    const fresh = await page.evaluate(() => ({ pick: !!document.querySelector('.fr-pick'), stored: localStorage.getItem('brm:fridge'), chosen: document.querySelectorAll('.fr-time[aria-checked="true"]').length, times: document.querySelectorAll('.fr-time').length }));
+    check('fridge: nothing is counted until a time is tapped (no "1 นาที" out of nowhere); 9 times to tap', fresh.pick && !fresh.stored && !fresh.chosen && fresh.times === KIT.fridge.quick.length, JSON.stringify(fresh));
+    const cards = () => page.$$eval('.fr-card', (cs) => cs.map((c) => ({ id: c.dataset.part, s: c.className.replace('fr-card ', ''), say: c.querySelector('.fr-say').textContent, d: c.querySelector('.fr-detail').textContent })));
+    await page.click('.fr-time[data-h="3"]');
+    let c = await cards();
+    check('fridge: "3 ชม." → the fridge is nearly at 4 hours, about 1 hour left; a full freezer about 45 hours',
+      c.length === 2 && c[0].s === 'is-soon' && c[0].d.includes('1 ชม.') && c[1].s === 'is-ok' && c[1].d.includes('45 ชม.') && (await page.getAttribute('.fr-time[data-h="3"]', 'aria-checked')) === 'true', JSON.stringify(c));
+    const onScreen = await page.evaluate(() => { const r = document.querySelector('.fr-card').getBoundingClientRect(); return r.top >= 0 && r.top < innerHeight; });
+    check('fridge: the answer is on screen after the tap (360x640)', onScreen);
+    await page.click('.fr-time[data-h="6"]');
+    await page.click('.fr-seg .kit-flag:has(input[value="half"])');
+    await page.click('.fr-med');
+    c = await cards();
+    check('fridge: "6 ชม.", half a freezer, cold medicine → the fridge food out (meat, fish, eggs, milk, leftovers); the freezer about 18 h; a day for the medicine in about 18 h',
+      c.length === 3 && c[0].s === 'is-over' && c[0].d === KIT.fridge.parts[0].over.th && /18 ชม\./.test(c[1].d) && /18 ชม\./.test(c[2].d), JSON.stringify(c));
     const kept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:fridge')));
-    check('fridge: the start time and answers are kept on the device', kept.freezer === 'half' && kept.med === true && Math.abs(kept.start - (start - 3600e3)) < 120e3, JSON.stringify(kept));
+    const want = await page.evaluate(() => Date.now() - 6 * 3600e3);
+    check('fridge: the start time and answers are kept on the device', kept.freezer === 'half' && kept.med === true && kept.picked === 6 && Math.abs(kept.start - want) < 120e3, JSON.stringify(kept));
     const smallF = await smallControls(page);
     check('fridge controls >= 44 px', !smallF.length, smallF.join(', '));
     await page.click('[data-t="copy"]');
     await page.click('#fr-close');
     const chip = (await page.textContent('#fridge-chip')).trim();
-    check('fridge: the start screen says how long the power has been off', chip === STR.th.hubFridgeRunning.replace('{h}', 4), chip);
+    check('fridge: the start screen says how long the power has been off', chip === STR.th.hubFridgeRunning.replace('{h}', 6), chip);
     await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
     await page.waitForTimeout(500);
     const names = new Set(events.map((e) => e[0]));
@@ -858,15 +861,18 @@ try {
     const { ctx, page } = await newPage({ width: 360, height: 640 });
     await page.addInitScript(() => localStorage.setItem('brm:kit', JSON.stringify({ people: 3, flags: ['baby', 'meds'], have: [], answered: true })));
     await page.goto(`${BASE}/?open=air&debug=1`, { waitUntil: 'networkidle' });
-    await page.waitForSelector('#air-v');
+    await page.waitForSelector('.air-colour');
+    const first = await page.evaluate(() => ({ colours: [...document.querySelectorAll('.air-colour')].every((c) => c.getBoundingClientRect().bottom <= innerHeight), numberOpen: document.querySelector('#air-num').open }));
+    check('dust: the five colours come first, on the first screen; the number is behind "รู้ตัวเลข?"', first.colours && !first.numberOpen, JSON.stringify(first));
     const pre = await page.$$eval('.kit-flags:not(.air-units) input:checked', (xs) => xs.map((x) => x.value));
     check('dust: who is at home starts from the home check (a small child, daily medicine)', pre.join() === 'kids,chronic', pre.join());
     const out = () => page.evaluate(() => ({ text: document.querySelector('#air-out').innerText, lists: document.querySelectorAll('#air-out .air-list').length }));
+    await page.click('#air-num summary'); // the number is the second way in; the colour is the first
     await page.fill('#air-v', '82.4');
     let o = await out();
     const A = KIT.air;
     check('dust: 82.4 µg/m³ is red: no outdoor activities, a dust-free room (said to be the DOH), and lines for a long-term illness',
-      o.text.includes(A.levels[4].label.th) && o.text.includes(A.levels[4].all[0].th) && /ห้องปลอดฝุ่น \(กรมอนามัย\)/.test(o.text) && o.text.includes(A.levels[4].chronic[0].th), o.text.slice(0, 120));
+      o.text.includes(A.levels[4].label.th) && o.text.includes(A.levels[4].all[0].th) && o.text.includes(`${A.levels[4].all[3].th} (กรมอนามัย)`) && o.text.includes(A.levels[4].chronic[0].th), o.text.slice(0, 120));
     await page.click('.air-units .kit-flag:has(input[value="aqi"])');
     await page.fill('#air-v', '137');
     o = await out();

@@ -8,7 +8,7 @@
 >
 > **Since v1.9.0 the app is tools first and the game is optional.** The start screen opens on what to do when something happens (a short sourced guide for each of nine hazards, four of them with no game), what to keep at home, and the family plan; the 60-second game sits below them as the easier way to remember ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).
 >
-> **Since v1.10.0 three calculators** work out what to do from the household's answers: how long the fridge keeps in a power cut, what today's dust reading means for everyone at home, and how many days the pills last ([below](#calculators-the-fridge-dust-today-and-the-pills-v1100)).
+> **Since v1.10.0 three calculators** work out what to do from the household's answers: how long the fridge keeps in a power cut, what today's dust reading means for everyone at home, and how many days the pills last ([below](#calculators-the-fridge-dust-today-and-the-pills-v1100)). Since v1.10.1 they ask one question at a time and answer with a word first, in plain words.
 
 ## Design pillars
 
@@ -176,37 +176,46 @@
 
 **The idea:** the owner liked the home check's "put in values and it works out what to prepare and how much", and asked for more like it. Three tools now work that way, each from numbers an agency gives, each in a sheet over the start screen, keeping its answers on the device and ending in a text to send. Details, sources and checks: [KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100).
 
+**In plain words (v1.10.1).** The owner couldn't read the first fridge tool ("I cannot understand, please review and validate the UI and UX, try to improve and use general simple language"): it counted before it was asked, had two ways to set the time, three facts on every line and the source under every row. Both sheets now follow [GUIDELINES rule 82](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit): one question at a time, by a tap; nothing started before it; the answer as a word first, large, then one line; no jargon up front; the sources once, at the bottom ([KNOWLEDGE §32.10](KNOWLEDGE.md#3210-the-plain-words-pass-v1101)).
+
 ```
- FRIDGE (sheet)                         DUST TODAY (sheet)
+ FRIDGE (sheet), after tapping "3 ชม."   DUST TODAY (sheet), after tapping orange
 ┌──────────────────────────────┐      ┌──────────────────────────────┐
 │ 🥛 ไฟดับ: ของในตู้เย็นยังกินได้ไหม? │      │ 😷 ฝุ่นวันนี้ บ้านเราต้องทำอะไร?  │
-│ ไฟดับมานานแค่ไหนแล้ว?            │      │ ตัวเลขที่เห็นเป็นแบบไหน?          │
-│   [−]   3 ชม. 30 นาที   [+]     │      │ (•) PM2.5  ( ) AQI ของไทย     │
-│ นับจากราว 21:10 น. …             │      │ ค่าฝุ่นตอนนี้ [ 82.4        ]   │
-│ [⏱️ ไฟเพิ่งดับ เริ่มนับจากตอนนี้]   │      │ หรือเลือกสี ● ● ● ● ●          │
-│ ตอนนี้                           │      │ ในบ้านมีใคร … [👶][🧓][🤰][❤️] │
-│ 🥛 ⏳ อีกราว 30 นาที · ถึง 23:30 │      │ ┌ ● ระดับแดง · 75.1 ขึ้นไป ─┐ │
-│ ❄️ ✅ อีกราว 44 ชม. 30 นาที …    │      │ │ ทุกคนในบ้าน …            │ │
-│ 💊 ✅ อีกราว 20 ชม. 30 นาที …    │      │ │ สำหรับเด็กเล็ก …          │ │
-│ ช่องแช่แข็ง (•)เต็ม ( )ครึ่ง  [💊] │      │ │ เพิ่มเติมสำหรับคนมีโรค… │ │
-│ ไม่ว่าไฟดับนานแค่ไหน 🚪 🚫 🥫     │      │ └─────────────────────────┘ │
-│ ⚠️ ตัวเลขชั่วโมงมาจาก CDC …       │      │ [🌐 Air4Thai] 📤 ส่งให้คนที่บ้าน │
-│ 📤 ส่งให้คนที่บ้าน  [🎒] [💡] [ปิด] │      │ [😷 วิธีป้องกันฝุ่น 10 ข้อ] [ปิด] │
-└──────────────────────────────┘      └──────────────────────────────┘
+│ ไฟดับมานานเท่าไรแล้ว?            │      │ ค่าฝุ่นตอนนี้เป็นสีอะไร?          │
+│ [เพิ่งดับ][1 ชม.][2 ชม.][3 ชม.]   │      │ [ฟ้า][เขียว][เหลือง][ส้ม][แดง]  │
+│ [4 ชม.][6 ชม.][12 ชม.][1 วัน]    │      │ ▸ 🔢 รู้ตัวเลข? ใส่ตัวเลขแทน      │
+│ [2 วัน]                        │      │ ในบ้านมีใคร … [👶][🧓][🤰][❤️] │
+│ ⏱️ ไฟดับมาแล้ว 3 ชม. แอปจะนับ…    │      │ ┌ ● สีส้ม · เริ่มมีผลต่อสุขภาพ ┐ │
+│ [💡 ไฟมาแล้ว]                    │      │ │                           │ │
+│ คำตอบ                          │      │ │ ทุกคนในบ้าน                │ │
+│ ┃🥛 ของในตู้เย็น                 │      │ │ · ใส่หน้ากากกันฝุ่น PM2.5 … │ │
+│ ┃⏳ ใกล้ครบ 4 ชม.                │      │ │ · ออกกำลังหนักๆ นอกบ้าน     │ │
+│ ┃เหลืออีกราว 1 ชม. ถ้าไม่เปิดตู้     │      │ │   ให้สั้นลง               │ │
+│ ┃❄️ ของในช่องแช่แข็ง              │      │ │ สำหรับเด็กเล็ก …           │ │
+│ ┃✅ ยังเก็บได้                    │      │ └─────────────────────────┘ │
+│ ┃เหลืออีกราว 45 ชม. ถ้าไม่เปิด…     │      │ ที่มา: กรมควบคุมมลพิษ …        │
+│ ┃ช่องแช่แข็งมีของ [เต็มช่อง][ครึ่งช่อง] │      │ [🌐 Air4Thai] 📤 ส่งให้คนที่บ้าน │
+│ [💊 มียาที่ต้องเก็บในตู้เย็น]        │      │ [😷 วิธีป้องกันฝุ่น 10 ข้อ] [ปิด] │
+│ จำไว้ 🚪 … 🚫 … 🥫 …              │      └──────────────────────────────┘
+│ ⚠️ ตัวเลขชั่วโมงมาจาก CDC … ที่มา: … │
+│ 📤 ส่งให้คนที่บ้าน  [🎒] [ปิด]        │
+└──────────────────────────────┘
 ```
 
 | Element | ไฟดับ: ตู้เย็น (`/fridge`, `/?open=fridge`) | ฝุ่นวันนี้ (`/air`, `/?open=air`) | ยาพอกี่วัน? (in the home check) |
 |---|---|---|---|
-| Asks | How long the power has been off (± one hour, 0–72 h, or a count from now), how full the freezer is, cold medicine | The kind of number (µg/m³ or Thailand's AQI) and the reading, or a colour; who at home needs extra care (starts from the home check) | Pills left, pills a day |
-| Shows | Per part, ✅ / ⏳ / ❌, how long it keeps and until what time: the fridge 4 h, the freezer 48 h full or 24 h half, cold medicine a day; three lines that always hold | The level with its colour and band; what everyone at home does; what the ticked people do; the lines for a long-term illness; the agencies, with the DOH's two lines named | "⏳ พอ 4 วัน ให้พอ 7 วัน ต้องมีอีก 5 เม็ด" or "✅ พอ 7 วัน" |
-| Numbers from | The US CDC and Ready.gov (⚠️, said on screen) | The PCD's notice in the Royal Gazette (2023); the DOH for two lines | The home check's 7 days (`moph-7days`, ⚠️) |
-| Kept | `brm:fridge`: when the power went off, so the count goes on after closing; the hub tile says "⏱️ ไฟดับมาเกิน 5 ชม.แล้ว" | `brm:air`: the unit and the ticks, never the reading | Nothing |
-| Ways in | The hub's 🥛 tile, `/fridge`, the power-cut and storm guides' next steps, the power-cut result, `/ready`, `/storm`, a shortcut | The hub's 😷 tile, `/air`, the dust guide's next steps, the dust result, `/pm25`, a shortcut | The home check's list, when 💊 is ticked |
+| Asks | "ไฟดับมานานเท่าไรแล้ว?": one of 9 buttons, เพิ่งดับ to 2 วัน (`fridge.quick`); in the freezer's card, full or half full; a tick for cold medicine. Nothing is counted before a tap | "ค่าฝุ่นตอนนี้เป็นสีอะไร?": five colours first; or, behind "🔢 รู้ตัวเลข? ใส่ตัวเลขแทน", the kind of number (PM2.5 or Thailand's AQI) and the number; who at home needs extra care (starts from the home check) | Pills left, pills a day |
+| Shows | A card per part: a status word ("ยังกินได้" / "ใกล้ครบ 4 ชม." / "เกิน 4 ชม.แล้ว"), then one line (the time left "about", or what to do); a coloured left edge; "จำไว้" in three lines; the sources once | The colour and level ("สีส้ม · เริ่มมีผลต่อสุขภาพ") with its band; what everyone at home does; what the ticked people do; the lines for a long-term illness; the agencies, with the DOH's two lines named | "⏳ พออีก 4 วัน ต้องมีเพิ่ม 5 เม็ด จะพอ 7 วัน" or "✅ พออีก 7 วัน ครบ 7 วันแล้ว" |
+| Numbers from | The US CDC and Ready.gov (⚠️, said once on screen) | The PCD's notice in the Royal Gazette (2023); the DOH for two lines | The home check's 7 days (`moph-7days`, ⚠️) |
+| Kept | `brm:fridge`: when the power went off and the button tapped, so the count goes on after closing; the hub tile says "⏱️ ไฟดับมาเกิน 5 ชม.แล้ว" | `brm:air`: the unit and the ticks, never the reading | Nothing |
+| Ways in | The hub's 🥛 tile, `/fridge`, the power-cut and storm guides' next steps, the power-cut result, `/ready`, `/storm`, a shortcut | The hub's 😷 tile ("ค่าฝุ่นนี้ ต้องทำอะไร"), `/air`, the dust guide's next steps, the dust result, `/pm25`, a shortcut | The home check's list, when 💊 is ticked |
 
 - **The hub** is now the main guide button and a 2 × 2 grid (🎒 📝 / 🥛 😷). The first three tools stay on the first screen at 320 × 460 and 360 × 640; the calculators' row follows ([KNOWN_ISSUES #77](KNOWN_ISSUES.md#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones)).
-- **Safe rounding:** the time off rounds up and the time left down, so neither looks safer than it is; + and − move exactly one hour from what is shown.
-- **The unit question:** the dust tool asks whether the number is µg/m³ or Thailand's AQI, because the same number is a different colour (AQI 152 orange, 152 µg/m³ red), and sends people with a foreign app to the PM2.5 figure.
-- **After the answer:** in the dust tool the result scrolls into view when a number is entered or a colour picked; "📤 ส่งให้คนที่บ้าน" sends the result as text (LINE, the phone's share sheet, copy) with the tool's link; the fridge's 🎒 opens the home check, and the dust tool's "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" the dust guide.
+- **Rounding:** each status comes from the exact time, so it never looks safer than the source; times on screen read "about" (ราว), to the minute, and a time left of 3 hours or more in whole hours, while the time off keeps its minutes (v1.10.1; v1.10.0's time off up and time left down read "59 นาที" just after a tap).
+- **The unit question:** behind "รู้ตัวเลข?", the dust tool asks whether the number is µg/m³ or Thailand's AQI, because the same number is a different colour (AQI 152 orange, 152 µg/m³ red), and sends people with a foreign app to the PM2.5 number. The colour, first, needs no unit.
+- **Plain words:** the dust advice is in everyday words with the notice's meaning and strength kept: ให้น้อยลง (reduce), ให้สั้นลง (limit), เลี่ยง (avoid), งด (stop) stay four different words.
+- **After the answer:** in both tools the answer scrolls into view after a tap (or a number); "📤 ส่งให้คนที่บ้าน" sends the result as text (LINE, the phone's share sheet, copy) with the tool's link; the fridge's 🎒 opens the home check, and the dust tool's "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" the dust guide. When a sheet opens, its title takes the focus, so no button looks chosen.
 - **Guardrails:** no number of our own, a foreign figure flagged on screen, no promise that food is safe ("ราว"), no medical advice in the pills (arithmetic only), and nothing typed or read leaves the phone.
 
 ## Playing a round

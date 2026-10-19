@@ -864,25 +864,47 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .kit-qty { color: #1A56B8; font-weight: 600; font-size: 15px; }
 .kit-src { color: var(--ink-2); font-size: 13px; }
 .kit-note { display: block; margin: 6px 0 10px; }
-/* the fridge in a power cut (v1.10.0): the time off, then each part's status, live */
-.stepper output.fr-h { min-width: 0; flex: 1; font-size: 24px; }
-.fr-head { margin: 14px 0 0; font-size: 17px; }
-.fr-list { margin-top: 2px; }
-.fr-row { cursor: default; }
-.fr-status { font-weight: 600; font-size: 15px; }
-.fr-status.is-ok { color: #1A56B8; }
-.fr-status.is-soon { color: #9A4A05; }
-.fr-status.is-over { color: #B3261E; }
-.fr-med { margin-top: 8px; }
+/* the fridge in a power cut (v1.10.0): tap how long the power has been off,
+   then one card per part: a word that answers the question, and one line */
+/* nine times, 3 × 3 at every width (auto-fill left "2 วัน" alone on a 400 px phone) */
+.fr-times { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fr-time { min-height: 48px; padding: 6px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; }
+.fr-time[aria-checked="true"] { border-color: var(--ink); background: var(--sun); box-shadow: var(--press); }
+.fr-count { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 10px 0 0; }
+.fr-count p { flex: 1 1 200px; margin: 0; color: var(--ink-2); font-size: 15px; }
+.fr-count .btn { width: auto; margin: 0; padding: 0 14px; }
+.fr-head { margin: 16px 0 6px; font-size: 18px; }
+.fr-out { display: grid; gap: 10px; scroll-margin-top: 48px; }
+.fr-pick { margin: 0; padding: 14px; border: 2px dashed var(--line); border-radius: 14px; color: var(--ink-2); text-align: center; }
+.fr-card { padding: 10px 14px; border: 2px solid var(--line); border-left: 10px solid var(--line); border-radius: 14px; background: var(--paper); }
+.fr-card.is-ok { border-left-color: #1A56B8; }
+.fr-card.is-soon { border-left-color: #C4610A; }
+.fr-card.is-over { border-left-color: #B3261E; }
+.fr-card p { margin: 0; }
+.fr-card-head { font-size: 16px; }
+.fr-say { margin-top: 2px !important; font-size: 22px; font-weight: 600; line-height: 1.3; }
+.fr-card.is-ok .fr-say { color: #1A56B8; }
+.fr-card.is-soon .fr-say { color: #9A4A05; }
+.fr-card.is-over .fr-say { color: #B3261E; }
+.fr-detail { font-size: 16px; }
+.fr-note { margin-top: 4px !important; color: var(--ink-2); font-size: 14px; }
+.fr-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; margin-top: 8px; }
+.fr-seg > span { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; }
+/* a title that takes the focus when a tool opens (so no button looks chosen) shows no ring */
+.sheet h2[tabindex="-1"]:focus { outline: none; }
+.fr-med { margin-top: 10px; }
+.fr-always { margin: 0 0 8px; padding: 0; list-style: none; }
+.fr-always li { margin: 6px 0; font-size: 16px; }
 .fr-share { margin: 12px 0 4px; }
 .share-grid-text { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }
 /* dust today (v1.10.0): the reading or a colour → the PCD's level and what each group does */
 .air-units { grid-template-columns: 1fr 1fr; }
 .air-value { margin-top: 10px; }
 .air-value input { max-width: 180px; }
-.air-or { margin-top: 10px; font-size: 15px; }
+.air-num { margin-top: 10px; }
 .air-colours { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-.air-colour { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; padding: 4px 2px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); font-size: 14px; cursor: pointer; }
+.air-colour { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 64px; padding: 6px 2px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); font-size: 15px; font-weight: 600; cursor: pointer; }
+.air-colour .air-dot { width: 26px; height: 26px; }
 .air-colour input { position: absolute; opacity: 0; pointer-events: none; }
 .air-colour:has(input:checked) { border-color: var(--ink); background: var(--sun); }
 .air-colour:has(input:focus-visible) { outline: 3px solid var(--ok); outline-offset: 2px; }
@@ -935,7 +957,9 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .alert-btn > span:nth-child(2) { flex: 1; }
 .has-challenge .hub, .has-challenge .game-label, .has-challenge .alert-card { display: none; }
 /* the guide picker and a guide */
-.guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin: 10px 0 14px; }
+/* nine guides: three across (3 × 3, no tile left alone on a tablet), two on a 320 px phone */
+.guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0 14px; }
+@media (max-width: 335px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
 .guide-tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 84px; padding: 8px 6px; border: 2px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); font: inherit; font-size: 15px; font-weight: 600; line-height: 1.25; text-align: center; cursor: pointer; }
 .guide-tile.is-now { border-color: var(--warn); background: var(--warn-bg); }
 .guide-ico { font-size: 30px; line-height: 1; }

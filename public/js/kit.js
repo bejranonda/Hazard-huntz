@@ -232,19 +232,13 @@ export async function openPlan(from = 'start', again = false) {
 // The start time stays on this device (brm:fridge), so it keeps counting after
 // the page is closed; nothing about it is sent (tool_open counts the opening).
 const HOUR = 3600e3;
-const clock = (ms) => {
-  const hm = new Date(ms).toLocaleTimeString(getLang() === 'th' ? 'th-TH' : 'en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-  return getLang() === 'th' ? `${hm} น.` : hm;
-};
-// A time on another day says which day ("02:19 น. 22 ต.ค."): 48 hours on, the clock alone repeats.
-const when = (ms) => {
-  const d = new Date(ms);
-  const same = d.toDateString() === new Date().toDateString();
-  return same ? clock(ms) : `${clock(ms)} ${d.toLocaleDateString(getLang() === 'th' ? 'th-TH' : 'en-GB', { day: 'numeric', month: 'short' })}`;
-};
-// Time off rounds up and time left rounds down, so neither ever looks safer than it is.
-function span(hours, up = false) {
-  const total = Math.max(0, (up ? Math.ceil : Math.floor)(hours * 60 - (up ? 1e-6 : -1e-6)));
+// Times read "about", to the nearest minute, so a time just tapped doesn't read
+// "59 นาที"; a time left of 3 hours or more reads in whole hours ("ราว 45 ชม.").
+// The time off keeps its minutes, so it never reads "4 ชม." when a card already
+// says "เกิน 4 ชม.แล้ว". ✅ ⏳ ❌ always come from the exact time.
+function span(hours, whole = false) {
+  whole = whole && hours >= 3;
+  const total = whole ? Math.round(hours) * 60 : Math.max(0, Math.round(hours * 60));
   const h = Math.floor(total / 60);
   const m = total % 60;
   if (!h) return u('minutes', { n: m });
@@ -261,84 +255,100 @@ export async function openFridge(from = 'start') {
   await loadKit();
   track('tool_open', { mode: 'fridge', label: from });
   const F = K.fridge;
-  const s = { start: Date.now(), freezer: F.freezer[0].id, med: false, ...fridgeSaved() };
+  // start: when the power went off (null until a time is tapped).
+  const s = { start: null, freezer: F.freezer[0].id, med: false, ...fridgeSaved() };
   const hoursNow = () => (Date.now() - s.start) / HOUR;
-  // The start screen's button says "ไฟดับมา 3 ชม.แล้ว" at once, not after a reload.
-  const chip = (on) => {
+  // The start screen's button says "ไฟดับมาเกิน 3 ชม.แล้ว" at once, not after a reload.
+  const chip = () => {
     const c = document.getElementById('fridge-chip');
-    const h = Math.floor(hoursNow());
-    if (c) c.textContent = !on ? t('hubFridgeSub') : h ? t('hubFridgeRunning', { h }) : t('hubFridgeJust');
+    if (!c) return;
+    const h = s.start ? Math.floor(hoursNow()) : -1;
+    c.textContent = h < 0 ? t('hubFridgeSub') : h ? t('hubFridgeRunning', { h }) : t('hubFridgeJust');
   };
-  const save = () => { store.set('fridge', { start: s.start, freezer: s.freezer, med: s.med }); chip(true); };
-  const row = (icon, html, src, verify) => `<li class="kit-row fr-row"><span class="kit-ico" aria-hidden="true">${esc(icon)}</span><span class="kit-text">${html}<span class="kit-src">${esc(u('source'))}: ${esc(agencies(src))}${verify !== 'verified' ? ' · ⚠️' : ''}</span></span></li>`;
+  const save = () => { store.set('fridge', s.start ? { start: s.start, picked: s.picked, freezer: s.freezer, med: s.med } : null); chip(); };
+  const timeName = (h) => (!h ? u('fridgeJust') : h % 24 ? u('hours', { n: h }) : h === 24 ? u('fridgeDay') : u('fridgeDays', { n: h / 24 }));
+  const fill = (x, vars) => Object.entries(vars).reduce((str, [key, v]) => str.replaceAll(`{${key}}`, v), L(x));
   openSheet(`
-    <h2 id="sheet-title">🥛 ${esc(u('fridgeTitle'))}</h2>
+    <h2 id="sheet-title" tabindex="-1" autofocus>🥛 ${esc(u('fridgeTitle'))}</h2>
     <p class="sub">${esc(u('fridgeIntro'))}</p>
     <p class="kit-q" id="fr-hours-label">${esc(u('fridgeHours'))}</p>
-    <div class="stepper" role="group" aria-labelledby="fr-hours-label">
-      <button class="step-btn" type="button" id="fr-minus" aria-label="${esc(u('fridgeLess'))}">−</button>
-      <output id="fr-h" class="fr-h"></output>
-      <button class="step-btn" type="button" id="fr-plus" aria-label="${esc(u('fridgeMore'))}">+</button>
-    </div>
-    <p class="kit-src fr-since" id="fr-since"></p>
-    <button class="btn secondary small" type="button" id="fr-now">${esc(u('fridgeNow'))}</button>
+    <div class="fr-times" role="radiogroup" aria-labelledby="fr-hours-label">${F.quick.map((h) => `<button class="fr-time" type="button" role="radio" aria-checked="false" data-h="${h}">${esc(timeName(h))}</button>`).join('')}</div>
+    <div class="fr-count" id="fr-count" hidden><p id="fr-elapsed" aria-live="polite"></p><button class="btn secondary small" type="button" id="fr-reset">💡 ${esc(u('fridgeReset'))}</button></div>
     <h3 class="fr-head">${esc(u('fridgeNowHead'))}</h3>
-    <ul class="kit-list fr-list" id="fr-list" aria-live="polite"></ul>
-    <p class="kit-q" id="fr-freezer-label">${esc(u('fridgeFreezer'))}</p>
-    <div class="kit-flags" role="radiogroup" aria-labelledby="fr-freezer-label">${F.freezer.map((x) => `<label class="kit-flag"><input type="radio" name="fr-freezer" value="${esc(x.id)}"${x.id === s.freezer ? ' checked' : ''}><span>${esc(L(x.label))}</span></label>`).join('')}</div>
+    <div class="fr-out" id="fr-out"></div>
     <label class="kit-flag fr-med"><input type="checkbox" id="fr-med"${s.med ? ' checked' : ''}><span>💊 ${esc(u('fridgeMed'))}</span></label>
     <h3 class="fr-head">${esc(u('fridgeAlways'))}</h3>
-    <ul class="kit-list">${F.always.map((a) => row(a.icon, `<b>${esc(L(a.text))}</b>`, a.sources, a.verify)).join('')}</ul>
-    <p class="kit-src kit-note">⚠️ ${esc(u('fridgeIntl'))}</p>
+    <ul class="fr-always">${F.always.map((a) => `<li><span aria-hidden="true">${esc(a.icon)}</span> ${esc(L(a.text))}</li>`).join('')}</ul>
+    <p class="kit-src">⚠️ ${esc(u('fridgeIntl'))}<br>${esc(u('source'))}: ${esc(agencies([...new Set([...F.parts, ...F.always].flatMap((x) => x.sources))]))}</p>
     <p class="kit-privacy">🔒 ${esc(u('fridgePrivacy'))}</p>
     <div class="fr-share" id="fr-share-row"></div>
     <button class="btn secondary" type="button" id="fr-kit">${esc(u('fridgeKit'))}</button>
-    <button class="btn secondary small" type="button" id="fr-reset">💡 ${esc(u('fridgeReset'))}</button>
     <button class="btn secondary small" type="button" id="fr-close">${esc(u('close'))}</button>`, { label: u('fridgeTitle') });
-  const statusText = (x) => {
-    const p = x.part;
-    if (x.status === 'over') return `❌ ${L(p.over).replace('{h}', x.limit)}`;
-    const left = span(x.left);
-    const at = when(s.start + x.limit * HOUR);
-    // "About 18 h until it has been a day (about 20:58)"; the others "… · until about 23:30".
-    const line = p.left ? `${L(p.left).replace('{left}', left)} ${u('fridgeAt', { at })}` : `${u('fridgeLeft', { left, cond: L(p.ok) })} · ${u('fridgeUntil', { at })}`;
-    return `${x.status === 'soon' ? '⏳' : '✅'} ${line}`;
+  // One card per part: the word that answers the question, then one line.
+  const say = (x) => `${{ ok: '✅', soon: '⏳', over: '❌' }[x.status]} ${fill(x.part.say[x.status], { h: x.limit })}`;
+  const detail = (x) => {
+    if (x.status === 'over') return L(x.part.over);
+    const left = span(x.left, true);
+    return x.part.ok ? fill(x.part.ok, { left }) : u('fridgeLeft', { left, cond: L(x.part.cond) });
   };
-  const paint = () => {
-    if (!document.getElementById('fr-list')) return false;
-    const plan = fridgePlan(F, { hours: hoursNow(), freezer: s.freezer, med: s.med });
-    $('#fr-h').textContent = span(hoursNow(), true);
-    $('#fr-since').textContent = u('fridgeSince', { time: when(s.start) });
-    $('#fr-list').innerHTML = plan.map((x) => row(x.part.icon, `<b>${esc(L(x.part.label))}</b><span class="fr-status is-${x.status}">${esc(statusText(x))}</span>${x.part.left && x.status !== 'over' ? `<span class="kit-qty">${esc(L(x.part.ok).replace(/^./, (c) => c.toUpperCase()))}</span>` : ''}`, x.part.sources, x.part.verify)).join('');
+  const plan = () => fridgePlan(F, { hours: hoursNow(), freezer: s.freezer, med: s.med });
+  const cards = () => {
+    if (!s.start) {
+      $('#fr-out').innerHTML = `<p class="fr-pick">👆 ${esc(u('fridgePick'))}</p>`;
+      return;
+    }
+    $('#fr-out').innerHTML = plan().map((x) => `
+      <div class="fr-card" data-part="${esc(x.id)}">
+        <p class="fr-card-head"><span aria-hidden="true">${esc(x.part.icon)}</span> <b>${esc(L(x.part.label))}</b></p>
+        <p class="fr-say"></p>
+        <p class="fr-detail"></p>
+        ${x.part.note ? `<p class="fr-note">${esc(L(x.part.note))}</p>` : ''}
+        ${x.part.hoursBy ? `<div class="fr-seg" role="radiogroup" aria-label="${esc(u('fridgeFreezer'))}"><span>${esc(u('fridgeFreezer'))}</span>${F.freezer.map((z) => `<label class="kit-flag"><input type="radio" name="fr-freezer" value="${esc(z.id)}"${z.id === s.freezer ? ' checked' : ''}><span>${esc(L(z.label))}</span></label>`).join('')}</div>` : ''}
+      </div>`).join('');
+    for (const r of $$('input[name="fr-freezer"]', $('#fr-out'))) r.addEventListener('change', () => { s.freezer = r.value; save(); tick(); });
+    tick();
+  };
+  // The time moves on by itself; only the words change, so a tap on the freezer answer stays put.
+  const tick = () => {
+    if (!document.getElementById('fr-out')) return false;
+    $('#fr-count').hidden = !s.start;
+    for (const b of $$('.fr-time', $('#sheet'))) b.setAttribute('aria-checked', String(s.start != null && Number(b.dataset.h) === s.picked));
+    if (!s.start) return true;
+    $('#fr-elapsed').textContent = u('fridgeCounting', { elapsed: span(hoursNow()) });
+    for (const x of plan()) {
+      const card = $(`.fr-card[data-part="${x.id}"]`, $('#fr-out'));
+      if (!card) continue;
+      card.className = `fr-card is-${x.status}`;
+      $('.fr-say', card).textContent = say(x);
+      $('.fr-detail', card).textContent = detail(x);
+      const note = $('.fr-note', card);
+      if (note) note.hidden = x.status === 'over';
+    }
     return true;
   };
-  paint();
+  cards();
   // Live while the sheet is open; stops by itself once another sheet replaces it.
-  const timer = setInterval(() => { if (!paint()) clearInterval(timer); }, 20e3);
-  // ± one hour from what shows (3 h 30 min → 4 h 30 min), within 0–72 h.
-  const shift = (d) => {
-    const h = Math.min(F.maxHours, Math.max(0, hoursNow() + d));
-    s.start = Date.now() - h * HOUR;
-    save();
-    paint();
-  };
-  $('#fr-minus').addEventListener('click', () => shift(-1));
-  $('#fr-plus').addEventListener('click', () => shift(1));
-  $('#fr-now').addEventListener('click', () => { s.start = Date.now(); save(); paint(); });
-  for (const r of $$('input[name="fr-freezer"]', $('#sheet'))) r.addEventListener('change', () => { s.freezer = r.value; save(); paint(); });
-  $('#fr-med').addEventListener('change', (e) => { s.med = e.target.checked; save(); paint(); });
-  $('#fr-reset').addEventListener('click', () => { store.set('fridge', null); s.start = Date.now(); paint(); chip(false); toast(u('fridgeReset')); });
+  const timer = setInterval(() => { if (!tick()) clearInterval(timer); }, 20e3);
+  for (const b of $$('.fr-time', $('#sheet'))) {
+    b.addEventListener('click', () => {
+      s.picked = Number(b.dataset.h);
+      s.start = Date.now() - s.picked * HOUR;
+      save();
+      cards();
+      $('#fr-out').scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    });
+  }
+  $('#fr-med').addEventListener('change', (e) => { s.med = e.target.checked; save(); cards(); });
+  $('#fr-reset').addEventListener('click', () => { s.start = null; s.picked = null; save(); cards(); tick(); toast(u('fridgeCleared')); });
   $('#fr-kit').addEventListener('click', () => { clearInterval(timer); openKit('fridge'); });
   $('#fr-close').addEventListener('click', () => { clearInterval(timer); closeSheet(); });
   textShare($('#fr-share-row'), {
     label: u('fridgeShare'), title: u('fridgeTitle'), url: pageUrl('fridge'), mode: 'fridge',
-    text: () => {
-      const plan = fridgePlan(F, { hours: hoursNow(), freezer: s.freezer, med: s.med });
-      return [u('fridgeShareHead', { elapsed: span(hoursNow(), true) }),
-        ...plan.map((x) => `${x.part.icon} ${L(x.part.label)}: ${statusText(x)}`),
-        `(${agencies(['cdc-food-outage', 'readygov-outage'])} · ⚠️)`,
-        u('fridgeShareTail', { url: pageUrl('fridge') })].join('\n');
-    },
+    text: () => [
+      ...(s.start ? [u('fridgeShareHead', { elapsed: span(hoursNow()) }), ...plan().map((x) => `${x.part.icon} ${L(x.part.label)}: ${say(x)} · ${detail(x)}`)] : [u('fridgeTitle')]),
+      `(${agencies(['cdc-food-outage', 'readygov-outage'])} · ⚠️)`,
+      u('fridgeShareTail', { url: pageUrl('fridge') }),
+    ].join('\n'),
   });
 }
 
@@ -375,14 +385,16 @@ export async function openAir(from = 'start') {
   const li = (x) => `<li>${esc(L(x))}${x.sources.some((id) => doh.has(id)) ? ` <small class="air-by">${esc(u('airBy', { agency: agencies(x.sources) }))}</small>` : ''}</li>`;
   const check = modeLink(content().config, 'dust');
   openSheet(`
-    <h2 id="sheet-title">😷 ${esc(u('airTitle'))}</h2>
+    <h2 id="sheet-title" tabindex="-1" autofocus>😷 ${esc(u('airTitle'))}</h2>
     <p class="sub">${esc(u('airIntro'))}</p>
-    <p class="kit-q" id="air-unit-label">${esc(u('airUnit'))}</p>
-    <div class="kit-flags air-units" role="radiogroup" aria-labelledby="air-unit-label">${A.units.map((x) => `<label class="kit-flag"><input type="radio" name="air-unit" value="${esc(x.id)}"${x.id === s.unit ? ' checked' : ''}><span>${esc(L(x.label))}</span></label>`).join('')}</div>
-    <label class="calc-field air-value"><span>${esc(u('airValue'))}</span><input type="number" id="air-v" min="0" step="0.1" inputmode="decimal" enterkeyhint="done"></label>
-    <p class="kit-q air-or" id="air-colour-label">${esc(u('airOr'))}</p>
+    <p class="kit-q" id="air-colour-label">${esc(u('airColourQ'))}</p>
     <div class="air-colours" role="radiogroup" aria-labelledby="air-colour-label">${A.levels.map((l) => `<label class="air-colour"><input type="radio" name="air-colour" value="${esc(l.id)}"><span class="air-dot" style="background:${esc(l.colour)}"></span><span>${esc(L(l.label).split(' · ')[0])}</span></label>`).join('')}</div>
-    <p class="kit-src">${esc(u('airAvg'))}</p>
+    <details class="kit-calc air-num" id="air-num"><summary>🔢 ${esc(u('airNumber'))}</summary>
+      <p class="kit-q" id="air-unit-label">${esc(u('airUnit'))}</p>
+      <div class="kit-flags air-units" role="radiogroup" aria-labelledby="air-unit-label">${A.units.map((x) => `<label class="kit-flag"><input type="radio" name="air-unit" value="${esc(x.id)}"${x.id === s.unit ? ' checked' : ''}><span>${esc(L(x.label))}</span></label>`).join('')}</div>
+      <label class="calc-field air-value"><span>${esc(u('airValue'))}</span><input type="number" id="air-v" min="0" step="0.1" inputmode="decimal" enterkeyhint="done"></label>
+      <p class="kit-src">${esc(u('airAvg'))}</p>
+    </details>
     <p class="kit-q">${esc(u('airWho'))}</p>
     <div class="kit-flags">${A.groups.map((g) => `<label class="kit-flag"><input type="checkbox" value="${esc(g.id)}"${s.groups.includes(g.id) ? ' checked' : ''}><span>${esc(g.icon)} ${esc(L(g.label))}</span></label>`).join('')}</div>
     <div class="air-out" id="air-out" aria-live="polite"></div>

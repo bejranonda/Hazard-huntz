@@ -2,10 +2,53 @@
 
 import { $, $$, esc, inAppBrowser } from './util.js';
 
+// ---------- the phone's back button ----------
+// The game and result screens and an open sheet each own one history entry, so
+// Back closes the sheet, pauses a round or leaves the result for the start
+// screen, instead of leaving the site (a guide opened from LINE used to drop
+// people back in the chat, v1.9.1; a round did until v1.9.2). After every
+// change the entries are made to match what is showing, once, in the next task,
+// so a sheet that closes and another that opens straight after share one entry.
+const layers = []; // 'screen' | 'sheet', bottom to top; history.state.brm = depth
+let ignorePop = 0;
+let screenOn = false;
+let onScreenBack = () => {};
+export function setScreenBack(fn) { onScreenBack = fn; }
+let settleTimer = 0;
+function settleHistory() {
+  clearTimeout(settleTimer);
+  settleTimer = setTimeout(() => {
+    const want = [...(screenOn ? ['screen'] : []), ...(sheetState ? ['sheet'] : [])];
+    try {
+      if (layers.length > want.length) {
+        const n = layers.length - want.length;
+        layers.length = want.length;
+        ignorePop += 1;
+        history.go(-n);
+      }
+      while (layers.length < want.length) {
+        layers.push(want[layers.length]);
+        history.pushState({ ...(history.state || {}), brm: layers.length }, '');
+      }
+      want.forEach((kind, i) => { layers[i] = kind; });
+    } catch { /* sandboxed */ }
+  }, 0);
+}
+addEventListener('popstate', () => {
+  if (ignorePop) { ignorePop -= 1; return; }
+  const depth = Math.min(layers.length, Number(history.state?.brm) || 0);
+  for (const kind of layers.splice(depth).reverse()) {
+    if (kind === 'sheet') sheetState?.close();
+    else onScreenBack();
+  }
+});
+
 export function showScreen(name) {
   for (const s of $$('.screen')) s.classList.toggle('active', s.id === `screen-${name}`);
   const active = $(`#screen-${name}`);
   if (active) active.scrollTop = 0;
+  screenOn = name === 'game' || name === 'result';
+  settleHistory();
 }
 
 // ---------- bottom sheet ----------
@@ -13,31 +56,6 @@ export function showScreen(name) {
 let sheetState = null;
 
 export function sheetOpen() { return !!sheetState; }
-
-// The phone's back button closes the sheet instead of leaving the site (a
-// guide opened from LINE used to drop people back in the chat). An open sheet
-// owns one history entry; closing it any other way removes that entry again,
-// unless another sheet opened straight after and reuses it.
-let historyEntry = false;
-let ignorePop = 0;
-addEventListener('popstate', () => {
-  if (ignorePop) { ignorePop -= 1; return; }
-  if (!historyEntry) return;
-  historyEntry = false;
-  sheetState?.close();
-});
-function claimHistory() {
-  if (historyEntry) return;
-  try { history.pushState({ ...(history.state || {}), brmSheet: 1 }, ''); historyEntry = true; } catch { /* sandboxed */ }
-}
-function releaseHistory() {
-  setTimeout(() => {
-    if (sheetState || !historyEntry) return;
-    historyEntry = false;
-    ignorePop += 1;
-    history.back();
-  }, 0);
-}
 
 export function openSheet(html, { dismissible = true, onClose, label } = {}) {
   const sheet = $('#sheet');
@@ -49,7 +67,6 @@ export function openSheet(html, { dismissible = true, onClose, label } = {}) {
   backdrop.hidden = false;
   sheet.classList.toggle('fixed', !dismissible);
   sheet.scrollTop = 0;
-  claimHistory();
   if (label) sheet.setAttribute('aria-label', label);
   const lastFocus = document.activeElement;
 
@@ -80,9 +97,10 @@ export function openSheet(html, { dismissible = true, onClose, label } = {}) {
     body.innerHTML = '';
     cleanup(true);
     cb?.();
-    releaseHistory();
+    settleHistory();
   };
   sheetState = { close, cleanup, onClose };
+  settleHistory();
   requestAnimationFrame(() => {
     // The sheet's own content first; the ✕ is still a Tab away.
     const first = body.querySelector('[autofocus], button, a[href], summary') || $('#sheet-x');

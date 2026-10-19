@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.9.1 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.9.2 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -67,15 +67,13 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 63 | [Printing isn't offered in in-app browsers](#63-printing-isnt-offered-in-in-app-browsers) | Platform | — |
 | 64 | [The alert must be cleared or renewed by hand](#64-the-alert-must-be-cleared-or-renewed-by-hand) | By design | — |
 | 65 | [Loose ends from the v1.9.0 sweep](#65-loose-ends-from-the-v190-sweep) | Fixed in v1.9.0 | Low |
-| 66 | [The right answer is usually the longest choice](#66-the-right-answer-is-usually-the-longest-choice) | Owner | Medium |
-| 67 | [The result card is hard to read at chat size](#67-the-result-card-is-hard-to-read-at-chat-size) | Open | Low |
-| 68 | [Link previews are small and alike at chat size](#68-link-previews-are-small-and-alike-at-chat-size) | Open | Low |
+| 66 | [The right answer was usually the longest choice](#66-the-right-answer-was-usually-the-longest-choice) | Fixed in v1.9.2 (F83, F90); Owner: the Thai read of the new wrong answers | Low |
+| 68 | [Link previews are small at chat size](#68-link-previews-are-small-at-chat-size) | Open (partly fixed in v1.9.2, F87) | Low |
 | 69 | [Kept Thai words are a hand-made list](#69-kept-thai-words-are-a-hand-made-list) | By design | Low |
-| 70 | [The back button in a round still leaves the page](#70-the-back-button-in-a-round-still-leaves-the-page) | Open | Low |
-| 71 | [On a tablet the app is a narrow column](#71-on-a-tablet-the-app-is-a-narrow-column) | Open | Low |
-| 72 | [Structured data still calls the start page a game](#72-structured-data-still-calls-the-start-page-a-game) | Open | Low |
+| 71 | [On a tablet the app is a narrow column](#71-on-a-tablet-the-app-is-a-narrow-column) | By design (v1.9.2) | — |
+| 73 | [English choice sheets still scroll on the smallest phones](#73-english-choice-sheets-still-scroll-on-the-smallest-phones) | Open | Low |
 
-Fixed issues are listed [at the end](#fixed).
+Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)).
 
 ---
 
@@ -99,8 +97,9 @@ What a headless test **cannot** show:
 - how the start screen's hub (v1.9.0) reads on a real phone: whether people see the three tools first and still find the game below, and whether the alert card is noticed
 - whether "🖨️ พิมพ์เก็บไว้" prints a clean A4 list from Chrome and Safari on a phone, and whether the guide picker and the guide sheets work inside LINE (v1.9.0)
 - since v1.9.1: whether the phone's back button closes a sheet inside LINE (and iOS's swipe back), whether sharing to LINE keeps the result in the game's tab, whether Thai words still break between words on an iPhone (its dictionary isn't ICU, [#69](#69-kept-thai-words-are-a-hand-made-list)), whether the fire smoke is drawn on a real 360 × 640 phone (F58 was found in headless Chromium), and whether a guide's ☎️ buttons dial; `/no-such-page` answering with the 404 page is checked on the live site after the deploy
+- since v1.9.2: whether the phone's back button inside a round pauses it and on the result goes to the start screen, with the Android back gesture, iOS's swipe back and inside LINE (F85); whether the result card's line and link can be read in a real chat (F86); and whether a choice's three answers fit on a small phone without scrolling (F84, [#73](#73-english-choice-sheets-still-scroll-on-the-smallest-phones))
 
-**To do:** run the 60-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 63-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
 
@@ -167,7 +166,9 @@ The English is written in one variety, British ("torch", "power cut", "litres", 
 
 v1.9.0 added much new copy in both languages: the hub and the guide picker, the four new guides' 40 lines, the new hazard pages and the `/kit` and `/plan` pages (`seo.<lang>`), the new link-preview texts and the rewritten tagline, About intro, default preview and `llmsSummary` ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
 
-v1.9.1 renamed the two tools (เช็กของจำเป็น, แผนครอบครัว; "Check your supplies", "Our family plan") and the flood guides ("น้ำท่วม: ก่อนน้ำมา", "น้ำท่วม: หลังน้ำลด"), rewrote the mode hazard pages' titles and intros, how-to step 4 in every mode, the heat guide's phase names and the guide sheet's labels ("ส่งต่อให้คนที่บ้าน", "เตรียมบ้านต่อ", "โทรฟรี", "เสร็จแล้ว"), and added the 404 page's text and `versusLoseFar`. The same review should rewrite the wrong answers that are easy to spot ([#66](#66-the-right-answer-is-usually-the-longest-choice)).
+v1.9.1 renamed the two tools (เช็กของจำเป็น, แผนครอบครัว; "Check your supplies", "Our family plan") and the flood guides ("น้ำท่วม: ก่อนน้ำมา", "น้ำท่วม: หลังน้ำลด"), rewrote the mode hazard pages' titles and intros, how-to step 4 in every mode, the heat guide's phase names and the guide sheet's labels ("ส่งต่อให้คนที่บ้าน", "เตรียมบ้านต่อ", "โทรฟรี", "เสร็จแล้ว"), and added the 404 page's text and `versusLoseFar`.
+
+v1.9.2 rewrote 117 wrong answers in `items.json`, in Thai and English, so that the right answer is no longer given away by its length ([#66](#66-the-right-answer-was-usually-the-longest-choice), [F83](#in-v192-19-oct-2026)). They are new copy: the reader should check that each sounds like something a person would really say, and that its `feedback` still answers it.
 
 ### 12. Analytics SQL and the Fail-open default are unchecked on a live account
 
@@ -582,7 +583,7 @@ The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/
 
 **Since v1.9.0** the home check and the plan card have pages of their own, `/kit` and `/plan` (`/en/…`), with their own previews (`og/kit.png`, `og/plan.png`) and a button into the tool; the kit and plan cards print and link these addresses. Post `/kit` or `/plan`, not `/?open=kit` or `/?open=plan`. The guide picker's link, **`/?open=guide`, still previews as the main game**: in a post, link one guide's `/checklist/<id>` (its preview is that guide's picture and title) or its hazard page (`/quake`, `/heat`…) instead. The app's third shortcut opens `/?open=guide` but shows no preview.
 
-**Still true in v1.9.1** (the audit checked it again): `/?open=kit`, `/?open=plan` and `/?open=guide` preview as the start screen. The owner's posts in [04-launch-kit](04-launch-kit.md#the-home-check-and-the-plan-card-v180-any-time-of-year) now link `/kit` and `/plan` and use the tools' new names ([#68](#68-link-previews-are-small-and-alike-at-chat-size)).
+**Still true in v1.9.1** (the audit checked it again): `/?open=kit`, `/?open=plan` and `/?open=guide` preview as the start screen. The owner's posts in [04-launch-kit](04-launch-kit.md#the-home-check-and-the-plan-card-v180-any-time-of-year) now link `/kit` and `/plan` and use the tools' new names ([#68](#68-link-previews-are-small-at-chat-size)).
 
 **When the preview matters,** share the hazard page instead: `/pm25`, `/fire`, `/flood` or `/ready` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
 
@@ -594,7 +595,7 @@ The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/
 
 - **Today's state shows in the build,** not the smoke test: `node tools/build.mjs` prints a `start` line (what visitors see today, and since v1.9.0 the alert while it is on) and warns about a switch with no end date or a past one. Read it after every release and at the start of each month.
 - **The alert (v1.9.0)** is expected from `activeAlert()` on `SMOKE_DATE`, like the mode from `recommend()`: on 18 Oct 2026 the card shows the landslide guide, on 5 Dec 2026 it is hidden. A separate check forces an alert (`storm`, until 2099) by changing the `config.json` the test server sends to that page only, so the card is tested whatever the shipped date.
-- **To test another season,** run `SMOKE_DATE=2026-12-05 npm run smoke` (dust) or `SMOKE_DATE=2027-04-10 npm run smoke` (fire); both passed 79/79 on 18 Oct 2026, and 134/134 on 19 Oct 2026 (v1.9.1).
+- **To test another season,** run `SMOKE_DATE=2026-12-05 npm run smoke` (dust) or `SMOKE_DATE=2027-04-10 npm run smoke` (fire); both passed 79/79 on 18 Oct 2026, 134/134 on 19 Oct 2026 (v1.9.1) and 138/138 (v1.9.2).
 - **The test server answers like Pages** since v1.9.1: an unknown address gets `404.html` with status 404, so the 404 page can be checked before a deploy.
 - **Only `Date` is shifted,** by an init script, and time keeps running. Playwright's clock API would also fake the timers and `requestAnimationFrame` that the rounds use, so it isn't used ([LESSONS D10](LESSONS_LEARNED.md#d-testing-and-verification)).
 
@@ -657,7 +658,7 @@ The start screen now puts the alert card and the three tools above the game. Mea
 `sources.json` holds each source's `note`: what was read and quoted, for reviewers, the build and docs/01. The game never shows a note, but `content.js` loads the whole file before the start screen. The 36 sources of v1.9.0 have long notes, so `sources.json` grew from 12.0 to 23.8 KB compressed; about 14 KB of it is notes (about 9.6 KB from the new ones). That is most of the start screen's growth from 209 to 232 KB (the rest: the guides in `checklists.json`, +4.1 KB; new strings, +4.2 KB; code and CSS, about +3 KB).
 
 - **The fix,** AI-ready: keep the notes out of what the client loads, for example in a second file the build, `npm run docs` and the tests read (or the build writes a slim `sources.json` without notes for `public/`), and let `content.js` load only `agency`, `title`, `url`, `date` and `kind` ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads)). Keep one file to edit by hand, so a source can't drift from its note.
-- **Not urgent:** 232 KB (240 KB in v1.9.1, with the hub's text, the guide sheet and the `keepTogether` list) is far under the 500 KB limit. It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
+- **Not urgent:** 232 KB (240 KB in v1.9.1, with the hub's text, the guide sheet and the `keepTogether` list; 243 KB in v1.9.2) is far under the 500 KB limit. It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
 
 ### 63. Printing isn't offered in in-app browsers
 
@@ -687,26 +688,23 @@ Found while documenting v1.9.0, after its first checks had passed, and fixed in 
 - **docs/01's reference list** marked the guides' sources "not cited yet": `npm run docs` now counts the citations in `checklists.json` too.
 - **Texts that called the whole app a game:** `ogEn.siteName` is now "Baan Rod Mai? Home safety" and `aboutTitle` "เกี่ยวกับบ้านรอดไหม?" / "About Baan Rod Mai?".
 
-### 66. The right answer is usually the longest choice
+### 66. The right answer was usually the longest choice
 
-**Status:** Owner (group D of the v1.9.1 audit, left for the Thai review) · **Severity:** Medium
+**Status:** Fixed in v1.9.2 ([F83, F90](#in-v192-19-oct-2026)); Owner: the Thai read of the new wrong answers · **Severity:** Low
 
-The v1.9.1 audit measured the choices of all 82 items: the correct answer is the longest choice in 72 of 82 in Thai and 74 of 82 in English, about 1.4 times as long as the others, and in 26 items it is the only choice with a different icon. So a player can often pick it without reading, which weakens what the round teaches.
+The v1.9.1 audit found the right answer strictly the longest choice in most sets (recounted for v1.9.2: 71 of 82 in Thai, 73 of 82 in English), so it could be picked without reading. v1.9.2 rewrote 117 wrong answers so that each gives the reason a real person would give for that mistake; the right answer is now the longest in 17 of 82 sets in Thai and 16 in English, and a unit test keeps it between 10 and 33 % ([KNOWLEDGE §31.1](KNOWLEDGE.md#311-wrong-answers-that-dont-give-the-right-one-away)).
 
-- **Why it wasn't fixed in v1.9.1:** the wrong answers are safety content. Each one needs to be a plausible mistake, about as long as the right one, written by hand and read by a native speaker; a mechanical rewrite could make a wrong answer sound right.
-- **What to do:** in the Thai review ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)), rewrite the wrong choices of the worst items first (longest gap, different icon) in `items.json`, Thai and English, with their `feedback`; keep the right answer as it is, so no advice changes. Changing a choice's text doesn't reshuffle houses ([#24](#24-some-content-edits-reshuffle-todays-house-and-old-challenge-links)). Not started.
+- **Left for the owner:** the new wrong answers are new Thai copy. A native reader checks that each sounds like what a person would say and that its `feedback` still answers it ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy), [#11](#11-thai-and-english-copy-need-a-second-native-reader)). Rewriting one keeps it within 60 Thai letters or 80 English characters and keeps the length test passing ([GUIDELINES rule 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **The icons, too (F90).** The audit also found that in 26 items the right answer was the only choice with a different icon. Each button drew an icon for its `kind`; in 42 of the 82 sets one answer's icon was the odd one out, and it was the right one in 26 (in 24 of those the two wrong answers shared the clock of `leave`). Since v1.9.2 the buttons show ก ข ค (A B C in English) instead, and `kind` is no longer drawn.
 
-### 67. The result card is hard to read at chat size
+### 68. Link previews are small at chat size
 
-**Status:** Open · **Severity:** Low
+**Status:** Open (partly fixed in v1.9.2) · **Severity:** Low
 
-Shown at 25 % in a chat, the 1080 × 1350 result and share card keeps the wordmark, the score, the rank and "ท้าเลย!" readable, but not the gecko's bubble (about 9 px), the printed link (about 7 px) or the footer, and the result dots have no key. Found in the v1.9.1 audit; not changed. Larger text for the link and the bubble, or fewer words, would help; check it at thumbnail size before and after ([06-test-checklist](06-test-checklist.md) row 37).
+At the 260 px a chat shows them, the 1200 × 630 previews' helpline line is about 6 px. `/?open=kit`, `/?open=plan` and `/?open=guide` still preview as the start screen ([#52](#52-a-mode-link-previews-as-the-main-game)): share `/kit`, `/plan` or a `/checklist/<id>`. Found in the v1.9.1 audit.
 
-### 68. Link previews are small and alike at chat size
-
-**Status:** Open · **Severity:** Low
-
-At the 260 px a chat shows them, the 1200 × 630 previews' helpline line is about 6 px, and every guide's preview uses the same gecko, so two guides look alike in a chat. `/?open=kit`, `/?open=plan` and `/?open=guide` still preview as the start screen ([#52](#52-a-mode-link-previews-as-the-main-game)): share `/kit`, `/plan` or a `/checklist/<id>`. Found in the v1.9.1 audit; not changed.
+- **Fixed in v1.9.2:** the four guides with no game drew the gecko with nothing on, so their pictures looked alike in a chat. Now the gecko wears a hard hat (landslide, earthquake), the rain hood (storm) or a sun hat (heat) ([F87](#in-v192-19-oct-2026), [KNOWLEDGE §31.4](KNOWLEDGE.md#314-a-prop-for-every-guide-picture)).
+- **Still open:** the helpline line, and the `/?open=…` previews (by design, [#52](#52-a-mode-link-previews-as-the-main-game)). Larger helplines would need a new preview layout and a re-render of every preview image, in both languages; check them at 260 px before and after.
 
 ### 69. Kept Thai words are a hand-made list
 
@@ -718,23 +716,24 @@ The browser's Thai dictionary decides where a Thai line may break, and it splits
 - **iPhones may break differently.** iOS uses its own dictionary (CoreFoundation), not ICU, so its breaks may differ from Chromium's and Node's. Not tried on a phone **[unverified]** ([06-test-checklist](06-test-checklist.md) row 57).
 - **Keep words short.** The build allows 2–14 letters: a long glued run could stop a narrow line from breaking at all.
 
-### 70. The back button in a round still leaves the page
-
-**Status:** Open · **Severity:** Low
-
-Since v1.9.1 every sheet owns one history entry, so the phone's back button closes it ([F56](#in-v191-19-oct-2026)). A round doesn't: Back during a round, or on the result screen when no sheet is open, leaves the page as before (into the chat when the link came from LINE). Giving the round and the result their own entry needs care with the challenge and `?mode=` links and with the service worker's reload; check it on a real phone first ([ROADMAP N19](ROADMAP.md#n19-visitor-audit-2)).
-
 ### 71. On a tablet the app is a narrow column
 
+**Status:** By design (v1.9.2)
+
+At 768 × 1024 the start screen, the sheets and the round are a 480 px column with wide margins. Everything works and the tools are on the first screen, but the space isn't used. Found in the v1.9.1 audit and looked at again for v1.9.2, then kept:
+
+- **The audience is on phones.** People arrive from LINE and Facebook chats on their phones, and there is no data on tablet visits yet.
+- **A second layout doubles the checking.** Every screen, sheet and card would need screenshots and checks at a second size, for little gain.
+- **Revisit** if Web Analytics shows tablet visits ([05-metrics](05-metrics.md#answers-back-button-and-card-v192)).
+
+### 73. English choice sheets still scroll on the smallest phones
+
 **Status:** Open · **Severity:** Low
 
-At 768 × 1024 the start screen, the sheets and the round are a 480 px column with wide margins. Everything works and the tools are on the first screen, but the space isn't used. Found in the v1.9.1 audit; not changed.
+Since v1.9.2 a choice's three answers fit without scrolling on phones up to 640 px tall in Thai ([F84](#in-v192-19-oct-2026)). English is longer: at 320 × 568, 20 of 82 English choice sheets still scroll, by up to 78 px; the worst is `p-meds`, whose right answer is 82 characters. On the live v1.9.1 it was 42 of 82, by up to 78 px. At 360 × 640 and 390 × 844 no sheet scrolls in either language. Measured with a scratch probe that filled the real sheet with every item's labels ([KNOWLEDGE §31.7](KNOWLEDGE.md#317-choice-sheets-on-short-screens)).
 
-### 72. Structured data still calls the start page a game
-
-**Status:** Open · **Severity:** Low
-
-The JSON-LD on `/` and `/en/` types the start page as a `VideoGame`, though the app is tools first since v1.9.0; the `Article` markup on `/learn` and the hazard pages has no `author` or `publisher`; and `x-default` points to `/en/`. None of this is wrong enough to break a page, but it doesn't describe the app as it is. Change it in `tools/build.mjs`, then run the Rich Results Test ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)). Found in the v1.9.1 audit; not changed.
+- **Why it is low:** the sheet scrolls normally and the shadow at its bottom shows there is more (F79); the clock is stopped while a sheet is open.
+- **What would fix it:** shorter English right answers where the source allows it, read by a native English reader ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)), or a smaller picture in the sheet at that size. Don't shorten a sourced right answer just to save a line ([GUIDELINES rule 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)); measure with the same probe before and after.
 
 ---
 
@@ -759,9 +758,25 @@ The JSON-LD on `/` and `/en/` types the start page as a `VideoGame`, though the 
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
 
+### In v1.9.2 (19 Oct 2026)
+
+The leftovers of the second visitor audit (#66–#72), after the owner's "Continue what yo suggested to make app attractive and secure practical usability" ([ROADMAP N20](ROADMAP.md#n20-v192-answers-back-button-card-security), [KNOWLEDGE §31](KNOWLEDGE.md#31-answers-back-button-card-and-security-v192)). F84 was found while measuring F83, and F88 answers the owner's "secure"; F91 was found in our own review before release and was never live. The tablet layout (#71) was looked at and kept, by design.
+
+| # | Problem | Fix |
+|---|---|---|
+| F83 (was #66) | The right answer was strictly the longest choice in 71 of 82 choice sets in Thai and 73 of 82 in English (81 items and `p-breaker`'s `wet` set; the v1.9.1 audit, counting slightly differently, reported 72 and 74), so it could be picked without reading | 117 wrong labels rewritten in `items.json`, Thai and English (prepare, return, dust, fire and power-cut items, and the `wet` set). Each gives the reason a real person would give and keeps the same mistake, so its `feedback` still answers it ("ปล่อยไว้ เสียก็ไปทำใหม่ได้" → "ปล่อยไว้ในลิ้นชักเหมือนเดิม เสียก็ไปขอทำใหม่ได้"). Drafted by three agents from one brief, then read by the lead against each item's `context` and `feedback` ([APPROACH §29](APPROACH_AND_METHOD.md#29-answers-drafted-in-parallel-read-by-one-lead-v192)). The right answer is now the longest in 17 of 82 (Thai) and 16 of 82 (English); longest / middle / shortest: Thai 17 / 40 / 25, English 16 / 37 / 29. In 14 sets (`p-waterfood`, `p-poster`, `r-glass`, `r-mudfeet`, `r-mould`, `f-extinguisher`, `r-fever`, `r-debris`, `r-breaker`, `a-inhaler`, `a-purifier`, `r-tap`, `a-grill`, `s-plugs`) one drafted rewrite was left out, so the right answer stays the longest by a hair (the longest wrong one is 0.79–0.97 of it) and "never pick the longest" isn't a new tell. No right answer, tip, `why`, `feedback`, source, `kind` or id changed, so the advice, houses and challenge links are the same. Unit test "the right answer is not given away by its length (KNOWN_ISSUES #66)"; on the v1.9.1 content it fails. The Thai read is left ([#66](#66-the-right-answer-was-usually-the-longest-choice)). Rule: [GUIDELINES 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F84 | With answers that say why, a choice sheet could need scrolling on phones 640 px tall or less: on the live v1.9.1, 42 of 82 English sheets already scrolled at 320 × 568, by up to 78 px | Under `@media (max-height: 640px)`: `.sheet { max-height: 92% }`, the item's picture 52 px, `.choices` gap 8 px, `.choice` at least 52 px tall with padding 8 × 12 px (tap targets stay ≥ 44 px). `p-drain`'s second wrong answer was trimmed ("เทน้ำยาล้างท่อลงไปเยอะๆ ให้น้ำระบายลงไปเร็วๆ") so its Thai sheet fits. Measured with a probe that filled the real sheet with every item's labels: Thai sheets that scroll, 0 at 320 × 568, 360 × 640 and 390 × 844; English, 20 of 82 at 320 × 568 (by up to 78 px, [#73](#73-english-choice-sheets-still-scroll-on-the-smallest-phones)), 0 at the other two. A 320 × 460 screen keeps its own compaction (`max-height: 520px`, F79) |
+| F85 (was #70) | Since v1.9.1 a sheet closed with the phone's back button, but Back during a round, or on the result screen with no sheet open, left the page, into the chat when the link came from LINE; a round in progress was lost | One history manager in `ui.js`: the game and result screens own one entry, an open sheet one more (`history.state.brm` = the depth). After each change, `settleHistory()` makes the entries match what is showing, once, in the next task: missing entries are pushed (same address, so challenge and `?mode=` links keep theirs), extra ones removed with `history.go(-n)` while one `popstate` is ignored. On `popstate` the layers above the new depth close: a sheet closes; a screen calls `onScreenBack` (`setScreenBack` in `main.js`), which pauses a running round (the pause sheet) or else goes to the start screen. So Back in a round → the pause sheet; Back again → the round resumes; Back on the result → the start screen; Back on the start screen → leaves the site. Smoke checks "back inside a round pauses it (the pause sheet), back again resumes; still on the site", "back on the result goes to the start screen, still on the site", "no page errors (back in the game)". A real phone is still needed ([06-test-checklist](06-test-checklist.md) row 61). Rule: [GUIDELINES 77](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F86 (was #67) | Shown at about a quarter of its size in a chat (about 270 px wide), the 1080 × 1350 result card's gecko line was about 9 px (38 px text in a 330 px box beside the gecko) and its printed link about 7 px | `cards.js → drawResultCard`: the gecko (300 × 316) at the top; its line in a wide bubble under it (`endingBubble`, 960 px wide, 52 px text shrinking to 38 px to fit two lines, three at 38 px if it must, centred, the tail pointing up); the score at 200 px; the rank pill; the result dots; the call to action at 50 px (down to 34); the link at 46 px (down to 30, weight 600); the footer. The headline is no longer drawn: the wordmark, the mode chip, the score and the rank carry it. Looked at 270 px wide: the line and the link can be read. `share/sample-result-prepare.png` and `share/sample-result-return.png` re-rendered. The dots still have no key, and the footer stays 24 px ([06-test-checklist](06-test-checklist.md) row 62) |
+| F87 (part of #68) | The four guides with no game drew the gecko with no accessory on their pictures, so landslide, storm, earthquake and heat looked alike in a chat | `config.json → guides[].prop` (new, optional): `helmet` (a yellow hard hat) for `landslide` and `quake`, `hood` (the rain hood) for `storm`, `sunhat` (a straw sun hat with a red band) for `heat`. `modes.js → setGuides(list)`, `propFor(id)` (a guide with a game keeps its mode's prop); `mascot.js` draws `helmet` and `sunhat`; the build stops on a prop the gecko doesn't have. Re-rendered `og/checklist-{landslide,storm,quake,heat}.png`, the same four under `og/en/`, and `share/checklist-{landslide,storm,quake,heat}.png`. Unit test "every guide picture has a gecko accessory, games and guides alike (v1.9.2)". The helpline line and the `/?open=…` previews stay open ([#68](#68-link-previews-are-small-at-chat-size)) |
+| F88 | Any site could show the app inside a frame (clickjacking), and nothing limited plugins, a `<base>` or a form target: `_headers` sent only `nosniff`, `Referrer-Policy` and `Permissions-Policy` | `public/_headers`, for every path: `Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests` and `X-Frame-Options: SAMEORIGIN` (for browsers that don't read `frame-ancestors`). No `script-src` or `default-src`: Cloudflare injects inline scripts (the Web Analytics beacon, the zone's JavaScript detections), which such a policy would block, or allow only with hashes that change. HSTS is already sent by Cloudflare. Unit test "security headers: no framing by other sites, no plugins, no foreign base or form target", which also fails on a `script-src`. The live headers are checked with `curl -sI` after the deploy ([06-test-checklist](06-test-checklist.md#live-site-checks-search-and-ai-search)). Rule: [GUIDELINES 76](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F89 (was #72) | The JSON-LD named no publisher: the `Article` markup on `/learn` and the hazard pages had no `author` or `publisher`, and the app, tools first since v1.9.0, had no utility category. `llms.txt`'s tools line linked only `/?open=kit` and `/?open=plan` | `tools/build.mjs`: a publisher `Organization` (`@id` `${SITE}/#org`, the name, `alternateName` "Baan Rod Mai?", the address, `icon-512.png` as its logo) in the start page's `@graph`; `WebSite.publisher` points to it; `author` and `publisher` on the `Article` of `/learn` and every hazard page, in both languages; `applicationCategory: UtilitiesApplication`. Kept: the type `['VideoGame', 'WebApplication']` (the game is still part of the app) and `x-default` → `/en/` (for visitors whose language is neither Thai nor English). `llms.txt` adds "every line and its source: …/kit" and "…/plan". The Rich Results Test is the owner's ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)) |
+| F90 (was #66, its second half) | The answer buttons drew an icon for each choice's `kind` (a clock for `leave`, a bag for `pack`…). In 42 of the 82 choice sets one answer's icon was the odd one out, and it was the right answer in 26 of them, mostly because the two wrong answers shared the clock ("wait", "leave it": 24 of the 26). So "pick the odd icon" was right in 26 of 42; the v1.9.1 audit had noted "in 26 items it is the only choice with a different icon" | Each button shows a letter in the same 36 px badge: ก ข ค in Thai, A B C in English (`strings.json → choiceLetters`). The choices are still shuffled for each house, so a letter tells nothing about the answer. `icons.js` lost `actionIcon` (only `spriteIcon` is left); `kind` stays in `items.json` as a description of the action, but is no longer drawn. Smoke check "the answers are lettered ก ข ค, with no icon that tells them apart". Rule: [GUIDELINES 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F91 | Found in our own review of F89, before release (never live): the build makes the English start page's `@graph` by copying the Thai one and overwriting its nodes **by position**. The publisher had been inserted at position 1, where the game node used to be, so on `/en/` the `Organization` got the game's English description, the `/en/` address, `isPartOf` `/en/#website` and `subjectOf` `/en/learn`, while the game node (`#game`) kept the Thai description and addresses | The build finds the English game node by its `@id` (`${SITE}/#game`) before changing it. Checked in both built pages: the `#org` node has no description or `subjectOf`; the `/en/` `#game` node has the `/en/` address and `subjectOf` `/en/learn`. Unit test "structured data: one publisher, and each start page describes the app in its own language". Lesson: [C22](LESSONS_LEARNED.md#c-engineering-and-platform) |
+
 ### In v1.9.1 (19 Oct 2026)
 
-Found by the second visitor audit: three audit agents walked the live v1.9.0 site at the same time (the tools journey, the game and share loop, the pages and previews), on phone and tablet sizes, in Thai and English, with analytics blocked; the lead re-checked every finding before fixing it ([APPROACH §28](APPROACH_AND_METHOD.md#28-visitor-audit-2-three-auditors-in-parallel-v191), [KNOWLEDGE §30](KNOWLEDGE.md#30-visitor-audit-2-v191)). F82 was found in our own review of the fixes. Group D (content) is left for the Thai review ([#66](#66-the-right-answer-is-usually-the-longest-choice)).
+Found by the second visitor audit: three audit agents walked the live v1.9.0 site at the same time (the tools journey, the game and share loop, the pages and previews), on phone and tablet sizes, in Thai and English, with analytics blocked; the lead re-checked every finding before fixing it ([APPROACH §28](APPROACH_AND_METHOD.md#28-visitor-audit-2-three-auditors-in-parallel-v191), [KNOWLEDGE §30](KNOWLEDGE.md#30-visitor-audit-2-v191)). F82 was found in our own review of the fixes. Group D (content) was left for the Thai review, then rewritten in v1.9.2 ([F83](#in-v192-19-oct-2026), [#66](#66-the-right-answer-was-usually-the-longest-choice)).
 
 | # | Problem | Fix |
 |---|---|---|

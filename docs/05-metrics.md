@@ -209,6 +209,15 @@ Share rate of a guide = its `checklist_save` row ÷ its `checklist_open` row (bo
 - **Prepare scores.** The flood's water curve changed, so `round_end` scores for `prepare` are not strictly comparable before and after 19 Oct 2026; split any trend at that date.
 - **Web Analytics** looks on since the audit (its beacon is in the live HTML), so page views by path (the hazard pages, `/kit`, `/plan`, the 404 page) should appear there; the owner confirms it ([ROADMAP L1](ROADMAP.md#l1-create-the-cloudflare-pages-project)). **[unverified]** until the dashboard shows data.
 
+## Answers, back button and card (v1.9.2)
+
+**No new events.** v1.9.2 added no event and changed no allowlist ([KNOWLEDGE §31](KNOWLEDGE.md#31-answers-back-button-card-and-security-v192)). What changes in the numbers:
+
+- **Scores may drop.** Until v1.9.1 the right answer could often be picked by its length or by its odd icon ([KNOWN_ISSUES #66](KNOWN_ISSUES.md#66-the-right-answer-was-usually-the-longest-choice)). Now it can't, so `round_end` scores in every mode may fall after 19 Oct 2026. Split the learning signal (average score per mode) at that date: a lower average after it means guessing stopped working, not that people learn less.
+- **Fewer abandoned rounds.** Back inside a round used to leave the site; now it pauses the round. `round_end ÷ round_start` (completion) may rise; compare a week before and after.
+- **More after the result.** Back on the result now goes to the start screen instead of leaving, so `mode_select`, `guide_open`, `kit_open` and `plan_open` after a round may rise.
+- **Tablets.** The app stays a phone column on a tablet, by design ([KNOWN_ISSUES #71](KNOWN_ISSUES.md#71-on-a-tablet-the-app-is-a-narrow-column)). Web Analytics' device split shows whether tablets matter; if they do, revisit it. **[unverified]** until the dashboard shows data.
+
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.

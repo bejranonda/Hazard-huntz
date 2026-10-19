@@ -15,8 +15,8 @@ import { Scene, prefetchHouse, loadSprites } from './scene.js';
 import { Gecko } from './mascot.js';
 import { unlockAudio, play, haptic, isMuted, setMuted } from './audio.js';
 import { sparkle, floatText, confetti } from './fx.js';
-import { showScreen, openSheet, closeSheet, sheetOpen, toast, say, hideBubble, setLoading, canPrint, printList } from './ui.js';
-import { actionIcon, spriteIcon } from './icons.js';
+import { showScreen, openSheet, closeSheet, sheetOpen, toast, say, hideBubble, setLoading, canPrint, printList, setScreenBack } from './ui.js';
+import { spriteIcon } from './icons.js';
 import { loadCardAssets, drawResultCard, drawChecklist, canvasToBlob, plainText } from './cards.js';
 import {
   challengeUrl, parseChallenge, nativeShare, canNativeShare, copyText, shareChannel,
@@ -317,6 +317,13 @@ function bindGlobal() {
   $('#btn-book').addEventListener('click', () => openBook());
 
   $('#btn-pause').addEventListener('click', () => pauseGame(true));
+  // The phone's back button in a round pauses it (the pause sheet offers to
+  // quit); on the result it goes back to the start screen. It never leaves the site.
+  setScreenBack(() => {
+    const r = state.round;
+    if (r && !r.ended && $('#screen-game').classList.contains('active')) pauseGame(true);
+    else goHome();
+  });
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
       flush();
@@ -513,6 +520,9 @@ function openChoices(p) {
   const variant = r.variantFor(p);
   const ctx = variant === 'wet' ? p.ref.wet.context : p.ref.context;
   const choices = r.choicesFor(p);
+  // Letters, not an icon per kind of action: the wrong answers were mostly
+  // "wait" (a clock), so the right one was the odd icon out (KNOWN_ISSUES #66).
+  const letters = [...t('choiceLetters')];
   play('sheet');
   openSheet(`
     <div class="item-head">
@@ -529,7 +539,7 @@ function openChoices(p) {
     <div class="choices">
       ${choices.map((c, i) => `
         <button class="choice" type="button" data-i="${i}">
-          <span class="ico" aria-hidden="true">${actionIcon(c.kind)}</span>
+          <span class="ico" aria-hidden="true">${esc(letters[i] || String(i + 1))}</span>
           <span>${esc(L(c.label))}</span>
         </button>`).join('')}
     </div>`, {

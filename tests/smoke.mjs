@@ -1035,6 +1035,34 @@ try {
     check('flood: nothing goes under in the first 19 s; what the water took is shown apart (💧), not counted as done', early === 0 && hud.lost > 0 && hud.text.startsWith('0/') && hud.text.includes(`💧${hud.lost}`), `early ${early}, ${hud.text}`);
     check('no page errors (v1.9.1 checks)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
+
+    // v1.9.2: the phone's back button inside a round pauses it, and on the
+    // result goes back to the start screen; neither leaves the site.
+    ({ ctx, page } = await newPage({ width: 360, height: 640 }));
+    await page.addInitScript(() => { for (const m of ['prepare', 'return', 'dust', 'fire', 'stock']) localStorage.setItem(`brm:howto-${m}`, 'true'); });
+    await page.goto(`${BASE}/learn`, { waitUntil: 'domcontentloaded' }); // a page before, like a chat
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await page.evaluate(() => window.__brm.startFlow('prepare'));
+    await page.waitForFunction(() => window.__brm.state.round?.running);
+    const where = () => page.evaluate(() => ({ path: location.pathname, screen: document.querySelector('.screen.active')?.id, sheet: !document.querySelector('#sheet')?.hidden, running: !!window.__brm.state.round?.running }));
+    // The answers carry ก ข ค, not an icon per kind of action (the right one was the odd icon out, KNOWN_ISSUES #66).
+    await page.evaluate(() => [...document.querySelectorAll('.item-target .hit')].find((h) => { const r = h.getBoundingClientRect(); return r.width && r.left >= 0 && r.right <= innerWidth; }).dispatchEvent(new MouseEvent('click', { bubbles: true })));
+    await page.waitForSelector('#sheet:not([hidden]) .choice');
+    const badges = await page.$$eval('#sheet .choice .ico', (els) => els.map((e) => e.textContent.trim() + (e.querySelector('svg') ? 'svg' : '')));
+    check('the answers are lettered ก ข ค, with no icon that tells them apart', badges.join('') === 'กขค'.slice(0, badges.length) && badges.length >= 2, badges.join(' '));
+    await page.keyboard.press('Escape'); await page.waitForTimeout(400);
+    await page.goBack(); await page.waitForTimeout(500);
+    const paused = await where();
+    await page.goBack(); await page.waitForTimeout(500);
+    const resumed = await where();
+    check('back inside a round pauses it (the pause sheet), back again resumes; still on the site', paused.path === '/' && paused.screen === 'screen-game' && paused.sheet && !paused.running && resumed.screen === 'screen-game' && !resumed.sheet && resumed.running, `${JSON.stringify(paused)} ${JSON.stringify(resumed)}`);
+    await page.evaluate(() => window.__brm.state.round.addTime(60000));
+    await page.waitForSelector('#screen-result.active', { timeout: 15000 });
+    await page.goBack(); await page.waitForTimeout(500);
+    const after = await where();
+    check('back on the result goes to the start screen, still on the site', after.path === '/' && after.screen === 'screen-start' && !after.sheet, JSON.stringify(after));
+    check('no page errors (back in the game)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
   }
 
   check('analytics beacons received', beacons > 0, String(beacons));

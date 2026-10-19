@@ -10,7 +10,7 @@ import { bangkokDateKey, formatHouseDate, daysBetween, setKeepTogether, keptSpan
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
-import { setModes, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
+import { setModes, setGuides, propFor, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
 import { kitPlan, kitScore, kitMissing } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
@@ -512,6 +512,59 @@ test('config: every keepTogether word is short Thai, listed once', () => {
   assert.ok(Array.isArray(words) && words.length > 50);
   assert.equal(new Set(words).size, words.length);
   for (const w of words) assert.ok(/^[\u0E00-\u0E7F]{2,14}$/.test(w), w);
+});
+
+test('every guide picture has a gecko accessory, games and guides alike (v1.9.2)', () => {
+  setGuides(C.config.guides);
+  for (const g of C.config.guides) assert.ok(['hood', 'torch', 'mask', 'firehat', 'helmet', 'sunhat'].includes(propFor(g.id)), `${g.id}: ${propFor(g.id)}`);
+  assert.equal(propFor('quake'), 'helmet');
+  assert.equal(propFor('prepare'), 'hood'); // a mode keeps its own
+});
+
+test('security headers: no framing by other sites, no plugins, no foreign base or form target', () => {
+  const h = fs.readFileSync(path.join(ROOT, 'public/_headers'), 'utf8');
+  const all = h.split(/\n(?=\S)/).find((b) => b.startsWith('/*'));
+  for (const d of ["frame-ancestors 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'self'"]) assert.ok(all.includes(d), d);
+  assert.ok(/X-Frame-Options: SAMEORIGIN/.test(all));
+  assert.ok(!/script-src/.test(all), 'script-src would block the scripts Cloudflare injects (Web Analytics, bot detection)');
+});
+
+test('structured data: one publisher, and each start page describes the app in its own language', () => {
+  for (const [file, lang] of [['public/index.html', ''], ['public/en/index.html', '/en']]) {
+    const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
+    const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
+    const byId = (s) => graph.find((n) => n['@id']?.endsWith(s));
+    const org = byId('/#org');
+    const game = byId('/#game');
+    assert.equal(org?.['@type'], 'Organization', file);
+    assert.ok(!org.description && !org.subjectOf, `${file}: the publisher carries the game's details`);
+    assert.ok(game.url.endsWith(`${lang}/`) && game.subjectOf.url.endsWith(`${lang}/learn`), `${file}: ${game.url}`);
+    assert.equal(byId('/#website').publisher['@id'], org['@id']);
+  }
+});
+
+test('the right answer is not given away by its length (KNOWN_ISSUES #66)', () => {
+  // Before v1.9.2 it was the longest in 71 of 82 choice sets (Thai). Now the wrong answers say
+  // the reason a real person would give, so length tells nothing either way:
+  // the right one is the longest now and then, never by a wide margin.
+  const len = { th: (s) => [...s].length, en: (s) => s.length };
+  for (const lang of ['th', 'en']) {
+    let sets = 0;
+    let longest = 0;
+    for (const it of items.items.filter((i) => !i.disabled)) {
+      for (const cs of [it.choices, it.wet?.choices].filter(Boolean)) {
+        sets++;
+        const c = len[lang](cs.find((x) => x.correct).label[lang]);
+        const wrong = cs.filter((x) => !x.correct).map((x) => len[lang](x.label[lang]));
+        if (wrong.every((w) => w < c)) {
+          longest++;
+          assert.ok(Math.max(...wrong) / c >= 0.75, `${it.id} ${lang}: the right answer stands out by length`);
+        }
+        for (const x of cs) if (!x.correct) assert.ok(len[lang](x.label[lang]) <= (lang === 'th' ? 60 : 80), `${it.id} ${lang}: wrong label too long for a phone`);
+      }
+    }
+    assert.ok(longest / sets <= 0.33 && longest / sets >= 0.1, `${lang}: the right answer is the longest in ${longest} of ${sets}`);
+  }
 });
 
 console.log(`${passed} passed, ${failures.length} failed`);

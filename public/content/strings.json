@@ -74,6 +74,7 @@
     "seconds": "{s} วิ",
     "scoreHud": "{done}/{total}",
     "whatToDo": "จะทำยังไงดี?",
+    "choiceLetters": "กขค",
     "timePausedTag": "⏸️ พักเวลาอยู่ ค่อยๆ คิดได้เลย",
     "correctTitles": [
       "ถูกต้อง!",
@@ -506,6 +507,7 @@
     "seconds": "{s}s",
     "scoreHud": "{done}/{total}",
     "whatToDo": "What should you do?",
+    "choiceLetters": "ABC",
     "timePausedTag": "⏸️ Time paused — take your time",
     "correctTitles": [
       "Correct!",

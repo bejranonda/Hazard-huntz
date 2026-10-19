@@ -1,7 +1,7 @@
 // Loads the editable JSON content and provides translation helpers.
 
 import { store, setKeepTogether } from './util.js';
-import { setModes, mk, codesRe, modeLink } from './modes.js';
+import { setModes, setGuides, mk, codesRe, modeLink } from './modes.js';
 
 const FILES = ['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'];
 
@@ -28,6 +28,7 @@ export async function loadContent() {
     helplines: helplines.helplines,
   };
   setModes(config.modes);
+  setGuides(config.guides);
   setKeepTogether(config.keepTogether);
   const q = new URLSearchParams(location.search).get('lang');
   if (q === 'en' || q === 'th') setLang(q, true);

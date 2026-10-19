@@ -431,7 +431,7 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 ## 6. Launch-day checklist
 
 - [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
-- [ ] Sitemap (24 addresses since v1.9.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan` (with their twins) submitted for indexing; `/learn` and `/pm25` JSON-LD pass the Rich Results Test
+- [ ] Sitemap (24 addresses since v1.9.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan` (with their twins) submitted for indexing; `/`, `/learn` and `/pm25` JSON-LD pass the Rich Results Test (since v1.9.2 with a publisher)
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
 - [ ] Hazard pages `/flood`, `/pm25`, `/fire` and `/ready` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE; the same for the guide pages `/landslide`, `/storm`, `/quake`, `/heat` and for `/kit`, `/plan` and a `/checklist/<id>` of a new guide
@@ -439,7 +439,7 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on
 - [ ] Real-phone pass of [06-test-checklist.md](06-test-checklist.md) in LINE, Facebook and TikTok in-app browsers
 - [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md), including the 10 power-cut lessons before the `ready` set is posted widely, and the home check's ⚠️ lines before the check is promoted ([KNOWN_ISSUES #57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance))
-- [ ] `/kit` and `/plan` (and their buttons into the tools) tried on a phone, inside LINE and in the phone's browser (rows 46–48 of [06-test-checklist.md](06-test-checklist.md)); a guide closes with the phone's back button, and sharing a result to LINE keeps it (rows 55–56, v1.9.1)
+- [ ] `/kit` and `/plan` (and their buttons into the tools) tried on a phone, inside LINE and in the phone's browser (rows 46–48 of [06-test-checklist.md](06-test-checklist.md)); a guide closes with the phone's back button, and sharing a result to LINE keeps it (rows 55–56, v1.9.1); Back inside a round pauses it, and a result card can be read in the chat (rows 61–62, v1.9.2)
 - [ ] The start screen's hub, the alert card, the guide picker inside LINE and print from Chrome or Safari tried on a phone (rows 51–54)
 - [ ] The alert set for what is in the news, or cleared: the build's `start` line shows it, with no warning about a past end date
 - [ ] Posts scheduled for the 06:00 / 12:00 / 20:00 slots; partner kit sent

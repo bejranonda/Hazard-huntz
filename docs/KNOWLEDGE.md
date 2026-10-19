@@ -2,7 +2,7 @@
 
 A reference for anyone maintaining บ้านรอดไหม?. It covers every rule, constant and formula in the game, the content model, the platform facts the design depends on, and the research behind it.
 
-Facts are as of **19 Oct 2026** (v1.9.1). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
+Facts are as of **19 Oct 2026** (v1.9.2). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
 What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
 
@@ -38,6 +38,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 28. [The home check and the family plan card (v1.8.0)](#28-the-home-check-and-the-family-plan-card-v180)
 29. [Tools first: a guide for every hazard (v1.9.0)](#29-tools-first-a-guide-for-every-hazard-v190)
 30. [Visitor audit 2 (v1.9.1)](#30-visitor-audit-2-v191)
+31. [Answers, back button, card and security (v1.9.2)](#31-answers-back-button-card-and-security-v192)
 
 ---
 
@@ -67,7 +68,7 @@ The game teaches the correct action for each of those moments, one tap at a time
 | เช็กของจำเป็น | *Check your supplies*: the home check, `/kit` or `/?open=kit` (v1.8.0, §28). Since v1.9.1 its one name; its sheet is titled "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?" / "Check your supplies: how ready is our home?" (before: บ้านเราพร้อมแค่ไหน?, เครื่องเช็กบ้าน, §30.6). Its things to have are "kit items" in `kit.json`, not lessons |
 | แผนครอบครัว | *Our family plan*: the plan card ("การ์ดแผนครอบครัว"), `/plan` or `/?open=plan` (v1.8.0, §28.4). Called แผนบ้านรอด / "family safety plan" until v1.9.1 |
 | `tools` | `config.json → hazards.<hazard>.tools`: the tools (`kit`, `plan`) a hazard offers. They are linked on its page (`/ready` since v1.8.0, `/flood` since v1.8.1, the four guide-only hazards since v1.9.0), and since v1.8.1 `kit` also puts the 🎒 button on its modes' result screens (§28.2). Since v1.9.0 each tool also has its own page, `/kit` and `/plan` (§29.9) |
-| guide | A short "what to do" list for one hazard, 10 lines (v1.9.0, §29): `config.json → guides` (order, icon, hazard) and `checklists.json`. A game mode's checklist is its guide; `landslide`, `storm`, `quake` and `heat` are guides with no game, with a phase, sources and `verify` on every line. Opened from the hub ("📋 ต้องทำอะไร เมื่อเกิดภัย"), `/?open=guide` or `/checklist/<id>` |
+| guide | A short "what to do" list for one hazard, 10 lines (v1.9.0, §29): `config.json → guides` (order, icon, hazard, and since v1.9.2 the gecko's `prop` on its picture) and `checklists.json`. A game mode's checklist is its guide; `landslide`, `storm`, `quake` and `heat` are guides with no game, with a phase, sources and `verify` on every line. Opened from the hub ("📋 ต้องทำอะไร เมื่อเกิดภัย"), `/?open=guide` or `/checklist/<id>` |
 | phase | A guide line's moment: `before` (ก่อนเกิด), `during` (ขณะเกิด) or `after` (หลังเกิด), in that order (§29.2). Since v1.9.1 a guide may name its phases in `phaseNames` (heat: เตรียมไว้ก่อน / วันที่ร้อนจัด / ถ้ามีคนเป็นลมแดด, §30.6) |
 | `keepTogether` | `config.json → keepTogether` (v1.9.1): Thai words that must never break across lines, wrapped in `<span class="nw">` wherever Thai is shown (§30.1) |
 | alert | `config.json → alert: { guide, until }`: the owner's card at the top of the start screen for the guide in the news, until its end date (§29.5) |
@@ -237,7 +238,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 | `hit` | [x, y, w, h] | Optional tap box, relative to the sprite |
 | `slots` | tag[] | The slot tags the item fits |
 | `name`, `context` | {th, en} | `context` is the question line in the choice sheet |
-| `choices` | 2–3 × {kind, correct?, label{th,en}, feedback{th,en}} | **Exactly one** has `correct: true`. Every wrong one needs `feedback`. `kind` picks the icon: up, pack, off, leave, place, call, gear, check, toss, boil, move, clear. |
+| `choices` | 2–3 × {kind, correct?, label{th,en}, feedback{th,en}} | **Exactly one** has `correct: true`. Every wrong one needs `feedback`. Since v1.9.2 a wrong label gives the reason a real person would give for that mistake, in at most 60 Thai letters or 80 English characters, and the right label must not stand out by length (a unit test, §31.1). `kind` names the kind of action: up, pack, off, leave, place, call, gear, check, toss, boil, move, clear (and wash, drink, seal, home). Until v1.9.1 it picked the button's icon; since v1.9.2 it is a description only and is not drawn: the buttons are lettered ก ข ค / A B C (`strings.json → choiceLetters`, §31.1). |
 | `tip` | {th, en} | **At most 80 characters** in each language (counted by code points) |
 | `why` | {th, en} | The "ทำไม?" explanation |
 | `sources` | source id[] | Keys into `sources.json` |
@@ -270,7 +271,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
   - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1), and since v1.9.0 `alert: { guide, until }` (§29.5)
   - `keepTogether` (v1.9.1): 217 Thai words, 2–14 letters each, that never break across lines (§30.1)
   - `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `version`, `houseVersion`
-  - `modes` (the registry, §22.3), `topics` (§21), `guides` (v1.9.0: the guides in display order, `{id, hazard, icon}`, §29.2), `hazards` (the hazard pages' slugs, §25.4, a hazard needing a mode or, since v1.9.0, a guide; and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`, and since v1.9.0 on `landslide`, `storm`, `quake` and `heat`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2)
+  - `modes` (the registry, §22.3), `topics` (§21), `guides` (v1.9.0: the guides in display order, `{id, hazard, icon, prop?}`, §29.2; `prop`, v1.9.2, is the gecko's accessory on the picture of a guide with no game, §31.4), `hazards` (the hazard pages' slugs, §25.4, a hazard needing a mode or, since v1.9.0, a guide; and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`, and since v1.9.0 on `landslide`, `storm`, `quake` and `heat`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2)
   - `round` (section 3; `round.stock.hours` and `round.stock.dark` for the power cut, §27.4)
   - `analytics.endpoint`, `analytics.sampleRate`
   - `features.comboRun`
@@ -292,7 +293,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - `rainWarningUntil` and `featuredTopicUntil` are real `YYYY-MM-DD` dates (v1.6.0)
 - every hazard has a slug in `config.json → hazards` that is valid, unique and not a site path, and its `seo` strings exist in both languages (v1.6.0)
 - a mode whose threat is `dark` has `round.<mode>.hours`; `lostAfter` is used only in such a mode and lies between 0 and its hours (v1.7.0)
-- `config.json → guides` and the guides (v1.9.0, §29.2): each guide's hazard, icon, strings and checklist; every checklist is a guide; a guide with no game has 10 lines, phases in order, existing sources on every line and a valid `verify` (with a `verifyNote` when `partial`); `config.json → alert` names a guide and has a real end date
+- `config.json → guides` and the guides (v1.9.0, §29.2): each guide's hazard, icon, strings and checklist; every checklist is a guide; a guide with no game has 10 lines, phases in order, existing sources on every line and a valid `verify` (with a `verifyNote` when `partial`); `config.json → alert` names a guide and has a real end date; a guide's `prop` is one the gecko has (v1.9.2)
 - `checklists.json → <guide>.phaseNames` (v1.9.1): a named phase must be one the guide's lines have, with Thai and English; `config.json → keepTogether` is a list of Thai words of 2–14 letters, each listed once
 - `kit.json` (v1.8.0): every item and plan hint has existing sources, `verify` is `verified` or `partial`, `for` is a real answer, a plan field's `max` is 1–80, every number above 1 in an amount rule appears in one of its sources' title or note, and every text has Thai and English; a hazard's `tools` are only `kit` or `plan`, with their `seo` strings (§28.8)
 
@@ -1310,7 +1311,7 @@ Until v1.8.1 the app was a game with tools beside it: the start screen led with 
 
 ### 29.2 The data model: guides, phases, sources, verify
 
-**`config.json → guides`** lists the guides in the order the app shows them, each `{id, hazard, icon}`:
+**`config.json → guides`** lists the guides in the order the app shows them, each `{id, hazard, icon}`, and since v1.9.2 an optional `prop` for the gecko on the picture of a guide with no game (§31.4):
 
 | Order | Id | Icon | Hazard | Name (`guide<Id>`, th / en) | Game | Page |
 |---|---|---|---|---|---|---|
@@ -1617,6 +1618,8 @@ Lines also use `text-wrap: pretty` (paragraphs, list items, headings, the gecko'
 3. Closing it any other way (✕, a button, the backdrop, Esc) removes the entry: after the current task (`setTimeout(…, 0)`), if no sheet is open and the entry is still owned, the app calls `history.back()` and ignores the `popstate` that follows. If another sheet opened in the meantime (a guide → "← เรื่องอื่น" → the picker), it reuses the entry, so one Back still leaves the sheets.
 4. Where `pushState` throws (a sandboxed frame), the sheets work as before.
 
+Since v1.9.2 this is one history manager for the game and result screens as well as the sheets (§31.2): the state key is `brm` (the depth), and the entries are made to match what is showing in the next task.
+
 **✕ is always in view.** A sticky top bar (`.sheet-top`) holds the handle and a 44 px ✕ (`#sheet-x`, labelled "ปิด" / "Close"). Guides were 2.3–4.8 screens long and the About sheet 16–25, with "ปิด" only at the bottom. The how-to, which can't be dismissed, hides it (`.sheet.fixed`). Focus goes to the sheet's own content first; ✕ is a Tab away.
 
 **The guide sheet** (`openChecklist()`), from the top: the title; phase jump chips (when the guide has phases, so "ขณะเกิด" is one tap away for someone reading it while it happens); "☎️ โทรฟรี" with 1784, 199 and 1669 as `tel:` chips (`help_click` with the guide as the mode); the lines; the sources, small and muted, with the agencies' English names on English pages (`agencyName()` in `content.js`, also used by the tip card, the About sheet and the home check), and one ⚠️ footnote; ▶ and 📖 as before; "เตรียมบ้านต่อ" with 🎒 เช็กของจำเป็น and 📝 แผนครอบครัว for a hazard with `tools` (`kit_open` / `plan_open`, label `guide`); "ส่งต่อให้คนที่บ้าน" with the four share buttons 2 × 2 and the picture as a thumbnail (it was 580 px tall and repeated the list; the heading was "ส่งต่อเป็นรูป", which promised a picture LINE's buttons don't send); "เปิดในเบราว์เซอร์" inside LINE; print; "← เรื่องอื่น" and "เสร็จแล้ว" side by side.
@@ -1699,13 +1702,13 @@ The HUD counted every target that was no longer pending as done, so "4/6" could 
 
 | Finding | Where it is tracked |
 |---|---|
-| Group D: the right answer is the longest choice in 72 of 82 items (Thai) and 74 of 82 (English), about 1.4 times as long, and in 26 items the only one with a different icon | [KNOWN_ISSUES #66](KNOWN_ISSUES.md#66-the-right-answer-is-usually-the-longest-choice), [ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy) |
-| The result card at 25 % in a chat: the bubble (about 9 px), the link (about 7 px) and the footer unreadable; the result dots have no key | [#67](KNOWN_ISSUES.md#67-the-result-card-is-hard-to-read-at-chat-size) |
-| Previews at 260 px: the hotline line about 6 px; every guide uses the same gecko; `/?open=…` previews as the start screen | [#68](KNOWN_ISSUES.md#68-link-previews-are-small-and-alike-at-chat-size), [#52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game) |
+| Group D: the right answer is the longest choice in 72 of 82 items (Thai) and 74 of 82 (English), about 1.4 times as long, and in 26 items the only one with a different icon Fixed in v1.9.2 (§31.1, [KNOWN_ISSUES #66](KNOWN_ISSUES.md#66-the-right-answer-was-usually-the-longest-choice)); the Thai read in [ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy) |
+| The result card at 25 % in a chat: the bubble (about 9 px), the link (about 7 px) and the footer unreadable; the result dots have no key Fixed in v1.9.2 (§31.3, [F86](KNOWN_ISSUES.md#in-v192-19-oct-2026)) |
+| Previews at 260 px: the hotline line about 6 px; every guide uses the same gecko; `/?open=…` previews as the start screen The guide pictures fixed in v1.9.2 (§31.4); the rest in [#68](KNOWN_ISSUES.md#68-link-previews-are-small-at-chat-size), [#52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game) |
 | `keepTogether` is a hand list; iOS's dictionary untested | [#69](KNOWN_ISSUES.md#69-kept-thai-words-are-a-hand-made-list) |
-| The back button inside a round still leaves the page | [#70](KNOWN_ISSUES.md#70-the-back-button-in-a-round-still-leaves-the-page) |
-| A tablet gets a 480 px column with wide margins | [#71](KNOWN_ISSUES.md#71-on-a-tablet-the-app-is-a-narrow-column) |
-| JSON-LD: `VideoGame` on the start page; `Article` without `author` or `publisher`; `x-default` → `/en/` | [#72](KNOWN_ISSUES.md#72-structured-data-still-calls-the-start-page-a-game) |
+| The back button inside a round still leaves the page Fixed in v1.9.2 (§31.2, [F85](KNOWN_ISSUES.md#in-v192-19-oct-2026)) |
+| A tablet gets a 480 px column with wide margins By design since v1.9.2 ([#71](KNOWN_ISSUES.md#71-on-a-tablet-the-app-is-a-narrow-column)) |
+| JSON-LD: `VideoGame` on the start page; `Article` without `author` or `publisher`; `x-default` → `/en/` Fixed in v1.9.2 (§31.6, [F89](KNOWN_ISSUES.md#in-v192-19-oct-2026)) |
 | In `llms.txt` most earthquake sources are news reports, labelled by the agency they quote | [#60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies) |
 | Web Analytics is on (the beacon is in the live HTML, no `Set-Cookie`); Cloudflare's "JavaScript detections" add about 12 KB per page | [ROADMAP L1](ROADMAP.md#l1-create-the-cloudflare-pages-project), [#30](KNOWN_ISSUES.md#30-web-analytics-search-consoles-and-push-to-deploy-are-not-done-or-checked) |
 | Real phones, LINE and Facebook in-app, iOS Safari, screen readers | [#3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers), [ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix) |
@@ -1715,3 +1718,158 @@ The HUD counted every target that was no longer pending as done, so "4/6" could 
 - **Budget:** start screen **240 KB** compressed (232 in v1.9.0), first game screen **254 KB** (247), limit 500 KB. The 8 KB are the hub's text, the guide sheet and the `keepTogether` list. 44 files precached, as before; 129 link-preview pages.
 - **Code:** `util.js` (`setKeepTogether`, `keptSpans`, `keepWordsIn`, `observeKeptWords`), `content.js` (`agencyName`, `brm:langPick`), `ui.js` (the sheet's history entry, ✕, focus), `share.js` (`openExternal`), `scene.js` (the smoke's geometry, `updateCounts(records, lostMark)`, the decoy's dash), `main.js` (the guide sheet, the HUD, the result, the offline path, the how-to's `{d}`), `cards.js` (`tokens()`), `kit.js` (names, footnote, the score on the hub, "เสร็จแล้ว"), `app.css` (`.nw`, `text-wrap`, `.sheet-top`, `.sheet-x`, the guide sheet, short screens, direct-child selectors), `tools/build.mjs` (the hazard pages' order, `jumpRow`, `telRow`, `keepHtml`, the static alert, the checklist canonical, `404.html`, the `keepTogether` and `phaseNames` checks), `tools/sw.template.js`, `tools/render.html`.
 - **Tests:** 32 rule tests (flood pace; kept words on the cards; the `keepTogether` list) and 134 smoke checks (section 13, "the visitor audit of 19 Oct 2026", listed in [06-test-checklist](06-test-checklist.md#automated-run-before-every-release)).
+
+## 31. Answers, back button, card and security (v1.9.2)
+
+Built 19 Oct 2026 (ROADMAP N20). After v1.9.1 the owner said: "Continue what yo suggested to make app attractive and secure practical usability". What had been suggested were the leftovers of the second visitor audit (§30.11). The method is in [APPROACH §29](APPROACH_AND_METHOD.md#29-answers-drafted-in-parallel-read-by-one-lead-v192), the fixes one by one in [KNOWN_ISSUES F83–F91](KNOWN_ISSUES.md#in-v192-19-oct-2026). No item, room, slot or `houseVersion` changed, and no right answer, tip, `why`, `feedback`, source, `kind` or id: the advice, the houses and the challenge links are the same.
+
+### 31.1 Wrong answers that don't give the right one away
+
+**The problem.** The right answers were written from the agencies' wording, which names the action and often its reason; the wrong ones were short. Recounted for v1.9.2 over the 82 choice sets (the 81 items and `p-breaker`'s `wet` set), the right answer was strictly the longest in 71 in Thai and 73 in English (the v1.9.1 audit reported 72 and 74, counting slightly differently). A player could pick it without reading, and the round taught less.
+
+**The brief** for the rewrite, the same for every drafter:
+
+- keep the wrong answer's meaning and its mistake, so the item's existing `feedback` still answers it;
+- add the reason a real person would give for doing it;
+- no new facts, advice or numbers;
+- a wrong label at most 60 Thai code points and 80 English characters (it must fit a phone's choice button);
+- no filler: every added word is part of the reason.
+
+**What it looks like** (`p-docs`, documents before a flood):
+
+| | Before | After |
+|---|---|---|
+| Wrong answer | ปล่อยไว้ เสียก็ไปทำใหม่ได้ | ปล่อยไว้ในลิ้นชักเหมือนเดิม เสียก็ไปขอทำใหม่ได้ / Leave them in the drawer as usual; if they're ruined, get new ones |
+| Its feedback (unchanged) | ทำใหม่ได้ก็จริง แต่ยุ่งยากและเสียเวลามาก ตอนอพยพหรือขอความช่วยเหลือก็ต้องใช้ ห่อกันน้ำไว้ก่อนดีกว่า | the same |
+
+**The numbers.** 117 wrong labels were rewritten, in the prepare, return, dust, fire and power-cut items and `p-breaker`'s `wet` set.
+
+| | Right answer strictly the longest | Longest / middle / shortest by length |
+|---|---|---|
+| Thai, v1.9.1 | 71 of 82 | — |
+| Thai, v1.9.2 | 17 of 82 | 17 / 40 / 25 |
+| English, v1.9.1 | 73 of 82 | — |
+| English, v1.9.2 | 16 of 82 | 16 / 37 / 29 |
+
+**The balance.** Rewriting every set would have made the right answer almost never the longest, and "never pick the longest" would have been the new tell. So in 14 sets one drafted rewrite was left out, and the right answer stays the longest by a hair (the longest wrong one is 0.79–0.97 of it): `p-waterfood`, `p-poster`, `r-glass`, `r-mudfeet`, `r-mould`, `f-extinguisher`, `r-fever`, `r-debris`, `r-breaker`, `a-inhaler`, `a-purifier`, `r-tap`, `a-grill`, `s-plugs`. Length now says nothing either way.
+
+**What the review changed.** Every draft was read against its item's `context` and `feedback`:
+
+- `p-phone`'s draft said the battery was "still half full", but the item's context says 15 % ("แบตเหลือ 15%"). It became "แบตยังเหลือ 15% เดี๋ยวค่อยชาร์จตอนไฟใกล้ดับก็ทัน" / "15% will do for now; charge it just before the power goes".
+- Three drafts proposed shorter right answers (`r-gas`, `r-tap`, `r-cupboard`). They were declined: a right answer is sourced advice and stays word for word.
+- `p-drain`'s second wrong answer was trimmed to "เทน้ำยาล้างท่อลงไปเยอะๆ ให้น้ำระบายลงไปเร็วๆ" so its Thai sheet fits at 320 × 568 (§31.7).
+- One draft was dropped by its own agent: `s-plugs` "leave them plugged in but switched off" would have been half right, since Ready.gov says "turn off or disconnect". `s-plugs` keeps its one wrong answer.
+
+**The test.** "the right answer is not given away by its length (KNOWN_ISSUES #66)" in `tests/run.mjs`, per language (Thai counted in code points): the right answer is strictly the longest in 10–33 % of the sets; where it is, the longest wrong one is at least 0.75 of it; and every wrong label is at most 60 Thai code points or 80 English characters. On the v1.9.1 content it fails (71 of 82). [GUIDELINES rule 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**The icons were a tell too.** Each answer button drew an icon for its `kind` (a clock for `leave`, a bag for `pack`…). In 42 of the 82 sets one answer's icon was the odd one out, and it was the right answer in 26 of them: the two wrong answers often shared the clock, because a common mistake is to wait or leave things as they are (24 of the 26). So "pick the odd icon" was right in 26 of 42, the audit's "in 26 items it is the only choice with a different icon". Since v1.9.2 each button shows a letter in the same 36 px badge, ก ข ค in Thai and A B C in English (`strings.json → choiceLetters`). The choices are still shuffled for each house, so a letter says nothing about the answer. `icons.js` lost `actionIcon` (only `spriteIcon` is left), and `kind` stays in `items.json` as a description of the action, not drawn (§5). Smoke check: "the answers are lettered ก ข ค, with no icon that tells them apart" ([KNOWN_ISSUES F90](KNOWN_ISSUES.md#in-v192-19-oct-2026)).
+
+**Still for people.** The new wrong answers are new Thai copy: a native reader checks that each sounds like what a person would say ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy), [KNOWN_ISSUES #66](KNOWN_ISSUES.md#66-the-right-answer-was-usually-the-longest-choice)).
+
+### 31.2 The back button: one history manager
+
+Since v1.9.1 a sheet owned a history entry (§30.2), but Back during a round, or on the result screen, still left the page. Now `ui.js` keeps a list of layers, bottom to top: the game or result screen (`'screen'`) and an open sheet (`'sheet'`). Each owns one history entry, and `history.state.brm` is the depth.
+
+- **Settling.** `showScreen()`, `openSheet()` and a sheet's `close()` call `settleHistory()`. In the next task (`setTimeout(…, 0)`, once, however many changes came before) it compares the layers with what is showing: missing entries are pushed with `history.pushState`, at the same address, so a challenge link or a `?mode=` link keeps its address; extra entries are removed with `history.go(-n)`, and the one `popstate` that follows is ignored. A sheet that closes and another that opens straight after share one entry.
+- **Back.** On `popstate` the layers above the new depth close, top first: a sheet closes (its `onClose` runs, as with ✕); a screen calls `onScreenBack`, which `main.js` sets with `setScreenBack()`: in a running round it pauses the game (the pause sheet), otherwise it goes to the start screen (`goHome()`).
+- **Where `pushState` throws** (a sandboxed frame), the app works as it did without the entries.
+
+| Showing | Entries the app owns | The phone's back button |
+|---|---|---|
+| The start screen | 0 | Leaves the site (back to the chat or the page before), as before |
+| The start screen with a sheet (a guide) | 1 | Closes the sheet (v1.9.1) |
+| A round, running | 1 | Pauses it: the pause sheet opens, and the round owns 2 entries again |
+| A round with the pause sheet | 2 | Closes the sheet, which resumes the round |
+| A round with a choice sheet | 2 | Closes the choice sheet, as ✕ does; the round goes on |
+| The result | 1 | Goes to the start screen |
+| The result with a sheet (sharing) | 2 | Closes the sheet |
+
+**Checks:** three smoke checks at 360 × 640, with a page before the game as a chat would be: "back inside a round pauses it (the pause sheet), back again resumes; still on the site", "back on the result goes to the start screen, still on the site" and "no page errors (back in the game)". Also tried in a scratch probe. The Android back gesture, iOS's swipe back and LINE's in-app browser are untried **[unverified]** ([06-test-checklist](06-test-checklist.md) row 61). [GUIDELINES rule 77](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+### 31.3 The result card at chat size
+
+A chat shows the 1080 × 1350 card about 270 px wide, a quarter of its size. Before v1.9.2 the gecko's line was 38 px (down to 28 px, up to 4 lines) in a 330 px bubble left of the gecko, about 9 px in a chat, and the printed link about 7 px. The new layout in `drawResultCard` (`cards.js`), top to bottom:
+
+| Part | Size | Where (y on the 1350 px card) |
+|---|---|---|
+| The wordmark, the mode chip, the house date | 104 px, 40 px, 30 px (as before) | 150, 192, 300 |
+| The gecko | 300 × 316, centred | from 318 |
+| Its line (`endingBubble`) | 960 px wide (x 60–1020), white with the tail pointing up at the gecko; centred text from 52 px down to 38 px, the largest size that fits two lines without a lone short word on the last; a line that needs more even at 38 px gets up to three | from 672 |
+| The score | 200 px | at 980, or lower under a taller bubble |
+| The rank pill | 50 px | just under the score |
+| The result dots | 60 px each, 22 px apart | 1158 |
+| The call to action | 50 px, down to 34 | 1244 |
+| The challenge link | 46 px, down to 30, weight 600 | 1294 |
+| The footer | 24 px | 1334 |
+
+The separate headline is no longer drawn: the wordmark, the mode chip, the score and the rank say it. At a quarter of the size the line's 52 px text is 13 px and the 46 px link 11.5 px; looked at 270 px wide, both can be read. The dots still have no key and the footer stays small. `share/sample-result-prepare.png` and `share/sample-result-return.png` were re-rendered.
+
+### 31.4 A prop for every guide picture
+
+The picture of a guide with a game draws the gecko with its mode's prop (the rain hood, the torch, the mask, the fire helmet). The four guides with no game drew it with nothing on, so in a chat they looked alike. `config.json → guides[].prop` (optional, v1.9.2) gives them one:
+
+| Guide | `prop` | What the gecko wears |
+|---|---|---|
+| `landslide` | `helmet` | a yellow hard hat |
+| `storm` | `hood` | the rain hood (as in Prepare) |
+| `quake` | `helmet` | a yellow hard hat |
+| `heat` | `sunhat` | a straw sun hat with a red band |
+| a guide with a game | its mode's | `prepare` hood, `return` torch, `dust` mask, `fire` fire helmet, `stock` torch |
+
+- **Code:** `content.js` calls `setGuides(config.guides)`; `propFor(id)` in `modes.js` returns the mode's prop, else the guide's, else `none`; `cards.js` draws with it. `mascot.js` has two new props, `helmet` and `sunhat`.
+- **Checks:** the build stops on a prop the gecko doesn't have (`hood`, `torch`, `mask`, `firehat`, `helmet`, `sunhat`); the unit test "every guide picture has a gecko accessory, games and guides alike (v1.9.2)".
+- **Images:** `og/checklist-{landslide,storm,quake,heat}.png`, the same under `og/en/`, and `share/checklist-{landslide,storm,quake,heat}.png`. Landslide and earthquake share the hard hat; their titles tell them apart.
+- **Still open:** the previews' helpline line, about 6 px in a chat ([KNOWN_ISSUES #68](KNOWN_ISSUES.md#68-link-previews-are-small-at-chat-size)).
+
+### 31.5 Security headers
+
+`public/_headers` sends these on every path (`/*`):
+
+| Header or directive | What it stops |
+|---|---|
+| `Content-Security-Policy: frame-ancestors 'self'` | Another site showing the app inside a frame, to trick taps onto it (clickjacking) |
+| `object-src 'none'` | Plugins (`<object>`, `<embed>`); the app uses none |
+| `base-uri 'self'` | An injected `<base>` sending the page's relative links and scripts to another site |
+| `form-action 'self'` | A form sending what is typed to another site; the plan card's fields are never submitted anyway |
+| `upgrade-insecure-requests` | Any `http://` request from the page; it is made over HTTPS |
+| `X-Frame-Options: SAMEORIGIN` (v1.9.2) | Framing, for browsers that don't read `frame-ancestors` |
+| `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()` | As before |
+
+- **No `script-src` or `default-src`, on purpose.** Cloudflare injects inline scripts into the pages it serves: the Web Analytics beacon and the zone's JavaScript detections (`/cdn-cgi/challenge-platform/…`, §10). A script policy would block them, or allow them only through hashes or nonces that Cloudflare can change at any time. The app has no third-party scripts of its own, and the privacy rules keep it that way ([GUIDELINES rule 76](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **HSTS** is sent by Cloudflare for the domain already, so `_headers` doesn't repeat it.
+- **In-app browsers** (LINE, Facebook) show the page in their own web view, not inside another site's frame, so `frame-ancestors` doesn't affect them; the phone test will show it **[unverified]**.
+- **Checks:** the unit test "security headers: no framing by other sites, no plugins, no foreign base or form target" reads `_headers` (and fails on a `script-src`); after the deploy, `curl -sI https://baanrodmai.autobahn.bot/` should show both headers ([06-test-checklist](06-test-checklist.md#live-site-checks-search-and-ai-search)).
+
+### 31.6 Structured data
+
+The JSON-LD the build writes (`tools/build.mjs`):
+
+| Where | What |
+|---|---|
+| `/` and `/en/` (`@graph`) | `WebSite` (`…/#website`, `publisher` → `…/#org`); **the publisher**, an `Organization` (`@id` `${SITE}/#org`, the name, `alternateName` "Baan Rod Mai?", `url`, `logo` `icons/icon-512.png`); the app (`…/#game`), typed `['VideoGame', 'WebApplication']` with `applicationCategory: UtilitiesApplication`, free, about the eight hazards |
+| `/learn`, the hazard pages and their `/en/` twins | `Article` with `author` and `publisher` (the same `Organization`) and the sources as `citation` |
+
+- **The English start page.** The build makes `/en/`'s graph by copying the Thai one and changing the website and game nodes. It first did so by position, and the publisher, inserted at position 1, took the game's English description and addresses, while the game node kept the Thai ones; found in our own review before release, never live. It now finds the game node by its `@id` (`…/#game`), and the unit test "structured data: one publisher, and each start page describes the app in its own language" checks both pages ([KNOWN_ISSUES F91](KNOWN_ISSUES.md#in-v192-19-oct-2026), [LESSONS C22](LESSONS_LEARNED.md#c-engineering-and-platform)).
+- **Kept on purpose:** the `VideoGame` type, because the game is still part of the app; `x-default` → `/en/`, because `x-default` is the page for visitors whose language matches none of the others, and for them the English page is right.
+- **`llms.txt`:** the tools line now also links the tools' own pages: "every line and its source: https://baanrodmai.autobahn.bot/kit" and "…/plan".
+- **Left:** Google's Rich Results Test of the publisher and its logo ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)).
+
+### 31.7 Choice sheets on short screens
+
+With wrong answers that say why, a choice's three answers grew longer. Under `@media (max-height: 640px)` the choice sheet is now more compact: `.sheet { max-height: 92% }`, the item's picture 52 px wide (46 px tall), `.choices` gap 8 px, `.choice` at least 52 px tall with 8 × 12 px padding. Every tap target stays 44 px or more. Screens 520 px tall or less keep their own, tighter rules (§30.10).
+
+Measured with a scratch probe that filled the real choice sheet with every item's context and labels, in both languages, and compared its scroll height with its height:
+
+| Screen | Thai sheets that scroll | English sheets that scroll |
+|---|---|---|
+| 320 × 568 | 0 of 82 | 20 of 82, by up to 78 px (`p-meds`, whose right answer is 82 characters); 42 of 82 on the live v1.9.1, by up to 78 px |
+| 360 × 640 | 0 | 0 |
+| 390 × 844 | 0 | 0 |
+
+The English remainder is [KNOWN_ISSUES #73](KNOWN_ISSUES.md#73-english-choice-sheets-still-scroll-on-the-smallest-phones). The probe's first run said 6 Thai sheets scrolled; the truth was 1 (`p-drain`, then trimmed). It rewrote the text inside the sheet, and the app's keep-together observer (`observeKeptWords`, §30.1) had already wrapped words of earlier labels in spans, so old text stayed behind ([LESSONS D19](LESSONS_LEARNED.md#d-testing-and-verification)).
+
+### 31.8 Budget, code and tests
+
+- **Budget:** start screen **243 KB** compressed (240 in v1.9.1), first game screen **258 KB** (254), limit 500 KB: the longer wrong answers, the history manager and the card. 44 files precached; 81 items (and 30 decoys), 109 sources.
+- **Code:** `ui.js` (`settleHistory`, `setScreenBack`, the layers), `main.js` (Back in a round and on the result; lettered answers), `icons.js` (`actionIcon` removed), `cards.js` (`drawResultCard`, `endingBubble`), `modes.js` (`setGuides`, `propFor`), `mascot.js` (`helmet`, `sunhat`), `content.js`, `app.css` (the choice sheet under 640 px), `tools/build.mjs` (the publisher, `applicationCategory`, the English game node by `@id`, the guides' `prop` check, `llms.txt`), `public/_headers`; `strings.json → choiceLetters`.
+- **Tests:** 36 rule tests (the answers' lengths, the guides' props, the security headers, the structured data) and 138 smoke checks (the lettered answers, the back button in a round and on the result, listed in [06-test-checklist](06-test-checklist.md#automated-run-before-every-release)), on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027.

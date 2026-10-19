@@ -51,8 +51,9 @@ const ARMS = {
     <circle cx="96" cy="63" r="2.6" fill="${SPOT}" stroke="${OL}" stroke-width="1.4"/>`,
 };
 
-// Small accessories per mode (config.json → modes[].prop): a rain hood before
-// the flood, a torch after it, a dust mask, a fire helmet. FRONT parts are
+// Small accessories per mode (config.json → modes[].prop) and per guide with no
+// game (guides[].prop): a rain hood before the flood, a torch after it, a dust
+// mask, a fire helmet, a hard hat, a sun hat. FRONT parts are
 // drawn over the face (a mask has to cover the mouth).
 const PROPS = {
   none: '',
@@ -65,6 +66,15 @@ const PROPS = {
       <rect x="4" y="94" width="7" height="15" rx="2" fill="#FFF3C4" stroke="${OL}" stroke-width="2.2"/>
     </g>`,
   mask: '',
+  // a yellow hard hat (earthquakes, landslides) and a straw sun hat (heat), v1.9.2
+  helmet: `<g transform="translate(0 -7)">
+    <path d="M27 41 Q27 9 60 9 Q93 9 93 41 Z" fill="#FFC83D" stroke="${OL}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M18 43 Q60 34 102 43 L100 48 Q60 39 20 48 Z" fill="#E0A21E" stroke="${OL}" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M60 10 V39 M47 14 Q44 26 45 39 M73 14 Q76 26 75 39" fill="none" stroke="#FFE38A" stroke-width="2.6" stroke-linecap="round"/></g>`,
+  sunhat: `<g transform="translate(0 -11)">
+    <ellipse cx="60" cy="37" rx="52" ry="11" fill="#F3D28B" stroke="${OL}" stroke-width="2.4"/>
+    <path d="M35 37 Q35 11 60 11 Q85 11 85 37 Z" fill="#F7DFA2" stroke="${OL}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M36 30 Q60 24 84 30 L84 35 Q60 29 36 35 Z" fill="#E8452C" stroke="${OL}" stroke-width="1.6" stroke-linejoin="round"/></g>`,
   firehat: `
     <path d="M26 40 Q26 8 60 8 Q94 8 94 40 Z" fill="#E8452C" stroke="${OL}" stroke-width="2.4" stroke-linejoin="round"/>
     <path d="M18 42 Q60 32 102 42 L100 47 Q60 38 20 47 Z" fill="#C7361F" stroke="${OL}" stroke-width="2.2" stroke-linejoin="round"/>

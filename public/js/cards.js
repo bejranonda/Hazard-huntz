@@ -5,7 +5,7 @@
 
 import { geckoSVG } from './mascot.js';
 import { parseSvg, drawSvgInto } from './svgdraw.js';
-import { modeOf } from './modes.js';
+import { modeOf, propFor } from './modes.js';
 import { keptSpans } from './util.js';
 
 const INK = '#3E2A1E';
@@ -35,7 +35,7 @@ const THEMES = {
   heat: { sun: SUN, waves: ['#FFD3A3', '#FFAE5E'], chip: '#FFE7CC', accentDark: '#C4610A', og: '#FFF1E0' },
 };
 const theme = (mode) => THEMES[mode] || THEMES.return;
-const propOf = (mode) => modeOf(mode)?.prop || 'none';
+const propOf = (id) => propFor(id);
 
 export async function loadCardAssets() {
   if (document.fonts?.load) {
@@ -258,23 +258,24 @@ export function drawResultCard(canvas, d, assets) {
   pill(ctx, W / 2, 192, d.modeLabel, { size: 40, fill: chipFill, lw: 4 });
 
   const face = d.tier >= 2 ? 'cheer' : d.tier === 1 ? 'happy' : 'think';
-  drawGecko(ctx, assets, W / 2 - 190, 318, 380, 400, face, propOf(d.mode));
+  // v1.9.2: the gecko a little smaller, its line in a wide bubble under it, no
+  // separate headline (the rank and the mode chip say it), a bigger score and
+  // link, so the card reads at the size a chat shows it (about 270 px wide).
+  drawGecko(ctx, assets, W / 2 - 150, 318, 300, 316, face, propOf(d.mode));
+  const bubbleH = d.ending ? endingBubble(ctx, d.ending, 60, 672, W - 120, W / 2) : 0;
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
-  fitText(ctx, d.headline, W - 120, 70, 44);
-  ctx.fillStyle = INK;
-  ctx.fillText(d.headline, W / 2, 780);
-
-  font(ctx, 230);
+  const scoreY = Math.max(980, 672 + bubbleH + 178);
+  font(ctx, 200);
   ctx.lineJoin = 'round';
   ctx.lineWidth = 16;
   ctx.strokeStyle = INK;
-  ctx.strokeText(d.scoreText, W / 2, 990);
+  ctx.strokeText(d.scoreText, W / 2, scoreY);
   ctx.fillStyle = CORAL;
-  ctx.fillText(d.scoreText, W / 2, 990);
+  ctx.fillText(d.scoreText, W / 2, scoreY);
 
-  pill(ctx, W / 2, 1022, d.rankTitle, { size: 50, fill: SUN });
+  pill(ctx, W / 2, scoreY + 34, d.rankTitle, { size: 50, fill: SUN });
 
   // result dots, Wordle-style, with shapes as well as colours
   const n = d.grid.length;
@@ -282,27 +283,26 @@ export function drawResultCard(canvas, d, assets) {
   const total = n * (r * 2) + (n - 1) * gap;
   let x = W / 2 - total / 2 + r;
   for (const st of d.grid) {
-    statusDot(ctx, x, 1150, r, st);
+    statusDot(ctx, x, 1158, r, st);
     x += r * 2 + gap;
   }
 
   ctx.textAlign = 'center';
   ctx.fillStyle = '#FFFFFF';
-  fitText(ctx, d.cta, W - 100, 46, 32);
-  ctx.fillText(d.cta, W / 2, 1238);
+  fitText(ctx, d.cta, W - 100, 50, 34);
+  ctx.fillText(d.cta, W / 2, 1244);
   // The challenge link itself, so a forwarded picture leads to this house.
   const shown = d.url.replace(/^https?:\/\//, '');
-  fitText(ctx, shown, W - 100, 40, 26, 400);
-  ctx.fillText(shown, W / 2, 1290);
+  fitText(ctx, shown, W - 80, 46, 30, 600);
+  ctx.fillText(shown, W / 2, 1294);
   font(ctx, 24, 400);
   ctx.fillStyle = 'rgba(255,255,255,.92)';
-  ctx.fillText(d.footer, W / 2, 1332);
+  ctx.fillText(d.footer, W / 2, 1334);
   font(ctx, 30, 400);
   ctx.fillStyle = INK2;
   ctx.fillText(d.houseLabel, W / 2, 300);
 
-  if (d.ending) endingBubble(ctx, d.ending, 30, 462, 330, 300);
-  if (d.perfect) stamp(ctx, W - 200, 470, d.perfect);
+  if (d.perfect) stamp(ctx, W - 190, 470, d.perfect);
 }
 
 // Canvas fonts may draw emoji as empty boxes, so the card leaves them out.
@@ -310,42 +310,43 @@ export const plainText = (text) => String(text ?? '')
   .replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, '')
   .replace(/\s+/g, ' ').trim();
 
-// The ending ("บ้านรอด! …") in a speech bubble left of the gecko, so a forwarded
-// card answers "บ้านรอดไหม?" too. x, w: the bubble; cy: its middle; maxH: its
-// tallest. The text shrinks from 38 to 28 px to fit at most 4 lines.
-function endingBubble(ctx, text, x, cy, w, maxH) {
+// The ending ("บ้านรอด! …"), so a forwarded card answers "บ้านรอดไหม?" too: a
+// wide bubble under the gecko, tail pointing up. Wide and large so it can still
+// be read when a chat shows the card at a quarter of its size (v1.9.2: it was
+// 38 px in a 330 px box beside the gecko, about 9 px in a chat). Centred lines;
+// the largest size from 52 px that fits two lines, else three at 38 px.
+// Returns the bubble's height.
+function endingBubble(ctx, text, x, top, w, tailX) {
   const clean = plainText(text);
-  if (!clean) return;
-  const pad = 22;
-  // The largest size that fits; better still, one that leaves no lone short
-  // word on the last line (Thai breaks between words, e.g. "เต็ม|สิบ").
+  if (!clean) return 0;
+  const pad = 26;
   let fit = null;
-  for (let s = 38; s >= 28; s -= 2) {
+  for (let s = 52; s >= 38; s -= 2) {
     font(ctx, s, 400);
     const ls = wrapText(ctx, clean, w - pad * 2);
-    if (ls.length > 4 || ls.length * s * 1.3 + pad * 2 > maxH) continue;
+    if (ls.length > 2) continue;
+    // No lone short word on the last line (Thai breaks between words, e.g. "เต็ม|สิบ").
     const widow = ls.length > 1 && ctx.measureText(ls[ls.length - 1]).width < (w - pad * 2) * 0.3;
     fit = fit || { s, ls };
     if (!widow) { fit = { s, ls }; break; }
   }
   if (!fit) {
-    font(ctx, 28, 400);
-    fit = { s: 28, ls: wrapText(ctx, clean, w - pad * 2).slice(0, 4) };
+    font(ctx, 38, 400);
+    fit = { s: 38, ls: wrapText(ctx, clean, w - pad * 2).slice(0, 3) };
   }
   const size = fit.s;
   const lines = fit.ls;
   font(ctx, size, 400);
   const lh = size * 1.3;
   const h = lines.length * lh + pad * 2;
-  const top = cy - h / 2;
-  const r = 24;
-  // One path for the box and its tail, which points right at the gecko.
+  const r = 26;
+  // One path for the box and its tail, which points up at the gecko.
   ctx.beginPath();
   ctx.moveTo(x + r, top);
+  ctx.lineTo(tailX - 22, top);
+  ctx.lineTo(tailX, top - 30);
+  ctx.lineTo(tailX + 22, top);
   ctx.arcTo(x + w, top, x + w, top + h, r);
-  ctx.lineTo(x + w, cy - 14);
-  ctx.lineTo(x + w + 36, cy + 4);
-  ctx.lineTo(x + w, cy + 18);
   ctx.arcTo(x + w, top + h, x, top + h, r);
   ctx.arcTo(x, top + h, x, top, r);
   ctx.arcTo(x, top, x + w, top, r);
@@ -357,11 +358,11 @@ function endingBubble(ctx, text, x, cy, w, maxH) {
   ctx.strokeStyle = INK;
   ctx.stroke();
   ctx.fillStyle = INK;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  lines.forEach((line, i) => ctx.fillText(line, x + pad, top + pad + lh * (i + 0.5)));
   ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  lines.forEach((line, i) => ctx.fillText(line, x + w / 2, top + pad + lh * (i + 0.5)));
   ctx.textBaseline = 'alphabetic';
+  return h;
 }
 
 // A tilted "rubber stamp" for a perfect round.

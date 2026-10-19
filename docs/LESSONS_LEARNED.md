@@ -514,3 +514,40 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* for v1.9.1 three audit agents walked the live site in parallel, each with its own journey (the tools; the game and the share loop; the pages and previews), with analytics blocked so they wouldn't count as visitors. Between them they found the share bug, the back button, the fire smoke, the Thai breaks, the flood's pace and the pages' order, more than one walk had found. Not every claim held: one reported Cloudflare's beacon as a third-party script against the privacy rules; it was the owner's own Web Analytics, which the rules allow.
 - *Do this:* split an audit by journey so auditors don't repeat each other, give each the same rules (sizes, languages, what counts as a finding, where to save screenshots), and have one lead re-check every finding before it becomes work: open the screenshot, read the code, reproduce the bug. Group the fixes for the owner (bugs, pages, game, content) and leave content that needs a native speaker for that review.
 - *Encoded in:* [APPROACH §28](APPROACH_AND_METHOD.md#28-visitor-audit-2-three-auditors-in-parallel-v191), [ROADMAP N19](ROADMAP.md#n19-visitor-audit-2).
+
+**D18. Fixing a tell can create the opposite tell: measure the distribution, not only the old symptom.**
+
+- *What happened:* the right answer was the longest choice in 71 of 82 sets in Thai, so it could be picked without reading. Rewriting every wrong answer to be longer would have made the right one almost never the longest, and "never pick the longest" would have worked just as well. v1.9.2 counted where the right answer ranks by length (longest, middle, shortest) and left one drafted rewrite out in 14 sets, so that it is still the longest now and then, by a hair: Thai 17 / 40 / 25, English 16 / 37 / 29 ([KNOWN_ISSUES F83](KNOWN_ISSUES.md#in-v192-19-oct-2026)).
+- *Also:* length wasn't the only tell. Each answer drew an icon for its kind of action, and the right one was the odd icon out in 26 of the 42 sets that had one, mostly because the wrong answers shared the clock of "leave it". The buttons now show ก ข ค ([F90](KNOWN_ISSUES.md#in-v192-19-oct-2026)).
+- *Do this:* when a fix removes a pattern a player (or a test, or a search engine) can exploit, measure the whole distribution after the fix and ask what the new pattern is. Look at everything drawn on the choice, not only its words. Test a range, not a single limit.
+- *Encoded in:* the unit test "the right answer is not given away by its length (KNOWN_ISSUES #66)" (the longest in 10–33 % of sets, never by a wide margin); [GUIDELINES rule 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**B12. Copy drafted by agents needs a read against each item's own facts.**
+
+- *What happened:* three agents drafted the new wrong answers from one brief, and most drafts were good. One wasn't: `p-phone`'s draft said the battery was "still half full", while the item's context says 15 %. Read alone, the draft sounded fine; read next to the question the player sees, it contradicted it. Other drafts proposed shortening three right answers (`r-gas`, `r-tap`, `r-cupboard`), which would have reworded sourced advice; and one agent dropped its own draft for `s-plugs` ("leave them plugged in but switched off") because it was half right against Ready.gov's "turn off or disconnect" ([KNOWLEDGE §31.1](KNOWLEDGE.md#311-wrong-answers-that-dont-give-the-right-one-away)).
+- *Do this:* have one person (the lead) read every draft beside its item's `context` and `feedback`, and the right answer's source; reject any change to a right answer; ask each drafter to flag a draft it isn't sure of rather than ship it.
+- *Encoded in:* [APPROACH §29](APPROACH_AND_METHOD.md#29-answers-drafted-in-parallel-read-by-one-lead-v192), [GUIDELINES §2.3 and rule 75](GUIDELINES.md#23-wrong-answers-and-feedback).
+
+**D19. A probe that edits the page must survive the app's own changes to it.**
+
+- *What happened:* to see whether the longer answers fit, a scratch probe wrote every item's labels into the real choice sheet and measured it. Its first run said 6 Thai sheets needed scrolling; the truth was 1. The app's keep-together observer (`observeKeptWords`, v1.9.1) had wrapped kept Thai words of the earlier labels in spans, so the probe's later writes left old text behind and the sheets looked taller than they were.
+- *Do this:* know what the app does to the page by itself (observers, timers, re-renders) before a probe changes it. Rebuild the element for each case, or let the app open it as a visitor would, and look at one result by eye before trusting a count.
+- *Encoded in:* [KNOWLEDGE §31.7](KNOWLEDGE.md#317-choice-sheets-on-short-screens).
+
+**D20. Run a new test file once before trusting its result.**
+
+- *What happened:* v1.9.2 added smoke checks for the back button and the lettered answers. A second `const home` in `tests/smoke.mjs` made the whole file a `SyntaxError`, so not one check ran, old or new. The first run showed it, and the name was changed.
+- *Do this:* after adding checks, run the file once and read the count it prints: it should be the old count plus the new checks (134 + 4 = 138 in v1.9.2). A file that doesn't parse runs nothing, and a check that never ran proves nothing; in CI or a script that hides the output, look for the count, not only the exit.
+- *Encoded in:* [06-test-checklist](06-test-checklist.md#automated-run-before-every-release) (each run ends with its own count).
+
+**C21. Read what the host adds to the page before writing a script policy.**
+
+- *What happened:* v1.9.2 added security headers. A full Content Security Policy with `script-src 'self'` looks like the safe choice, but Cloudflare injects inline scripts into the pages it serves (the Web Analytics beacon and the zone's JavaScript detections), which such a policy would block, or allow only through hashes that Cloudflare can change at any time. So the policy covers framing, plugins, `<base>` and forms, and leaves scripts alone ([KNOWN_ISSUES F88](KNOWN_ISSUES.md#in-v192-19-oct-2026)).
+- *Do this:* look at the live HTML (and its headers) before writing a header that limits what the page may load, and check the live headers again after the deploy. Prefer a smaller policy that can't break the site to a full one that breaks what the host adds.
+- *Encoded in:* [GUIDELINES rule 76](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); the unit test "security headers: …", which fails on a `script-src`.
+
+**C22. Edit a shared structure by id, not by position.**
+
+- *What happened:* the build makes the English start page's JSON-LD by copying the Thai `@graph` and changing two nodes by their place in the list (`[0]` the website, `[1]` the game). v1.9.2 inserted the publisher at `[1]`, so on `/en/` the publisher got the game's English description and addresses, and the game kept the Thai ones. Nothing failed: the JSON was valid and the page looked the same. It was found in our own review of the built pages, before release ([KNOWN_ISSUES F91](KNOWN_ISSUES.md#in-v192-19-oct-2026)).
+- *Do this:* when code changes an item in a list it didn't just build (graph nodes, config entries, table rows), find it by its id (`@id`, `id`), not its index; and after inserting into a shared structure, search for every place that reads it by position. Check generated output, not only that it parses.
+- *Encoded in:* `tools/build.mjs` (the English game node found by `@id`); the unit test "structured data: one publisher, and each start page describes the app in its own language".

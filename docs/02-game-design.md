@@ -172,12 +172,13 @@
 
 ## Playing a round
 
-- **Tap a target:** the timer pauses and a bottom sheet shows 3 choices.
+- **Tap a target:** the timer pauses and a bottom sheet shows 3 choices. Since v1.9.2 each wrong choice gives the reason a real person would give for that mistake ("ปล่อยไว้ในลิ้นชักเหมือนเดิม เสียก็ไปขอทำใหม่ได้"), so the right one can't be spotted by its length: it is the longest in 17 of 82 sets in Thai. The answers are lettered ก ข ค (A B C in English), shuffled for each house; until v1.9.1 each had an icon for its kind of action, and the right one was often the odd icon out ([KNOWLEDGE §31.1](KNOWLEDGE.md#311-wrong-answers-that-dont-give-the-right-one-away)).
 - **Correct:** +100, a squish and sparkle sound, the gecko cheers. The item changes state: the breaker flips to OFF, sandbags line up, the TV lifts, the car drives away. A **tip card** shows the ≤ 80-character tip, a **ทำไม?** expander and the agency link.
 - **Wrong:** −4 s, a soft "boop" and the gecko's worried face. A gentle correction shows the safer choice, why the chosen one is risky, and the same tip card. The item is marked 💡 *learned*, not failed.
 - **Decoy:** −2 s on the first tap only. The gecko explains why it is fine, and the item gets a grey dash (v1.9.1; a grey tick before, which read as a win). The idle hint rings only targets, never decoys.
 - **HUD:** "done/total" counts only targets the player answered; what the water, smoke or dark took is shown apart with its mark ("0/6 💧5", 💨 in fire, 🌑 in the power cut, the same marks as the share text's grid), and a room tab whose things were lost shows the mark, not ✓ (v1.9.1).
 - **End:** when every target is resolved or time is up. Missed targets get a dashed outline and "?" badge, and **every** target appears in the lesson list with its tip and source: since v1.9.1 mistakes first (wrong, lost, missed, then right). When something was lost, the stats say "💧 โดนน้ำก่อน 6 อย่าง" instead of the time left. A lost challenge says "อีกนิดเดียว!" only when 1–2 points short, otherwise "รอบหน้าเอาใหม่!".
+- **The phone's back button** (v1.9.2): in a round it pauses the game (the pause sheet), and Back again resumes it; on the result it goes to the start screen; on a choice or any other sheet it closes the sheet; only on the start screen does it leave the site ([KNOWLEDGE §31.2](KNOWLEDGE.md#312-the-back-button-one-history-manager)).
 - **Score:** `score10 = round(10 × points ÷ max)`. Max is 100 per target plus 50 per critical item. Results are always shown as X/10, so cards compare across houses.
 - **Ranks (by score10):** 0–4, 5–7, 8–10.
   - ก่อนน้ำมา: มือใหม่หัดเตรียมตัว → หัวหน้าทีมยกของ → บ้านนี้เตรียมพร้อม
@@ -208,7 +209,7 @@
 ## Feel
 
 - **Art:** flat, warm illustration with chunky outlines. Mud browns with bright accents (sun yellow, sky blue, coral, teal). Hopeful skies: rain clouds before, sunshine after. Everything is hand-made SVG (about 40 KB), crisp on any screen.
-- **Mascot:** **น้องจก**, an original gecko in yellow rubber boots. A rain hood before the flood, a torch after. Five faces: happy, cheer, oops, wow, think.
+- **Mascot:** **น้องจก**, an original gecko in yellow rubber boots. A rain hood before the flood, a torch after (and a mask, a fire helmet and a torch in the dust, fire and power-cut modes). Since v1.9.2 the pictures of the guides with no game give it a prop too: a yellow hard hat (landslide, earthquake), the rain hood (storm) or a straw sun hat (heat), from `config.json → guides[].prop`. Five faces: happy, cheer, oops, wow, think.
   - It reacts to every choice: it hops on correct answers and wobbles on mistakes.
   - It speaks short lines: *"บ้านรอดแล้วหนึ่ง!"*, *"พลาดในเกมดีกว่าพลาดจริง"*.
   - Its name plays on the Thai folk idea that a gecko's chirp (จิ้งจกทัก) is a friendly warning.
@@ -231,13 +232,14 @@
 - **Tap areas:** at least 64 scene units. That measures **47.5 px** on a 375×548 screen (iPhone SE in Safari) and 48.7 px at 360×560. On a 320×460 phone the room tabs hide, so items measure **44.1 px** ([KNOWN_ISSUES F21](KNOWN_ISSUES.md#after-v122-13-oct-2026)).
 - **Controls:** every button, link and expander is at least 44 px. The smoke test checks this on the game, result, checklist, help and about screens, and on `/learn` and the hazard pages.
 - Results use **colour and shape**: blue ✓ correct, orange ! learned, grey ~/? missed. There is no red/green pairing anywhere.
-- Every target is a focusable SVG `role="button"` with a Thai or English label, operable with Enter or Space. Sheets trap focus and support Esc; since v1.9.1 a sticky 44 px ✕ and the phone's back button close them too.
+- Every target is a focusable SVG `role="button"` with a Thai or English label, operable with Enter or Space. Sheets trap focus and support Esc; since v1.9.1 a sticky 44 px ✕ and the phone's back button close them too, and since v1.9.2 Back in a round pauses it rather than leaving the site.
+- On screens up to 640 px tall the choice sheet is more compact (v1.9.2), so a choice's three answers fit without scrolling in Thai at 320 × 568, 360 × 640 and 390 × 844; in English 20 of 82 still scroll a little at 320 × 568 ([KNOWN_ISSUES #73](KNOWN_ISSUES.md#73-english-choice-sheets-still-scroll-on-the-smallest-phones)). Every answer stays 52 px tall or more there.
 - Thai words never break mid-word: the words in `config.json → keepTogether` are kept on one line in the app, on the pages and on the cards (v1.9.1, [KNOWLEDGE §30.1](KNOWLEDGE.md#301-thai-words-that-must-not-break-keeptogether)). Text is 15–19 px with Thai-friendly line height.
 - No flashing effects. Rain streaks drift slowly and stop under reduced motion.
 
 ## Wireframes
 
-Low-fidelity layouts below, drawn for v1.0 (the start screen of v1.9.0, with the hub above the game, is in the section above and in [20-start-tools.png](screens/20-start-tools.png)). Real screenshots from the built game, captured by `npm run smoke -- --screens docs/screens`, are in [`docs/screens/`](screens/).
+Low-fidelity layouts below, drawn for v1.0 (the start screen of v1.9.0, with the hub above the game, is in the section above and in [20-start-tools.png](screens/20-start-tools.png); since v1.9.2 the choice sheet's answers carry ก ข ค / A B C instead of the action icons drawn here, and their wrong answers are longer). Real screenshots from the built game, captured by `npm run smoke -- --screens docs/screens`, are in [`docs/screens/`](screens/).
 
 ```
  START / MODE SELECT            ROOM (Prepare)                  ACTION CHOICE (sheet)
@@ -318,11 +320,11 @@ The share assets, rendered by the same canvas code as the game:
 ## Sharing design
 
 - **Result card** (1080×1350 PNG, drawn on a canvas in the browser):
-  - logo, mode chip, house date, the gecko's face matching the rank, the headline and big score. On the themes with a sun or moon at the top right (Return, dust, the power cut), the English wordmark shrinks to stay clear of it (v1.8.1)
-  - **the ending** (v1.6.0): the line that answers "บ้านรอดไหม?", the same one the result gecko says, in a white speech bubble left of the gecko (x 30–360, centred at y 462, the tail pointing at the gecko). The text is 38 px and shrinks to 28 px to fit at most 4 lines, and no line starts with closing punctuation such as "!" (v1.8.1); emoji are left out on the card, because canvas fonts can draw them as empty boxes. The card's `alt` text ends with the same line.
-  - rank pill, a ✓/!/? row (shapes as well as colours), "บ้านหลังเดียวกัน ท้าเลย!" (or, after a challenge, "เพื่อน 3/10 · เรา 8/10 · บ้านหลังเดียวกัน"), **the challenge link for this house** (v1.3.0), the disclaimer
+  - logo, mode chip, house date, the gecko (300 × 316, its face matching the rank) and the big score (200 px). On the themes with a sun or moon at the top right (Return, dust, the power cut), the English wordmark shrinks to stay clear of it (v1.8.1). Since v1.9.2 there is no separate headline: the wordmark, the mode chip, the score and the rank say it
+  - **the ending** (v1.6.0): the line that answers "บ้านรอดไหม?", the same one the result gecko says, in a white speech bubble. Since v1.9.2 the bubble is under the gecko, 960 px wide, with its tail pointing up, and the text is centred at 52 px, shrinking to 38 px to fit two lines, three at 38 px if it must (it was 38 px in a 330 px bubble beside the gecko, about 9 px in a chat). No line starts with closing punctuation such as "!" (v1.8.1); emoji are left out on the card, because canvas fonts can draw them as empty boxes. The card's `alt` text ends with the same line
+  - rank pill, a ✓/!/? row (shapes as well as colours), "บ้านหลังเดียวกัน ท้าเลย!" (or, after a challenge, "เพื่อน 3/10 · เรา 8/10 · บ้านหลังเดียวกัน"; 50 px, down to 34), **the challenge link for this house** (v1.3.0; 46 px, down to 30, weight 600 since v1.9.2), the disclaimer
   - a "เต็มสิบไม่หัก!" / "Perfect 10!" stamp for 10/10
-  - bright and warm, readable at chat-thumbnail size
+  - bright and warm, readable at chat-thumbnail size: looked at 270 px wide for v1.9.2, where the gecko's line and the link can be read ([KNOWLEDGE §31.3](KNOWLEDGE.md#313-the-result-card-at-chat-size))
 - **Share text** pastes anywhere: `เตรียมบ้านทัน 8/10 🏠 (บ้านวันที่ 14 ต.ค. 69) · ได้ฉายา "…" · เล่นต่อเนื่อง 3 วัน 🔥 · ✅✅💡✅💧✅ · … 👉 link · #บ้านรอดไหม` (the streak part only from two days on)
 - **Challenge back** (v1.3.0): after a friend's challenge, the first button replies with both scores and the card: *"เพื่อนได้ 3/10 เราได้ 8/10 ในบ้านหลังเดียวกัน 🏠 ตาเธอแล้ว ลองแก้มือดู! 👉 link"*. During the round the clock shows the score to beat.
 - **One tap:**
@@ -353,22 +355,22 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── css/app.css
 │   ├── js/
 │   │   ├── main.js         boot (pickStart → state.start; ?open=guide, /checklist/<id>), start screen (the alert card and the hub, renderStart), the guide picker and a guide (openGuides, guideSections, openChecklist), screens (mode grid --cols ≤ 4), game loop, HUD (story hours in a power cut), result, sharing UI
-│   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend, activeAlert (the owner's alert, v1.9.0) (pure, unit-tested)
+│   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend, activeAlert (the owner's alert, v1.9.0); setGuides, propFor (a guide's prop, v1.9.2) (pure, unit-tested)
 │   │   ├── house.js        seeded house generation; a power-cut house always gets an item with lostAfter (pure, unit-tested)
 │   │   ├── round.js        timer, water / smoke / haze / dark (darkLevel, hoursOut, lostAfter), choices, score (pure, unit-tested)
 │   │   ├── run.js          v1 single round / v2 combo structure
 │   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke (redrawn by geometry, v1.9.1), haze, the dark (_dark), badges (wet, smoked, spoiled; a dash for a tapped decoy), room tabs with the lost mark
-│   │   ├── cards.js        canvas: result card (with the ending bubble), checklists (a plain layout for guides without sprites, v1.9.0), link previews; a theme per mode and guide (THEMES: stock since v1.7.0; landslide, storm, quake, heat since v1.9.0)
+│   │   ├── cards.js        canvas: result card (the ending bubble under the gecko, endingBubble, v1.9.2), checklists (a plain layout for guides without sprites, v1.9.0), link previews; a theme per mode and guide (THEMES: stock since v1.7.0; landslide, storm, quake, heat since v1.9.0)
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links; openExternal keeps the game's tab (v1.9.1)
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
 │   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing, print (loaded on open, v1.8.0); the cards link /kit and /plan (v1.9.0)
 │   │   ├── kitplan.js      the household's list, score and missing things from kit.json (pure, unit-tested)
-│   │   ├── mascot.js       น้องจก (SVG, faces, props)
-│   │   ├── ui.js           screens, the bottom sheet (its ✕ and its history entry for the back button, v1.9.1), toasts; canPrint and printList (an A4 list for a guide or the kit, v1.9.0)
+│   │   ├── mascot.js       น้องจก (SVG, faces, props: hood, torch, mask, firehat, and helmet and sunhat since v1.9.2)
+│   │   ├── ui.js           screens, the bottom sheet (its ✕, v1.9.1), the back button's history entries for the game and result screens and sheets (settleHistory, setScreenBack, v1.9.2), toasts; canPrint and printList (an A4 list for a guide or the kit, v1.9.0)
 │   │   ├── util.js         $, esc, store, dates, inAppBrowser; keepTogether: setKeepTogether, keptSpans, keepWordsIn, observeKeptWords (v1.9.1)
 │   │   ├── content.js      loads the content, t/L, the language (brm:langPick, v1.9.1), agencyName, langPath
-│   │   ├── audio.js fx.js icons.js progress.js analytics.js rng.js
+│   │   ├── audio.js fx.js icons.js (spriteIcon; the answers' action icons were removed in v1.9.2) progress.js analytics.js rng.js
 │   ├── content/            ← EDITABLE: items, rooms, strings, config (modes, guides, alert, hazards), sources, checklists (one per guide), helplines, kit (home check + plan card), carousel
 │   ├── art/                rooms/*.svg (front, living, kitchen) + sprites.svg
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)

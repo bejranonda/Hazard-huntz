@@ -13,7 +13,7 @@
   - Storms, strong wind and lightning: readying the house and staying safe: https://baanrodmai.autobahn.bot/storm (Thai) · https://baanrodmai.autobahn.bot/en/storm (English)
   - Earthquakes: readying the home, and what to do during and after: https://baanrodmai.autobahn.bot/quake (Thai) · https://baanrodmai.autobahn.bot/en/quake (English)
   - Extreme heat: keeping everyone at home safe from heatstroke: https://baanrodmai.autobahn.bot/heat (Thai) · https://baanrodmai.autobahn.bot/en/heat (English)
-- Two family tools that run on the device; nothing typed is sent: Check how ready your home is (free, 1 minute): https://baanrodmai.autobahn.bot/?open=kit · Make your family plan card: https://baanrodmai.autobahn.bot/?open=plan
+- Two family tools that run on the device; nothing typed is sent: Check how ready your home is (free, 1 minute): https://baanrodmai.autobahn.bot/?open=kit (every line and its source: https://baanrodmai.autobahn.bot/kit) · Make your family plan card: https://baanrodmai.autobahn.bot/?open=plan (every line and its source: https://baanrodmai.autobahn.bot/plan)
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: 2026-10-19
 

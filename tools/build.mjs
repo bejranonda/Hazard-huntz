@@ -224,6 +224,8 @@ for (const l of LANGS) for (const k of ['swipe', 'doLabel', 'whyLabel', 'sourceL
 // carries its own sources and verify flag, and a phase (before, during, after).
 const guideSeen = new Set();
 for (const g of GUIDES) {
+  // The gecko's accessory on its pictures (mascot.js → PROPS); a guide with a game uses its mode's.
+  if (g.prop != null && !['hood', 'torch', 'mask', 'firehat', 'helmet', 'sunhat'].includes(g.prop)) err(`config.json guides ${g.id}: prop "${g.prop}" isn't one the gecko has`);
   const where = `config.json: guides "${g.id}"`;
   if (guideSeen.has(g.id)) err(`${where} is listed twice`);
   guideSeen.add(g.id);
@@ -420,20 +422,26 @@ const seoUpdated = seo.updated;
 const gameDesc = indexHtml.match(/<meta name="description" content="([^"]*)">/)?.[1] || og.defaultDesc;
 // Structured data: lets search engines and AI assistants recognise the game as
 // one entity (Thai + English names, free, web-based, about floods).
+// Who publishes the pages (the Article markup on the hazard pages names it as
+// author and publisher; search engines asked for one, v1.9.2).
+const PUBLISHER = { '@type': 'Organization', '@id': `${SITE}/#org`, name: og.siteName, alternateName: 'Baan Rod Mai?', url: `${SITE}/`, logo: `${SITE}/icons/icon-512.png` };
 const indexLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'WebSite', '@id': `${SITE}/#website`, url: `${SITE}/`,
       name: og.siteName, alternateName: ['Baan Rod Mai?', 'บ้านรอดไหม'], inLanguage: 'th',
+      publisher: { '@id': `${SITE}/#org` },
     },
+    PUBLISHER,
     {
       '@type': ['VideoGame', 'WebApplication'], '@id': `${SITE}/#game`, url: `${SITE}/`,
       name: og.siteName, alternateName: 'Baan Rod Mai?', description: gameDesc,
       isPartOf: { '@id': `${SITE}/#website` },
       inLanguage: ['th', 'en'], image: `${SITE}/og/default.png`,
       genre: ['Educational game', 'Serious game'], gamePlatform: 'Web browser',
-      applicationCategory: 'GameApplication', operatingSystem: 'Any',
+      // Tools first since v1.9.0: a utility with a game, not only a game.
+      applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any',
       playMode: 'SinglePlayer', timeRequired: 'PT1M', isAccessibleForFree: true,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
       about: ['น้ำท่วม', 'Flood safety', 'ฝุ่น PM2.5', 'PM2.5 air pollution', 'ไฟไหม้', 'Home fire safety', 'ไฟดับ', 'Power cut preparedness', 'น้ำป่า ดินถล่ม', 'Flash floods and landslides', 'พายุ ฟ้าผ่า', 'Storms and lightning', 'แผ่นดินไหว', 'Earthquakes', 'อากาศร้อนจัด', 'Extreme heat'].map((name) => ({ '@type': 'Thing', name })),
@@ -488,7 +496,9 @@ const localize = (html) => html
   .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2');
 const enIndexLd = JSON.parse(JSON.stringify(indexLd));
 enIndexLd['@graph'][0] = { ...enIndexLd['@graph'][0], '@id': `${SITE}${EN}/#website`, url: `${SITE}${EN}/`, name: ogEn.siteName, alternateName: ['Baan Rod Mai?', og.siteName], inLanguage: 'en' };
-enIndexLd['@graph'][1] = { ...enIndexLd['@graph'][1], url: `${SITE}${EN}/`, description: ogEn.defaultDesc, isPartOf: { '@id': `${SITE}${EN}/#website` }, subjectOf: { '@type': 'WebPage', url: `${SITE}${EN}/learn` } };
+// By @id, not position: the publisher sits between the site and the game since v1.9.2.
+const enGame = enIndexLd['@graph'].findIndex((n) => n['@id'] === `${SITE}/#game`);
+enIndexLd['@graph'][enGame] = { ...enIndexLd['@graph'][enGame], url: `${SITE}${EN}/`, description: ogEn.defaultDesc, isPartOf: { '@id': `${SITE}${EN}/#website` }, subjectOf: { '@type': 'WebPage', url: `${SITE}${EN}/learn` } };
 const enIndexHtml = page(localize(indexHtml), ogBlock({
   title: ogEn.defaultTitle, desc: ogEn.defaultDesc, image: '/og/en/default.png', alt: ogEn.defaultAlt,
   url: `${SITE}${EN}/`, canonical: `${SITE}${EN}/`, ld: enIndexLd, lang: 'en', alternates: alt('/', `${EN}/`),
@@ -588,6 +598,7 @@ const learnLd = {
   inLanguage: 'th', dateModified: seoUpdated, image: `${SITE}/og/default.png`,
   isPartOf: { '@id': `${SITE}/#website` }, about: { '@id': `${SITE}/#game` },
   isAccessibleForFree: true,
+  author: PUBLISHER, publisher: PUBLISHER,
   citation: usedSources.map((id) => sources[id].url),
 };
 // One template for every plain page (/learn, the hazard pages, both languages).
@@ -798,6 +809,7 @@ for (const h of hazardList) {
     inLanguage: lang, dateModified: seoUpdated, image: `${SITE}/og/${lang === 'en' ? 'en/' : ''}checklist-${h.modes[0] || h.guides[0]}.png`,
     isPartOf: { '@id': `${SITE}${lang === 'en' ? EN : ''}/#website` }, about: { '@id': `${SITE}/#game` },
     isAccessibleForFree: true,
+    author: PUBLISHER, publisher: PUBLISHER,
     citation: cites,
   });
   const thUrl = `${SITE}/${h.slug}`;
@@ -1034,7 +1046,7 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 - Every lesson with its reason and sources: ${LEARN_URL} (Thai, with English) · ${LEARN_EN} (English)
 - One page per hazard, with only its lessons and a link that opens that game mode:
 ${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug} (Thai) · ${SITE}${EN}/${h.slug} (English)`).join('\n')}
-- Two family tools that run on the device; nothing typed is sent: ${allTools.tools.map((tool) => `${md(E[`tool${capM(tool)}`].replace(/^\S+\s/, ''))}: ${SITE}/?open=${tool}`).join(' · ')}
+- Two family tools that run on the device; nothing typed is sent: ${allTools.tools.map((tool) => `${md(E[`tool${capM(tool)}`].replace(/^\S+\s/, ''))}: ${SITE}/?open=${tool} (every line and its source: ${SITE}/${tool})`).join(' · ')}
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 

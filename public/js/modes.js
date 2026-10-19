@@ -32,6 +32,14 @@ export function setModes(list) {
 export const modeList = () => MODES;
 export const modeIds = () => MODES.map((m) => m.id);
 export const modeOf = (id) => MODES.find((m) => m.id === id) || null;
+
+// The gecko's accessory on a guide's pictures (config.json → guides[].prop);
+// a guide with a game uses its mode's prop.
+let GUIDE_PROPS = {};
+export function setGuides(list = []) {
+  GUIDE_PROPS = Object.fromEntries(list.filter((g) => g.prop).map((g) => [g.id, g.prop]));
+}
+export const propFor = (id) => modeOf(id)?.prop || GUIDE_PROPS[id] || 'none';
 export const codeOf = (id) => modeOf(id)?.code ?? null;
 export const idOfCode = (code) => MODES.find((m) => m.code === code)?.id ?? null;
 

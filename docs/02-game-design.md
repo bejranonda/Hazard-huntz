@@ -7,6 +7,8 @@
 > Since v1.8.0 two tools outside the round turn the lessons into the family's own: **บ้านเราพร้อมแค่ไหน?** (a home-kit check) and **แผนบ้านรอดของบ้านเรา** (a family plan card).
 >
 > **Since v1.9.0 the app is tools first and the game is optional.** The start screen opens on what to do when something happens (a short sourced guide for each of nine hazards, four of them with no game), what to keep at home, and the family plan; the 60-second game sits below them as the easier way to remember ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).
+>
+> **Since v1.10.0 three calculators** work out what to do from the household's answers: how long the fridge keeps in a power cut, what today's dust reading means for everyone at home, and how many days the pills last ([below](#calculators-the-fridge-dust-today-and-the-pills-v1100)).
 
 ## Design pillars
 
@@ -159,7 +161,7 @@
 | Element | What it does |
 |---|---|
 | **Alert card** (optional) | "ช่วงนี้: {guide} · ดูว่าต้องทำอะไร ›" while `config.json → alert` is on (an owner-set guide with an end date); opens that guide |
-| **Hub** | "📋 ต้องทำอะไร เมื่อเกิดภัย" (the guide picker), "🎒 เช็กของจำเป็น" (the home check; shows "บ้านเราพร้อม 64%" once checked), "📝 แผนครอบครัว" (the plan card). All three on the first screen at 320 × 460 and 360 × 640 |
+| **Hub** | "📋 ต้องทำอะไร เมื่อเกิดภัย" (the guide picker), "🎒 เช็กของจำเป็น" (the home check; shows "บ้านเราพร้อม 64%" once checked), "📝 แผนครอบครัว" (the plan card). All three on the first screen at 320 × 460 and 360 × 640. Since v1.10.0 two more tiles, "🥛 ไฟดับ: ตู้เย็น" and "😷 ฝุ่นวันนี้", make a 2 × 2 grid with the check and the plan ([below](#calculators-the-fridge-dust-today-and-the-pills-v1100)) |
 | **"🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"** | The label above the gecko and the mode cards, which work as before |
 | **Guide picker** | The nine guides as tiles, in `config.json → guides` order (since v1.9.1: 🌊 น้ำท่วม: ก่อนน้ำมา, 🧹 น้ำท่วม: หลังน้ำลด, ⛰️ น้ำป่า ดินถล่ม, ⛈️ พายุ ฟ้าผ่า, 🏚️ แผ่นดินไหว, 🔥 ไฟไหม้, 🔦 ไฟดับ, 🌡️ อากาศร้อนจัด, 😷 ฝุ่น PM2.5), the alert's first with "ช่วงนี้" |
 | **A guide** (v1.9.1 layout) | The title; phase jump chips; "☎️ โทรฟรี" 1784 · 199 · 1669 (tap to dial); 10 lines, grouped "ก่อนเกิด / ขณะเกิด / หลังเกิด" where they have phases (the heat guide names its own: เตรียมไว้ก่อน / วันที่ร้อนจัด / ถ้ามีคนเป็นลมแดด), ⚠️ on lines under review; the agencies, small, and one ⚠️ footnote; ▶ the game when there is one; 📖 the hazard page with every line's sources; "เตรียมบ้านต่อ": 🎒 เช็กของจำเป็น, 📝 แผนครอบครัว; "ส่งต่อให้คนที่บ้าน": four share buttons and the picture as a thumbnail; 🖨️ print; "← เรื่องอื่น" and "เสร็จแล้ว". ✕ at the top and the phone's back button close it ([KNOWLEDGE §30.2](KNOWLEDGE.md#302-sheets-the-back-button-and-sharing)) |
@@ -169,6 +171,43 @@
 - **The result screen's "📋 เช็กลิสต์ 10 ข้อ"** opens that mode's guide; "← เรื่องอื่น" leads to the rest. The old checklist tabs are gone.
 - **Print:** a guide or the home check's list prints as a plain A4 list with tick boxes, for the fridge door or an older relative; the button is hidden in in-app browsers, which can't print.
 - **Guardrails:** the guides follow the same content rules as the lessons: sourced, no deaths or injuries, no blame, calm wording ("รีบอพยพทันที" is an action, not a threat). What sources disagree on is left out.
+
+## Calculators: the fridge, dust today and the pills (v1.10.0)
+
+**The idea:** the owner liked the home check's "put in values and it works out what to prepare and how much", and asked for more like it. Three tools now work that way, each from numbers an agency gives, each in a sheet over the start screen, keeping its answers on the device and ending in a text to send. Details, sources and checks: [KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100).
+
+```
+ FRIDGE (sheet)                         DUST TODAY (sheet)
+┌──────────────────────────────┐      ┌──────────────────────────────┐
+│ 🥛 ไฟดับ: ของในตู้เย็นยังกินได้ไหม? │      │ 😷 ฝุ่นวันนี้ บ้านเราต้องทำอะไร?  │
+│ ไฟดับมานานแค่ไหนแล้ว?            │      │ ตัวเลขที่เห็นเป็นแบบไหน?          │
+│   [−]   3 ชม. 30 นาที   [+]     │      │ (•) PM2.5  ( ) AQI ของไทย     │
+│ นับจากราว 21:10 น. …             │      │ ค่าฝุ่นตอนนี้ [ 82.4        ]   │
+│ [⏱️ ไฟเพิ่งดับ เริ่มนับจากตอนนี้]   │      │ หรือเลือกสี ● ● ● ● ●          │
+│ ตอนนี้                           │      │ ในบ้านมีใคร … [👶][🧓][🤰][❤️] │
+│ 🥛 ⏳ อีกราว 30 นาที · ถึง 23:30 │      │ ┌ ● ระดับแดง · 75.1 ขึ้นไป ─┐ │
+│ ❄️ ✅ อีกราว 44 ชม. 30 นาที …    │      │ │ ทุกคนในบ้าน …            │ │
+│ 💊 ✅ อีกราว 20 ชม. 30 นาที …    │      │ │ สำหรับเด็กเล็ก …          │ │
+│ ช่องแช่แข็ง (•)เต็ม ( )ครึ่ง  [💊] │      │ │ เพิ่มเติมสำหรับคนมีโรค… │ │
+│ ไม่ว่าไฟดับนานแค่ไหน 🚪 🚫 🥫     │      │ └─────────────────────────┘ │
+│ ⚠️ ตัวเลขชั่วโมงมาจาก CDC …       │      │ [🌐 Air4Thai] 📤 ส่งให้คนที่บ้าน │
+│ 📤 ส่งให้คนที่บ้าน  [🎒] [💡] [ปิด] │      │ [😷 วิธีป้องกันฝุ่น 10 ข้อ] [ปิด] │
+└──────────────────────────────┘      └──────────────────────────────┘
+```
+
+| Element | ไฟดับ: ตู้เย็น (`/fridge`, `/?open=fridge`) | ฝุ่นวันนี้ (`/air`, `/?open=air`) | ยาพอกี่วัน? (in the home check) |
+|---|---|---|---|
+| Asks | How long the power has been off (± one hour, 0–72 h, or a count from now), how full the freezer is, cold medicine | The kind of number (µg/m³ or Thailand's AQI) and the reading, or a colour; who at home needs extra care (starts from the home check) | Pills left, pills a day |
+| Shows | Per part, ✅ / ⏳ / ❌, how long it keeps and until what time: the fridge 4 h, the freezer 48 h full or 24 h half, cold medicine a day; three lines that always hold | The level with its colour and band; what everyone at home does; what the ticked people do; the lines for a long-term illness; the agencies, with the DOH's two lines named | "⏳ พอ 4 วัน ให้พอ 7 วัน ต้องมีอีก 5 เม็ด" or "✅ พอ 7 วัน" |
+| Numbers from | The US CDC and Ready.gov (⚠️, said on screen) | The PCD's notice in the Royal Gazette (2023); the DOH for two lines | The home check's 7 days (`moph-7days`, ⚠️) |
+| Kept | `brm:fridge`: when the power went off, so the count goes on after closing; the hub tile says "⏱️ ไฟดับมาเกิน 5 ชม.แล้ว" | `brm:air`: the unit and the ticks, never the reading | Nothing |
+| Ways in | The hub's 🥛 tile, `/fridge`, the power-cut and storm guides' next steps, the power-cut result, `/ready`, `/storm`, a shortcut | The hub's 😷 tile, `/air`, the dust guide's next steps, the dust result, `/pm25`, a shortcut | The home check's list, when 💊 is ticked |
+
+- **The hub** is now the main guide button and a 2 × 2 grid (🎒 📝 / 🥛 😷). The first three tools stay on the first screen at 320 × 460 and 360 × 640; the calculators' row follows ([KNOWN_ISSUES #77](KNOWN_ISSUES.md#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones)).
+- **Safe rounding:** the time off rounds up and the time left down, so neither looks safer than it is; + and − move exactly one hour from what is shown.
+- **The unit question:** the dust tool asks whether the number is µg/m³ or Thailand's AQI, because the same number is a different colour (AQI 152 orange, 152 µg/m³ red), and sends people with a foreign app to the PM2.5 figure.
+- **After the answer:** in the dust tool the result scrolls into view when a number is entered or a colour picked; "📤 ส่งให้คนที่บ้าน" sends the result as text (LINE, the phone's share sheet, copy) with the tool's link; the fridge's 🎒 opens the home check, and the dust tool's "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" the dust guide.
+- **Guardrails:** no number of our own, a foreign figure flagged on screen, no promise that food is safe ("ราว"), no medical advice in the pills (arithmetic only), and nothing typed or read leaves the phone.
 
 ## Playing a round
 
@@ -354,7 +393,7 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── index.html          start screen markup (works before JS runs)
 │   ├── css/app.css
 │   ├── js/
-│   │   ├── main.js         boot (pickStart → state.start; ?open=guide, /checklist/<id>), start screen (the alert card and the hub, renderStart), the guide picker and a guide (openGuides, guideSections, openChecklist), screens (mode grid --cols ≤ 4), game loop, HUD (story hours in a power cut), result, sharing UI
+│   │   ├── main.js         boot (pickStart → state.start; ?open=guide, /checklist/<id>, ?open=<tool>), start screen (the alert card and the hub, renderStart; one TOOLS map and openTool for the four tools, v1.10.0), the guide picker and a guide (openGuides, guideSections, openChecklist), screens (mode grid --cols ≤ 4), game loop, HUD (story hours in a power cut), result, sharing UI
 │   │   ├── modes.js        mode registry: codes, threats, props, seasons; switchOn, modeLink, recommend, activeAlert (the owner's alert, v1.9.0); setGuides, propFor (a guide's prop, v1.9.2) (pure, unit-tested)
 │   │   ├── house.js        seeded house generation; a power-cut house always gets an item with lostAfter (pure, unit-tested)
 │   │   ├── round.js        timer, water / smoke / haze / dark (darkLevel, hoursOut, lostAfter), choices, score (pure, unit-tested)
@@ -364,14 +403,14 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links; openExternal keeps the game's tab (v1.9.1)
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
-│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing, print (loaded on open, v1.8.0); the cards link /kit and /plan (v1.9.0)
-│   │   ├── kitplan.js      the household's list, score and missing things from kit.json (pure, unit-tested)
+│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing, print (loaded on open, v1.8.0); the cards link /kit and /plan (v1.9.0); the calculators (v1.10.0): openFridge, openAir, the pills, textShare (a result sent as text)
+│   │   ├── kitplan.js      the household's list, score and missing things from kit.json; fridgePlan, medDays, airLevel, airAdvice (v1.10.0) (pure, unit-tested)
 │   │   ├── mascot.js       น้องจก (SVG, faces, props: hood, torch, mask, firehat, and helmet and sunhat since v1.9.2)
 │   │   ├── ui.js           screens, the bottom sheet (its ✕, v1.9.1), the back button's history entries for the game and result screens and sheets (settleHistory, setScreenBack, v1.9.2), toasts; canPrint and printList (an A4 list for a guide or the kit, v1.9.0)
 │   │   ├── util.js         $, esc, store, dates, inAppBrowser; keepTogether: setKeepTogether, keptSpans, keepWordsIn, observeKeptWords (v1.9.1)
 │   │   ├── content.js      loads the content, t/L, the language (brm:langPick, v1.9.1), agencyName, langPath
 │   │   ├── audio.js fx.js icons.js (spriteIcon; the answers' action icons were removed in v1.9.2) progress.js analytics.js rng.js
-│   ├── content/            ← EDITABLE: items, rooms, strings, config (modes, guides, alert, hazards), sources, checklists (one per guide), helplines, kit (home check + plan card), carousel
+│   ├── content/            ← EDITABLE: items, rooms, strings, config (modes, guides, alert, hazards), sources, checklists (one per guide), helplines, kit (home check, plan card, the fridge and dust today), carousel
 │   ├── art/                rooms/*.svg (front, living, kitchen) + sprites.svg
 │   ├── fonts/              Kanit Thai + Latin subsets (OFL)
 │   ├── og/  share/  icons/ pre-rendered images (npm run images); og/en/ holds the English previews
@@ -381,6 +420,7 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   ├── flood.html pm25.html fire.html ready.html   generated hazard pages (slugs: config.json → hazards)
 │   ├── landslide.html storm.html quake.html heat.html   generated guide-only hazard pages (v1.9.0)
 │   ├── kit.html plan.html  generated pages for the home check and the plan card, with their own previews (v1.9.0)
+│   ├── fridge.html air.html   generated pages for the calculators, with their own previews (v1.10.0)
 │   ├── posts.html          generated carousel page for whoever posts (noindex); images in share/carousel/
 │   ├── 404.html            generated "not found" page, Thai + English, noindex (v1.9.1)
 │   ├── sw.js  js/version.js   generated service worker (offline) and version guard

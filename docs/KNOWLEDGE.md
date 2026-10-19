@@ -2,7 +2,7 @@
 
 A reference for anyone maintaining บ้านรอดไหม?. It covers every rule, constant and formula in the game, the content model, the platform facts the design depends on, and the research behind it.
 
-Facts are as of **19 Oct 2026** (v1.9.2). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
+Facts are as of **19 Oct 2026** (v1.10.0). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
 What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
 
@@ -39,6 +39,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 29. [Tools first: a guide for every hazard (v1.9.0)](#29-tools-first-a-guide-for-every-hazard-v190)
 30. [Visitor audit 2 (v1.9.1)](#30-visitor-audit-2-v191)
 31. [Answers, back button, card and security (v1.9.2)](#31-answers-back-button-card-and-security-v192)
+32. [Calculators: the fridge, dust today, the pills (v1.10.0)](#32-calculators-the-fridge-dust-today-the-pills-v1100)
 
 ---
 
@@ -258,20 +259,21 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - **`rooms.json`:** `{id, order, enabled, art, name{th,en}, slots: [{id, x, y, tags[]}]}`. Slots must lie inside the 360×600 scene.
 - **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`.
   - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost), `secondary` (news quoting the agency), `academic` or `international` ([GUIDELINES §2.1](GUIDELINES.md#21-adding-or-changing-an-item)).
+  - Totals (v1.10.0): 112 sources, of which 32 official, 9 government, 52 secondary, 2 academic and 17 international. The 3 added in v1.10.0 are for dust today (§32.3): the PCD's notice in the Royal Gazette (`pcd-aqi-2566`, official), Thai PBS quoting the PCD Director-General (`pcd-aqi-thaipbs-2566`, secondary) and MGR Online quoting the DOH Deputy Director-General (`doh-aqi-2566`, secondary).
   - Totals (v1.9.0): 109 sources, of which 31 official, 9 government, 50 secondary, 2 academic and 17 international. The 36 added in v1.9.0 for the four new guides are 27 secondary, 1 official (TMD's tsunami paper) and 8 international (Ready.gov ×4, the US NWS ×2, WHO, the US CDC) (§29.3). Before v1.9.0: 73 sources, of which 30 official, 9 government, 23 secondary, 2 academic (a university statement and a peer-reviewed study, used only for `r-stagnant` and always flagged ⚠️) and 9 international: WHO Europe and the US Fire Administration (2), used to cross-check dust and fire and as the only source of `f-alarm`; since v1.7.0 the US CDC, Ready.gov (2), the Tokyo Metropolitan Government and a third US Fire Administration page, for the power cut (§27.2); and since v1.8.0 Ready.gov "Make A Plan" (`readygov-plan`), cited only by the plan card (§28.4).
 - **`strings.json`:**
-  - `th` and `en` UI strings (264 keys each since v1.9.0, was 233, the same keys in both; the home check's own texts are in `kit.json`). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
+  - `th` and `en` UI strings (281 keys each since v1.10.0, 264 in v1.9.0, 233 before, the same keys in both; the home check's own texts are in `kit.json`). Placeholders look like `{score}`, `{rank}`, `{grid}` and `{url}`. `logoA` / `logoB` are the two halves of the wordmark (Thai "บ้าน" + "รอดไหม?", English "Baan " + "Rod Mai?"); `langSwitch` is the label of the language button.
   - `og`: Thai link-preview texts, and `ogEn`: their English twins (the build fails if a key is missing from `ogEn`). Both are used by the build and by the image renderer.
-  - `seo`: the text of `/learn`, the hazard pages and `llms.txt` (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`). The hazard pages use `byHazard`, `allLessons`, `playMode`, `hazard<H><Nav|Title|Desc|H1|Intro>` (§25.4) and, for a hazard with `tools`, `toolKit` and `toolPlan` (v1.8.0); since v1.9.0 also `guideHeading` and `guidePicture`, and `/kit` and `/plan` use `kitPage<Title|Desc|H1|Intro|Cta|List>`, `planPage…` and the amount rules `kitPerPersonDay`, `kitPerPerson`, `kitDaysPeople`, `kitDays`, `kitIf` (§29.9).
+  - `seo`: the text of `/learn`, the hazard pages and `llms.txt` (`th`, `en`, `en.agencies` = English names of the source agencies, and `updated`). The hazard pages use `byHazard`, `allLessons`, `playMode`, `hazard<H><Nav|Title|Desc|H1|Intro>` (§25.4) and, for a hazard with `tools`, `toolKit` and `toolPlan` (v1.8.0); since v1.9.0 also `guideHeading` and `guidePicture`, and `/kit` and `/plan` use `kitPage<Title|Desc|H1|Intro|Cta|List>`, `planPage…` and the amount rules `kitPerPersonDay`, `kitPerPerson`, `kitDaysPeople`, `kitDays`, `kitIf` (§29.9). Since v1.10.0 `toolFridge` and `toolAir` (the hazard pages' links), `fridgePage<Title|Desc|H1|Intro|Cta|List>`, `fridgeKeeps`, `fridgeAfter`, `airPage…` and `airFor<All|Risk|Chronic>` (the `/fridge` and `/air` pages, §32.5).
 - **`checklists.json`:** one per guide (§29.2): `prepare`, `return`, `dust`, `fire` and `stock` (v1.7.0), each `{title, items: exactly 10 × {icon, th, en, sprite?}}`, and since v1.9.0 the guides with no game, `landslide`, `storm`, `quake` and `heat`, each `{title, phaseNames?, items: exactly 10 × {icon, th, en, phase, sources[], verify, verifyNote?}}`. `phaseNames` (v1.9.1, optional) is `{before|during|after: {th, en}}`, names that replace "ก่อนเกิด / ขณะเกิด / หลังเกิด" for that guide (only `heat` uses it, §30.6).
-- **`kit.json`** (v1.8.0, loaded only when the home check or the plan card opens): `people {min, max, default}`, `flags[]` (`{id, icon, label{th,en}}`: `baby`, `elder`, `meds`, `pet`), `items[]` (`{id, for?, icon, label{th,en}, qty?, sources[], verify}`), `plan[]` (`{id, icon, label, hint?, placeholder, max, sources?, verify?}`) and `ui.th` / `ui.en` (42 interface texts each since v1.8.1, with `backPlan`). `qty` is one of `{perPersonPerDay, days, unit}`, `{perPerson, unit}`, `{days, people: true}` or `{days}`. Details in §28.
+- **`kit.json`** (v1.8.0, loaded only when the home check or the plan card opens): `people {min, max, default}`, `flags[]` (`{id, icon, label{th,en}}`: `baby`, `elder`, `meds`, `pet`), `items[]` (`{id, for?, icon, label{th,en}, qty?, sources[], verify}`), `plan[]` (`{id, icon, label, hint?, placeholder, max, sources?, verify?}`) and `ui.th` / `ui.en` (96 interface texts each since v1.10.0; 42 in v1.8.1, with `backPlan`). `qty` is one of `{perPersonPerDay, days, unit}`, `{perPerson, unit}`, `{days, people: true}` or `{days}`. Details in §28. Since v1.10.0 also the calculators (§32): `fridge` (`{maxHours, freezer[] {id, label}, parts[] {id, if?, icon, label, hours | hoursBy {full, half} | days, ok, over, left?, sources[], verify}, always[] {icon, text, sources[], verify}}`) and `air` (`{units[] {id, label, step, max}, groups[] {id, icon, from?, chronic?, label, short}, levels[] {id, pm, aqi, colour, label, all[], risk[], chronic[]}}`, each line `{th, en, sources[]}`; `pm` and `aqi` are the level's upper edges, `null` on the top level). The build checks every figure against its sources (§32.6).
 - **`carousel.json`** (v1.6.1, not loaded by the game): `sets.<hazard>` (the lessons per post set, `outage` since v1.7.0) and the frame text in `th` and `en` (§26); since v1.9.0 also `guidesTitle`, `guidesIntro` and `guideCaption` for the guide pictures on `/posts` (§29.9).
 - **`helplines.json`:** `{number, main, who{th,en}, what{th,en}, source}`. Numbers have 3–5 digits. `main: true` puts the number on the cards.
 - **`config.json`:**
   - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1), and since v1.9.0 `alert: { guide, until }` (§29.5)
   - `keepTogether` (v1.9.1): 217 Thai words, 2–14 letters each, that never break across lines (§30.1)
   - `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `version`, `houseVersion`
-  - `modes` (the registry, §22.3), `topics` (§21), `guides` (v1.9.0: the guides in display order, `{id, hazard, icon, prop?}`, §29.2; `prop`, v1.9.2, is the gecko's accessory on the picture of a guide with no game, §31.4), `hazards` (the hazard pages' slugs, §25.4, a hazard needing a mode or, since v1.9.0, a guide; and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`, and since v1.9.0 on `landslide`, `storm`, `quake` and `heat`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2)
+  - `modes` (the registry, §22.3), `topics` (§21), `guides` (v1.9.0: the guides in display order, `{id, hazard, icon, prop?}`, §29.2; `prop`, v1.9.2, is the gecko's accessory on the picture of a guide with no game, §31.4), `hazards` (the hazard pages' slugs, §25.4, a hazard needing a mode or, since v1.9.0, a guide; and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`, and since v1.9.0 on `landslide`, `storm`, `quake` and `heat`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2; since v1.10.0 the list may also hold `fridge` (on `outage` and `storm`) and `air` (on `dust`), §32.5)
   - `round` (section 3; `round.stock.hours` and `round.stock.dark` for the power cut, §27.4)
   - `analytics.endpoint`, `analytics.sampleRate`
   - `features.comboRun`
@@ -408,7 +410,8 @@ Only the Facebook tokens are documented by Meta; the others were taken from real
 - **How a visit arrived:** `view` is labelled `direct`, `challenge`, `checklist` or, since v1.6.0, `link` (a `?mode=` link, with the mode; §25.3). A `/?open=kit` or `/?open=plan` arrival is a `direct` view plus `kit_open` or `plan_open` with the label `link` (§28.6), and a `/?open=guide` arrival a `direct` view plus `guide_open` (v1.9.0, §29.11).
 - **The home check and plan card (v1.8.0)** add four events: `kit_open`, `kit_share` (the score in % as the value), `plan_share` and, since v1.8.1, `plan_open`. Their answers, ticks and typed text never leave the device; a smoke check reads every `/api/e` body to prove it (§28.5).
 - **The guides (v1.9.0)** add `guide_open` and `print`, and labels on `checklist_open` (where the guide was opened from) (§29.11).
-- **No IP, user agent, ID, cookie or location is stored.** Scores, the home check's answers and the plan card's text stay in `localStorage`. There is nothing to ask consent for under the PDPA. The About sheet says this in Thai and English.
+- **The calculators (v1.10.0)** add `tool_open` and `tool_share`, with the tool (`fridge` or `air`) as the mode: where it was opened from, or the share channel. No reading, time, answer or count of people is sent (§32.5). A `/?open=fridge` or `/?open=air` arrival is a `direct` view plus `tool_open` with the label `link`.
+- **No IP, user agent, ID, cookie or location is stored.** Scores, the home check's answers, the plan card's text and, since v1.10.0, the fridge's start time and the dust tool's answers stay in `localStorage`. There is nothing to ask consent for under the PDPA. The About sheet says this in Thai and English.
 
 ## 10. Cloudflare platform facts
 
@@ -631,7 +634,7 @@ What the build does for search, why, and how sure we are. Facts about *this site
 | `/landslide`, `/storm`, `/quake`, `/heat` (v1.9.0) | `checklists.json`, `sources.json` | The hazard's guide first, by phase, with the sources under every line, then the picture link, the tool links and the helplines. No script. See §29.9. |
 | `/kit`, `/plan` (v1.9.0) | `kit.json`, `sources.json` | Every line of the home check or the plan card with its sources, and a button into the tool. JSON-LD `WebPage`. See §29.9. |
 | `/llms.txt` | same, plus `seo.en.llmsSummary` | Markdown per [llmstxt.org](https://llmstxt.org). Since v1.9.0 a section per guide with no game, "What to do: …", lists each line with its source URLs. Since v1.8.1 one line names the two family tools and their links: "Two family tools that run on the device; nothing typed is sent: …/?open=kit · …/?open=plan". It's an informal proposal; **no major search engine is confirmed to use it [unverified]**. It costs nothing and is read by some AI tools. |
-| `/sitemap.xml` | 24 addresses since v1.9.0 (12 before): `/`, `/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/landslide`, `/storm`, `/quake`, `/heat`, `/kit`, `/plan` and their `/en/` twins, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
+| `/sitemap.xml` | 28 addresses since v1.10.0 (24 in v1.9.0, 12 before): `/`, `/learn`, `/flood`, `/pm25`, `/fire`, `/ready`, `/landslide`, `/storm`, `/quake`, `/heat`, `/kit`, `/plan`, `/fridge`, `/air` and their `/en/` twins, with `seo.updated` as `lastmod` and `xhtml:link` language alternates | The `/c/*`, `/checklist/*` and `/en/c/*` share pages are left out on purpose: they are copies of the app shell. |
 | `/robots.txt` | generated | `Allow: /`, `Disallow: /api/`, `Sitemap:`. Search and AI crawlers aren't blocked. |
 | `<link rel="canonical">` and `hreflang` | the OG block, and the page template for `/learn` and the hazard pages | Each indexable page points at itself (`/`, `/learn`, `/pm25`, `/en/`, `/en/learn`, `/en/pm25` and so on); the 55 Thai challenge pages → `/` and the 55 English ones → `/en/`; since v1.9.1 the 9 checklist pages in each language → their hazard's page (`/checklist/quake` → `/quake`), with no `hreflang` (before: `/` and `/en/`). Each indexable page lists its twin with `hreflang` (§18). |
 | JSON-LD on `/` and `/en/` | `og` / `ogEn` strings | `WebSite` and a `VideoGame`/`WebApplication` (free, 1 minute, Thai and English). Its `about` lists every hazard in Thai and English: floods, PM2.5 dust, house fire and power cuts (since v1.7.0; before, floods only), and since v1.9.0 flash floods and landslides, storms and lightning, earthquakes and extreme heat ([KNOWN_ISSUES #65](KNOWN_ISSUES.md#65-loose-ends-from-the-v190-sweep)). |
@@ -1282,7 +1285,7 @@ Both are drawn in `kit.js` with the card helpers `cards.js` exports as `kit` (he
 - `kit.js` holds the sheets, the cards and the share sheet. `main.js` loads it with `import('./kit.js')` only when the check or the plan opens (`openTool()`); `kit.js` fetches `kit.json` on first use. If the import fails (offline and not cached), the toast "เปิดไม่ได้ตอนนี้ ลองใหม่เมื่อต่อเน็ตนะ" (`offlineTool`) shows and nothing else changes.
 - The start-screen chip's text is set by `main.js` from `brm:kit`, so the start screen never loads `kit.js`.
 - The service worker precaches `kit.js`, `kitplan.js` and `kit.json` (44 files), and the build's budget counts the two scripts as start-screen weight ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)).
-- Sizes on 19 Oct 2026 (gzip -9): `kit.js` 5.5 KB (17.2 KB raw), `kitplan.js` 0.8 KB, `kit.json` 4.3 KB (17.1 KB raw).
+- Sizes on 19 Oct 2026 (gzip -9): `kit.js` 5.5 KB (17.2 KB raw), `kitplan.js` 0.8 KB, `kit.json` 4.3 KB (17.1 KB raw). With the calculators (v1.10.0): `kit.js` 11.0 KB, `kitplan.js` 1.9 KB, `kit.json` 9.1 KB (§32.9).
 
 ### 28.10 What was left out, and why
 
@@ -1541,7 +1544,7 @@ The old per-mode tabs at the top of the checklist sheet are gone. The result scr
 - **Pages with a game** (`/flood`, `/pm25`, `/fire`, `/ready`) are as in §25.4 and gain a "📲 ส่งต่อเป็นรูป" link for each checklist.
 - **`/learn`** lists all nine guides under its checklists, grouped by phase, with the sources under the four new guides' lines; **`llms.txt`** adds a section per new guide, "## What to do: … (…)", with the hazard page, the picture link and each line with its source URLs and "(under review)" on ⚠️ lines.
 - **`/kit` and `/plan`** (`/en/…`): plain pages for the two tools of §28. The H1, a ▶-style button into the tool (`/?open=kit`: "🎒 เริ่มเช็กบ้านเรา ฟรี 1 นาที"; `/?open=plan`: "📝 ทำการ์ดแผนของบ้านเรา"), the intro, the privacy line from `kit.json`, the list ("ของที่ควรมี และที่มา": each kit line with its amount rule, such as "3 ลิตร ต่อคน ต่อวัน × 3 วัน", and "ถ้ามี…" for a household-specific line; or "6 ช่องในการ์ด และที่มา" with each plan field's hint), the sources and ⚠️ under every line, the button again, a link to the other tool's page, the date, the helplines, the "อ่านตามภัย" row and the disclaimer. JSON-LD `WebPage`. The kit card and the plan card print `/kit` and `/plan`, and their share texts link them, so a forwarded card previews as the check or the plan.
-- **The sitemap** has 24 addresses, 12 Thai–English pairs: `/`, `/learn`, the eight hazard pages, `/kit` and `/plan`. `kit` and `plan` are reserved: no hazard can take those slugs.
+- **The sitemap** has 24 addresses, 12 Thai–English pairs: `/`, `/learn`, the eight hazard pages, `/kit` and `/plan` (28 since v1.10.0, with `/fridge` and `/air`, §32.5). `kit` and `plan` are reserved: no hazard can take those slugs.
 - **Link-preview pages:** 129 (110 challenge pages, 18 checklist pages, `en/index.html`).
 - **Pictures** (`npm run images`; `--only` takes comma-separated paths since v1.9.0): for each guide, `og/checklist-<id>.png` and `og/en/checklist-<id>.png` (1200 × 630: the title, "เบอร์ช่วยเหลือ 1784 · 199 · 1669" / "Free · from official safety advice", "ดูครบ 10 ข้อ" / "See all 10") and `share/checklist-<id>.png` (1080 × 1920, Thai); `og/kit.png`, `og/plan.png` and their English twins in the power cut's colours. A guide with no sprites is drawn with the plain layout of `drawChecklist()`: the number at x 92 and the text from x 142 (with sprites: 170 and 216), so lines have 74 px more room. New card themes in `cards.js → THEMES`: `landslide` (earth browns), `storm` (grey-blue), `quake` (warm grey) and `heat` (orange, with a sun).
 - **`/posts`** has a section "รูป "ต้องทำอะไร" ทุกภัย (โพสต์ได้ทันทีเมื่อมีข่าว)" after the carousel sets: each guide's icon and name, its 1080 × 1920 picture, and a caption to copy (`carousel.json → guideCaption`): "{title} 📋 / อ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา / 👉 {url} / #บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ", with `{url}` = `/checklist/<id>`.
@@ -1873,3 +1876,229 @@ The English remainder is [KNOWN_ISSUES #73](KNOWN_ISSUES.md#73-english-choice-sh
 - **Budget:** start screen **243 KB** compressed (240 in v1.9.1), first game screen **258 KB** (254), limit 500 KB: the longer wrong answers, the history manager and the card. 44 files precached; 81 items (and 30 decoys), 109 sources.
 - **Code:** `ui.js` (`settleHistory`, `setScreenBack`, the layers), `main.js` (Back in a round and on the result; lettered answers), `icons.js` (`actionIcon` removed), `cards.js` (`drawResultCard`, `endingBubble`), `modes.js` (`setGuides`, `propFor`), `mascot.js` (`helmet`, `sunhat`), `content.js`, `app.css` (the choice sheet under 640 px), `tools/build.mjs` (the publisher, `applicationCategory`, the English game node by `@id`, the guides' `prop` check, `llms.txt`), `public/_headers`; `strings.json → choiceLetters`.
 - **Tests:** 36 rule tests (the answers' lengths, the guides' props, the security headers, the structured data) and 138 smoke checks (the lettered answers, the back button in a round and on the result, listed in [06-test-checklist](06-test-checklist.md#automated-run-before-every-release)), on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027.
+
+## 32. Calculators: the fridge, dust today, the pills (v1.10.0)
+
+Built 19 Oct 2026 (ROADMAP N21). The owner sent a screenshot of the home check and wrote: "ชอบแบบนี้ ใส่ค่า แล้วคำนวณให้เลยว่าต้องเตรียมของยังไง เท่าไหร่ มีแบบนี้อีกไหม ดีๆ เอาแนวคิดนี้ไปใช้ทำ Features อื่นได้อีกไหม" ("I like this: put in values and it works out what to prepare and how much. Are there more good ones like this? Can this idea be used for other features?"). Until then only the home check calculated (§28.3); the plan card is a form. v1.10.0 adds three calculators built the same way and joins them to the start screen, the guides, the hazard pages and the results. The method is in [APPROACH §30](APPROACH_AND_METHOD.md#30-from-one-tool-the-owner-liked-to-three-v1100), what is still open in [KNOWN_ISSUES #74–#78](KNOWN_ISSUES.md#74-the-fridge-hours-rest-on-us-guidance-only). No item, room, slot or `houseVersion` changed, and no lesson: houses, challenge links and the game's advice are the same.
+
+| Calculator | Asks | Works out | Numbers from | Where |
+|---|---|---|---|---|
+| **ไฟดับ: ของในตู้เย็นยังกินได้ไหม?** / "Power cut: is the food in the fridge still safe?" (`fridge`) | How long the power has been off; how full the freezer is; whether there is medicine that must be kept cold | For each part, how much longer it keeps and until what time, or what to throw out | The US CDC and Ready.gov (⚠️ international) | `/fridge`, `/?open=fridge`, the hub, an app shortcut |
+| **ฝุ่นวันนี้ บ้านเราต้องทำอะไร?** / "Dust today: what should we do at home?" (`air`) | A reading (µg/m³ or Thailand's AQI) or the colour an app shows; who at home needs extra care | The level, and what everyone, the people at risk and people with a long-term illness should do | The PCD's notice in the Royal Gazette (2023); two lines from the DOH, named | `/air`, `/?open=air`, the hub, an app shortcut |
+| **ยาพอกี่วัน?** / "How many days will the pills last?" | Pills left; pills a day | How many days they last, and how many more make 7 days | The home check's 7 days (`moph-7days`, ⚠️ a 2013 figure) | In the home check, under the daily-medicine line |
+
+### 32.1 The pattern
+
+The same rules as the home check, written down so that the next calculator follows them ([GUIDELINES rules 78–81](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)):
+
+- **Answers given once, and reused.** Each tool asks only what it needs, in taps where it can (a stepper, radio buttons, ticks). Who is at home starts from the home check's answers where they fit, and the person can change it.
+- **Sourced numbers only.** Every figure a tool computes with is in `kit.json`, and the build stops unless it appears in a cited source's title or note (§32.6). Figures from a foreign agency are ⚠️ `partial`, and the tool says so on screen. A tool adds no number of its own: a day is 24 hours, and "enough for 7 days" is 7 × pills a day.
+- **Rounding in the safe direction.** Time that has passed rounds up and time that is left rounds down, so an answer never looks safer than its source.
+- **Nothing typed or read is sent.** Answers stay in `localStorage`; events carry only the tool and where it was opened from or shared to (§32.5).
+- **It ends in something to send.** "📤 ส่งให้คนที่บ้าน" ("Send to the family") shares what the tool worked out as text, through LINE, the phone's share sheet or a copy, with the tool's link.
+- **Pure functions.** The sums are in `kitplan.js` (no DOM), unit-tested in Node and cross-checked against a script written apart from them (§32.7).
+
+### 32.2 The fridge in a power cut
+
+`openFridge()` in `kit.js`; content `kit.json → fridge`; logic `fridgePlan(cfg, { hours, freezer, med })` in `kitplan.js`.
+
+**The questions:**
+
+- "ไฟดับมานานแค่ไหนแล้ว?" ("How long has the power been off?"): a − / + stepper that moves the time by exactly one hour, within 0–72 h (`fridge.maxHours`), and shows the time off ("3 ชม. 30 นาที"); and "⏱️ ไฟเพิ่งดับ เริ่มนับจากตอนนี้" ("It has just gone off: start counting now"), which starts a count from this moment. Under them: "นับจากราว 21:10 น. ระบบนับต่อให้เองแม้ปิดหน้านี้" ("Counting from about 21:10; it keeps counting even if you close this").
+- "ช่องแช่แข็งมีของแค่ไหน?" ("How full is the freezer?"): เต็มช่อง / ราวครึ่งช่อง ("Full" / "About half full").
+- "💊 มียาที่ต้องเก็บในตู้เย็น" ("There is medicine that must be kept cold"): a tick that adds the medicine line.
+
+**The answer** ("ตอนนี้", "Right now"), worked out again every 20 s while the sheet is open:
+
+| Part | Keeps for | Source | While it keeps (✅, or ⏳ in its last hour) | When it is over (❌) |
+|---|---|---|---|---|
+| 🥛 ของในตู้เย็น (ช่องธรรมดา) / food in the fridge | 4 h | `cdc-food-outage` | "ยังเก็บได้อีกราว 30 นาที ถ้าไม่เปิดประตูตู้ · ถึงราว 23:30 น." ("Safe for about 30 min more, if the door stays shut · until about 23:30") | "เกิน 4 ชม.แล้ว: ทิ้งเนื้อสัตว์ ปลา ไข่ นม และอาหารที่เหลือ" ("Over 4 hours: throw out meat, fish, eggs, milk and leftovers") |
+| ❄️ ของในช่องแช่แข็ง / food in the freezer | 48 h full, 24 h about half full | `cdc-food-outage` | "… ถ้าไม่เปิดช่องแช่แข็ง · ถึงราว …" ("… if it stays shut · until about …") | "เกิน 48 ชม.แล้ว: ห้ามชิมเพื่อดูว่าเสียไหม ไม่แน่ใจให้ทิ้ง" ("Over 48 hours: never taste it to check; when in doubt, throw it out"), 24 for a half-full one |
+| 💊 ยาที่ต้องเก็บในตู้เย็น / cold medicine (only when ticked) | 1 day | `readygov-outage` | "อีกราว 20 ชม. 30 นาที จะครบ 1 วัน (ราว …)" ("About 20 h 30 min until it has been a day"), with "ถ้าไฟดับเกิน 1 วัน Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากบอกว่าเก็บนอกตู้ได้" under it | "ไฟดับเกิน 1 วันแล้ว: Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้" ("Off for over a day: Ready.gov says throw it out unless the label says it can be kept out of the fridge") |
+
+- **Statuses:** ✅ more than an hour left; ⏳ an hour or less (display only: the advice is the same, the mark says time is short); ❌ over.
+- **Clock times:** "ถึงราว 23:30 น."; when that time isn't today, the date too ("02:19 น. 22 ต.ค."), because 48 hours on, the clock alone would repeat.
+- **However long the power is off** ("ไม่ว่าไฟดับนานแค่ไหน"): 🚪 open the fridge and freezer only when you must (CDC, Ready.gov, ⚠️); 🚫 never taste food to see if it has gone off, when in doubt throw it out (CDC, ⚠️); 🥫 throw out cans that are dented, bulging, leaking or rusty (อย. and กรมอนามัย, `fda-cans`, `anamai-cans`, ✅).
+- **Said on screen:** each line's agencies with ⚠️ where it is `partial`; a footnote, "⚠️ ตัวเลขชั่วโมงมาจาก CDC และ Ready.gov ของสหรัฐฯ ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานไทย" ("The hours come from the US CDC and Ready.gov; no Thai agency advice on this was found."); "🔒 เวลาที่นับอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน".
+- **Buttons:** 📤 ส่งให้คนที่บ้าน (the text: "ไฟดับมา 3 ชม. 30 นาที แล้ว", one line per part, the two agencies with ⚠️, and the `/fridge` link); 🎒 เช็กของจำเป็นสำหรับไฟดับ (the home check, `kit_open` with the label `fridge`); 💡 ไฟมาแล้ว: ล้างเวลา ("The power's back: clear the time"); ปิด.
+
+**Rounding.** `span()` in `kit.js` rounds the time off **up** to the minute and the time left **down**, with a tolerance of a millionth of a minute for floating point, so neither ever looks safer than it is. At 3 h 30 min 20 s without power, the stepper says 3 ชม. 31 นาที and the fridge has 29 นาที left, not 30 ([GUIDELINES rule 78](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [LESSONS B13](LESSONS_LEARNED.md#b-safety-content-and-research)).
+
+**The + button** adds exactly one hour to the time shown, within 0–72 h: 3 h 30 min becomes 4 h 30 min. The first version rounded the time first (`Math.round`), so 3 h 30 min + 1 became 5 h and skipped the hour in which the fridge's 4 hours run out. Found in testing, never live ([KNOWN_ISSUES F92](KNOWN_ISSUES.md#in-v1100-19-oct-2026), [LESSONS C23](LESSONS_LEARNED.md#c-engineering-and-platform)).
+
+**What stays on the device.** `brm:fridge` = `{start, freezer, med}`: the moment the power went off (in milliseconds), the freezer answer and the tick. A count that started more than 7 days ago, or in the future, is ignored as another power cut. Because the start is stored, not the hours, the count goes on after the page or the app is closed. The start screen reads it too (in `main.js`, without loading `kit.js`): while a cut is counted, up to 72 h, the tile's second line says "⏱️ ไฟดับมาเกิน 5 ชม.แล้ว" ("⏱️ Off for over 5 h"; whole hours rounded down, so the wording says "more than", which is never safer than the truth) or, in the first hour, "⏱️ ไฟเพิ่งดับ กำลังนับเวลา"; otherwise "ยังกินได้อีกกี่ชั่วโมง". "💡 ไฟมาแล้ว: ล้างเวลา" clears it. The same limits as the home check apply: one browser, and LINE's in-app browser keeps its own copy ([KNOWN_ISSUES #58](KNOWN_ISSUES.md#58-the-home-check-and-the-plan-live-in-one-browser)).
+
+**What the hours rest on.** `cdc-food-outage` (the US CDC, "Keep Food Safe After a Disaster or Emergency", read 18 Oct 2026): with the doors closed, food stays safe up to 4 hours in a fridge, 48 hours in a full freezer and 24 in a half-full one; never taste food to check; and its power-outage message, after 4 hours throw out meat, fish, eggs, milk and leftovers. `readygov-outage` (Ready.gov, "Power Outages"): keep the doors closed, and if the power is out for more than a day, discard medication that should be refrigerated unless the label says otherwise. The research of 19 Oct 2026 again found no Thai agency advice on food in a fridge during a power cut (§32.8), so all three parts are ⚠️ `partial` ([KNOWN_ISSUES #74](KNOWN_ISSUES.md#74-the-fridge-hours-rest-on-us-guidance-only)). The power-cut lessons `s-fridge` and `s-freezer` use the same hours (§27.2), so the game and the tool agree.
+
+### 32.3 Dust today
+
+`openAir()` in `kit.js`; content `kit.json → air`; logic `airLevel()` and `airAdvice()` in `kitplan.js`.
+
+**The questions:**
+
+- "ตัวเลขที่เห็นเป็นแบบไหน?" ("What kind of number is it?"): PM2.5 (มคก./ลบ.ม.) / AQI ของไทย ("Thailand's AQI"); µg/m³ to start.
+- "ค่าฝุ่นตอนนี้" ("The reading now"): a number field (`inputmode="decimal"`; a comma counts as a decimal point; µg/m³ from 0 to 999 and AQI from 0 to 500, anything else gives no level).
+- "หรือเลือกสีที่เห็นในแอป" ("or pick the colour the app shows"): five swatches, ฟ้า เขียว เหลือง ส้ม แดง. Picking one clears the number; typing a number marks its colour.
+- Under them: "สีของกรมควบคุมมลพิษใช้ค่าเฉลี่ย 24 ชั่วโมง AQI ในนี้คือ AQI ของไทย แอปต่างประเทศใช้ AQI คนละแบบ ให้ใส่ค่า PM2.5 แทน" ("The PCD's colours are for the 24-hour average. The AQI here is Thailand's AQI; apps from abroad use a different AQI, so put in the PM2.5 figure instead.").
+- "ในบ้านมีใครต้องระวังเป็นพิเศษไหม?" ("Is anyone at home who needs extra care?"): 👶 เด็กไม่เกิน 5 ขวบ, 🧓 คนอายุเกิน 60, 🤰 คนท้อง, ❤️ คนมีโรคหัวใจ ปอด หรือโรคประจำตัว. These are the notice's people at risk (its clause 2: older people over 60, young children up to 5, pregnant women, people with heart and blood-vessel or respiratory disease, "among others").
+
+**The bands.** The PCD's notice, Table 2. PM2.5 is the continuous 24-hour average in µg/m³, to one decimal place, rounded by the usual rule (clause 4.1(1)). AQI 100 equals the 24-hour standard of 37.5 µg/m³ (clause 3).
+
+| Colour (`colour`) | Level | PM2.5, µg/m³ (`pm`, the upper edge) | Thailand's AQI (`aqi`) |
+|---|---|---|---|
+| ฟ้า (`#4FB3E8`) | ดีมาก / very good | 0–15.0 (15) | 0–25 (25) |
+| เขียว (`#6CC04A`) | ดี / good | 15.1–25.0 (25) | 26–50 (50) |
+| เหลือง (`#F2CF3A`) | ปานกลาง / moderate | 25.1–37.5 (37.5) | 51–100 (100) |
+| ส้ม (`#F28C28`) | เริ่มมีผลกระทบต่อสุขภาพ / starting to affect health | 37.6–75.0 (75) | 101–200 (200) |
+| แดง (`#E5372E`) | มีผลกระทบต่อสุขภาพ / affects health | 75.1 and over (`null`) | 201 and over (`null`) |
+
+- **How a reading is placed.** `airLevel()` rounds µg/m³ to one decimal, half up (`Math.round(n × 10) / 10`, with a tiny tolerance for floating point), and AQI to a whole number, then takes the first level whose upper edge it doesn't pass. So 15.04 is blue and 15.05 green, 37.55 is orange and 75.05 red.
+- **The averaging period.** The colours are for the 24-hour average. Many apps also show an hourly reading; whether Air4Thai colours hourly readings with the same bands is **[unverified]**, because Air4Thai couldn't be opened ([KNOWN_ISSUES #75](KNOWN_ISSUES.md#75-the-dust-colours-are-for-the-24-hour-average-apps-often-show-hourly-readings)). The tool says its colours are for the 24-hour average.
+- **The old scale.** The notice took effect with the 37.5 µg/m³ standard on 1 Jun 2023 (Thai PBS) and was published on 3 Jul 2023; it replaced the 2018 notice. Thai PBS prints the old bands beside the new: 0–25, 25–37, 38–50, 51–90 and 91 and over µg/m³. Reports from before mid-2023, and the repository's PPTV 2022 source, still carry them ([LESSONS B7](LESSONS_LEARNED.md#b-safety-content-and-research)).
+
+**What each level says** (`levels[].all`, `risk` and `chronic`; every line with its sources):
+
+| Level | Everyone at home (`all`) | People at risk (`risk`) | People with a long-term illness (`chronic`) |
+|---|---|---|---|
+| ฟ้า | ทุกคนใช้ชีวิตได้ตามปกติ (everyone can go about life as normal) | — | — |
+| เขียว | ทำกิจกรรมกลางแจ้งได้ตามปกติ (outdoor activities as normal) | watch for unusual symptoms: frequent cough, hard breathing, wheeze, a tight chest, palpitations, dizziness | — |
+| เหลือง | spend less time on hard outdoor activity or exercise | a PM2.5 mask every time you go outside; spend less time on hard outdoor activity or exercise; any unusual symptoms, see a doctor promptly | — |
+| ส้ม | a PM2.5 mask every time you go outside; limit hard outdoor activity or exercise; watch for symptoms such as a cough, hard breathing or sore eyes | a PM2.5 mask every time you go outside; **avoid** hard outdoor activity or exercise; follow the doctor's advice, and with any unusual symptoms see a doctor promptly | have the medicine and equipment you need ready **(กรมอนามัย)** |
+| แดง | no outdoor activities; if you must go out, always wear a PM2.5 mask; any unusual symptoms, see a doctor promptly; stay in a dust-free room **(กรมอนามัย)** | — (the notice has one list for everyone at red) | stay in a room kept safe from air pollution, with the medicine and equipment you need ready, and follow the doctor's advice strictly |
+
+- **Sources.** Every line but the two marked **(กรมอนามัย)** cites the notice (`pcd-aqi-2566`, the Royal Gazette, `official`, read 19 Oct 2026) and Thai PBS, which prints its table word for word while quoting the PCD Director-General (`pcd-aqi-thaipbs-2566`, `secondary`). The two marked lines cite the DOH (`doh-aqi-2566`: MGR Online quoting the DOH Deputy Director-General, 21 Oct 2023; InfoQuest carries the same statement), and say so where they are shown: "(กรมอนามัย)" in the tool, "— Department of Health (DOH)" on `/en/air`.
+- **The bands are verified** in the primary text (Table 2 and clause 4.1(1)), and two agencies give the same five: the PCD (the notice, Thai PBS) and the DOH (MGR Online, InfoQuest). The DDPM (Matichon, Feb 2024) gives the same four lowest.
+- **Masks.** Neither agency's advice per level names N95: the PCD says "หน้ากากป้องกัน PM2.5", the DOH "หน้ากากป้องกันฝุ่น". The tool says "หน้ากากป้องกัน PM2.5". N95 is in the dust guide and lessons, from THE STANDARD's report of 1 Apr 2026 quoting the DOH (`doh-dustroom-2569`, §22.4).
+
+**The two agencies differ** (research conflict 1, §32.8):
+
+| Level | The PCD's notice | The DOH (21 Oct 2023) |
+|---|---|---|
+| เขียว, people at risk | watch for symptoms | avoid outdoor activity or exercise; watch your health |
+| เหลือง, everyone | spend less time on hard outdoor activity | avoid outdoor activity; watch your health |
+| แดง | people with a chronic illness stay in an air-pollution safe area | everyone stays in a dust-free room |
+
+The DOH is stricter at the lower levels; its green advice for people at risk ("avoid") is even stronger than its yellow advice for them ("spend less time"), as published. **The decision:** the PCD's notice is the main text, because it is the legal notice, the one Air4Thai follows, and it separates the general public from the people at risk. The DOH's lines are added only where they add something the notice lacks (medicine and equipment ready at orange; a dust-free room for everyone at red), and each is named on its line. The two sets' green and yellow lines are never mixed ([GUIDELINES rule 81](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES #76](KNOWN_ISSUES.md#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red), [LESSONS B14](LESSONS_LEARNED.md#b-safety-content-and-research)).
+
+**The unit question.** Apps show either µg/m³ or an AQI number, and the same number means different colours: AQI 152 is orange, 152 µg/m³ is red. So the tool asks which it is, remembers the answer, and calls the AQI "AQI ของไทย". Apps from abroad (the US AQI, for example) use a different scale, so the tool asks for the PM2.5 figure instead ([GUIDELINES rule 79](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [LESSONS A7](LESSONS_LEARNED.md#a-product-and-audience)).
+
+**The answer** (`airAdvice()`):
+
+1. A badge with the colour, the level ("ระดับแดง · มีผลกระทบต่อสุขภาพ") and its band in the chosen unit ("75.1 มคก./ลบ.ม. ขึ้นไป").
+2. "ทุกคนในบ้าน" ("Everyone at home"): `all`.
+3. If anyone is ticked, "สำหรับเด็กเล็ก และคนมีโรคประจำตัว" ("For young children and people with a long-term illness", from the ticked groups' `short` names): `risk`, or "ทำแบบเดียวกับทุกคนในบ้าน" ("The same as everyone at home") where the level has none.
+4. If ❤️ is ticked, "เพิ่มเติมสำหรับคนมีโรคประจำตัว" ("Also, for people with a long-term illness"): `chronic`.
+5. If nobody is ticked and the level has lines for people at risk, a hint: "กลุ่มเสี่ยง (เด็กเล็ก ผู้สูงอายุ คนท้อง คนเป็นโรคหัวใจหรือโรคทางเดินหายใจ) ต้องระวังมากกว่านี้ ติ๊กด้านบนถ้าในบ้านมี".
+6. The agencies of the lines shown.
+
+After a number is entered (the field's `change`: on leaving it or pressing done on the keyboard) or a colour is picked, the answer scrolls into view, smoothly unless reduced motion is on.
+
+**Buttons:** "🌐 ดูค่าฝุ่นใน Air4Thai" (the dust mode's `link`, the same one the start screen shows in the dust season); 📤 ส่งให้คนที่บ้าน (the text: "ฝุ่นตอนนี้ 82.4 µg/m³ สีแดง · มีผลกระทบต่อสุขภาพ", the lines shown, the agencies and the `/air` link); "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" (the dust guide: `kit.js` dispatches a `brm:guide` event, and `main.js` opens the guide with the label `tool`); ปิด.
+
+**Who is at home, and what is kept.** On the first open the ticks come from the home check's answers in `brm:kit` (`groups[].from`: `baby` → 👶, `elder` → 🧓, `meds` → ❤️; nothing maps to 🤰). It is a starting guess: "older or bedridden people" and "daily medicine" are close to, not the same as, "over 60" and "a long-term illness", so the person can change the ticks. From then on `brm:air` = `{unit, groups}` keeps the kind of number and the ticks. The reading itself is never stored and never sent.
+
+### 32.4 The pills
+
+Under the home check's daily-medicine line (`meds`, shown only when "💊 มีคนกินยาประจำ" is ticked) there is a closed section, "💊 ยาพอกี่วัน? ลองคำนวณ" ("How many days will the pills last?"), with two number fields, "ยาเหลือกี่เม็ด" ("Pills left", whole pills) and "กินวันละกี่เม็ด" ("Pills a day", in halves), and one line under them:
+
+- "⏳ พอ 4 วัน ให้พอ 7 วัน ต้องมีอีก 5 เม็ด" (9 left, 2 a day), or
+- "✅ พอ 7 วัน ถึง 7 วันแล้ว" (14 left, 2 a day).
+
+`medDays({ left, perDay, target })` in `kitplan.js`: days = ⌊left ÷ pills a day⌋; more needed = ⌈pills a day × target − left⌉, at least 0. The target is the home check's own line (`items.meds.qty.days`, 7 days, `moph-7days`, ⚠️ a 2013 figure, [KNOWN_ISSUES #57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)). It is arithmetic only, with no dose or medical advice. A part pill counts as one: 3 left at half a pill a day last 6 days and need 1 more for 7. One medicine at a time ("ใส่ทีละตัวยา ดูว่าพออย่างน้อย 7 วันไหม"). Pills a day must be more than 0 and at most 50. Nothing typed is kept or sent.
+
+### 32.5 Integration
+
+- **The start screen.** The hub has two more tiles; under the main guide button they make a 2 × 2 grid: 🎒 เช็กของจำเป็น, 📝 แผนครอบครัว, 🥛 ไฟดับ: ตู้เย็น ("ยังกินได้อีกกี่ชั่วโมง", or the running count, §32.2) and 😷 ฝุ่นวันนี้ ("ค่าเท่านี้ บ้านเราทำอะไร"). The first three tools stay on the first screen at 320 × 460 and 360 × 640 (smoke-checked); the new row comes next, below the first screen at 320 × 460, by design ([KNOWN_ISSUES #77](KNOWN_ISSUES.md#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones)).
+- **One map of tools.** `main.js` has one `TOOLS` map (`kit` 🎒, `plan` 📝, `fridge` 🥛, `air` 😷) for routing (`/?open=<id>`, and the tools' pages opened offline), the hub, the guide sheets' next steps and the result buttons; `toolName()` takes each name from `hub<Id>`. `openTool()` loads `kit.js` on first use, as before (§28.9).
+- **The hazards that offer them** (`config.json → hazards.<h>.tools`; the build allows `kit`, `plan`, `fridge` and `air`):
+
+| Hazard | `tools` |
+|---|---|
+| `flood` | `kit`, `plan` |
+| `dust` | `air` (new) |
+| `fire` | none |
+| `outage` | `kit`, `plan`, `fridge` (new) |
+| `storm` | `kit`, `plan`, `fridge` (new) |
+| `landslide`, `quake`, `heat` | `kit`, `plan` |
+
+  The list puts the links on the hazard's page (`/pm25` → `/?open=air`; `/ready` and `/storm` → `/?open=fridge`, with `seo.<lang>.toolFridge` and `toolAir`), the buttons under "เตรียมบ้านต่อ" in the hazard's guide sheet, and a button on the result screen of the hazard's modes (`data-result-tool`): "🥛 ไฟดับ: ตู้เย็น" after a power-cut round, beside the 🎒 home check, and "😷 ฝุ่นวันนี้" after a dust round. The storm has no game, so its guide and its page offer the fridge tool.
+- **Pages.** `/fridge` and `/air` (and `/en/…`) are written by the build like `/kit` (§29.9): the H1 and an intro, a button into the tool (`/?open=fridge`, `/?open=air`), then every part or level with its figures and sources (the fridge's parts with "เก็บได้ราว 4 ชม." and what to do after; the five dust levels with both bands and the lines for everyone, people at risk and a long-term illness, the DOH's named). Each has its own link preview: `og/fridge.png` in the power-cut look and `og/air.png` with the masked gecko, and their `og/en/` twins. `fridge` and `air` are reserved names, so no hazard slug can take them. Opened offline before they were ever visited, the pages open their tool (as `/kit` does since v1.9.1, §30.7).
+- **Search and AI search.** The sitemap has 28 addresses (the 24 of v1.9.0, plus `/fridge`, `/air` and their twins). `llms.txt` lists every tool on one line, "Family tools that run on the device; nothing typed is sent: …", with each tool's `?open=` link and its page; `/learn` links all four.
+- **The installed app.** Two more shortcuts in `manifest.webmanifest`, five in all: "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?" (short "ไฟดับ ตู้เย็น") → `/?open=fridge&source=pwa` and "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?" (short "ฝุ่นวันนี้") → `/?open=air&source=pwa`.
+- **Events.** Two new anonymous events, in both allowlists (`functions/api/e.js`, `public/js/analytics.js`):
+
+| Event | When | mode | label | value |
+|---|---|---|---|---|
+| `tool_open` | A calculator opens | `fridge` / `air` | `start` (the hub) / `link` (`/?open=…`, a page's button, a shortcut) / `result` (a result screen) / `guide` (a guide's next steps) | – |
+| `tool_share` | A channel tapped under "📤 ส่งให้คนที่บ้าน" | `fridge` / `air` | `native` / `line` / `copy` | – |
+
+  No reading, time, freezer answer, tick or count of people is in any event; two smoke checks read every `/api/e` body to prove it. The fridge's 🎒 button sends `kit_open` with the new label `fridge`. Queries: [05-metrics](05-metrics.md#calculators-v1100).
+- **Texts about the whole app** (rule 59): the About intro and the privacy line (Thai and English; the privacy line now names the fridge and dust tools among what stays on the device), the default preview's description (`og`/`ogEn.defaultDesc`, also the start page's meta description), `seo.en.llmsSummary` ("calculators that work out what to do from the household's answers…"), the manifest's description and `package.json → description`. The tagline, `/learn`'s intro and the JSON-LD `about` don't name the calculators; they stay true as written. `seo.en.agencies` has the new agency: กรมควบคุมมลพิษ → "Pollution Control Department (PCD)".
+
+### 32.6 Build checks
+
+- **The fridge.** Each part has `label`, `ok` and `over` (and `left` where used) in Thai and English; `if` can only be `med`; `verify` is `verified` or `partial`; at least one known source; exactly one of `hours`, `hoursBy` (with every freezer option) or `days`. Every figure is a whole number, and every figure above 1 (4, 48, 24) must appear as a number on its own in the title or `note` of one of the part's sources. Every `always` line has known sources.
+- **Dust today.** Each level has a `#RRGGBB` colour and at least one line for everyone; every line has Thai and English and at least one known source. For each unit the upper edges rise from level to level and the top level's is `null` (open). Every edge must appear in the sources of that level's lines: µg/m³ written to one decimal ("15.0", "37.5"), AQI as a whole number, not inside a longer number. Each group's `from` must be a home-check answer (`kit.json → flags`).
+- **The hazards.** A `tools` entry must be one of `TOOL_IDS` (`kit`, `plan`, `fridge`, `air`).
+- **Shown to fail** with a wrong figure: the fridge at 5 h, orange's edge at 70 µg/m³, green's AQI edge at 10; each stopped the build with a message naming the figure.
+- **What it doesn't prove:** that the number means the same thing in the source, as for the home check (§28.8). A person still reads the source.
+
+### 32.7 Checks: tests, a visitor walk and an independent cross-check
+
+- **Unit tests** (3 new, 39 in all): "power cut: the fridge keeps 4 h, a full freezer 48 h, a half one 24 h, cold medicine a day (v1.10.0)"; "medicine: days the pills last and how many more make the home check's target (v1.10.0)" (10 left at 2 a day: 5 days and 4 more; 14: enough; 3 at half a pill: 6 days and 1 more; 0 a day, −1 or text: nothing); "dust today: the PCD bands to the decimal, AQI too, and who gets which lines (v1.10.0)" (13 µg/m³ readings around every edge, "82,4" with a comma among them; 8 AQI values; bad input gives nothing; a picked colour wins over a number; who gets which lines; every line has a source; the groups map onto the home check's answers).
+- **Smoke checks** (19 new, 157 in all, at 360 × 640), passing on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027:
+  - the pills: 10 left at 2 a day, "พอ 5 วัน ให้พอ 7 วัน ต้องมีอีก 4 เม็ด"; 14, enough; nothing typed is kept;
+  - the fridge (9): 3 h 30 min off gives the fridge ⏳ about 30 min, a full freezer 44 h 30 min and cold medicine 20 h 30 min; the answer starts on the first screen; + gives 4 h 30 min, the fridge over (meat, fish, eggs, milk, leftovers) and half a freezer 19 h 30 min of its 24; the start time and answers are kept; controls ≥ 44 px; the start screen says "ไฟดับมา 4 ชม.แล้ว"; only `tool_open` and `tool_share` are sent, never the time; no page errors; `/fridge` and `/en/fridge` have every part with its source and a button into the tool;
+  - dust today (9): who is at home starts from the home check (a small child, daily medicine); 82.4 µg/m³ is red, with no outdoor activities, the dust-free room named as the DOH's, and the lines for a long-term illness; Thailand's AQI 137 is orange, with the at-risk lines for young children; picking yellow clears the number and, with nobody ticked, shows the hint; controls ≥ 44 px; the kind of number and the ticks are kept, the reading is not; only counts are sent, never the reading; no page errors; `/air` and `/en/air` show the five colours with their bands and sources, and `/pm25` links the tool.
+
+  Two older checks now cover the tools too: the hub check expects five buttons with the first three on the first screen at 320 × 460 and 360 × 640, and `/learn` and `llms.txt` must link all four tools.
+- **A visitor walk** in headless Chromium at 320 × 568 (Thai), 360 × 640 (Thai), 390 × 844 (English), 768 × 1024 (Thai) and 1024 × 1366 (English): the start screen, the fridge, dust today (82 µg/m³), the pills (9 left, 2 a day: "พอ 4 วัน ให้พอ 7 วัน ต้องมีอีก 5 เม็ด"), `/air` and `/fridge`. No sideways scrolling, no control under 44 px, no page or console errors. One screenshot of a sheet looked like a broken overlay; it had been taken during the sheet's 0.22 s slide and fade-in (`sheet-in`), and one taken after it was fine ([LESSONS D22](LESSONS_LEARNED.md#d-testing-and-verification)).
+- **axe-core:** nothing on the fridge sheet, the dust sheet, `/air` or `/fridge`; on the start screen only the wordmark's coral half, as before ([KNOWN_ISSUES #51](KNOWN_ISSUES.md#51-the-wordmarks-coral-half-is-low-contrast)).
+- **An independent cross-check.** A scratch script written from the sources, not from `kitplan.js` (its own table of bands, its own rounding, its own hours), was compared with the app's answers: 35 of 35 dust readings got the notice's colour (25 in µg/m³ on both sides of every edge, such as 15.04 → blue, 15.05 → green, 37.55 → orange and 75.05 → red, and 10 AQI values), and 8 of 8 fridge times (0.5 to 48.5 h, a full and a half-full freezer, cold medicine) got the status the sources' hours give ([LESSONS D21](LESSONS_LEARNED.md#d-testing-and-verification)).
+- **Not run:** real phones ([ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix), rows 64–66); `npm run probe` (no item, slot or water change).
+
+### 32.8 Research record (19 Oct 2026)
+
+A research agent read the agency texts and the news that quotes them while the lead built the fridge tool from the sources already in the repository. A quote counted as read only when it was checked against the downloaded page, not a summary. The notes were a scratch file of the session; what matters is below and in the sources' `note`s.
+
+**Read:**
+
+- **The Royal Gazette PDF of the PCD's notice** (ประกาศกรมควบคุมมลพิษ เรื่อง ดัชนีคุณภาพอากาศของประเทศไทย พ.ศ. 2566; vol. 140, special part 157 ง, pp. 3–6; signed on 16 May 2023 by the PCD Director-General, Pinsak Suraswadi; published on 3 Jul 2023; it replaces the notice of 24 Sep 2018): Table 2 (the bands), clause 4.1(1) (the continuous 24-hour average, one decimal, rounded by the usual rule), clause 3 (five levels, AQI 100 equal to the standard), clause 2 (who is at risk; the general public; an "air-pollution safe area", a room prepared in a public building or a home), and Table 1 (what to do). The PDF's text drops the vowel ำ when it is extracted ("ทากิจกรรม"); Thai PBS prints the same table with it, which confirms the wording.
+- **Thai PBS 329386** (5 Jul 2023, quoting the PCD Director-General): the new bands with the old ones in brackets, and the notice's advice word for word (one typo, กำจัด for จำกัด).
+- **MGR Online 9660000094860 and InfoQuest 2023/344790** (21 Oct 2023, the DOH Deputy Director-General, Dr Atthaphon Kaewsamrit): the same bands, and the DOH's own advice per colour.
+- **Matichon** (15 Feb 2024, the DDPM): four bands (no red) and simpler advice.
+- **The heat index:** two pages on the TMD's own site (7 Mar 2024 and 21 Apr 2023), Post Today (11 Mar 2024), InfoQuest quoting the BMA (3 May 2026), Thai PBS 504055 (31 Mar 2026), the TMD's 2012 explainer PDF and a TMD Northern Meteorological Centre sheet of 2019.
+
+**Could not be reached on 19 Oct 2026:** pcd.go.th's news (connection reset; 503 through a fetch tool), the DOH's PM2.5 guideline PDF on hia.anamai.moph.go.th (the same), air4thai.pcd.go.th (its TLS certificate chain couldn't be verified; checking wasn't turned off), rnd.tmd.go.th (503), thairath.co.th and hfocus.org (403); tmd.go.th/forecast/heatindex returned only the page shell. A PCD news page, "ค่ามาตรฐาน PM2.5 ใหม่ บังคับใช้แล้ววันนี้ (1 มิ.ย. 66)", was seen in search results only.
+
+**Conflicts recorded:**
+
+1. The PCD and the DOH differ at green, yellow and red (§32.3).
+2. Thai PBS 327288 (3 May 2023, before the notice) prints the 2018 advice and a green range "15-125": not used for advice.
+3. The green band's lower edge: Thai PBS writes 15–25; the Gazette, the DOH and the DDPM 15.1–25(.0). The tool uses 15.1.
+4. The repository's PPTV 2022 source has the old scale (orange 51–90, red over 91); it was already flagged and isn't used for numbers.
+5. The heat-index bands, old and new; the wording of the top band; the advice per level by agency; and the formula (below).
+
+**Food in a fridge in a power cut.** No Thai agency source (กรมอนามัย, อย., กรมวิทยาศาสตร์การแพทย์, PEA or MEA) after two targeted searches. Found instead: a media article reposted on LINE Today with 4 h and 48 h and no agency named (not usable), a Thai-language leaflet from the health department of Victoria, Australia (foreign advice), and the US FoodSafety.gov and CDC figures already in `sources.json`. So the hours stay ⚠️ international ([KNOWN_ISSUES #74](KNOWN_ISSUES.md#74-the-fridge-hours-rest-on-us-guidance-only)).
+
+**The heat index, for a calculator not built yet** ([ROADMAP P10](ROADMAP.md#p10-more-calculators), [KNOWN_ISSUES #78](KNOWN_ISSUES.md#78-a-heat-index-calculator-is-not-built)):
+
+| Level | Colour | Heat index, °C | Where it was read |
+|---|---|---|---|
+| เฝ้าระวัง (watch) | green | 27.0–32.9 | Post Today, InfoQuest (the BMA), Thai PBS |
+| เตือนภัย (warning) | yellow | 33.0–41.9 | the same three |
+| อันตราย (danger) | orange | 42.0–51.9 | **the TMD's own site** (the DOH and TMD press conference of 7 Mar 2024), and the same three |
+| อันตรายมาก (extreme danger) | red | 52.0 and over | Post Today ("from 52"), InfoQuest and Thai PBS ("over 52"); the danger band ends at 51.9, so 52.0 and over |
+
+- **The scheme** is the DOH's and the TMD's (2024), in four levels; the TMD's page gives the level names and the danger band, and the news gives all four. The index is "computed from air temperature and relative humidity" (the TMD, 2023 and 2024). The TMD publishes the expected maximum by region on Mondays, Wednesdays and Fridays.
+- **The formula.** The TMD's 2012 explainer, "ดัชนีความร้อนคืออะไร" (arcims.tmd.go.th), prints the US NWS table and the Rothfusz regression with the NWS coefficients (T in °F, relative humidity in %). Whether the current TMD product uses it, and with which adjustments at low values, is **[unverified]**: the TMD's heat-index pages answered 503. Two academic works using TMD data say "Steadman" (seen in search results only).
+- **Old bands still in print.** The 2012 explainer has 27–32 / 32–41 / 41–54 / over 54 (the NWS's); the TMD Northern centre's 2019 sheet 27–31 / 32–40 / 41–54 / over 54 (citing the DOH); MGR Online's science page (13 Apr 2024) still prints the NWS-style bands. Use the 2024 bands only.
+- **Advice per level differs by agency, without contradicting.** The BMA: at warning, cut outdoor activity from 11:00 to 15:00 (the BMA alone says this), at danger watch yourself for symptoms, at extreme danger stop outdoor activity completely. The DOH: at danger, spend less time outdoors. Thai PBS: at extreme danger, a hat, sunglasses and breathable clothes if you must go out.
+- **People at risk in the heat** (the TMD's page, 2024): young children, older people, people with a chronic illness, people with obesity, people who drink alcohol, and people who work or are active outdoors for long periods.
+- `tmd-heatindex-posttoday-2567` and `bma-heatindex-2569` in `sources.json` already point at the Post Today and InfoQuest pages; their bands were checked on the pages on 19 Oct 2026.
+
+### 32.9 Budget and code
+
+- **Budget:** start screen **253 KB** compressed (243 in v1.9.2), first game screen **268 KB** (258), against 500 KB. Most of the 10 KB is the tools' code, which the budget counts as start-screen weight although it loads only when a tool opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)): `kit.js` is 11.0 KB with `gzip -9` (37.0 KB raw; 5.8 KB in v1.9.0) and `kitplan.js` 1.9 KB (4.3 KB raw). `kit.json`, 9.1 KB (41.6 KB raw), isn't counted: it is fetched when a tool opens. Still 44 files precached: `kit.js`, `kitplan.js` and `kit.json` were already in the precache, so the calculators work offline after one visit, and `/fridge` and `/air` open their tool offline.
+- **Code:** `kit.js` (`openFridge`, `openAir`, the pills in the home check's list, `textShare`, `span`), `kitplan.js` (`fridgePlan`, `medDays`, `airLevel`, `airAdvice`), `main.js` (`TOOLS`, `toolName`, `openTool`, the fridge tile's line, `data-result-tool`, the `brm:guide` listener), `app.css` (the 2 × 2 hub, the stepper's time, the statuses, the swatches, the dust badge), `tools/build.mjs` (`TOOL_IDS`, the checks of §32.6, the `/fridge` and `/air` pages, the sitemap, `llms.txt`), `tools/render.html` (the two previews), `functions/api/e.js` and `analytics.js` (the two events).
+- **Content:** `kit.json → fridge` and `air`, and 54 new `ui` texts (96 per language); `strings.json` (`hubFridge…`, `hubAir…`, `seo.<lang>.toolFridge`, `toolAir`, `fridgePage…`, `airPage…`, `og`/`ogEn` `fridge…` and `air…`; 281 keys per language); three sources (112 in all); `config.json → hazards.<h>.tools`; the manifest. Version 1.10.0.

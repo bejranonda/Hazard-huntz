@@ -143,6 +143,7 @@ Links for dust posts:
 - **To read,** link `/pm25` (`/en/pm25` in English). It has its own preview (title, description and the dust checklist image), all 12 dust lessons and a ▶ play button.
 - **To play,** link `/?mode=dust`: the game opens with dust as the big card. Its preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)), so put it after the `/pm25` link, or use it where the post already carries a picture.
 - Also share `/checklist/dust` and a `/c/d…` challenge.
+- **Dust today (v1.10.0):** link `/air`: people put in the reading from their app, or pick its colour, and see what everyone at home and the people at risk should do, by the PCD's colours. It is the most useful dust link on a hazy day ([the drafts](#the-fridge-and-dust-today-v1100)).
 
 > ฝุ่นมาอีกแล้ว 😷 บ้านเราพร้อมสู้ฝุ่นหรือยัง?
 >
@@ -183,6 +184,7 @@ Links for power-cut posts:
 - **To read,** link `/ready` (`/en/ready` in English). It has its own preview (title, description and the power-cut checklist image), all 13 lessons, the checklist and ▶ play buttons.
 - **To play,** link `/?mode=stock`: the game opens with the power cut as the big card and the 💧 water-and-food topic. Its preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)), so put it after the `/ready` link.
 - Also share `/checklist/stock` ("ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ") and a `/c/s…` challenge, and the `ready` carousel set from `/posts`.
+- **During a power cut (v1.10.0):** link `/fridge`, which counts the hours and says how long the fridge, the freezer and cold medicine keep, with the US hours named ([the drafts](#the-fridge-and-dust-today-v1100)).
 
 **Be open about the sources.** 10 of the 13 lessons are ⚠️: most rest on international guidance (the US CDC, Ready.gov, the US Fire Administration) until a Thai review ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). Name the source next to a foreign number, as below, and never present it as a Thai agency's advice.
 
@@ -255,6 +257,59 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 
 Rules for these posts: never shame a low score ("ยังขาดอีกนิด" is the tone); no lists of what to buy from a shop or a brand; no photos of empty shelves or panic buying.
 
+### The fridge and dust today (v1.10.0)
+
+Two calculators that answer a question of the moment, each with a page and a preview of its own ([KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100)). They are worth a post when the moment comes, and not much before.
+
+- **`/fridge`: "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?"** Post it **during or right after a power cut** (a storm, a planned cut announced for the area, a long cut in the news) and **before the next storm season**, next to the storm guide (`/checklist/storm`) and the power cut's `/ready`. People tap "⏱️ ไฟเพิ่งดับ เริ่มนับจากตอนนี้" and the phone keeps the count, so the link is useful the moment the power goes. Its preview is `og/fridge.png` (the power-cut look). **Name the source next to the hours:** they are the US CDC's and Ready.gov's, and no Thai agency gives them yet ([KNOWN_ISSUES #74](KNOWN_ISSUES.md#74-the-fridge-hours-rest-on-us-guidance-only)); never present them as Thai advice, and never promise that food is safe ("ราว 4 ชั่วโมง", not "ปลอดภัยแน่นอน"). Whether to post it before a Thai source is found is the owner's call.
+- **`/air`: "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?"** Post it **from December** with the dust posts, and on any day the haze is in the news. Its preview is `og/air.png` (the gecko in its mask). The colours are the PCD's notice (the 24-hour average, µg/m³): ฟ้า 0–15.0 · เขียว 15.1–25.0 · เหลือง 25.1–37.5 · ส้ม 37.6–75.0 · แดง 75.1 ขึ้นไป. Quote them only with "ค่าเฉลี่ย 24 ชั่วโมง" and the PCD's name, and say that the tool reads the number people put in; it doesn't measure the air. Don't use 🟢 🟡 🟠 in the text: they are Unicode 12 and show as empty boxes on older phones ([GUIDELINES rule 64](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **The pills** ("ยาพอกี่วัน?") sit inside the home check (`/kit`), under the daily-medicine line; mention them in a home-check post for families with an older relative on daily medicine.
+- **Privacy is part of the message, again:** the time, the reading and who is at home stay on the phone.
+
+These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
+
+**Facebook: the fridge** (during a power cut, or before the storm season; with a screenshot of the tool or the preview):
+
+> ไฟดับ! ของในตู้เย็นยังกินได้ไหม? 🥛
+>
+> บอกว่าไฟดับมากี่ชั่วโมง (หรือกด "ไฟเพิ่งดับ" ให้มือถือนับเวลาให้)
+> แล้วดูว่าของในตู้เย็น ช่องแช่แข็ง และยาที่ต้องแช่เย็น ยังเก็บได้อีกกี่ชั่วโมง ถึงราวกี่โมง
+> ✅ ปิดประตูตู้เย็นไว้ เปิดเท่าที่จำเป็น
+> ✅ ห้ามชิมเพื่อดูว่าอาหารเสียไหม ไม่แน่ใจให้ทิ้ง
+> ตู้เย็นที่ไม่เปิดประตู เก็บอาหารได้ราว 4 ชั่วโมง ตามคำแนะนำของ CDC สหรัฐฯ (ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานไทย ในเครื่องมือมีป้ายบอกไว้)
+>
+> 🔒 เวลาที่นับอยู่ในมือถือของคุณเท่านั้น ไม่ส่งไปที่ไหน
+>
+> เช็กตู้เย็นบ้านเรา 👉 https://baanrodmai.autobahn.bot/fridge
+> #บ้านรอดไหม #ไฟดับ
+
+**LINE family groups:**
+
+> ไฟดับอยู่ไหม? 💛 กดเริ่มนับเวลาไว้ แล้วดูได้ว่าของในตู้เย็นยังเก็บได้อีกกี่ชั่วโมง 👉 https://baanrodmai.autobahn.bot/fridge
+
+**Facebook: dust today** (from December, or a hazy day; with the preview or a screenshot of the colours):
+
+> ฝุ่นวันนี้ บ้านเราต้องทำอะไร? 😷
+>
+> ใส่ค่าฝุ่นจากแอป (PM2.5 หรือ AQI ของไทย) หรือเลือกสีที่เห็นในแอป
+> แล้วได้คำแนะนำสำหรับทุกคนในบ้าน และสำหรับเด็กเล็ก ผู้สูงอายุ คนท้อง คนมีโรคประจำตัว
+>
+> สีตามประกาศกรมควบคุมมลพิษ (PM2.5 ค่าเฉลี่ย 24 ชั่วโมง มคก./ลบ.ม.)
+> ฟ้า 0–15.0 · เขียว 15.1–25.0 · เหลือง 25.1–37.5 · ส้ม 37.6–75.0 · แดง 75.1 ขึ้นไป
+> ✅ สีส้ม: ใส่หน้ากากป้องกัน PM2.5 ทุกครั้งที่ออกนอกอาคาร
+> ✅ สีแดง: งดกิจกรรมกลางแจ้ง
+>
+> 🔒 คำตอบอยู่ในมือถือของคุณเท่านั้น ไม่ส่งไปที่ไหน
+>
+> เช็กฝุ่นวันนี้ 👉 https://baanrodmai.autobahn.bot/air
+> #บ้านรอดไหม #ฝุ่นPM25
+
+**LINE family groups:**
+
+> ฝุ่นวันนี้สีอะไร? 😷 ใส่ค่าจากแอป แล้วดูว่าคุณตา คุณยาย เด็กๆ ในบ้านต้องทำอะไร 👉 https://baanrodmai.autobahn.bot/air
+
+Rules for these posts: no photos of real haze victims, hospital scenes or spoiled food; no blame on the electricity authorities or anyone else for a cut or for the dust; the tool's numbers only, each with its agency, and nothing of your own (no "safe for 6 hours if…", no brand of mask or purifier); for the fridge, the US source named every time.
+
 ### When something happens: the 5-minute playbook
 
 Hazards don't keep to a calendar: a quake abroad, a storm warning, a heatwave or a flash flood can be the topic of the day without notice. Every hazard has a "what to do" guide, a picture and a page, so the answer takes minutes, not a release ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).
@@ -284,7 +339,7 @@ Hazards don't keep to a calendar: a quake abroad, a storm warning, a heatwave or
 
 **Now (19 Oct 2026):** `landslide` until `2026-10-25`, for ปภ.'s warning of heavy rain, flash floods and mudslides on 18–25 Oct (Thairath, 18 Oct 2026). On 26 Oct set it back to `null` or to the next topic.
 
-**Rules for these posts:** the picture and the guide carry the advice, so add no numbers or tips of your own; the guides' ⚠️ lines say on the page that they are under review (the four new guides rest on news reports quoting the agencies until a Thai review, [KNOWN_ISSUES #60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies)); no photos of real damage, no death tolls, no blame; for a quake abroad, say where it happened and keep the post about getting ready at home. **No guide for it yet?** Post the closest one or the home check (`/kit`), and ask for a new guide ([ROADMAP S2](ROADMAP.md#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts)).
+**Rules for these posts:** the picture and the guide carry the advice, so add no numbers or tips of your own; the guides' ⚠️ lines say on the page that they are under review (the four new guides rest on news reports quoting the agencies until a Thai review, [KNOWN_ISSUES #60](KNOWN_ISSUES.md#60-the-four-new-guides-rest-on-news-reports-quoting-the-agencies)); no photos of real damage, no death tolls, no blame; for a quake abroad, say where it happened and keep the post about getting ready at home. **A power cut or a hazy day?** Add the calculator to the guide: `/fridge` with the storm or power-cut guide, `/air` with the dust guide ([above](#the-fridge-and-dust-today-v1100)). **No guide for it yet?** Post the closest one or the home check (`/kit`), and ask for a new guide ([ROADMAP S2](ROADMAP.md#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts)).
 
 ### Your own post: the tools-first relaunch (v1.9.0, draft)
 
@@ -431,7 +486,7 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 ## 6. Launch-day checklist
 
 - [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
-- [ ] Sitemap (24 addresses since v1.9.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan` (with their twins) submitted for indexing; `/`, `/learn` and `/pm25` JSON-LD pass the Rich Results Test (since v1.9.2 with a publisher)
+- [ ] Sitemap (28 addresses since v1.10.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan`, `/fridge`, `/air` (with their twins) submitted for indexing; `/`, `/learn` and `/pm25` JSON-LD pass the Rich Results Test (since v1.9.2 with a publisher)
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
 - [ ] Hazard pages `/flood`, `/pm25`, `/fire` and `/ready` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE; the same for the guide pages `/landslide`, `/storm`, `/quake`, `/heat` and for `/kit`, `/plan` and a `/checklist/<id>` of a new guide

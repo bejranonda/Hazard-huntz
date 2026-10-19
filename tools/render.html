@@ -108,13 +108,14 @@ window.renderAll = async (site) => {
     out[`share/checklist-${id}.png`] = c.toDataURL('image/png');
   }
 
-  // /kit and /plan: their link previews (v1.9.0)
-  for (const tool of ['kit', 'plan']) {
+  // /kit, /plan and /fridge: their link previews (v1.9.0, fridge v1.10.0)
+  for (const tool of ['kit', 'plan', 'fridge', 'air']) {
     c = canvas();
-    drawOG(c, { kind: 'checklist', mode: 'stock', line1: og[`${tool}Line1`], line2: og[`${tool}Line2`], line3: og[`${tool}Pill`], url }, assets);
+    const look = tool === 'air' ? 'dust' : 'stock'; // the dust tool wears the mask
+    drawOG(c, { kind: 'checklist', mode: look, line1: og[`${tool}Line1`], line2: og[`${tool}Line2`], line3: og[`${tool}Pill`], url }, assets);
     out[`og/${tool}.png`] = c.toDataURL('image/png');
     c = canvas();
-    drawOG(c, { kind: 'checklist', logo: enLogo, mode: 'stock', line1: ogEn[`${tool}Line1`], line2: ogEn[`${tool}Line2`], line3: ogEn[`${tool}Pill`], url }, assets);
+    drawOG(c, { kind: 'checklist', logo: enLogo, mode: look, line1: ogEn[`${tool}Line1`], line2: ogEn[`${tool}Line2`], line3: ogEn[`${tool}Pill`], url }, assets);
     out[`og/en/${tool}.png`] = c.toDataURL('image/png');
   }
 

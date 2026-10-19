@@ -51,6 +51,14 @@ Tools first and the guides (v1.9.0):
 - **The Function** accepts two more events, `guide_open` and `print` (both allowlists, `functions/api/e.js` and `public/js/analytics.js`).
 - **The start screen's Thai text** in `public/index.html` is now written by the build from `strings.json`, so `index.html` changes in the same commit as a string edit; that is expected.
 
+The calculators (v1.10.0):
+
+- **New pages, static and generated** (never edit them by hand): `public/fridge.html` and `public/air.html` (served as `/fridge` and `/air`) and their `/en/` twins. The sitemap lists 28 addresses. `fridge` and `air` are reserved names, so no hazard slug can take them.
+- **New images, committed** (from `npm run images`): `og/fridge.png`, `og/air.png` and their `og/en/` twins. To re-render only these: `SITE_URL=https://baanrodmai.autobahn.bot npm run images -- --only og/fridge,og/en/fridge,og/air,og/en/air`.
+- **No new static files to serve:** the calculators live in `kit.js`, `kitplan.js` and `kit.json`, which were already precached (still 44 files), so they work offline after one visit.
+- **The Function** accepts two more events, `tool_open` and `tool_share` (both allowlists, `functions/api/e.js` and `public/js/analytics.js`). Neither carries a value; no reading, time or answer reaches Cloudflare.
+- **Two more app shortcuts** in `public/manifest.webmanifest` (five in all): the fridge → `/?open=fridge&source=pwa` and dust today → `/?open=air&source=pwa`. Static, nothing to set in Cloudflare; an installed app may keep its old shortcuts until the browser updates it **[unverified]**.
+
 ## Option A: Git integration (recommended: every content edit deploys itself)
 
 1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**.
@@ -117,7 +125,7 @@ Any static server also works (`npx serve public`), apart from the `/c/p8` pretty
 
 | Piece | Free-plan cost |
 |---|---|
-| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn`, the hazard pages, `/kit`, `/plan` and `/posts`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
+| Pages, images, link-preview pages `/c/*` and `/checklist/*`, `/learn`, the hazard pages, `/kit`, `/plan`, `/fridge`, `/air` and `/posts`, and their English twins under `/en/` | **Static: unlimited and free.** `_routes.json` keeps every path except `/api/*` from invoking a Function. |
 | `/api/e` event counter | 1 Function request per page session (events are batched and sent with `sendBeacon` when the page is hidden). Shares the 100,000 requests/day quota. |
 | Workers Analytics Engine | 100,000 data points/day written free. Each event is one data point. |
 | Cloudflare Web Analytics | Free, cookieless. |
@@ -137,7 +145,7 @@ The reasons:
 
 1. **CPU limit.** Workers Free allows **10 ms CPU** per request. Rendering a PNG with Thai text (satori/resvg) takes far longer, and the needed WASM is several MB.
 2. **Quota.** A viral challenge link served by a Function counts against the **100,000/day** Functions quota. Past that it would fail (or, with fail-open, lose its preview). Static pages are unlimited.
-3. **The set is small and fixed:** 5 modes × 11 scores, plus the default and five checklists, in two languages: 122 images (61 Thai, 61 English) and 121 generated pages (v1.7.0). v1.9.0 added four guides' previews and `/kit` and `/plan`'s, in both languages (12 more previews), and 8 checklist pages: 129 generated pages. Pre-rendering costs nothing and the previews are cached and instant.
+3. **The set is small and fixed:** 5 modes × 11 scores, plus the default and five checklists, in two languages: 122 images (61 Thai, 61 English) and 121 generated pages (v1.7.0). v1.9.0 added four guides' previews and `/kit` and `/plan`'s, in both languages (12 more previews), and 8 checklist pages: 129 generated pages. v1.10.0 added `/fridge` and `/air`'s previews in both languages (4 more). Pre-rendering costs nothing and the previews are cached and instant.
 
 If you later move to Workers Paid and want per-player text (for example a nickname, which would need a privacy review), a Function can rewrite the same tags with `HTMLRewriter`.
 

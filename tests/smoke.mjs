@@ -39,6 +39,7 @@ const CHECKLISTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/content/ch
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain' };
 let beacons = 0;
 const events = []; // every [name, mode, label, value, lang] the pages sent
+const h1 = (html) => (/<h1>([\s\S]*?)<\/h1>/.exec(html)?.[1] || '').replace(/<[^>]+>/g, ''); // the text, without the kept-word spans
 const sent = []; // every raw body posted to /api/e, to prove what never leaves the device
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
@@ -687,7 +688,7 @@ try {
     const llms = await (await fetch(`${BASE}/llms.txt`)).text();
     check('/learn, sitemap.xml and llms.txt link every hazard page', hz.every((h) => learn.includes(`href="/${h.slug}"`) && sitemap.includes(`${site}/${h.slug}</loc>`) && sitemap.includes(`${site}/en/${h.slug}</loc>`) && llms.includes(`${site}/${h.slug} `)));
     const tools = [...new Set(hz.flatMap((h) => h.tools))];
-    check('/learn and llms.txt link the home check and the plan card', tools.length === 2 && tools.every((tool) => learn.includes(`href="/?open=${tool}"`) && llms.includes(`${site}/?open=${tool}`)), tools.join(', '));
+    check('/learn and llms.txt link every tool (the home check, the plan card, the fridge, dust today)', tools.length === 4 && tools.every((tool) => learn.includes(`href="/?open=${tool}"`) && llms.includes(`${site}/?open=${tool}`)), tools.join(', '));
 
     // The smallest phone: every control is 44 px, and a hazard page's first line
     // (and the helplines above it) are on the first screen, before any game button.
@@ -772,6 +773,16 @@ try {
     check('home check: answers and ticks are kept on the device', kept.people === 4 && kept.have.includes('water') && kept.flags.includes('meds'), JSON.stringify(kept));
     const smallL = await smallControls(page);
     check('home check controls >= 44 px (questions and list)', !smallQ.length && !smallL.length, [...smallQ, ...smallL].join(', '));
+    // v1.10.0: "how many days will the pills last?" under the medicine line.
+    await page.click('#med-calc summary');
+    await page.fill('#med-left', '10');
+    await page.fill('#med-day', '2');
+    const pills = (await page.textContent('#med-out')).trim();
+    await page.fill('#med-left', '14');
+    const pillsOk = (await page.textContent('#med-out')).trim();
+    const medKept = await page.evaluate(() => Object.keys(localStorage).filter((k) => localStorage.getItem(k).includes('"10"') || /med-left/.test(k)));
+    check('pills: 10 left at 2 a day last 5 days and need 4 more for 7; 14 is enough; nothing typed is kept',
+      pills === KIT.ui.th.medShort.replace('{days}', 5).replace('{target}', 7).replace('{need}', 4) && pillsOk === KIT.ui.th.medEnough.replace('{days}', 7).replace('{target}', 7) && !medKept.length, `${pills} | ${pillsOk}`);
     await page.click('#kit-share');
     await page.waitForFunction(() => document.querySelector('#kit-img')?.naturalWidth === 1080, null, { timeout: 15000 });
     const lineOk = await page.evaluate(() => document.querySelector('[data-k="line"]').getBoundingClientRect().bottom <= innerHeight);
@@ -801,6 +812,87 @@ try {
     await ctx.close();
   }
 
+  // 11b. The fridge in a power cut (v1.10.0): how long each part keeps, live,
+  // from the time the power went off; the time stays on the device.
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    const start = await page.evaluate(() => Date.now() - 3.5 * 3600e3 + 20e3); // 20 s to spare for the minutes
+    await page.addInitScript((st) => localStorage.setItem('brm:fridge', JSON.stringify({ start: st, freezer: 'full', med: true })), start);
+    await page.goto(`${BASE}/?open=fridge&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#fr-list .fr-row');
+    const rows = () => page.$$eval('#fr-list .fr-row', (els) => els.map((e) => ({ s: e.querySelector('.fr-status').className.replace('fr-status ', ''), t: e.querySelector('.fr-status').textContent })));
+    const r1 = await rows();
+    check('fridge: 3 h 30 min off → the fridge has about 30 min (soon), a full freezer 44 h 30 min, cold medicine 20 h 30 min',
+      r1.length === 3 && r1[0].s === 'is-soon' && /30 นาที/.test(r1[0].t) && r1[1].s === 'is-ok' && /44 ชม\. 30 นาที/.test(r1[1].t) && /20 ชม\. 30 นาที/.test(r1[2].t), JSON.stringify(r1));
+    const firstRow = await page.evaluate(() => document.querySelector('#fr-list').getBoundingClientRect().top < innerHeight - 80);
+    check('fridge: the answer starts on the first screen (360x640)', firstRow);
+    await page.click('#fr-plus'); // 4 h
+    await page.click('.kit-flag:has(input[value="half"])');
+    const r2 = await rows();
+    check('fridge: + adds an hour (4 h 30 min): the fridge food is out (meat, fish, eggs, milk, leftovers); half a freezer has 19 h 30 min of its 24 h',
+      r2[0].s === 'is-over' && r2[0].t.includes(KIT.fridge.parts[0].over.th.replace('{h}', 4)) && /19 ชม\. 30 นาที/.test(r2[1].t) && (await page.textContent('#fr-h')).trim() === '4 ชม. 30 นาที', JSON.stringify(r2));
+    const kept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:fridge')));
+    check('fridge: the start time and answers are kept on the device', kept.freezer === 'half' && kept.med === true && Math.abs(kept.start - (start - 3600e3)) < 120e3, JSON.stringify(kept));
+    const smallF = await smallControls(page);
+    check('fridge controls >= 44 px', !smallF.length, smallF.join(', '));
+    await page.click('[data-t="copy"]');
+    await page.click('#fr-close');
+    const chip = (await page.textContent('#fridge-chip')).trim();
+    check('fridge: the start screen says how long the power has been off', chip === STR.th.hubFridgeRunning.replace('{h}', 4), chip);
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(500);
+    const names = new Set(events.map((e) => e[0]));
+    const leaked = sent.filter((b) => b.includes(String(kept.start).slice(0, 7)));
+    check('fridge: only counts are sent (tool_open, tool_share), never the time', names.has('tool_open') && names.has('tool_share') && !leaked.length, [...names].join(', '));
+    check('no page errors (fridge)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+    const html = await (await fetch(`${BASE}/fridge`)).text();
+    const en = await (await fetch(`${BASE}/en/fridge`)).text();
+    check('/fridge and /en/fridge: their own pages, every part and its source, a button that opens the tool',
+      h1(html) === STR.seo.th.fridgePageH1 && h1(en) === STR.seo.en.fridgePageH1 && (html.match(/<li><b>/g) || []).length >= 6 && html.includes('href="/?open=fridge"') && en.includes('href="/en/?open=fridge"') && html.includes('cdc.gov'), '');
+  }
+
+  // 11c. Dust today (v1.10.0): a reading or a colour → the PCD's level and what
+  // everyone, the people at risk and people with a long-term illness do.
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.addInitScript(() => localStorage.setItem('brm:kit', JSON.stringify({ people: 3, flags: ['baby', 'meds'], have: [], answered: true })));
+    await page.goto(`${BASE}/?open=air&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#air-v');
+    const pre = await page.$$eval('.kit-flags:not(.air-units) input:checked', (xs) => xs.map((x) => x.value));
+    check('dust: who is at home starts from the home check (a small child, daily medicine)', pre.join() === 'kids,chronic', pre.join());
+    const out = () => page.evaluate(() => ({ text: document.querySelector('#air-out').innerText, lists: document.querySelectorAll('#air-out .air-list').length }));
+    await page.fill('#air-v', '82.4');
+    let o = await out();
+    const A = KIT.air;
+    check('dust: 82.4 µg/m³ is red: no outdoor activities, a dust-free room (said to be the DOH), and lines for a long-term illness',
+      o.text.includes(A.levels[4].label.th) && o.text.includes(A.levels[4].all[0].th) && /ห้องปลอดฝุ่น \(กรมอนามัย\)/.test(o.text) && o.text.includes(A.levels[4].chronic[0].th), o.text.slice(0, 120));
+    await page.click('.air-units .kit-flag:has(input[value="aqi"])');
+    await page.fill('#air-v', '137');
+    o = await out();
+    check("dust: Thailand's AQI 137 is orange, with the at-risk lines for young children", o.text.includes(A.levels[3].label.th) && o.text.includes(A.levels[3].risk[1].th) && o.text.includes('เด็กเล็ก'), o.text.slice(0, 120));
+    await page.click('.air-colour:has(input[value="yellow"])');
+    for (const id of ['kids', 'chronic']) await page.click(`.kit-flags:not(.air-units) .kit-flag:has(input[value="${id}"])`);
+    o = await out();
+    check('dust: picking yellow clears the number; with no one at risk, a hint says who needs more care', o.text.includes(A.levels[2].label.th) && (await page.inputValue('#air-v')) === '' && o.text.includes(KIT.ui.th.airRiskHint.slice(0, 12)) && o.lists === 1, o.text.slice(0, 160));
+    const small = await smallControls(page);
+    check('dust controls >= 44 px', !small.length, small.join(', '));
+    await page.click('[data-t="copy"]');
+    const kept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:air')));
+    check('dust: who is at home and the kind of number are kept on the device, the reading is not', kept.unit === 'aqi' && Array.isArray(kept.groups) && !('value' in kept), JSON.stringify(kept));
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(500);
+    const toolEv = events.filter((e) => /^tool_/.test(e[0]) && e[1] === 'air');
+    check('dust: only counts are sent (tool_open, tool_share), never the reading', toolEv.some((e) => e[0] === 'tool_open') && toolEv.some((e) => e[0] === 'tool_share') && toolEv.every((e) => !e[3]) && !sent.some((b) => b.includes('82.4')), JSON.stringify(toolEv));
+    check('no page errors (dust)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+    const html = await (await fetch(`${BASE}/air`)).text();
+    const en = await (await fetch(`${BASE}/en/air`)).text();
+    const pm = await (await fetch(`${BASE}/pm25`)).text();
+    check('/air and /en/air: the five colours with their bands and sources; /pm25 links the tool',
+      h1(html) === STR.seo.th.airPageH1 && h1(en) === STR.seo.en.airPageH1 && (html.match(/class="dot"/g) || []).length === 5 && html.includes('37.6–75.0') && html.includes('ratchakitcha.soc.go.th') && en.includes('href="/en/?open=air"') && pm.includes('/?open=air'), '');
+  }
+
   // 12. Tools first (v1.9.0): what to do for any hazard, what to keep and the
   // family plan on the first screen, the game below; the owner's alert puts one
   // guide on top until its end date; any guide prints as a plain A4 list.
@@ -813,7 +905,8 @@ try {
         alert: !document.querySelector('#alert-card').hidden,
         alertText: document.querySelector('#alert-card').textContent,
       }));
-      check(`${w}x${h}: "what to do", "check your supplies" and "family plan" are on the first screen`, pos.hub.length === 3 && pos.hub.every((b) => b <= h), pos.hub.map(Math.round).join(','));
+      // v1.10.0: two calculators follow (the fridge in a power cut, dust today), 2 × 2 with the first two tools.
+      check(`${w}x${h}: "what to do", "check your supplies" and "family plan" are on the first screen; the fridge and dust tools follow`, pos.hub.length === 5 && pos.hub.slice(0, 3).every((b) => b <= h), pos.hub.map(Math.round).join(','));
       if (w === 360) check(`${SMOKE_DATE}: the alert card ${ALERT ? `shows ${ALERT}` : 'is hidden'} (config.alert, until its end date)`, pos.alert === !!ALERT && (!ALERT || pos.alertText.includes(STR.th[`guide${capM(ALERT)}`])), pos.alertText.trim());
       await ctx.close();
     }

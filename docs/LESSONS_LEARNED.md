@@ -551,3 +551,39 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the build makes the English start page's JSON-LD by copying the Thai `@graph` and changing two nodes by their place in the list (`[0]` the website, `[1]` the game). v1.9.2 inserted the publisher at `[1]`, so on `/en/` the publisher got the game's English description and addresses, and the game kept the Thai ones. Nothing failed: the JSON was valid and the page looked the same. It was found in our own review of the built pages, before release ([KNOWN_ISSUES F91](KNOWN_ISSUES.md#in-v192-19-oct-2026)).
 - *Do this:* when code changes an item in a list it didn't just build (graph nodes, config entries, table rows), find it by its id (`@id`, `id`), not its index; and after inserting into a shared structure, search for every place that reads it by position. Check generated output, not only that it parses.
 - *Encoded in:* `tools/build.mjs` (the English game node found by `@id`); the unit test "structured data: one publisher, and each start page describes the app in its own language".
+
+**A7. A number without its unit is two different answers.**
+
+- *What happened:* dust today (v1.10.0) takes a reading from whatever app a family uses. Some apps show PM2.5 in µg/m³, others an AQI number, and the same figure lands in different colours: on Thailand's scale AQI 152 is orange and 152 µg/m³ is red. A tool that guessed the unit would have been wrong for half its users, in either direction, and the US AQI that many weather apps show is a third scale.
+- *Do this:* ask which kind of number it is, in words people see in their app ("PM2.5 (มคก./ลบ.ม.)" / "AQI ของไทย"), remember the answer, and name the scale on the result. Say what the bands are defined on (here the 24-hour average), send people with a foreign scale to the figure that has no ambiguity (PM2.5), and offer a way in that needs no number at all (the colour the app shows).
+- *Encoded in:* `kit.json → air.units`, `openAir()` in `kit.js`; [GUIDELINES rule 79](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); [KNOWN_ISSUES #75](KNOWN_ISSUES.md#75-the-dust-colours-are-for-the-24-hour-average-apps-often-show-hourly-readings).
+
+**B13. For anything about safety, round so that the answer never looks safer.**
+
+- *What happened:* the fridge tool (v1.10.0) shows how long the power has been off and how long the food has left. Rounded to the nearest minute both ways, a fridge with 29 min 40 s left would read "30 min", and a cut of 3 h 30 min 20 s would read "3 h 30 min": each a little kinder than the truth, and always on the same side.
+- *Do this:* round every safety figure towards caution: time that has passed rounds up, time that is left rounds down, a pill split in two counts as a whole one needed, a reading on a band edge goes to the band the source's own rounding rule gives (the PCD notice: one decimal, half up). Write the direction next to the code, and test the edges (15.04 and 15.05 µg/m³; 3 h 30 min 20 s).
+- *Encoded in:* `span()` in `kit.js`, `medDays()` and `airLevel()` in `kitplan.js`; [GUIDELINES rule 78](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); the unit tests of v1.10.0.
+
+**B14. Two official sources can disagree: decide which is the main text, and say whose each line is.**
+
+- *What happened:* for dust today, the PCD's notice in the Royal Gazette and the DOH's statement of the same year give the same five PM2.5 bands but different advice: at yellow the PCD tells everyone to spend less time on hard outdoor activity, the DOH to avoid outdoor activity; at red the PCD sends people with a chronic illness to a safe room, the DOH everyone. Both are Thai agencies and both are current, so "leave it out" (B2) would have left the tool with nothing to say ([KNOWN_ISSUES #76](KNOWN_ISSUES.md#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red)).
+- *Do this:* pick a main text for a reason you can write down (the legal notice, the one Air4Thai follows, which separates the general public from people at risk); add the other agency's lines only where they add something, and name the agency on each such line, on screen and on the page; record the difference and the choice where a reviewer will find it. Numbers that differ still stay out (B2); wording that differs gets an owner.
+- *Encoded in:* `kit.json → air.levels` (the DOH's two lines cite `doh-aqi-2566` and show "(กรมอนามัย)"); [GUIDELINES rule 81](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); [KNOWLEDGE §32.3](KNOWLEDGE.md#323-dust-today).
+
+**C23. `Math.round` on a half hour jumps a whole step.**
+
+- *What happened:* the fridge tool's + button (v1.10.0) first rounded the time off to the nearest hour and added one. From 3 h 30 min, `Math.round(3.5) + 1` gave 5 h, so one tap skipped the hour in which the fridge's 4 hours run out, and the half hour already counted was lost. It was found in testing, never live ([KNOWN_ISSUES F92](KNOWN_ISSUES.md#in-v1100-19-oct-2026)).
+- *Do this:* a control that steps a value adds exactly its step to the value shown (3 h 30 min → 4 h 30 min), and clamps at the ends. Rounding is for display, and in the safe direction (B13), never inside the value. Test a stepper from a value between steps, not only from a whole one.
+- *Encoded in:* `shift()` in `openFridge()` (`kit.js`); the smoke check "fridge: + adds an hour (4 h 30 min): …", which starts at 3 h 30 min.
+
+**D21. Cross-check a calculator with an independent computation, not with its own function.**
+
+- *What happened:* the unit tests of v1.10.0 call `airLevel()` and `fridgePlan()` and compare them with expected values, but a test written from the same reading of the source as the code shares its mistakes. So a scratch script was written apart from `kitplan.js`, from the sources alone (its own table of bands, its own rounding, its own hours), and compared with the app's answers: 35 of 35 dust readings (25 in µg/m³ on both sides of every edge, such as 15.04, 15.05, 37.55 and 75.05, and 10 AQI values) and 8 of 8 fridge times (0.5 to 48.5 h) agreed.
+- *Do this:* for anything that turns numbers into advice, write the check from the source, not from the code: another table, another rounding, ideally another person or agent. Choose inputs on both sides of every edge and at the rounding points, and count the agreements. Keep the cases that matter as unit tests.
+- *Encoded in:* the unit test "dust today: the PCD bands to the decimal, AQI too, and who gets which lines (v1.10.0)" (the edges, to the decimal); [GUIDELINES rule 78](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); [KNOWLEDGE §32.7](KNOWLEDGE.md#327-checks-tests-a-visitor-walk-and-an-independent-cross-check). The script itself was a one-off.
+
+**D22. A screenshot taken during an animation looks like a broken overlay.**
+
+- *What happened:* in the visitor walk of v1.10.0 one screenshot showed a calculator's sheet half see-through over the start screen, as if the overlay were broken. It had been taken while the sheet was still sliding and fading in (`sheet-in`, 0.22 s); taken after the animation, the same sheet was fine. The same timing had already made a size check fail once (D13).
+- *Do this:* before judging a screenshot, wait for the element's animations to end (`element.getAnimations()`, then their `finished`), or turn motion off for the capture (`prefers-reduced-motion`). If a screenshot looks broken, take it again after the animation before calling it a bug.
+- *Encoded in:* this lesson and [D13](#d-testing-and-verification); the walk's captures in [KNOWLEDGE §32.7](KNOWLEDGE.md#327-checks-tests-a-visitor-walk-and-an-independent-cross-check).

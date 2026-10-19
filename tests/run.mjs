@@ -12,7 +12,7 @@ import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, setGuides, propFor, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
-import { kitPlan, kitScore, kitMissing } from '../public/js/kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, medDays, airLevel, airAdvice } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -527,6 +527,66 @@ test('security headers: no framing by other sites, no plugins, no foreign base o
   for (const d of ["frame-ancestors 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'self'"]) assert.ok(all.includes(d), d);
   assert.ok(/X-Frame-Options: SAMEORIGIN/.test(all));
   assert.ok(!/script-src/.test(all), 'script-src would block the scripts Cloudflare injects (Web Analytics, bot detection)');
+});
+
+test('power cut: the fridge keeps 4 h, a full freezer 48 h, a half one 24 h, cold medicine a day (v1.10.0)', () => {
+  const F = load('kit').fridge;
+  const at = (hours, o = {}) => Object.fromEntries(fridgePlan(F, { hours, ...o }).map((x) => [x.id, x]));
+  let p = at(0);
+  assert.deepEqual(Object.keys(p), ['fridge', 'freezer'], 'no medicine row unless there is cold medicine');
+  assert.equal(p.fridge.left, 4);
+  assert.equal(p.freezer.left, 48);
+  p = at(3.5);
+  assert.equal(p.fridge.status, 'soon');
+  assert.equal(p.fridge.left, 0.5);
+  p = at(4);
+  assert.equal(p.fridge.status, 'over', 'at 4 hours the fridge food is out');
+  assert.equal(p.freezer.status, 'ok');
+  p = at(30, { freezer: 'half', med: true });
+  assert.equal(p.freezer.status, 'over');
+  assert.equal(p.med.status, 'over');
+  assert.equal(at(30, { freezer: 'full' }).freezer.left, 18);
+  assert.equal(at(23, { med: true }).med.status, 'soon');
+  assert.equal(at(-5).fridge.left, 4, 'a time in the future counts as just now');
+  assert.equal(at(0, { freezer: 'nonsense' }).freezer.limit, 48, 'an unknown freezer answer falls back to the first option');
+  // Every figure is in its source's own words (the build checks it too).
+  const sources = load('sources').sources || load('sources');
+  for (const part of F.parts) {
+    const said = part.sources.map((id) => `${sources[id].title} ${sources[id].note}`).join(' ');
+    for (const v of [part.hours, ...Object.values(part.hoursBy || {})].filter(Boolean)) assert.ok(new RegExp(`\\b${v} hours`).test(said), `${part.id}: ${v} hours`);
+    assert.equal(part.verify, 'partial', `${part.id}: international guidance stays partial`);
+  }
+});
+
+test('medicine: days the pills last and how many more make the home check\'s target (v1.10.0)', () => {
+  const target = load('kit').items.find((x) => x.id === 'meds').qty.days;
+  assert.equal(target, 7);
+  assert.deepEqual(medDays({ left: 10, perDay: 2, target }), { days: 5, need: 4, enough: false });
+  assert.deepEqual(medDays({ left: 14, perDay: 2, target }), { days: 7, need: 0, enough: true });
+  assert.deepEqual(medDays({ left: '3', perDay: '0.5', target }), { days: 6, need: 1, enough: false }, 'half a pill a day; a part pill counts as one');
+  assert.equal(medDays({ left: 5, perDay: 0, target }), null);
+  assert.equal(medDays({ left: -1, perDay: 1, target }), null);
+  assert.equal(medDays({ left: 'abc', perDay: 1, target }), null);
+});
+
+test('dust today: the PCD bands to the decimal, AQI too, and who gets which lines (v1.10.0)', () => {
+  const A = load('kit').air;
+  const lv = (unit, value) => airLevel(A, { unit, value })?.id ?? null;
+  // The Royal Gazette notice: 0–15.0, 15.1–25.0, 25.1–37.5, 37.6–75.0, 75.1+ µg/m³ (24-hour average, one decimal).
+  for (const [v, id] of [[0, 'blue'], [15, 'blue'], [15.04, 'blue'], [15.05, 'green'], [15.1, 'green'], [25, 'green'], [25.1, 'yellow'], [37.5, 'yellow'], [37.6, 'orange'], [75, 'orange'], [75.1, 'red'], [500, 'red'], ['82,4', 'red']]) assert.equal(lv('pm', v), id, `${v} µg/m³`);
+  for (const [v, id] of [[25, 'blue'], [26, 'green'], [50, 'green'], [51, 'yellow'], [100, 'yellow'], [101, 'orange'], [200, 'orange'], [201, 'red']]) assert.equal(lv('aqi', v), id, `AQI ${v}`);
+  for (const bad of [-1, 'abc', '', null, 1000]) assert.equal(lv('pm', bad), null, `nothing for ${bad}`);
+  assert.equal(airLevel(A, { colour: 'orange', value: 3 }).id, 'orange', 'a picked colour wins over a number');
+  const alone = airAdvice(A, { unit: 'pm', value: 50 }, []);
+  assert.ok(alone.all.length && !alone.risk.length && !alone.chronic.length, 'no one at risk: the lines for everyone only');
+  const kids = airAdvice(A, { unit: 'pm', value: 50 }, ['kids']);
+  assert.ok(kids.risk.length && !kids.chronic.length);
+  const ill = airAdvice(A, { unit: 'pm', value: 90 }, ['chronic']);
+  assert.ok(ill.chronic.length && ill.who[0].id === 'chronic', 'red: the long-term illness lines');
+  // Every line has a source; a line from the DOH says so (the PCD notice is the rest).
+  const sources = load('sources').sources;
+  for (const l of A.levels) for (const x of [...l.all, ...l.risk, ...l.chronic]) assert.ok(x.sources.length && x.sources.every((id) => sources[id]), `${l.id}: ${x.th}`);
+  assert.deepEqual(A.groups.filter((g) => g.from).map((g) => g.from).sort(), ['baby', 'elder', 'meds'], 'who is at home starts from the home check');
 });
 
 test('structured data: one publisher, and each start page describes the app in its own language', () => {

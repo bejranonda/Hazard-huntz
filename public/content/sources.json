@@ -797,6 +797,30 @@
       "date": "2026-07-20",
       "kind": "international",
       "note": "Read on 18 Oct 2026 (the old extreme-heat/signs-symptoms address redirects here). Higher risk: people 65 or older, infants and young children, pregnant women, people with heart disease or other chronic conditions, people with asthma, outdoor workers; check on people who live alone. \"Drink plenty of fluids\"; consider limiting sugary drinks, caffeine and alcohol. Use fans indoors only below 90 °F (a threshold that differs from WHO's; left out). Used as a cross-check only."
+    },
+    "pcd-aqi-2566": {
+      "agency": "กรมควบคุมมลพิษ",
+      "title": "ประกาศกรมควบคุมมลพิษ เรื่อง ดัชนีคุณภาพอากาศของประเทศไทย พ.ศ. 2566 — PM2.5 ค่าเฉลี่ย 24 ชั่วโมง ฟ้า 0–15.0 เขียว 15.1–25.0 เหลือง 25.1–37.5 ส้ม 37.6–75.0 แดง 75.1 ขึ้นไป มคก./ลบ.ม. พร้อมข้อควรปฏิบัติของประชาชนทั่วไปและกลุ่มเสี่ยง",
+      "url": "https://ratchakitcha.soc.go.th/documents/140D157S0000000000300.pdf",
+      "date": "2023-07-03",
+      "kind": "official",
+      "note": "Read on 19 Oct 2026: the Royal Gazette (vol. 140, special part 157 ง, pp. 3–6), signed 16 May 2023 by the PCD Director-General, published 3 Jul 2023; replaces the 2018 AQI notice. PM2.5 is the continuous 24-hour average in µg/m³ to one decimal place. Table 2: blue (very good) 0–15.0, green (good) 15.1–25.0, yellow (moderate) 25.1–37.5, orange (starting to affect health) 37.6–75.0, red (affects health) 75.1 and over; AQI 0–25, 26–50, 51–100, 101–200, 201 and over; AQI 100 equals the standard. At-risk people: older people over 60, young children up to 5, pregnant women, people with heart and blood-vessel or respiratory disease. Table 1, what to do: blue, everyone as normal; green, general public outdoor activities as normal, at-risk people watch for unusual symptoms (frequent cough, hard or fast breathing, wheeze, chest tightness or pain, palpitations, nausea, unusual tiredness, dizziness); yellow, general public spend less time on strenuous outdoor activity or exercise, at-risk people wear a PM2.5 mask every time they go outside, spend less time on strenuous outdoor activity and see a doctor promptly with symptoms; orange, general public wear a PM2.5 mask every time they go outside, limit strenuous outdoor activity and watch for symptoms such as cough, hard breathing or sore eyes, at-risk people wear a mask every time they go outside, avoid strenuous outdoor activity, follow their doctor's advice and see a doctor promptly with symptoms; red, everyone stop outdoor activities, wear a PM2.5 mask whenever they must be outdoors, see a doctor promptly with symptoms, and people with a chronic illness stay in an air-pollution safe area with their medicine and equipment ready and follow their doctor's advice strictly. The Gazette's text drops the vowel sara am when extracted; Thai PBS 5 Jul 2023 prints the same table intact."
+    },
+    "pcd-aqi-thaipbs-2566": {
+      "agency": "กรมควบคุมมลพิษ",
+      "title": "เช็กด่วน! ประกาศใหม่ AQI คุณภาพอากาศคุมเข้ม PM2.5 (ไทยพีบีเอส อ้างอธิบดีกรมควบคุมมลพิษ)",
+      "url": "https://www.thaipbs.or.th/news/content/329386",
+      "date": "2023-07-05",
+      "kind": "secondary",
+      "note": "Read on 19 Oct 2026 (Thai PBS quoting PCD Director-General Pinsak Suraswadi). The 24-hour PM2.5 standard is 37.5 µg/m³ since 1 Jun 2023 (formerly 50). The new bands: blue 0–15, green 15–25 (the Gazette says 15.1), yellow 25.1–37.5, orange 37.6–75, red 75.1 and over µg/m³. Prints the notice's advice for the general public and at-risk groups word for word (one typo, กำจัด for จำกัด)."
+    },
+    "doh-aqi-2566": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัยแนะวิธีป้องกันตนเองตามระดับสีค่าฝุ่น PM2.5 (MGR Online อ้างรองอธิบดีกรมอนามัย)",
+      "url": "https://mgronline.com/qol/detail/9660000094860",
+      "date": "2023-10-21",
+      "kind": "secondary",
+      "note": "Read on 19 Oct 2026 (MGR Online quoting DOH Deputy Director-General Dr Atthaphon Kaewsamrit; InfoQuest carries the same statement). The standard went from 50 to 37.5 µg/m³; the same five bands as the PCD (blue 0–15, green 15.1–25, yellow 25.1–37.5, orange 37.6–75, red 75.1 and over). Advice: orange, the general public cut outdoor activity and wear a dust mask outdoors, at-risk people spend less time outdoors, wear a mask and see a doctor promptly with symptoms, and people with a chronic illness have their medicine and equipment ready; red, everyone stops outdoor activities, stays in a dust-free room, wears a dust mask whenever outdoors and sees a doctor promptly with symptoms. At green and yellow the DOH is stricter than the PCD notice; the app uses the PCD's lines there."
     }
   }
 }

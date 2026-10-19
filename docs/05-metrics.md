@@ -27,10 +27,12 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0), or a hazard page from a guide's "📖" (v1.9.0) | – | the topic (e.g. `health`), `book`, or the guide's id (e.g. `quake`) | – |
-| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
+| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) / `fridge` (the fridge tool's "🎒 เช็กของจำเป็นสำหรับไฟดับ", v1.10.0) | – |
 | `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 (%) |
 | `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
 | `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
+| `tool_open` (v1.10.0) | A calculator opened: the fridge in a power cut or dust today | `fridge` / `air` | `start` (the hub's tile) / `link` (`/?open=fridge` or `/?open=air`, from a post, a page, `/learn`, `llms.txt` or the app's shortcut) / `result` (after a power-cut or dust round) / `guide` (a guide's "เตรียมบ้านต่อ") | – |
+| `tool_share` (v1.10.0) | A channel tapped under "📤 ส่งให้คนที่บ้าน" in a calculator | `fridge` / `air` | `native` / `line` / `copy` | – |
 
 ## The numbers you asked for
 
@@ -218,6 +220,35 @@ Share rate of a guide = its `checklist_save` row ÷ its `checklist_open` row (bo
 - **More after the result.** Back on the result now goes to the start screen instead of leaving, so `mode_select`, `guide_open`, `kit_open` and `plan_open` after a round may rise.
 - **Tablets.** The app stays a phone column on a tablet, by design ([KNOWN_ISSUES #71](KNOWN_ISSUES.md#71-on-a-tablet-the-app-is-a-narrow-column)). Web Analytics' device split shows whether tablets matter; if they do, revisit it. **[unverified]** until the dashboard shows data.
 
+## Calculators (v1.10.0)
+
+Two new events, `tool_open` and `tool_share`, for the fridge in a power cut and dust today ([KNOWLEDGE §32.5](KNOWLEDGE.md#325-integration)). The mode is the tool (`fridge` or `air`); the label is where it was opened from, or the share channel; there is **no value**. No reading, no time without power, no freezer answer, no tick of who is at home and no count of people is ever sent; two smoke checks read every `/api/e` body for the reading (82.4) and the time to prove it. The pills calculator in the home check sends nothing of its own.
+
+- **Which tool, from where:** `tool_open` by mode and label. `start` is the hub's tile, `link` a `/?open=fridge` or `/?open=air` link (a post, a button on `/fridge`, `/air`, `/ready`, `/storm` or `/pm25`, `/learn`, `llms.txt` or the app's shortcut), `result` the button after a power-cut or dust round, `guide` a guide's "เตรียมบ้านต่อ".
+- **Is it sent to the family?** `tool_share` ÷ `tool_open`, per tool. Each channel tapped counts once (`native`, `line`, `copy`), so one person who taps LINE and then Copy counts twice: share actions, not people.
+- **When people need them.** `tool_open` for `fridge` per day should rise with power cuts and storms, and `air` from December. Compare with the news of the day: these are the moments to post `/fridge` and `/air` ([04-launch-kit](04-launch-kit.md#the-fridge-and-dust-today-v1100)).
+- **From the fridge to the home check.** The fridge's "🎒 เช็กของจำเป็นสำหรับไฟดับ" sends `kit_open` with the label `fridge`.
+- **The new tiles' place.** On the smallest phones the two tiles are below the first screen ([KNOWN_ISSUES #77](KNOWN_ISSUES.md#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones)); if `start` is near zero while `link` works, that is expected.
+- **Pages without script.** `/fridge` and `/air` show in Web Analytics by path once it is confirmed on **[unverified]**; their button arrives as `tool_open` with the label `link`.
+
+**Which calculator is opened, from where, and how often it is shared (last 7 days):**
+```sql
+SELECT blob1 AS event, blob2 AS tool, blob3 AS label, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 IN ('tool_open','tool_share') AND timestamp > NOW() - INTERVAL '7' DAY
+GROUP BY event, tool, label ORDER BY event, tool, n DESC
+```
+
+**The calculators per day, beside the other tools:**
+```sql
+SELECT toStartOfInterval(timestamp, INTERVAL '1' DAY) AS day, blob1 AS event, blob2 AS mode, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 IN ('tool_open','kit_open','plan_open','guide_open') AND timestamp > NOW() - INTERVAL '30' DAY
+GROUP BY day, event, mode ORDER BY day
+```
+
+Share rate of a calculator = its `tool_share` rows ÷ its `tool_open` rows, both counted per action, not per person. **[unverified]** on real data; no players yet.
+
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
@@ -245,5 +276,5 @@ GROUP BY label
 
 - **Free plan:** 100,000 data points written per day and 10,000 queries per day. Data is kept for 3 months.
 - **Quota math:** one session sends about 4–8 events in a single request. If you approach the limit, set `config.analytics.sampleRate` to `0.5` or `0.2`; the queries above stay correct.
-- **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers and the plan card's text stay in the player's own browser (`localStorage`).
-- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both, and so were `guide_open` and `print` (v1.9.0).
+- **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers, the plan card's text and the calculators' answers (when the power went off, who is at home; never the dust reading) stay in the player's own browser (`localStorage`).
+- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both, and so were `guide_open` and `print` (v1.9.0) and `tool_open` and `tool_share` (v1.10.0).

@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.9.2 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.10.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -72,8 +72,13 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 69 | [Kept Thai words are a hand-made list](#69-kept-thai-words-are-a-hand-made-list) | By design | Low |
 | 71 | [On a tablet the app is a narrow column](#71-on-a-tablet-the-app-is-a-narrow-column) | By design (v1.9.2) | — |
 | 73 | [English choice sheets still scroll on the smallest phones](#73-english-choice-sheets-still-scroll-on-the-smallest-phones) | Open | Low |
+| 74 | [The fridge hours rest on US guidance only](#74-the-fridge-hours-rest-on-us-guidance-only) | Owner | **Medium (review before posting `/fridge` widely)** |
+| 75 | [The dust colours are for the 24-hour average; apps often show hourly readings](#75-the-dust-colours-are-for-the-24-hour-average-apps-often-show-hourly-readings) | Owner (the note is by design) | Low |
+| 76 | [The PCD and the DOH advise differently at green, yellow and red](#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red) | By design (v1.10.0) | — |
+| 77 | [The fridge and dust tiles are below the first screen on the smallest phones](#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones) | By design (v1.10.0) | — |
+| 78 | [A heat-index calculator is not built](#78-a-heat-index-calculator-is-not-built) | Not built (needs the owner first) | — |
 
-Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)).
+Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)).
 
 ---
 
@@ -434,6 +439,8 @@ The home check's answers, ticks and score (`brm:kit`) and the plan card's text (
 - **Safari may delete it after a week without a visit.** WebKit caps script-written storage for sites the user hasn't interacted with in seven days of browser use; whether that applies here, and to LINE's in-app browser on iPhone, is **[unverified]**.
 - **Anyone holding the phone can open it.** The plan text is on the device in plain form, which is why the form warns against ID-card numbers and more personal data than needed, and caps each field at 40 characters (60 for medicine).
 
+**The calculators (v1.10.0)** keep their answers the same way: `brm:fridge` (when the power went off, the freezer answer, the cold-medicine tick) and `brm:air` (the kind of number and who is at home, never the reading). So a power cut counted in LINE's browser isn't counted in Chrome, and the other way round; a phone test should open `/fridge` from LINE, start the count, close LINE and open the link again (row 64 of [06-test-checklist.md](06-test-checklist.md)).
+
 **What families keep is the picture.** The plan card says "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน": the saved or forwarded image is the copy that lasts, and the household can make it again from any browser. Real-phone checks: rows 46–48 of [06-test-checklist.md](06-test-checklist.md).
 
 ### 42. A challenge link carries one score, and the combo never scores
@@ -497,6 +504,7 @@ The power-cut mode (v1.7.0) was prompted by a Thai stockpiling infographic, whic
 | `s-candle` | The US Fire Administration and Ready.gov only | ⚠️ |
 
 - **Why:** no Thai agency page on fridge food in a power cut, unplugging against surges, candles, a manual can opener or cold medicine was found. The international pages were read in full and quoted in each source's `note`. Each ⚠️ lesson's `verifyNote` says which part is international, and `/learn`, the hazard page and the carousel mark them as under review.
+- **The fridge calculator (v1.10.0)** uses the same CDC hours and Ready.gov's day for cold medicine, flagged the same way ([#74](#74-the-fridge-hours-rest-on-us-guidance-only)); a Thai source for one is a Thai source for both.
 - **What the game does with the numbers:** only the CDC's 4 hours drives play (`lostAfter: 4` on the fridge); the 48 hours keep the freezer safe through the 12-hour round. Numbers no agency shares are left out: the infographic's eating order, "check every 3–6 months" and the 7-day aim (Tokyo's alone).
 - **Written for other countries.** The US and Tokyo pages were written for their own homes and services. The lessons keep to general actions with no foreign numbers or laws, and whether they fit Thai homes is what the Thai review should confirm.
 - **What would make them Thai:** a person opening the PRD checklist page in a normal browser (3 L, the radio); MEA (กฟน.) or PEA (กฟภ.) advice on unplugging in a power cut; กรมอนามัย or อย. on fridge and freezer food; a Thai pharmacist or อย. on cold medicine; ปภ. wording on candles and on a can opener in a kit. Add the Thai source beside the international one and mark the lesson ✅ when it says the same. The steps are in [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
@@ -623,6 +631,8 @@ The carousel posts (v1.6.1) are 45 JPEG images in four sets (`flood` 12, `pm25` 
 
 If the check grows, measure it on its own (`gzip -9` of the files) rather than through the budget line.
 
+- **v1.10.0:** the calculators (the fridge, dust today, the pills) live in the same files, so they load and are precached the same way. `kit.js` is now 11.0 KB compressed and `kitplan.js` 1.9 KB, about 12.9 KB the budget counts as start-screen weight (253 KB in v1.10.0); `kit.json` is 9.1 KB ([KNOWLEDGE §32.9](KNOWLEDGE.md#329-budget-and-code)). If the calculators keep growing, give them a file of their own, loaded only when one opens.
+
 ### 60. The four new guides rest on news reports quoting the agencies
 
 **Status:** Owner · **Severity:** Medium: review before posting the guides widely
@@ -658,7 +668,7 @@ The start screen now puts the alert card and the three tools above the game. Mea
 `sources.json` holds each source's `note`: what was read and quoted, for reviewers, the build and docs/01. The game never shows a note, but `content.js` loads the whole file before the start screen. The 36 sources of v1.9.0 have long notes, so `sources.json` grew from 12.0 to 23.8 KB compressed; about 14 KB of it is notes (about 9.6 KB from the new ones). That is most of the start screen's growth from 209 to 232 KB (the rest: the guides in `checklists.json`, +4.1 KB; new strings, +4.2 KB; code and CSS, about +3 KB).
 
 - **The fix,** AI-ready: keep the notes out of what the client loads, for example in a second file the build, `npm run docs` and the tests read (or the build writes a slim `sources.json` without notes for `public/`), and let `content.js` load only `agency`, `title`, `url`, `date` and `kind` ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads)). Keep one file to edit by hand, so a source can't drift from its note.
-- **Not urgent:** 232 KB (240 KB in v1.9.1, with the hub's text, the guide sheet and the `keepTogether` list; 243 KB in v1.9.2) is far under the 500 KB limit. It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
+- **Not urgent:** 232 KB (240 KB in v1.9.1, with the hub's text, the guide sheet and the `keepTogether` list; 243 KB in v1.9.2; 253 KB in v1.10.0, with the calculators' code) is far under the 500 KB limit. v1.10.0 added three sources with notes (dust today). It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
 
 ### 63. Printing isn't offered in in-app browsers
 
@@ -735,6 +745,58 @@ Since v1.9.2 a choice's three answers fit without scrolling on phones up to 640 
 - **Why it is low:** the sheet scrolls normally and the shadow at its bottom shows there is more (F79); the clock is stopped while a sheet is open.
 - **What would fix it:** shorter English right answers where the source allows it, read by a native English reader ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)), or a smaller picture in the sheet at that size. Don't shorten a sourced right answer just to save a line ([GUIDELINES rule 75](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)); measure with the same probe before and after.
 
+### 74. The fridge hours rest on US guidance only
+
+**Status:** Owner · **Severity:** Medium: review before posting `/fridge` widely
+
+The fridge calculator (v1.10.0, `/fridge`) works out how long food keeps in a power cut from the US CDC's hours (4 h for a closed fridge, 48 h for a full freezer, 24 h for a half-full one) and Ready.gov's day for medicine that must be kept cold. No Thai agency page on food in a fridge during a power cut was found: not on 18 Oct 2026, for the power-cut lessons ([#55](#55-the-power-cut-lessons-rest-largely-on-international-guidance)), and not again on 19 Oct 2026 after two targeted searches (กรมอนามัย, อย., กรมวิทยาศาสตร์การแพทย์, PEA, MEA). What did come up was a media article with no agency named (not usable) and a Thai-language leaflet from the health department of Victoria, Australia (foreign advice) ([KNOWLEDGE §32.8](KNOWLEDGE.md#328-research-record-19-oct-2026)).
+
+- **What the tool does about it:** all three parts are ⚠️ `partial`; each line names its agency with ⚠️; a footnote says "ตัวเลขชั่วโมงมาจาก CDC และ Ready.gov ของสหรัฐฯ ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานไทย"; the text it shares names the two agencies with ⚠️; `/fridge` lists each figure with its source. Only the line on cans is Thai (อย., กรมอนามัย) and ✅.
+- **Written for American homes.** Whether the hours fit Thai kitchens (warmer rooms, fridges opened often) is what the Thai review should confirm. The tool adds no margin of its own; it only rounds the time left down ([GUIDELINES rule 78](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Cold medicine** follows Ready.gov's "more than a day … unless the label says otherwise"; a Thai pharmacist or อย. should read it, as for `s-medcold` (#55).
+- **The pills calculator** in the home check uses its 7 days, the MOPH's 2013 figure, ⚠️ as before ([#57](#57-the-home-check-and-plan-card-rest-partly-on-international-guidance)).
+- **What would make it Thai:** กรมอนามัย or อย. on fridge and freezer food in a power cut, and on cold medicine. Add the Thai source beside the CDC's in `kit.json → fridge.parts[].sources` (the build checks that the hours are in it) and mark the part ✅ if it says the same. If it gives other hours, the owner decides, and the lessons `s-fridge` and `s-freezer` change with the tool, so the game and the tool keep agreeing ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+- **The owner's decision:** keep the international hours, flagged as they are, or hold `/fridge` back from posts until a Thai source is found.
+
+### 75. The dust colours are for the 24-hour average; apps often show hourly readings
+
+**Status:** Owner (the note is by design) · **Severity:** Low
+
+The PCD's notice defines its colours on the continuous 24-hour average of PM2.5, to one decimal (clause 4.1(1)), and dust today places a reading with those bands. Many apps also show the last hour's reading, which in a morning or an evening can be well above or below the 24-hour average, and so a different colour.
+
+- **What the tool does:** under the field it says "สีของกรมควบคุมมลพิษใช้ค่าเฉลี่ย 24 ชั่วโมง" ("The PCD's colours are for the 24-hour average"), and it takes the colour the app shows as another way in. It doesn't ask which kind of reading it is, because few people know.
+- **[unverified]:** whether Air4Thai colours its hourly readings with the same bands. air4thai.pcd.go.th couldn't be opened on 19 Oct 2026 (its TLS certificate chain couldn't be verified, and checking wasn't turned off). A person opens Air4Thai, the app and the site, notes whether it shows hourly and 24-hour values and how it colours each, and the tool's note is changed if it needs to be ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+- **A foreign AQI** (the US AQI in many weather apps) has other bands; the tool asks for the PM2.5 figure instead ([GUIDELINES rule 79](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+
+### 76. The PCD and the DOH advise differently at green, yellow and red
+
+**Status:** By design (v1.10.0)
+
+The PCD's notice (2023) and the DOH's advice (21 Oct 2023) give the same five bands but different advice. At green, people at risk "watch for symptoms" (PCD) or "avoid outdoor activity or exercise" (DOH); at yellow, everyone "spends less time on hard outdoor activity" (PCD) or "avoids outdoor activity" (DOH); at red, people with a chronic illness (PCD) or everyone (DOH) stay in a safe, dust-free room. The DOH is stricter at the lower levels ([KNOWLEDGE §32.3](KNOWLEDGE.md#323-dust-today)).
+
+- **The decision:** the notice is the main text. It is the legal notice, the one Air4Thai follows, and it separates the general public from the people at risk. Two DOH lines are added where they add something the notice lacks (at orange, medicine and equipment ready for a long-term illness; at red, a dust-free room for everyone), each named "(กรมอนามัย)" on its line. The two sets' green and yellow lines are never mixed ([GUIDELINES rule 81](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **What a family sees:** at green and yellow the tool reads milder than a DOH post. That is the notice's wording, said with its source, not a choice to play the dust down.
+- **Revisit** if the PCD issues a new notice or the two agencies publish one set, or if the Thai reviewer prefers the DOH's stricter lines at green and yellow: then add them, named, beside the notice's ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+
+### 77. The fridge and dust tiles are below the first screen on the smallest phones
+
+**Status:** By design (v1.10.0)
+
+The hub has five buttons since v1.10.0: "📋 ต้องทำอะไร เมื่อเกิดภัย", then a 2 × 2 grid of 🎒 เช็กของจำเป็น, 📝 แผนครอบครัว, 🥛 ไฟดับ: ตู้เย็น and 😷 ฝุ่นวันนี้. At 320 × 460 the grid's second row, the two calculators, is below the first screen; the first three tools stay on it at 320 × 460 and 360 × 640, which the smoke test checks as it has since v1.9.0 ([#61](#61-the-game-card-is-below-the-first-screen-on-small-phones)).
+
+- **Why it stays:** tools first ([GUIDELINES rule 61](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)) puts what to do, what to keep and the family plan first. The calculators are for a moment (a power cut, a dusty day), and people will mostly reach them from a link or a guide.
+- **The other ways in:** `/fridge` and `/air` (posts), `/?open=fridge` and `/?open=air`, the next steps in the power-cut, storm and dust guides, the power-cut and dust results, `/ready`, `/storm` and `/pm25`, and the installed app's shortcuts.
+- **Watch:** `tool_open` by label ([05-metrics](05-metrics.md#calculators-v1100)). If the tools are opened from links but almost never from `start`, that is expected; if they are hardly opened at all, revisit the order with the owner.
+
+### 78. A heat-index calculator is not built
+
+**Status:** Not built (needs the owner first)
+
+The next calculator the idea suggests is "heat today": the temperature and the humidity give the heat index, its level and what to do. The research of 19 Oct 2026 found the current Thai levels (watch 27.0–32.9, warning 33.0–41.9, danger 42.0–51.9, extreme danger 52.0 °C and over: the DOH and TMD scheme of 2024), but only the danger band was read on an agency page (the TMD's own site); the other three come from Post Today, InfoQuest quoting the BMA and Thai PBS, and older bands are still in print. The TMD's 2012 explainer prints the US NWS (Rothfusz) formula, but whether the current TMD product uses it is **[unverified]**: the TMD's heat-index pages answered 503 ([KNOWLEDGE §32.8](KNOWLEDGE.md#328-research-record-19-oct-2026)).
+
+- **Why not now:** a calculator that computes the index itself would show a number that no Thai agency page we could read confirms ([GUIDELINES rule 78](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Two ways forward** ([ROADMAP P10](ROADMAP.md#p10-more-calculators)): a person confirms the TMD's heat-index page (the four levels and the formula it uses), and the tool computes from the temperature and humidity; or the tool asks for the level the TMD publishes (its expected maximum by region, every Monday, Wednesday and Friday) and shows only what to do at that level, with no formula.
+
 ---
 
 ## Fixed
@@ -757,6 +819,14 @@ Since v1.9.2 a choice's three answers fit without scrolling on phones up to 640 
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.10.0 (19 Oct 2026)
+
+Found while testing the calculators, before release; never live ([ROADMAP N21](ROADMAP.md#n21-calculators-from-the-home-checks-idea-v1100), [KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F92 | The fridge tool's + button rounded the time off to the nearest hour (`Math.round`) before adding one, so from 3 h 30 min it jumped to 5 h. It skipped the very hour in which the fridge's 4 hours run out, and a half hour of the count was lost | `shift()` in `kit.js` moves the start time by exactly one hour from what is shown, within 0–72 h: 3 h 30 min → 4 h 30 min, and − the same way. Smoke check "fridge: + adds an hour (4 h 30 min): the fridge food is out (meat, fish, eggs, milk, leftovers); half a freezer has 19 h 30 min of its 24 h". Lesson: [C23](LESSONS_LEARNED.md#c-engineering-and-platform) |
 
 ### In v1.9.2 (19 Oct 2026)
 

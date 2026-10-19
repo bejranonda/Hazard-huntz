@@ -864,6 +864,51 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .kit-qty { color: #1A56B8; font-weight: 600; font-size: 15px; }
 .kit-src { color: var(--ink-2); font-size: 13px; }
 .kit-note { display: block; margin: 6px 0 10px; }
+/* the fridge in a power cut (v1.10.0): the time off, then each part's status, live */
+.stepper output.fr-h { min-width: 0; flex: 1; font-size: 24px; }
+.fr-head { margin: 14px 0 0; font-size: 17px; }
+.fr-list { margin-top: 2px; }
+.fr-row { cursor: default; }
+.fr-status { font-weight: 600; font-size: 15px; }
+.fr-status.is-ok { color: #1A56B8; }
+.fr-status.is-soon { color: #9A4A05; }
+.fr-status.is-over { color: #B3261E; }
+.fr-med { margin-top: 8px; }
+.fr-share { margin: 12px 0 4px; }
+.share-grid-text { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }
+/* dust today (v1.10.0): the reading or a colour → the PCD's level and what each group does */
+.air-units { grid-template-columns: 1fr 1fr; }
+.air-value { margin-top: 10px; }
+.air-value input { max-width: 180px; }
+.air-or { margin-top: 10px; font-size: 15px; }
+.air-colours { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.air-colour { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px; padding: 4px 2px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); font-size: 14px; cursor: pointer; }
+.air-colour input { position: absolute; opacity: 0; pointer-events: none; }
+.air-colour:has(input:checked) { border-color: var(--ink); background: var(--sun); }
+.air-colour:has(input:focus-visible) { outline: 3px solid var(--ok); outline-offset: 2px; }
+.air-dot { display: inline-block; flex: 0 0 auto; width: 20px; height: 20px; border: 2px solid var(--ink); border-radius: 50%; }
+.air-out { margin: 12px 0; padding: 10px 14px; border: 2px solid var(--line); border-left: 10px solid var(--lv, var(--line)); border-radius: 14px; background: var(--paper); scroll-margin-top: 48px; }
+.air-out h3 { margin: 10px 0 2px; font-size: 16px; }
+.air-badge { display: flex; align-items: center; gap: 10px; }
+.air-badge .air-dot { width: 28px; height: 28px; }
+.air-badge span:last-child { display: flex; flex-direction: column; }
+.air-badge b { font-size: 18px; line-height: 1.3; }
+.air-badge small { color: var(--ink-2); font-size: 14px; }
+.air-list { margin: 2px 0 4px; padding-left: 20px; }
+.air-list li { margin: 3px 0; font-size: 16px; }
+.air-by { color: var(--ink-2); font-size: 13px; }
+.air-none, .air-same { margin: 4px 0; color: var(--ink-2); }
+.air-hint { display: block; margin: 8px 0 0; }
+/* "how many days will the pills last?" under the home check's medicine line (v1.10.0) */
+.kit-calc { margin: 4px 0 14px; padding: 4px 12px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); }
+.kit-calc summary { display: flex; align-items: center; min-height: 44px; font-weight: 600; cursor: pointer; }
+.calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.calc-field { display: grid; gap: 4px; font-size: 14px; color: var(--ink-2); }
+.calc-field input { min-height: 48px; padding: 6px 10px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 20px; font-weight: 600; background: #fff; color: var(--ink); }
+.calc-field input:focus { border-color: var(--ink); outline: none; }
+.calc-out { margin: 10px 0 2px; font-size: 16px; font-weight: 600; }
+.calc-out.is-ok { color: #1A56B8; }
+.calc-out.is-short { color: #9A4A05; }
 .plan-form { display: grid; gap: 12px; margin: 8px 0 14px; }
 .plan-field { display: grid; gap: 4px; }
 .plan-label { font-weight: 600; }

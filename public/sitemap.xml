@@ -120,4 +120,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/plan"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/plan"/>
   </url>
+  <url><loc>https://baanrodmai.autobahn.bot/fridge</loc><lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/fridge"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/fridge"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/fridge"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/fridge</loc><lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/fridge"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/fridge"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/fridge"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/air</loc><lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/air"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/air"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/air"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/air</loc><lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/air"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/air"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/air"/>
+  </url>
 </urlset>

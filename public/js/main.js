@@ -105,12 +105,12 @@ async function boot() {
   const pageGuide = hazard && guideList().find((g) => g.hazard === hazard)?.id;
   if (cl) openChecklist(cl[1], 'link');
   else if (pageGuide) openChecklist(pageGuide, 'link');
-  else if (page === 'kit' || page === 'plan') openTool(page, 'link');
+  else if (TOOLS[page]) openTool(page, 'link');
   else if (new RegExp(`^checklist-(${ids})$`).test(open)) openChecklist(open.split('-')[1], 'link');
   else if (open === 'guide') openGuides('link');
   else if (open === 'help') openHelp();
   else if (open === 'about') openAbout();
-  else if (open === 'kit' || open === 'plan') openTool(open, 'link');
+  else if (TOOLS[open]) openTool(open, 'link');
 
   const via = state.challenge ? 'challenge' : cl ? 'checklist' : state.start.why === 'link' ? 'link' : 'direct';
   track('view', { mode: via === 'link' ? state.start.mode : '', label: via });
@@ -229,6 +229,11 @@ function renderStart() {
   const kitSaved = store.get('kit', null);
   const kitChip = $('#kit-chip');
   if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('hubKitScore', { pct: kitSaved.pct }) : t('hubKitSub');
+  // The fridge: "ไฟดับมา 3 ชม.แล้ว" while a power cut is being counted (up to 3 days).
+  const cut = store.get('fridge', null);
+  const offH = cut?.start ? Math.floor((Date.now() - cut.start) / 3600e3) : -1;
+  const fridgeChip = $('#fridge-chip');
+  if (fridgeChip) fridgeChip.textContent = offH < 0 || offH > 72 ? t('hubFridgeSub') : offH ? t('hubFridgeRunning', { h: offH }) : t('hubFridgeJust');
 
   // The owner's alert (config.alert, until its end date): that guide, first.
   const alertId = activeAlert(content().config, today);
@@ -282,13 +287,15 @@ function bindGlobal() {
     track('mode_select', { mode: btn.dataset.mode, label: pick });
     startFlow(btn.dataset.mode, { kind: 'daily' });
   });
+  // A tool asks for a guide (the dust tool's "10 ways"); kit.js can't open one itself.
+  document.addEventListener('brm:guide', (e) => openChecklist(e.detail, 'tool'));
   for (const b of $$('[data-open]')) {
     b.addEventListener('click', () => {
       const what = b.dataset.open;
       if (what === 'guide' || what === 'checklist') openGuides('start');
       else if (what === 'help') openHelp();
       else if (what === 'about') openAbout();
-      else if (what === 'kit' || what === 'plan') openTool(what, 'start');
+      else if (TOOLS[what]) openTool(what, 'start');
     });
   }
   $('#forecast-link-start').addEventListener('click', () => track('forecast_click', { label: 'start' }));
@@ -832,6 +839,7 @@ async function showResult(result) {
     <p class="note">${esc(t('helpNote'))}</p>
     ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     ${(C.config.hazards?.[modeOf(mode)?.hazard]?.tools || []).includes('kit') ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
+    ${(C.config.hazards?.[modeOf(mode)?.hazard]?.tools || []).filter((x) => x === 'fridge' || x === 'air').map((x) => `<button class="btn secondary" type="button" data-result-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}
     <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
@@ -848,6 +856,7 @@ async function showResult(result) {
   $('#btn-home').addEventListener('click', () => goHome());
   $('#btn-checklist').addEventListener('click', () => openChecklist(mode, 'result'));
   $('#btn-kit')?.addEventListener('click', () => openTool('kit', 'result', mode));
+  for (const b of $$('[data-result-tool]')) b.addEventListener('click', () => openTool(b.dataset.resultTool, 'result'));
   $('#btn-forecast')?.addEventListener('click', () => track('forecast_click', { mode, label: 'result' }));
   for (const a of $$('[data-help]', $('#result'))) {
     a.addEventListener('click', () => track('help_click', { mode, label: a.dataset.help }));
@@ -976,11 +985,18 @@ function goHome() {
 
 // ------------------------------------------------------------------ sheets
 
-// The home check and the family plan card load only when opened (kit.js).
+// The tools outside the round (kit.js, loaded only when one opens): the home
+// check, the family plan card and, since v1.10.0, the calculators that take
+// the household's answers and work out what to do (the fridge in a power cut,
+// the dust today). Each has a page of its own (/kit, /plan, /fridge, /air) and ?open=<id>.
+const TOOLS = { kit: '🎒', plan: '📝', fridge: '🥛', air: '😷' };
+const toolName = (x) => t(`hub${x[0].toUpperCase()}${x.slice(1)}`);
 async function openTool(which, from, mode = '') {
   try {
     const m = await import('./kit.js');
     if (which === 'plan') await m.openPlan(from);
+    else if (which === 'fridge') await m.openFridge(from);
+    else if (which === 'air') await m.openAir(from);
     else await m.openKit(from, mode);
   } catch (e) {
     console.warn('kit failed', e);
@@ -1049,7 +1065,7 @@ async function openChecklist(mode, from = '') {
   const agencies = [...new Set(list.items.flatMap((it) => it.sources || []).map((s) => C.sources[s]?.agency).filter(Boolean))].map(agencyName);
   const partial = list.items.some((it) => it.verify === 'partial');
   const calls = C.helplines.filter((h) => h.main).slice(0, 3);
-  const tools = (hz?.tools || []).filter((x) => x === 'kit' || x === 'plan');
+  const tools = (hz?.tools || []).filter((x) => TOOLS[x]);
   openSheet(`
     <h2 id="sheet-title">${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
     ${sections.length > 1 ? `<nav class="phase-jump" aria-label="${esc(t('guideJump'))}">${sections.map((sec) => `<button class="phase-chip phase-${sec.phase}" type="button" data-jump="${sec.phase}">${esc(sec.head)}</button>`).join('')}</nav>` : ''}
@@ -1061,7 +1077,7 @@ async function openChecklist(mode, from = '') {
       ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
     </div>
     ${tools.length ? `<h3>${esc(t('guideNext'))}</h3>
-    <div class="btn-row guide-next">${tools.map((x) => `<button class="btn secondary small" type="button" data-tool="${x}">${x === 'kit' ? '🎒' : '📝'} ${esc(t(x === 'kit' ? 'hubKit' : 'hubPlan'))}</button>`).join('')}</div>` : ''}
+    <div class="btn-row guide-next">${tools.map((x) => `<button class="btn secondary small" type="button" data-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}</div>` : ''}
     <h3>${esc(t('guideShare'))}</h3>
     <div class="share-grid" id="cl-share"></div>
     <div class="guide-pic">

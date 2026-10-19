@@ -4,7 +4,7 @@
 // anonymous counts are sent (kit_open, kit_share, plan_share), never the text.
 
 import { $, $$, esc, store, bangkokDateKey, formatHouseDate } from './util.js';
-import { t, L, getLang, siteUrl, content } from './content.js';
+import { t, L, getLang, siteUrl, content, agencyName } from './content.js';
 import { openSheet, closeSheet, toast, canPrint, printList } from './ui.js';
 import { kit as draw, loadCardAssets, canvasToBlob, wrapText } from './cards.js';
 import {
@@ -24,11 +24,7 @@ async function loadKit() {
 const u = (key, vars = {}) => String(K.ui[getLang()]?.[key] ?? K.ui.th[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
 // /kit and /plan are pages with their own link preview (a sample card) that open the tool.
 const pageUrl = (tool) => `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/${tool}`;
-const agencies = (ids = []) => {
-  const C = content();
-  const en = getLang() === 'en' ? C.strings.seo?.en?.agencies || {} : {};
-  return [...new Set(ids.map((id) => C.sources[id]?.agency).filter(Boolean))].map((a) => en[a] || a).join(' · ');
-};
+const agencies = (ids = []) => [...new Set(ids.map((id) => content().sources[id]?.agency).filter(Boolean))].map(agencyName).join(' · ');
 
 function saved() {
   const s = store.get('kit', null);
@@ -83,6 +79,9 @@ function persist(s, plan) {
   const sc = kitScore(plan, s.have);
   const keep = { people: s.people, flags: s.flags, have: s.have.filter((id) => plan.items.some((x) => x.id === id)), answered: true, pct: sc.pct, date: bangkokDateKey() };
   store.set('kit', keep);
+  // The start screen's button shows the new score at once, not after a reload.
+  const chip = document.getElementById('kit-chip');
+  if (chip) chip.textContent = t('hubKitScore', { pct: sc.pct });
   return { keep, sc };
 }
 
@@ -101,9 +100,10 @@ function showList(s) {
         <input type="checkbox" data-id="${esc(x.id)}"${s.have.includes(x.id) ? ' checked' : ''}>
         <span class="kit-ico" aria-hidden="true">${esc(x.item.icon)}</span>
         <span class="kit-text"><b>${esc(L(x.item.label))}</b>${qtyText(x) ? `<span class="kit-qty">${esc(qtyText(x))}</span>` : ''}
-          <span class="kit-src">${esc(u('source'))}: ${esc(agencies(x.item.sources))}${x.item.verify !== 'verified' ? ` · ${esc(u('partial'))}` : ''}</span></span>
+          <span class="kit-src">${esc(u('source'))}: ${esc(agencies(x.item.sources))}${x.item.verify !== 'verified' ? ' · ⚠️' : ''}</span></span>
       </label></li>`).join('')}
     </ul>
+    ${plan.items.some((x) => x.item.verify !== 'verified') ? `<p class="kit-src kit-note">${esc(t('guidePartial'))}</p>` : ''}
     <button class="btn" type="button" id="kit-share">${esc(u('share'))}</button>
     <button class="btn secondary" type="button" id="kit-plan">${esc(u('plan'))}</button>
     ${canPrint() ? `<button class="btn secondary small" type="button" id="kit-print">${esc(t('printBtn'))}</button>` : ''}
@@ -223,9 +223,13 @@ async function shareImage({ canvas, title, text, url, filename, event, value = 0
     </div>
     <img class="card-preview share-preview" id="kit-img" alt="${esc(title)}">
     ${saveOk ? '' : `<p class="save-hint">💡 ${esc(t('saveHint'))}</p>`}
-    <button class="btn secondary small" type="button" id="kit-back">${esc(backLabel)}</button>`, { label: title });
+    <div class="btn-row">
+      <button class="btn secondary small" type="button" id="kit-back">${esc(backLabel)}</button>
+      <button class="btn secondary small" type="button" id="kit-done">${esc(t('done'))}</button>
+    </div>`, { label: title });
   $('#kit-img').src = await imageSrc(blob);
   $('#kit-back').addEventListener('click', () => back());
+  $('#kit-done').addEventListener('click', () => closeSheet());
   for (const b of $$('[data-k]', $('#sheet'))) {
     b.addEventListener('click', async () => {
       const k = b.dataset.k;

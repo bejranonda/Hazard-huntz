@@ -6,6 +6,7 @@
 import { geckoSVG } from './mascot.js';
 import { parseSvg, drawSvgInto } from './svgdraw.js';
 import { modeOf } from './modes.js';
+import { keptSpans } from './util.js';
 
 const INK = '#3E2A1E';
 const INK2 = '#6B4A35';
@@ -70,10 +71,14 @@ const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segme
 function tokens(text) {
   if (segmenter) {
     // Keep closing punctuation (and Thai ๆ) on the word before it, so a line
-    // never starts with "!", "?", "," or ")".
+    // never starts with "!", "?", "," or ")". Words in config.json →
+    // keepTogether stay whole ("กระจก", not "กระ|จก"), as on the page.
     const out = [];
-    for (const { segment } of segmenter.segment(text)) {
-      if (out.length && /^[!?,.:;)\]}%…”’ๆฯ]+$/.test(segment) && /\S$/.test(out[out.length - 1])) out[out.length - 1] += segment;
+    const kept = keptSpans(text);
+    const inKept = (i) => kept.some(([a, b]) => i > a && i < b);
+    for (const { segment, index } of segmenter.segment(text)) {
+      const glue = (/^[!?,.:;)\]}%…”’ๆฯ]+$/.test(segment) && /\S$/.test(out[out.length - 1])) || inKept(index);
+      if (out.length && glue) out[out.length - 1] += segment;
       else out.push(segment);
     }
     return out;

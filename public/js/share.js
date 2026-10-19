@@ -121,8 +121,12 @@ export function openExternal(href) {
     location.href = href;
     return;
   }
-  const w = window.open(href, '_blank', 'noopener');
-  if (!w) location.href = href;
+  // Not window.open(…, 'noopener'): with that feature it always returns null,
+  // so the fallback below also sent this tab away and the result was lost.
+  const w = window.open(href, '_blank');
+  if (w) {
+    try { w.opener = null; } catch { /* cross-origin already */ }
+  } else location.href = href;
 }
 
 // LINE's in-app browser can hand the page to the phone's real browser.

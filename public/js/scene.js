@@ -46,7 +46,7 @@ const BADGE = {
   smoked: { fill: '#6F6A66', glyph: 'M-5 2 Q-6 -2 -2.5 -2 Q-2 -5.5 1.5 -4.5 Q5 -5 5 -1 Q6.5 2 3 2.5 Z' },
   spoiled: { fill: '#6F6A66', glyph: 'M0 -5 A5 5 0 1 0 0.01 -5 M0 -2.5 V0.5 L2.5 2' },
   missed: { fill: '#6F6A66', glyph: 'M-3.5 -2.5 Q-3.5 -6 0 -6 Q3.5 -6 3.5 -3 Q3.5 -0.5 0 0.5 V2 M0 5 V5.2' },
-  decoy: { fill: '#8A847F', glyph: 'M-5 0 L-1.5 4 L5.5 -4' },
+  decoy: { fill: '#8A847F', glyph: 'M-4.5 0 H4.5' }, // "nothing to do", not a tick that reads as a win
 };
 
 export class Scene {
@@ -164,17 +164,19 @@ export class Scene {
     return { body, wave, phase: 0 };
   }
 
+  // The smoke's shape is redrawn as it falls (setThreat), not moved with a
+  // transform: a layer that started above the picture and was only translated
+  // into it was never painted on shorter phone screens (360 × 640, 320 × 460).
   _smoke(group) {
     group.innerHTML = '';
     const body = svgEl('g', { class: 'smoke-g' });
-    body.appendChild(svgEl('rect', { class: 'smoke-body', x: -20, y: -700, width: 400, height: 700 }));
-    body.appendChild(svgEl('path', {
-      class: 'smoke-edge',
-      d: 'M-40 -6 q15 10 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V-20 H-40 Z',
-    }));
+    const rect = svgEl('rect', { class: 'smoke-body', x: -20, y: -20, width: 400, height: 0 });
+    const edge = svgEl('path', { class: 'smoke-edge', d: '' });
+    body.appendChild(rect);
+    body.appendChild(edge);
     group.appendChild(body);
     group.style.pointerEvents = 'none';
-    return { body, kind: 'smoke' };
+    return { body, rect, edge, kind: 'smoke' };
   }
 
   _haze(group) {
@@ -207,7 +209,12 @@ export class Scene {
     if (level == null) return;
     if (this.threat === 'water') return this.setWater(level);
     for (const g of this.threatGroups) {
-      if (g.kind === 'smoke') g.body.setAttribute('transform', `translate(0 ${level.toFixed(1)})`);
+      if (g.kind === 'smoke') {
+        const y = level.toFixed(1);
+        g.rect.setAttribute('height', Math.max(0, level + 20).toFixed(1));
+        g.edge.setAttribute('d', `M-40 ${(level - 6).toFixed(1)} q15 10 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V${(level - 20).toFixed(1)} H-40 Z`);
+        g.body.dataset.level = y;
+      }
       else g.body.setAttribute('opacity', Math.max(0, Math.min(1, level)).toFixed(3));
     }
   }
@@ -243,7 +250,7 @@ export class Scene {
     this._badge(g, p, status === 'flooded' && lost !== 'wet' ? lost : status);
   }
 
-  // A decoy that was tapped: grey tick so nobody taps it twice.
+  // A decoy that was tapped: a grey dash so nobody taps it twice.
   markDecoy(p) {
     const g = this.nodes.get(p.pid);
     if (!g) return;
@@ -286,15 +293,19 @@ export class Scene {
     }
   }
 
-  // Remaining targets per room on the tabs.
-  updateCounts(records) {
+  // Remaining targets per room on the tabs. A room whose things were lost to
+  // the water (smoke, the dark) shows that, not a tick: ✓ means the player did it.
+  updateCounts(records, lostMark = '💧') {
     this.rooms.forEach((room, i) => {
-      const left = room.placements.filter((p) => p.kind === 'target' && records.get(p.pid)?.status === 'pending').length;
+      const mine = room.placements.filter((p) => p.kind === 'target').map((p) => records.get(p.pid)?.status);
+      const left = mine.filter((st) => st === 'pending').length;
+      const lost = mine.some((st) => st === 'flooded');
       const tab = this.tabsEl.children[i];
       if (!tab) return;
       const c = tab.querySelector('.count');
-      c.textContent = left ? String(left) : '✓';
-      c.classList.toggle('zero', !left);
+      c.textContent = left ? String(left) : lost ? lostMark : '✓';
+      c.classList.toggle('zero', !left && !lost);
+      c.classList.toggle('lost', !left && lost);
     });
   }
 

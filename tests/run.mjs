@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { generateHouse, playableRooms, MIN_HIT } from '../public/js/house.js';
 import { Round, STATUS, waterY, rankTier } from '../public/js/round.js';
 import { makeRng, isValidHouseKey } from '../public/js/rng.js';
-import { bangkokDateKey, formatHouseDate, daysBetween } from '../public/js/util.js';
+import { bangkokDateKey, formatHouseDate, daysBetween, setKeepTogether, keptSpans } from '../public/js/util.js';
 import { challengeUrl, parseChallenge } from '../public/js/share.js';
 import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
@@ -100,7 +100,7 @@ test('prepare: water rises, low items flood first, floor gets wet', () => {
   let wet = false;
   const r = new Round({ house, config: C.config, clock: clock.now, on: { flood: (p) => floods.push(p), wet: () => { wet = true; } } });
   r.start();
-  assert.equal(r.waterLevel, 612);
+  assert.equal(r.waterLevel, C.config.round.prepare.water[0][1]);
   for (let i = 0; i < 61; i++) {
     clock.advance(1000);
     r.tick();
@@ -470,6 +470,48 @@ test('guides with no game: 10 lines, before → during → after, a source on ev
       assert.ok(x.verify === 'verified' || (x.verify === 'partial' && x.verifyNote), `${g.id}: "${x.th}" verify`);
     }
   }
+});
+
+test('flood pace: no target goes under in the first 20 s, and never all of them before 30 s', () => {
+  // v1.9.0's curve flooded every target of the 18 Oct house by 26.8 s, the first
+  // at 13.6 s, so a round could end before a careful player reached room two.
+  const curve = C.config.round.prepare.water;
+  const T = C.config.round.prepare.seconds;
+  const at = (y) => { for (let t = 0; t <= T * 10; t++) if (waterY(t / (T * 10), curve) <= y) return t / 10; return Infinity; };
+  for (const d of days.slice(0, 120)) {
+    const ts = generateHouse(C, 'prepare', d).targets.map((p) => at(p.cy));
+    assert.ok(Math.min(...ts) >= 20, `${d}: a target floods at ${Math.min(...ts)} s`);
+    assert.ok(Math.max(...ts) >= 30, `${d}: every target is under by ${Math.max(...ts)} s`);
+  }
+});
+
+test('Thai words in keepTogether never break across lines on the cards', () => {
+  setKeepTogether(C.config.keepTogether);
+  const ctx = { measureText: (s) => ({ width: [...s].length * 10 }) };
+  const lists = load('checklists');
+  const texts = Object.entries(lists).filter(([k]) => !k.startsWith('_')).flatMap(([, l]) => l.items.map((x) => x.th));
+  let checked = 0;
+  for (const text of texts) {
+    const spans = keptSpans(text);
+    for (let w = 80; w <= 300; w += 10) {
+      const lines = wrapText(ctx, text, w);
+      // every kept word is whole on one line
+      for (const [a, b] of spans) {
+        const word = text.slice(a, b);
+        assert.ok(lines.some((line) => line.includes(word)), `"${word}" split at ${w} in "${text}"`);
+        checked++;
+      }
+    }
+  }
+  assert.ok(checked > 1000, `checked ${checked} placements`);
+  setKeepTogether([]);
+});
+
+test('config: every keepTogether word is short Thai, listed once', () => {
+  const words = C.config.keepTogether;
+  assert.ok(Array.isArray(words) && words.length > 50);
+  assert.equal(new Set(words).size, words.length);
+  for (const w of words) assert.ok(/^[\u0E00-\u0E7F]{2,14}$/.test(w), w);
 });
 
 console.log(`${passed} passed, ${failures.length} failed`);

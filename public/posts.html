@@ -10,6 +10,7 @@
 <style>
 body{margin:0;background:#FFF4E3;color:#2b2118;font:17px/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
 main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+.nw{white-space:nowrap}p,li,h1,h2,h3{text-wrap:pretty}
 h1{font-size:1.6em;line-height:1.3;margin:.3em 0}h2{margin-top:2em;border-bottom:3px solid #f2c48d}
 h3{margin:0 0 .2em;font-size:1.1em}article{background:#fff;border-radius:14px;padding:14px 16px;margin:14px 0}
 article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{display:inline;margin-left:.3em}
@@ -21,6 +22,11 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 .tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .tix li{margin:0}.tix a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
 .top a,.check a{display:inline-flex;align-items:center;min-height:44px}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.jump a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:2px solid #f2c48d;border-radius:999px;background:#fff;text-decoration:none;font-size:.92em;box-sizing:border-box}
+.tel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tel a{display:inline-grid;place-items:center;min-width:64px;min-height:44px;padding:0 12px;border-radius:999px;background:#FDE3DA;color:#8A2E12;font-weight:600;text-decoration:none;box-sizing:border-box}
+h2,h3{scroll-margin-top:8px}.top{font-size:.9em;margin:0}
+h2 .en{display:inline;margin-left:.4em;font-size:.7em}
+@media (max-width:380px){.tel .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}h1{font-size:1.3em;line-height:1.25;margin:.2em 0}h2{font-size:1.2em;margin-top:.9em}.tel a{min-width:56px}.jump,.tel{margin:4px 0}main{padding-top:8px}.top{font-size:.85em}}
 .imgs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.imgs img{display:block;width:100%;height:auto;border-radius:10px;background:#fff}
 textarea{display:block;width:100%;min-height:220px;box-sizing:border-box;font:inherit;font-size:.95em;padding:10px;border:2px solid #f2c48d;border-radius:12px;background:#fff;color:inherit}
 button.cta{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:10px}
@@ -86,13 +92,20 @@ button.cta{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:10px}
 <section id="guides">
 <h2>รูป &quot;ต้องทำอะไร&quot; ทุกภัย (โพสต์ได้ทันทีเมื่อมีข่าว)</h2>
 <p>ภัยไหนกำลังเป็นข่าว กดค้างที่รูปของเรื่องนั้นเพื่อบันทึก แล้วคัดลอกข้อความไปโพสต์ ลิงก์ในข้อความเปิดเรื่องนั้นในแอปได้เลย ถ้าจะให้ขึ้นบนหน้าแรกด้วย ตั้ง alert ใน config.json</p>
-<h3>🌊 น้ำกำลังมา</h3>
+<h3>🌊 น้ำท่วม: ก่อนน้ำมา</h3>
 <div class="imgs"><img src="/share/checklist-prepare.png" width="1080" height="1920" loading="lazy" alt="เตรียมบ้านก่อนน้ำมา 10 ข้อ"></div>
 <textarea readonly id="cap-guide-prepare" aria-label="คัดลอกข้อความโพสต์">เตรียมบ้านก่อนน้ำมา 10 ข้อ 📋
 อ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา
 👉 https://baanrodmai.autobahn.bot/checklist/prepare
 #บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ</textarea>
 <button class="cta" type="button" data-copy="cap-guide-prepare">คัดลอกข้อความโพสต์</button>
+<h3>🧹 น้ำท่วม: หลังน้ำลด</h3>
+<div class="imgs"><img src="/share/checklist-return.png" width="1080" height="1920" loading="lazy" alt="ก่อนกลับเข้าบ้าน 10 ข้อ"></div>
+<textarea readonly id="cap-guide-return" aria-label="คัดลอกข้อความโพสต์">ก่อนกลับเข้าบ้าน 10 ข้อ 📋
+อ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา
+👉 https://baanrodmai.autobahn.bot/checklist/return
+#บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ</textarea>
+<button class="cta" type="button" data-copy="cap-guide-return">คัดลอกข้อความโพสต์</button>
 <h3>⛰️ น้ำป่า ดินถล่ม</h3>
 <div class="imgs"><img src="/share/checklist-landslide.png" width="1080" height="1920" loading="lazy" alt="น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ"></div>
 <textarea readonly id="cap-guide-landslide" aria-label="คัดลอกข้อความโพสต์">น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ 📋
@@ -107,13 +120,6 @@ button.cta{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:10px}
 👉 https://baanrodmai.autobahn.bot/checklist/storm
 #บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ</textarea>
 <button class="cta" type="button" data-copy="cap-guide-storm">คัดลอกข้อความโพสต์</button>
-<h3>🧹 หลังน้ำลด</h3>
-<div class="imgs"><img src="/share/checklist-return.png" width="1080" height="1920" loading="lazy" alt="ก่อนกลับเข้าบ้าน 10 ข้อ"></div>
-<textarea readonly id="cap-guide-return" aria-label="คัดลอกข้อความโพสต์">ก่อนกลับเข้าบ้าน 10 ข้อ 📋
-อ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา
-👉 https://baanrodmai.autobahn.bot/checklist/return
-#บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ</textarea>
-<button class="cta" type="button" data-copy="cap-guide-return">คัดลอกข้อความโพสต์</button>
 <h3>🏚️ แผ่นดินไหว</h3>
 <div class="imgs"><img src="/share/checklist-quake.png" width="1080" height="1920" loading="lazy" alt="แผ่นดินไหว ทำอะไร 10 ข้อ"></div>
 <textarea readonly id="cap-guide-quake" aria-label="คัดลอกข้อความโพสต์">แผ่นดินไหว ทำอะไร 10 ข้อ 📋

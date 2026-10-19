@@ -8,11 +8,11 @@
 <script>
 /* Visitors from outside Thailand go straight to the English page, so they never see Thai first.
    Same rule as guessLang() in js/content.js: a Thai browser or Bangkok time stays on Thai, a stored
-   choice or ?lang= wins, and search/preview bots stay on the Thai page (their hreflang covers English). */
+   choice (the language button or ?lang=) wins, and search/preview bots stay on the Thai page (their hreflang covers English). */
 (function () {
   try {
     var p = location.pathname;
-    if (/^\/en(\/|$)/.test(p) || /[?&]lang=/.test(location.search) || localStorage.getItem('brm:lang')) return;
+    if (/^\/en(\/|$)/.test(p) || /[?&]lang=/.test(location.search) || localStorage.getItem('brm:langPick')) return;
     if (/bot|crawl|spider|slurp|facebookexternalhit|preview|lighthouse/i.test(navigator.userAgent)) return;
     var l = navigator.languages || [navigator.language || ''];
     if (l.some(function (x) { return /^th\b/i.test(x || ''); }) || Intl.DateTimeFormat().resolvedOptions().timeZone === 'Asia/Bangkok') return;
@@ -24,10 +24,7 @@
 <title>น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ ส่งต่อให้คนที่บ้าน · บ้านรอดไหม?</title>
 <meta name="description" content="เช็กลิสต์จากคำแนะนำหน่วยงานรัฐ พร้อมเบอร์ช่วยเหลือ 1784 · 199 · 1669 · 1555 · 1130 · 1129">
 <!--OG:START-->
-<link rel="canonical" href="https://baanrodmai.autobahn.bot/">
-<link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/checklist/landslide">
-<link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/checklist/landslide">
-<link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/checklist/landslide">
+<link rel="canonical" href="https://baanrodmai.autobahn.bot/landslide">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="บ้านรอดไหม?">
 <meta property="og:title" content="น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ ส่งต่อให้คนที่บ้าน">
@@ -64,7 +61,7 @@
     <header class="hero">
       <h1 id="logo-title" class="logo"><span class="logo-a" data-i18n="logoA">บ้าน</span><span class="logo-b" data-i18n="logoB">รอดไหม?</span></h1>
       <p class="tagline" data-i18n="tagline">เตรียมบ้านให้พร้อมทุกภัย รู้ว่าต้องทำอะไร และมีเกม 60 วิ ช่วยจำ</p>
-      <div class="alert-card" id="alert-card" hidden></div>
+      <div class="alert-card" id="alert-card"><button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">⛰️</span><span>ช่วงนี้: น้ำป่า ดินถล่ม · ดูว่าต้องทำอะไร</span><span aria-hidden="true">›</span></button></div>
       <nav class="hub" id="hub" aria-label="เตรียมบ้านให้พร้อม" data-i18n-aria="hubLabel">
         <button class="hub-btn hub-main" type="button" data-open="guide"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b data-i18n="hubGuide">ต้องทำอะไร เมื่อเกิดภัย</b><small data-i18n="hubGuideSub">น้ำท่วม แผ่นดินไหว พายุ ไฟไหม้ และเรื่องอื่น</small></span><span class="hub-go" aria-hidden="true">›</span></button>
         <button class="hub-btn" type="button" data-open="kit"><span class="hub-ico" aria-hidden="true">🎒</span><span class="hub-text"><b data-i18n="hubKit">เช็กของจำเป็น</b><small id="kit-chip" data-i18n="hubKitSub">ตามจำนวนคนในบ้าน</small></span></button>
@@ -137,7 +134,7 @@
       <p data-i18n="disclaimer">เนื้อหาเพื่อการเรียนรู้ หากไม่แน่ใจให้ติดต่อช่างหรือเจ้าหน้าที่</p>
       <a class="link" href="/learn" data-i18n="learnLink">อ่านสรุปวิธีรับมือทุกข้อ</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">ที่มาของข้อมูล · ความเป็นส่วนตัว</button>
-      <div class="app-version" id="app-version">v1.9.0</div>
+      <div class="app-version" id="app-version">v1.9.1</div>
     </footer>
   </section>
 
@@ -171,13 +168,16 @@
   <!-- shared bottom sheet for choices, tips, share, checklists, help, about -->
   <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
-    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-top">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <button class="sheet-x" id="sheet-x" type="button" aria-label="ปิด" data-i18n-aria="close">✕</button>
+    </div>
     <div class="sheet-body" id="sheet-body"></div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <div class="loading" id="loading" hidden><div class="spinner" aria-hidden="true"></div><span data-i18n="loading">กำลังเตรียมบ้าน…</span></div>
 </div>
-<noscript><p style="padding:24px;font-family:sans-serif">เกมนี้ต้องเปิด JavaScript · This game needs JavaScript. <a href="/learn">อ่านสรุปวิธีรับมือน้ำท่วมทุกข้อ · Read every lesson</a></p></noscript>
+<noscript><p style="padding:24px;font-family:sans-serif">บ้านรอดไหม? ต้องเปิด JavaScript · This app needs JavaScript. <a href="/learn">อ่านวิธีรับมือทุกภัย ทุกข้อ · Read what to do for every hazard</a></p></noscript>
 </body>
 </html>

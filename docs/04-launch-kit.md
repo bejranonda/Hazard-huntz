@@ -210,9 +210,10 @@ Rules for these posts: no photos of real blackouts, storms or damage; no blame o
 
 ### The home check and the plan card (v1.8.0, any time of year)
 
-Two tools that end in a picture a family forwards: **"บ้านเราพร้อมแค่ไหน?"** (`/?open=kit`) works out what this household needs for a flood, a power cut or 3 days at home and how ready it is, and **"แผนบ้านรอดของบ้านเรา"** (`/?open=plan`) makes a card with the family's meeting place, contact and who helps whom. Good moments: next to a power-cut or flood post, before a long holiday, at the start of the rains, or when a family group is already talking about stocking up.
+Two tools that end in a picture a family forwards: **"เช็กของจำเป็น"** (`/kit`; its sheet asks "บ้านเราพร้อมแค่ไหน?") works out what this household needs for a flood, a power cut or 3 days at home and how ready it is, and **"แผนครอบครัว"** (`/plan`) makes a card ("การ์ดแผนครอบครัว") with the family's meeting place, contact and who helps whom. Good moments: next to a power-cut or flood post, before a long holiday, at the start of the rains, or when a family group is already talking about stocking up.
 
 - **Links:** since v1.9.0 link **`/kit`** and **`/plan`** (`/en/kit`, `/en/plan`): each has its own preview (the check's or the plan's title and pill) and a button into the tool. `/?open=kit` and `/?open=plan` still open the tool straight away, but their preview is the main game's ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). The posts below use the new addresses.
+- **Names (v1.9.1):** call the tools what the app calls them, **เช็กของจำเป็น** and **แผนครอบครัว** (the card: "การ์ดแผนครอบครัว"), in English "Check your supplies" and "Our family plan". Until v1.9.1 they were also called บ้านเราพร้อมแค่ไหน?, เครื่องเช็กบ้าน, แผนบ้านรอด and การ์ดแผนบ้านรอด; the posts in this file were updated. "บ้านเราพร้อมแค่ไหน?" stays as the question the check answers.
 - **Pictures:** use [17-kit.png](screens/17-kit.png), or a kit card or plan card you make yourself **with the form's example text only**. Never post a real family's plan card: it shows where they meet and who to call.
 - **Numbers:** the posts below name only the 3 days the check is built on (กรมประชาสัมพันธ์'s 72 hours; ปภ. and กรมอนามัย say 3 days or more). Leave the amounts to the check, which shows each one with its source, and don't add an interval, a 7-day target or an eating order: no agency gives them ([KNOWLEDGE §28.10](KNOWLEDGE.md#2810-what-was-left-out-and-why)).
 - **Privacy is part of the message:** the answers and the plan stay on the phone and are never sent. Say so; it is what makes an older relative willing to type a meeting place.
@@ -230,14 +231,14 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 >
 > 🔒 คำตอบอยู่ในมือถือของคุณเท่านั้น ไม่ส่งไปที่ไหน
 >
-> เช็กฟรี 1 นาที 👉 https://baanrodmai.autobahn.bot/kit
+> เช็กของจำเป็น ฟรี 1 นาที 👉 https://baanrodmai.autobahn.bot/kit
 > #บ้านรอดไหม #ไฟดับ #ของตุน
 
 **Facebook: the plan card** (with a sample plan card):
 
 > ถ้าน้ำมา ไฟดับ หรือต้องออกจากบ้านกะทันหัน บ้านเรานัดเจอกันที่ไหน? 📝
 >
-> ทำ "การ์ดแผนบ้านรอด" ของบ้านเรา กรอกสั้นๆ 6 ช่อง:
+> ทำ "การ์ดแผนครอบครัว" ของบ้านเรา กรอกสั้นๆ 6 ช่อง:
 > ศูนย์พักพิงใกล้บ้าน · จุดนัดพบของครอบครัว · ถ้าพลัดกันจะติดต่อใคร · ใครช่วยใคร · ยาที่ต้องเอาไปด้วย
 > กดสร้าง ได้การ์ดพร้อมเบอร์ช่วยเหลือ เซฟไว้ในมือถือทุกคนในบ้าน
 >
@@ -250,7 +251,7 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 
 > ส่งต่อด้วยความห่วงใย 💛 ลองเช็กกันไหมว่าบ้านเราพร้อมแค่ไหน ถ้าไฟดับ 3 วัน ตอบ 2 ข้อ ได้รายการของบ้านเราเลย 👉 https://baanrodmai.autobahn.bot/kit
 
-> แล้วมาทำการ์ดแผนบ้านรอดเก็บไว้ในมือถือทุกคนนะ จะนัดเจอกันที่ไหน ใครดูแลคุณยาย 👉 https://baanrodmai.autobahn.bot/plan
+> แล้วมาทำการ์ดแผนครอบครัวเก็บไว้ในมือถือทุกคนนะ จะนัดเจอกันที่ไหน ใครดูแลคุณยาย 👉 https://baanrodmai.autobahn.bot/plan
 
 Rules for these posts: never shame a low score ("ยังขาดอีกนิด" is the tone); no lists of what to buy from a shop or a brand; no photos of empty shelves or panic buying.
 
@@ -260,10 +261,10 @@ Hazards don't keep to a calendar: a quake abroad, a storm warning, a heatwave or
 
 | Guide id | Topic | Its picture link (preview = the guide) | Its page |
 |---|---|---|---|
-| `prepare` | 🌊 น้ำกำลังมา | `/checklist/prepare` | `/flood` |
+| `prepare` | 🌊 น้ำท่วม: ก่อนน้ำมา | `/checklist/prepare` | `/flood` |
+| `return` | 🧹 น้ำท่วม: หลังน้ำลด | `/checklist/return` | `/flood` |
 | `landslide` | ⛰️ น้ำป่า ดินถล่ม | `/checklist/landslide` | `/landslide` |
 | `storm` | ⛈️ พายุ ลมแรง ฟ้าผ่า | `/checklist/storm` | `/storm` |
-| `return` | 🧹 หลังน้ำลด | `/checklist/return` | `/flood` |
 | `quake` | 🏚️ แผ่นดินไหว | `/checklist/quake` | `/quake` |
 | `fire` | 🔥 ไฟไหม้ | `/checklist/fire` | `/fire` |
 | `stock` | 🔦 ไฟดับ | `/checklist/stock` | `/ready` |
@@ -337,8 +338,8 @@ How these were checked:
 Before posting:
 
 - **The rain line goes stale after 25 Oct.** Send the LINE version by about 20–21 Oct, and after the 25th drop the ปภ. sentence (the rest still stands).
-- **Since v1.9.0, link `/kit` instead of `/?open=kit`** in these posts: it has a preview of its own. The rain sentence also has a tools-first successor below ([the relaunch post](#your-own-post-the-tools-first-relaunch-v190-draft)).
-- **Attach a picture.** `/?open=kit` previews as the main game ([KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)). Use [19-kit-card.png](screens/19-kit-card.png), a sample kit card for an example household.
+- **Since v1.9.1 these posts link `/kit`,** which has a preview of its own (they linked `/?open=kit`, which previews as the main game, [KNOWN_ISSUES #52](KNOWN_ISSUES.md#52-a-mode-link-previews-as-the-main-game)), and call the tools by their one name, เช็กของจำเป็น and การ์ดแผนครอบครัว. The rain sentence also has a tools-first successor ([the relaunch post](#your-own-post-the-tools-first-relaunch-v190-draft)).
+- **Attach a picture** anyway: [19-kit-card.png](screens/19-kit-card.png), a sample kit card for an example household, says more in a feed than a preview.
 - **Check that counting works** before a big push, so `kit_open` → `kit_share` after the post can be seen ([05-metrics](05-metrics.md)).
 
 **Facebook (personal post, with `19-kit-card.png`):**
@@ -347,14 +348,14 @@ Before posting:
 > เลยอยากชวนไปลองเว็บที่เคยทำไว้ก่อนหน้านี้ ใช้ฟรี ไม่ต้องโหลดแอป ไม่ต้องสมัคร 🦎
 >
 > "บ้านรอดไหม?" มี 2 อย่างที่อยากให้ลองเป็นพิเศษ
-> 🎒 เช็กว่าบ้านเราพร้อมแค่ไหน: บอกว่าบ้านมีกี่คน มีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำ หรือสัตว์เลี้ยงไหม แล้วจะได้รายการของจำเป็น พร้อมจำนวนที่คำนวณตามบ้านเรา เช่น น้ำดื่มกี่ลิตร ไฟฉายกี่อัน ติ๊กของที่มีแล้ว จะรู้ว่าพร้อมกี่เปอร์เซ็นต์
-> 📝 การ์ดแผนบ้านรอด: กรอกจุดนัดพบ คนที่ต้องโทรหา ใครดูแลใคร ยาประจำตัว แล้วได้การ์ดไว้ส่งให้ทุกคนในบ้านเซฟ ในการ์ดมีเบอร์ 1784 · 199 · 1669 ด้วย
+> 🎒 เช็กของจำเป็น: บอกว่าบ้านมีกี่คน มีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำ หรือสัตว์เลี้ยงไหม แล้วจะได้รายการของจำเป็น พร้อมจำนวนที่คำนวณตามบ้านเรา เช่น น้ำดื่มกี่ลิตร ไฟฉายกี่อัน ติ๊กของที่มีแล้ว จะรู้ว่าพร้อมกี่เปอร์เซ็นต์
+> 📝 การ์ดแผนครอบครัว: กรอกจุดนัดพบ คนที่ต้องโทรหา ใครดูแลใคร ยาประจำตัว แล้วได้การ์ดไว้ส่งให้ทุกคนในบ้านเซฟ ในการ์ดมีเบอร์ 1784 · 199 · 1669 ด้วย
 > 🎮 และเกม 60 วินาที หาจุดเสี่ยงในบ้าน: ก่อนน้ำมา หลังน้ำลด ฝุ่น PM2.5 ไฟไหม้ ไฟดับ
 >
 > ✅ ไม่ใช่เว็บของหน่วยงานรัฐ แต่ทุกข้อบอกที่มาว่ามาจากไหน ข้อที่ยังรอตรวจทานก็ติดป้ายไว้
 > 🔒 สิ่งที่กรอกและติ๊กอยู่ในมือถือเราเท่านั้น ไม่ส่งไปที่ไหน
 >
-> เช็กบ้านเรา 👉 https://baanrodmai.autobahn.bot/?open=kit
+> เช็กของจำเป็น 👉 https://baanrodmai.autobahn.bot/kit
 > เล่นเกม 👉 https://baanrodmai.autobahn.bot
 >
 > ฝากลองดูหน่อยนะ เจออะไรแปลก ๆ หรืออยากให้เพิ่มเรื่องไหน บอกกันได้เลย 🙏
@@ -365,7 +366,7 @@ Before posting:
 > ปภ. ประสาน 35 จังหวัดและ กทม. ให้เตรียมรับมือฝนตกหนัก เสี่ยงน้ำท่วม ถึง 25 ต.ค. นี้ 🌧️
 > ลองเช็กกันหน่อยว่าบ้านเรามีของจำเป็นครบหรือยัง
 > เป็นเว็บที่เราทำเองนะ ใช้ฟรี บอกจำนวนคนในบ้าน กับว่ามีเด็กเล็ก ผู้สูงอายุ คนกินยาประจำไหม แล้วจะรู้ว่าควรมีน้ำ อาหาร ยา และอื่นๆ เท่าไร
-> 👉 https://baanrodmai.autobahn.bot/?open=kit
+> 👉 https://baanrodmai.autobahn.bot/kit
 > ไม่ต้องโหลดแอป ไม่ต้องสมัคร ที่ติ๊กไว้อยู่ในมือถือเราเท่านั้น
 > เช็กเสร็จแล้วส่งการ์ดกลับมาในกลุ่มด้วยนะ ว่าบ้านใครพร้อมกี่เปอร์เซ็นต์ 😊
 
@@ -374,7 +375,7 @@ Before posting:
 > ช่วงนี้คนแชร์เรื่องเตรียมถุงยังชีพ 72 ชม. กันเยอะ เลยปัดฝุ่นเว็บฟรีที่เคยทำไว้ 🦎
 > ใส่จำนวนคนในบ้าน + ติ๊กว่ามีใครบ้าง → ได้รายการของจำเป็น พร้อมจำนวนตามบ้านเรา
 > ไม่ต้องสมัคร ที่กรอกอยู่ในเครื่องเรา
-> 👉 https://baanrodmai.autobahn.bot/?open=kit
+> 👉 https://baanrodmai.autobahn.bot/kit
 > #เตรียมพร้อมรับมือภัยพิบัติ
 
 **Facebook album or Instagram carousel:** use the flood set from `/posts` (its caption is ready there). Its link `/flood` has its own preview and, since v1.8.1, links the check and the plan card.
@@ -438,7 +439,7 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 - [ ] Web Analytics enabled; `EVENTS` binding present; Fail open on
 - [ ] Real-phone pass of [06-test-checklist.md](06-test-checklist.md) in LINE, Facebook and TikTok in-app browsers
 - [ ] A content reviewer has looked at the ⚠️ flags in [01-safety-content.md](01-safety-content.md), including the 10 power-cut lessons before the `ready` set is posted widely, and the home check's ⚠️ lines before the check is promoted ([KNOWN_ISSUES #57](KNOWN_ISSUES.md#57-the-home-check-and-plan-card-rest-partly-on-international-guidance))
-- [ ] `/?open=kit` and `/?open=plan` tried on a phone, inside LINE and in the phone's browser (rows 46–48 of [06-test-checklist.md](06-test-checklist.md))
+- [ ] `/kit` and `/plan` (and their buttons into the tools) tried on a phone, inside LINE and in the phone's browser (rows 46–48 of [06-test-checklist.md](06-test-checklist.md)); a guide closes with the phone's back button, and sharing a result to LINE keeps it (rows 55–56, v1.9.1)
 - [ ] The start screen's hub, the alert card, the guide picker inside LINE and print from Chrome or Safari tried on a phone (rows 51–54)
 - [ ] The alert set for what is in the news, or cleared: the build's `start` line shows it, with no warning about a past end date
 - [ ] Posts scheduled for the 06:00 / 12:00 / 20:00 slots; partner kit sent

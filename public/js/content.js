@@ -1,6 +1,6 @@
 // Loads the editable JSON content and provides translation helpers.
 
-import { store } from './util.js';
+import { store, setKeepTogether } from './util.js';
 import { setModes, mk, codesRe, modeLink } from './modes.js';
 
 const FILES = ['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'];
@@ -28,12 +28,17 @@ export async function loadContent() {
     helplines: helplines.helplines,
   };
   setModes(config.modes);
+  setKeepTogether(config.keepTogether);
   const q = new URLSearchParams(location.search).get('lang');
-  setLang(q === 'en' || q === 'th' ? q : pathLang() || store.get('lang', null) || (isBot() ? 'th' : guessLang()));
+  if (q === 'en' || q === 'th') setLang(q, true);
+  else setLang(pathLang() || store.get(LANG_KEY, null) || (isBot() ? 'th' : guessLang()));
   return C;
 }
 
 export const content = () => C;
+// An agency's name in the current language (strings.json → seo.en.agencies);
+// English pages used to show "Source: กรมทรัพยากรธรณี".
+export const agencyName = (a) => (lang === 'en' && C?.strings?.seo?.en?.agencies?.[a]) || a;
 export const getLang = () => lang;
 
 // English pages live under /en/ (/en/, /en/c/p8, /en/checklist/prepare).
@@ -62,9 +67,13 @@ export function langPath(pathname, next) {
   return bare === '/' ? '/en/' : `/en${bare}`;
 }
 
-export function setLang(next) {
+// Only a choice the player made (the language button, ?lang=) is remembered.
+// Opening an English page once used to be remembered too, and then every Thai
+// link opened in English on that phone. A new key drops those old values.
+const LANG_KEY = 'langPick';
+export function setLang(next, remember = false) {
   lang = next === 'en' ? 'en' : 'th';
-  store.set('lang', lang);
+  if (remember) store.set(LANG_KEY, lang);
   document.documentElement.lang = lang;
   document.body.classList.toggle('lang-en', lang === 'en');
   document.body.classList.toggle('lang-th', lang === 'th');

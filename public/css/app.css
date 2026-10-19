@@ -110,6 +110,11 @@ a { color: var(--sky-dark); }
 .link { background: none; border: 0; padding: 10px 6px; min-height: 44px; color: var(--ink-2); text-decoration: underline; cursor: pointer; font-size: 14px; }
 a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 :focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+/* No short word alone on a last line ("ต้องทำ|อะไร"). Compounds that the
+   browser's Thai dictionary splits are wrapped in .nw (util.js → keepWordsIn). */
+p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
+.nw { white-space: nowrap; }
+.hub-text b, .hub-text small, .alert-btn, .guide-name, .mode-name, .mode-desc, .tagline { text-wrap: balance; }
 
 .bubble {
   position: relative;
@@ -252,7 +257,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .book-grid { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; }
 .book-grid li { position: relative; display: flex; align-items: center; justify-content: center; height: 58px; border-radius: 12px; background: var(--miss-bg); border: 2px dashed var(--line); }
 .book-grid svg { width: 44px; height: 38px; filter: grayscale(1) brightness(1.4); opacity: .45; }
-.book-grid span { position: absolute; right: 4px; bottom: 2px; font-size: 13px; }
+.book-grid li > span { position: absolute; right: 4px; bottom: 2px; font-size: 13px; }
 /* Two per row, icon beside the label, so every label stays on one line. */
 .quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .quick-btn {
@@ -274,8 +279,8 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   line-height: 1.25;
   cursor: pointer;
 }
-.quick-btn span:first-child { font-size: 22px; flex: 0 0 auto; }
-.quick-btn span:last-child { text-align: left; }
+.quick-btn > span:first-child { font-size: 22px; flex: 0 0 auto; }
+.quick-btn > span:last-child { text-align: left; }
 .rooms-soon { margin: 0; text-align: center; font-size: 13px; color: var(--ink-2); opacity: .85; }
 .footer { margin-top: auto; text-align: center; font-size: 13px; color: var(--ink-2); }
 .footer p { margin: 0; }
@@ -467,7 +472,9 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .item.is-resolved { cursor: default; }
 .item:not(.is-resolved):hover .sprite { transform: translateY(-3px) scale(1.03); filter: drop-shadow(0 4px 6px rgba(40, 26, 18, .2)); }
 .is-return .item:not(.is-resolved) .sprite { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8)) drop-shadow(0 2px 4px rgba(40, 26, 18, 0.35)); }
-.show-hints .item:not(.is-resolved) .ring {
+/* The idle hint rings the things that need doing only; ringing the decoys too
+   sent people to the one tap that costs 2 seconds. */
+.show-hints .item-target:not(.is-resolved) .ring {
   display: inline;
   stroke: var(--sky);
   stroke-width: 3.5;
@@ -479,7 +486,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   50% { opacity: 0.9; stroke-width: 3.5; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .show-hints .item:not(.is-resolved) .ring { animation: none; opacity: 0.7; }
+  .show-hints .item-target:not(.is-resolved) .ring { animation: none; opacity: 0.7; }
 }
 .item .sprite { transition: transform .5s ease, opacity .5s ease; transform-box: fill-box; transform-origin: 50% 100%; }
 .item.lift .sprite { transform: translateY(-26px); }
@@ -520,12 +527,48 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   overflow-y: auto;
   padding: 8px 16px calc(16px + var(--safe-b));
   border-radius: 24px 24px 0 0;
-  background: var(--bg);
+  /* a soft shadow at the bottom while there is more below (it scrolls away at the end) */
+  background:
+    linear-gradient(rgba(255, 244, 227, 0), var(--bg) 70%) center bottom / 100% 40px no-repeat local,
+    radial-gradient(farthest-side at 50% 100%, rgba(62, 42, 30, .28), transparent) center bottom / 100% 14px no-repeat scroll,
+    var(--bg);
   box-shadow: 0 -8px 30px rgba(40, 26, 18, .25);
   animation: sheet-in .22s ease-out;
 }
 @keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } }
-.sheet-handle { width: 44px; height: 5px; margin: 0 auto 10px; border-radius: 3px; background: var(--line); }
+/* The top bar stays in view while a long sheet scrolls, so ✕ is always one tap
+   away (the phone's back button closes the sheet too, see ui.js). */
+.sheet-top {
+  position: sticky;
+  top: -8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  margin: -8px -16px 0;
+  border-radius: 24px 24px 0 0;
+  background: var(--bg);
+}
+.sheet-handle { width: 44px; height: 5px; border-radius: 3px; background: var(--line); }
+.sheet-x {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.sheet-x:focus-visible { outline-offset: -3px; }
+.sheet.fixed .sheet-x { display: none; }
+.sheet:not(.fixed) .sheet-body > :first-child { padding-right: 36px; }
 .sheet h2 { margin: 0 0 4px; font-size: 22px; line-height: 1.3; }
 .sheet .sub { margin: 0 0 12px; color: var(--ink-2); font-size: 15px; }
 .item-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -609,7 +652,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
   font-size: 18px;
 }
 .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; color: var(--ink-2); font-size: 15px; }
-.stats span { padding: 2px 10px; border-radius: 999px; background: var(--paper); border: 2px solid var(--line); }
+.stats > span { padding: 2px 10px; border-radius: 999px; background: var(--paper); border: 2px solid var(--line); }
 .result-cheer { display: flex; align-items: center; gap: 8px; }
 .result-cheer .gecko-host { flex: 0 0 72px; width: 72px; height: 78px; }
 .result-cheer .bubble { position: relative; margin: 0; flex: 1; font-weight: 600; }
@@ -779,6 +822,17 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 @media (max-height: 520px) {
   .tabs { display: none; }
   .hud { padding: 2px 8px 1px; }
+  /* the how-to's four steps and a choice's three answers fit above the fold */
+  .sheet { max-height: 94%; }
+  .sheet h2 { font-size: 19px; }
+  .howto { gap: 6px; margin: 4px 0 10px; }
+  .howto li { padding: 6px 10px; font-size: 15px; }
+  .howto .n { flex-basis: 28px; height: 28px; }
+  .item-head { margin-bottom: 6px; }
+  .item-head svg { flex-basis: 46px; width: 46px; height: 40px; }
+  .item-head .sub { font-size: 14px; }
+  .choices { gap: 8px; }
+  .choice { min-height: 48px; padding: 6px 12px; font-size: 16px; line-height: 1.3; }
 }
 
 /* ---------- the home check (/?open=kit) and the family plan card (/?open=plan) ---------- */
@@ -802,6 +856,7 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .kit-text { display: flex; flex-direction: column; gap: 2px; font-size: 16px; }
 .kit-qty { color: #1A56B8; font-weight: 600; font-size: 15px; }
 .kit-src { color: var(--ink-2); font-size: 13px; }
+.kit-note { display: block; margin: 6px 0 10px; }
 .plan-form { display: grid; gap: 12px; margin: 8px 0 14px; }
 .plan-field { display: grid; gap: 4px; }
 .plan-label { font-weight: 600; }
@@ -818,14 +873,14 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .hub-ico { flex: 0 0 auto; font-size: 26px; line-height: 1; }
 .hub-text { display: flex; flex-direction: column; min-width: 0; }
 .hub-text b { font-size: clamp(15px, 4.4vw, 18px); line-height: 1.25; }
-.hub-text small { color: var(--ink-2); font-size: clamp(12px, 3.5vw, 13px); line-height: 1.3; }
+.hub-text small { color: var(--ink-2); font-size: 14px; line-height: 1.3; }
 .hub-main .hub-text { flex: 1; }
 .hub-main .hub-text small { color: var(--ink); }
 .hub-go { font-size: 26px; font-weight: 600; }
 .game-label { align-self: stretch; margin: 10px 0 0; color: var(--ink-2); font-size: 15px; font-weight: 600; text-align: left; }
 .alert-card { align-self: stretch; margin: 4px 0 2px; }
 .alert-btn { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 8px 12px; border: 2px solid var(--warn); border-radius: 14px; background: var(--warn-bg); color: var(--ink); font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
-.alert-btn span:nth-child(2) { flex: 1; }
+.alert-btn > span:nth-child(2) { flex: 1; }
 .has-challenge .hub, .has-challenge .game-label, .has-challenge .alert-card { display: none; }
 /* the guide picker and a guide */
 .guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin: 10px 0 14px; }
@@ -838,6 +893,23 @@ a.link { display: inline-block; box-sizing: border-box; line-height: 24px; }
 .check-list .partial { font-size: 14px; }
 .guide-actions { display: grid; gap: 8px; margin: 10px 0 4px; }
 .guide-actions .btn { margin: 0; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+/* Jump to a phase: someone reading during an earthquake wants "during" now. */
+.phase-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 2px; }
+.phase-chip { min-height: 44px; padding: 6px 14px; border: 2px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink-2); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.phase-chip.phase-during { border-color: #E7B98A; color: #9A4A05; }
+.phase { scroll-margin-top: 44px; }
+.tel-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0 2px; font-size: 14px; color: var(--ink-2); }
+.tel-chip { display: inline-grid; place-items: center; min-width: 64px; min-height: 44px; padding: 0 12px; border-radius: 999px; background: #FDE3DA; color: #8A2E12; font-size: 17px; font-weight: 600; text-decoration: none; }
+@media (max-width: 340px) { .tel-row .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+.guide-src { margin: 10px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+.guide-next { margin: 6px 0 4px; }
+.guide-next .btn { margin: 0; }
+.guide-pic { display: flex; align-items: center; gap: 12px; margin: 10px 0; }
+.card-thumb { width: 42%; max-width: 200px; flex: 0 0 auto; }
+.guide-pic .save-hint { margin: 0; }
+.guide-pic:has(.save-hint[hidden]) { justify-content: center; }
+/* Four share buttons sit two by two, not three and one ("บันทึกรูป" alone). */
+.share-grid:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
 
 /* ---------- printing: only #print-area, as a plain A4 list ---------- */
 #print-area { display: none; }

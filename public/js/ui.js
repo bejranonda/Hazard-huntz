@@ -14,6 +14,31 @@ let sheetState = null;
 
 export function sheetOpen() { return !!sheetState; }
 
+// The phone's back button closes the sheet instead of leaving the site (a
+// guide opened from LINE used to drop people back in the chat). An open sheet
+// owns one history entry; closing it any other way removes that entry again,
+// unless another sheet opened straight after and reuses it.
+let historyEntry = false;
+let ignorePop = 0;
+addEventListener('popstate', () => {
+  if (ignorePop) { ignorePop -= 1; return; }
+  if (!historyEntry) return;
+  historyEntry = false;
+  sheetState?.close();
+});
+function claimHistory() {
+  if (historyEntry) return;
+  try { history.pushState({ ...(history.state || {}), brmSheet: 1 }, ''); historyEntry = true; } catch { /* sandboxed */ }
+}
+function releaseHistory() {
+  setTimeout(() => {
+    if (sheetState || !historyEntry) return;
+    historyEntry = false;
+    ignorePop += 1;
+    history.back();
+  }, 0);
+}
+
 export function openSheet(html, { dismissible = true, onClose, label } = {}) {
   const sheet = $('#sheet');
   const backdrop = $('#sheet-backdrop');
@@ -22,7 +47,9 @@ export function openSheet(html, { dismissible = true, onClose, label } = {}) {
   body.innerHTML = html;
   sheet.hidden = false;
   backdrop.hidden = false;
+  sheet.classList.toggle('fixed', !dismissible);
   sheet.scrollTop = 0;
+  claimHistory();
   if (label) sheet.setAttribute('aria-label', label);
   const lastFocus = document.activeElement;
 
@@ -31,12 +58,15 @@ export function openSheet(html, { dismissible = true, onClose, label } = {}) {
     if (e.key === 'Tab') trapFocus(e, sheet);
   };
   const onBackdrop = () => { if (dismissible) close(); };
+  const xBtn = $('#sheet-x');
   document.addEventListener('keydown', onKey);
   backdrop.addEventListener('click', onBackdrop);
+  xBtn?.addEventListener('click', onBackdrop);
 
   const cleanup = (restore = true) => {
     document.removeEventListener('keydown', onKey);
     backdrop.removeEventListener('click', onBackdrop);
+    xBtn?.removeEventListener('click', onBackdrop);
     if (restore && lastFocus && lastFocus.focus) {
       try { lastFocus.focus({ preventScroll: true }); } catch { /* element gone */ }
     }
@@ -50,10 +80,12 @@ export function openSheet(html, { dismissible = true, onClose, label } = {}) {
     body.innerHTML = '';
     cleanup(true);
     cb?.();
+    releaseHistory();
   };
   sheetState = { close, cleanup, onClose };
   requestAnimationFrame(() => {
-    const first = sheet.querySelector('[autofocus], button, a[href], summary');
+    // The sheet's own content first; the ✕ is still a Tab away.
+    const first = body.querySelector('[autofocus], button, a[href], summary') || $('#sheet-x');
     if (first) first.focus({ preventScroll: true });
   });
   return { close, body };

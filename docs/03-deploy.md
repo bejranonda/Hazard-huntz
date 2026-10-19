@@ -22,13 +22,15 @@ Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app 
 | Bindings | `EVENTS` → `baanrodmai_events` (from `wrangler.toml`; needs Analytics Engine enabled once on the account), fail open |
 | API token (`.env`, never committed) | Needs **Account → Cloudflare Pages → Edit** and **Zone → DNS → Edit** on `autobahn.bot`. Add **Account Analytics → Read** for the metrics SQL. |
 | Account prerequisite | **Analytics Engine enabled once**: Workers → Analytics Engine → *Create dataset* `baanrodmai_events`, binding `EVENTS`. Without it the build and file upload succeed but the deploy fails with "You need to enable Analytics Engine" and the site stays down (522). |
-| Not yet done | Web Analytics (dashboard), search-console submission, and a check that pushes to `main` start a build |
+| Not yet done | Search-console submission. Web Analytics looks on: on 19 Oct 2026 the live HTML carried its beacon (`static.cloudflareinsights.com`), with no cookie; the owner confirms it in the dashboard. Pushes to `main` deploy by themselves (verified 10 Oct 2026) |
+| Zone settings seen on 19 Oct 2026 | Every page also loads `/cdn-cgi/challenge-platform/scripts/jsd` (about 12 KB), the zone's "JavaScript detections" (Security → Bots). It isn't the app's; the owner may switch it off if nothing needs it |
 
 Search and AI search:
 
 - `node tools/build.mjs` writes `/learn` (every lesson as plain HTML), `/robots.txt`, `/sitemap.xml` and `/llms.txt`, plus the canonical link and JSON-LD in each page's OG block.
 - Since v1.6.0 it also writes one page per hazard: `public/flood.html`, `public/pm25.html`, `public/fire.html` and, since v1.7.0, `public/ready.html`, each with its twin under `public/en/`. Pages serves them as `/flood`, `/pm25`, `/fire`, `/ready` and `/en/…`, and redirects `/pm25.html` to `/pm25` with a 308. They are generated (never edit them by hand), listed in the sitemap, and their names come from `config.json → hazards`; never change a name once it is published.
 - Since v1.6.1 it writes `public/posts.html` (`/posts`): the carousel images with their captions, for whoever posts for the game (four sets since v1.7.0: `flood`, `pm25`, `fire`, `ready`). It has `noindex` in the page and in `_headers`, and isn't in the sitemap. The images themselves come from `npm run images` and are committed, like the link previews; the build warns when they are older than the lesson text.
+- Since v1.9.1 it writes `public/404.html` (Thai and English, `noindex`). With a top-level `404.html`, Pages answers unknown addresses with it and status 404; without one it served the start screen with a 200 for any address. Check after a deploy: `curl -s -o /dev/null -w '%{http_code}' https://baanrodmai.autobahn.bot/no-such-page` prints 404. The `/checklist/<id>` pages point their canonical at the hazard page (`/quake`) since v1.9.1.
 - `_headers` adds `X-Robots-Tag: noindex` on `*.pages.dev`, so only the custom domain is indexed.
 - After the first deploy, submit `https://baanrodmai.autobahn.bot/sitemap.xml` in Google Search Console and Bing Webmaster Tools. Bing's index also feeds Copilot and other AI search tools.
 - Leave Cloudflare's "Block AI bots" and managed robots.txt **off** for this hostname. The game is public safety content and should be readable by AI assistants.

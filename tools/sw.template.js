@@ -19,7 +19,10 @@ self.addEventListener('install', (event) => {
     const cache = await caches.open(CACHE);
     await Promise.all(PRECACHE.map(async (url) => {
       try {
-        const res = await fetch(new Request(url, { cache: 'reload' }));
+        // 'no-cache' asks the server whether the copy the page just loaded is
+        // still current (a 304 of a few hundred bytes), instead of 'reload',
+        // which downloaded all ~270 KB a second time on a first visit.
+        const res = await fetch(new Request(url, { cache: 'no-cache' }));
         if (res.ok && !res.redirected) await cache.put(url, res);
       } catch { /* offline during install: the file is fetched later */ }
     }));

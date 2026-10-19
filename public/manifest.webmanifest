@@ -10,9 +10,9 @@
   "background_color": "#FFF4E3",
   "theme_color": "#FFF4E3",
   "shortcuts": [
-    { "name": "บ้านเราพร้อมแค่ไหน?", "short_name": "เช็กบ้าน", "url": "/?open=kit&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?", "short_name": "เช็กของ", "url": "/?open=kit&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
     { "name": "ต้องทำอะไร เมื่อเกิดภัย", "short_name": "ต้องทำอะไร", "url": "/?open=guide&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
-    { "name": "แผนบ้านรอดของบ้านเรา", "short_name": "แผนบ้าน", "url": "/?open=plan&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+    { "name": "แผนครอบครัวของบ้านเรา", "short_name": "แผนครอบครัว", "url": "/?open=plan&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ],
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },

@@ -23,13 +23,13 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `checklist_save` | A guide's picture shared or saved | the guide's id | `native` / `line` / `facebook` / `copy` / `save` | – |
 | `guide_open` (v1.9.0) | The guide picker opened | – | `start` (the hub's "📋 ต้องทำอะไร เมื่อเกิดภัย") / `link` (`/?open=guide`, also the app's shortcut) / `guide` ("← เรื่องอื่น" from a guide) | – |
 | `print` (v1.9.0) | "🖨️ พิมพ์เก็บไว้" tapped (never in in-app browsers, which hide it) | the guide's id, or – for the home check | `guide` / `kit` | – |
-| `help_click` | Helpline tapped (tel:) | mode or – | the number, e.g. `1784` | – |
+| `help_click` | Helpline tapped (tel:) | mode or –; since v1.9.1 the guide's id for a guide's ☎️ chips | the number, e.g. `1784` | – |
 | `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0), or a hazard page from a guide's "📖" (v1.9.0) | – | the topic (e.g. `health`), `book`, or the guide's id (e.g. `quake`) | – |
-| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) | – |
+| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
 | `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 (%) |
-| `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) | – |
+| `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
 | `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
 
 ## The numbers you asked for
@@ -198,6 +198,16 @@ GROUP BY day, event ORDER BY day
 ```
 
 Share rate of a guide = its `checklist_save` row ÷ its `checklist_open` row (both counted per action, not per person). **[unverified]** on real data; no players yet.
+
+## Visitor audit 2 (v1.9.1)
+
+**No new events.** v1.9.1 added no event and changed no allowlist ([KNOWLEDGE §30](KNOWLEDGE.md#30-visitor-audit-2-v191)). What changes in the numbers:
+
+- **New label values.** A guide's ☎️ chips send `help_click` with the guide's id as the mode (the hazard pages' ☎️ row runs no script, so it isn't counted); a guide's "เตรียมบ้านต่อ" buttons send `kit_open` or `plan_open` with the label `guide`. A page never visited, opened offline (`/quake`, `/kit`), now opens its guide or tool: `checklist_open`, `kit_open` or `plan_open` with the label `link`.
+- **Fewer accidental English visitors.** Since only a chosen language is remembered (`brm:langPick`), phones that had picked up English from one look at `/en/` are Thai again, so the `en` share of events (`blob4`) may drop after 19 Oct 2026 without fewer English players.
+- **Sharing returns to the game.** Sharing to LINE, Facebook or X no longer sends the game's tab away, so what happens after `share_click` (a second share, `round_start` again, `checklist_open` from the result) can rise; compare a week before and after.
+- **Prepare scores.** The flood's water curve changed, so `round_end` scores for `prepare` are not strictly comparable before and after 19 Oct 2026; split any trend at that date.
+- **Web Analytics** looks on since the audit (its beacon is in the live HTML), so page views by path (the hazard pages, `/kit`, `/plan`, the 404 page) should appear there; the owner confirms it ([ROADMAP L1](ROADMAP.md#l1-create-the-cloudflare-pages-project)). **[unverified]** until the dashboard shows data.
 
 ## Thai and English split
 

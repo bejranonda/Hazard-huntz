@@ -29,6 +29,71 @@ export function esc(str) {
   ));
 }
 
+// Thai has no spaces between words, and the browser's dictionary splits some
+// compounds across lines ("กระ|จก", "แข็ง|แรง", "ไฟ|ดับ"). The words in
+// config.json → keepTogether are wrapped in <span class="nw"> (white-space:
+// nowrap) once they are on the page. A span doesn't change the text the
+// dictionary reads; an invisible joiner inside the word did, and moved the
+// break next to it instead ("ขอ|งกรมอุตุฯ").
+let keepRe = null;
+export function setKeepTogether(words = []) {
+  keepRe = words.length ? new RegExp([...words].sort((a, b) => b.length - a.length).join('|'), 'g') : null;
+}
+// Spans [start, end) of kept words, for code that wraps text itself (cards).
+export function keptSpans(s) {
+  const out = [];
+  if (!keepRe) return out;
+  keepRe.lastIndex = 0;
+  for (const m of String(s).matchAll(keepRe)) out.push([m.index, m.index + m[0].length]);
+  return out;
+}
+const SKIP = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'OPTION', 'TITLE']);
+const XHTML = 'http://www.w3.org/1999/xhtml'; // never inside SVG text
+export function keepWordsIn(root) {
+  if (!keepRe || !root) return;
+  const nodes = [];
+  if (root.nodeType === 3) nodes.push(root);
+  else {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
+  }
+  for (const n of nodes) {
+    const parent = n.parentNode;
+    if (!parent || SKIP.has(parent.nodeName) || parent.namespaceURI !== XHTML || parent.classList.contains('nw') || !/[\u0E00-\u0E7F]/.test(n.data)) continue;
+    if (!n.data.match(keepRe)) continue; // (match with a /g pattern leaves lastIndex at 0)
+    const frag = document.createDocumentFragment();
+    let at = 0;
+    for (const m of n.data.matchAll(keepRe)) {
+      if (m.index > at) frag.append(n.data.slice(at, m.index));
+      const span = document.createElement('span');
+      span.className = 'nw';
+      span.textContent = m[0];
+      frag.append(span);
+      at = m.index + m[0].length;
+    }
+    if (at < n.data.length) frag.append(n.data.slice(at));
+    // In a flex or grid box each piece would become its own item (a gap opened
+    // in "ทำแผน ครอบครัว"), so the line goes in as one inline span there.
+    const display = getComputedStyle(parent).display;
+    if (/flex|grid/.test(display)) {
+      const one = document.createElement('span');
+      one.append(frag);
+      parent.replaceChild(one, n);
+    } else parent.replaceChild(frag, n);
+  }
+}
+// Keep words together in everything the app puts on the page from now on.
+export function observeKeptWords(root = document.body) {
+  if (!keepRe || typeof MutationObserver === 'undefined') return;
+  keepWordsIn(root);
+  new MutationObserver((records) => {
+    for (const r of records) {
+      if (r.type === 'characterData') keepWordsIn(r.target);
+      else for (const n of r.addedNodes) if (n.nodeType === 1 || n.nodeType === 3) keepWordsIn(n);
+    }
+  }).observe(root, { childList: true, subtree: true, characterData: true });
+}
+
 // localStorage can throw in private modes and some in-app browsers, so every
 // access is guarded and the game keeps working with in-memory state.
 const memory = new Map();

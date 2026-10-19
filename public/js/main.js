@@ -1,10 +1,10 @@
 // บ้านรอดไหม? — boot, screens and the game loop.
 
-import { $, $$, esc, store, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from './util.js';
+import { $, $$, esc, observeKeptWords, store, bangkokDateKey, formatHouseDate, inAppBrowser, wait } from './util.js';
 import { randomHouseKey, isValidHouseKey } from './rng.js';
 import {
   loadContent, content, t, L, setLang, getLang, pickLine, pickLineFor, rankTitle, sourceList,
-  siteUrl, forecastUrl, applyStaticStrings, langPath, tm,
+  siteUrl, forecastUrl, applyStaticStrings, langPath, tm, agencyName,
 } from './content.js';
 import { modeList, modeIds, modeOf, mk, cap, recommend, activeAlert } from './modes.js';
 import { APP_VERSION } from './version.js';
@@ -79,6 +79,7 @@ async function boot() {
   const C = content();
   if (C.config.version && C.config.version !== APP_VERSION && await refreshStaleApp(C.config.version)) return;
   applyStaticStrings();
+  observeKeptWords();
   heroGecko = new Gecko($('#hero-gecko'), { title: 'น้องจก' });
 
   syncLangPath();
@@ -97,7 +98,14 @@ async function boot() {
   const open = new URLSearchParams(location.search).get('open') || '';
   const ids = guideIds().join('|');
   const cl = new RegExp(`^(?:/en)?/checklist/(${ids})/?$`).exec(location.pathname);
+  // Offline, the service worker answers a page it never saved (/quake, /kit)
+  // with this app: open what that page is about instead of the start screen.
+  const page = /^(?:\/en)?\/([a-z][a-z0-9-]*)\/?$/.exec(location.pathname)?.[1];
+  const hazard = page && Object.keys(C.config.hazards || {}).find((h) => C.config.hazards[h].slug === page);
+  const pageGuide = hazard && guideList().find((g) => g.hazard === hazard)?.id;
   if (cl) openChecklist(cl[1], 'link');
+  else if (pageGuide) openChecklist(pageGuide, 'link');
+  else if (page === 'kit' || page === 'plan') openTool(page, 'link');
   else if (new RegExp(`^checklist-(${ids})$`).test(open)) openChecklist(open.split('-')[1], 'link');
   else if (open === 'guide') openGuides('link');
   else if (open === 'help') openHelp();
@@ -287,7 +295,7 @@ function bindGlobal() {
 
   $('#btn-lang').textContent = t('langSwitch');
   $('#btn-lang').addEventListener('click', () => {
-    setLang(getLang() === 'th' ? 'en' : 'th');
+    setLang(getLang() === 'th' ? 'en' : 'th', true);
     syncLangPath();
     track('lang', { label: getLang() });
     $('#btn-lang').textContent = t('langSwitch');
@@ -331,7 +339,7 @@ function showHowto(mode, onStart) {
   const steps = t(mk('howto', mode));
   openSheet(`
     <h2 id="sheet-title">${esc(t(mk('howtoTitle', mode)))}</h2>
-    <ol class="howto">${steps.map((s, i) => `<li><span class="n">${i + 1}</span><span>${esc(s)}</span></li>`).join('')}</ol>
+    <ol class="howto">${steps.map((s, i) => `<li><span class="n">${i + 1}</span><span>${esc(s.replace('{d}', content().config.round.decoyPenaltySec))}</span></li>`).join('')}</ol>
     <p class="sub">👉 ${esc(t('howtoSwipe'))}</p>
     <button class="btn" type="button" id="howto-go" autofocus>${esc(t('startBtn'))}</button>`, { dismissible: false });
   $('#howto-go').addEventListener('click', () => {
@@ -382,7 +390,7 @@ async function startRound() {
   });
   state.round = round;
   updateHud();
-  state.scene.updateCounts(round.records);
+  state.scene.updateCounts(round.records, tm('lostMark', mode));
   state.scene.setThreat(threatLevel(round));
   $('#gauge').classList.remove('low');
   state.target = run.kind === 'challenge' && state.challenge ? state.challenge.score : null;
@@ -449,8 +457,11 @@ function updateHud() {
     ? `${t('darkHours', { h: Math.floor(r.hoursOut) })} · ${t('seconds', { s: Math.ceil(r.remaining) })}`
     : t('seconds', { s: Math.ceil(r.remaining) });
   $('#gauge-label').textContent = state.target != null ? `${secs} · 🏆 ${t('challengeTarget', { score: state.target })}` : secs;
-  const done = [...r.records.values()].filter((x) => x.status !== STATUS.PENDING).length;
-  $('#hud-score').textContent = t('scoreHud', { done, total: r.records.size });
+  // Done means the player handled it; what the water (smoke, dark) took is counted apart.
+  const recs = [...r.records.values()];
+  const done = recs.filter((x) => x.status === STATUS.CORRECT || x.status === STATUS.LEARNED).length;
+  const lost = recs.filter((x) => x.status === STATUS.FLOODED).length;
+  $('#hud-score').textContent = `${t('scoreHud', { done, total: r.records.size })}${lost ? ` ${tm('lostMark', r.mode)}${lost}` : ''}`;
 }
 
 function stagePoint(p) {
@@ -541,7 +552,7 @@ function sourcesLine(ids) {
   for (const s of list) {
     if (seen.has(s.agency)) continue;
     seen.add(s.agency);
-    links.push(`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.agency)}</a>`);
+    links.push(`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(agencyName(s.agency))}</a>`);
   }
   return `<span class="src">${esc(t('source'))}: ${links.join(' · ')}</span>`;
 }
@@ -581,7 +592,7 @@ function onChoice(p, choice, variant, choices) {
     state.scene.mark(p, 'learned');
     say(pickLine('geckoWrong'), 1800);
   }
-  state.scene.updateCounts(r.records);
+  state.scene.updateCounts(r.records, tm('lostMark', r.mode));
   updateHud();
 
   const right = choices.find((c) => c.correct);
@@ -658,7 +669,7 @@ function pauseGame(showSheet) {
 
 function onFlood(p) {
   state.scene.mark(p, 'flooded');
-  state.scene.updateCounts(state.round.records);
+  state.scene.updateCounts(state.round.records, tm('lostMark', state.round.mode));
   play(modeOf(state.round.mode)?.threat === 'smoke' ? 'puff' : 'blub');
   const now = performance.now();
   if (now - state.lastFloodLine > 3000) {
@@ -699,7 +710,7 @@ function gridOf(result) {
 }
 
 function emojiGrid(mode, grid) {
-  const lost = { water: '💧', smoke: '💨', dark: '🌑' }[modeOf(mode)?.threat] || '⬜';
+  const lost = tm('lostMark', mode); // the same mark as the HUD and the room tabs
   const map = { correct: '✅', learned: '💡', flooded: lost, missed: '⬜' };
   return grid.map((s) => map[s] || '⬜').join('');
 }
@@ -713,6 +724,8 @@ async function showResult(result) {
   const site = siteUrl();
   const cUrl = challengeUrl(site, mode, result.score10, run.houseKey, getLang());
   const grid = gridOf(result);
+  // Lost to the water, smoke or dark: then "N s left" would read as a win.
+  const lostN = result.records.filter((r) => r.status === STATUS.FLOODED).length;
   const headlineKey = mk('result', mode);
   const houseText = run.kind === 'random' ? t('cardRandomHouse') : t('cardHouse', { date: houseLabel(run.houseKey) });
   const shareText = t(mk('shareText', mode), {
@@ -740,7 +753,8 @@ async function showResult(result) {
   const me = result.score10;
   const vs = isChallenge
     ? (() => {
-      const line = me > them ? t('versusWin') : me === them ? t('versusTie') : t('versusLose');
+      // "So close" only when it was (1–2 points); 5 against 8 isn't.
+      const line = me > them ? t('versusWin') : me === them ? t('versusTie') : t(them - me <= 2 ? 'versusLose' : 'versusLoseFar');
       return `<div class="versus">${esc(t('versus', { me: `${me}/10`, them: `${them}/10` }))}<br>${esc(line)}</div>`;
     })() : '';
   const perfect = me === 10;
@@ -748,7 +762,10 @@ async function showResult(result) {
   // The ending answers "บ้านรอดไหม?": the same line on the screen and on the card.
   const ending = pickLineFor(cheerKey, mode);
 
-  const lessons = state.house.targets.map((p) => {
+  // What to learn first: wrong answers, then what was lost or missed, then the right ones.
+  const order = { learned: 0, flooded: 1, missed: 2, correct: 3 };
+  const statusOf = (p) => result.records.find((r) => r.pid === p.pid).status;
+  const lessons = [...state.house.targets].sort((a, b) => order[statusOf(a)] - order[statusOf(b)]).map((p) => {
     const rec = result.records.find((r) => r.pid === p.pid);
     const data = rec.variant === 'wet' ? p.ref.wet : p.ref;
     const st = rec.status;
@@ -784,7 +801,7 @@ async function showResult(result) {
     <div class="stats">
       <span>${esc(t('statCorrect', { c: result.correct, n: result.total }))}</span>
       ${modeOf(mode)?.bonus && result.criticalTotal ? `<span>${esc(t('statBonus', { b: result.bonusHits }))}</span>` : ''}
-      <span>${esc(t('statTime', { t: result.timeLeft }))}</span>
+      ${lostN ? `<span>${esc(tm('lostMark', mode))} ${esc(t('statLost', { what: tm('stFlooded', mode), n: lostN }))}</span>` : `<span>${esc(t('statTime', { t: result.timeLeft }))}</span>`}
     </div>
     ${added.length ? `<button class="book-chip is-new" type="button" id="btn-book-new">${esc(t('bookNew', { n: added.length, have: book.n, total: book.total }))}</button>` : ''}
     ${vs}
@@ -989,12 +1006,20 @@ async function openGuides(from = 'start') {
 }
 
 // The guide's lines, grouped by phase (before, during, after) when it has them.
+// A guide can name its phases (checklists.json → phaseNames, e.g. heat).
 function guideSections(list) {
   const phases = ['before', 'during', 'after'].filter((p) => list.items.some((it) => it.phase === p));
   if (!phases.length) return [{ head: '', items: list.items }];
-  return phases.map((p) => ({ head: t(mk('phase', p)), phase: p, items: list.items.filter((it) => it.phase === p) }));
+  return phases.map((p) => ({
+    head: list.phaseNames?.[p] ? L(list.phaseNames[p]) : t(mk('phase', p)),
+    phase: p,
+    items: list.items.filter((it) => it.phase === p),
+  }));
 }
 
+// One guide: the lines first (with a jump to "during" for someone reading it
+// while it happens, and the helplines), then what to do next for the home,
+// then passing it on.
 async function openChecklist(mode, from = '') {
   const C = content();
   const list = C.checklists[mode];
@@ -1003,33 +1028,49 @@ async function openChecklist(mode, from = '') {
   const g = guideOf(mode);
   const hz = g && C.config.hazards?.[g.hazard];
   const pre = getLang() === 'en' ? '/en' : '';
+  const sections = guideSections(list);
   const row = (it) => `<li><span>${esc(it.icon)} ${esc(L(it))}${it.verify === 'partial' ? ' <span class="partial">⚠️</span>' : ''}</span></li>`;
   let n = 0;
-  const listHtml = guideSections(list).map((sec) => {
+  const listHtml = sections.map((sec) => {
     const start = n + 1;
     n += sec.items.length;
-    return `${sec.head ? `<h3 class="phase phase-${sec.phase}">${esc(sec.head)}</h3>` : ''}<ol class="check-list" start="${start}" style="counter-reset: c ${start - 1}">${sec.items.map(row).join('')}</ol>`;
+    return `${sec.head ? `<h3 class="phase phase-${sec.phase}" id="gp-${sec.phase}">${esc(sec.head)}</h3>` : ''}<ol class="check-list" start="${start}" style="counter-reset: c ${start - 1}">${sec.items.map(row).join('')}</ol>`;
   }).join('');
-  const agencies = [...new Set(list.items.flatMap((it) => it.sources || []).map((s) => C.sources[s]?.agency).filter(Boolean))];
+  const agencies = [...new Set(list.items.flatMap((it) => it.sources || []).map((s) => C.sources[s]?.agency).filter(Boolean))].map(agencyName);
   const partial = list.items.some((it) => it.verify === 'partial');
+  const calls = C.helplines.filter((h) => h.main).slice(0, 3);
+  const tools = (hz?.tools || []).filter((x) => x === 'kit' || x === 'plan');
   openSheet(`
     <h2 id="sheet-title">${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
+    ${sections.length > 1 ? `<nav class="phase-jump" aria-label="${esc(t('guideJump'))}">${sections.map((sec) => `<button class="phase-chip phase-${sec.phase}" type="button" data-jump="${sec.phase}">${esc(sec.head)}</button>`).join('')}</nav>` : ''}
+    <p class="tel-row"><span>☎️ <span class="lbl">${esc(t('telFree'))}</span></span>${calls.map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}" data-help="${esc(h.number)}">${esc(h.number)}</a>`).join('')}</p>
     ${listHtml}
-    ${agencies.length ? `<p class="src">${esc(t('source'))}: ${esc(agencies.join(' · '))}</p>` : ''}
-    ${partial ? `<p class="src">${esc(t('guidePartial'))}</p>` : ''}
+    ${agencies.length || partial ? `<p class="src guide-src">${agencies.length ? `${esc(t('source'))}: ${esc(agencies.join(' · '))}` : ''}${partial ? `<br>${esc(t('guidePartial'))}` : ''}</p>` : ''}
     <div class="guide-actions">
       ${modeIds().includes(mode) ? `<button class="btn" type="button" id="cl-play">${esc(t('guidePlay'))}</button>` : ''}
       ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
     </div>
+    ${tools.length ? `<h3>${esc(t('guideNext'))}</h3>
+    <div class="btn-row guide-next">${tools.map((x) => `<button class="btn secondary small" type="button" data-tool="${x}">${x === 'kit' ? '🎒' : '📝'} ${esc(t(x === 'kit' ? 'hubKit' : 'hubPlan'))}</button>`).join('')}</div>` : ''}
     <h3>${esc(t('guideShare'))}</h3>
     <div class="share-grid" id="cl-share"></div>
-    <p class="save-hint" id="cl-hint" hidden>💡 ${esc(t('saveHint'))}</p>
-    <img class="card-preview" id="cl-img" alt="${esc(L(list.title))}">
+    <div class="guide-pic">
+      <img class="card-preview card-thumb" id="cl-img" alt="${esc(L(list.title))}">
+      <p class="save-hint" id="cl-hint" hidden>💡 ${esc(t('saveHint'))}</p>
+    </div>
+    ${inAppBrowser() === 'line' ? `<a class="link" href="${esc(lineExternalUrl(location.href))}">${esc(t('openExternal'))}</a>` : ''}
     ${canPrint() ? `<button class="btn secondary small" type="button" id="cl-print">${esc(t('printBtn'))}</button>` : ''}
-    <button class="btn secondary small" type="button" id="cl-back">${esc(t('guideBack'))}</button>
-    <button class="btn secondary small" type="button" id="cl-close">${esc(t('close'))}</button>`, { label: L(list.title) });
+    <div class="btn-row">
+      <button class="btn secondary small" type="button" id="cl-back">${esc(t('guideBack'))}</button>
+      <button class="btn secondary small" type="button" id="cl-close">${esc(t('done'))}</button>
+    </div>`, { label: L(list.title) });
   $('#cl-close').addEventListener('click', () => closeSheet());
   $('#cl-back').addEventListener('click', () => openGuides('guide'));
+  for (const b of $$('[data-jump]', $('#sheet'))) {
+    b.addEventListener('click', () => $(`#gp-${b.dataset.jump}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
+  for (const a of $$('.tel-chip', $('#sheet'))) a.addEventListener('click', () => track('help_click', { label: a.dataset.help, mode }));
+  for (const b of $$('[data-tool]', $('#sheet'))) b.addEventListener('click', () => openTool(b.dataset.tool, 'guide'));
   $('#cl-play')?.addEventListener('click', () => {
     closeSheet();
     track('mode_select', { mode, label: 'guide' });
@@ -1041,7 +1082,7 @@ async function openChecklist(mode, from = '') {
     printList({
       brand: `${t('logoA')}${t('logoB')}`,
       title: L(list.title),
-      sections: guideSections(list).map((sec) => ({ head: sec.head, items: sec.items.map((it) => ({ text: L(it), note: it.verify === 'partial' ? t('partialItem') : '' })) })),
+      sections: sections.map((sec) => ({ head: sec.head, items: sec.items.map((it) => ({ text: L(it), note: it.verify === 'partial' ? t('partialItem') : '' })) })),
       foot: [
         agencies.length ? `${t('source')}: ${agencies.join(' · ')}` : '',
         `${t('clHelpLabel')}: ${C.helplines.filter((h) => h.main).map((h) => h.number).join(' · ')}`,
@@ -1059,7 +1100,8 @@ async function openChecklist(mode, from = '') {
   if (!img) return; // sheet closed meanwhile
   img.src = await imageSrc(blob);
   const url = `${siteUrl()}${pre}/checklist/${mode}`;
-  const text = t('shareTextChecklist', { title: L(list.title), url });
+  // Only a guide with a game invites people to play it.
+  const text = t(modeIds().includes(mode) ? 'shareTextChecklist' : 'shareTextGuide', { title: L(list.title), url });
   let file = null;
   try { file = new File([blob], `baanrodmai-checklist-${mode}.png`, { type: 'image/png' }); } catch { /* old browser */ }
   const saveOk = canDownload();
@@ -1175,7 +1217,7 @@ function openAbout() {
     byAgency.get(s.agency).push(s);
   }
   const srcHtml = [...byAgency.entries()].map(([agency, list]) => `
-    <li><b>${esc(agency)}</b><ul>${list.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}${s.date ? `<span class="tag">(${esc(s.date)})</span>` : ''}</a></li>`).join('')}</ul></li>`).join('');
+    <li><b>${esc(agencyName(agency))}</b><ul>${list.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}${s.date ? `<span class="tag">(${esc(s.date)})</span>` : ''}</a></li>`).join('')}</ul></li>`).join('');
   openSheet(`
     <h2 id="sheet-title">${esc(t('aboutTitle'))}</h2>
     <p>${esc(t('aboutIntro'))}</p>

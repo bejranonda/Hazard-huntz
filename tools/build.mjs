@@ -235,6 +235,10 @@ for (const g of GUIDES) {
   if (!strings.og?.[`checklistTitle${capM(g.id)}`] || !strings.ogEn?.[`checklistTitle${capM(g.id)}`]) err(`strings.json: og/ogEn.checklistTitle${capM(g.id)} is missing`);
   const list = checklists[g.id];
   if (!list) { err(`checklists.json: "${g.id}" is missing (it is in config.json → guides)`); continue; }
+  for (const [p, nm] of Object.entries(list.phaseNames || {})) {
+    if (!list.items.some((x) => x.phase === p)) err(`checklists.json ${g.id}: phaseNames.${p} names a phase no line has`);
+    for (const l of LANGS) if (!nm?.[l]) err(`checklists.json ${g.id}: phaseNames.${p}.${l} is missing`);
+  }
   if (mode) continue; // checked with the modes below
   if (list.items.length !== 10) err(`checklists.json: "${g.id}" must have exactly 10 items`);
   let last = 0;
@@ -260,6 +264,22 @@ if (ALERT.guide != null) {
   if (!GUIDE_IDS.includes(ALERT.guide)) err(`config.json: alert.guide "${ALERT.guide}" is not a guide`);
   if (!realDay(ALERT.until)) err('config.json: alert.until must be a real date YYYY-MM-DD (an alert always ends by itself)');
   else if (ALERT.until < TODAY) warn(`config.json: alert.until (${ALERT.until}) has passed, so the alert is off; clear it or give a new end date`);
+}
+// Thai words that never break across lines (util.js → keepWords). Short, Thai
+// only: a long glued run could stop a narrow line from breaking at all.
+{
+  const KEEP = config.keepTogether || [];
+  if (!Array.isArray(KEEP)) err('config.json: keepTogether must be a list of Thai words');
+  else {
+    const allTh = JSON.stringify([strings.th, itemsFile, checklists, readJSON('content/kit.json')]);
+    const seen = new Set();
+    for (const w of KEEP) {
+      if (typeof w !== 'string' || !/^[฀-๿]{2,14}$/.test(w)) err(`config.json: keepTogether "${w}" must be 2–14 Thai letters`);
+      else if (seen.has(w)) err(`config.json: keepTogether "${w}" is listed twice`);
+      else if (!allTh.includes(w)) warn(`config.json: keepTogether "${w}" appears in no Thai text; remove it`);
+      seen.add(w);
+    }
+  }
 }
 
 for (const mode of MODE_IDS) {
@@ -427,6 +447,18 @@ const indexLd = {
 // version shows even before the script runs.
 if (config.version !== pkgVersion) err(`config.json version "${config.version}" must equal package.json version "${pkgVersion}"`);
 indexHtml = indexHtml.replace(/(<div class="app-version" id="app-version">)[^<]*(<\/div>)/, `$1v${pkgVersion}$2`);
+// The owner's alert is written into the page, so the hub doesn't jump down when
+// the script adds it on a slow connection (79 px at 2.75 s on slow 4G). The
+// script still hides it after its end date and under a friend's challenge.
+const ALERT_RE = /<div class="alert-card" id="alert-card"[^>]*>(?:<button[\s\S]*?<\/button>)?<\/div>/;
+const alertHtml = (S) => {
+  if (!(ALERT.guide && GUIDE_IDS.includes(ALERT.guide) && ALERT.until >= TODAY)) return '<div class="alert-card" id="alert-card" hidden></div>';
+  const g = GUIDES.find((x) => x.id === ALERT.guide);
+  const text = fill(S.alertCard, { name: S[`guide${capM(ALERT.guide)}`] });
+  return `<div class="alert-card" id="alert-card"><button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(g.icon || '📢')}</span><span>${esc(text)}</span><span aria-hidden="true">›</span></button></div>`;
+};
+if (!ALERT_RE.test(indexHtml)) err('index.html: the #alert-card element is missing');
+indexHtml = indexHtml.replace(ALERT_RE, alertHtml(strings.th));
 // The start screen's static Thai text comes from strings.json, as the English
 // page's does: text edited there can't go stale in index.html (rule 59).
 indexHtml = indexHtml.replace(/(<([a-z0-9]+)\b[^>]*\bdata-i18n="(\w+)"[^>]*>)([^<]*)(<\/\2>)/g,
@@ -451,6 +483,7 @@ const localize = (html) => html
     (m, open, tag, key, text, close) => (typeof enText[key] === 'string' ? `${open}${esc(enText[key])}${close}` : m))
   .replace(/(<[^>]*\bdata-i18n-aria="(\w+)"[^>]*>)/g,
     (tag, _, key) => (typeof enText[key] === 'string' ? tag.replace(/aria-label="[^"]*"/, `aria-label="${esc(enText[key])}"`) : tag))
+  .replace(ALERT_RE, alertHtml(enText))
   .replace(/href="\/learn"/g, `href="${EN}/learn"`)
   .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2');
 const enIndexLd = JSON.parse(JSON.stringify(indexLd));
@@ -481,18 +514,21 @@ for (const { code: m, id: mode } of MODES) {
   }
 }
 // One shareable "what to do" page per guide (/checklist/<id>), game or not:
-// the app opens on that guide, and the link preview is its picture.
+// the app opens on that guide, and the link preview is its picture. Search
+// engines are pointed at the hazard's own page, which has the same list as
+// text (the canonical used to be the start screen, so neither was indexed).
 for (const id of GUIDE_IDS) {
   const cap = capM(id);
+  const slug = config.hazards[GUIDES.find((g) => g.id === id).hazard]?.slug;
   const ct = og[`checklistTitle${cap}`];
   write(`checklist/${id}.html`, page(indexHtml, ogBlock({
     title: ct, desc: og.checklistDesc, image: `/og/checklist-${id}.png`, alt: ct, url: `${SITE}/checklist/${id}`,
-    alternates: alt(`/checklist/${id}`, `${EN}/checklist/${id}`),
+    canonical: slug ? `${SITE}/${slug}` : `${SITE}/`,
   }), `${ct} · บ้านรอดไหม?`));
   const cte = ogEn[`checklistTitle${cap}`];
   write(`en/checklist/${id}.html`, page(enIndexHtml, ogBlock({
     title: cte, desc: ogEn.checklistDesc, image: `/og/en/checklist-${id}.png`, alt: cte, url: `${SITE}${EN}/checklist/${id}`,
-    canonical: `${SITE}${EN}/`, lang: 'en', alternates: alt(`/checklist/${id}`, `${EN}/checklist/${id}`),
+    canonical: slug ? `${SITE}${EN}/${slug}` : `${SITE}${EN}/`, lang: 'en',
   }), `${cte} · Baan Rod Mai?`));
 }
 
@@ -557,6 +593,7 @@ const learnLd = {
 // One template for every plain page (/learn, the hazard pages, both languages).
 const SEO_CSS = `body{margin:0;background:#FFF4E3;color:#2b2118;font:17px/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
 main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+.nw{white-space:nowrap}p,li,h1,h2,h3{text-wrap:pretty}
 h1{font-size:1.6em;line-height:1.3;margin:.3em 0}h2{margin-top:2em;border-bottom:3px solid #f2c48d}
 h3{margin:0 0 .2em;font-size:1.1em}article{background:#fff;border-radius:14px;padding:14px 16px;margin:14px 0}
 article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{display:inline;margin-left:.3em}
@@ -567,7 +604,17 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 .src a,.help a{min-width:44px;text-align:center}
 .tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .tix li{margin:0}.tix a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
-.top a,.check a{display:inline-flex;align-items:center;min-height:44px}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}`;
+.top a,.check a{display:inline-flex;align-items:center;min-height:44px}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.jump a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:2px solid #f2c48d;border-radius:999px;background:#fff;text-decoration:none;font-size:.92em;box-sizing:border-box}
+.tel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tel a{display:inline-grid;place-items:center;min-width:64px;min-height:44px;padding:0 12px;border-radius:999px;background:#FDE3DA;color:#8A2E12;font-weight:600;text-decoration:none;box-sizing:border-box}
+h2,h3{scroll-margin-top:8px}.top{font-size:.9em;margin:0}
+h2 .en{display:inline;margin-left:.4em;font-size:.7em}
+@media (max-width:380px){.tel .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}h1{font-size:1.3em;line-height:1.25;margin:.2em 0}h2{font-size:1.2em;margin-top:.9em}.tel a{min-width:56px}.jump,.tel{margin:4px 0}main{padding-top:8px}.top{font-size:.85em}}`;
+// Thai words in config.json → keepTogether never break across lines (the
+// same <span class="nw"> the app adds, util.js → keepWordsIn): text only,
+// never inside a tag or an attribute.
+const KEEP_RE = (config.keepTogether || []).length ? new RegExp([...config.keepTogether].sort((a, b) => b.length - a.length).join('|'), 'g') : null;
+const keepHtml = (html) => (KEEP_RE ? html.split(/(<[^>]*>)/).map((part, i) => (i % 2 ? part : part.replace(KEEP_RE, '<span class="nw">$&</span>'))).join('') : html);
 const seoPage = ({ lang, title, desc, url, thPath, enPath, image, ld, main }) => `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -585,18 +632,19 @@ ${alt(thPath, enPath).map(([hl, href]) => `<link rel="alternate" hreflang="${hl}
 <meta property="og:image" content="${SITE}${image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(title)}">
 <meta property="og:locale" content="${lang === 'en' ? 'en_US' : 'th_TH'}">
 <meta property="og:locale:alternate" content="${lang === 'en' ? 'th_TH' : 'en_US'}">
 <meta property="og:url" content="${url}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
-${jsonLd(ld)}
+${ld ? jsonLd(ld) : ''}
 <style>
 ${SEO_CSS}
 </style>
 </head>
 <body>
-${main}
+${lang === 'th' ? keepHtml(main) : main}
 </body>
 </html>
 `;
@@ -613,12 +661,14 @@ const phaseGroups = (list) => {
   const ph = ['before', 'during', 'after'].filter((p) => list.items.some((x) => x.phase === p));
   return ph.length ? ph.map((p) => ({ p, items: list.items.filter((x) => x.phase === p) })) : [{ p: null, items: list.items }];
 };
+// A guide can name its phases (heat: "if someone is ill from the heat", not "after").
+const phaseName = (list, p, lang) => list.phaseNames?.[p]?.[lang] || strings[lang][`phase${capM(p)}`];
 const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(c.sources, lang)}${c.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>` : '');
 // title = false (a hazard page that is its guide): the H1 says it, so the phases are the headings.
 const checklistsTh = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
   let n = 0;
   const hp = title ? level + 1 : level;
-  return `${title ? `<h${level} id="cl-${m}">${T(checklists[m].title)} ${En(checklists[m].title)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp}>${esc(strings.th[`phase${capM(g.p)}`])} <span class="en" lang="en">${esc(strings.en[`phase${capM(g.p)}`])}</span></h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}${clSrc(c, 'th')}</li>`)).join('')}</ol>`).join('\n')}`;
+  return `${title ? `<h${level} id="cl-${m}">${T(checklists[m].title)} ${En(checklists[m].title)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp} id="${m}-${g.p}">${esc(phaseName(checklists[m], g.p, 'th'))} <span class="en" lang="en">${esc(phaseName(checklists[m], g.p, 'en'))}</span></h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}${clSrc(c, 'th')}</li>`)).join('')}</ol>`).join('\n')}`;
 }).join('\n');
 const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
 
@@ -640,6 +690,18 @@ const checkLinks = (lang, ids) => {
   return ids.map((id) => [id, modeLink(config, id)])
     .filter(([, u]) => u && !isPlaceholder(u) && !seen.has(u) && seen.add(u))
     .map(([id, u]) => `<p class="check"><a href="${esc(u)}">${esc(str('forecastIcon', id))} ${esc(str('forecastLong', id))}</a></p>`).join('\n');
+};
+
+// The top of a hazard page, for someone reading it while it happens: a jump to
+// each list (or each phase of a guide) and the three main helplines.
+const telRow = (lang) => `<p class="tel"><span>☎️ <span class="lbl">${esc(strings[lang].telFree)}</span></span>${helplines.helplines.filter((x) => x.main).slice(0, 3).map((x) => `<a href="tel:${x.number}">${x.number}</a>`).join('')}</p>`;
+const jumpRow = (lang, h, lists) => {
+  const guideOnly = !h.modes.length;
+  const links = guideOnly
+    ? lists.flatMap((g) => phaseGroups(checklists[g]).filter((x) => x.p).map((x) => [`${g}-${x.p}`, phaseName(checklists[g], x.p, lang)]))
+    : lists.length > 1 ? lists.map((g) => [`cl-${g}`, strings[lang][`mode${capM(g)}`] || L2(checklists[g].title, lang)]) : [];
+  if (!links.length) return '';
+  return `<nav class="jump" aria-label="${esc(strings[lang].guideJump)}">${links.map(([id, label]) => `<a href="#${id}">${esc(label)}</a>`).join('')}</nav>`;
 };
 
 writeSeo('learn.html', seoPage({
@@ -687,7 +749,7 @@ ${lessonsBy[id].map(enLesson).join('\n')}`).join('\n');
 const checklistsEn = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
   let n = 0;
   const hp = title ? level + 1 : level;
-  return `${title ? `<h${level} id="cl-${m}">${esc(checklists[m].title.en)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp}>${esc(strings.en[`phase${capM(g.p)}`])}</h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.en)}${clSrc(c, 'en')}</li>`)).join('')}</ol>`).join('\n')}`;
+  return `${title ? `<h${level} id="cl-${m}">${esc(checklists[m].title.en)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp} id="${m}-${g.p}">${esc(phaseName(checklists[m], g.p, 'en'))}</h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.en)}${clSrc(c, 'en')}</li>`)).join('')}</ol>`).join('\n')}`;
 }).join('\n');
 const helplineEn = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${esc(h.who.en)}: ${esc(h.what.en)}</li>`).join('')}</ul>`;
 const learnTitleEn = fill(E.learnTitle, { n: nLessons });
@@ -746,15 +808,16 @@ for (const h of hazardList) {
     main: `<main>
 <p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/${h.slug}" lang="en" hreflang="en">English</a></p>
 <h1>${esc(S[`hazard${H}H1`])}</h1>
-${h.modes.length ? `${playLinks('th', h.modes)}
+${jumpRow('th', h, lists)}
+${telRow('th')}
+${h.modes.length ? `${checklistsTh(lists, 2)}
+${picture('th')}
 <p>${esc(S[`hazard${H}Intro`])}</p>
+${playLinks('th', h.modes)}
 ${checkLinks('th', h.modes)}
 ${toolLinks('th', h)}
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
-${sectionsTh(h.modes)}
-<h2 id="checklists">${esc(S.checklists)}</h2>
-${checklistsTh(lists)}
-${picture('th')}` : `${checklistsTh(lists, 2, false)}
+${sectionsTh(h.modes)}` : `${checklistsTh(lists, 2, false)}
 ${picture('th')}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${toolLinks('th', h)}
@@ -774,16 +837,17 @@ ${hazardChips('th', h.id)}
     main: `<main>
 <p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a> · <a href="/${h.slug}" lang="th" hreflang="th">ภาษาไทย</a></p>
 <h1>${esc(E[`hazard${H}H1`])}</h1>
-${h.modes.length ? `${playLinks('en', h.modes)}
+${jumpRow('en', h, lists)}
+${telRow('en')}
+${h.modes.length ? `${checklistsEn(lists, 2)}
+${picture('en')}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
+${playLinks('en', h.modes)}
 ${checkLinks('en', h.modes)}
 ${toolLinks('en', h)}
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
-${sectionsEn(h.modes)}
-<h2 id="checklists">${esc(E.checklists)}</h2>
-${checklistsEn(lists)}
-${picture('en')}` : `${checklistsEn(lists, 2, false)}
+${sectionsEn(h.modes)}` : `${checklistsEn(lists, 2, false)}
 ${picture('en')}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
@@ -922,7 +986,21 @@ for (const b of document.querySelectorAll('[data-copy]')) b.addEventListener('cl
 
 // robots.txt: everyone, including AI search and AI assistants, may read the
 // public pages; only the event endpoint is off limits.
-writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): a public home-safety game.
+// A real "not found" page: Cloudflare Pages answers unknown addresses with it
+// and status 404 (without one, every address was the start screen with a 200).
+writeSeo('404.html', seoPage({
+  lang: 'th', title: `${S.notFoundTitle} · ${og.siteName}`, desc: S.notFoundBody, url: `${SITE}/`, thPath: '/', enPath: `${EN}/`,
+  image: '/og/default.png', ld: null,
+  main: `<main>
+<h1>${esc(S.notFoundTitle)} <span class="en" lang="en">${esc(E.notFoundTitle)}</span></h1>
+<p>${esc(S.notFoundBody)}</p>
+<p class="en" lang="en">${esc(E.notFoundBody)}</p>
+<p class="play"><a class="cta" href="/">${esc(og.siteName)}</a> <a class="cta" href="/?open=guide">${esc(strings.th.hubGuide)}</a></p>
+<p class="check"><a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/" lang="en">English</a></p>
+</main>`,
+}).replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">'));
+
+writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): free home-preparedness tools (what to do, what to keep, a family plan) and a 60-second game.
 # Search engines and AI assistants are welcome to read and cite it.
 # Generated by tools/build.mjs; do not edit by hand.
 User-agent: *

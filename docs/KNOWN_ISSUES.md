@@ -1,6 +1,6 @@
 # Known issues and deliberate trade-offs
 
-This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.9.0 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
+This is a straight list of what is wrong, what is not built yet, and what is limited on purpose. The state is as of **v1.9.1 (19 Oct 2026)**. Each entry gives a status, the evidence and what to do about it. Numbers are measured, not guessed. `npm run probe` reproduces the overlap and flood-timing figures, and the browser measurements are described in [APPROACH_AND_METHOD.md](APPROACH_AND_METHOD.md#7-measuring-instead-of-assuming).
 
 The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-cards for the owner items). Issues that were fixed keep their number and sit under [Fixed](#fixed).
 
@@ -67,6 +67,13 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 63 | [Printing isn't offered in in-app browsers](#63-printing-isnt-offered-in-in-app-browsers) | Platform | — |
 | 64 | [The alert must be cleared or renewed by hand](#64-the-alert-must-be-cleared-or-renewed-by-hand) | By design | — |
 | 65 | [Loose ends from the v1.9.0 sweep](#65-loose-ends-from-the-v190-sweep) | Fixed in v1.9.0 | Low |
+| 66 | [The right answer is usually the longest choice](#66-the-right-answer-is-usually-the-longest-choice) | Owner | Medium |
+| 67 | [The result card is hard to read at chat size](#67-the-result-card-is-hard-to-read-at-chat-size) | Open | Low |
+| 68 | [Link previews are small and alike at chat size](#68-link-previews-are-small-and-alike-at-chat-size) | Open | Low |
+| 69 | [Kept Thai words are a hand-made list](#69-kept-thai-words-are-a-hand-made-list) | By design | Low |
+| 70 | [The back button in a round still leaves the page](#70-the-back-button-in-a-round-still-leaves-the-page) | Open | Low |
+| 71 | [On a tablet the app is a narrow column](#71-on-a-tablet-the-app-is-a-narrow-column) | Open | Low |
+| 72 | [Structured data still calls the start page a game](#72-structured-data-still-calls-the-start-page-a-game) | Open | Low |
 
 Fixed issues are listed [at the end](#fixed).
 
@@ -91,8 +98,9 @@ What a headless test **cannot** show:
 - whether a long-press on the installed app's icon offers the two shortcuts to the home check and the plan card (`manifest.webmanifest → shortcuts`, v1.8.1), and which phones show them **[unverified]**; since v1.9.0 there are three, with "ต้องทำอะไร เมื่อเกิดภัย"
 - how the start screen's hub (v1.9.0) reads on a real phone: whether people see the three tools first and still find the game below, and whether the alert card is noticed
 - whether "🖨️ พิมพ์เก็บไว้" prints a clean A4 list from Chrome and Safari on a phone, and whether the guide picker and the guide sheets work inside LINE (v1.9.0)
+- since v1.9.1: whether the phone's back button closes a sheet inside LINE (and iOS's swipe back), whether sharing to LINE keeps the result in the game's tab, whether Thai words still break between words on an iPhone (its dictionary isn't ICU, [#69](#69-kept-thai-words-are-a-hand-made-list)), whether the fire smoke is drawn on a real 360 × 640 phone (F58 was found in headless Chromium), and whether a guide's ☎️ buttons dial; `/no-such-page` answering with the 404 page is checked on the live site after the deploy
 
-**To do:** run the 54-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
+**To do:** run the 60-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
 
@@ -159,6 +167,8 @@ The English is written in one variety, British ("torch", "power cut", "litres", 
 
 v1.9.0 added much new copy in both languages: the hub and the guide picker, the four new guides' 40 lines, the new hazard pages and the `/kit` and `/plan` pages (`seo.<lang>`), the new link-preview texts and the rewritten tagline, About intro, default preview and `llmsSummary` ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
 
+v1.9.1 renamed the two tools (เช็กของจำเป็น, แผนครอบครัว; "Check your supplies", "Our family plan") and the flood guides ("น้ำท่วม: ก่อนน้ำมา", "น้ำท่วม: หลังน้ำลด"), rewrote the mode hazard pages' titles and intros, how-to step 4 in every mode, the heat guide's phase names and the guide sheet's labels ("ส่งต่อให้คนที่บ้าน", "เตรียมบ้านต่อ", "โทรฟรี", "เสร็จแล้ว"), and added the 404 page's text and `versusLoseFar`. The same review should rewrite the wrong answers that are easy to spot ([#66](#66-the-right-answer-is-usually-the-longest-choice)).
+
 ### 12. Analytics SQL and the Fail-open default are unchecked on a live account
 
 **Status:** Owner · **Severity:** Low
@@ -187,7 +197,7 @@ Otherwise the manual `rainWarningActive` switch is used, until its end date `rai
 
 Three launch steps are still open on the Cloudflare and search side:
 
-- **Web Analytics** isn't enabled. It's a dashboard switch the API token can't reach (Pages project → Metrics → Web Analytics → Enable).
+- **Web Analytics** looks enabled since the v1.9.1 audit (19 Oct 2026): the HTML the live site serves to browsers carries Cloudflare's beacon (`static.cloudflareinsights.com`), with no `Set-Cookie`. The owner confirms it in the dashboard (Pages project → Metrics → Web Analytics), which the API token can't reach ([ROADMAP L1](ROADMAP.md#l1-create-the-cloudflare-pages-project)). Cloudflare also injects `/cdn-cgi/challenge-platform/scripts/jsd` (about 12 KB) on every page: that is the zone's "JavaScript detections" security setting, not our code. The owner may switch it off (Security → Bots) if nothing needs it.
 - **The sitemap hasn't been submitted** to Google Search Console or Bing Webmaster Tools, and the JSON-LD hasn't been through the Rich Results Test ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)).
 - **Push-to-deploy is unverified.** A push to `main` didn't start a build, so the first two deploys were started through the API. The likely cause is that the Cloudflare GitHub app can't see this repository **[unverified]**.
 
@@ -337,7 +347,9 @@ The daily key is the date in UTC+7, so everyone shares the same house, as in Wor
 
 **Status:** By design
 
-Penalties (−4 s for a wrong answer, −2 s for the first tap on each decoy) move the round clock forward. In Prepare mode the water level comes from that clock, so it jumps with each penalty. This makes mistakes cost something in the fiction too (*"น้ำขึ้นไวขึ้น"*), and the score never punishes reading: the clock stops while a sheet is open.
+Penalties (−4 s for a wrong answer, −2 s for the first tap on each decoy) move the round clock forward. In Prepare mode the water level comes from that clock, so it jumps with each penalty. This makes mistakes cost something in the fiction too (*"น้ำขึ้นไวขึ้น"*), and the score never punishes reading: the clock stops while a sheet is open. Since v1.9.1 the how-to says so in every mode ("นาฬิกาหยุดตอนอ่านตัวเลือก แต่น้ำขึ้นระหว่างที่มองหา แตะของที่ไม่เสี่ยงเสียเวลา 2 วิ"; before, it said not to worry about time at all), and the idle hint no longer rings decoys ([F77, F78](#in-v191-19-oct-2026)).
+
+**The water curve changed in v1.9.1** ([F75](#in-v191-19-oct-2026)): the floor is wet at 36 s (was 27 s), and no target floods before 20 s with no penalties. Houses and challenge links are the same, but a Prepare score from v1.9.0 or earlier and one from v1.9.1 aren't strictly comparable: the new round gives more time before the water, and the critical bonus (before the floor is wet) is easier to get.
 
 ### 27. The build rewrites tracked files
 
@@ -345,10 +357,11 @@ Penalties (−4 s for a wrong answer, −2 s for the first tap on each decoy) mo
 
 `node tools/build.mjs` rewrites these files:
 
-- `public/index.html` (its Open Graph block, canonical link and JSON-LD)
+- `public/index.html` (its Open Graph block, canonical link and JSON-LD; since v1.9.0 its static Thai text, and since v1.9.1 the alert card)
 - `public/learn.html`, `public/llms.txt`, `public/sitemap.xml`, `public/robots.txt`
 - the hazard pages `public/flood.html`, `public/pm25.html`, `public/fire.html` (v1.6.0) and `public/ready.html` (v1.7.0)
 - `public/posts.html` (v1.6.1)
+- `public/404.html` (v1.9.1)
 - `public/c/*.html`
 - `public/checklist/*.html`
 - the English set under `public/en/`
@@ -493,7 +506,7 @@ The power-cut mode (v1.7.0) was prompted by a Thai stockpiling infographic, whic
 
 **Status:** Owner · **Severity:** Medium: review before promoting the check widely
 
-The home check (v1.8.0, `kit.json`) lists 15 things a household may need; 9 of them are ⚠️ `partial`, and the list says "ข้อนี้อยู่ระหว่างตรวจทาน" next to their sources. They rest on the same pages as the power-cut lessons:
+The home check (v1.8.0, `kit.json`) lists 15 things a household may need; 9 of them are ⚠️ `partial`, and the list says so next to their sources (since v1.9.1 a ⚠️ there and one footnote under the list, instead of "ข้อนี้อยู่ระหว่างตรวจทาน" on every such line). They rest on the same pages as the power-cut lessons:
 
 | Kit items | What they rest on | Why ⚠️ |
 |---|---|---|
@@ -569,6 +582,8 @@ The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/
 
 **Since v1.9.0** the home check and the plan card have pages of their own, `/kit` and `/plan` (`/en/…`), with their own previews (`og/kit.png`, `og/plan.png`) and a button into the tool; the kit and plan cards print and link these addresses. Post `/kit` or `/plan`, not `/?open=kit` or `/?open=plan`. The guide picker's link, **`/?open=guide`, still previews as the main game**: in a post, link one guide's `/checklist/<id>` (its preview is that guide's picture and title) or its hazard page (`/quake`, `/heat`…) instead. The app's third shortcut opens `/?open=guide` but shows no preview.
 
+**Still true in v1.9.1** (the audit checked it again): `/?open=kit`, `/?open=plan` and `/?open=guide` preview as the start screen. The owner's posts in [04-launch-kit](04-launch-kit.md#the-home-check-and-the-plan-card-v180-any-time-of-year) now link `/kit` and `/plan` and use the tools' new names ([#68](#68-link-previews-are-small-and-alike-at-chat-size)).
+
 **When the preview matters,** share the hazard page instead: `/pm25`, `/fire`, `/flood` or `/ready` (or `/en/…`). Each has its own title, description and the hazard's checklist image, and its ▶ button opens `/?mode=<id>`. Use the `?mode=` link where the post already carries a picture, or next to the hazard page ([04-launch-kit](04-launch-kit.md#when-the-dust-season-starts-v150-from-december)).
 
 ### 53. The smoke test runs on a pinned date
@@ -579,7 +594,8 @@ The home check and the plan card work the same way (v1.8.0): `/?open=kit` and `/
 
 - **Today's state shows in the build,** not the smoke test: `node tools/build.mjs` prints a `start` line (what visitors see today, and since v1.9.0 the alert while it is on) and warns about a switch with no end date or a past one. Read it after every release and at the start of each month.
 - **The alert (v1.9.0)** is expected from `activeAlert()` on `SMOKE_DATE`, like the mode from `recommend()`: on 18 Oct 2026 the card shows the landslide guide, on 5 Dec 2026 it is hidden. A separate check forces an alert (`storm`, until 2099) by changing the `config.json` the test server sends to that page only, so the card is tested whatever the shipped date.
-- **To test another season,** run `SMOKE_DATE=2026-12-05 npm run smoke` (dust) or `SMOKE_DATE=2027-04-10 npm run smoke` (fire); both passed 79/79 on 18 Oct 2026.
+- **To test another season,** run `SMOKE_DATE=2026-12-05 npm run smoke` (dust) or `SMOKE_DATE=2027-04-10 npm run smoke` (fire); both passed 79/79 on 18 Oct 2026, and 134/134 on 19 Oct 2026 (v1.9.1).
+- **The test server answers like Pages** since v1.9.1: an unknown address gets `404.html` with status 404, so the 404 page can be checked before a deploy.
 - **Only `Date` is shifted,** by an init script, and time keeps running. Playwright's clock API would also fake the timers and `requestAnimationFrame` that the rounds use, so it isn't used ([LESSONS D10](LESSONS_LEARNED.md#d-testing-and-verification)).
 
 ### 54. Carousel images are committed and Thai only
@@ -600,7 +616,7 @@ The carousel posts (v1.6.1) are 45 JPEG images in four sets (`flood` 12, `pm25` 
 
 `kit.js` (about 5.5 KB compressed, 5.8 KB since v1.9.0 added printing) and `kitplan.js` (0.8 KB) load only when the check or the plan card opens (`import('./kit.js')` in `main.js`), and `kit.json` (about 4.3 KB) is fetched then.
 
-- **The budget counts them anyway.** The build sums every file in `public/js/` as start-screen weight, so its `budget` line (208 KB in v1.8.0, 232 KB in v1.9.0) counts about 6.6 KB that a first visit doesn't fetch before the start screen. The limit is 500 KB, so the build errs on the safe side; `kit.json` isn't counted.
+- **The budget counts them anyway.** The build sums every file in `public/js/` as start-screen weight, so its `budget` line (208 KB in v1.8.0, 232 KB in v1.9.0, 240 KB in v1.9.1) counts about 6.6 KB that a first visit doesn't fetch before the start screen. The limit is 500 KB, so the build errs on the safe side; `kit.json` isn't counted.
 - **The service worker downloads them after the page has loaded.** All three are in the precache (44 files), so a visitor whose browser runs the service worker gets about 10.5 KB more in the background, whether or not they open the check; in return the check works offline after the first visit.
 - **Without the files,** offline in a browser with no service worker (the iOS in-app browsers, [#16](#16-no-offline-play-inside-ios-in-app-browsers)) or before the precache finished, the button shows the toast "เปิดไม่ได้ตอนนี้ ลองใหม่เมื่อต่อเน็ตนะ" (`offlineTool`) and the game carries on.
 
@@ -621,6 +637,7 @@ The four guides with no game (v1.9.0: น้ำป่า ดินถล่ม, 
 
 - **Dates.** Several reports are older (ปภ. on storms 2018, กรมทรัพยากรธรณี's risk villages 2022, กรมอนามัย on elders and water 2022) or show no date on the page; each `note` says so.
 - **What would close it:** a person opens the agency pages (or asks an agency contact) and confirms each line, as for the dust and fire lessons ([#46](#46-dust-and-fire-advice-is-quoted-through-news-reports)); a Thai source for the three Ready.gov-only landslide points; and ปภ. or กรมทรัพยากรธรณี wording on the sea pulling back before a tsunami. Steps: [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons).
+- **Labelled by agency, read through the news.** The v1.9.1 audit noticed that in `llms.txt` most of the earthquake guide's source links are news reports, while the page names the agency they quote. That is how these sources are recorded (`agency` is who is quoted, `kind: secondary`), and it is why this review is open; nothing was changed.
 - **Not in the safety table.** [01-safety-content.md](01-safety-content.md) is generated from `items.json`; the guides' lines are in `checklists.json`, and [KNOWLEDGE §29.3](KNOWLEDGE.md#293-the-four-new-guides-and-their-sources) lists them with their sources. What was left out because sources disagree is in [§29.4](KNOWLEDGE.md#294-what-was-left-out-and-why).
 
 ### 61. The game card is below the first screen on small phones
@@ -640,7 +657,7 @@ The start screen now puts the alert card and the three tools above the game. Mea
 `sources.json` holds each source's `note`: what was read and quoted, for reviewers, the build and docs/01. The game never shows a note, but `content.js` loads the whole file before the start screen. The 36 sources of v1.9.0 have long notes, so `sources.json` grew from 12.0 to 23.8 KB compressed; about 14 KB of it is notes (about 9.6 KB from the new ones). That is most of the start screen's growth from 209 to 232 KB (the rest: the guides in `checklists.json`, +4.1 KB; new strings, +4.2 KB; code and CSS, about +3 KB).
 
 - **The fix,** AI-ready: keep the notes out of what the client loads, for example in a second file the build, `npm run docs` and the tests read (or the build writes a slim `sources.json` without notes for `public/`), and let `content.js` load only `agency`, `title`, `url`, `date` and `kind` ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads)). Keep one file to edit by hand, so a source can't drift from its note.
-- **Not urgent:** 232 KB is far under the 500 KB limit. It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
+- **Not urgent:** 232 KB (240 KB in v1.9.1, with the hub's text, the guide sheet and the `keepTogether` list) is far under the 500 KB limit. It is a rule-53 case ([GUIDELINES](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): what the game never uses shouldn't be in what it loads.
 
 ### 63. Printing isn't offered in in-app browsers
 
@@ -656,6 +673,7 @@ The start screen now puts the alert card and the three tools above the game. Mea
 
 - **It ends by itself.** `activeAlert()` shows it while today's Bangkok date is on or before `until`, that day included, and never without an end date; the build stops on a date that isn't real.
 - **After the date, it stays in the file.** The card is gone, but the build warns ("alert.until … has passed, so the alert is off; clear it or give a new end date") on every build until the owner sets `"alert": { "guide": null, "until": null }` or a new date. On 26 Oct 2026 the warning appears.
+- **Written into the page since v1.9.1.** The build puts the card into `index.html` and every page copied from it while the alert is on, so it no longer appears late and pushes the hub down ([F70](#in-v191-19-oct-2026)). After `until` the script hides it the next day even if no build has run, and the next build leaves it out.
 - **One at a time.** Only one guide can be on top. When two things are in the news, pick the more urgent and post the other's `/checklist/<id>` link ([04-launch-kit](04-launch-kit.md#when-something-happens-the-5-minute-playbook)).
 
 ### 65. Loose ends from the v1.9.0 sweep
@@ -668,6 +686,55 @@ Found while documenting v1.9.0, after its first checks had passed, and fixed in 
 - **Five older icons newer than Unicode 11** ([GUIDELINES rule 64](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)) were replaced: 🪟 → 🚪 (the `dust` checklist's line 2), 🩺 → 🏥 (`dust` line 9), 🧊 → ❄️ (`stock` line 8) in `checklists.json`; 🩹 → ⛑️ (`firstaid`) and 🧊 → ❄️ (`medcold`) in `kit.json`. A scan of every content file, `index.html`, `main.js`, `kit.js`, `build.mjs` and the manifest found no other emoji newer than Unicode 11. The pictures draw sprites, not these icons, so no image changed.
 - **docs/01's reference list** marked the guides' sources "not cited yet": `npm run docs` now counts the citations in `checklists.json` too.
 - **Texts that called the whole app a game:** `ogEn.siteName` is now "Baan Rod Mai? Home safety" and `aboutTitle` "เกี่ยวกับบ้านรอดไหม?" / "About Baan Rod Mai?".
+
+### 66. The right answer is usually the longest choice
+
+**Status:** Owner (group D of the v1.9.1 audit, left for the Thai review) · **Severity:** Medium
+
+The v1.9.1 audit measured the choices of all 82 items: the correct answer is the longest choice in 72 of 82 in Thai and 74 of 82 in English, about 1.4 times as long as the others, and in 26 items it is the only choice with a different icon. So a player can often pick it without reading, which weakens what the round teaches.
+
+- **Why it wasn't fixed in v1.9.1:** the wrong answers are safety content. Each one needs to be a plausible mistake, about as long as the right one, written by hand and read by a native speaker; a mechanical rewrite could make a wrong answer sound right.
+- **What to do:** in the Thai review ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)), rewrite the wrong choices of the worst items first (longest gap, different icon) in `items.json`, Thai and English, with their `feedback`; keep the right answer as it is, so no advice changes. Changing a choice's text doesn't reshuffle houses ([#24](#24-some-content-edits-reshuffle-todays-house-and-old-challenge-links)). Not started.
+
+### 67. The result card is hard to read at chat size
+
+**Status:** Open · **Severity:** Low
+
+Shown at 25 % in a chat, the 1080 × 1350 result and share card keeps the wordmark, the score, the rank and "ท้าเลย!" readable, but not the gecko's bubble (about 9 px), the printed link (about 7 px) or the footer, and the result dots have no key. Found in the v1.9.1 audit; not changed. Larger text for the link and the bubble, or fewer words, would help; check it at thumbnail size before and after ([06-test-checklist](06-test-checklist.md) row 37).
+
+### 68. Link previews are small and alike at chat size
+
+**Status:** Open · **Severity:** Low
+
+At the 260 px a chat shows them, the 1200 × 630 previews' helpline line is about 6 px, and every guide's preview uses the same gecko, so two guides look alike in a chat. `/?open=kit`, `/?open=plan` and `/?open=guide` still preview as the start screen ([#52](#52-a-mode-link-previews-as-the-main-game)): share `/kit`, `/plan` or a `/checklist/<id>`. Found in the v1.9.1 audit; not changed.
+
+### 69. Kept Thai words are a hand-made list
+
+**Status:** By design (v1.9.1) · **Severity:** Low
+
+The browser's Thai dictionary decides where a Thai line may break, and it splits some compounds ("กระ|จก", "ไฟ|ดับ"). Since v1.9.1 the 217 words in `config.json → keepTogether` are wrapped in a no-wrap span wherever Thai is shown ([KNOWLEDGE §30.1](KNOWLEDGE.md#301-thai-words-that-must-not-break-keeptogether)).
+
+- **New text may need new words.** The list was made from the content's word pairs on 19 Oct 2026. After adding Thai text, look at it at 320 and 360 px (or make a wrap dump of the new lines) and add any word that breaks; the build warns about a listed word that appears in no Thai text.
+- **iPhones may break differently.** iOS uses its own dictionary (CoreFoundation), not ICU, so its breaks may differ from Chromium's and Node's. Not tried on a phone **[unverified]** ([06-test-checklist](06-test-checklist.md) row 57).
+- **Keep words short.** The build allows 2–14 letters: a long glued run could stop a narrow line from breaking at all.
+
+### 70. The back button in a round still leaves the page
+
+**Status:** Open · **Severity:** Low
+
+Since v1.9.1 every sheet owns one history entry, so the phone's back button closes it ([F56](#in-v191-19-oct-2026)). A round doesn't: Back during a round, or on the result screen when no sheet is open, leaves the page as before (into the chat when the link came from LINE). Giving the round and the result their own entry needs care with the challenge and `?mode=` links and with the service worker's reload; check it on a real phone first ([ROADMAP N19](ROADMAP.md#n19-visitor-audit-2)).
+
+### 71. On a tablet the app is a narrow column
+
+**Status:** Open · **Severity:** Low
+
+At 768 × 1024 the start screen, the sheets and the round are a 480 px column with wide margins. Everything works and the tools are on the first screen, but the space isn't used. Found in the v1.9.1 audit; not changed.
+
+### 72. Structured data still calls the start page a game
+
+**Status:** Open · **Severity:** Low
+
+The JSON-LD on `/` and `/en/` types the start page as a `VideoGame`, though the app is tools first since v1.9.0; the `Article` markup on `/learn` and the hazard pages has no `author` or `publisher`; and `x-default` points to `/en/`. None of this is wrong enough to break a page, but it doesn't describe the app as it is. Change it in `tools/build.mjs`, then run the Rich Results Test ([ROADMAP L8](ROADMAP.md#l8-search-consoles-and-ai-search-check)). Found in the v1.9.1 audit; not changed.
 
 ---
 
@@ -691,6 +758,41 @@ Found while documenting v1.9.0, after its first checks had passed, and fixed in 
 | F7 | `npm run smoke` timed out at the share step on desktop Chrome (Windows), even on untouched `HEAD`, because Chrome's own Web Share opened the OS dialog | The smoke test hides `navigator.share`, so the in-page sheet is always tested. 24/24 pass on Chrome (Windows). |
 | F8 | The first deploy failed at the Functions step with "You need to enable Analytics Engine", and the site returned 522 | The owner created the dataset `baanrodmai_events` (binding `EVENTS`) in Workers → Analytics Engine; the next deploy succeeded. |
 | F9 | Creating the Git-connected Pages project failed (code 8000012, then an authentication error from a token without Pages → Edit) | The repository was made visible to Cloudflare and the token was given Pages → Edit. See [LESSONS F6](LESSONS_LEARNED.md#f-working-in-an-ai-sandbox). |
+
+### In v1.9.1 (19 Oct 2026)
+
+Found by the second visitor audit: three audit agents walked the live v1.9.0 site at the same time (the tools journey, the game and share loop, the pages and previews), on phone and tablet sizes, in Thai and English, with analytics blocked; the lead re-checked every finding before fixing it ([APPROACH §28](APPROACH_AND_METHOD.md#28-visitor-audit-2-three-auditors-in-parallel-v191), [KNOWLEDGE §30](KNOWLEDGE.md#30-visitor-audit-2-v191)). F82 was found in our own review of the fixes. Group D (content) is left for the Thai review ([#66](#66-the-right-answer-is-usually-the-longest-choice)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F55 | Sharing to LINE, Facebook or X sent the game's own tab to the share page, so Back lost the result, the lessons and the challenge back. `openExternal()` in `share.js` called `window.open(href, '_blank', 'noopener')`, which by the specification always returns `null`, so its `location.href` fallback always ran too. No test caught it: nothing in the smoke test returned `null` from `window.open` as browsers do ([LESSONS D16](LESSONS_LEARNED.md#d-testing-and-verification)) | `window.open(href, '_blank')`, then `w.opener = null`; the fallback runs only when `window.open` really returns `null`. Smoke check "sharing to LINE opens one new tab; this tab stays" with a stub that returns `null` for `'noopener'`: with the old `share.js` the tab went to line.me, with the new one it stays. Rule: [GUIDELINES 66](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F56 | The phone's back button left the site: a guide opened from a LINE chat dropped people back in the chat. Guides were 2.3–4.8 screens long and the About sheet 16–25, with "ปิด" only at the bottom | An open sheet owns one history entry (`history.pushState`); `popstate` closes it, and closing it any other way removes the entry (`history.back()` after the current task, unless another sheet opened and reuses it). A sticky top bar with a 44 px ✕ (`#sheet-x`; hidden on the how-to, which can't be dismissed); focus goes to the sheet's content first, ✕ is a Tab away. Smoke checks: Back closes a sheet and stays in the app; ✕ stays at the top of a long sheet and closes it. Rule: [GUIDELINES 67](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F57 | Thai words broke across lines: "กระ\|จก", "แข็ง\|แรง", "ไฟ\|ดับ" in the home check's intro, "หน่วย\|งาน", "ต้องทำ\|อะไร", "ใครช่วย\|ใคร" on the start screen. The browser's ICU Thai dictionary splits them (Node's too: "เป็นก\|ระ\|จก"), and `word-break: keep-all` has no effect on Thai in Chromium (tested). A word joiner (U+2060) inside the word, tried first, moved the break next to it ("ขอ\|งกรมอุตุฯ", "บ้า\|นที่เสี่ยง") | `config.json → keepTogether`: 217 Thai words of 2–14 letters, wrapped in `<span class="nw">` (`white-space: nowrap`) in the app (`util.js → keepWordsIn`, `observeKeptWords`), on the Thai plain pages by the build (`keepHtml`) and on the canvas pictures (`cards.js → tokens()` with `keptSpans`), plus `text-wrap: pretty` ([KNOWLEDGE §30.1](KNOWLEDGE.md#301-thai-words-that-must-not-break-keeptogether)). A wrap dump of every guide line, the hub, the alert and the home check at 320 and 360 px shows only breaks between words; a unit test keeps every kept word whole on the cards at widths 80–300 (without the list: 7 bad wraps on "…ที่เป็นกระจก"); a smoke check finds no split `.nw` in a guide (36 kept words). Rule: [GUIDELINES 68](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F58 | Fire mode drew no smoke on shorter screens (360 × 640, 375 × 667, 320 × 460; 390 × 844 was fine) while the gecko said "ควันลงมาต่ำแล้ว!" over a clear sky; reproduced in headless Chromium. The smoke layer started above the picture and was moved in only with a `transform`, and it was never repainted | `scene.js` redraws the smoke's rectangle height and edge path each frame instead of translating the group. Smoke check: the smoke rectangle is 262 units tall at 40 s on 360 × 640 (more than 200). Whether the original bug happened on real phones too needs a phone ([06-test-checklist](06-test-checklist.md) row 58). Rule: [GUIDELINES 73](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F59 | A guide with no game was shared with the text "เล่นเกมฝึกจริง 60 วิ" (the earthquake guide, for one) | `shareTextGuide`: "อ่านครบทุกข้อ พร้อมที่มา 👉" / "Every step, with its source 👉" for the guides without a mode. Smoke check: the quake guide's shared text has its link and no "เกม" |
+| F60 | The `/checklist/<id>` pages told search engines that the start screen was the original (canonical `/`) and listed themselves as their own `hreflang` twins, so neither page was a good result | Canonical is the hazard page (`/checklist/quake` → `/quake`, `/en/checklist/prepare` → `/en/flood`); no `hreflang`. Smoke check: both canonical links |
+| F61 | One visit to an English page made Thai links open in English on that phone: `setLang()` stored the language on every visit, and the redirect script read it | Only a choice is stored (the language button, `?lang=`), under the new key `brm:langPick`; old `brm:lang` values are ignored, and the redirect script in `index.html` reads the new key. Smoke checks: opening `/en/` once doesn't make Thai links open in English; the language button is remembered. Rule: [GUIDELINES 70](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F62 | A first visit downloaded the app twice, about 560 KB instead of about 290 KB on prepaid data: the service worker's install fetched every precached file with `cache: 'reload'` | `cache: 'no-cache'`: the install revalidates, so what the page already loaded comes back as a 304 (Cloudflare sends `max-age=0, must-revalidate` and an ETag). Not measured on the live site yet |
+| F63 | `/flood`, `/pm25`, `/fire` and `/ready` opened with the game buttons; `/flood`'s 10-line checklist was at y ≈ 28,833 px, about 80 screens down | H1 → jump row (flood: ก่อนน้ำมา / หลังน้ำลด; a guide-only page: each phase) → "☎️ โทรฟรี" 1784 · 199 · 1669 as `tel:` links → the list(s) as `h2` → picture links → intro → game buttons → check and tool links → lessons; small-screen CSS (H1 1.3em, phase headings with the English inline, the helplines' label visually hidden under 380 px). Measured at 320 × 460 and 360 × 640: every hazard page's first line by 450 px, in Thai and English. The smoke check now requires the helplines and the first line on the first screen and no game button before the list. Rule: [GUIDELINES 71](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F64 | The mode hazards' titles said "43 ข้อ", "12" or "13" while their preview picture said "10 ข้อ"; their intros described the game first; the `/en/` title was 83 characters | Titles name no count ("น้ำท่วม ทำอะไรก่อนน้ำมา และหลังน้ำลด เช็กลิสต์พร้อมที่มา · บ้านรอดไหม?"); intros tools first ("เริ่มจากเช็กลิสต์ 10 ข้อ … ด้านล่างเป็นเหตุผลและที่มาของทุกข้อ และมีเกม 60 วิ ให้ลองฝึก"); the `/en/` title is 59 characters; `og:image:alt` on the plain pages |
+| F65 | The guide sheet: "ส่งต่อเป็นรูป" promised a picture that LINE's share buttons don't send; the 580 px picture repeated the list; English pages said "Source: กรมทรัพยากรธรณี"; the helplines and the next step for the home were not in the sheet; the four share buttons sat 3 + 1 | Phase jump chips and "☎️ โทรฟรี" with three `tel:` chips at the top; sources small and muted under the list, agency names in English on English pages (`agencyName()`); one ⚠️ footnote; "เตรียมบ้านต่อ" with 🎒 เช็กของจำเป็น / 📝 แผนครอบครัว; "ส่งต่อให้คนที่บ้าน"; the picture as a thumbnail; "เปิดในเบราว์เซอร์" in LINE; "← เรื่องอื่น" and "เสร็จแล้ว" side by side; share buttons 2 × 2. Smoke check: "during" one tap away, three `tel:` buttons, next steps lead to the home check and the plan |
+| F66 | The two flood guides were apart in the picker (1st and 4th) and named "น้ำกำลังมา" / "หลังน้ำลด", without the word flood | "น้ำท่วม: ก่อนน้ำมา" / "น้ำท่วม: หลังน้ำลด" ("Flood: before it comes" / "Flood: after it goes down"), side by side; order prepare, return, landslide, storm, quake, fire, stock, heat, dust |
+| F67 | The heat guide's last lines, about someone with heatstroke ("call 1669"), sat under "หลังเกิด" (after), which doesn't fit a heatwave | `checklists.json → heat.phaseNames`: เตรียมไว้ก่อน / วันที่ร้อนจัด / ถ้ามีคนเป็นลมแดด (Get ready / Very hot days / Heatstroke). `phaseNames` is optional, checked by the build (a named phase must exist, both languages), and used by the app, print and the pages |
+| F68 | Each tool had several names: the check was เช็กของจำเป็น, บ้านเราพร้อมแค่ไหน?, แชร์ผลเช็กบ้าน and เครื่องเช็กบ้าน; the plan แผนครอบครัว, แผนบ้านรอดของบ้านเรา and การ์ดแผนบ้านรอด | One name each: เช็กของจำเป็น (sheet "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?") and แผนครอบครัว (card "การ์ดแผนครอบครัว", sheet "แผนครอบครัวของบ้านเรา"); "Check your supplies: how ready is our home?" and "Our family plan" in English. Manifest shortcuts renamed; `og/plan.png` and `og/en/plan.png` re-rendered |
+| F69 | The home check said "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน" on 4 of its 9 rows; the start screen's 🎒 button showed a new score only after a reload; its share sheet had no way to finish | ⚠️ next to the line's sources and one footnote under the list; the button updates at once; "เสร็จแล้ว" next to "← กลับไปที่รายการ" |
+| F70 | On slow 4G the alert card appeared at 2.75 s, when the script added it, and pushed the hub down 79 px (CLS 0.08) | The build writes the card into `index.html` and every page copied from it while the alert is on; the script still hides it after its end date and on a challenge link. Smoke check: the card is in the page before the script runs |
+| F71 | The hub's sub-labels were 12.6 px; "ตามจำนวน\|คนในบ้าน" broke unevenly; the alert's "·" could start a line | 14 px; balanced wrapping on the hub, the alert and the tiles; a no-break space before "·" in `alertCard` |
+| F72 | Unknown addresses (`/nonexistent-page`, `/c/p99`, `/en/posts`, `/og/nope.png`) got the start screen with status 200: with no top-level `404.html`, Pages serves `/` | The build writes `public/404.html` (Thai and English, `noindex`, links to the start, "what to do" and `/learn`); Pages serves it with a 404. Smoke check against a test server that answers like Pages. Check on the live site after the deploy |
+| F73 | Offline, a page never visited (`/quake`, `/kit`) got the app shell from the service worker and showed the start screen | The app reads the path: a hazard's page opens its guide, `/kit` and `/plan` open the tool. Smoke check: `/quake` served the app shell opens the quake guide |
+| F74 | `robots.txt`'s first line called the site "a public home-safety game", and the `<noscript>` line offered the flood summary only | "free home-preparedness tools (what to do, what to keep, a family plan) and a 60-second game"; the `<noscript>` line links "อ่านวิธีรับมือทุกภัย" |
+| F75 | The flood came too fast. On the 18 Oct 2026 house every target was under water by 26.8 s (the first at 13.6 s), and a careful player's round ended at 15.9 s of game time, 5/10 against a target of 8. Over 90 houses, 32 % of targets flooded before 20 s, and in 49 of 90 a target in another room flooded before 18 s | `round.prepare.water` `[[0, 625], [0.35, 590], [0.6, 470], [0.82, 390], [1, 300]]` (was `[[0, 612], [0.25, 580], [0.45, 470], [0.7, 390], [1, 300]]`). Over 90 houses from 1 Oct 2026: first flood at 21.9 s at the earliest (median 23.2 s), no target before 20 s, no house with an other-room target before 18 s; the 18 Oct house's last target at 35.8 s; floor wet at 36 s (was 27 s). No item, room or `houseVersion` changed, so houses and challenge links are the same; scores before and after aren't strictly comparable ([#26](#26-wrong-answers-and-decoys-make-the-water-rise-faster)). Unit test over 120 days; `npm run probe` table in [KNOWLEDGE §3](KNOWLEDGE.md#water-prepare-only) |
+| F76 | The HUD's "done" counted what the water took: "4/6" with 2 of the 4 lost; a room tab showed a blue ✓ though its only item had flooded; the result showed "เหลือเวลา 44 วิ" after things were lost | The HUD counts only right and learned answers and shows losses apart ("0/6 💧5"; 💨 in fire, 🌑 in the power cut, as in the share text: `lostMark…`); a tab whose things were lost shows the mark; the result shows "💧 โดนน้ำก่อน 6 อย่าง" (`statLost`) instead of the time left. Smoke check: nothing floods in the first 19 s, and the HUD shows the 💧 count apart. Rule: [GUIDELINES 69](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| F77 | The idle hint also ringed the decoys, which cost 2 s to tap; a tapped decoy got a grey tick that read as a win | `.show-hints .item-target` only; a tapped decoy shows a grey dash. Smoke check: the rings are on targets, none on decoys |
+| F78 | How-to step 4 said "ไม่ต้องกังวลเรื่องเวลา: เมื่อแตะของ นาฬิกาจะหยุดทันที…" in every mode, though the water (haze, smoke, dark) keeps coming while the player looks, and a decoy costs time | Per mode, e.g. "นาฬิกาหยุดตอนอ่านตัวเลือก แต่น้ำขึ้นระหว่างที่มองหา แตะของที่ไม่เสี่ยงเสียเวลา 2 วิ 💡"; the 2 comes from `round.decoyPenaltySec` (`{d}`) |
+| F79 | On screens 520 px tall or less, the how-to and a choice's answers were laid out as on taller phones, and a sheet gave no sign that more was below | Compact rules under `max-height: 520px`: the how-to's four steps and a choice's three answers fit above the fold at 320 × 460 (screenshots); a soft shadow at a sheet's bottom while more is below |
+| F80 | The result listed lessons in house order, and "อีกนิดเดียว!" (so close) followed any lost challenge, 5 against 8 too | Lessons: wrong, lost, missed, then right; "อีกนิดเดียว!" only 1–2 points short, otherwise "รอบหน้าเอาใหม่!" (`versusLoseFar`) |
+| F81 | The LINE share sheet said "แตะรูปด้านบน" (the picture above) for a picture below the buttons | "แตะรูปด้านล่างค้างไว้…" (`lineGuideText`, th/en) |
+| F82 | Found in our own review of F57: four CSS rules matched any span inside (`.quick-btn span:first-child`, `.book-grid span`, `.stats span`, `.alert-btn span:nth-child(2)`), so a kept-word `<span class="nw">` inherited them: "ช่วยเหลือ" in the "เบอร์ช่วยเหลือ" button was drawn at 22 px, and a kept word in the safety book would have been `position: absolute`, one in the result's stats a pill | Direct-child selectors: `.quick-btn > span:first-child`, `.book-grid li > span`, `.stats > span`, `.alert-btn > span:nth-child(2)`. Smoke check "kept Thai words look like the text around them (guide, start screen, safety book)", which fails with the v1.9.0 selectors. Rule: [GUIDELINES 72](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); lesson [C18](LESSONS_LEARNED.md#c-engineering-and-platform) |
 
 ### In v1.9.0 (19 Oct 2026)
 

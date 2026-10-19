@@ -57,8 +57,14 @@ const server = http.createServer((req, res) => {
   let p = decodeURIComponent(url.pathname);
   const candidates = [p, `${p}.html`, path.join(p, 'index.html')].map((c) => path.join(PUB, c));
   let file = candidates.find((f) => f.startsWith(PUB) && fs.existsSync(f) && fs.statSync(f).isFile());
-  if (!file) file = path.join(PUB, 'index.html'); // Pages without 404.html behaves like an SPA
-  res.writeHead(200, { 'content-type': TYPES[path.extname(file)] || 'application/octet-stream' });
+  // Like Cloudflare Pages: with a top-level 404.html, an unknown address gets it
+  // with status 404 (without one, Pages behaves like an SPA and serves index.html).
+  let status = 200;
+  if (!file) {
+    const nf = path.join(PUB, '404.html');
+    if (fs.existsSync(nf)) { file = nf; status = 404; } else file = path.join(PUB, 'index.html');
+  }
+  res.writeHead(status, { 'content-type': TYPES[path.extname(file)] || 'application/octet-stream' });
   fs.createReadStream(file).pipe(res);
 });
 await new Promise((r) => server.listen(0, r));
@@ -569,7 +575,7 @@ try {
     ];
     for (const [name, opts, url, stored] of cases) {
       const { ctx, page } = await newPage(opts);
-      if (stored) await page.addInitScript((v) => localStorage.setItem('brm:lang', JSON.stringify(v)), stored);
+      if (stored) await page.addInitScript((v) => localStorage.setItem('brm:langPick', JSON.stringify(v)), stored);
       await page.goto(`${BASE}${url}`, { waitUntil: 'networkidle' });
       const lang = await page.getAttribute('html', 'lang');
       const here = new URL(page.url()).pathname;
@@ -662,7 +668,8 @@ try {
         const pre = lang === 'en' ? '/en' : '';
         const html = await (await fetch(`${BASE}${pre}/${h.slug}`)).text();
         const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] || '{}');
-        const ok = html.includes(`<h1>${STR.seo[lang][`hazard${capM(h.id)}H1`]}</h1>`)
+        // (the Thai pages wrap kept words in <span class="nw">, so compare the text)
+        const ok = (html.match(/<h1>([\s\S]*?)<\/h1>/)?.[1] || '').replace(/<[^>]+>/g, '') === STR.seo[lang][`hazard${capM(h.id)}H1`]
           && html.includes(`<link rel="canonical" href="${site}${pre}/${h.slug}">`)
           && ['th', 'en', 'x-default'].every((hl) => html.includes(`hreflang="${hl}"`))
           && h.modes.every((m) => html.includes(`href="${pre}/?mode=${m}"`))
@@ -682,7 +689,8 @@ try {
     const tools = [...new Set(hz.flatMap((h) => h.tools))];
     check('/learn and llms.txt link the home check and the plan card', tools.length === 2 && tools.every((tool) => learn.includes(`href="/?open=${tool}"`) && llms.includes(`${site}/?open=${tool}`)), tools.join(', '));
 
-    // The smallest phone: every control is 44 px and the play button is on the first screen.
+    // The smallest phone: every control is 44 px, and a hazard page's first line
+    // (and the helplines above it) are on the first screen, before any game button.
     const { ctx, page } = await newPage({ width: 320, height: 460, ua: UA.iphone });
     const bad = [];
     const guideOnly = new Set(hz.filter((h) => !h.modes.length).flatMap((h) => [`/${h.slug}`, `/en/${h.slug}`]));
@@ -691,13 +699,20 @@ try {
       const small = await smallControls(page);
       if (small.length) bad.push(`${p}: ${small.join(', ')}`);
       if (p !== '/learn' && p !== '/en/learn') {
-        // a guide with no game leads with its first line; the others with a play (or start) button
-        // its first line starts on the first screen (its source links may run on below)
-        const bottom = await page.$eval(guideOnly.has(p) ? 'main ol li' : '.play a', (a, g) => (g ? a.getBoundingClientRect().top + 48 : a.getBoundingClientRect().bottom), guideOnly.has(p));
-        if (bottom > 460) bad.push(`${p}: first ${guideOnly.has(p) ? 'line' : 'button'} at ${Math.round(bottom)} px`);
+        // hazard pages lead with their list (v1.9.1); /kit and /plan with the button into the tool
+        const hazardPage = !/\/(kit|plan)$/.test(p);
+        const at = await page.$eval(hazardPage ? 'main ol li' : '.play a', (a, hp) => (hp ? a.getBoundingClientRect().top + 48 : a.getBoundingClientRect().bottom), hazardPage);
+        if (at > 460) bad.push(`${p}: first ${hazardPage ? 'line' : 'button'} at ${Math.round(at)} px`);
+        if (hazardPage) {
+          const tel = await page.$eval('.tel', (e) => e.getBoundingClientRect().bottom).catch(() => 9999);
+          if (tel > 460) bad.push(`${p}: helplines at ${Math.round(tel)} px`);
+          const play = await page.$$eval('main > *', (els) => els.findIndex((e) => e.matches('.play')));
+          const list = await page.$$eval('main > *', (els) => els.findIndex((e) => e.matches('ol')));
+          if (play >= 0 && play < list) bad.push(`${p}: a game button comes before the list`);
+        }
       }
     }
-    check('hazard pages, /kit, /plan and /learn on 320x460: controls >= 44 px, the play button (or a guide\'s first line) on the first screen', !bad.length, bad.join(' | '));
+    check('hazard pages, /kit, /plan and /learn on 320x460: controls >= 44 px; a hazard page\'s helplines and first line on the first screen, the game after the list', !bad.length, bad.join(' | '));
     // /kit and /plan: their own preview, every line with its source, a button into the tool
     const kitOk = [];
     for (const [tool, n] of [['kit', KIT.items.length], ['plan', KIT.plan.length]]) {
@@ -882,6 +897,143 @@ try {
     const names = new Set(events.map((e) => e[0]));
     check('guide_open and print are counted (anonymous)', names.has('guide_open') && names.has('print'), [...names].filter((n) => /guide|print|checklist/.test(n)).join(', '));
     check('no page errors (tools first)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+  }
+
+  // 13. The visitor audit of 19 Oct 2026 (v1.9.1): the phone's back button,
+  // sharing without losing the result, Thai words kept whole, one name per tool,
+  // the guide's jumps and helplines, a fairer flood, the smoke drawn.
+  {
+    let { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    const startUrl = page.url();
+    await page.click('[data-open="guide"]');
+    await page.waitForSelector('[data-guide]');
+    await page.goBack();
+    await page.waitForTimeout(400);
+    check('the phone\'s back button closes a sheet and stays in the app', (await page.isHidden('#sheet')) && page.url() === startUrl, page.url());
+    await page.click('[data-open="guide"]');
+    await page.waitForSelector('[data-guide="quake"]');
+    await page.click('[data-guide="quake"]');
+    await page.waitForSelector('#cl-back');
+    await page.evaluate(() => { document.querySelector('#sheet').scrollTop = 900; });
+    await page.waitForTimeout(200);
+    const x = await page.evaluate(() => {
+      const r = document.querySelector('#sheet-x').getBoundingClientRect();
+      const s = document.querySelector('#sheet').getBoundingClientRect();
+      return { top: r.top - s.top, w: r.width, h: r.height };
+    });
+    await page.click('#sheet-x');
+    await page.waitForTimeout(300);
+    check('✕ stays at the top of a long sheet (44 px) and closes it', x.top <= 4 && x.w >= 44 && x.h >= 44 && (await page.isHidden('#sheet')), JSON.stringify(x));
+
+    // A guide: jump to "during", call buttons, next steps, no game promised.
+    await page.goto(`${BASE}/checklist/quake`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('[data-jump="during"]');
+    await page.click('[data-jump="during"]');
+    await page.waitForTimeout(800);
+    const during = await page.evaluate(() => {
+      const h = document.querySelector('#gp-during').getBoundingClientRect();
+      const s = document.querySelector('#sheet').getBoundingClientRect();
+      return h.top - s.top;
+    });
+    const tels = await page.$$eval('.tel-chip', (as) => as.map((a) => a.getAttribute('href')));
+    const toolBtns = await page.$$eval('[data-tool]', (bs) => bs.map((b) => b.dataset.tool));
+    check('a guide: "during" is one tap away, the helplines are buttons, next steps lead to the home check and the plan', during >= 0 && during < 120 && tels.length === 3 && tels.every((h) => /^tel:\d+$/.test(h)) && toolBtns.join() === 'kit,plan', `${Math.round(during)} ${tels.join(' ')} ${toolBtns}`);
+    await page.evaluate(() => { window.__copied = ''; navigator.clipboard.writeText = (t) => { window.__copied = t; return Promise.resolve(); }; });
+    await page.waitForSelector('[data-c="copy"]');
+    await page.click('[data-c="copy"]');
+    const copied = await page.evaluate(() => window.__copied);
+    check('a guide with no game is shared without promising a game', copied.includes('/checklist/quake') && !copied.includes('เกม') && copied.includes(STR.th.shareTextGuide.split('\n')[2].split(' 👉')[0]), copied.replace(/\n/g, ' / '));
+    // Sharing to LINE opens one new tab and leaves this one where it is.
+    // Like a real browser: with the 'noopener' feature, window.open returns null.
+    await page.evaluate(() => { window.__opened = []; window.open = (u, n, f) => { window.__opened.push(u); return /noopener/.test(f || '') ? null : {}; }; });
+    const before = page.url();
+    await page.click('[data-c="line"]');
+    await page.waitForTimeout(300);
+    const opened = await page.evaluate(() => window.__opened);
+    check('sharing to LINE opens one new tab; this tab stays (the result is not lost)', opened.length === 1 && opened[0].includes('line.me') && page.url() === before, `${opened.length} ${page.url()}`);
+    // Thai words in keepTogether sit on one line.
+    const split = await page.$$eval('#sheet .nw', (els) => els.filter((e) => e.getClientRects().length > 1).map((e) => e.textContent));
+    const kept = await page.$$eval('#sheet .nw', (els) => els.length);
+    check('Thai words in keepTogether are never split across lines in a guide', kept > 10 && !split.length, `${kept} kept, split: ${split.join(', ')}`);
+    // A kept word must look exactly like the text around it: a rule such as
+    // ".quick-btn span:first-child" once caught these spans (22 px, absolute).
+    const odd = async () => page.$$eval('.nw', (els) => els.filter((e) => {
+      const a = getComputedStyle(e), b = getComputedStyle(e.parentElement);
+      return a.fontSize !== b.fontSize || a.position !== 'static' || a.display !== 'inline' || a.padding !== '0px' || a.borderStyle !== 'none';
+    }).map((e) => `${e.parentElement.className}: ${e.textContent}`));
+    const oddGuide = await odd();
+    await page.click('#sheet-x');
+    await page.waitForSelector('#sheet', { state: 'hidden' });
+    const oddStart = await odd();
+    await page.click('#btn-book');
+    await page.waitForSelector('#sheet:not([hidden])');
+    const oddBook = await odd();
+    check('kept Thai words look like the text around them (guide, start screen, safety book)', ![...oddGuide, ...oddStart, ...oddBook].length, [...oddGuide, ...oddStart, ...oddBook].slice(0, 5).join(' | '));
+    await ctx.close();
+
+    // One visit to an English page doesn't turn Thai links English.
+    ({ ctx, page } = await newPage({ width: 360, height: 640 }));
+    await page.goto(`${BASE}/en/`, { waitUntil: 'networkidle' });
+    await page.goto(`${BASE}/checklist/quake`, { waitUntil: 'networkidle' });
+    const lang = await page.getAttribute('html', 'lang');
+    check('opening /en/ once doesn\'t make Thai links open in English', lang === 'th' && !page.url().includes('/en/'), `${lang} ${page.url()}`);
+    // The language button is remembered.
+    await page.click('#sheet-x');
+    await page.waitForSelector('#sheet', { state: 'hidden' });
+    await page.click('#btn-lang');
+    await page.goto(`${BASE}/checklist/quake`, { waitUntil: 'networkidle' });
+    check('the language button is remembered', (await page.getAttribute('html', 'lang')) === 'en');
+    await ctx.close();
+
+    // The page as the server sends it: the alert card is already there (no jump), checklist pages point search at their hazard page, a real 404.
+    const home = await (await fetch(`${BASE}/`)).text();
+    check(`the alert card is in the page before the script runs (the hub doesn't jump)`, ALERT ? home.includes('id="alert-open"') : true, ALERT || 'no alert');
+    const cl = await (await fetch(`${BASE}/checklist/quake`)).text();
+    const clEn = await (await fetch(`${BASE}/en/checklist/prepare`)).text();
+    const site = CFG.siteUrl.replace(/\/$/, '');
+    check('checklist pages point search engines at their hazard page', cl.includes(`<link rel="canonical" href="${site}/quake">`) && clEn.includes(`<link rel="canonical" href="${site}/en/flood">`));
+    const nf = await fetch(`${BASE}/no-such-page`);
+    const nfText = await nf.text();
+    check('an unknown address gets the 404 page (noindex), not the start screen', nf.status === 404 && nfText.includes(STR.seo.th.notFoundTitle) && nfText.includes('noindex'), String(nf.status));
+
+    // Offline, the app answers /quake: it opens the quake guide.
+    ({ ctx, page } = await newPage({ width: 360, height: 640 }));
+    await page.route(/\/quake$/, (route) => route.fulfill({ path: path.join(PUB, 'index.html'), contentType: 'text/html' }));
+    await page.goto(`${BASE}/quake`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#sheet-title', { timeout: 5000 }).catch(() => {});
+    const t2 = await page.textContent('#sheet-title').catch(() => '');
+    check('served the app at /quake (offline), it opens the quake guide', t2.includes(CHECKLISTS.quake.title.th), t2);
+    await ctx.close();
+
+    // The game: the smoke is drawn on a 360 x 640 screen; the hint rings only
+    // what needs doing; lost things are counted apart; the flood starts later.
+    ({ ctx, page } = await newPage({ width: 360, height: 640 }));
+    await page.addInitScript(() => { for (const m of ['prepare', 'return', 'dust', 'fire', 'stock']) localStorage.setItem(`brm:howto-${m}`, 'true'); });
+    await page.goto(`${BASE}/?debug=1`, { waitUntil: 'networkidle' });
+    await page.evaluate(() => window.__brm.startFlow('fire'));
+    await page.waitForFunction(() => window.__brm.state.round?.running);
+    await page.evaluate(() => window.__brm.state.round.addTime(40000));
+    await page.waitForTimeout(500);
+    const smokeH = await page.evaluate(() => Number(document.querySelector('.smoke-body')?.getAttribute('height')));
+    check('fire: the smoke is drawn on a 360x640 screen (it was not before v1.9.1)', smokeH > 200, String(smokeH));
+    await page.evaluate(() => document.querySelector('#stage').classList.add('show-hints'));
+    const rings = await page.evaluate(() => ({
+      target: [...document.querySelectorAll('.item-target:not(.is-resolved) .ring')].filter((r) => getComputedStyle(r).display !== 'none').length,
+      decoy: [...document.querySelectorAll('.item-decoy .ring')].filter((r) => getComputedStyle(r).display !== 'none').length,
+    }));
+    check('the idle hint rings things to do, never the decoys', rings.target > 0 && rings.decoy === 0, JSON.stringify(rings));
+    await page.evaluate(() => window.__brm.startFlow('prepare'));
+    await page.waitForFunction(() => window.__brm.state.round?.running && window.__brm.state.round.mode === 'prepare');
+    await page.evaluate(() => window.__brm.state.round.addTime(19000));
+    await page.waitForTimeout(400);
+    const early = await page.evaluate(() => [...window.__brm.state.round.records.values()].filter((r) => r.status === 'flooded').length);
+    await page.evaluate(() => window.__brm.state.round.addTime(25000));
+    await page.waitForTimeout(400);
+    const hud = await page.evaluate(() => ({ text: document.querySelector('#hud-score').textContent, lost: [...window.__brm.state.round.records.values()].filter((r) => r.status === 'flooded').length }));
+    check('flood: nothing goes under in the first 19 s; what the water took is shown apart (💧), not counted as done', early === 0 && hud.lost > 0 && hud.text.startsWith('0/') && hud.text.includes(`💧${hud.lost}`), `early ${early}, ${hud.text}`);
+    check('no page errors (v1.9.1 checks)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
   }
 

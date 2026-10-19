@@ -14,6 +14,7 @@ import { carouselSets } from '/__tools/carousel.mjs';
 import { geckoSVG } from '/js/mascot.js';
 import { parseSvg, drawSvgInto } from '/js/svgdraw.js';
 import { setModes } from '/js/modes.js';
+import { setKeepTogether } from '/js/util.js';
 const cap = (id) => id.charAt(0).toUpperCase() + id.slice(1);
 
 const get = (f) => fetch(`/content/${f}.json`).then((r) => r.json());
@@ -37,6 +38,7 @@ function icon(size, { maskable = false } = {}) {
 window.renderAll = async (site) => {
   const [strings, checklists, helplines, config] = await Promise.all([get('strings'), get('checklists'), get('helplines'), get('config')]);
   setModes(config.modes);
+  setKeepTogether(config.keepTogether); // pictures wrap Thai the way the app does
   const MODES = config.modes.map((m) => [m.code, m.id]);
   const assets = await loadCardAssets();
   const og = strings.og;

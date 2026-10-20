@@ -1020,6 +1020,99 @@ try {
       && KIT.links.list.every((x) => tools.includes(x.url.replaceAll('&', '&amp;'))) && tools.replace(/<[^>]+>/g, '').includes(KIT.alerts.ios.steps[1].th) && toolsEn.includes('href="/en/?open=tools"') && map.includes('/tools</loc>') && map.includes('/mask</loc>'), '');
   }
 
+  // 11e. Six more tools (v1.13.0): heat today, water, the tank, the emergency card,
+  // "I'm safe" and the bag; what is typed or counted stays on the device.
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.addInitScript(() => localStorage.setItem('brm:kit', JSON.stringify({ people: 4, flags: ['baby', 'pet'], have: [], answered: true })));
+    await page.goto(`${BASE}/?open=hot&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.hot-level');
+    const before = await page.evaluate(() => ({ text: document.querySelector('#hot-out').innerText, share: document.querySelector('#hot-share-row').hidden }));
+    await page.click('.hot-level[data-v="danger"]');
+    const hot = await page.evaluate(() => ({ text: document.querySelector('#hot-out').innerText, aid: document.querySelector('#hot-aid').open }));
+    check('heat today: nothing before a tap; "danger" shows what everyone and the people at risk do (their heading once), and opens the heatstroke signs and first aid', before.share && before.text.includes(KIT.ui.th.hotPick.replace('👆 ', '')) && hot.text.includes(KIT.hot.levels[2].all[0].th) && hot.text.includes('42.0–51.9') && hot.aid && hot.text.split(KIT.ui.th.hotRisk).length === 2, JSON.stringify(hot).slice(0, 160));
+    let small = await smallControls(page);
+    check('heat today controls >= 44 px', !small.length, small.join(', '));
+    await page.waitForFunction(() => history.state?.brm);
+    await page.goto(`${BASE}/?open=water&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.wt-size');
+    const people = await page.textContent('#wt-n');
+    for (let i = 0; i < 6; i++) await page.click('[data-s="b1500"][data-d="1"]');
+    await page.click('[data-s="g6"][data-d="1"]');
+    const wt = await page.evaluate(() => ({ text: document.querySelector('#wt-out').innerText, kept: JSON.parse(localStorage.getItem('brm:water')) }));
+    // 6 × 1.5 + 6 = 15 litres for 4 people at 3 L a day: about 1 day, 21 litres short of 3 days.
+    check('water: people from the home check (4); 6 large bottles and a 6-litre jug → 15 litres, about 1 day, 21 litres short of 3 days', people.trim() === '4' && wt.text.includes('15 ลิตร') && wt.text.includes(KIT.ui.th.waterDays.replace('{d}', 1)) && wt.text.includes('21') && wt.kept.counts.b1500 === 6, wt.text.slice(0, 160));
+    small = await smallControls(page);
+    check('water controls >= 44 px', !small.length, small.join(', '));
+    await page.waitForFunction(() => history.state?.brm);
+    await page.goto(`${BASE}/?open=tank&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.tk-size');
+    await page.click('.tk-size[data-l="1000"]');
+    await page.click('.tk-type[data-t="l5"]');
+    const tk = await page.evaluate(() => document.querySelector('#tk-out').innerText);
+    await page.fill('#tk-other', '700');
+    await page.click('.tk-type[data-t="l10"]');
+    const tk2 = await page.evaluate(() => document.querySelector('#tk-out').innerText);
+    check('tank: 1,000 litres and 5% liquid → 100 ml; 700 litres and 10% → 35 ml (the MWA and the DDC); the steps say never climb in', tk.includes('100 มล.') && tk2.includes('35 มล.') && (await page.textContent('.tk-steps')).includes('อย่าลงไปในถัง'), `${tk} | ${tk2}`);
+    await page.waitForFunction(() => history.state?.brm);
+    await page.goto(`${BASE}/?open=bag&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.kit-row');
+    const bag = await page.evaluate(() => [...document.querySelectorAll('.kit-row input')].map((i) => i.dataset.id));
+    await page.click('.kit-row:has(input[data-id="torch"])');
+    const bagKept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:bag')));
+    check('bag: every bag\'s list plus the baby and pet rows the home check\'s answers add; a tick is kept on the device', bag.includes('baby') && bag.includes('pet') && !bag.includes('elder') && bagKept.have.includes('torch'), bag.join(','));
+    small = await smallControls(page);
+    check('bag controls >= 44 px', !small.length, small.join(', '));
+    await page.waitForFunction(() => history.state?.brm);
+    await page.goto(`${BASE}/?open=safe&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.sf-status');
+    await page.click('.sf-status[data-v="help"]');
+    const help = await page.evaluate(() => ({ shown: !document.querySelector('#sf-help').hidden, tel: [...document.querySelectorAll('#sf-help .tel-chip')].map((a) => a.getAttribute('href')) }));
+    await page.click('.sf-status[data-v="moved"]');
+    await page.fill('#sf-where', 'บ้านลุงสมชาย');
+    const sf = await page.evaluate(() => ({ text: document.querySelector('#sf-preview').innerText, sms: document.querySelector('#sf-sms').getAttribute('href') }));
+    check('"I\'m safe": needing help shows 1784 and 1669 to call first; the message names the place typed, and the SMS link carries it', help.shown && help.tel.join() === 'tel:1784,tel:1669' && sf.text.includes('บ้านลุงสมชาย') && sf.sms.startsWith('sms:') && decodeURIComponent(sf.sms).includes('บ้านลุงสมชาย'), JSON.stringify({ help, sf }).slice(0, 200));
+    await page.click('#sf-send [data-t="copy"]');
+    small = await smallControls(page);
+    check('"I\'m safe" controls >= 44 px', !small.length, small.join(', '));
+    await page.waitForFunction(() => history.state?.brm);
+    await page.goto(`${BASE}/?open=info&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.plan-form input');
+    await page.fill('input[name="name"]', 'คุณยายสมศรี');
+    await page.fill('input[name="allergy"]', 'แพ้เพนิซิลลิน');
+    await page.click('#info-make');
+    await page.waitForSelector('#kit-img[src]');
+    const info = await page.evaluate(() => ({ kept: JSON.parse(localStorage.getItem('brm:info')), img: document.querySelector('#kit-img').naturalWidth }));
+    check('emergency card: the picture is made on the phone and the text kept on it (brm:info)', info.kept.cards[0].name === 'คุณยายสมศรี' && info.img > 0, JSON.stringify(info).slice(0, 160));
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(500);
+    const opened = new Set(events.filter((e) => e[0] === 'tool_open').map((e) => e[1]));
+    check('the six tools count as tool_open, and nothing typed or counted is ever sent', ['hot', 'water', 'tank', 'bag', 'safe', 'info'].every((m) => opened.has(m)) && !sent.some((b) => /สมศรี|ลุงสมชาย|เพนิซิลลิน/.test(b)), [...opened].join(','));
+    check('no page errors (six tools)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+    const pages = await Promise.all(['hot', 'water', 'tank', 'info', 'safe', 'bag'].flatMap((x) => [fetch(`${BASE}/${x}`), fetch(`${BASE}/en/${x}`)]).map((r) => r.then((x) => x.text())));
+    const ids = ['hot', 'water', 'tank', 'info', 'safe', 'bag'];
+    const okPages = ids.every((x, i) => h1(pages[2 * i]) === STR.seo.th[`${x}PageH1`] && h1(pages[2 * i + 1]) === STR.seo.en[`${x}PageH1`] && pages[2 * i].includes(`/?open=${x}`));
+    const flat = (h) => h.replace(/<[^>]+>/g, '');
+    check('/hot /water /tank /info /safe /bag (and /en/): their own H1, the tool\'s link, and the sourced lines (heat bands, 100 ml per 1,000 litres)', okPages && flat(pages[0]).includes('27.0–32.9') && flat(pages[4]).includes('100 มล. / 1,000 ลิตร'), '');
+    // English: a household of one reads "1 person", "1 day", and a chlorine's name
+    // inside a sentence is in lower case.
+    const en = await newPage({ width: 360, height: 640 });
+    await en.page.addInitScript(() => localStorage.setItem('brm:kit', JSON.stringify({ people: 1, flags: [], have: [], answered: true })));
+    await en.page.goto(`${BASE}/en/?open=water&debug=1`, { waitUntil: 'networkidle' });
+    await en.page.waitForSelector('.wt-size');
+    for (let i = 0; i < 2; i++) await en.page.click('[data-s="b1500"][data-d="1"]');
+    const enWater = await en.page.evaluate(() => document.querySelector('#wt-out').innerText);
+    await en.page.waitForFunction(() => history.state?.brm);
+    await en.page.goto(`${BASE}/en/?open=tank&debug=1`, { waitUntil: 'networkidle' });
+    await en.page.waitForSelector('.tk-size');
+    await en.page.click('.tk-size[data-l="1000"]');
+    await en.page.click('.tk-type[data-t="l5"]');
+    const enTank = await en.page.evaluate(() => document.querySelector('#tk-out').innerText);
+    check('English: one person and 3 litres read "About 1 day" and "1 person at home"; "About 100 ml of liquid chlorine"', enWater.includes('About 1 day') && !/1 days|1 people/.test(enWater) && enWater.includes('1 person at home') && enTank.includes('100 ml of liquid chlorine'), `${enWater.slice(0, 80)} | ${enTank.slice(0, 60)}`);
+    await en.ctx.close();
+  }
+
   // 12. Tools first (v1.9.0): what to do for any hazard, what to keep and the
   // family plan on the first screen, the game below; the owner's alert puts one
   // guide on top until its end date; any guide prints as a plain A4 list.
@@ -1168,7 +1261,7 @@ try {
     });
     const tels = await page.$$eval('.tel-chip', (as) => as.map((a) => a.getAttribute('href')));
     const toolBtns = await page.$$eval('[data-tool]', (bs) => bs.map((b) => b.dataset.tool));
-    check('a guide: "during" is one tap away, the helplines are buttons, next steps lead to the home check and the plan', during >= 0 && during < 120 && tels.length === 3 && tels.every((h) => /^tel:\d+$/.test(h)) && toolBtns.join() === 'kit,plan', `${Math.round(during)} ${tels.join(' ')} ${toolBtns}`);
+    check('a guide: "during" is one tap away, the helplines are buttons, next steps are the hazard\'s tools (an earthquake: the bag, the plan, the emergency card, "I\'m safe")', during >= 0 && during < 120 && tels.length === 3 && tels.every((h) => /^tel:\d+$/.test(h)) && toolBtns.join() === CFG.hazards.quake.tools.join(), `${Math.round(during)} ${tels.join(' ')} ${toolBtns}`);
     await page.evaluate(() => { window.__copied = ''; navigator.clipboard.writeText = (t) => { window.__copied = t; return Promise.resolve(); }; });
     await page.waitForSelector('[data-c="copy"]');
     await page.click('[data-c="copy"]');

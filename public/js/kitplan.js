@@ -158,3 +158,57 @@ export function maskAdvice(M, air, { why = null, colour = null, who = null, what
   const masked = b.status === 'n95' || b.status === 'surgical';
   return { why, status: st(b.status), lines: [...b.lines, ...(masked && air.baby ? [air.baby] : [])], card: masked, guide: b.guide || null };
 }
+
+// Heat today (/hot, v1.13.0, content/kit.json → hot): the level announced
+// today → what everyone and the people who need extra care should do. No
+// formula: the TMD's own page couldn't be read, so people pick the level.
+export function hotAdvice(H, id) {
+  const level = H.levels.find((l) => l.id === id);
+  if (!level) return null;
+  return { level, all: level.all, risk: level.risk || [] };
+}
+
+// Water we have (/water, v1.13.0): how many days it lasts at the home check's
+// rule (kit.json → items water: litres per person per day, for so many days).
+// counts: { sizeId: n }; other: litres typed in. Never a ration: the answer is
+// days at the full amount, and how much more makes the target.
+export function waterDays(W, { counts = {}, other = 0, people = 1, per = 3, target = 3 } = {}) {
+  const ml = W.sizes.reduce((sum, s) => sum + Math.max(0, Math.floor(Number(counts[s.id]) || 0)) * s.ml, 0);
+  const extra = Math.max(0, Number(String(other).replace(',', '.')) || 0);
+  const litres = Math.round((ml / 1000 + extra) * 10) / 10;
+  const n = Math.max(1, Math.round(Number(people) || 1));
+  const perDay = per * n;
+  const days = Math.floor(litres / perDay + 1e-9);
+  const need = Math.max(0, Math.ceil(perDay * target - litres - 1e-9));
+  return { litres, people: n, perDay, days, need, enough: need === 0, target };
+}
+
+// Chlorine for a water tank (/tank, v1.13.0): the MWA's and the DDC's dose per
+// 1,000 litres, for the tank's size. Liquid in ml (to the nearest 5 from 20 ml),
+// powder in grams (at least 1).
+export function tankDose(T, { litres = 0, type = null } = {}) {
+  const t = T.types.find((x) => x.id === type);
+  const l = Math.round(Number(String(litres).replace(/[, ]/g, '')) || 0);
+  if (!t || !(l > 0 && l <= 100000)) return null;
+  const raw = (t.per1000 * l) / 1000;
+  const amount = t.unit.en === 'g' ? Math.max(1, Math.round(raw)) : raw >= 20 ? Math.round(raw / 5) * 5 : Math.max(1, Math.round(raw));
+  return { type: t, litres: l, amount };
+}
+
+// The emergency bag (/bag, v1.13.0): what every bag holds, then what the
+// people the home check knows about add (daily medicine, a baby, an older
+// person, a pet).
+export function bagList(B, flags = []) {
+  const extra = ['meds', 'baby', 'elder', 'pet'].filter((f) => flags.includes(f)).flatMap((f) => B.extra[f] || []);
+  return { every: B.every, extra, all: [...B.every, ...extra] };
+}
+
+// "I'm safe" (/safe, v1.13.0): the message, made on the phone and sent only to
+// the chat the person picks; no location is ever added.
+export function safeMessage(Sf, { status = null, where = '', note = '', time = '', lang = 'th' } = {}) {
+  const st = Sf.status.find((x) => x.id === status);
+  if (!st) return '';
+  const L = (o) => o?.[lang] ?? o?.th ?? '';
+  const w = st.at ? String(where).trim().slice(0, 60) : '';
+  return [`${st.icon} ${L(st.text)}`, w ? L(st.at).replace('{w}', w) : '', String(note).trim().slice(0, 80), time].filter(Boolean).join('\n');
+}

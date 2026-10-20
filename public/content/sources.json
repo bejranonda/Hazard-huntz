@@ -12,14 +12,16 @@
       "agency": "ปภ.",
       "title": "ปภ. แนะเตรียม 'ถุงยังชีพฉุกเฉิน' 6 สิ่งต้องมี",
       "url": "https://www.bangkokbiznews.com/news/news-update/1183355",
-      "kind": "secondary"
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting DDPM, read on 20 Oct 2026 (page date 5 Jun 2025). An emergency bag, 6 things: drinking water and long-life dry food; a torch with spare batteries; a first-aid kit and your regular medicines; a multi-tool such as a pocket knife or rope; important documents in a waterproof pouch; what you need to live, such as clothes, sanitary pads and a mobile phone. Check it regularly, including the expiry dates of what is inside."
     },
     "ddpm-amarin": {
       "agency": "ปภ.",
       "title": "ปภ. แนะเตรียมของจำเป็น: อุปกรณ์ชาร์จไฟและแบตสำรอง ไฟฉาย เอกสารในถุงกันน้ำ อาหารและยาอย่างน้อย 3–4 วัน",
       "url": "https://www.amarintv.com/news/social/510554",
       "date": "2025-04-01",
-      "kind": "secondary"
+      "kind": "secondary",
+      "note": "Read again on 20 Oct 2026: dry food, bottled water and usable medicines for at least 3 - 4 days; a charger and a power bank; a waterproof torch with batteries; a radio with spare batteries; a first-aid kit and regular medicines; a whistle; candles and a lighter (the app doesn't list candles: torches, not candles); a pocket knife, scissors, tape, rope; black bin bags; toilet paper; soap, a toothbrush and toothpaste; spare clothes; sanitary pads; copies of documents (ID card, house registration, birth certificate) and health papers in a waterproof bag."
     },
     "ddpm-south": {
       "agency": "ปภ.",
@@ -269,7 +271,8 @@
       "agency": "กปน.",
       "title": "น้ำลดแล้ว มาล้างบ่อพักน้ำกันเถอะ",
       "url": "https://www.mwa.co.th/wp-content/uploads/2022/12/cleantank.pdf",
-      "kind": "official"
+      "kind": "official",
+      "note": "Read on 20 Oct 2026 (the PDF, no date on the page). Clean out stones, soil and sand and check for cracks first. Liquid or powder chlorine (powder: dissolve it in a bucket first and use the clear water). 'ความเข้มข้นของคลอรีนที่ใช้ คือ 5 มิลลิกรัมต่อลิตร ซึ่งเป็นค่าแนะนำขององค์การอนามัยโลก': 'ชนิดน้ำ 5% ใช้ 100 มิลลิลิตร (c.c.) ต่อน้ำ 1 คิว (ลูกบาศก์เมตร หรือ 1,000 ลิตร)', 'ชนิดน้ำ 10% ใช้ 50 มิลลิลิตร', 'ชนิดผง ใช้ประมาณ 8 กรัมต่อน้ำ 1 คิว'. Pour it in, 'แช่ทิ้งค้างคืน 1 คืน', then drain it out through the pipes (it can wash floors), and let mains water in as usual."
     },
     "pwa-repair": {
       "agency": "กปภ.",
@@ -530,6 +533,102 @@
       "date": "2026-10-02",
       "kind": "secondary",
       "note": "Thai PBS quoting DDPM, read word for word on 20 Oct 2026: two ways to apply. 1 the ทางรัฐ app: 'บริการทั้งหมด' → 'ลงทะเบียนตรวจสอบสิทธิ' → 'ยื่นขอรับเงินเยียวยาผู้ประสบภัยตามมติ ครม.' → fill in the form. 2 in person: 'ยื่นเอกสารด้วยตนเอง ที่องค์กรปกครองส่วนท้องถิ่นในพื้นที่ /สำนักงานเขตในพื้นที่ กทม.' DDPM's relief site (relief.disaster.go.th) lists the schemes and checks a registration."
+    },
+    "bma-heat-posttoday-2569": {
+      "agency": "กทม.",
+      "title": "กทม.เตือนค่าดัชนีความร้อนวันนี้ อยู่ในเกณฑ์ \"อันตราย\" (โพสต์ทูเดย์ อ้างกรุงเทพมหานคร)",
+      "url": "https://www.posttoday.com/general-news/740308",
+      "date": "2026-04-02",
+      "kind": "secondary",
+      "note": "Post Today quoting the BMA, read word for word on 20 Oct 2026. Heat-index levels: 27.0 – 32.9 °C 'เฝ้าระวัง': follow heat-warning news; at-risk people drink clean water often. 33.0 – 41.9 °C 'เตือนภัย': cut outdoor activity (the BMA says 11.00 – 15.00 น.); at-risk people with unusual symptoms see a doctor promptly. 42.0 – 51.9 °C 'อันตราย': watch yourself for symptoms; at-risk people with unusual symptoms see a doctor promptly. Over 52 °C 'อันตรายมาก': stop outdoor activity entirely; unusual symptoms, see a doctor promptly. At-risk: young children (0-5), older people (60 and over), pregnant women, people with an illness or a long-term condition, obesity, alcohol, long outdoor work, outdoor exercise, tourists. THE STANDARD (23 Apr 2025, the TMD and the DOH) gives the same bands with 52.0 and over, and older people from 65; the hours and the ages are left out."
+    },
+    "doh-heatlevels-2569": {
+      "agency": "กรมอนามัย",
+      "title": "เตือนอากาศร้อนรุนแรง ต้องช่วยกันระวังฮีทสโตรก งดกิจกรรมเสี่ยง (เดลินิวส์ อ้างอธิบดีกรมอนามัย)",
+      "url": "https://www.dailynews.co.th/news/5756174/",
+      "date": "2026-04-07",
+      "kind": "secondary",
+      "note": "Daily News quoting DOH Director-General Dr Amporn Benjaponpitak, read on 20 Oct 2026: 4 risk levels, 'สีเขียว ทำกิจกรรมได้ปกติ แต่ควรดื่มน้ำสม่ำเสมอ สีเหลือง เริ่มเสี่ยง ควรลดกิจกรรมกลางแดด สีส้ม เสี่ยงสูง ควรหลีกเลี่ยงแดดและปรับเวลา และสีแดง อันตรายมาก ควรหยุดกิจกรรมกลางแจ้งทันที'. THE STANDARD (3 May 2024, the DOH deputy DG) maps them: เฝ้าระวัง green, เตือนภัย yellow, อันตราย orange, อันตรายมาก red."
+    },
+    "doh-heatsigns-2569": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัยเตือนดัชนีความร้อน ระวังฮีทสโตรก (THE STANDARD และผู้จัดการออนไลน์ อ้างอธิบดีกรมอนามัย)",
+      "url": "https://thestandard.co/doh-warns-heat-index-heatstroke/",
+      "date": "2026-03-14",
+      "kind": "secondary",
+      "note": "THE STANDARD and MGR Online quoting the DOH Director-General, read on 20 Oct 2026. At risk: 'ผู้สูงอายุ เด็กเล็ก หญิงตั้งครรภ์ ผู้ป่วยโรคเรื้อรัง (เช่น โรคหัวใจ ความดันโลหิตสูง เบาหวาน) ผู้ที่ต้องทำงานกลางแจ้ง ผู้ที่มีภาวะอ้วน ผู้ป่วยจิตเวช และผู้ป่วยติดสุราเรื้อรัง'. Heatstroke signs: 'ผิวหนังร้อนแดง ชีพจรเต้นเร็วและแรง ปวดศีรษะ เวียนศีรษะ สับสน พูดจาไม่รู้เรื่อง ซึมลง หรือหมดสติ'. First aid: 'ใช้ผ้าชุบน้ำเย็นหรือน้ำแข็งประคบตามจุดต่างๆ เช่น หลังคอ รักแร้ และขาหนีบ' and take the person to hospital or call 1669 at once. Avoid outdoor activity, above all 13.00 – 16.00 (the hours differ from the BMA's, so the app gives none)."
+    },
+    "dms-heatstroke-2566": {
+      "agency": "กรมการแพทย์",
+      "title": "กรมการแพทย์ เตือนภัยฮีทสโตรก (ฐานเศรษฐกิจ อ้างอธิบดีกรมการแพทย์ และโรงพยาบาลเลิดสิน)",
+      "url": "https://www.thansettakij.com/health/wellbeing/561072",
+      "date": "2023-04-05",
+      "kind": "secondary",
+      "note": "Thansettakij quoting the Department of Medical Services' Director-General and Lerdsin Hospital, read on 20 Oct 2026. Signs: drowsiness, fainting, agitation, confusion or seizures; hot dry skin; 'ในระยะเริ่มต้นของภาวะ Heatstroke ผู้ป่วยยังสามารถมีเหงื่อได้อยู่'. First aid: move the person into shade with good airflow, take off as much clothing as possible, wet cloths on the body, a fan, and call 1669."
+    },
+    "bma-heataid-2569": {
+      "agency": "กทม.",
+      "title": "สำนักการแพทย์ กทม. แนะวิธีปฐมพยาบาลผู้มีอาการจากความร้อน (ข่าวสด อ้างสำนักการแพทย์ กรุงเทพมหานคร)",
+      "url": "https://www.khaosod.co.th/update-news/news_10151587",
+      "date": "2026-02-26",
+      "kind": "secondary",
+      "note": "Khaosod quoting the BMA Medical Department, read on 20 Oct 2026: move the person into shade, lie them down and raise both feet; a cloth soaked in cold water or ice at the neck, armpits, the inside of the elbows and knees and the groin; someone unconscious and not breathing: call 1669 and start CPR."
+    },
+    "ddc-tank-2568": {
+      "agency": "กรมควบคุมโรค",
+      "title": "คู่มือความปลอดภัยในการดูแลบ้านหลังน้ำลด ข้อ 3.21 การล้างถังเก็บน้ำ (กองโรคจากการประกอบอาชีพและสิ่งแวดล้อม)",
+      "url": "https://ddc.moph.go.th/uploads/publish/1761920260602112057.pdf",
+      "date": "2025-11",
+      "kind": "official",
+      "note": "Read on 20 Oct 2026 (pp. 23–24). 1 close the inlet valve, open every tap, drain the tank through its bottom outlet; scrub with a plastic brush on a long handle; 'ไม่ควรลงไปในถังเพราะอาจขาดอากาศหายใจได้'. 2 hose it from the top down, drain it all, pump water back in until nearly full. 3 'คลอรีนเข้มข้น 5 % ให้ใช้ปริมาณ 100 ซีซี ต่อน้ำ 1 ลูกบาศก์เมตร / 10 % … 50 ซีซี / คลอรีนผง ใช้ 8 กรัมต่อน้ำ 1 ลูกบาศก์เมตร'; liquid chlorine is sold at 5% and 10%, powder at 60% and 65%. 4 stir, soak for 3 hours, then rinse with clean water. Flood water in a tank is always dirty water; rubber gloves for cleaning."
+    },
+    "dss-bleach-2568": {
+      "agency": "กรมวิทยาศาสตร์บริการ",
+      "title": "คุณภาพผลิตภัณฑ์ไฮโปคลอไรท์ในประเทศไทย (วารสารกรมวิทยาศาสตร์บริการ ปีที่ 14 ฉบับที่ 1)",
+      "url": "https://ph03.tci-thaijo.org/index.php/BulletinofAppliedSciences/article/view/2993/2909",
+      "date": "2025",
+      "kind": "academic",
+      "note": "Read on 20 Oct 2026. Thai standard มอก. 2232-2548 requires available chlorine of at least 3.0 per cent. Of 17 hypochlorite products, only 10 stated the available chlorine on the label, and those measured below the label. Used only to say: buy chlorine whose label states its strength."
+    },
+    "pharm-medbook-2561": {
+      "agency": "สภาเภสัชกรรม",
+      "title": "สภาเภสัชกรรม แนะผู้ป่วยโรคเรื้อรังพก \"สมุดบันทึกยา\" (แนวหน้า อ้างผู้ช่วยเลขาธิการสภาเภสัชกรรม)",
+      "url": "https://www.naewna.com/lady/366305",
+      "date": "2018-09-26",
+      "kind": "secondary",
+      "note": "Naewna quoting the Pharmacy Council's assistant secretary for academic affairs, read on 20 Oct 2026: 'ควรมี \"สมุดบันทึกยา\" พกไว้ติดตัว ซึ่งบันทึกรายการยาที่ผู้ป่วยต้องใช้เป็นประจำอย่างต่อเนื่อง' with the patient's age, weight, height and history of drug allergy; anyone with a drug allergy tells the doctor and pharmacist every time."
+    },
+    "niems-call-2557": {
+      "agency": "สพฉ.",
+      "title": "สพฉ. แนะข้อควรรู้ก่อนโทรแจ้งสายด่วน 1669 (ผู้จัดการออนไลน์)",
+      "url": "https://mgronline.com/qol/detail/9570000150108",
+      "date": "2014-12-30",
+      "kind": "secondary",
+      "note": "MGR Online on a NIEMS postcard, read on 20 Oct 2026. When you call 1669 say what happened and how people are hurt, where (with a landmark), the patient's sex, how awake they are, any risk of it happening again (in the road, a car leaking gas), and your name and a phone number that can be reached. The PRD page with the same advice (iid 244285) could not be opened by tools."
+    },
+    "fema-older-2566": {
+      "agency": "Ready.gov (FEMA สหรัฐฯ)",
+      "title": "Disaster Preparedness Guide for Older Adults",
+      "url": "https://www.ready.gov/sites/default/files/2023-09/ready-gov_disaster-preparedness-guide-for-older-adults.pdf",
+      "date": "2023-09",
+      "kind": "international",
+      "note": "Read on 20 Oct 2026 (PDF). Kit: 'A complete list of medications and your doctors' phone numbers'; include assistive devices (hearing aids, mobility aids) and spare batteries; a form for medication names and doses, emergency contacts and medical information. The UK's 'Message in a Bottle' (NHS ambulance services with the Lions) keeps the same details on a form in the fridge; Thai responders don't know that, so the app doesn't say it."
+    },
+    "redcross-contact-2569": {
+      "agency": "สภากาชาดอเมริกัน (American Red Cross)",
+      "title": "Contact and Locate Loved Ones",
+      "url": "https://www.redcross.org/get-help/disaster-relief-and-recovery-services/contact-and-locate-loved-ones.html",
+      "date": "2026-10",
+      "kind": "international",
+      "note": "Read on 20 Oct 2026: 'Send a text message, which may go through when phone calls cannot.' 'Call during off-peak hours for the best chance of getting through.' No Thai agency source on telling family you are safe was found; marked international."
+    },
+    "dmr-bag-2568": {
+      "agency": "กรมทรัพยากรธรณี",
+      "title": "กรมทรัพยากรธรณี แนะเตรียมกระเป๋าฉุกเฉินรับมือแผ่นดินไหว (เดลินิวส์)",
+      "url": "https://www.dailynews.co.th/news/4565964/",
+      "date": "2025-04-02",
+      "kind": "secondary",
+      "note": "Daily News quoting the Department of Mineral Resources' page, read on 20 Oct 2026 (an earthquake list): emergency contacts of relatives or close friends; a map or the address of nearby shelters; regular medicines; a dust or N95 mask; a power bank; a whistle; some cash in case ATMs don't work; closed shoes; formula, nappies and small toys if there are children; pet food and what pets need; check and replace the bag's contents every 6 months. Its water figure (3-5 litres per person in all) differs from the PRD's 3 L per person per day, so the app gives no water figure for the bag."
     },
     "who-smoke-2566": {
       "agency": "องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป",
@@ -981,6 +1080,14 @@
       "date": "2026-08-12",
       "kind": "international",
       "note": "Read on 20 Oct 2026 (page dated AUG. 12, 2026). \"Once the power is back on, check your stored breast milk. Milk is still considered frozen if ice crystals can be seen in it. Frozen breast milk that has started to thaw but still contains ice crystals can be refrozen. If your breast milk has completely thawed but still feels cold, put it in the refrigerator and use it within the next day or throw it away.\" \"Thawed milk cannot be refrozen. After 24 hours, throw out unused, thawed milk. When it comes to safe storage of breast milk, remember 'when in doubt, throw it out.'\" \"If you have any breast milk in the freezer, help keep the freezer cold by packing any empty spaces with crumpled newspaper, frozen containers of water, or frozen gel packs.\" Formula: \"Throw away any opened or prepared formula that was in the refrigerator if your power has been off for 4 hours or more or if the refrigerator temperature is above 40°F.\" \"Throw away all perishable foods in your refrigerator when the power has been off for 4 hours or more.\" CDC's \"Breast Milk Storage Questions and Answers\" (15 Dec 2023) says the same and adds: \"Freezers, if full and left unopened during a power outage, will keep food safe for about 48 hours. If the freezer is half full, they will keep food safe for about 24 hours. The refrigerator will keep food cold for about 4 hours if it is left unopened.\" CDC gives no separate rule for breast milk kept in the fridge (not frozen) during a power cut; the app applies the fridge's 4 hours and \"when in doubt, throw it out\". Thai hospital tables give other room and fridge times for breast milk (from an older protocol), so the app uses none of them."
+    },
+    "readygov-water-2564": {
+      "agency": "Ready.gov (FEMA สหรัฐฯ)",
+      "title": "Water",
+      "url": "https://www.ready.gov/water",
+      "date": "2021-02-22",
+      "kind": "international",
+      "note": "Read on 20 Oct 2026 (updated 22 Feb 2021): store at least one gallon of water per person per day for several days, for drinking and sanitation; 'Children, nursing mothers and sick people may need more water'; 'In very hot temperatures, water needs can double'; 'Never ration drinking water unless ordered to do so by authorities'."
     }
   }
 }

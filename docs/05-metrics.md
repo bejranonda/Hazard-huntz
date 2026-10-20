@@ -293,6 +293,15 @@ One new event, `link_click`, in both allowlists: a tap on an agency's own page (
 - **Do people use the links?** `link_click` by label, against `tool_open` with mode `tools`. Few taps on a link that is on the page every day means it can go; many on `relief` after a flood means the relief note is read.
 - **Who comes for masks?** `tool_open` with mode `mask` by label: `air` (from dust today), `start` (the hub's seasonal tile), `tools`, `link`.
 
+## Six more tools (v1.13.0)
+
+No new event. Heat today, water, the tank, the emergency card, "I'm safe" and the bag count as `tool_open` with modes `hot`, `water`, `tank`, `info`, `safe` and `bag` (label: where it was opened from: `start`, `tools`, `link`, a guide, or the tool that offered it, such as `kit` or `plan`), and as `tool_share` when a text, a card or a message is sent (label: `line`, `sms`, `copy`, `native`…); the bag's print-out is `print` with label `bag`. **What is tapped, counted or typed is never sent:** not the heat level, the bottles, the tank's size, anything on the card, the place in "I'm safe" or the ticks. The smoke test reads every `/api/e` body to hold that.
+
+- **Which tools earn their tile?** `tool_open` by mode and label `start`, against the season tiles of the day (`config.json → hub.season`). A tool opened mostly from `link` is a posting tool; one opened from nothing at all is a candidate to move down the all-tools page.
+- **Is "I'm safe" used in an emergency?** `tool_share` with mode `safe` by day, against the alert dates (`config.json → alert`). A spike after a storm or a quake says the button is found when it matters.
+- **Do the tools lead into each other?** `tool_open` with label `kit` (water, the bag) and `plan` (the card, "I'm safe").
+
+
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.

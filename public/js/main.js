@@ -1047,12 +1047,9 @@ const toolName = (x) => t(`hub${x[0].toUpperCase()}${x.slice(1)}`);
 async function openTool(which, from, mode = '') {
   try {
     const m = await import('./kit.js');
-    if (which === 'plan') await m.openPlan(from);
-    else if (which === 'fridge') await m.openFridge(from);
-    else if (which === 'air') await m.openAir(from);
-    else if (which === 'mask') await m.openMask(from);
-    else if (which === 'tools') await m.openTools(from);
-    else await m.openKit(from, mode);
+    // Each tool opens with open<Id> in kit.js (openKit, openFridge, openHot…).
+    const fn = m[`open${which[0].toUpperCase()}${which.slice(1)}`];
+    await (fn ? fn(from, mode || undefined) : m.openKit(from, mode));
   } catch (e) {
     console.warn('kit failed', e);
     toast(t('offlineTool'), 2600);

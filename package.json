@@ -1,8 +1,8 @@
 {
   "name": "baanrodmai",
   "private": true,
-  "version": "1.12.0",
-  "description": "บ้านรอดไหม? (Baan Rod Mai?) — a Thai home-preparedness web app for any disaster: what-to-do guides for nine hazards, a home-kit checker, a family plan card, calculators for the fridge in a power cut and today's PM2.5 dust, and a 60-second hazard-hunt game, for Cloudflare Pages",
+  "version": "1.13.0",
+  "description": "บ้านรอดไหม? (Baan Rod Mai?) — a Thai home-preparedness web app for any disaster: what-to-do guides for nine hazards, a home-kit checker and an emergency bag, a family plan card and an emergency info card, a safe message, calculators (the fridge in a power cut, PM2.5 dust and heat today, which mask, water days, tank chlorine), links to Thai agencies, and a 60-second hazard-hunt game, for Cloudflare Pages",
   "homepage": "https://github.com/bejranonda/Hazard-huntz#readme",
   "repository": {
     "type": "git",

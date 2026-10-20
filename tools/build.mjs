@@ -186,7 +186,7 @@ const carouselPartial = [];
 // The tools outside the round, each with a page of its own (/kit, /plan, /fridge…).
 // Since v1.12.0 the list is config.json → tools (id, icon, group); /tools lists them all.
 const TOOL_IDS = (config.tools || []).map((x) => x.id);
-const KNOWN_TOOLS = ['kit', 'plan', 'fridge', 'air', 'mask'];
+const KNOWN_TOOLS = ['kit', 'plan', 'fridge', 'air', 'mask', 'hot', 'water', 'tank', 'info', 'safe', 'bag'];
 const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts', 'tools', ...KNOWN_TOOLS]);
 {
   const seen = new Set();
@@ -588,6 +588,82 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
       if (!(AL[os]?.steps || []).length) err(`kit.json alerts.${os}: needs steps`);
       (AL[os]?.steps || []).forEach((x, i) => text(x, `kit.json alerts.${os}[${i}]`));
     }
+  }
+  // v1.13.0: heat today, water, the tank, the emergency card, "I'm safe", the bag.
+  const H = kitFile.hot;
+  if (!H) err('kit.json: hot is missing');
+  else {
+    let prevHi = -1;
+    for (const [i, l] of (H.levels || []).entries()) {
+      const where = `kit.json hot level ${l.id}`;
+      text(l.label, where);
+      if (!/^#[0-9A-Fa-f]{6}$/.test(l.colour || '')) err(`${where}: colour must be #RRGGBB`);
+      const lines = [...(l.all || []), ...(l.risk || [])];
+      if (!(l.all || []).length) err(`${where}: needs lines for everyone`);
+      lines.forEach((x, j) => line(x, `${where} line ${j}`));
+      const ss = said([...new Set(lines.flatMap((x) => x.sources || []))]);
+      for (const v of [l.lo, l.hi].filter((x) => x != null)) if (!new RegExp(`(^|[^0-9.])${String(v).replace('.', '\\.')}([^0-9]|$)`).test(ss)) err(`${where}: ${v} is not in the sources of its lines`);
+      if (Number(l.lo) <= prevHi) err(`${where}: the bands must rise`);
+      if ((i === H.levels.length - 1) !== (l.hi == null)) err(`${where}: only the top level is open (hi: null)`);
+      prevHi = Number(l.hi ?? Infinity);
+    }
+    for (const k of ['risk', 'signs', 'sweat']) line(H[k] || {}, `kit.json hot.${k}`);
+    (H.aid || []).forEach((x, i) => line(x, `kit.json hot.aid[${i}]`));
+  }
+  const W = kitFile.water;
+  if (!W) err('kit.json: water is missing');
+  else {
+    for (const x of W.sizes || []) { text(x.label, `kit.json water size ${x.id}`); if (!(Number.isInteger(x.ml) && x.ml > 0)) err(`kit.json water size ${x.id}: ml must be a whole number`); }
+    (W.lines || []).forEach((x, i) => line(x, `kit.json water.lines[${i}]`));
+    if (!kitFile.items.find((x) => x.id === 'water')?.qty?.perPersonPerDay) err('kit.json water: the home check\'s water line has no perPersonPerDay to count from');
+  }
+  const T = kitFile.tank;
+  if (!T) err('kit.json: tank is missing');
+  else {
+    for (const x of T.types || []) {
+      const where = `kit.json tank type ${x.id}`;
+      text(x.label, where);
+      if (!(x.per1000 > 0)) err(`${where}: per1000 must be positive`);
+      else if (!new RegExp(`(^|[^0-9])${x.per1000}([^0-9]|$)`).test(said(x.sources || []))) err(`${where}: ${x.per1000} is not in its sources' title or note`);
+      if (x.dissolve) line(x.dissolve, `${where} dissolve`);
+    }
+    for (const k of ['steps', 'safety']) (T[k] || []).forEach((x, i) => line(x, `kit.json tank.${k}[${i}]`));
+  }
+  const I = kitFile.info;
+  if (!I) err('kit.json: info is missing');
+  else {
+    for (const f of I.fields || []) { text(f.label, `kit.json info field ${f.id}`); text(f.placeholder, `kit.json info field ${f.id} placeholder`); if (!(f.max > 0 && f.max <= 80)) err(`kit.json info field ${f.id}: max must be 1–80`); }
+    for (const k of ['why', 'keep', 'call']) (I[k] || []).forEach((x, i) => line(x, `kit.json info.${k}[${i}]`));
+  }
+  const SF = kitFile.safe;
+  if (!SF) err('kit.json: safe is missing');
+  else {
+    for (const x of SF.status || []) {
+      text(x.label, `kit.json safe status ${x.id}`);
+      text(x.text, `kit.json safe status ${x.id} text`);
+      if (x.at) text(x.at, `kit.json safe status ${x.id} at`);
+      for (const n of x.calls || []) if (!helplines.helplines.some((h) => h.number === n)) err(`kit.json safe status ${x.id}: ${n} is not in helplines.json`);
+    }
+    if (!(SF.status || []).some((x) => x.calls?.length)) err('kit.json safe: "I need help" must show the numbers to call first');
+    (SF.lines || []).forEach((x, i) => line(x, `kit.json safe.lines[${i}]`));
+  }
+  const BG = kitFile.bag;
+  if (!BG) err('kit.json: bag is missing');
+  else {
+    for (const k of ['what', 'check']) line(BG[k] || {}, `kit.json bag.${k}`);
+    const flagIds = new Set((kitFile.flags || []).map((f) => f.id));
+    for (const [k, xs] of [['every', BG.every || []], ...Object.entries(BG.extra || {})]) {
+      if (k !== 'every' && !flagIds.has(k)) err(`kit.json bag.extra.${k}: not a home-check answer`);
+      for (const x of xs) {
+        const where = `kit.json bag ${k} ${x.id}`;
+        text(x.label, where);
+        if (!['verified', 'partial'].includes(x.verify)) err(`${where}: verify must be verified or partial`);
+        if (x.verify === 'partial' && !x.verifyNote) err(`${where}: a partial line needs a verifyNote`);
+        if (!(x.sources || []).length) err(`${where}: needs sources`);
+        for (const sid of x.sources || []) if (!sources[sid]) err(`${where}: unknown source "${sid}"`);
+      }
+    }
+    if ([...(BG.every || []), ...Object.values(BG.extra || {}).flat()].some((x) => /เทียน|candle/i.test(`${x.label.th} ${x.label.en}`))) err('kit.json bag: no candles (torches, not candles)');
   }
 }
 
@@ -1216,15 +1292,57 @@ ${hazardChips('en', h.id)}
       mrow(`😷 ${X.maskHowTitle}`, [...M.card.fit, ...M.card.change, ...M.card.buy, ...M.card.cant], lang),
     ].join('\n');
   };
-  const privacyKey = { kit: 'privacy', plan: 'planPrivacy', fridge: 'fridgePrivacy', air: 'airPrivacy', mask: 'maskPrivacy' };
-  const nextTool = { kit: 'plan', plan: 'kit', fridge: 'kit', air: 'mask', mask: 'air' };
+  // v1.13.0: the six tools' pages, every line with its sources.
+  const li = (head, xs, lang, extra = '') => `<li><b>${esc(head)}</b>${extra}${xs.length ? `<br>${xs.map((x) => mline(x, lang)).join('<br>')}` : ''}<br>${src({ sources: [...new Set(xs.flatMap((x) => x.sources))], verify: xs.every((x) => x.verify === 'verified') ? 'verified' : 'partial' }, lang)}</li>`;
+  const KU = (lang) => kitFile.ui[lang];
+  const H = kitFile.hot;
+  const hotRows = (lang) => [
+    ...H.levels.map((l) => li(`${L2(l.label, lang)} · ${l.hi ? `${l.lo}–${l.hi}` : `${l.lo}+`} °C`, [...l.all, ...(l.risk || [])], lang, `<span class="dot" style="background:${esc(l.colour)}"></span>`)),
+    li(KU(lang).hotRisk, [H.risk], lang),
+    li(KU(lang).hotSigns.replace(/^\S+\s/, ''), [H.signs, H.sweat], lang),
+    li(KU(lang).hotAid, H.aid, lang),
+  ].join('\n');
+  const waterRule = kitFile.items.find((x) => x.id === 'water');
+  const waterRows = (lang) => [
+    `<li><b>${esc(fill(KU(lang).waterRule, { per: waterRule.qty.perPersonPerDay }))}</b><br>${esc(rule(waterRule, lang))}<br>${src(waterRule, lang)}</li>`,
+    ...kitFile.water.lines.map((x) => `<li>${mline(x, lang)}<br>${src(x, lang)}</li>`),
+  ].join('\n');
+  const T = kitFile.tank;
+  const tankRows = (lang) => [
+    ...T.types.map((x) => `<li><b>${esc(L2(x.label, lang))}</b> · ${x.per1000} ${esc(L2(x.unit, lang))} / 1,000 ${lang === 'en' ? 'litres' : 'ลิตร'}${x.dissolve ? `<br>${mline(x.dissolve, lang)}` : ''}<br>${src({ sources: x.sources, verify: 'verified' }, lang)}</li>`),
+    li(KU(lang).tankSteps, T.steps, lang),
+    li(KU(lang).tankSafety, T.safety, lang),
+  ].join('\n');
+  const I = kitFile.info;
+  const infoRows = (lang) => [
+    `<li><b>${esc(KU(lang).infoCardTitle)}</b><br>${I.fields.map((f) => `${esc(f.icon)} ${esc(L2(f.label, lang))}`).join(' · ')}</li>`,
+    li(KU(lang).infoWhy, I.why, lang),
+    li(KU(lang).infoKeep, I.keep, lang),
+    li(KU(lang).infoCall.replace(/^\S+\s/, ''), I.call, lang),
+  ].join('\n');
+  const SF = kitFile.safe;
+  const safeRows = (lang) => [
+    `<li><b>${esc(KU(lang).safeQ)}</b><br>${SF.status.map((x) => `${esc(x.icon)} ${esc(L2(x.label, lang))}${x.calls ? ` (${esc(KU(lang).safeCallFirst)}: ${x.calls.join(', ')})` : ''}`).join('<br>')}<br>${esc(KU(lang).safePrivacy)}</li>`,
+    ...SF.lines.map((x) => `<li>${mline(x, lang)}<br>${src(x, lang)}</li>`),
+  ].join('\n');
+  const BG = kitFile.bag;
+  const flagName = (id, lang) => L2(kitFile.flags.find((f) => f.id === id)?.label, lang);
+  const bagRows = (lang) => [
+    `<li><b>${esc(L2(BG.what, lang))}</b><br>${src(BG.what, lang)}</li>`,
+    ...BG.every.map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b><br>${src(x, lang)}</li>`),
+    ...Object.entries(BG.extra).flatMap(([k, xs]) => xs.map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b> · ${esc(fill((lang === 'en' ? E : S).kitIf, { who: flagName(k, lang) }))}<br>${src(x, lang)}</li>`)),
+    `<li>${mline(BG.check, lang)}<br>${src(BG.check, lang)}</li>`,
+  ].join('\n');
+  const privacyKey = { kit: 'privacy', plan: 'planPrivacy', fridge: 'fridgePrivacy', air: 'airPrivacy', mask: 'maskPrivacy', hot: 'hotPrivacy', water: 'waterPrivacy', tank: 'tankPrivacy', info: 'infoPrivacy', safe: 'safePrivacy', bag: 'bagPrivacy' };
+  const nextTool = { kit: 'bag', plan: 'info', fridge: 'water', air: 'mask', mask: 'air', hot: 'water', water: 'kit', tank: 'mask', info: 'plan', safe: 'plan', bag: 'kit' };
+  const rowsFor = { fridge: fridgeRows, air: airRows, mask: maskRows, hot: hotRows, water: waterRows, tank: tankRows, info: infoRows, safe: safeRows, bag: bagRows };
   const tools = { kit: kitFile.items, plan: kitFile.plan };
   for (const tool of TOOL_IDS) {
     for (const lang of LANGS) {
       const X = lang === 'en' ? E : S;
       const pre = lang === 'en' ? EN : '';
       const url = `${SITE}${pre}/${tool}`;
-      const rows = tool === 'fridge' ? fridgeRows(lang) : tool === 'air' ? airRows(lang) : tool === 'mask' ? maskRows(lang) : tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}${(x.sources || []).length ? `<br>${src(x, lang)}` : ''}</li>`).join('\n');
+      const rows = rowsFor[tool] ? rowsFor[tool](lang) : tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}${(x.sources || []).length ? `<br>${src(x, lang)}` : ''}</li>`).join('\n');
       const title = X[`${tool}PageTitle`];
       const html = seoPage({
         lang, title, desc: X[`${tool}PageDesc`], url, thPath: `/${tool}`, enPath: `${EN}/${tool}`,
@@ -1529,7 +1647,9 @@ if (gz > 500 * 1024) err(`initial load is ${(gz / 1024).toFixed(0)} KB compresse
     // the guides with no game cite their own sources (checklists.json)
     for (const l of Object.values(checklists)) for (const x of l?.items || []) for (const id of x.sources || []) used.add(id);
     for (const h of helplines.helplines) if (h.source) used.add(h.source);
-    for (const k of [...(kitFile.items || []), ...(kitFile.plan || []), ...(kitFile.fridge?.parts || []), ...(kitFile.fridge?.always || []), ...(kitFile.air?.levels || []).flatMap((l) => [...l.all, ...l.risk, ...l.chronic]), ...(kitFile.air?.baby ? [kitFile.air.baby] : [])]) for (const id of k.sources || []) used.add(id);
+    // Every tool's content cites by a "sources" list somewhere inside it (since v1.12.0 a walk, not a list of sections).
+    const walk = (o) => { if (Array.isArray(o)) o.forEach(walk); else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { if (k === 'sources' && Array.isArray(v)) v.forEach((id) => used.add(id)); else walk(v); } };
+    walk(kitFile);
     const refs = Object.entries(sources)
       .sort((a, b) => a[1].agency.localeCompare(b[1].agency, 'th') || a[0].localeCompare(b[0]))
       .map(([id, s]) => `- **[${id}]** ${s.agency} — ${s.title}${s.date ? ` (${s.date})` : ''} · _${kindLabel[s.kind] || s.kind}_${used.has(id) ? '' : ' · not cited yet'}  \n  <${s.url}>${s.note ? `  \n  ${s.note}` : ''}`)

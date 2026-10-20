@@ -636,3 +636,28 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the fridge's answer is long since v1.11.0, so a tap on a time now scrolls the answer's start to the top of the sheet (`block: 'start'`, smoothly unless reduced motion is on). The smoke check's next tap, made while the sheet was still scrolling, failed; it was one of two failures on the way to 163 passing checks, and nothing was wrong with the app.
 - *Do this:* after an action that starts a smooth scroll or an animation, wait for it to end before the next tap or measurement, as for a sheet's slide-in (D13, D22): wait for the scroll position to settle, or turn motion off in that test. The check now waits 700 ms after the tap; a wait on the scroll position would be sturdier.
 - *Encoded in:* `tests/smoke.mjs`, section 11b (`waitForTimeout(700)`, "the answer scrolls into view smoothly").
+
+**A10. "Research it yourself" turns questions into research and reviewer flags.**
+
+- *What happened:* building v1.12.0–v1.13.0, the open questions (which heat levels are current, which chlorine dose, what to tell 1669, what a bag holds, whether a baby wears a mask) would once have gone to the owner. The owner wrote "Try to research to answer your questions yourself too." Each became a search for the agency's own words; where the sources disagreed (the tank's soak time) or no agency page could be read (the heat levels), the tool shows both or names its source, and the question went to the reviewer's list instead of the owner's inbox.
+- *Do this:* ask the owner only what needs the owner (a decision, an account, a phone); research the rest, and write down what research can't settle as a flag for the right reviewer (a doctor, a pharmacist), with the sources found.
+- *Encoded in:* [KNOWN_ISSUES #90–#92](KNOWN_ISSUES.md#90-heat-today-rests-on-news-reports-quoting-the-agencies); [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) steps 7a and 7b.
+
+**B17. A new source's id can already be taken.**
+
+- *What happened:* v1.12.0 added eleven sources by merging a list into `sources.json`; one id, `ddpm-app-2569`, already existed, and the merge kept the old entry and dropped the new one without a word. Found before release: the new page's details went into the old entry's `note`, and the changelog's count was corrected to eleven.
+- *Do this:* before adding sources, check every new id against the file and fail on a clash; compare the build's `sources` count with the number you meant to add; when the id is taken by the same page, extend its `note` instead.
+- *Encoded in:* the release notes now give the count the build prints; the build already fails on an unknown source id, not on a clash, so the check is by hand.
+
+**D26. A bug in a language the tests never use lives for releases.**
+
+- *What happened:* from v1.8.0 to v1.13.0 the English home check said "1 people at home" for a household of one, and "(3 L × 1 people × 3 days)". Every smoke check ran in Thai, which has no plural, with three or four people; the English walk of v1.13.0's water tool found "About 1 days" and, behind it, the older bug (F130).
+- *Do this:* walk every new tool in English as well as Thai, and test the smallest household (one person) and the smallest amounts (one day, one litre), where plurals and rounding break.
+- *Encoded in:* [GUIDELINES rule 94](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); `one()` in `kit.js`; the smoke check "English: one person and 3 litres read "About 1 day" and "1 person at home"…".
+
+**E12. A scripted splice needs an anchor that occurs once.**
+
+- *What happened:* v1.13.0's build checks were inserted by a script after the line `const T = kitFile.tank;`. That line already stood earlier in `build.mjs`, so about 690 lines were copied in twice. It was found before the commit and repaired by keeping the text before the first copy and after the second.
+- *Do this:* assert the anchor's count is 1 before a scripted replace; afterwards compare `git diff --stat` with the change you meant; prefer edits whose old text is unique by construction.
+- *Encoded in:* [GUIDELINES rule 90](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+

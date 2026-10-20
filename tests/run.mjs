@@ -12,7 +12,7 @@ import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, setGuides, propFor, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
-import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice, maskAdvice } from '../public/js/kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice, maskAdvice, hotAdvice, waterDays, tankDose, bagList, safeMessage } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -711,6 +711,47 @@ test('all tools: one list in config, two seasonal tiles per mode, government lin
     for (const g of x.guides) assert.ok(C.guides.some((y) => y.id === g), `${x.id}: guide ${g}`);
   }
   assert.ok(K.links.list.some((x) => x.id === 'linealert') && K.links.list.some((x) => x.id === 'ddpm1784'), 'LINE ALERT and DDPM 1784 are on the list');
+});
+
+test('heat today, water, the tank, the bag and "I am safe": the sources\' numbers, never a ration, no location (v1.13.0)', () => {
+  const K = load('kit');
+  const sources = load('sources').sources;
+  // Heat: the four bands as the BMA and the DOH publish them, rising, the top one open.
+  assert.deepEqual(K.hot.levels.map((l) => [l.lo, l.hi]), [['27.0', '32.9'], ['33.0', '41.9'], ['42.0', '51.9'], ['52.0', null]]);
+  assert.equal(hotAdvice(K.hot, 'nope'), null);
+  assert.ok(hotAdvice(K.hot, 'extreme').all.some((x) => /งดกิจกรรมกลางแจ้ง/.test(x.th)), 'extreme: stop outdoor activity');
+  assert.ok(K.hot.aid[0].th.includes('1669'), 'first aid starts with 1669');
+  assert.ok(!/11\.00|13\.00|60 ปี|65 ปี|40\.5/.test(JSON.stringify(K.hot)), 'the hours, ages and temperatures the sources disagree on are left out');
+  // Water: the home check's 3 L × people × 3 days, counted the other way round.
+  const rule = K.items.find((x) => x.id === 'water').qty;
+  const w = (counts, people, other = 0) => waterDays(K.water, { counts, people, other, per: rule.perPersonPerDay, target: rule.days });
+  assert.deepEqual(w({ b1500: 6, g6: 2 }, 3), { litres: 21, people: 3, perDay: 9, days: 2, need: 6, enough: false, target: 3 });
+  assert.equal(w({ t19: 2 }, 4).enough, true);
+  assert.equal(w({}, 2, '4,5').litres, 4.5, 'a comma reads as a decimal point');
+  assert.equal(w({ b600: 1 }, 1).days, 0, 'less than a day reads 0 (the sheet says "less than a day")');
+  assert.ok(!/ลดน้ำดื่มลง|ดื่มวันละ\s*\d|ration to/i.test(JSON.stringify(K.water)), 'never advice to drink less');
+  // Tank: the MWA's and the DDC's dose per 1,000 litres.
+  assert.equal(tankDose(K.tank, { litres: 1000, type: 'l5' }).amount, 100);
+  assert.equal(tankDose(K.tank, { litres: 1000, type: 'l10' }).amount, 50);
+  assert.equal(tankDose(K.tank, { litres: 1000, type: 'p60' }).amount, 8);
+  assert.equal(tankDose(K.tank, { litres: 2000, type: 'l5' }).amount, 200);
+  assert.equal(tankDose(K.tank, { litres: 700, type: 'l10' }).amount, 35);
+  assert.equal(tankDose(K.tank, { litres: 0, type: 'l5' }), null);
+  assert.ok(K.tank.steps.some((x) => /อย่าลงไปในถัง/.test(x.th)) && K.tank.safety.some((x) => x.sources.includes('fda-bleach')), 'never climb in; never mix with toilet cleaner');
+  // Bag: every bag, plus what the household's answers add; never candles.
+  assert.deepEqual(bagList(K.bag, ['baby', 'pet']).extra.map((x) => x.id), ['baby', 'pet']);
+  assert.equal(bagList(K.bag, []).extra.length, 0);
+  assert.ok(!/เทียน|candle/i.test(JSON.stringify([K.bag.every, K.bag.extra])));
+  // "I'm safe": the message only, with no place unless typed, and the numbers first when help is needed.
+  assert.equal(safeMessage(K.safe, { status: 'ok', time: 't' }), '✅ ปลอดภัยดี อยู่บ้าน\nt');
+  assert.equal(safeMessage(K.safe, { status: 'help', where: 'สะพาน', lang: 'en' }), '🆘 I need help\nI’m at สะพาน');
+  assert.equal(safeMessage(K.safe, { status: 'nope' }), '');
+  assert.deepEqual(K.safe.status.find((x) => x.id === 'help').calls, ['1784', '1669']);
+  // Every line of the six tools has a source.
+  const walk = (o, out = []) => { if (Array.isArray(o)) o.forEach((x) => walk(x, out)); else if (o && typeof o === 'object') { if (o.sources) out.push(o); Object.values(o).forEach((x) => walk(x, out)); } return out; };
+  for (const x of walk([K.hot, K.water, K.tank, K.info, K.safe, K.bag])) assert.ok(x.sources.length && x.sources.every((id) => sources[id]), JSON.stringify(x).slice(0, 80));
+  // The emergency card asks for no ID number.
+  assert.ok(!K.info.fields.some((f) => /บัตรประชาชน|id card|passport/i.test(`${f.label.th} ${f.label.en}`)));
 });
 
 test('emoji in the content are Unicode 11 or older (newer ones are empty boxes on older phones, rule 64)', () => {

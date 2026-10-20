@@ -110,6 +110,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/kit"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/kit"/>
   </url>
+  <url><loc>https://baanrodmai.autobahn.bot/bag</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/bag"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/bag"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/bag"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/bag</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/bag"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/bag"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/bag"/>
+  </url>
   <url><loc>https://baanrodmai.autobahn.bot/plan</loc><lastmod>2026-10-21</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/plan"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/plan"/>
@@ -119,6 +129,16 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/plan"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/plan"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/plan"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/info</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/info"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/info"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/info"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/info</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/info"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/info"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/info"/>
   </url>
   <url><loc>https://baanrodmai.autobahn.bot/fridge</loc><lastmod>2026-10-21</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/fridge"/>
@@ -149,6 +169,46 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/mask"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/mask"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/mask"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/hot</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/hot"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/hot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/hot"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/hot</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/hot"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/hot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/hot"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/water</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/water"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/water"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/water"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/water</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/water"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/water"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/water"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/tank</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/tank"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/tank"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/tank"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/tank</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/tank"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/tank"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/tank"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/safe</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/safe"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/safe"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/safe"/>
+  </url>
+  <url><loc>https://baanrodmai.autobahn.bot/en/safe</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/safe"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://baanrodmai.autobahn.bot/en/safe"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://baanrodmai.autobahn.bot/en/safe"/>
   </url>
   <url><loc>https://baanrodmai.autobahn.bot/tools</loc><lastmod>2026-10-21</lastmod>
     <xhtml:link rel="alternate" hreflang="th" href="https://baanrodmai.autobahn.bot/tools"/>

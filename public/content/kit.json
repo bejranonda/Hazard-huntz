@@ -2252,6 +2252,973 @@
     "verify": "partial",
     "verifyNote": "The steps are DDPM’s, through a news report; menu names differ by make and model (Thairath), so a person checks them on an Android phone and an iPhone."
   },
+  "hot": {
+    "_readme": "ร้อนวันนี้ ต้องทำอะไร? (/hot, v1.13.0) เลือกระดับดัชนีความร้อนที่ประกาศ (ไม่คำนวณสูตรเอง เพราะยังยืนยันหน้าของกรมอุตุฯ ไม่ได้) ช่วงตัวเลขและคำแนะนำตามกทม. และกรมอนามัย สีตามกรมอนามัย ชั่วโมงและอายุที่แหล่งไม่ตรงกันตัดออก ตัวเลขทุกตัวต้องอยู่ใน sources (build ตรวจ)",
+    "levels": [
+      {
+        "id": "watch",
+        "colour": "#6CC04A",
+        "lo": "27.0",
+        "hi": "32.9",
+        "label": {
+          "th": "เฝ้าระวัง",
+          "en": "Watch"
+        },
+        "all": [
+          {
+            "th": "ดื่มน้ำสะอาดบ่อยๆ ไม่ต้องรอให้กระหาย",
+            "en": "Drink clean water often, without waiting to feel thirsty",
+            "sources": [
+              "doh-heatlevels-2569",
+              "bma-heat-posttoday-2569",
+              "tmd-heatindex-posttoday-2567"
+            ],
+            "verify": "verified",
+            "icon": "💧"
+          },
+          {
+            "th": "ติดตามประกาศเตือนความร้อน",
+            "en": "Keep an eye on heat warnings",
+            "sources": [
+              "bma-heat-posttoday-2569"
+            ],
+            "verify": "verified",
+            "icon": "📢"
+          }
+        ]
+      },
+      {
+        "id": "warn",
+        "colour": "#F2CF3A",
+        "lo": "33.0",
+        "hi": "41.9",
+        "label": {
+          "th": "เตือนภัย",
+          "en": "Warning"
+        },
+        "all": [
+          {
+            "th": "ลดกิจกรรมกลางแดด",
+            "en": "Spend less time active in the sun",
+            "sources": [
+              "bma-heat-posttoday-2569",
+              "doh-heatlevels-2569"
+            ],
+            "verify": "verified",
+            "icon": "⛱️"
+          },
+          {
+            "th": "ดื่มน้ำสะอาดบ่อยๆ",
+            "en": "Drink clean water often",
+            "sources": [
+              "doh-heatlevels-2569",
+              "bma-heat-posttoday-2569"
+            ],
+            "verify": "verified",
+            "icon": "💧"
+          }
+        ],
+        "risk": [
+          {
+            "th": "มีอาการผิดปกติ รีบไปหาหมอ",
+            "en": "Feeling unwell? See a doctor soon",
+            "sources": [
+              "bma-heat-posttoday-2569"
+            ],
+            "verify": "verified",
+            "icon": "🏥"
+          }
+        ]
+      },
+      {
+        "id": "danger",
+        "colour": "#F28C28",
+        "lo": "42.0",
+        "hi": "51.9",
+        "label": {
+          "th": "อันตราย",
+          "en": "Danger"
+        },
+        "all": [
+          {
+            "th": "หลีกเลี่ยงแดด ย้ายกิจกรรมไปช่วงที่ไม่ร้อน",
+            "en": "Keep out of the sun; move activities to a cooler time",
+            "sources": [
+              "doh-heatlevels-2569"
+            ],
+            "verify": "verified",
+            "icon": "🌅"
+          },
+          {
+            "th": "คอยสังเกตอาการตัวเอง",
+            "en": "Watch yourself for symptoms",
+            "sources": [
+              "bma-heat-posttoday-2569"
+            ],
+            "verify": "verified",
+            "icon": "👀"
+          }
+        ],
+        "risk": [
+          {
+            "th": "มีอาการผิดปกติ รีบไปหาหมอ",
+            "en": "Feeling unwell? See a doctor soon",
+            "sources": [
+              "bma-heat-posttoday-2569"
+            ],
+            "verify": "verified",
+            "icon": "🏥"
+          }
+        ]
+      },
+      {
+        "id": "extreme",
+        "colour": "#E5372E",
+        "lo": "52.0",
+        "hi": null,
+        "label": {
+          "th": "อันตรายมาก",
+          "en": "Extreme danger"
+        },
+        "all": [
+          {
+            "th": "งดกิจกรรมกลางแจ้ง",
+            "en": "Stop outdoor activity",
+            "sources": [
+              "bma-heat-posttoday-2569",
+              "doh-heatlevels-2569"
+            ],
+            "verify": "verified",
+            "icon": "🛑"
+          },
+          {
+            "th": "มีอาการผิดปกติ รีบไปหาหมอ",
+            "en": "Feeling unwell? See a doctor soon",
+            "sources": [
+              "bma-heat-posttoday-2569"
+            ],
+            "verify": "verified",
+            "icon": "🏥"
+          }
+        ]
+      }
+    ],
+    "risk": {
+      "th": "ผู้สูงอายุ เด็กเล็ก คนท้อง คนมีโรคประจำตัว เช่น โรคหัวใจ ความดัน เบาหวาน คนทำงานกลางแจ้ง คนอ้วน คนดื่มสุรา",
+      "en": "Older people, young children, pregnant women, people with a long-term illness such as heart disease, high blood pressure or diabetes, outdoor workers, people with obesity, heavy drinkers",
+      "sources": [
+        "doh-heatsigns-2569",
+        "bma-heat-posttoday-2569"
+      ],
+      "verify": "verified"
+    },
+    "signs": {
+      "th": "ตัวร้อนจัด ผิวแดง หัวใจเต้นเร็ว ปวดหัว เวียนหัว สับสน พูดไม่รู้เรื่อง ซึม หรือหมดสติ",
+      "en": "A very hot body, red skin, a racing pulse, a headache, dizziness, confusion, slurred speech, drowsiness or fainting",
+      "sources": [
+        "doh-heatsigns-2569",
+        "dms-heatstroke-2566"
+      ],
+      "verify": "verified"
+    },
+    "sweat": {
+      "th": "ยังมีเหงื่อออกอยู่ ก็เป็นฮีทสโตรกได้",
+      "en": "Still sweating? It can still be heatstroke",
+      "sources": [
+        "dms-heatstroke-2566"
+      ],
+      "verify": "verified"
+    },
+    "aid": [
+      {
+        "th": "โทร 1669 ทันที",
+        "en": "Call 1669 at once",
+        "sources": [
+          "doh-heatsigns-2569",
+          "dms-heatstroke-2566",
+          "bma-heataid-2569"
+        ],
+        "verify": "verified",
+        "icon": "☎️"
+      },
+      {
+        "th": "พาเข้าที่ร่ม อากาศถ่ายเท ให้นอนราบ ยกเท้าสูง",
+        "en": "Move them into the shade with moving air; lie them down with their feet raised",
+        "sources": [
+          "dms-heatstroke-2566",
+          "bma-heataid-2569"
+        ],
+        "verify": "verified",
+        "icon": "⛱️"
+      },
+      {
+        "th": "ถอดหรือคลายเสื้อผ้า",
+        "en": "Take off or loosen their clothes",
+        "sources": [
+          "dms-heatstroke-2566",
+          "doh-heat-illness-2569"
+        ],
+        "verify": "verified",
+        "icon": "👕"
+      },
+      {
+        "th": "ผ้าชุบน้ำเย็นหรือน้ำแข็ง ประคบคอ รักแร้ ขาหนีบ แล้วเปิดพัดลม",
+        "en": "Cold wet cloths or ice at the neck, armpits and groin, and a fan",
+        "sources": [
+          "doh-heatsigns-2569",
+          "dms-heatstroke-2566",
+          "bma-heataid-2569"
+        ],
+        "verify": "verified",
+        "icon": "💦"
+      }
+    ],
+    "verify": "partial",
+    "verifyNote": "The bands and advice come through news reports quoting the BMA and the DOH; the TMD's heat-index page could not be read (KNOWN_ISSUES #78). The hours (11–15 or 13–16), the age for older people (60 or 65) and body temperatures differ between sources and are left out."
+  },
+  "water": {
+    "_readme": "น้ำดื่มที่มี พอกี่วัน? (/water, v1.13.0) คิดจากข้อ water ของเช็กของจำเป็น (คนละกี่ลิตรต่อวัน กี่วัน) ขนาดภาชนะเป็นขนาดที่คนกดเลือก ไม่ใช่คำแนะนำ ห้ามแนะนำให้ลดน้ำดื่ม",
+    "sizes": [
+      {
+        "id": "b600",
+        "ml": 600,
+        "icon": "🥤",
+        "label": {
+          "th": "ขวดเล็ก 600 มล.",
+          "en": "Small bottle, 600 ml"
+        }
+      },
+      {
+        "id": "b1500",
+        "ml": 1500,
+        "icon": "🥤",
+        "label": {
+          "th": "ขวดใหญ่ 1.5 ลิตร",
+          "en": "Large bottle, 1.5 litres"
+        }
+      },
+      {
+        "id": "g6",
+        "ml": 6000,
+        "icon": "💧",
+        "label": {
+          "th": "แกลลอน 6 ลิตร",
+          "en": "6-litre jug"
+        }
+      },
+      {
+        "id": "t19",
+        "ml": 18900,
+        "icon": "🚰",
+        "label": {
+          "th": "ถังน้ำดื่ม 18.9 ลิตร",
+          "en": "18.9-litre water-cooler bottle"
+        }
+      }
+    ],
+    "lines": [
+      {
+        "th": "เด็ก แม่ให้นม คนป่วย หรืออากาศร้อน อาจต้องใช้น้ำมากกว่านี้",
+        "en": "Children, nursing mothers, sick people and hot weather may need more",
+        "sources": [
+          "readygov-water-2564"
+        ],
+        "verify": "partial",
+        "icon": "👶",
+        "verifyNote": "Ready.gov only; no Thai figure for extra needs."
+      },
+      {
+        "th": "ดื่มให้พอ อย่าอดน้ำเพื่อให้พอใช้ ถ้าหน่วยงานไม่ได้สั่ง",
+        "en": "Drink enough: don't cut back on water unless the authorities tell you to",
+        "sources": [
+          "readygov-water-2564"
+        ],
+        "verify": "partial",
+        "icon": "🚫",
+        "verifyNote": "Ready.gov only."
+      },
+      {
+        "th": "ไม่แน่ใจว่าน้ำสะอาดไหม ต้มให้เดือดก่อนดื่ม หรือใช้น้ำขวดที่ได้มาตรฐาน",
+        "en": "Not sure the water is clean? Boil it first, or use bottled water with a standard mark",
+        "sources": [
+          "anamai-water"
+        ],
+        "verify": "verified",
+        "icon": "♨️"
+      }
+    ]
+  },
+  "tank": {
+    "_readme": "ล้างถังพักน้ำหลังน้ำท่วม (/tank, v1.13.0) ปริมาณคลอรีนต่อน้ำ 1,000 ลิตร ตามกปน. และกรมควบคุมโรค (ตรงกัน) เวลาแช่ไม่ตรงกัน (กปน. ค้างคืน กรมควบคุมโรค 3 ชั่วโมง) จึงบอกทั้งสองพร้อมชื่อหน่วยงาน น้ำที่แช่คลอรีนไม่ใช่น้ำดื่ม ต้องระบายทิ้ง",
+    "sizes": [
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "types": [
+      {
+        "id": "l5",
+        "per1000": 100,
+        "unit": {
+          "th": "มล.",
+          "en": "ml"
+        },
+        "label": {
+          "th": "คลอรีนน้ำ 5%",
+          "en": "Liquid chlorine, 5%"
+        },
+        "sources": [
+          "mwa-tank",
+          "ddc-tank-2568"
+        ]
+      },
+      {
+        "id": "l10",
+        "per1000": 50,
+        "unit": {
+          "th": "มล.",
+          "en": "ml"
+        },
+        "label": {
+          "th": "คลอรีนน้ำ 10%",
+          "en": "Liquid chlorine, 10%"
+        },
+        "sources": [
+          "mwa-tank",
+          "ddc-tank-2568"
+        ]
+      },
+      {
+        "id": "p60",
+        "per1000": 8,
+        "unit": {
+          "th": "กรัม",
+          "en": "g"
+        },
+        "label": {
+          "th": "คลอรีนผง 60–65%",
+          "en": "Chlorine powder, 60–65%"
+        },
+        "sources": [
+          "mwa-tank",
+          "ddc-tank-2568"
+        ],
+        "dissolve": {
+          "th": "ละลายผงในถังน้ำก่อน ใช้แต่น้ำใส ทิ้งตะกอน",
+          "en": "Dissolve the powder in a bucket first; use only the clear water and throw the sludge away",
+          "sources": [
+            "mwa-tank"
+          ],
+          "verify": "verified"
+        }
+      }
+    ],
+    "steps": [
+      {
+        "th": "ปิดวาล์วน้ำเข้า เปิดก๊อกทุกตัว ระบายน้ำออกจนหมด",
+        "en": "Close the inlet valve, open every tap and drain the tank",
+        "sources": [
+          "ddc-tank-2568"
+        ],
+        "verify": "verified",
+        "icon": "🚰"
+      },
+      {
+        "th": "ขัดด้วยแปรงด้ามยาว อย่าลงไปในถัง อาจขาดอากาศหายใจ",
+        "en": "Scrub with a long-handled brush. Never climb in: you could run out of air",
+        "sources": [
+          "ddc-tank-2568"
+        ],
+        "verify": "verified",
+        "icon": "🧹"
+      },
+      {
+        "th": "ฉีดล้าง ระบายทิ้ง แล้วเติมน้ำจนเกือบเต็ม",
+        "en": "Hose it down, drain it, then fill it nearly full",
+        "sources": [
+          "ddc-tank-2568"
+        ],
+        "verify": "verified",
+        "icon": "💦"
+      },
+      {
+        "th": "ใส่คลอรีนตามปริมาณด้านบน คนให้เข้ากัน",
+        "en": "Add the chlorine above and stir it in",
+        "sources": [
+          "ddc-tank-2568",
+          "mwa-tank"
+        ],
+        "verify": "verified",
+        "icon": "🧪"
+      },
+      {
+        "th": "แช่ไว้: กปน. แนะค้างคืน 1 คืน กรมควบคุมโรคแนะ 3 ชั่วโมง",
+        "en": "Let it stand: overnight, says the MWA; 3 hours, says the DDC",
+        "sources": [
+          "mwa-tank",
+          "ddc-tank-2568"
+        ],
+        "verify": "verified",
+        "icon": "⏳"
+      },
+      {
+        "th": "ระบายทิ้งทางก๊อก ใช้ล้างพื้นได้ แล้วเติมน้ำใหม่ใช้ตามปกติ",
+        "en": "Drain it out through the taps (it can wash floors), then refill and use as usual",
+        "sources": [
+          "mwa-tank",
+          "ddc-tank-2568"
+        ],
+        "verify": "verified",
+        "icon": "🔄"
+      }
+    ],
+    "safety": [
+      {
+        "th": "ใส่ถุงมือยาง",
+        "en": "Wear rubber gloves",
+        "sources": [
+          "ddc-tank-2568"
+        ],
+        "verify": "verified",
+        "icon": "🧤"
+      },
+      {
+        "th": "ห้ามผสมคลอรีนหรือน้ำยาฟอกขาว กับน้ำยาล้างห้องน้ำ เกิดก๊าซพิษ",
+        "en": "Never mix chlorine or bleach with toilet cleaner: it makes a toxic gas",
+        "sources": [
+          "fda-bleach"
+        ],
+        "verify": "verified",
+        "icon": "☠️"
+      },
+      {
+        "th": "น้ำที่แช่คลอรีนไม่ใช่น้ำดื่ม ระบายทิ้งให้หมด",
+        "en": "Water standing with chlorine is not for drinking: drain it all",
+        "sources": [
+          "mwa-tank"
+        ],
+        "verify": "verified",
+        "icon": "🚱"
+      },
+      {
+        "th": "ซื้อแบบที่ฉลากบอกความเข้มข้น (%)",
+        "en": "Buy one whose label states its strength (%)",
+        "sources": [
+          "dss-bleach-2568"
+        ],
+        "verify": "partial",
+        "icon": "🏷️",
+        "verifyNote": "A Department of Science Service study found many Thai hypochlorite labels state no strength, or more than the product holds."
+      }
+    ]
+  },
+  "info": {
+    "_readme": "บัตรข้อมูลฉุกเฉิน (/info, v1.13.0) ช่องที่ผู้ใช้กรอก อยู่ในเครื่องเท่านั้น (brm:info) ไม่ส่งไปไหน ห้ามใส่เลขบัตรประชาชน",
+    "fields": [
+      {
+        "id": "name",
+        "icon": "🙂",
+        "max": 40,
+        "label": {
+          "th": "ชื่อที่ใช้เรียก",
+          "en": "Name"
+        },
+        "placeholder": {
+          "th": "เช่น คุณยายสมศรี",
+          "en": "e.g. Grandma Somsri"
+        }
+      },
+      {
+        "id": "conditions",
+        "icon": "❤️",
+        "max": 80,
+        "label": {
+          "th": "โรคประจำตัว",
+          "en": "Long-term conditions"
+        },
+        "placeholder": {
+          "th": "เช่น ความดัน เบาหวาน",
+          "en": "e.g. high blood pressure, diabetes"
+        }
+      },
+      {
+        "id": "meds",
+        "icon": "💊",
+        "max": 80,
+        "label": {
+          "th": "ยาที่ใช้ประจำ และขนาด",
+          "en": "Regular medicines, with doses"
+        },
+        "placeholder": {
+          "th": "เช่น ยาความดัน 1 เม็ด เช้า",
+          "en": "e.g. blood-pressure pill, 1 each morning"
+        }
+      },
+      {
+        "id": "allergy",
+        "icon": "⚠️",
+        "max": 60,
+        "label": {
+          "th": "แพ้ยา แพ้อาหาร",
+          "en": "Drug or food allergies"
+        },
+        "placeholder": {
+          "th": "เช่น แพ้เพนนิซิลลิน",
+          "en": "e.g. penicillin"
+        }
+      },
+      {
+        "id": "hospital",
+        "icon": "🏥",
+        "max": 60,
+        "label": {
+          "th": "โรงพยาบาลที่รักษา และเลข HN",
+          "en": "Hospital and patient number (HN)"
+        },
+        "placeholder": {
+          "th": "เช่น รพ.ประจำจังหวัด HN 123456",
+          "en": "e.g. the provincial hospital, HN 123456"
+        }
+      },
+      {
+        "id": "contact1",
+        "icon": "📞",
+        "max": 50,
+        "label": {
+          "th": "ติดต่อคนแรก (ชื่อ เบอร์)",
+          "en": "First contact (name, number)"
+        },
+        "placeholder": {
+          "th": "เช่น ลูกสาว 08x-xxx-xxxx",
+          "en": "e.g. daughter, 08x-xxx-xxxx"
+        }
+      },
+      {
+        "id": "contact2",
+        "icon": "📞",
+        "max": 50,
+        "label": {
+          "th": "ติดต่อคนที่สอง",
+          "en": "Second contact"
+        },
+        "placeholder": {
+          "th": "เช่น หลาน 09x-xxx-xxxx",
+          "en": "e.g. grandson, 09x-xxx-xxxx"
+        }
+      }
+    ],
+    "why": [
+      {
+        "th": "สภาเภสัชกรรมแนะให้พกรายการยาที่ใช้ประจำ และประวัติแพ้ยา ติดตัวไว้",
+        "en": "The Pharmacy Council advises carrying a list of your regular medicines and any drug allergies",
+        "sources": [
+          "pharm-medbook-2561",
+          "fema-older-2566"
+        ],
+        "verify": "verified",
+        "icon": "💊"
+      },
+      {
+        "th": "แพ้ยา บอกหมอและเภสัชกรทุกครั้ง",
+        "en": "A drug allergy: tell the doctor and pharmacist every time",
+        "sources": [
+          "pharm-medbook-2561"
+        ],
+        "verify": "verified",
+        "icon": "⚠️"
+      }
+    ],
+    "keep": [
+      {
+        "th": "เก็บไว้ในกระเป๋าสตางค์ หรือบันทึกรูปเป็นภาพหน้าจอล็อก",
+        "en": "Keep it in a wallet, or save the picture as the phone's lock screen",
+        "sources": [
+          "pharm-medbook-2561"
+        ],
+        "verify": "partial",
+        "icon": "👛",
+        "verifyNote": "Carrying the list is the Pharmacy Council's advice; a lock-screen picture is our way of carrying it."
+      },
+      {
+        "th": "ใส่สำเนาเอกสารสุขภาพไว้ในถุงกันน้ำ ในกระเป๋าฉุกเฉิน",
+        "en": "Put copies of health papers in a waterproof bag, in the emergency bag",
+        "sources": [
+          "ddpm-amarin"
+        ],
+        "verify": "verified",
+        "icon": "🎒"
+      },
+      {
+        "th": "บอกลูกหลานว่าเก็บบัตรไว้ที่ไหน",
+        "en": "Tell the family where the card is kept",
+        "sources": [
+          "fema-older-2566"
+        ],
+        "verify": "partial",
+        "icon": "👪",
+        "verifyNote": "Our wording of FEMA's guide for older adults."
+      }
+    ],
+    "call": [
+      {
+        "th": "เกิดอะไร ใครเจ็บ เจ็บแบบไหน",
+        "en": "What happened, who is hurt, and how",
+        "sources": [
+          "niems-call-2557"
+        ],
+        "verify": "verified"
+      },
+      {
+        "th": "อยู่ที่ไหน มีจุดสังเกตอะไร",
+        "en": "Where you are, and a landmark",
+        "sources": [
+          "niems-call-2557"
+        ],
+        "verify": "verified"
+      },
+      {
+        "th": "ผู้ป่วยเพศอะไร รู้สึกตัวไหม",
+        "en": "The patient's sex, and whether they are awake",
+        "sources": [
+          "niems-call-2557"
+        ],
+        "verify": "verified"
+      },
+      {
+        "th": "มีอันตรายซ้ำไหม เช่น อยู่กลางถนน",
+        "en": "Any danger still there, such as being in the road",
+        "sources": [
+          "niems-call-2557"
+        ],
+        "verify": "verified"
+      },
+      {
+        "th": "ชื่อคนแจ้ง และเบอร์ที่ติดต่อกลับได้",
+        "en": "Your name, and a number they can call back",
+        "sources": [
+          "niems-call-2557"
+        ],
+        "verify": "verified"
+      }
+    ],
+    "verify": "partial"
+  },
+  "safe": {
+    "_readme": "ส่งข่าวว่าปลอดภัย (/safe, v1.13.0) ข้อความสำเร็จรูป ส่งทาง LINE หรือ SMS ไม่แนบตำแหน่ง ไม่เก็บข้อความ ถ้าต้องการความช่วยเหลือ ให้โทร 1784 หรือ 1669 ก่อน",
+    "status": [
+      {
+        "id": "ok",
+        "icon": "✅",
+        "label": {
+          "th": "ปลอดภัยดี อยู่บ้าน",
+          "en": "Safe, at home"
+        },
+        "text": {
+          "th": "ปลอดภัยดี อยู่บ้าน",
+          "en": "I'm safe, at home"
+        }
+      },
+      {
+        "id": "moved",
+        "icon": "🏃",
+        "label": {
+          "th": "ย้ายไปที่ปลอดภัยแล้ว",
+          "en": "Moved somewhere safe"
+        },
+        "text": {
+          "th": "ปลอดภัยดี ย้ายไปที่ปลอดภัยแล้ว",
+          "en": "I’m safe: I’ve moved somewhere safe"
+        },
+        "at": {
+          "th": "ตอนนี้อยู่ที่ {w}",
+          "en": "Now at {w}"
+        }
+      },
+      {
+        "id": "help",
+        "icon": "🆘",
+        "label": {
+          "th": "ต้องการความช่วยเหลือ",
+          "en": "I need help"
+        },
+        "text": {
+          "th": "ต้องการความช่วยเหลือ",
+          "en": "I need help"
+        },
+        "calls": [
+          "1784",
+          "1669"
+        ],
+        "at": {
+          "th": "อยู่ที่ {w}",
+          "en": "I’m at {w}"
+        }
+      }
+    ],
+    "lines": [
+      {
+        "th": "โทรไม่ติด ลองส่งข้อความ มักส่งถึงได้มากกว่า",
+        "en": "Calls not getting through? Send a text: it often goes through when a call won't",
+        "sources": [
+          "redcross-contact-2569"
+        ],
+        "verify": "partial",
+        "icon": "💬",
+        "verifyNote": "The American Red Cross; no Thai agency source found."
+      },
+      {
+        "th": "ตกลงกันไว้ก่อนว่าจะติดต่อกันทางไหน และนัดเจอที่ไหน",
+        "en": "Agree beforehand how you'll reach each other, and where to meet",
+        "sources": [
+          "readygov-plan"
+        ],
+        "verify": "partial",
+        "icon": "📝",
+        "verifyNote": "Ready.gov; the plan card has the meeting place."
+      }
+    ]
+  },
+  "bag": {
+    "_readme": "กระเป๋าฉุกเฉิน (/bag, v1.13.0) ของที่หยิบไปได้ทันทีเมื่อต้องออกจากบ้าน รายการตามปภ. เพิ่มตามคนในบ้านจากเช็กของจำเป็น (เด็กเล็ก ผู้สูงอายุ ยาประจำ สัตว์เลี้ยง) ไม่มีตัวเลขน้ำ เพราะแหล่งไม่ตรงกัน ไม่มีเทียน (ใช้ไฟฉาย)",
+    "what": {
+      "th": "ของที่หยิบไปได้ทันที เมื่อต้องออกจากบ้าน",
+      "en": "What you can grab at once when you have to leave home",
+      "sources": [
+        "ddpm-6kit"
+      ],
+      "verify": "verified"
+    },
+    "every": [
+      {
+        "id": "water",
+        "icon": "💧",
+        "label": {
+          "th": "น้ำดื่ม และอาหารแห้งเก็บได้นาน",
+          "en": "Drinking water and long-life dry food"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "torch",
+        "icon": "🔦",
+        "label": {
+          "th": "ไฟฉาย พร้อมถ่านสำรอง",
+          "en": "A torch with spare batteries"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "firstaid",
+        "icon": "⛑️",
+        "label": {
+          "th": "ชุดปฐมพยาบาล",
+          "en": "A first-aid kit"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "docs",
+        "icon": "📄",
+        "label": {
+          "th": "สำเนาบัตรประชาชน ทะเบียนบ้าน ในถุงกันน้ำ",
+          "en": "Copies of your ID card and house registration, in a waterproof bag"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "phone",
+        "icon": "🔋",
+        "label": {
+          "th": "มือถือ สายชาร์จ พาวเวอร์แบงก์",
+          "en": "A phone, charger and power bank"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "radio",
+        "icon": "📻",
+        "label": {
+          "th": "วิทยุ พร้อมถ่านสำรอง",
+          "en": "A radio with spare batteries"
+        },
+        "sources": [
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "whistle",
+        "icon": "📣",
+        "label": {
+          "th": "นกหวีด",
+          "en": "A whistle"
+        },
+        "sources": [
+          "ddpm-amarin",
+          "dmr-bag-2568"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "clothes",
+        "icon": "👕",
+        "label": {
+          "th": "เสื้อผ้าสำรอง ผ้าอนามัย กระดาษชำระ",
+          "en": "Spare clothes, sanitary pads, toilet paper"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "hygiene",
+        "icon": "🧼",
+        "label": {
+          "th": "สบู่ แปรงสีฟัน ยาสีฟัน",
+          "en": "Soap, a toothbrush and toothpaste"
+        },
+        "sources": [
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "tools",
+        "icon": "🔪",
+        "label": {
+          "th": "มีดพก กรรไกร เทปกาว เชือก ถุงดำ",
+          "en": "A pocket knife, scissors, tape, rope, bin bags"
+        },
+        "sources": [
+          "ddpm-6kit",
+          "ddpm-amarin"
+        ],
+        "verify": "verified"
+      },
+      {
+        "id": "cash",
+        "icon": "💵",
+        "label": {
+          "th": "เงินสดติดไว้บ้าง เผื่อตู้ ATM ใช้ไม่ได้",
+          "en": "Some cash, in case cash machines don't work"
+        },
+        "sources": [
+          "dmr-bag-2568"
+        ],
+        "verify": "partial",
+        "verifyNote": "The Department of Mineral Resources' earthquake list."
+      },
+      {
+        "id": "contacts",
+        "icon": "📒",
+        "label": {
+          "th": "เบอร์ญาติเขียนบนกระดาษ และที่อยู่ศูนย์พักพิงใกล้บ้าน",
+          "en": "Relatives' numbers on paper, and the address of a nearby shelter"
+        },
+        "sources": [
+          "dmr-bag-2568"
+        ],
+        "verify": "partial",
+        "verifyNote": "The Department of Mineral Resources' earthquake list."
+      }
+    ],
+    "extra": {
+      "meds": [
+        {
+          "id": "meds",
+          "icon": "💊",
+          "label": {
+            "th": "ยาประจำตัว และรายการยา (บัตรข้อมูลฉุกเฉิน)",
+            "en": "Regular medicines, and the medicine list (the emergency card)"
+          },
+          "sources": [
+            "ddpm-6kit",
+            "pharm-medbook-2561"
+          ],
+          "verify": "verified"
+        }
+      ],
+      "baby": [
+        {
+          "id": "baby",
+          "icon": "🍼",
+          "label": {
+            "th": "ผ้าอ้อม ขวดนม และนมผง ถ้าลูกกินนมผงอยู่แล้ว ของเล่นชิ้นเล็ก",
+            "en": "Nappies, bottles, and formula if the baby already has it; a small toy"
+          },
+          "sources": [
+            "dmr-bag-2568",
+            "readygov-kit"
+          ],
+          "verify": "partial",
+          "verifyNote": "The Department of Mineral Resources and Ready.gov; formula only for a baby already fed with it (the DOH promotes breastfeeding)."
+        }
+      ],
+      "elder": [
+        {
+          "id": "elder",
+          "icon": "👓",
+          "label": {
+            "th": "แว่นตา เครื่องช่วยฟัง และถ่านสำรอง ไม้เท้า",
+            "en": "Glasses, hearing aids and spare batteries, a walking aid"
+          },
+          "sources": [
+            "fema-older-2566",
+            "readygov-kit"
+          ],
+          "verify": "partial",
+          "verifyNote": "US guidance (FEMA, Ready.gov) only."
+        }
+      ],
+      "pet": [
+        {
+          "id": "pet",
+          "icon": "🐶",
+          "label": {
+            "th": "อาหารสัตว์เลี้ยง สายจูง",
+            "en": "Pet food and a lead"
+          },
+          "sources": [
+            "dmr-bag-2568",
+            "readygov-kit"
+          ],
+          "verify": "partial",
+          "verifyNote": "The Department of Mineral Resources' earthquake list and Ready.gov."
+        }
+      ]
+    },
+    "check": {
+      "th": "ตรวจของในกระเป๋าและวันหมดอายุเป็นประจำ",
+      "en": "Check the bag and the expiry dates regularly",
+      "sources": [
+        "ddpm-6kit"
+      ],
+      "verify": "verified"
+    }
+  },
   "ui": {
     "th": {
       "title": "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?",
@@ -2404,7 +3371,101 @@
       "toolsLinksNote": "ลิงก์ไปที่หน่วยงานโดยตรง ตรวจว่าใช้ได้ล่าสุด {date} บัญชี LINE กดแล้วเพิ่มเพื่อนได้เลย",
       "toolsLine": "LINE",
       "toolsWeb": "เว็บ",
-      "guideLinks": "🔗 ดูข้อมูลจากหน่วยงาน"
+      "guideLinks": "🔗 ดูข้อมูลจากหน่วยงาน",
+      "hotTitle": "ร้อนวันนี้ ต้องทำอะไร?",
+      "hotIntro": "แตะระดับดัชนีความร้อนที่ประกาศวันนี้ แล้วดูว่าต้องทำอะไร",
+      "hotQ": "วันนี้ประกาศระดับไหน?",
+      "hotCheck": "ยังไม่รู้ระดับ? 🌐 ดูประกาศกรมอุตุฯ",
+      "hotRange": "ดัชนีความร้อน {lo}–{hi} °C",
+      "hotRangeTop": "ดัชนีความร้อน {lo} °C ขึ้นไป",
+      "hotAll": "ทุกคน",
+      "hotRisk": "คนที่ต้องระวังเป็นพิเศษ",
+      "hotRiskWho": "คนที่ต้องระวังเป็นพิเศษ: {who}",
+      "hotSigns": "🆘 อาการฮีทสโตรก",
+      "hotAid": "ช่วยเหลือเบื้องต้น",
+      "hotShare": "📤 ส่งให้คนที่บ้าน",
+      "hotShareHead": "🌡️ วันนี้ดัชนีความร้อนระดับ \"{name}\"",
+      "hotShareTail": "เช็กเองได้ที่ {url}",
+      "hotGuide": "📋 อากาศร้อนจัด: ต้องทำอะไร 10 ข้อ",
+      "hotPrivacy": "ไม่ต้องกรอกอะไร ระดับที่เลือกไม่ถูกส่งไปไหน",
+      "hotPick": "👆 แตะระดับด้านบน แล้วคำตอบจะขึ้นตรงนี้",
+      "waterTitle": "น้ำดื่มที่มี พอกี่วัน?",
+      "waterIntro": "นับขวดและแกลลอนที่มีในบ้าน แล้วดูว่าพอดื่มกี่วัน",
+      "waterPeople": "บ้านเรามีกี่คน",
+      "waterHave": "มีน้ำดื่มเท่าไร",
+      "waterOther": "อื่นๆ (ลิตร)",
+      "waterTotal": "รวม {l} ลิตร",
+      "waterDays": "พอดื่มราว {d} วัน",
+      "waterLess": "ไม่ถึง 1 วัน",
+      "waterRule": "คิดคนละ {per} ลิตรต่อวัน (กรมประชาสัมพันธ์)",
+      "waterEnough": "✅ ครบ {days} วันแล้ว",
+      "waterShort": "ยังขาดราว {need} ลิตร ให้ครบ {days} วัน",
+      "waterPick": "👆 กด + ที่ขวดหรือแกลลอนที่มี",
+      "waterPrivacy": "จำนวนที่กดอยู่ในเครื่องนี้ ไม่ส่งไปไหน",
+      "waterShare": "📤 ส่งให้คนที่บ้าน",
+      "waterShareTail": "นับเองได้ที่ {url}",
+      "waterKit": "🎒 เช็กของจำเป็นอื่นๆ",
+      "tankTitle": "ล้างถังพักน้ำหลังน้ำท่วม",
+      "tankIntro": "ถังที่น้ำท่วมถึง ต้องล้างและแช่คลอรีนก่อนใช้ ใส่ขนาดถัง แล้วดูว่าใช้คลอรีนเท่าไร",
+      "tankSize": "ถังขนาดกี่ลิตร?",
+      "tankOther": "ขนาดอื่น (ลิตร)",
+      "tankType": "มีคลอรีนแบบไหน?",
+      "tankAmount": "ใช้ {type} ราว {n} {unit}",
+      "tankFor": "สำหรับน้ำ {l} ลิตร · ความเข้ม 5 มก. ต่อลิตร ตาม กปน.",
+      "tankSteps": "ทำทีละขั้น",
+      "tankSafety": "ระวัง",
+      "tankPick": "👆 เลือกขนาดถังและชนิดคลอรีน",
+      "tankPrivacy": "ไม่มีอะไรถูกส่งไปไหน",
+      "tankShare": "📤 ส่งให้คนที่บ้าน",
+      "tankShareTail": "ดูวิธีเต็มที่ {url}",
+      "tankGuide": "📋 หลังน้ำลด: ต้องทำอะไร 10 ข้อ",
+      "tankLitres": "{n} ลิตร",
+      "infoTitle": "บัตรข้อมูลฉุกเฉิน",
+      "infoIntro": "ข้อมูลที่หมอและเจ้าหน้าที่ต้องรู้ ทำเป็นรูปเก็บไว้ในมือถือ หรือพิมพ์ใส่กระเป๋าสตางค์",
+      "infoPrivacy": "สิ่งที่พิมพ์อยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปไหน อย่าใส่เลขบัตรประชาชน",
+      "infoMake": "🆔 ทำบัตร",
+      "infoEmpty": "ใส่อย่างน้อยหนึ่งช่องก่อนนะ",
+      "infoWhy": "ทำไมต้องมี",
+      "infoKeep": "เก็บไว้ที่ไหน",
+      "infoCall": "☎️ โทร 1669 บอกอะไรบ้าง",
+      "infoCardTitle": "ข้อมูลฉุกเฉิน",
+      "infoShareTitle": "บัตรข้อมูลฉุกเฉิน",
+      "infoShareText": "ทำบัตรข้อมูลฉุกเฉินไว้แล้ว ทำของคนที่บ้านได้ที่ {url}",
+      "infoCopy": "📋 คัดลอกเป็นข้อความ",
+      "infoBack": "← กลับไปแก้",
+      "infoKeepCard": "เก็บไว้ในมือถือหรือกระเป๋าสตางค์ บอกลูกหลานว่าเก็บไว้ที่ไหน",
+      "infoPerson": "ทำบัตรของ",
+      "infoAdd": "+ อีกคน",
+      "infoDelete": "ลบบัตรนี้",
+      "safeTitle": "ส่งข่าวว่าปลอดภัย",
+      "safeIntro": "บอกลูกหลานด้วยข้อความเดียว แตะสถานะ แล้วส่งทาง LINE หรือ SMS",
+      "safeQ": "ตอนนี้เป็นอย่างไร?",
+      "safeWhere": "อยู่ที่ไหน (ไม่ต้องใส่ก็ได้)",
+      "safeWherePh": "เช่น บ้านลุง วัดใกล้บ้าน",
+      "safeNote": "บอกอะไรเพิ่ม (ไม่ต้องใส่ก็ได้)",
+      "safeNotePh": "เช่น อยู่กับแม่ แบตเหลือน้อย",
+      "safeNow": "ส่งเมื่อ {time}",
+      "safeCallFirst": "ต้องการความช่วยเหลือ โทรหาเจ้าหน้าที่ก่อน",
+      "safeSend": "📤 ส่งข้อความ",
+      "safeSms": "SMS",
+      "safePrivacy": "ไม่ส่งตำแหน่ง ไม่เก็บข้อความ ส่งไปที่ห้องแชตที่เลือกเท่านั้น",
+      "safePick": "👆 แตะสถานะด้านบน",
+      "safePreview": "ข้อความที่จะส่ง",
+      "safePlan": "📝 แผนครอบครัว: จุดนัดพบ",
+      "bagTitle": "กระเป๋าฉุกเฉิน",
+      "bagIntro": "รายการตามคนในบ้าน ติ๊กเมื่อจัดใส่กระเป๋าแล้ว",
+      "bagEvery": "ทุกกระเป๋า",
+      "bagExtra": "เพิ่มสำหรับคนในบ้านเรา",
+      "bagFromKit": "คนในบ้านตามที่ตอบในเช็กของจำเป็น",
+      "bagNoKit": "ตอบว่าบ้านเรามีใครบ้าง ในเช็กของจำเป็น จะได้รายการที่ตรงกว่า",
+      "bagCount": "จัดแล้ว {have} จาก {total}",
+      "bagShare": "📤 ส่งรายการให้คนที่บ้าน",
+      "bagShareHead": "🎒 กระเป๋าฉุกเฉินของบ้านเรา ยังขาด:",
+      "bagShareDone": "🎒 กระเป๋าฉุกเฉินของบ้านเราครบแล้ว",
+      "bagShareTail": "จัดของบ้านคุณได้ที่ {url}",
+      "bagPrivacy": "ติ๊กอยู่ในเครื่องนี้ ไม่ส่งไปไหน",
+      "bagKit": "🎒 เช็กของจำเป็นในบ้าน (ตามจำนวนคน)",
+      "bagInfo": "🆔 บัตรข้อมูลฉุกเฉิน"
     },
     "en": {
       "title": "Check your supplies: how ready is our home?",
@@ -2557,7 +3618,101 @@
       "toolsLinksNote": "These go straight to the agencies; last checked {date}. A LINE account opens in LINE, ready to add",
       "toolsLine": "LINE",
       "toolsWeb": "Web",
-      "guideLinks": "🔗 From the agencies"
+      "guideLinks": "🔗 From the agencies",
+      "hotTitle": "Heat today: what should we do?",
+      "hotIntro": "Tap the heat-index level announced today and see what to do",
+      "hotQ": "Which level is announced today?",
+      "hotCheck": "Don't know the level? 🌐 See the TMD's warnings",
+      "hotRange": "Heat index {lo}–{hi} °C",
+      "hotRangeTop": "Heat index {lo} °C and above",
+      "hotAll": "Everyone",
+      "hotRisk": "People who need extra care",
+      "hotRiskWho": "People who need extra care: {who}",
+      "hotSigns": "🆘 Signs of heatstroke",
+      "hotAid": "First aid",
+      "hotShare": "📤 Send to your family",
+      "hotShareHead": "🌡️ Today's heat index is \"{name}\"",
+      "hotShareTail": "Check for yourself: {url}",
+      "hotGuide": "📋 Extreme heat: 10 things to do",
+      "hotPrivacy": "Nothing to fill in; the level you pick is sent nowhere",
+      "hotPick": "👆 Tap a level above and the answer appears here",
+      "waterTitle": "How many days will our water last?",
+      "waterIntro": "Count the bottles and jugs at home and see how many days they last",
+      "waterPeople": "How many people live here",
+      "waterHave": "How much drinking water is there",
+      "waterOther": "Other (litres)",
+      "waterTotal": "{l} litres in all",
+      "waterDays": "About {d} days",
+      "waterLess": "Less than a day",
+      "waterRule": "{per} litres per person per day (Thailand's Public Relations Department)",
+      "waterEnough": "✅ {days} days covered",
+      "waterShort": "About {need} litres more for {days} days",
+      "waterPick": "👆 Tap + on the bottles or jugs you have",
+      "waterPrivacy": "What you count stays on this phone",
+      "waterShare": "📤 Send to your family",
+      "waterShareTail": "Count yours: {url}",
+      "waterKit": "🎒 Check your other supplies",
+      "tankTitle": "Cleaning a water tank after a flood",
+      "tankIntro": "A tank the flood reached must be cleaned and stood with chlorine before use. Enter its size to see how much chlorine",
+      "tankSize": "How many litres is the tank?",
+      "tankOther": "Other size (litres)",
+      "tankType": "Which chlorine do you have?",
+      "tankAmount": "About {n} {unit} of {type}",
+      "tankFor": "For {l} litres of water · 5 mg per litre, as the MWA says",
+      "tankSteps": "Step by step",
+      "tankSafety": "Take care",
+      "tankPick": "👆 Pick the tank size and the chlorine",
+      "tankPrivacy": "Nothing is sent anywhere",
+      "tankShare": "📤 Send to your family",
+      "tankShareTail": "The full method: {url}",
+      "tankGuide": "📋 After the flood: 10 things to do",
+      "tankLitres": "{n} litres",
+      "infoTitle": "Emergency info card",
+      "infoIntro": "What a doctor or rescuer needs to know, as a picture on your phone or a card for your wallet",
+      "infoPrivacy": "What you type stays on this phone and is sent nowhere. Don't enter an ID number",
+      "infoMake": "🆔 Make the card",
+      "infoEmpty": "Fill in at least one field first",
+      "infoWhy": "Why have one",
+      "infoKeep": "Where to keep it",
+      "infoCall": "☎️ Calling 1669: what to say",
+      "infoCardTitle": "Emergency information",
+      "infoShareTitle": "Emergency info card",
+      "infoShareText": "I've made an emergency info card. Make one for your family: {url}",
+      "infoCopy": "📋 Copy as text",
+      "infoBack": "← Back to edit",
+      "infoKeepCard": "Keep it on your phone or in your wallet, and tell the family where",
+      "infoPerson": "Card for",
+      "infoAdd": "+ Someone else",
+      "infoDelete": "Delete this card",
+      "safeTitle": "Tell the family you're safe",
+      "safeIntro": "One message for the family: tap how you are, then send it by LINE or SMS",
+      "safeQ": "How are you now?",
+      "safeWhere": "Where are you (optional)",
+      "safeWherePh": "e.g. Uncle's house, the temple nearby",
+      "safeNote": "Anything else (optional)",
+      "safeNotePh": "e.g. with Mum, battery low",
+      "safeNow": "Sent {time}",
+      "safeCallFirst": "Need help? Call the services first",
+      "safeSend": "📤 Send the message",
+      "safeSms": "SMS",
+      "safePrivacy": "No location is sent and nothing is kept; it goes only to the chat you choose",
+      "safePick": "👆 Tap how you are above",
+      "safePreview": "The message",
+      "safePlan": "📝 Family plan: where to meet",
+      "bagTitle": "Emergency bag",
+      "bagIntro": "A list for the people in your home; tick each thing once it's in the bag",
+      "bagEvery": "Every bag",
+      "bagExtra": "For the people in our home",
+      "bagFromKit": "Who lives here, from the supplies check",
+      "bagNoKit": "Say who lives here in the supplies check for a list that fits better",
+      "bagCount": "{have} of {total} packed",
+      "bagShare": "📤 Send the list to your family",
+      "bagShareHead": "🎒 Our emergency bag still needs:",
+      "bagShareDone": "🎒 Our emergency bag is packed",
+      "bagShareTail": "Pack yours: {url}",
+      "bagPrivacy": "Ticks stay on this phone",
+      "bagKit": "🎒 Check the supplies at home (for the household)",
+      "bagInfo": "🆔 Emergency info card"
     }
   }
 }

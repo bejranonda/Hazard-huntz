@@ -1,7 +1,7 @@
 {
   "name": "บ้านรอดไหม? เตรียมบ้านให้พร้อมทุกภัย",
   "short_name": "บ้านรอดไหม?",
-  "description": "ต้องทำอะไรเมื่อน้ำท่วม พายุ แผ่นดินไหว ไฟไหม้ ไฟดับ อากาศร้อน หรือฝุ่น เช็กของจำเป็น ทำแผนครอบครัว เช็กตู้เย็นตอนไฟดับ ค่าฝุ่นวันนี้ และเกม 60 วิ ช่วยจำ จากคำแนะนำของหน่วยงาน",
+  "description": "ต้องทำอะไรเมื่อน้ำท่วม พายุ แผ่นดินไหว ไฟไหม้ ไฟดับ อากาศร้อน หรือฝุ่น เช็กของจำเป็น กระเป๋าฉุกเฉิน แผนครอบครัว บัตรข้อมูลฉุกเฉิน ส่งข่าวว่าปลอดภัย ตู้เย็นตอนไฟดับ ฝุ่นและร้อนวันนี้ หน้ากาก น้ำพอกี่วัน ล้างถังพักน้ำ ลิงก์หน่วยงานรัฐ และเกม 60 วิ ช่วยจำ จากคำแนะนำของหน่วยงาน",
   "lang": "th",
   "start_url": "/?source=pwa",
   "scope": "/",
@@ -14,7 +14,8 @@
     { "name": "ต้องทำอะไร เมื่อเกิดภัย", "short_name": "ต้องทำอะไร", "url": "/?open=guide&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
     { "name": "แผนครอบครัวของบ้านเรา", "short_name": "แผนครอบครัว", "url": "/?open=plan&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
     { "name": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?", "short_name": "ไฟดับ ตู้เย็น", "url": "/?open=fridge&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
-    { "name": "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?", "short_name": "ฝุ่นวันนี้", "url": "/?open=air&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+    { "name": "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?", "short_name": "ฝุ่นวันนี้", "url": "/?open=air&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "เครื่องมือทั้งหมด", "short_name": "เครื่องมือ", "url": "/?open=tools&source=pwa", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ],
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },

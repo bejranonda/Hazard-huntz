@@ -2,7 +2,7 @@
 
 A reference for anyone maintaining บ้านรอดไหม?. It covers every rule, constant and formula in the game, the content model, the platform facts the design depends on, and the research behind it.
 
-Facts are as of **20 Oct 2026** (v1.11.0). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
+Facts are as of **21 Oct 2026** (v1.13.0). The research in §13–§15 was compiled on 6 Oct 2026, and each later section gives its own date. Where a fact comes from outside this repository, its source is linked. Anything marked **[unverified]** could not be confirmed from a primary source.
 
 What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and what to do next is in [ROADMAP.md](ROADMAP.md).
 
@@ -41,6 +41,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 31. [Answers, back button, card and security (v1.9.2)](#31-answers-back-button-card-and-security-v192)
 32. [Calculators: the fridge, dust today, the pills (v1.10.0)](#32-calculators-the-fridge-dust-today-the-pills-v1100)
 33. [Food by food in a power cut, and the whole app for its real readers (v1.11.0)](#33-food-by-food-in-a-power-cut-and-the-whole-app-for-its-real-readers-v1110)
+34. [Masks, all tools and six more tools (v1.11.1–v1.13.0)](#34-masks-all-tools-and-six-more-tools-v1111v1130)
 
 ---
 
@@ -2384,3 +2385,98 @@ Audit finding A12 ([F124](KNOWN_ISSUES.md#in-v1110-20-oct-2026)): the plan form'
 - **For the owner, the phone test:** rows 67–75, ก+ and the copy buttons inside LINE above all; and, the single most useful thing, two or three real older relatives, one of them rarely online, handed the phone and watched.
 - **For the owner, a post:** an "UPDATE:" for the corrected cold-medicine lesson (F128), wherever the power-cut set was shared ([GUIDELINES §2.4](GUIDELINES.md#24-changing-advice-that-is-already-public)).
 - **AI-ready:** the audit's leftovers ([#83](KNOWN_ISSUES.md#83-leftovers-of-visitor-audit-3)); `rem` sizes ([#81](KNOWN_ISSUES.md#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)); the audience research's ideas ([#84](KNOWN_ISSUES.md#84-ideas-from-the-audience-research-not-built-yet)); the source notes out of the client ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads)).
+
+## 34. Masks, all tools and six more tools (v1.11.1–v1.13.0)
+
+Built 20–21 Oct 2026 (ROADMAP N24, N25, N26). The owner asked, in turn:
+
+> "Research more for this kind calculator or useful tool, which fit best here in the app. The app can be a tool portal too. Please research and suggest"
+>
+> "When are where we need to wear the mask, and which type then? Please also research and suggest, can be develop also as a tool?"
+>
+> "Continue to make all features step by step till all accomplished. Do not forget keeping that the should be attractive, easy to use, look nice, and people feel good, and love to tell other people to use."
+>
+> "Try to research to answer your questions yourself too."
+
+### 34.1 How it was worked
+
+Four researchers worked in parallel (masks; calculators whose numbers a source gives; official Thai tools to link; preparedness apps abroad), and a fifth fetched the exact texts; every quote was re-read on its saved page before it went into `sources.json`. Their suggestions were ranked and built in three releases: v1.11.1 fixed what the mask research found in the live app (§34.2); v1.12.0 built the mask tool, the all-tools page and the agencies' links (§34.3–§34.5); v1.13.0 built six more tools (§34.6–§34.11). The owner's last line was taken literally: the questions an assistant would usually ask (which heat levels, which chlorine doses, what to tell 1669, what a bag holds) were researched, and what the sources don't settle is recorded for the reviewer instead (§34.12).
+
+**One pattern for every tool** ([GUIDELINES rule 82](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)): one question at a time, by a tap; nothing answered before it; a status word first, then the lines; the sources once, at the bottom; a text to send to the family (LINE first); what is typed or counted kept in `localStorage` only; a page of its own (`/<tool>` and `/en/<tool>`) listing every line with its sources, and a preview picture; `tool_open` and `tool_share` with no values ([05-metrics](05-metrics.md#six-more-tools-v1130)).
+
+### 34.2 No mask for a baby (v1.11.1)
+
+Dust today's at-risk lines at yellow and orange say "ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้งที่ออกนอกบ้าน", and since v1.11.0 they show to everyone under a heading that names young children ("เด็กไม่เกิน 5 ขวบ" in the PCD's notice). The DDC spokesperson (InfoQuest, 27 Jan 2025): "เด็กเล็กที่อายุน้อยกว่า 2 ปี ไม่แนะนำให้ใส่หน้ากากทุกชนิด"; Health Canada: respirators "shouldn't be used by children under 2". So every level whose lines mention a mask (`mask: true` in `kit.json → air`) adds `air.baby`: "👶 เด็กต่ำกว่า 2 ขวบ ไม่ควรใส่หน้ากากทุกชนิด ให้อยู่ในห้องที่กันฝุ่นได้ และอย่าพาไปที่ฝุ่นเยอะ", ⚠️ because the same article also lists muslin masks for under-2s (F129, [#87](KNOWN_ISSUES.md#87-the-mask-tools-lines-for-children-pregnancy-and-heart-or-lung-disease-need-a-doctors-read)).
+
+### 34.3 The mask tool (v1.12.0)
+
+`kit.json → mask`, `maskAdvice()` in `kitplan.js`, `/mask`.
+
+- **What for:** dust or smoke from burning · cleaning up after a flood · a cough, fever or a crowded place · a factory or warehouse fire nearby · a fire at home.
+- **Dust: when.** From the same lines as dust today: the first level whose lines for everyone (or, for the PCD's at-risk people, their lines) carry `mask: true`. So everyone from orange, the at-risk people from yellow; "not yet" says from which colour; red says stay in first. A child under 2: "ไม่ใส่หน้ากาก" and the baby line, at every colour.
+- **Dust: which kind** (the DOH, 6 Feb 2025): an N95 first, in a size that fits; older people, pregnant women and people with a long-term illness may use a 3-layer surgical mask instead; children of 2 to 5 a surgical mask that fits (⚠️); never exercise in an N95; take it off and go indoors if breathing gets hard. Heart or lung disease adds "follow your doctor's advice" (the PCD).
+- **Clean-up** (the DDC's November 2025 manual): mould and broken boards that may hold asbestos an N95; dried mud a surgical mask and a damp mop or vacuum; children kept out.
+- **Illness** (the DDC, 13 Aug 2026): a surgical mask with a cough or fever, or in a crowd.
+- **A factory fire nearby:** "ออกห่างก่อน หน้ากากกันไม่ได้" (the DOH after the Ming Dih fire; a mask can't filter the fumes: a Chulalongkorn academic and Health Canada, ⚠️).
+- **A fire at home:** "หนีออกจากบ้าน", with DDPM's cloth over the nose, crawling low, feeling the door, no lift, 199 and the fire guide; no mask and no card, on purpose: a mask question must never slow an escape.
+- **How to wear it** (the card under the answer): over the nose and under the chin, the wire pressed (Ramathibodi's poster), the fit check by breathing out hard; change it when loose, harder to breathe through, torn, dirty or wet; never share it or wash it to reuse; a Thai label (the OCPB); an N95's standard (NIOSH, EN149, GB2626); cloth isn't enough on high-dust days.
+- **No number of masks:** no agency gives one, and the tool says so.
+
+### 34.4 All tools on one page, and the agencies' own pages (v1.12.0)
+
+`/tools` and `/?open=tools` (and "🧰 เครื่องมือทั้งหมด" under the hub): the nine guides, the tools in two groups ("เตรียมไว้ก่อน": the home check, the bag, the plan, the emergency card; "ใช้ตอนเกิดเหตุ": the fridge, dust today, masks, heat today, water, the tank, "I'm safe"), the emergency-alert card and 13 agency links (`kit.json → links.list`): LINE ALERT (`@linealert`), the TMD's warnings, ThaiWater, GISTDA's flood map and PM2.5 by subdistrict, Air4Thai, the TMD's latest earthquakes, MEA's and PEA's planned cuts, DDPM's 1784 on LINE, DDPM's relief schemes (with the Royal Thai Police's warning about fake "house survey" links), the OIC's insurance LINE and the Anti-Fake News Center's LINE.
+
+- **Each link has** an id, an icon, a label, who runs it, a URL, `kind` (`line` or `web`), the guides it fits and the date it was checked. The build refuses http, a LINE id that isn't `@` plus letters and digits, a known splash or home page, and warns after 120 days; `npm run links` opens them all ([#88](KNOWN_ISSUES.md#88-agency-links-can-move-they-are-checked-by-hand-monthly)). Each guide shows its own under "🔗 ดูข้อมูลจากหน่วยงาน", each hazard page lists them, and a tap counts as `link_click` with the link's id.
+- **The emergency-alert card** (`kit.json → alerts`): DDPM's Cell Broadcast reaches every phone in an area, with no sign-up, on iOS 18+ and Android 11+, with a sound even on silent; the steps for iPhone and Android (Thansettakij, 19 Jan 2026); real messages come from DDPM and carry no link; ⚠️ because the menus differ by make ([#89](KNOWN_ISSUES.md#89-emergency-alert-menus-differ-by-phone)).
+
+### 34.5 One list of tools, and the hub by season
+
+`config.json → tools` lists the 11 tools in order (`{id, icon, group}`); `main.js` builds `TOOLS` from it, the build its `TOOL_IDS`, and `/tools` its groups. `config.json → hub`: the hub always shows the guides, the home check and the plan; the two tiles below follow the recommended mode (`hub.season`): flood season (prepare) the bag and the fridge, after a flood (return) the tank and masks, dust dust today and masks, the hot season (fire) heat today and dust today, the power cut (stock) the fridge and water. While a power cut is being counted, the fridge takes the first tile. `hazards.<h>.tools` lists the tools each hazard page and guide offers (flood: the home check, the bag, the plan, the tank, masks; heat: heat today, water, the plan; a quake: the bag, the plan, the card, "I'm safe"…).
+
+### 34.6 Heat today (v1.13.0)
+
+`kit.json → hot`, `hotAdvice()`, `/hot`. The person taps the level announced today; the tool computes nothing ([#78](KNOWN_ISSUES.md#78-a-heat-index-calculator-is-not-built)).
+
+| Level | Heat index | Everyone | People who need extra care |
+|---|---|---|---|
+| เฝ้าระวัง (green) | 27.0–32.9 °C | drink clean water often, without waiting to be thirsty; follow the heat warnings | (the list below) |
+| เตือนภัย (yellow) | 33.0–41.9 °C | cut time in the sun; drink often | unusual symptoms: see a doctor promptly |
+| อันตราย (orange) | 42.0–51.9 °C | avoid the sun, move activities to cooler hours; watch yourself for symptoms | the same |
+| อันตรายมาก (red) | 52.0 °C and over | no outdoor activity; unusual symptoms: a doctor promptly | (the list below) |
+
+The people at risk (the DOH): older people, young children, pregnant women, a long-term illness such as heart disease, high blood pressure or diabetes, outdoor workers, obesity, heavy drinkers. "🆘 อาการฮีทสโตรก · ช่วยเหลือเบื้องต้น" opens by itself from orange: the signs (very hot, red skin, a fast heartbeat, headache, dizziness, confusion, slurred speech, drowsiness or fainting), "ยังมีเหงื่อออกอยู่ ก็เป็นฮีทสโตรกได้" (the DMS), and call 1669, shade and moving air, lie down with the feet raised, loosen clothes, cold wet cloths at the neck, armpits and groin and a fan. Sources and what they rest on: [#90](KNOWN_ISSUES.md#90-heat-today-rests-on-news-reports-quoting-the-agencies).
+
+### 34.7 Water we have (v1.13.0)
+
+`kit.json → water`, `waterDays()`, `/water`. People (from the home check if answered, 1–10) and + and − on four sizes: a 600 ml bottle, a 1.5-litre bottle, a 6-litre jug, an 18.9-litre water-cooler bottle, plus other litres typed. **Days = floor(litres ÷ (3 L × people))**; **more for 3 days = ceil(3 L × people × 3 − litres)**: the PRD's 3 litres a person a day and the home check's 3 days ([KNOWLEDGE §28](#28-the-home-check-and-the-family-plan-card-v180)). Under 1 day says "ไม่ถึง 1 วัน". Below: children, nursing mothers, sick people and hot weather may need more; never ration unless told to; boil water you aren't sure of (Ready.gov ⚠️, the DOH). The answer never suggests drinking less.
+
+### 34.8 Cleaning a water tank (v1.13.0)
+
+`kit.json → tank`, `tankDose()`, `/tank`. The size (500, 1,000, 1,500 or 2,000 litres, or typed up to 100,000) and the chlorine: 5 % liquid 100 ml, 10 % liquid 50 ml, 60–65 % powder 8 g, each per 1,000 litres (the MWA, whose 5 mg per litre is the WHO's figure, and the DDC's manual agree; the build checks each number against its sources' notes). Millilitres are rounded to the nearest 5 from 20 ml, grams to the gram; powder is dissolved in a bucket first and only the clear water used. The steps (the DDC): close the inlet, open every tap, drain; scrub with a long-handled brush and never climb in; hose, drain, refill nearly full; add the chlorine and stir; soak (the MWA overnight, the DDC 3 hours, both shown, [#92](KNOWN_ISSUES.md#92-the-tanks-soak-time-overnight-or-3-hours)); drain through the taps and refill. Take care: rubber gloves; never mix chlorine or bleach with toilet cleaner (the FDA's toxic-gas warning); the chlorinated water is not for drinking; buy a product whose label states its strength (⚠️, [#91](KNOWN_ISSUES.md#91-six-tools-rest-partly-on-foreign-guidance)).
+
+### 34.9 The emergency info card (v1.13.0)
+
+`kit.json → info`, `/info`. Seven fields with caps: the name to call the person by (40), long-term conditions (80), medicines and doses (80), drug or food allergies (60), the hospital and HN (60), two contacts (50 each). "🆔 ทำบัตร" draws a picture on the phone (the plan card's layout), to keep in the wallet or as a lock-screen picture, with a copy as text; up to six people, each a card (`brm:info`). The why: the Pharmacy Council advises carrying a list of regular medicines and allergies, and telling the doctor and pharmacist about an allergy every time. "☎️ โทร 1669 บอกอะไรบ้าง" (NIEMS): what happened and who is hurt, where with a landmark, the patient's sex and whether awake, any danger of it happening again, your name and a number to call back. The form warns against an ID-card number; nothing leaves the phone.
+
+### 34.10 "I'm safe" (v1.13.0)
+
+`kit.json → safe`, `safeMessage()`, `/safe`. Three statuses: ✅ ปลอดภัยดี อยู่บ้าน · 🏃 ปลอดภัยดี ย้ายไปที่ปลอดภัยแล้ว (with "ตอนนี้อยู่ที่ …" when a place is typed) · 🆘 ต้องการความช่วยเหลือ ("อยู่ที่ …"); an optional place (60 characters; the plan's meeting place and shelter as buttons) and note (80); the time it was made. The person sends it through LINE, an SMS (`sms:?&body=`) or a copy; the app sends nothing and keeps nothing. "Need help" first shows 1784 and 1669 to call and DDPM's LINE 1784. Below: a text may get through when a call won't (the American Red Cross) and agree beforehand how to reach each other and where to meet (Ready.gov), both ⚠️.
+
+### 34.11 The emergency bag (v1.13.0)
+
+`kit.json → bag`, `bagList()`, `/bag`. "What you can grab at once when you have to leave home" (DDPM). Every bag (12): water and long-life food, a torch with spare batteries, a first-aid kit, copies of ID and house registration in a waterproof bag, a phone and power bank, a battery radio, a whistle, a change of clothes, hygiene items, a knife or multi-tool, some cash, relatives' numbers on paper (DDPM's six-item kit and its longer list; the whistle, cash and numbers from the Department of Mineral Resources). The home check's answers add daily medicine and the medicine list, a baby's nappies, bottles and formula (if the baby already has it) and a small toy, an older person's glasses, hearing aids and walking aid, and pet food and a lead. Ticks in `brm:bag`, "จัดแล้ว 3 จาก 14", a print-out and a text of what is missing; check the bag and its dates regularly. **No amounts:** no source gives them for a Thai bag. This settles the "กระเป๋าฉุกเฉิน" the flood guide used without defining it ([#83](KNOWN_ISSUES.md#83-leftovers-of-visitor-audit-3)).
+
+### 34.12 Left out on purpose
+
+- **Masks:** how many to keep; masks indoors; reuse counts; tissue inside a mask, two surgical masks, a wet cloth; valves for illness; Singapore's "short trips need none" and its pregnancy and heart lines; evacuation distances; a mask for a carer at home (WHO and CDC only).
+- **Heat:** a heat-index formula (no Thai agency page could be read), the BMA's 11.00–15.00 (one source), CPR (a skill; 1669 talks the caller through it).
+- **Water:** a different amount for a sick person or a longer cut (no source with numbers for Thai homes).
+- **The tank:** boiling times and chlorine for drinking water (sources differ; the tank's water is never for drinking).
+- **The card:** the UK's "Message in a Bottle" (Thai responders don't know to look in the fridge); an ID-card number.
+- **"I'm safe":** a location (nothing is sent by the app); a list of contacts (the phone has one).
+
+### 34.13 Build checks, tests and what is left
+
+- **The build** stops on: a tool not in `config.json → tools`, a hub tile or season tile that isn't a tool, a hazard listing an unknown tool; an agency link that isn't https, a bad LINE id, a home page, or a missing `checked`; a mask line without `mask: true` or a missing baby line; heat levels whose bands don't rise, or whose edges aren't in the sources of their lines, or more than one open top; a water size that isn't a whole number of millilitres, or a home check with no litres a person a day to count from; a chlorine dose that isn't in its sources' title or note; a card field without a cap of 1–80 characters; a message status without both languages, a number to call that isn't in `helplines.json`, or no status that shows numbers to call first; a bag row without a source or `verify`, or an added row for something the home check doesn't ask; and any line without a source or `verify`.
+- **`npm test`: 44** (v1.11.1 the under-2 line at every level; v1.12.0 which mask, all tools and the emoji scan; v1.13.0 the six tools' logic at their edges). **`npm run smoke`: 197** on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (183 in v1.12.0, 165 in v1.11.1). A visitor walk at 320 × 568 and 360 × 640 in Thai and English; axe-core clean on every new sheet and page; an independent cross-check (its own rules from the sources, not `kitplan.js`) of water, the tank, masks at every colour and person, the heat bands, the bag and the message: **2,263 agree, 0 disagree** ([LESSONS D24](LESSONS_LEARNED.md#d-testing-and-verification)).
+- **Left for the owner:** the reviews in [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) steps 7a and 7b (#87, #90, #91, #92); the phone test rows 76–85 ([L6](ROADMAP.md#l6-real-phone-test-matrix)); `npm run links` monthly; one "UPDATE:" post for F128 and F129.

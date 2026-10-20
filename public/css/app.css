@@ -1083,3 +1083,31 @@ html.big #screen-start, html.big .sheet { zoom: 1.15; }
 .tl-os { margin: 8px 0 0; font-weight: 700; }
 .tl-steps { margin: 2px 0 6px; padding-left: 22px; }
 .tl-steps li { margin: 2px 0; font-size: 15px; }
+/* v1.13.0: heat today, water, the tank, the emergency card, "I'm safe", the bag */
+.hot-levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.hot-level { font: inherit; font-size: 15px; font-weight: 600; color: var(--ink); }
+.hot-level small { color: var(--ink-2); font-size: 12px; font-weight: 400; }
+.hot-level.is-on { border-color: var(--ink); background: var(--sun); }
+.hot-aid { margin-top: 12px; }
+.wt-sizes { display: grid; gap: 6px; }
+.wt-size { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 4px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); }
+.wt-name { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; line-height: 1.3; }
+.wt-step { display: flex; align-items: center; gap: 4px; }
+.wt-step output { min-width: 2ch; font-size: 18px; font-weight: 700; text-align: center; }
+.wt-other { margin-top: 8px; }
+.wt-other input { max-width: 160px; }
+.wt-out.is-ok { border-left: 10px solid #6CC04A; }
+.wt-out.is-short { border-left: 10px solid #F28C28; }
+.wt-goal { margin: 6px 0; font-size: 17px; font-weight: 700; }
+.tk-out { border-left: 10px solid #2E9BDB; }
+.tk-steps { padding-left: 0; }
+.sf-help { margin: 10px 0; padding: 10px 12px; border: 2px solid #E5372E; border-radius: 14px; background: #FDE3DA; }
+.sf-help p { margin: 4px 0; }
+.sf-preview { white-space: pre-line; margin: 4px 0 10px; padding: 10px 12px; border: 2px dashed var(--line); border-radius: 12px; background: var(--paper); font-size: 16px; line-height: 1.5; }
+.sf-places, .info-people { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.sf-place, .info-person { min-height: 44px; padding: 6px 12px; font-size: 15px; }
+#sf-send a.share-btn { text-decoration: none; color: inherit; }
+.air-badge span:last-child { flex: 1; min-width: 0; }
+.sf-help { scroll-margin-top: 56px; }
+.sf-help .tel-chip { background: #FFFFFF; }
+#sf-form { scroll-margin-top: 56px; }

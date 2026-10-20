@@ -76,7 +76,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 75 | [The dust colours are for the 24-hour average; apps often show hourly readings](#75-the-dust-colours-are-for-the-24-hour-average-apps-often-show-hourly-readings) | Owner (the note is by design) | Low |
 | 76 | [The PCD and the DOH advise differently at green, yellow and red](#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red) | By design (v1.10.0); Owner: the dust guide and dust today at orange (v1.11.0) | Low |
 | 77 | [The fridge and dust tiles are below the first screen on the smallest phones](#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones) | By design (v1.10.0) | — |
-| 78 | [A heat-index calculator is not built](#78-a-heat-index-calculator-is-not-built) | Not built (needs the owner first) | — |
+| 78 | [A heat-index calculator is not built](#78-a-heat-index-calculator-is-not-built) | By design since v1.13.0 (heat today takes the announced level); a calculator still needs the owner | — |
 | 79 | [The fridge's food lists rest on US charts](#79-the-fridges-food-lists-rest-on-us-charts) | Owner | **Medium (review before posting `/fridge` widely)** |
 | 80 | [Insulin above 30 °C has no number](#80-insulin-above-30-c-has-no-number) | By design (v1.11.0); Owner: a pharmacist's read | Low |
 | 81 | [Larger text (ก+) covers the start screen and the sheets only, and sizes ignore the phone's text setting](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting) | Open | Low |
@@ -87,8 +87,11 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 87 | [The mask tool's lines for children, pregnancy and heart or lung disease need a doctor's read](#87-the-mask-tools-lines-for-children-pregnancy-and-heart-or-lung-disease-need-a-doctors-read) | Owner | **Medium (review before posting `/mask` widely)** |
 | 88 | [Agency links can move; they are checked by hand, monthly](#88-agency-links-can-move-they-are-checked-by-hand-monthly) | By design; Owner: run `npm run links` monthly | Low |
 | 89 | [Emergency-alert menus differ by phone](#89-emergency-alert-menus-differ-by-phone) | Owner (phone test) | Low |
+| 90 | [Heat today rests on news reports quoting the agencies](#90-heat-today-rests-on-news-reports-quoting-the-agencies) | Owner | **Medium (review before posting `/hot` widely)** |
+| 91 | [Six tools rest partly on foreign guidance](#91-six-tools-rest-partly-on-foreign-guidance) | Owner | Low |
+| 92 | [The tank's soak time: overnight or 3 hours](#92-the-tanks-soak-time-overnight-or-3-hours) | By design (v1.13.0); Owner: the reviewer picks | Low |
 
-Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
+Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
 ---
 
@@ -455,6 +458,8 @@ The home check's answers, ticks and score (`brm:kit`) and the plan card's text (
 
 **The calculators (v1.10.0)** keep their answers the same way: `brm:fridge` (when the power went off, since v1.10.1 the time button tapped, the freezer answer, the cold-medicine tick) and `brm:air` (the kind of number and who is at home, never the reading). So a power cut counted in LINE's browser isn't counted in Chrome, and the other way round; a phone test should open `/fridge` from LINE, tap a time, close LINE and open the link again (row 64 of [06-test-checklist.md](06-test-checklist.md)). **Since v1.11.0** `brm:fridge` also keeps when "💡 ไฟมาแล้ว" was tapped (`end`, so the answer stays for a day) and the breast-milk tick (`{start, end, picked, freezer, med, milk}`), `brm:air` keeps only the kind of number (the ticks are gone, [F101](#in-v1110-20-oct-2026)), and `brm:big` keeps the larger-text choice ("ก+"). Each is per browser in the same way.
 
+**Since v1.13.0** three more stores work the same way: `brm:water` (how many people and the bottles counted), `brm:bag` (the bag's ticks) and `brm:info` (up to six emergency cards: name, long-term conditions, medicines and doses, allergies, hospital and patient number, two contacts). The emergency card holds health details, so its form says "🔒 สิ่งที่พิมพ์อยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปไหน อย่าใส่เลขบัตรประชาชน"; the card is a picture made on the phone, and with two or more cards "ลบบัตรนี้" removes one. "I'm safe" keeps nothing of its own: it offers the plan's meeting places (`brm:plan`) as buttons, and the person sends the message themselves through LINE, an SMS or a copy; the app sends no place and keeps no message.
+
 **What families keep is the picture.** The plan card says "เซฟไว้ในมือถือทุกคน และพิมพ์เก็บไว้กับเอกสารสำคัญ" (until v1.11.0 "…และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน", [F113](#in-v1110-20-oct-2026)): the saved or forwarded image is the copy that lasts, and since v1.11.0 "📋 คัดลอกแผนเป็นข้อความ" puts the plan on the clipboard as text for a chat where the picture can't be attached, and the household can make it again from any browser. Real-phone checks: rows 46–48 of [06-test-checklist.md](06-test-checklist.md).
 
 ### 42. A challenge link carries one score, and the combo never scores
@@ -808,12 +813,13 @@ The hub has five buttons since v1.10.0: "📋 ต้องทำอะไร เ
 
 ### 78. A heat-index calculator is not built
 
-**Status:** Not built (needs the owner first)
+**Status:** By design since v1.13.0: heat today takes the level announced (the second way below); a calculator from the temperature and humidity still needs the owner
 
 The next calculator the idea suggests is "heat today": the temperature and the humidity give the heat index, its level and what to do. The research of 19 Oct 2026 found the current Thai levels (watch 27.0–32.9, warning 33.0–41.9, danger 42.0–51.9, extreme danger 52.0 °C and over: the DOH and TMD scheme of 2024), but only the danger band was read on an agency page (the TMD's own site); the other three come from Post Today, InfoQuest quoting the BMA and Thai PBS, and older bands are still in print. The TMD's 2012 explainer prints the US NWS (Rothfusz) formula, but whether the current TMD product uses it is **[unverified]**: the TMD's heat-index pages answered 503 ([KNOWLEDGE §32.8](KNOWLEDGE.md#328-research-record-19-oct-2026)).
 
 - **Why not now:** a calculator that computes the index itself would show a number that no Thai agency page we could read confirms ([GUIDELINES rule 78](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 - **Two ways forward** ([ROADMAP P10](ROADMAP.md#p10-more-calculators)): a person confirms the TMD's heat-index page (the four levels and the formula it uses), and the tool computes from the temperature and humidity; or the tool asks for the level the TMD publishes (its expected maximum by region, every Monday, Wednesday and Friday) and shows only what to do at that level, with no formula.
+- **Since v1.13.0** heat today (`/hot`) is the second way: the person taps the level announced today and sees what everyone and the people at risk do, with the heatstroke signs and first aid; it computes nothing. Its sources and what they rest on are [#90](#90-heat-today-rests-on-news-reports-quoting-the-agencies).
 
 ### 79. The fridge's food lists rest on US charts
 
@@ -932,9 +938,50 @@ The all-tools page's "📲 เปิดรับข้อความเตื�
 - **Left out:** the alert levels (only "National Alert" for the January test comes from DDPM; the Extreme/Informational counts come from an opposition analysis) and "full screen" (the sources say a sound and a pop-up).
 - **What would close it:** row 79 of [06-test-checklist](06-test-checklist.md) on a Samsung, an Oppo or Vivo, and an iPhone; reword the steps to what the phones show.
 
+### 90. Heat today rests on news reports quoting the agencies
+
+**Status:** Owner · **Severity:** Medium: review before posting `/hot` widely
+
+Heat today (v1.13.0) asks which level is announced today and shows what to do. Every line comes from a news report quoting an agency, read word for word on 20 Oct 2026; no agency page could be read (the TMD's heat-index page answered 503, [#78](#78-a-heat-index-calculator-is-not-built)):
+
+- **The four levels and what to do:** Post Today quoting the BMA (2 Apr 2026: 27.0–32.9 เฝ้าระวัง, 33.0–41.9 เตือนภัย, 42.0–51.9 อันตราย, 52.0 °C and over อันตรายมาก, and each level's lines) and Daily News quoting the DOH Director-General (7 Apr 2026: drink water, cut time in the sun, avoid the sun and move activities, stop outdoor activity); THE STANDARD (3 May 2024) maps the DOH's colours to the BMA's names.
+- **Who is at risk and the signs:** THE STANDARD and MGR Online quoting the DOH (14 Mar 2026). **First aid:** Thansettakij quoting the DMS and Lerdsin Hospital (5 Apr 2023) and Khaosod quoting the BMA's Medical Department (26 Feb 2026): call 1669, shade and moving air, lie down with the feet raised, loosen clothes, cold wet cloths at the neck, armpits and groin and a fan.
+- **Left out:** the BMA's "11.00–15.00" (one source), CPR (a skill, not a line; the guide and 1669 cover it), and any formula: the tool computes nothing, so it shows no number the agencies didn't publish. "ยังไม่รู้ระดับ?" links the TMD's warnings.
+- **The sweating sign, for the reviewer.** The heat guide (v1.9.0) says "ตัวร้อนจัด เหงื่อไม่ออก สับสน รีบโทร 1669"; the DMS says that early in heatstroke a person may still sweat, so heat today adds "ยังมีเหงื่อออกอยู่ ก็เป็นฮีทสโตรกได้". They don't contradict each other, but someone who is sweating might rule heatstroke out from the guide alone. The reviewer decides whether the guide's line changes; changing it is a change of published advice and needs an "UPDATE:" post ([GUIDELINES §2.4](GUIDELINES.md#24-changing-advice-that-is-already-public)).
+- **What would close it:** a person opens the TMD's heat-index page and a DOH page with the levels and confirms them; a doctor reads the first aid ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+
+### 91. Six tools rest partly on foreign guidance
+
+**Status:** Owner · **Severity:** Low
+
+The amounts in the v1.13.0 tools are Thai (3 litres a person a day, the PRD; the chlorine doses, the MWA and the DDC; what to say to 1669, NIEMS; the medicine list, the Pharmacy Council), but some of their lines are ⚠️ `partial` because only a foreign agency, a study or a news report says them:
+
+- **Water:** "children, nursing mothers, sick people and hot weather may need more" and "drink enough; don't ration unless the authorities tell you to" (Ready.gov only).
+- **The tank:** "buy chlorine whose label states its strength (%)": a Department of Science Service study found 7 of 17 products without it; no agency says the sentence.
+- **The emergency card:** "keep it in your wallet or as a lock-screen picture" (adapted from the Pharmacy Council's medicine book) and "tell the family where it is" (FEMA's guide for older adults). The UK's "Message in a Bottle" (a form in the fridge) was left out: Thai responders don't know to look there.
+- **"I'm safe":** "a text may get through when a call won't" (the American Red Cross) and "agree beforehand how you'll reach each other, and where to meet" (Ready.gov). No Thai agency page on telling family you're safe was found.
+- **The bag:** cash and relatives' numbers (the Department of Mineral Resources' earthquake list, through Daily News), and the baby, older person and pet rows (that list and Ready.gov, FEMA).
+- **What would close it:** Thai sources for these lines, added beside the foreign ones, and the reviewer's read ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+
+### 92. The tank's soak time: overnight or 3 hours
+
+**Status:** By design (v1.13.0); Owner: the reviewer picks · **Severity:** Low
+
+The MWA's leaflet says leave the chlorine in overnight ("แช่ทิ้งค้างคืน 1 คืน"); the DDC's November 2025 manual says 3 hours. Their doses agree (5 % liquid 100 ml, 10 % liquid 50 ml, powder about 8 g per 1,000 litres; the MWA: 5 mg per litre, the WHO's figure), so the tool computes those and shows both times in one line: "แช่ไว้: กปน. แนะค้างคืน 1 คืน กรมควบคุมโรคแนะ 3 ชั่วโมง". Amounts are rounded: grams to the gram, millilitres to 5 from 20 ml up; another size up to 100,000 litres can be typed.
+
+- **What would close it:** a reviewer (or the MWA) says which to give, or that both are fine.
+
 ---
 
 ## Fixed
+
+### In v1.13.0 (21 Oct 2026)
+
+Found by v1.13.0's visitor walk in English.
+
+| # | Problem | Fix |
+|---|---|---|
+| F130 | Live since v1.8.0: **the English tools said "1 people".** A household of one read "1 people at home" in the home check, its amounts "(3 L × 1 people × 3 days)" and "Enough for 3 days for 1 people", the copied list "(1 people)"; the medicine days "Enough for 1 days"; and the new water tool "About 1 days" | `u()` in `kit.js` turns "1 people", "1 days", "1 litres" and "1 pills" into the singular in English (not after another digit, a point or a comma, so "21 days" and "1.5 litres" stay); one smoke check opens the water tool in English for one person with 3 litres ("About 1 day", "1 person at home"). Thai has no plural, so nothing changed there |
 
 ### In v1.11.1 (20 Oct 2026)
 

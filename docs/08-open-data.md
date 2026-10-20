@@ -5,8 +5,10 @@
 How it was done ([APPROACH §35](APPROACH_AND_METHOD.md#35-open-data-learn-from-the-sister-project-then-test-every-source-live-research-21-oct-2026)):
 
 - **The sister project first.** BKK FloodWatch ([flood.autobahn.bot](https://flood.autobahn.bot), the owner's own project, private repository `flood2026-research`) has read Thai agency APIs every 10 minutes since September 2026. One researcher read how it accepts, fetches and stores a source (section 1).
-- **Then every candidate live.** A second researcher made 114 calls to Thai and global sources on 20 Oct 2026, about 18:50–19:30 UTC, sending `Origin: https://baanrodmai.autobahn.bot` to see the CORS header. The lead re-checked the strongest ones on 21 Oct 2026 (about 02:00–03:00 Bangkok).
+- **Then every candidate live.** A second researcher made 113 calls to Thai and global sources on 20 Oct 2026, about 18:50–19:30 UTC, sending `Origin: https://baanrodmai.autobahn.bot` to see the CORS header. The lead re-checked the strongest ones on 21 Oct 2026 (about 02:00–03:00 Bangkok).
 - **The host matters.** The calls went out through a cloud session's proxy outside Thailand. A source marked ⛔ refused or timed out from there, which isn't proof that it refuses a phone in Thailand.
+
+**The full record** (every one of the 113 calls with its URL, status, size and CORS reply; each source's coverage, licence and verdict; FloodWatch's source list and pitfalls; the corrections) is [research/open-data-2026-10-21.md](research/open-data-2026-10-21.md).
 
 Status marks, as FloodWatch uses them:
 
@@ -103,7 +105,7 @@ Read from FloodWatch's own documents and code on 21 Oct 2026. Details that belon
 | **Near an active fault** | DMR ArcGIS `HAZARD/T_ACTIVEFAULT` | `gisportal.dmr.go.th/arcgis/rest/services/HAZARD/T_ACTIVEFAULT/MapServer/0/query` | none | ✅ count 1,329: subdistricts within 20 km of an active fault, with `TB_CODE` | **Not stated** | Build time, once the licence is confirmed |
 | Fault lines, shaking zones | DMR `ZONE_ACTIVEFAULT`, `EQ_ZONE` | same server | none | ✅ (the researcher: 640 lines, 427 zones) | Not stated | Build time |
 | **Landslide-risk villages** | DMR `HAZARD/VILLLAGE_RISK` (the misspelling is the service's own) | same server | none | ✅ count 11,475 villages (mapped 2556) | Not stated | Build time: a count per subdistrict |
-| Landslide susceptibility, safe points | DMR `LANDSLIDE_SUSCEPTIBILITY`, `SAFE_LANDSLIDE_AREA` | same server | none | ✅ listed. The flash-flood subdistrict layer the researcher found on `gis.dmr.go.th` isn't on `gisportal` [not re-checked] | Not stated | Build time |
+| Landslide susceptibility, safe points | DMR `LANDSLIDE_SUSCEPTIBILITY`, `SAFE_LANDSLIDE_AREA` | same server | none | ✅ listed. The flash-flood subdistrict classes (`FLASHFLOOD_TAMBON`, 1,084 subdistricts) are on the DMR's other server, `gis.dmr.go.th` (folder `DMR_Hazard`), not on `gisportal` | Not stated | Build time |
 | Elevation | Open-Meteo elevation | `api.open-meteo.com/v1/elevation?latitude=…&longitude=…` | none | ✅ Bangkok 4 m, Phuket 6 m, Chiang Mai 313 m | CC BY 4.0, non-commercial | Build time; context only, never a flood verdict |
 | River-flood hazard | JRC global flood maps | `jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/FLOODS/GlobalMaps/floodMapGL_rp100y.zip` | none | ✅ 49 MB | CC BY 4.0 | Build time, secondary to GISTDA's history |
 | Tsunami zone | none open found | the DDPM and NDWC sites weren't reachable; plans cover 6 provinces, 27 districts and 108 subdistricts [unverified] | — | — | — | A flag only once an official list is found |

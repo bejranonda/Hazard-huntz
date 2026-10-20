@@ -7,6 +7,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 ### Docs
 
 - **Open data for "around my home" (research, 21 Oct 2026; no code changed).** The owner asked whether the app could show PM2.5 from the user's position, what would bring people back to see the situation and the risks around their home, whether a position could "tell the risk in any dimension", and to learn from FloodWatch how to read open APIs. New [docs/08-open-data.md](docs/08-open-data.md): FloodWatch's method and what carries over; 30+ Thai and global sources tried live with this site's origin (auth, CORS, licence, result); how the position stays on the phone (lists and subdistrict codes; point APIs only at build time); timestamp and missing-value pitfalls; what needs the owner; a three-phase proposal. Also ROADMAP N28, APPROACH §35, KNOWLEDGE §35, GUIDELINES rule 98, KNOWN_ISSUES #95 (and on #93: Bot Fight Mode must stay off), LESSONS B18–B19, HANDOFF, README and AGENTS.
+- **The full research record** ([docs/research/open-data-2026-10-21.md](docs/research/open-data-2026-10-21.md)): every one of the 113 calls with its URL, status, size and CORS reply (keys removed), the lead's own calls, each source's coverage, licence and verdict by hazard, the six DMR layers, FloodWatch's method, source list and pitfalls, and the corrections. Corrected in docs/08: 113 calls, not 114; the DMR's flash-flood subdistrict layer (1,084) is on `gis.dmr.go.th`.
 
 ## [1.13.1] — 2026-10-21
 

@@ -4,6 +4,10 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Docs
+
+- **Open data for "around my home" (research, 21 Oct 2026; no code changed).** The owner asked whether the app could show PM2.5 from the user's position, what would bring people back to see the situation and the risks around their home, whether a position could "tell the risk in any dimension", and to learn from FloodWatch how to read open APIs. New [docs/08-open-data.md](docs/08-open-data.md): FloodWatch's method and what carries over; 30+ Thai and global sources tried live with this site's origin (auth, CORS, licence, result); how the position stays on the phone (lists and subdistrict codes; point APIs only at build time); timestamp and missing-value pitfalls; what needs the owner; a three-phase proposal. Also ROADMAP N28, APPROACH §35, KNOWLEDGE §35, GUIDELINES rule 98, KNOWN_ISSUES #95 (and on #93: Bot Fight Mode must stay off), LESSONS B18–B19, HANDOFF, README and AGENTS.
+
 ## [1.13.1] — 2026-10-21
 
 **Visitor audit 4: the new tools as an older relative and an English reader find them.** Two auditors walked the live v1.13.0 in parallel (an older relative in LINE at 360 and 320 px with ก+; an English reader and a consistency checker at 390 and 360 px): 40 findings, six shared, four major. 33 are fixed here ([KNOWN_ISSUES F131–F163](docs/KNOWN_ISSUES.md#in-v1131-21-oct-2026), [ROADMAP N27](docs/ROADMAP.md#n27-visitor-audit-4-v1131)); one needs the owner ([#93](docs/KNOWN_ISSUES.md#93-cloudflares-bot-detection-sets-a-cookie)) and the rest are listed ([#94](docs/KNOWN_ISSUES.md#94-leftovers-of-visitor-audit-4)). No advice, number or source changed; no item, room or slot: **houses and challenge links are the same.**

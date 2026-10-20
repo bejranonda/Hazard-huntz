@@ -43,6 +43,7 @@ Every tap teaches one real action with its source. Most come from Thai agencies 
 > - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).
 > - The water-level button opens **BKK FloodWatch** (`flood.autobahn.bot`), the owner's own Autobahn Bot project.
 > - Before launch it still needs the owner to confirm Web Analytics (its beacon is on the live site), the sitemap (44 addresses) submitted to the search consoles, a review of 21 safety items flagged ⚠️ and a Thai review of the dust, fire and power-cut lessons, of the home check's ⚠️ lines, of the fridge tool's US hours and food lists, of its insulin, medicine and breast-milk lines (a pharmacist and a nurse, ideally), and of the four new guides (which rest on news reports quoting the agencies), a native-speaker language check (including the wrong answers rewritten in v1.9.2 and the calculators' texts, in plain words since v1.10.1), a doctor's and a pharmacist's read of the mask lines, heat today's first aid and the emergency card (v1.12.0–v1.13.0), and a pass on real phones (including the hub, print, the guides and the calculators inside LINE, since v1.11.0 "ก+" and the copy buttons there, and since v1.13.0 "I'm safe" by SMS).
+> - **Proposed, not built (21 Oct 2026):** "around my home", today's situation and the place's own risks without the position leaving the phone; the open data was tested live ([docs/08](docs/08-open-data.md), [ROADMAP N28](docs/ROADMAP.md#n28-home-today-and-home-risk-proposed)). It waits for the owner's yes, two API keys and a licence.
 > - Start with **[HANDOFF.md](HANDOFF.md)**.
 
 ## Highlights
@@ -165,6 +166,7 @@ You also need **Analytics Engine** enabled once on the Cloudflare account (Worke
 | 5 | [Metrics plan](docs/05-metrics.md) | Event dictionary and Analytics Engine SQL for every metric |
 | 6 | [Test checklist](docs/06-test-checklist.md) | Automated tests, plus a real-phone matrix (75 checks across 8 browser and app combinations) and the live-site checks |
 | 7 | [Who receives it](docs/07-audience.md) (v1.11.0) | Thai audiences on LINE and social media: platform reach, older adults, how disaster information spreads, devices, who is most at risk, seven personas, the sharer and the receiver, what to change and what to watch, with 50 sources |
+| 8 | [Open data for "around my home"](docs/08-open-data.md) (research, 21 Oct 2026) | How the owner's FloodWatch reads open APIs and what carries over; 30+ Thai and global sources tried live (warnings, dust, heat, rain, rivers, flash floods, earthquakes, fire hotspots, faults, landslides, flood history) with auth, CORS, licence and result; how the position stays on the phone; pitfalls; what needs the owner; a phased proposal ([ROADMAP N28](docs/ROADMAP.md#n28-home-today-and-home-risk-proposed)). Nothing built yet |
 
 **Reference for maintainers**
 

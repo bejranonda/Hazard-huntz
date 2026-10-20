@@ -92,6 +92,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 92 | [The tank's soak time: overnight or 3 hours](#92-the-tanks-soak-time-overnight-or-3-hours) | By design (v1.13.0); Owner: the reviewer picks | Low |
 | 93 | [Cloudflare's bot detection sets a cookie](#93-cloudflares-bot-detection-sets-a-cookie) | Owner (a Cloudflare setting) | **Medium (the privacy promise)** |
 | 94 | [Leftovers of visitor audit 4](#94-leftovers-of-visitor-audit-4) | Open (AI-ready, one needs a source) | Low |
+| 95 | [Live data for "around my home" isn't read yet](#95-live-data-for-around-my-home-isnt-read-yet) | Not built (Owner: yes or no, two keys, a licence, one decision) | — |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -258,6 +259,21 @@ Three launch steps are still open on the Cloudflare and search side:
 - turning on `config.features.comboRun`
 
 See [02-game-design.md](02-game-design.md#version-2-combined-run-structured-not-built).
+
+### 95. Live data for "around my home" isn't read yet
+
+**Status:** Not built (researched 21 Oct 2026) · **Owner:** a yes or no, two API keys, a licence and one decision
+
+The app shows no live situation: dust today, heat today and the fridge ask the reader for the colour, the level or the hours, and the alert card is set by hand. The owner asked whether the app could show PM2.5 from the user's position and tell "the situation around my home" for every hazard. The research ([docs/08-open-data.md](08-open-data.md), [ROADMAP N28](ROADMAP.md#n28-home-today-and-home-risk-proposed)) found the data published and machine-readable, but not yet usable as the app stands:
+
+- **CORS:** TMD's CAP warnings and earthquake RSS, NASA FIRMS's fire file and FloodWatch's `/api/stations` send no CORS header, so a phone can't read them; a scheduled job must ([GUIDELINES rule 98](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Keys:** TMD's forecast and warning-text APIs and GISTDA's flood history need the owner's own keys (the public demo keys are for trying out); a key never goes into the browser.
+- **Licence:** DMR's ArcGIS hazard layers (faults, landslide-risk villages) state none.
+- **Platform:** a Pages Function has 10 ms of CPU, too little for ThaiWater's 4.9 MB rain file; KV allows 1,000 writes a day; Open-Meteo counts its free limit per IP.
+- **Privacy:** GISTDA's PM2.5 by point and FloodWatch's `/api/point` need the user's coordinates, which this app never sends ([GUIDELINES rule 56](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)); the design uses lists and subdistrict codes instead.
+- **Air4Thai** still sends the wrong certificate chain ([#86](#86-air4thais-server-sends-the-wrong-certificate-chain)); its `air4thai.com` mirror sends CORS `*`.
+
+**What would close it:** the owner says yes or no to N28; on yes, picks how the data is served (FloodWatch publishes a slim file with CORS for this site, recommended; or a Worker cron; or GitHub Actions) and gets the TMD key (phase 1), then the GISTDA key and DMR's licence (phase 3).
 
 ---
 
@@ -981,6 +997,7 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 
 - **Since v1.13.1** the About text says so: "แอปไม่ใช้คุกกี้ (ระบบกันบอตของผู้ให้บริการเว็บอาจตั้งคุกกี้ความปลอดภัยไว้ 1 ตัว)" / "the app sets no cookies (the web host's bot protection may set one security cookie)".
 - **What would close it:** the owner turns off JavaScript detections for the zone (Cloudflare dashboard → the `autobahn.bot` zone → Security → Bots), or adds a rule that skips them for `baanrodmai.autobahn.bot`; then the About text goes back to "ไม่ใช้คุกกี้" and a live headless check (`context.cookies()` after a page load) shows none. An assistant doesn't change the zone's security settings ([GUIDELINES rule 96](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Bot Fight Mode itself must stay off.** The owner's FloodWatch, on the same zone, found on 26 Sep 2026 that with Bot Fight Mode on, Cloudflare answered `curl` and LINE's and Facebook's link-preview fetchers with a challenge (HTTP 403, `cf-mitigated: challenge`), so previews broke for every `*.autobahn.bot` site; the owner turned it off that day, and page rules could not skip it. Turning off JavaScript detections must not mean turning Bot Fight Mode back on, and a live `curl -sI` with LINE's user agent after any change should still get 200 ([docs/08 §3](08-open-data.md#3-how-it-could-work-without-the-location-leaving-the-phone)).
 
 ### 94. Leftovers of visitor audit 4
 

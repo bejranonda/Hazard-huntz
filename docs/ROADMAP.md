@@ -63,6 +63,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N25 | [Masks, all tools and the agencies' own pages (v1.12.0)](#n25-masks-all-tools-and-the-agencies-own-pages-v1120) | AI-ready (+ Owner review) | Done (21 Oct 2026, v1.12.0); a doctor's read of the mask lines (#87), the alert steps on real phones (#89) and the monthly link check (#88) left |
 | N26 | [Six more tools (v1.13.0)](#n26-six-more-tools-v1130) | AI-ready (+ Owner review) | Done (21 Oct 2026, v1.13.0); the reviews of heat today (#90), the foreign lines (#91) and the soak time (#92), and the phone checks (L6 rows 80–85) left |
 | N27 | [Visitor audit 4 (v1.13.1)](#n27-visitor-audit-4-v1131) | AI-ready (+ Owner) | Done (21 Oct 2026, v1.13.1); the host's cookie (#93, Owner) and the leftovers (#94) left |
+| N28 | [Home today and home risk (proposed)](#n28-home-today-and-home-risk-proposed) | Owner + AI | Researched (21 Oct 2026, [docs/08](08-open-data.md)); waits for the owner's yes, two API keys, DMR's licence and a decision on how FloodWatch serves the data (#95) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -586,6 +587,28 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **What shipped:** the water answer in view; every phone number a button; numbers at the top of all tools; "‹ back" to the tool or list a tool was opened from; the card's tab and footer; the tank reading decimals and asking about คิว; an English install with its own manifest; the illness mask answer without dust words; one ⚠️ on the alert card; arrows on fold-out cards; 11 Thai words kept whole; previews with each tool's look and icon; per-guide tools for the two flood guides; English wording and capitals; contrast on two small texts; the About text true about the host's cookie.
 - **Left:** the cookie itself (#93: the owner turns off JavaScript detections); the phone's Back, a household measure for chlorine, larger preview text, shortcuts for the newer tools (#94).
 - **Done when:** #93 is closed by the owner and the leftovers in #94 are built or dropped with a reason.
+
+### N28. Home today and home risk (proposed)
+
+- **Who:** Owner + AI · **Status:** Researched (21 Oct 2026); not built · **Issues:** #95, #93, #86, #82
+- **Why:** the owner asked whether the app could show PM2.5 from the user's GPS position, what would make people open it often ("ให้เปิดมาแล้วดูว่าสถานการณ์รอบบ้านตัวเองเป็นยังไง มีความเสี่ยงอะไรไหม"; heat, earthquakes, dust, water, pollution, natural hazards), whether a known position could "tell the risk in any dimension", and asked to learn from FloodWatch how to read open APIs (20–21 Oct 2026). The research is [docs/08-open-data.md](08-open-data.md), the method [APPROACH §35](APPROACH_AND_METHOD.md#35-open-data-learn-from-the-sister-project-then-test-every-source-live-research-21-oct-2026).
+- **The idea, in two cards:**
+  - **"บ้านเราวันนี้" (home today):** one line per hazard for the user's province or subdistrict (official warnings, dust, heat, rain, the river near home, flash-flood potential, earthquakes felt, fire hotspots), each with its source and time, each leading into the tool or guide that already exists. For up to three places ("บ้านพ่อแม่"), as Yahoo! 防災速報 does.
+  - **"บ้านเราเสี่ยงอะไร" (home risk):** what the place itself is exposed to, built at release time for each of the 7,425 subdistricts: flood years seen by GISTDA, near an active fault, landslide-risk villages, the power hotline. "No record" is never shown as "safe".
+- **Conditions (all from the research):**
+  - The position never leaves the phone: lists and subdistrict codes only; point APIs only at build time on subdistrict centres ([GUIDELINES rule 98](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+  - Nothing is fetched from an agency on a visitor's request: a job writes one small file every 1–3 hours, never faster than the source.
+  - Keys stay on the server that runs the job; sources are credited on screen; a stale line says so and still leads to the manual tool.
+  - The app stays a summary with what to do, not a warning system: it points to DDPM's Cell Broadcast and LINE ALERT.
+- **Steps:**
+  1. **The owner decides** whether to go ahead, and how the data is served: (a) FloodWatch publishes one slim file with CORS for this site (recommended; it already fetches most of it), (b) a Cloudflare Worker on a cron writing to KV, or (c) a GitHub Actions schedule.
+  2. **The owner gets** a TMD API key (phase 1) and a GISTDA API key and DMR's licence (phase 3); optionally asks HII about its API.
+  3. **Phase 1, home today by province:** TMD's CAP warnings, dust (Air4Thai, GISTDA by province as fallback), TMD's forecast maximum (its own words for 35 and 40 °C, once confirmed), earthquakes near Thailand (TMD, BMKG, USGS), fire hotspots per province (FIRMS). A picker (province → district → subdistrict) always; GPS only on a tap, to pick the nearest subdistrict centre.
+  4. **Measure:** count opens of the card per day (an event with no place in it). Go on only if people come back.
+  5. **Phase 2:** the river near home (FloodWatch's gauges by their own status), rain so far (ThaiWater by province), HII's flash-flood subdistricts; up to three places.
+  6. **Phase 3:** the place profile per subdistrict (GISTDA flood years, DMR fault and landslide counts), with "no record ≠ safe" on screen.
+  7. Each phase follows the usual way: sources and timezone rules recorded, build checks, unit tests on fixed fixtures, smoke checks that read every request for a position, a visitor walk as a first-time older visitor.
+- **Done when:** the owner has said yes or no; on yes, each phase ships with its checks, and the card's daily opens are reported after two weeks.
 
 ## Later
 

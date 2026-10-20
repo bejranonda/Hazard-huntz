@@ -42,6 +42,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 32. [Calculators: the fridge, dust today, the pills (v1.10.0)](#32-calculators-the-fridge-dust-today-the-pills-v1100)
 33. [Food by food in a power cut, and the whole app for its real readers (v1.11.0)](#33-food-by-food-in-a-power-cut-and-the-whole-app-for-its-real-readers-v1110)
 34. [Masks, all tools and six more tools (v1.11.1–v1.13.0)](#34-masks-all-tools-and-six-more-tools-v1111v1130)
+35. [Open data for "around my home" (research, 21 Oct 2026)](#35-open-data-for-around-my-home-research-21-oct-2026)
 
 ---
 
@@ -2493,3 +2494,44 @@ Two auditors on the live v1.13.0 (APPROACH §34): 40 findings, 33 fixed (KNOWN_I
 - **Previews:** `drawOG(…, { badge })` draws the tool's icon in a white circle; the looks are heat today `heat`, water `prepare`, the tank `return`, the card `quake`, "I'm safe" `storm`, the bag `landslide`, the rest as before.
 - **Privacy:** the host's `cf_clearance` cookie ([#93](KNOWN_ISSUES.md#93-cloudflares-bot-detection-sets-a-cookie)); the About text says so until the owner turns it off.
 
+## 35. Open data for "around my home" (research, 21 Oct 2026)
+
+Nothing here is built. The full record, with every endpoint, its live result, CORS, auth and licence, is [docs/08-open-data.md](08-open-data.md); the proposal is [ROADMAP N28](ROADMAP.md#n28-home-today-and-home-risk-proposed), the method [APPROACH §35](APPROACH_AND_METHOD.md#35-open-data-learn-from-the-sister-project-then-test-every-source-live-research-21-oct-2026) and the rule [GUIDELINES rule 98](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+### 35.1 What the owner asked
+
+"Can we display the status of pm 2.5 in our app by using the GPS coordinates of user?"; what would make people open the app often, to see "สถานการณ์รอบบ้านตัวเอง" and its risks (ร้อนจัด แผ่นดินไหว ฝุ่น น้ำ มลภาวะ ภัยธรรมชาติ); "if you know the coordinate from user, we can tell the risk in any dimension?"; and "Please learn flood2026-research how to read the current open API around the world, and research for searching our own needs" (20–21 Oct 2026).
+
+### 35.2 The answer in short
+
+- **Today's situation** (warnings, dust, heat, rain, rivers, flash floods, dams, earthquakes, fire hotspots) is published by Thai agencies and global services, and each answered a live call on 20–21 Oct 2026. Every one can be read as a national or provincial list, so the phone can pick what is near it without sending its position.
+- **The place's own risk** (flood years, active faults, landslide-risk villages, elevation) changes rarely and can be built at release time for each of the 7,425 subdistricts, keyed by the DOPA code (`adm3_pcode`, e.g. TH100101) that the HDX boundary file (CC BY-IGO), GISTDA and the DMR share.
+- **The owner's FloodWatch** is the best river source: `/api/stations`, 1,647 gauges in 77 provinces, each with its own `status` against its own bank or BMA's thresholds (975 normal, 146 watch, 84 warning, 31 critical, 411 unknown at 02:23 Bangkok on 21 Oct). It sends no CORS header.
+
+### 35.3 The sources that fit (✅ live on 20–21 Oct 2026)
+
+| Hazard | Source | Read by |
+|---|---|---|
+| Official warnings | TMD CAP feed (`tmd.go.th/api/xml/CAP`, "public domain", province codes) | a job (no CORS) |
+| Dust | Air4Thai (173 stations; the `air4thai.com` mirror sends CORS `*`; TLS chain broken, #86); GISTDA PM2.5 by province, district or subdistrict (CORS `*`) | the phone (GISTDA) or a job |
+| Heat | TMD 7-day forecast by province (key) | a job |
+| Rain, rivers, dams | ThaiWater (HII) by province (origin reflected); FloodWatch's gauges | the phone (ThaiWater by province) or a slim file from FloodWatch |
+| Flash floods | HII FEWS flash-flood report (510 bytes, CORS `*`, by subdistrict) | the phone |
+| Earthquakes | TMD RSS (no CORS); BMKG, USGS, EMSC (CORS `*`) | a job, or the phone for the backups |
+| Fire hotspots | NASA FIRMS public 24-hour file for Southeast Asia (no key, no CORS) | a job: a count per province |
+| Faults, landslides | DMR ArcGIS `HAZARD` layers (1,329 subdistricts near an active fault; 11,475 landslide-risk villages); licence not stated | build time, after the licence |
+| Flood history | GISTDA flood-freq (`y_2011`…`y_2024` per polygon); needs a key | build time |
+
+### 35.4 Facts to reuse when it is built
+
+- **Timestamps:** GISTDA PM2.5's "Z" is Bangkok time; HII's times are Bangkok time with no offset; FloodWatch's are true UTC; RID and DWR use Buddhist-era years and RID's "24.00" is the next day; a rain day runs 07:00–07:00.
+- **Missing values:** 999999 (HII), −1 (Air4Thai), −99 (BMA), "-" or "*" (RID), −999.9 (GSMaP); HII can return an error inside HTTP 200; some feeds repeat old values under new dates; Air4Thai had stations still on 30 Sep and 9 Oct on 21 Oct.
+- **Air4Thai's colours** in `AQILast` are judged on the 24-hour PM2.5 average; 170 of 170 stations' colours matched dust today's bands.
+- **Not usable as they stand:** WAQI's demo token (answered Bangkok with Shanghai), OpenAQ v3 (key), ReliefWeb v2 (approved app name), Google Flood Hub (waitlist; FloodWatch measured a hit rate of 0.20), GFM (401), GloFAS through Open-Meteo at a river point (a side cell, 1.25 m³/s against about 1,430 observed), CAMS dust (a model: 16.6 against GISTDA's 12.0 µg/m³). No open official tsunami-zone list was found.
+- **Platform:** a Pages Function has 10 ms of CPU and 100,000 requests a day; KV 1,000 writes a day; Open-Meteo is free for non-commercial use, counted per IP (the research host hit "Daily API request limit exceeded"). LINE Notify ended on 31 Mar 2025; Web Push on an iPhone works only for an app added to the home screen (iOS 16.4+).
+- **The zone:** Bot Fight Mode on `autobahn.bot` must stay off; FloodWatch found it blocked LINE's and Facebook's previews ([#93](KNOWN_ISSUES.md#93-cloudflares-bot-detection-sets-a-cookie)).
+- **Abroad:** Yahoo! 防災速報 (Japan) has about 22 million users and lets each set three places; the "บ้านพ่อแม่" idea follows it.
+
+### 35.5 What needs the owner
+
+A yes or no to N28; how FloodWatch serves the data (a slim file with CORS for this site is recommended); a TMD API key; a GISTDA API key; DMR's licence for its hazard layers; optionally a FIRMS key and asking HII about its API ([#95](KNOWN_ISSUES.md#95-live-data-for-around-my-home-isnt-read-yet)).

@@ -680,3 +680,15 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* bump the version, build, then run the smoke tests; never edit `public/` or the content while a run is going. When a size check fails, list what it counted before shrinking anything: a file counted twice is a reload, not weight.
 - *Encoded in:* the order in [AGENTS §4](../AGENTS.md#4-definition-of-done) (build, then tests); this lesson.
 
+
+**B18. Before researching a data source, read what the owner's other project already learned.**
+
+- *What happened:* asked how the app could show "the situation around my home", the first step was to read the owner's FloodWatch, which had read Thai agency APIs every ten minutes for weeks. Its sources document already said which endpoints work, which were refuted, which need a key, and each one's timezone and missing-value quirks; its fetch rules (never faster than the source, a 429 is an answer, raw responses archived, UTC) fitted this app with small changes. The live calls that followed then had to confirm and extend, not discover.
+- *Do this:* start research with the owner's own projects and their records; copy their method, test their claims live again before relying on them, and keep what belongs to a private repository (its notes, hosts, egress, account details) out of this one.
+- *Encoded in:* [APPROACH §35](APPROACH_AND_METHOD.md#35-open-data-learn-from-the-sister-project-then-test-every-source-live-research-21-oct-2026), [docs/08 §1](08-open-data.md#1-how-floodwatch-reads-open-data-and-what-to-reuse).
+
+**B19. A feed's own labels can be wrong: a "Z" that is Bangkok time, a demo token that answers for another city.**
+
+- *What happened:* GISTDA's PM2.5 reply sent at 19:20 UTC was stamped `2026-10-21T01:00Z`, which is Bangkok time with a "Z" on it; WAQI's demo token, asked for Bangkok, answered with Shanghai's data; GloFAS at a Chao Phraya point answered for a side cell (1.25 m³/s against about 1,430 observed). Each looked like a valid answer.
+- *Do this:* check a live answer against something known (the clock at the time of the call, the city's name in the reply, an observed value) before writing a source down as usable, and write each source's time rule down with the evidence.
+- *Encoded in:* [GUIDELINES rule 98](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [docs/08 §4](08-open-data.md#4-pitfalls-any-reader-of-these-feeds-must-handle).

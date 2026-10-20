@@ -43,6 +43,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 33. [Food by food in a power cut, and the whole app for its real readers (v1.11.0)](#33-food-by-food-in-a-power-cut-and-the-whole-app-for-its-real-readers-v1110)
 34. [Masks, all tools and six more tools (v1.11.1–v1.13.0)](#34-masks-all-tools-and-six-more-tools-v1111v1130)
 35. [Open data for "around my home" (research, 21 Oct 2026)](#35-open-data-for-around-my-home-research-21-oct-2026)
+36. [With a server of our own (research, 21 Oct 2026)](#36-with-a-server-of-our-own-research-21-oct-2026)
 
 ---
 
@@ -2535,3 +2536,42 @@ Nothing here is built. The full record, with every endpoint, its live result, CO
 ### 35.5 What needs the owner
 
 A yes or no to N28; how FloodWatch serves the data (a slim file with CORS for this site is recommended); a TMD API key; a GISTDA API key; DMR's licence for its hazard layers; optionally a FIRMS key and asking HII about its API ([#95](KNOWN_ISSUES.md#95-live-data-for-around-my-home-isnt-read-yet)).
+
+## 36. With a server of our own (research, 21 Oct 2026)
+
+Nothing here is built. The summary and recommendation are [docs/09-server.md](09-server.md); every measurement, quote and URL is in [research/server-2026-10-21.md](research/server-2026-10-21.md); the full record of §35's research is [research/open-data-2026-10-21.md](research/open-data-2026-10-21.md). The rule is [GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); the plan [ROADMAP N29](ROADMAP.md#n29-a-server-that-publishes-files-proposed).
+
+### 36.1 Numbers a collector faces (20 Oct 2026, 20:41–20:59 UTC, one sample each)
+
+| Source | Raw | gzip | CPU cold | 304? |
+|---|---|---|---|---|
+| TMD CAP list | 20,196 B | 2,455 B | 10.3 ms | no |
+| TMD CAP item | 123,300 B | 56,802 B | 24.1 ms | yes |
+| TMD quake RSS | 7,356 B | 1,246 B | 7.7 ms | yes |
+| Air4Thai | 134,417 B | 16,803 B | 5.1 ms | no |
+| GISTDA by province | 12,449 B | 3,480 B | 3.9 ms | no (recomputed each call) |
+| ThaiWater levels | 1,393,259 B | 239,986 B | 21.7 ms | no |
+| ThaiWater rain | 4,885,323 B | 623,257 B | 60.5 ms | no |
+| HII flash-flood report | 1,051 B | — | 4.1 ms | yes |
+| FloodWatch stations | 2,643,258 B | 263,059 B | 47.1 ms | no |
+| FIRMS SE Asia 24 h | 1,225,132 B | no gzip | 25.9 ms | ignored |
+| USGS | 16,461 B | 2,592 B | 6.5 ms | within 60 s |
+| BMKG | 582 B | 370 B | 5.9 ms | yes |
+
+- **A day:** 70.4 MB downloaded, 52.9 MB archived (gzip-9); 25.7 and 19.3 GB a year. Without FloodWatch's full file, 32.4 and 16.6 MB a day; a slim FloodWatch file is 36,950 B gzipped.
+- **CPU:** 83.6 ms a 10-minute cycle, 109.2 ms an hourly one (cold); about 15 s a day. Cloudflare: Free 10 ms per run; Paid 30 s per cron under an hourly interval, 15 min at hourly or longer; 128 MB.
+
+### 36.2 Facts to reuse when it is built
+
+- **TMD's warning polygons are the provinces.** The warning in force (TMD20261020170647_2, Heavy Rain, Severe): 150 polygons, 18 province codes; 1,380 subdistrict centres inside, 1,395 in the provinces, 1,379 both; the differences are coastlines. Relay the codes.
+- **TMD's CAP list `pubDate` is 7 h early** (UTC labelled +0700); its `lastBuildDate` is the time of the request; take times from the CAP item.
+- **Keyed below the province:** HII's flash-flood report (`TH` + its 6-digit code matches HDX); ThaiWater's level gauges (797 of 803 codes match); not ThaiWater's rain (names only); ONWR's area warning by `adm_code`.
+- **Nearest station distances** (subdistrict centres): Air4Thai median 27.9 km, 55 % over 25 km, worst 177.5 km; ThaiWater gauge median 11.7 km; FloodWatch gauge median 9.6 km.
+- **Old readings at 03:45 Bangkok:** Air4Thai 15 % over 3 h (8 stations over 7 days); ThaiWater levels 18 %; FloodWatch 50 % (734 of RID's 915 gauges, median 11.8 h).
+- **A per-subdistrict table** (code, name, centre, three nearest stations, province): 132,413 B gzipped for the country; 77 province files, median 1,853 B, largest 5,635 B (นครราชสีมา); 364 ms of CPU to build.
+- **Air4Thai's chain:** the leaf is issued by Let's Encrypt YR1, which the server doesn't send; it sends an unrelated Sectigo chain. Adding YR1 and Root YR (cross-signed by ISRG Root X1) verifies strictly. The `air4thai.com` mirror is the same server.
+- **Failures by kind:** ONWR's waterrisk a DNS failure at some resolvers (it resolves to `ghs.googlehosted.com` at Cloudflare's); `ndwc.go.th` NXDOMAIN; DDPM and data.go.th Cloudflare challenges or blocks; RID's `hyd-app` and DWR's `ews` time out from abroad.
+- **Hosting:** AWS Thailand `ap-southeast-7` (7 Jan 2025), `t4g.nano` US$0.0048/h plus US$0.005/h for an IPv4; Google Cloud Bangkok `asia-southeast3` (21 Jan 2026); no Azure Thai region. Workers Paid US$5 a month. Static assets on Cloudflare are free and unlimited; JSON isn't cached by default.
+- **Push:** `PushManager` unsupported in Android WebView and iOS WKWebView; iOS 16.4+ only from the Home Screen. LINE OA: 300 free messages a month; Basic 1,280 baht (15,000), Pro 1,780 baht (35,000), VAT 7 % extra; area targeting by 8 regions. LINE Notify ended 31 Mar 2025. DDPM's Cell Broadcast nationwide in 2025; LINE ALERT `@LINEALERT`.
+- **The law:** PDPA s.6, s.19, s.22, s.23, s.24, s.28, s.37(3)–(5), s.41, ss.82–84; fines of 7 M baht (2024) and 14.5 M baht across five cases (2025); the 2021 traffic-data notification's 90 days. A lawyer reads the plan before any per-person data ([#96](KNOWN_ISSUES.md#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person)).
+- **Terms binding a server:** Open-Meteo non-commercial means no subscriptions or advertising, limits per IP or per Cloudflare user; TMD's NWP API 60 a minute and 100,000 datapoints an hour, registration with personal details; FIRMS 5,000 per 10 min; BMKG 60 a minute per IP with credit; EMSC CC BY 4.0; Nominatim no autocomplete; OSM derived databases over 100 features stay ODbL.

@@ -692,3 +692,15 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* GISTDA's PM2.5 reply sent at 19:20 UTC was stamped `2026-10-21T01:00Z`, which is Bangkok time with a "Z" on it; WAQI's demo token, asked for Bangkok, answered with Shanghai's data; GloFAS at a Chao Phraya point answered for a side cell (1.25 m³/s against about 1,430 observed). Each looked like a valid answer.
 - *Do this:* check a live answer against something known (the clock at the time of the call, the city's name in the reply, an observed value) before writing a source down as usable, and write each source's time rule down with the evidence.
 - *Encoded in:* [GUIDELINES rule 98](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [docs/08 §4](08-open-data.md#4-pitfalls-any-reader-of-these-feeds-must-handle).
+
+**B20. Before calling a source down, name the kind of failure.**
+
+- *What happened:* five hosts had been written down as "not reachable" (⛔). Re-tested with DNS look-ups, they failed in five different ways: ONWR's area warning was a DNS failure at some resolvers (it resolves at Cloudflare's, and FloodWatch read it in October); `ndwc.go.th` no longer has a DNS record at all; Air4Thai's server sends a certificate chain without its Let's Encrypt intermediate (and its "mirror" is the same server); DDPM and data.go.th show Cloudflare bot checks or blocks; RID's and DWR's hosts time out from abroad. Each has a different answer: another resolver, drop it, add the public intermediate, never solve it, a Thai host.
+- *Do this:* record the failure's kind (DNS, TLS, bot check, timeout from abroad, gone) with the time and host, look up DNS before blaming the network, and try once more later before writing a source off.
+- *Encoded in:* [GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [docs/09 §9](09-server.md#9-hosts-that-failed-what-kind-of-failure).
+
+**C26. Measure the precise method against the simple one before building it.**
+
+- *What happened:* matching TMD's warning polygons against all 7,425 subdistrict centres looked like a way to tell a household "your subdistrict is inside today's warning" more precisely than by province. Measured, the 150 polygons were the 18 listed provinces' outlines: 1,379 of the 1,380 subdistricts inside them were in those provinces, and every difference was a coastline. The precise method would have cost a server, 138 ms a warning and a 3 KB file, to be slightly less accurate than comparing two province codes on the phone.
+- *Do this:* before building a finer method, compute it once on real data next to the simplest key the source already gives, and keep the simple one unless the finer one changes answers.
+- *Encoded in:* [GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWLEDGE §36.2](KNOWLEDGE.md#362-facts-to-reuse-when-it-is-built).

@@ -64,6 +64,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N26 | [Six more tools (v1.13.0)](#n26-six-more-tools-v1130) | AI-ready (+ Owner review) | Done (21 Oct 2026, v1.13.0); the reviews of heat today (#90), the foreign lines (#91) and the soak time (#92), and the phone checks (L6 rows 80–85) left |
 | N27 | [Visitor audit 4 (v1.13.1)](#n27-visitor-audit-4-v1131) | AI-ready (+ Owner) | Done (21 Oct 2026, v1.13.1); the host's cookie (#93, Owner) and the leftovers (#94) left |
 | N28 | [Home today and home risk (proposed)](#n28-home-today-and-home-risk-proposed) | Owner + AI | Researched (21 Oct 2026, [docs/08](08-open-data.md)); waits for the owner's yes, two API keys, DMR's licence and a decision on how FloodWatch serves the data (#95) |
+| N29 | [A server that publishes files (proposed)](#n29-a-server-that-publishes-files-proposed) | Owner + AI | Researched (21 Oct 2026, [docs/09](09-server.md)); waits for the owner's choice of where it runs, and a Thai lawyer before any per-person data (#96) |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -603,12 +604,27 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Steps:**
   1. **The owner decides** whether to go ahead, and how the data is served: (a) FloodWatch publishes one slim file with CORS for this site (recommended; it already fetches most of it), (b) a Cloudflare Worker on a cron writing to KV, or (c) a GitHub Actions schedule.
   2. **The owner gets** a TMD API key (phase 1) and a GISTDA API key and DMR's licence (phase 3); optionally asks HII about its API.
+     *Since the server research ([N29](#n29-a-server-that-publishes-files-proposed), [docs/09](09-server.md)):* option (b) works on Workers Paid, not Free; TMD's warnings need only their province codes; show the distance to the nearest dust station and each row's age.
   3. **Phase 1, home today by province:** TMD's CAP warnings, dust (Air4Thai, GISTDA by province as fallback), TMD's forecast maximum (its own words for 35 and 40 °C, once confirmed), earthquakes near Thailand (TMD, BMKG, USGS), fire hotspots per province (FIRMS). A picker (province → district → subdistrict) always; GPS only on a tap, to pick the nearest subdistrict centre.
   4. **Measure:** count opens of the card per day (an event with no place in it). Go on only if people come back.
   5. **Phase 2:** the river near home (FloodWatch's gauges by their own status), rain so far (ThaiWater by province), HII's flash-flood subdistricts; up to three places.
   6. **Phase 3:** the place profile per subdistrict (GISTDA flood years, DMR fault and landslide counts), with "no record ≠ safe" on screen.
   7. Each phase follows the usual way: sources and timezone rules recorded, build checks, unit tests on fixed fixtures, smoke checks that read every request for a position, a visitor walk as a first-time older visitor.
 - **Done when:** the owner has said yes or no; on yes, each phase ships with its checks, and the card's daily opens are reported after two weeks.
+
+### N29. A server that publishes files (proposed)
+
+- **Who:** Owner + AI · **Status:** Researched (21 Oct 2026); not built · **Issues:** #95, #96, #97, #86
+- **Why:** the owner: "research beyond, by considering that in the future we will deploy in a server" (21 Oct 2026). The research is [docs/09-server.md](09-server.md) and its record [research/server-2026-10-21.md](research/server-2026-10-21.md); the method [APPROACH §36](APPROACH_AND_METHOD.md#36-a-server-desk-research-and-live-measurement-in-parallel-research-21-oct-2026).
+- **The idea:** a collector that fetches the sources of [N28](#n28-home-today-and-home-risk-proposed) on their own schedules, checks and slims them, and publishes small static files by province and by subdistrict code; phones read them and match their own place. No accounts, no positions, no push subscriptions ([GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Steps:**
+  1. **The owner chooses where it runs:** (a) one more job on FloodWatch's server (recommended), (b) Cloudflare Workers Paid (US$5 a month; first check that a Worker can verify Air4Thai), or (c) a small VM in Bangkok (about US$7 a month on AWS with its IPv4) only if ONWR's or RID's Thai-only data becomes essential.
+  2. **Build the collector:** one adapter per source with its cadence, its time rule and a saved response as a test; gzip; content hashes for change; per-row observed time; failures named by kind; the Air4Thai chain repaired with Let's Encrypt's public intermediates; GISTDA's echoed key stripped.
+  3. **Publish:** `/live/province/<code>.json` and a warnings file (TMD's province codes), as static files with a long cache and no cookies; a health file with each source's last success.
+  4. **On the phone:** the "บ้านเราวันนี้" card of N28 phase 1 reads its province's file; shows source, time and age; falls back to the manual tools; sends nothing about where it is.
+  5. **Measure:** anonymous opens of the card and installs; only then consider push ([#97](KNOWN_ISSUES.md#97-web-push-cant-reach-readers-inside-line-or-facebook)) or a LINE Official Account, each after a Thai lawyer has read the plan ([#96](KNOWN_ISSUES.md#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person)).
+  6. **Tell the PCD** about Air4Thai's missing intermediate certificate ([#86](KNOWN_ISSUES.md#86-air4thais-server-sends-the-wrong-certificate-chain)).
+- **Done when:** the owner has chosen where it runs; the collector publishes phase 1's files with their checks and a health file; the card reads them; and no request from the app carries a position (a smoke check reads every request).
 
 ## Later
 

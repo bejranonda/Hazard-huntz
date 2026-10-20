@@ -8,7 +8,7 @@ How it was done ([APPROACH §35](APPROACH_AND_METHOD.md#35-open-data-learn-from-
 - **Then every candidate live.** A second researcher made 113 calls to Thai and global sources on 20 Oct 2026, about 18:50–19:30 UTC, sending `Origin: https://baanrodmai.autobahn.bot` to see the CORS header. The lead re-checked the strongest ones on 21 Oct 2026 (about 02:00–03:00 Bangkok).
 - **The host matters.** The calls went out through a cloud session's proxy outside Thailand. A source marked ⛔ refused or timed out from there, which isn't proof that it refuses a phone in Thailand.
 
-**The full record** (every one of the 113 calls with its URL, status, size and CORS reply; each source's coverage, licence and verdict; FloodWatch's source list and pitfalls; the corrections) is [research/open-data-2026-10-21.md](research/open-data-2026-10-21.md).
+**The full record** (every one of the 113 calls with its URL, status, size and CORS reply; each source's coverage, licence and verdict; FloodWatch's source list and pitfalls; the corrections) is [research/open-data-2026-10-21.md](research/open-data-2026-10-21.md). **What changes with a server of our own** (measured costs, the law, hosting, push) is [09-server.md](09-server.md), researched the same night; where it corrects this page, the line says so.
 
 Status marks, as FloodWatch uses them:
 
@@ -26,9 +26,9 @@ Status marks, as FloodWatch uses them:
 2. **The location can stay on the phone.** Every "today" source can be read as a national or provincial list, so the phone picks what is near it. The two that answer only to a point (GISTDA's PM2.5 by point, FloodWatch's `/api/point`) aren't needed.
 3. **The place's own risk (flood history, faults, landslides) can be built ahead of time for each of Thailand's 7,425 subdistricts.** It would ship as one static file keyed by the Interior Ministry (DOPA) code, which the boundary file, GISTDA and the DMR all share (section 3).
 4. **The best river source is the owner's own FloodWatch.** Its `/api/stations` returns 1,647 gauges in 77 provinces, each already judged against its own bank or BMA's thresholds: 975 normal, 146 watch, 84 warning, 31 critical and 411 unknown at 02:23 on 21 Oct. It sends no CORS header, so FloodWatch would need to publish a small file for this app, or the app would need a relay.
-5. **TMD's official warnings come as a CAP feed marked "public domain".** It carries province codes, and its alert that night was "ฝนตกหนัก" (heavy rain). Like TMD's earthquake RSS and the FIRMS fire file, it sends no CORS header, so a scheduled job has to fetch it.
+5. **TMD's official warnings come as a CAP feed marked "public domain".** It carries province codes, and its alert that night was "ฝนตกหนัก" (heavy rain). Like TMD's earthquake RSS and the FIRMS fire file, it sends no CORS header, so a scheduled job has to fetch it. Its polygons turned out to be the provinces' own outlines (1,379 of the 1,380 subdistricts inside them were in its 18 listed provinces, [docs/09](09-server.md#summary)), so the province codes are what to use.
 6. **Nothing is fetched on a visitor's request.** A job runs every 1–3 hours and writes one small file, and phones read that file. FloodWatch's rule is "never faster than the source updates" (section 1).
-7. **The free platform limits shape this.** A Pages Function gets 10 ms of CPU, too little to parse ThaiWater's 4.9 MB rain file. KV allows 1,000 writes a day, and Open-Meteo counts its free limit per IP. The research host itself was refused with "Daily API request limit exceeded".
+7. **The free platform limits shape this.** A Pages Function gets 10 ms of CPU, too little to parse ThaiWater's 4.9 MB rain file. KV allows 1,000 writes a day, and Open-Meteo counts its free limit per IP. The research host itself was refused with "Daily API request limit exceeded". *(Corrected by [docs/09](09-server.md#2-measured-what-a-collector-faces): a full collection cycle needs 84–109 ms of CPU, so Workers Free and Pages Functions can't run it, but Workers Paid (US$5 a month, 15 min of CPU for an hourly cron) or any small server can.)*
 8. **Timestamps lie in different ways.** GISTDA's "Z" is Bangkok time. HII's times have no offset and are Bangkok time. RID and DWR use Buddhist-era years. A "day" of rain runs 07:00–07:00. Every source needs its own rule, written down (section 4).
 9. **Some are not usable as they stand.** WAQI's demo token answered for Bangkok with Shanghai's data. GloFAS at a river point landed on a side cell (1.25 m³/s against about 1,430 observed). The ReliefWeb, OpenAQ, Flood Hub and GFM APIs need approval or keys. DDPM's site shows a bot check. No open official tsunami-zone map was found.
 10. **Five things need the owner** (section 5):
@@ -82,7 +82,7 @@ Read from FloodWatch's own documents and code on 21 Oct 2026. Details that belon
 |---|---|---|---|---|---|---|
 | **Official warnings** | TMD CAP feed | `https://www.tmd.go.th/api/xml/CAP` (Thai), `/en/api/xml/CAP`; each item links a CAP XML | none | none | ✅ 21 Oct 02:xx: one alert, "ฝนตกหนัก". The researcher saw severity Severe, urgency Immediate, expiry 2026-10-21 06:00 +07 and 18 province codes (TH-20…). `<copyright>public domain` | Via a job: province codes |
 | Warning text | TMD API `WeatherWarningNews/v2` | `data.tmd.go.th/api/WeatherWarningNews/v2/?uid=…&ukey=…&format=json` | 🔑 own key (we tested the public demo key) | only `wxmap.tmd.go.th` | ✅ "ฝนตกหนักถึงหนักมาก… ฉบับที่ 8", in effect until 25 Oct, text by region | Via a job |
-| **Dust and pollution** | Air4Thai (PCD) | `air4thai.pcd.go.th/services/getNewAQI_JSON.php`; mirror `air4thai.com/forweb/getAQI_JSON.php` | none | mirror `*` | ⚠️ 173 stations with PM2.5, PM10, O₃, CO, NO₂, SO₂ and coordinates; 170 of 170 colours match dust today's bands. TLS chain broken ([#86](KNOWN_ISSUES.md#86-air4thais-server-sends-the-wrong-certificate-chain)): Chromium opened it on 21 Oct, the second researcher's Chromium failed on 20 Oct | List (nearest on the phone), best via a job |
+| **Dust and pollution** | Air4Thai (PCD) | `air4thai.pcd.go.th/services/getNewAQI_JSON.php`; mirror `air4thai.com/forweb/getAQI_JSON.php` | none | mirror `*` | ⚠️ 173 stations with PM2.5, PM10, O₃, CO, NO₂, SO₂ and coordinates; 170 of 170 colours match dust today's bands. TLS chain broken ([#86](KNOWN_ISSUES.md#86-air4thais-server-sends-the-wrong-certificate-chain); diagnosed in [docs/09 §3](09-server.md#3-air4thai-the-chain-diagnosed-and-a-fix-only-a-server-can-apply): Let's Encrypt's YR1 intermediate is missing, and the mirror is the same server): Chromium opened it on 21 Oct, the second researcher's Chromium failed on 20 Oct | List (nearest on the phone), best via a job |
 | Dust by area | GISTDA PM2.5 | `pm25.gistda.or.th/rest/getPm25byProvince` (77 rows, 3.5 KB compressed); `getPm25byAmphoe?pv_idn=`; `getPm25byTambon?ap_idn=` | none | `*` | ✅ Rayong 27.6 µg/m³, 24-h average 16.0. ⚠️ its "Z" times are Bangkok time | List or a code: the phone can read it directly |
 | **Heat** | TMD 7-day forecast | `data.tmd.go.th/api/WeatherForecast7Days/V2/` | 🔑 own key | only `wxmap` | ✅ 80 provinces: maximum and minimum temperature, rain %, wind. No heat index | Via a job |
 | Heat (model) | Open-Meteo | `api.open-meteo.com/v1/forecast` (`apparent_temperature_max`, `wet_bulb_temperature_2m`) | none (non-commercial) | `*` | ⚠️ answered on 21 Oct 02:xx; the second researcher got 429 "Daily API request limit exceeded" from the same shared IP | Build time per province, labelled as a model |
@@ -123,9 +123,9 @@ Read from FloodWatch's own documents and code on 21 Oct 2026. Details that belon
 - **FloodWatch `/api/point` and GISTDA `getPm25byLocation`** need the user's coordinates, so they are out.
 - **⛔ from the research host:**
   - `disaster.go.th` (a bot check)
-  - `ndwc.go.th` (502)
+  - `ndwc.go.th` (502; on 20 Oct at 20:53 UTC the domain had no DNS record at all, [docs/09 §9](09-server.md#9-hosts-that-failed-what-kind-of-failure))
   - `data.go.th` (403)
-  - ONWR waterrisk (timeout)
+  - ONWR waterrisk (timeout; re-tested, a DNS failure at some resolvers rather than a geo-block, and it publishes the official area warning per subdistrict: worth reaching from a server, [docs/09 §9](09-server.md#9-hosts-that-failed-what-kind-of-failure))
   - `overpass-api.de` and Geofabrik (connection reset); the Overpass mirrors at `maps.mail.ru` and `overpass.private.coffee` answered for small areas
   - NASA LHASA (502, 404)
   - `data.dmr.go.th` (timeout; the ArcGIS server answered)
@@ -142,7 +142,7 @@ Each source is read in one of three ways.
 
 **Where the job runs:**
 - **(a) FloodWatch publishes it (recommended).** It is the owner's own server and already fetches HII, dams and rain every 10 minutes. One more small file with CORS for `baanrodmai.autobahn.bot` is the least new machinery.
-- **(b) A Cloudflare Worker on a cron, writing to KV.** 1–3-hourly writes are far under 1,000 a day, but the 10 ms CPU limit forbids parsing the multi-megabyte files.
+- **(b) A Cloudflare Worker on a cron, writing to KV.** 1–3-hourly writes are far under 1,000 a day, but the 10 ms CPU limit forbids parsing the multi-megabyte files. *(Corrected: that is Workers Free; Workers Paid gives an hourly cron 15 min of CPU, [docs/09 §5](09-server.md#5-where-to-run-it).)*
 - **(c) A GitHub Actions schedule**, which can be late or skipped and shares Open-Meteo's per-IP limit with other users.
 
 **What the phone does:**
@@ -161,6 +161,7 @@ Each source is read in one of three ways.
 
 - **Times:**
   - GISTDA PM2.5's `…Z` is Bangkok time (a reply sent at 19:20 UTC said `2026-10-21T01:00Z`).
+  - TMD's CAP list gives each item a `pubDate` 7 h early (UTC labelled +0700); take times from the CAP item itself ([docs/09](09-server.md#4-how-it-should-be-built)).
   - HII's times are Bangkok time with no offset.
   - FloodWatch's are true UTC.
   - TMD's earthquake RSS gives Thai time in words.

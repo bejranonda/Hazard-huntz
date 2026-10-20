@@ -348,6 +348,16 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **The position stays on the phone:** the phone downloads a list (national, provincial or by subdistrict code) and picks what is near it; a source that answers only to a point is used at build time on subdistrict centres or not at all. A subdistrict code chosen by the reader stays in `localStorage` and never goes into an event, a URL or a request (rule 56).
     - **Keys** live on the server that runs the job and go in headers, never in a URL or the browser.
     - **On screen:** each line names its source and time, says when it is old, and still leads to the manual tool (dust today, heat today); "no record" is never shown as "safe"; the app points to DDPM's Cell Broadcast and LINE ALERT for warnings and never presents itself as one.
+99. **A server publishes files; it doesn't know people.** When the app gets a server ([docs/09](09-server.md), [ROADMAP N29](ROADMAP.md#n29-a-server-that-publishes-files-proposed)):
+    - **It writes files** (by province, by subdistrict code) to static hosting with a long cache and no cookies; the phone matches its own place. It keeps no accounts, positions, push subscriptions or LINE ids, and no request logs beyond what the host needs, until a Thai lawyer has read the plan ([KNOWN_ISSUES #96](KNOWN_ISSUES.md#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person)); then a notice with the retention period, consent on a tap, deletion in code.
+    - **The app never waits for it:** every tool works without the live files, and a missing or old file shows its age and the manual tool.
+    - **Use the simplest key a source gives:** province codes for TMD's warnings (their polygons are the provinces), subdistrict codes where a source has them; measure a precise method against the simple one before building it.
+    - **Every row carries its own observed time**; drop rows older than about three times their cadence.
+    - **TLS is repaired, never switched off:** add the public intermediates from the CA's own site (Air4Thai's missing Let's Encrypt YR1), verify to the system's roots, alert on failure; and tell the agency.
+    - **Keys go in headers and never reach a phone;** strip a key a source echoes back (GISTDA's `links`).
+    - **Detect change by content,** hashed after normalising (GISTDA recomputes on every call), when a source sends no validators; ask for gzip.
+    - **Name each failure by kind** (DNS, TLS, bot check, timeout from abroad, gone) in the health record; never solve a bot check.
+    - **Measure CPU in a fresh process** before choosing a platform: a cycle cost 84–109 ms, so 10 ms platforms are out.
 
 ## 9. Working with AI assistants
 

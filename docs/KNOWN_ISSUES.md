@@ -93,6 +93,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 93 | [Cloudflare's bot detection sets a cookie](#93-cloudflares-bot-detection-sets-a-cookie) | Owner (a Cloudflare setting) | **Medium (the privacy promise)** |
 | 94 | [Leftovers of visitor audit 4](#94-leftovers-of-visitor-audit-4) | Open (AI-ready, one needs a source) | Low |
 | 95 | [Live data for "around my home" isn't read yet](#95-live-data-for-around-my-home-isnt-read-yet) | Not built (Owner: yes or no, two keys, a licence, one decision) | — |
+| 96 | [The PDPA and the traffic-data rule apply once a server keeps anything about a person](#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person) | Owner (a Thai lawyer, before any per-person data) | **High if ignored** (fines of 1–5 M baht a breach) |
+| 97 | [Web Push can't reach readers inside LINE or Facebook](#97-web-push-cant-reach-readers-inside-line-or-facebook) | Platform limit | Medium (decides whether push is worth building) |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -273,11 +275,32 @@ The app shows no live situation: dust today, heat today and the fridge ask the r
 - **Privacy:** GISTDA's PM2.5 by point and FloodWatch's `/api/point` need the user's coordinates, which this app never sends ([GUIDELINES rule 56](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)); the design uses lists and subdistrict codes instead.
 - **Air4Thai** still sends the wrong certificate chain ([#86](#86-air4thais-server-sends-the-wrong-certificate-chain)); its `air4thai.com` mirror sends CORS `*`.
 
+**Since the server research ([docs/09](09-server.md), 21 Oct 2026):** a collection cycle measured 84–109 ms of CPU, so Workers Free and Pages Functions are out but Workers Paid or any small server fits; about 70 MB a day downloaded and 53 MB archived; TMD's warning polygons are the provinces, so province codes are enough; the nearest Air4Thai station is more than 25 km away for 55 % of subdistricts; half of FloodWatch's gauges were more than 3 h old at that moment; and the Air4Thai chain can be repaired by a server ([#86](#86-air4thais-server-sends-the-wrong-certificate-chain)). The plan is [ROADMAP N29](ROADMAP.md#n29-a-server-that-publishes-files-proposed).
+
 **What would close it:** the owner says yes or no to N28; on yes, picks how the data is served (FloodWatch publishes a slim file with CORS for this site, recommended; or a Worker cron; or GitHub Actions) and gets the TMD key (phase 1), then the GISTDA key and DMR's licence (phase 3).
+
+### 96. The PDPA and the traffic-data rule apply once a server keeps anything about a person
+
+**Status:** Owner (a Thai lawyer, before any per-person data) · **Severity:** High if ignored
+
+Today the app keeps nothing about anyone: what people answer stays in `localStorage`, events are anonymous counts. A server that only fetches agency data and publishes files keeps it that way ([docs/09 §7](09-server.md#7-the-law-once-the-server-keeps-anything-about-a-person), [GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). The first per-person record changes that: a Web Push subscription with a province, a LINE user id with a province, a position, an IP log.
+
+- **The PDPA (B.E. 2562)** then asks for a lawful basis (consent by default, s.19), a notice that says what is kept and for how long (s.23), only what is needed (s.22), erasure when done (s.37(3)), a breach notice within 72 hours where feasible (s.37(4)), and, if the server is abroad, a cross-border basis (s.28) and possibly a representative in Thailand (s.37(5)). Fines: up to 1, 3 or 5 M baht a breach; 7 M baht in the first case (31 Jul 2024); 14.5 M baht across five cases on 1 Aug 2025.
+- **The 2021 notification on computer traffic data** (Royal Gazette เล่ม 138 ตอนพิเศษ 188 ง) asks service providers, listing "Web Services" and health and lifestyle digital services, to keep traffic data at least 90 days and to verify every user's identity. Whether a free, anonymous preparedness site is in scope is **[unverified]**; it pulls against "no logs".
+- **The GDPR** may apply too if the owner is established in the EU.
+- **What would close it:** a Thai lawyer reads the plan before any push, account or LINE Official Account is built; then a privacy notice in the app (th and en), the retention period in code, consent on a tap, and a way to delete. Until then a server holds no per-person data.
 
 ---
 
 ## Platform limits
+
+### 97. Web Push can't reach readers inside LINE or Facebook
+
+**Status:** Platform limit · **Severity:** Medium (it decides whether push is worth building)
+
+MDN's compatibility data (8.1.6, 15 Oct 2026) marks `PushManager` unsupported in Android WebView and iOS WKWebView, which in-app browsers are built on; LINE's LIFF browser lists push and service workers as unsupported. On an iPhone, Web Push works only for a web app added to the Home Screen (iOS 16.4+), and only after the person taps to allow. Most of this app's readers open it from a LINE chat ([docs/07](07-audience.md)), so push would reach only people who installed it.
+
+- **What would change this:** nothing on our side. Before building push, count installs (an anonymous event); point people to LINE ALERT and DDPM's Cell Broadcast for warnings, which reach phones without the app ([docs/09 §6](09-server.md#6-push-and-messages)). Push inside LINE's in-app browser was not tried on a phone (**[inferred]**).
 
 ### 16. No offline play inside iOS in-app browsers
 
@@ -923,6 +946,7 @@ On 20 Oct 2026 `https://air4thai.pcd.go.th/webV3/` answered `curl` with "SSL cer
 
 - **Where the app links it:** `config.json → modes` (the dust mode's check link), dust today's "ไม่รู้ว่าวันนี้สีอะไร? ดูใน Air4Thai", the dust guide's line 1 and `/pm25`.
 - **What would close it:** a real-phone test inside LINE on Android ([06-test-checklist](06-test-checklist.md), [ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)). If it warns, add GISTDA's PM2.5 page (`pm25.gistda.or.th`, which itself says official alerts are Air4Thai's) as the second link, and tell the PCD (the fix is on their server: send Let's Encrypt's chain).
+- **Confirmed again on 20 Oct at 20:43 UTC, and a server-side fix tested** ([docs/09 §3](09-server.md#3-air4thai-the-chain-diagnosed-and-a-fix-only-a-server-can-apply)): the leaf (valid 30 Sep–29 Dec 2026, with `air4thai.pcd.go.th` among its names) is issued by YR1, which the server doesn't send; nothing is expired. The `air4thai.com` mirror is the same server with the same chain (it only adds CORS `*`), so it is no workaround. A collector that adds Let's Encrypt's `int-yr1.pem` and the Root YR cross-sign by ISRG Root X1 (both from letsencrypt.org) as untrusted intermediates verifies strictly to the system's roots (curl and Node: 173 stations). The next certificate may come from another Let's Encrypt intermediate, so a collector ships them all and alerts on failure ([GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 
 ### 87. The mask tool's lines for children, pregnancy and heart or lung disease need a doctor's read
 

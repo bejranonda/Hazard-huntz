@@ -119,3 +119,42 @@ export function airAdvice(cfg, answers = {}, groups = []) {
     baby: [...level.all, ...level.risk, ...level.chronic].some((x) => x.mask) ? cfg.baby || null : null,
   };
 }
+
+// "Do I need a mask, and which one?" (/mask, v1.12.0, content/kit.json → mask).
+// One answer at a time: why (dust, clean, sick, chem, fire); for dust, today's
+// colour (the dust today levels: a line with mask: true says who must wear one
+// at that level) and who; for a clean-up, what. Returns { ask } while a
+// question is still open, else the status, the lines, and whether the
+// how-to-wear card applies. Never counts masks: no source gives a number.
+export function maskAdvice(M, air, { why = null, colour = null, who = null, what = null } = {}) {
+  const w = M.why.find((x) => x.id === why);
+  if (!w) return { ask: 'why' };
+  const st = (id) => ({ id, ...M.status[id] });
+  if (why === 'dust') {
+    const level = air.levels.find((l) => l.id === colour);
+    if (!level) return { ask: 'colour' };
+    const p = M.who.find((x) => x.id === who);
+    if (!p) return { ask: 'who' };
+    if (p.baby) return { why, level, who: p, status: st('baby'), lines: [air.baby], card: false };
+    const maskIn = (xs) => xs.find((x) => x.mask);
+    const line = maskIn(level.all) || (p.risk && maskIn(level.risk));
+    if (!line) {
+      // From which colour this person wears one, by the same lines.
+      const i = air.levels.indexOf(level);
+      const from = air.levels.slice(i + 1).find((l) => maskIn(l.all) || (p.risk && maskIn(l.risk)));
+      return { why, level, who: p, status: st('none'), lines: from ? [{ ...M.dust.next, level: from }] : [], card: false };
+    }
+    const red = air.levels[air.levels.length - 1] === level;
+    // Red also says "no outdoor activities" (its first line for everyone) before the mask.
+    const lines = [...(red ? level.all.filter((x) => !x.mask).slice(0, 1) : []), line, M.dust.type[p.type], ...(p.doctor ? [M.dust.doctor] : []), ...M.dust.always];
+    return { why, level, who: p, status: st(red ? 'stay' : 'wear'), lines, card: true };
+  }
+  if (why === 'clean') {
+    const job = M.clean[what];
+    if (!job || !M.what.some((x) => x.id === what)) return { ask: 'what' };
+    return { why, what: M.what.find((x) => x.id === what), status: st(job.status), lines: [...job.lines, ...M.clean.always], card: true };
+  }
+  const b = M[why];
+  const masked = b.status === 'n95' || b.status === 'surgical';
+  return { why, status: st(b.status), lines: [...b.lines, ...(masked && air.baby ? [air.baby] : [])], card: masked, guide: b.guide || null };
+}

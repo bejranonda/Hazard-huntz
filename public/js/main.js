@@ -78,6 +78,7 @@ async function boot() {
   }
   const C = content();
   if (C.config.version && C.config.version !== APP_VERSION && await refreshStaleApp(C.config.version)) return;
+  for (const x of C.config.tools || []) TOOLS[x.id] = x.icon;
   applyStaticStrings();
   observeKeptWords();
   heroGecko = new Gecko($('#hero-gecko'), { title: 'น้องจก' });
@@ -105,12 +106,12 @@ async function boot() {
   const pageGuide = hazard && guideList().find((g) => g.hazard === hazard)?.id;
   if (cl) openChecklist(cl[1], 'link');
   else if (pageGuide) openChecklist(pageGuide, 'link');
-  else if (TOOLS[page]) openTool(page, 'link');
+  else if (TOOLS[page] || page === 'tools') openTool(page, 'link');
   else if (new RegExp(`^checklist-(${ids})$`).test(open)) openChecklist(open.split('-')[1], 'link');
   else if (open === 'guide') openGuides('link');
   else if (open === 'help') openHelp();
   else if (open === 'about') openAbout();
-  else if (TOOLS[open]) openTool(open, 'link');
+  else if (TOOLS[open] || open === 'tools') openTool(open, 'link');
 
   const via = state.challenge ? 'challenge' : cl ? 'checklist' : state.start.why === 'link' ? 'link' : 'direct';
   track('view', { mode: via === 'link' ? state.start.mode : '', label: via });
@@ -229,13 +230,7 @@ function renderStart() {
   const kitSaved = store.get('kit', null);
   const kitChip = $('#kit-chip');
   if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('hubKitScore', { pct: kitSaved.pct }) : t('hubKitSub');
-  // The fridge: "ไฟดับมา 3 ชม.แล้ว" while a power cut is being counted (up to 3 days).
-  // After "the power's back", it says so for a day: there is still food to sort out.
-  const cut = store.get('fridge', null);
-  const offH = cut?.start ? Math.floor((Date.now() - cut.start) / 3600e3) : -1;
-  const back = cut?.end && Date.now() - cut.end < 24 * 3600e3;
-  const fridgeChip = $('#fridge-chip');
-  if (fridgeChip) fridgeChip.textContent = back ? t('hubFridgeBack') : offH < 0 || offH > 72 || cut?.end ? t('hubFridgeSub') : offH ? t('hubFridgeRunning', { h: offH }) : t('hubFridgeJust');
+  renderHub(defaultMode);
 
   // The owner's alert (config.alert, until its end date): that guide, first; it says until when.
   const alertUntil = (cfg) => new Date(`${cfg.alert.until}T12:00:00+07:00`).toLocaleDateString(getLang() === 'en' ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', timeZone: 'Asia/Bangkok' });
@@ -273,6 +268,36 @@ function renderStart() {
   } else banner.hidden = true;
 }
 
+// The start screen's tool tiles (v1.12.0): two that follow the season
+// (config.json → hub.season, by the recommended mode); a power cut being
+// counted keeps the fridge in the first, with how long it has been off.
+function renderHub(defaultMode = state.start.mode) {
+  // "ไฟดับมา 3 ชม.แล้ว" while a power cut is being counted (up to 3 days);
+  // after "the power's back", it says so for a day: there is still food to sort out.
+  const cut = store.get('fridge', null);
+  const offH = cut?.start ? Math.floor((Date.now() - cut.start) / 3600e3) : -1;
+  const back = cut?.end && Date.now() - cut.end < 24 * 3600e3;
+  const counting = back || (offH >= 0 && offH <= 72 && !cut?.end);
+  const season = (content().config.hub?.season?.[defaultMode] || ['fridge', 'air']).filter((x) => TOOLS[x]);
+  const slots = [...new Set([...(counting ? ['fridge'] : []), ...season])].slice(0, 2);
+  slots.forEach((id, i) => {
+    const b = $(`.hub-btn[data-slot="${i + 1}"]`);
+    if (!b) return;
+    const cap = `${id[0].toUpperCase()}${id.slice(1)}`;
+    b.dataset.open = id;
+    b.querySelector('.hub-ico').textContent = TOOLS[id];
+    const name = b.querySelector('.hub-text b');
+    name.dataset.i18n = `hub${cap}`;
+    name.textContent = t(`hub${cap}`);
+    const sub = b.querySelector('.hub-text small');
+    sub.dataset.i18n = `hub${cap}Sub`;
+    sub.id = id === 'fridge' ? 'fridge-chip' : '';
+    sub.textContent = t(`hub${cap}Sub`);
+  });
+  const fridgeChip = $('#fridge-chip');
+  if (fridgeChip) fridgeChip.textContent = back ? t('hubFridgeBack') : offH < 0 || offH > 72 || cut?.end ? t('hubFridgeSub') : offH ? t('hubFridgeRunning', { h: offH }) : t('hubFridgeJust');
+}
+
 function houseLabel(key) {
   return /^\d{8}$/.test(key) ? formatHouseDate(key, getLang()) : t('cardRandomHouse');
 }
@@ -292,13 +317,16 @@ function bindGlobal() {
   });
   // A tool asks for a guide (the dust tool's "10 ways"); kit.js can't open one itself.
   document.addEventListener('brm:guide', (e) => openChecklist(e.detail, 'tool'));
+  document.addEventListener('brm:guides', () => openGuides('tool'));
+  // A tool changed what a tile should say (the fridge started or stopped counting).
+  document.addEventListener('brm:hub', () => renderHub());
   for (const b of $$('[data-open]')) {
     b.addEventListener('click', () => {
       const what = b.dataset.open;
       if (what === 'guide' || what === 'checklist') openGuides('start');
       else if (what === 'help') openHelp();
       else if (what === 'about') openAbout();
-      else if (TOOLS[what]) openTool(what, 'start');
+      else if (TOOLS[what] || what === 'tools') openTool(what, 'start');
     });
   }
   $('#forecast-link-start').addEventListener('click', () => track('forecast_click', { label: 'start' }));
@@ -1012,7 +1040,9 @@ function goHome() {
 // check, the family plan card and, since v1.10.0, the calculators that take
 // the household's answers and work out what to do (the fridge in a power cut,
 // the dust today). Each has a page of its own (/kit, /plan, /fridge, /air) and ?open=<id>.
-const TOOLS = { kit: '🎒', plan: '📝', fridge: '🥛', air: '🌫️' };
+// Since v1.12.0 the list (and each tool's icon and group) is config.json → tools, filled in at boot;
+// "tools" itself is the page that lists them all (/tools), not one of them.
+const TOOLS = {};
 const toolName = (x) => t(`hub${x[0].toUpperCase()}${x.slice(1)}`);
 async function openTool(which, from, mode = '') {
   try {
@@ -1020,6 +1050,8 @@ async function openTool(which, from, mode = '') {
     if (which === 'plan') await m.openPlan(from);
     else if (which === 'fridge') await m.openFridge(from);
     else if (which === 'air') await m.openAir(from);
+    else if (which === 'mask') await m.openMask(from);
+    else if (which === 'tools') await m.openTools(from);
     else await m.openKit(from, mode);
   } catch (e) {
     console.warn('kit failed', e);
@@ -1108,6 +1140,7 @@ async function openChecklist(mode, from = '') {
       ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
       ${modeIds().includes(mode) && forecastUrl(mode) ? `<a class="btn blue small" id="cl-forecast" href="${esc(forecastUrl(mode))}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     </div>
+    <div id="cl-links"></div>
     ${tools.length ? `<h3>${esc(t('guideNext'))}</h3>
     <div class="btn-row guide-next">${tools.map((x) => `<button class="btn secondary small" type="button" data-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}</div>` : ''}
     <h3>${esc(t('guideShare'))}</h3>
@@ -1129,6 +1162,13 @@ async function openChecklist(mode, from = '') {
   }
   for (const a of $$('.tel-chip', $('#sheet'))) a.addEventListener('click', () => track('help_click', { label: a.dataset.help, mode }));
   for (const b of $$('[data-tool]', $('#sheet'))) b.addEventListener('click', () => openTool(b.dataset.tool, 'guide'));
+  // The agencies' own pages for this guide (kit.json → links, v1.12.0), filled in when the tools' code is in.
+  import('./kit.js').then((m) => m.guideLinks(mode)).then((html) => {
+    const box = $('#cl-links');
+    if (!box || !html) return;
+    box.innerHTML = html;
+    for (const a of $$('[data-link]', box)) a.addEventListener('click', () => track('link_click', { label: a.dataset.link, mode }));
+  }).catch(() => {});
   $('#cl-play')?.addEventListener('click', () => {
     closeSheet();
     track('mode_select', { mode, label: 'guide' });

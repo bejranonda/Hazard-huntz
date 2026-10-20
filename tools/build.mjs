@@ -183,9 +183,32 @@ for (const m of MODES) {
 // links and search results, so they never change once published.
 const HAZARDS = config.hazards || {};
 const carouselPartial = [];
-// The tools outside the round, each with a page of its own (/kit, /plan, /fridge).
-const TOOL_IDS = ['kit', 'plan', 'fridge', 'air'];
-const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts', 'kit', 'plan', 'fridge', 'air']);
+// The tools outside the round, each with a page of its own (/kit, /plan, /fridge…).
+// Since v1.12.0 the list is config.json → tools (id, icon, group); /tools lists them all.
+const TOOL_IDS = (config.tools || []).map((x) => x.id);
+const KNOWN_TOOLS = ['kit', 'plan', 'fridge', 'air', 'mask'];
+const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts', 'tools', ...KNOWN_TOOLS]);
+{
+  const seen = new Set();
+  for (const x of config.tools || []) {
+    if (!KNOWN_TOOLS.includes(x.id)) err(`config.json tools: "${x.id}" has no code (one of ${KNOWN_TOOLS.join(', ')})`);
+    if (seen.has(x.id)) err(`config.json tools: "${x.id}" is listed twice`);
+    seen.add(x.id);
+    if (!x.icon) err(`config.json tools ${x.id}: no icon`);
+    if (!['home', 'now'].includes(x.group)) err(`config.json tools ${x.id}: group must be home or now`);
+    for (const l of LANGS) for (const k of [`hub${capM(x.id)}`, `hub${capM(x.id)}Sub`]) if (!strings[l]?.[k]) err(`strings.json: ${l}.${k} is missing (the tool's name on the start screen and /tools)`);
+    for (const l of LANGS) for (const k of ['PageTitle', 'PageDesc', 'PageH1', 'PageIntro', 'PageCta', 'PageList']) if (!strings.seo?.[l]?.[`${x.id}${k}`]) err(`strings.json: seo.${l}.${x.id}${k} is missing`);
+  }
+  for (const k of KNOWN_TOOLS) if (!seen.has(k)) err(`config.json tools: "${k}" is missing`);
+  const hub = config.hub || {};
+  for (const id of hub.always || []) if (!seen.has(id)) err(`config.json hub.always: "${id}" is not a tool`);
+  for (const [m, ids] of Object.entries(hub.season || {})) {
+    if (!MODES.some((x) => x.id === m)) err(`config.json hub.season: "${m}" is not a mode`);
+    if (!Array.isArray(ids) || ids.length !== 2) err(`config.json hub.season.${m}: needs exactly two tools (the start screen has two tiles for them)`);
+    for (const id of ids || []) if (!seen.has(id) || (hub.always || []).includes(id)) err(`config.json hub.season.${m}: "${id}" is not a tool, or is already always shown`);
+  }
+  for (const m of MODES) if (!hub.season?.[m.id]) err(`config.json hub.season: no tiles for the mode "${m.id}"`);
+}
 // "What to do" guides (config.json → guides), in the order the app shows them.
 const GUIDES = config.guides || [];
 const GUIDE_IDS = GUIDES.map((g) => g.id);
@@ -476,6 +499,94 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
     for (const g of A.groups || []) {
       text(g.label, `kit.json air group ${g.id}`);
       if (g.from && !(kitFile.flags || []).some((f) => f.id === g.from)) err(`kit.json air group ${g.id}: from "${g.from}" is not a home-check answer`);
+    }
+  }
+}
+
+// Which mask (v1.12.0, kit.json → mask): every line sourced, every number in
+// it (N95, 3 layers, 2 years, 199, 1669…) in one of its sources' title or note;
+// each situation answers; the who list maps onto the PCD's at-risk people.
+{
+  const M = kitFile.mask;
+  const said = (ids) => (ids || []).map((sid) => `${sources[sid]?.title || ''} ${sources[sid]?.note || ''}`).join(' ');
+  const line = (x, where) => {
+    text(x, where);
+    if (!['verified', 'partial'].includes(x.verify)) err(`${where}: verify must be verified or partial`);
+    if (x.verify === 'partial' && !x.verifyNote) err(`${where}: a partial line needs a verifyNote`);
+    if (!(x.sources || []).length) err(`${where}: needs sources`);
+    for (const sid of x.sources || []) if (!sources[sid]) err(`${where}: unknown source "${sid}"`);
+    const ss = said(x.sources);
+    for (const t of [x.th, x.en]) for (const m of String(t || '').replace(/\{\w+\}/g, '').match(/\d+/g) || []) if (!new RegExp(`(^|[^0-9])${m}([^0-9]|$)`).test(ss)) err(`${where}: ${m} is not in any of its sources' title or note`);
+  };
+  if (!M) err('kit.json: mask is missing');
+  else {
+    const whys = ['dust', 'clean', 'sick', 'chem', 'fire'];
+    if (JSON.stringify((M.why || []).map((x) => x.id).sort()) !== JSON.stringify([...whys].sort())) err(`kit.json mask.why: must be exactly ${whys.join(', ')}`);
+    for (const x of [...(M.why || []), ...(M.who || []), ...(M.what || [])]) { text(x.label, `kit.json mask option ${x.id}`); if (!x.icon) err(`kit.json mask option ${x.id}: no icon`); }
+    for (const x of M.who || []) {
+      if (!x.baby && !M.dust?.type?.[x.type]) err(`kit.json mask.who ${x.id}: type "${x.type}" has no line in mask.dust.type`);
+      const ss = said(x.sources);
+      for (const m of String(x.label.th).match(/\d+/g) || []) if (!new RegExp(`(^|[^0-9])${m}([^0-9]|$)`).test(ss)) err(`kit.json mask.who ${x.id}: ${m} is not in its sources`);
+    }
+    if (!(M.who || []).some((x) => x.baby)) err('kit.json mask.who: needs the under-2 answer (baby: true)');
+    for (const [id, st] of Object.entries(M.status || {})) text(st, `kit.json mask.status ${id}`);
+    const stIds = new Set(Object.keys(M.status || {}));
+    for (const k of ['none', 'wear', 'stay', 'baby']) if (!stIds.has(k)) err(`kit.json mask.status: "${k}" is missing`);
+    for (const [k, x] of Object.entries(M.dust?.type || {})) line(x, `kit.json mask.dust.type.${k}`);
+    for (const k of ['next', 'doctor']) line(M.dust?.[k] || {}, `kit.json mask.dust.${k}`);
+    (M.dust?.always || []).forEach((x, i) => line(x, `kit.json mask.dust.always[${i}]`));
+    for (const w of M.what || []) {
+      const job = M.clean?.[w.id];
+      if (!job) { err(`kit.json mask.clean.${w.id} is missing`); continue; }
+      if (!stIds.has(job.status)) err(`kit.json mask.clean.${w.id}: status "${job.status}" is unknown`);
+      job.lines.forEach((x, i) => line(x, `kit.json mask.clean.${w.id}[${i}]`));
+    }
+    (M.clean?.always || []).forEach((x, i) => line(x, `kit.json mask.clean.always[${i}]`));
+    for (const k of ['sick', 'chem', 'fire']) {
+      const b = M[k];
+      if (!b || !stIds.has(b.status)) { err(`kit.json mask.${k}: needs a known status`); continue; }
+      if (b.guide && !GUIDE_IDS.includes(b.guide)) err(`kit.json mask.${k}: guide "${b.guide}" is not a guide`);
+      b.lines.forEach((x, i) => line(x, `kit.json mask.${k}[${i}]`));
+    }
+    for (const k of ['fit', 'change', 'buy', 'cant']) (M.card?.[k] || []).forEach((x, i) => line(x, `kit.json mask.card.${k}[${i}]`));
+    // A house fire never sends anyone to look for a mask: no mask status, no card.
+    if (['n95', 'surgical'].includes(M.fire?.status)) err('kit.json mask.fire: a house fire is "get out", never a mask');
+  }
+  // The agencies' own pages (kit.json → links): https, LINE accounts by their id,
+  // deep links (not a home page that may open with a special page first), a
+  // date checked, guides that exist, an English name for each agency.
+  const LK = kitFile.links;
+  const splash = new Set(['www.tmd.go.th', 'tmd.go.th', 'www.rid.go.th', 'rid.go.th', 'www.oic.or.th', 'oic.or.th', 'anamai.moph.go.th', 'www.antifakenewscenter.com', 'antifakenewscenter.com']);
+  const seenL = new Set();
+  for (const x of LK?.list || []) {
+    const where = `kit.json links ${x.id}`;
+    if (seenL.has(x.id)) err(`${where}: duplicate id`);
+    seenL.add(x.id);
+    text(x.label, where);
+    if (!x.icon) err(`${where}: no icon`);
+    let u = null;
+    try { u = new URL(x.url); } catch { err(`${where}: bad url`); }
+    if (u && u.protocol !== 'https:') err(`${where}: url must be https`);
+    if (x.kind === 'line' && !/^https:\/\/line\.me\/R\/ti\/p\/@[a-z0-9_.-]+$/.test(x.url)) err(`${where}: a LINE account is https://line.me/R/ti/p/@id`);
+    if (!['line', 'web'].includes(x.kind)) err(`${where}: kind must be line or web`);
+    if (u && splash.has(u.hostname) && u.pathname === '/') err(`${where}: link a page deeper than ${u.hostname}'s home page`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(x.checked || '')) err(`${where}: checked must be YYYY-MM-DD`);
+    else if ((Date.now() - Date.parse(`${x.checked}T00:00:00+07:00`)) / 864e5 > 120) warn(`${where}: checked ${x.checked}, over 120 days ago: run npm run links and update the dates`);
+    for (const g of x.guides || []) if (!GUIDE_IDS.includes(g)) err(`${where}: guide "${g}" is not a guide`);
+    if (!strings.seo?.en?.agencies?.[x.by] && !/^[\x20-\x7E]+$/.test(x.by || '')) err(`${where}: no English name for "${x.by}" in seo.en.agencies`);
+  }
+  if (!(LK?.list || []).length) err('kit.json: links is missing');
+  for (const x of LK?.list || []) if (x.note) line(x.note, `kit.json links ${x.id} note`);
+  // Turning on emergency alerts (DDPM's Cell Broadcast steps, v1.12.0).
+  const AL = kitFile.alerts;
+  if (!AL) err('kit.json: alerts is missing');
+  else {
+    text(AL.title, 'kit.json alerts.title');
+    for (const k of ['intro', 'note']) line(AL[k] || {}, `kit.json alerts.${k}`);
+    (AL.know || []).forEach((x, i) => line(x, `kit.json alerts.know[${i}]`));
+    for (const os of ['ios', 'android']) {
+      if (!(AL[os]?.steps || []).length) err(`kit.json alerts.${os}: needs steps`);
+      (AL[os]?.steps || []).forEach((x, i) => text(x, `kit.json alerts.${os}[${i}]`));
     }
   }
 }
@@ -828,6 +939,13 @@ const hazardChips = (lang, current) => `<div class="tix" id="hazards"><p><b>${es
 const playLinks = (lang, ids) => !ids.length ? '' : `<p class="play">${ids.map((id) => `<a class="cta" href="${lang === 'en' ? EN : ''}/?mode=${id}">${esc(fill((lang === 'en' ? E : S).playMode, { mode: strings[lang][`mode${capM(id)}`], s: config.round[id].seconds }))}</a>`).join(' ')}</p>`;
 // Every tool any hazard offers (/?open=kit, /?open=plan), for /learn and llms.txt.
 const allTools = { tools: [...new Set(hazardList.flatMap((h) => h.tools))] };
+// The agencies' own pages for the hazard's guides (kit.json → links, v1.12.0).
+const agencyLinks = (lang, h) => {
+  const xs = (kitFile.links?.list || []).filter((x) => x.guides.some((g) => h.guides.includes(g)));
+  if (!xs.length) return '';
+  const X = lang === 'en' ? E : S;
+  return `<p class="check"><b>${esc(X.toolsPageLinks)}:</b> ${xs.map((x) => `<a href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a>`).join(' · ')}</p>`;
+};
 const toolLinks = (lang, h) => h.tools.map((tool) => `<p class="check"><a href="${lang === 'en' ? EN : ''}/?open=${tool}">${esc((lang === 'en' ? E : S)[`tool${capM(tool)}`])}</a></p>`).join('\n');
 // "Check before you go" (FloodWatch, Air4Thai), once per address.
 const checkLinks = (lang, ids) => {
@@ -968,11 +1086,13 @@ ${picture('th')}
 ${playLinks('th', h.modes)}
 ${checkLinks('th', h.modes)}
 ${toolLinks('th', h)}
+${agencyLinks('th', h)}
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${sectionsTh(h.modes)}` : `${checklistsTh(lists, 2, false)}
 ${picture('th')}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${toolLinks('th', h)}
+${agencyLinks('th', h)}
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
 <h2 id="helplines">${esc(S.helplines)}</h2>
 ${helplineHtml}
@@ -998,12 +1118,14 @@ ${picture('en')}
 ${playLinks('en', h.modes)}
 ${checkLinks('en', h.modes)}
 ${toolLinks('en', h)}
+${agencyLinks('en', h)}
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 ${sectionsEn(h.modes)}` : `${checklistsEn(lists, 2, false)}
 ${picture('en')}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 ${toolLinks('en', h)}
+${agencyLinks('en', h)}
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
 <h2 id="helplines">${esc(E.helplines)}</h2>
 ${helplineEn}
@@ -1076,15 +1198,33 @@ ${hazardChips('en', h.id)}
     const ids = [...new Set([...l.all, ...l.risk, ...l.chronic].flatMap((x) => x.sources))];
     return `<li><b><span class="dot" style="background:${esc(l.colour)}"></span> ${esc(L2(l.label, lang))}</b> · PM2.5 ${band} µg/m³ · AQI ${aqi}${part(X.airForAll, l.all)}${part(X.airForRisk, l.risk)}${part(X.airForChronic, l.chronic)}<br>${src({ sources: ids, verify: 'verified' }, lang)}</li>`;
   }).join('\n') + (A.baby ? `\n<li><b>${esc(A.baby.icon)} ${esc(L2(A.baby, lang))}</b><br>${src(A.baby, lang)}</li>` : '');
-  const privacyKey = { kit: 'privacy', plan: 'planPrivacy', fridge: 'fridgePrivacy', air: 'airPrivacy' };
-  const nextTool = { kit: 'plan', plan: 'kit', fridge: 'kit', air: 'kit' };
+  // Which mask (v1.12.0): when, by colour (the same lines as dust today), then each
+  // situation with its lines, then how to wear one; every line with its sources.
+  const M = kitFile.mask;
+  const mline = (x, lang) => `${esc(L2(x, lang))}${x.verify !== 'verified' ? ' ⚠️' : ''}`;
+  const mrow = (head, xs, lang) => `<li><b>${esc(head)}</b><br>${xs.map((x) => mline(x, lang)).join('<br>')}<br>${src({ sources: [...new Set(xs.flatMap((x) => x.sources))], verify: xs.every((x) => x.verify === 'verified') ? 'verified' : 'partial' }, lang)}</li>`;
+  const maskRows = (lang) => {
+    const X = lang === 'en' ? E : S;
+    const lbl = (x) => L2(x.label, lang);
+    const when = A.levels.map((l) => `${L2(l.label, lang).split(' · ')[0]}: ${l.all.some((x) => x.mask) ? X.maskWhenAll : l.risk.some((x) => x.mask) ? X.maskWhenRisk : X.maskWhenNone}`).join(' · ');
+    const risk = M.who.filter((x) => x.risk).map(lbl).join(', ');
+    const dust = M.why.find((x) => x.id === 'dust');
+    return [
+      `<li><b>${esc(dust.icon)} ${esc(lbl(dust))}</b><br>${esc(X.maskWhen)} ${esc(when)}<br>${esc(fill(X.maskRisk, { who: risk }))}<br>${['adult', 'risk', 'kid'].map((k) => mline(M.dust.type[k], lang)).join('<br>')}<br>${mline(M.dust.doctor, lang)} (${esc(lbl(M.who.find((x) => x.doctor)))})<br>${M.dust.always.map((x) => mline(x, lang)).join('<br>')}<br>${esc(A.baby.icon)} ${mline(A.baby, lang)}<br>${src({ sources: [...new Set([...A.levels.flatMap((l) => [...l.all, ...l.risk].filter((x) => x.mask)), ...Object.values(M.dust.type), M.dust.doctor, ...M.dust.always, A.baby].flatMap((x) => x.sources))], verify: 'partial' }, lang)}</li>`,
+      ...M.what.map((w) => mrow(`${M.why.find((x) => x.id === 'clean').icon} ${lbl(M.why.find((x) => x.id === 'clean'))}: ${lbl(w)}`, [...M.clean[w.id].lines, ...M.clean.always], lang)),
+      ...['sick', 'chem', 'fire'].map((k) => { const w = M.why.find((x) => x.id === k); return mrow(`${w.icon} ${lbl(w)}: ${L2(M.status[M[k].status], lang)}`, M[k].lines, lang); }),
+      mrow(`😷 ${X.maskHowTitle}`, [...M.card.fit, ...M.card.change, ...M.card.buy, ...M.card.cant], lang),
+    ].join('\n');
+  };
+  const privacyKey = { kit: 'privacy', plan: 'planPrivacy', fridge: 'fridgePrivacy', air: 'airPrivacy', mask: 'maskPrivacy' };
+  const nextTool = { kit: 'plan', plan: 'kit', fridge: 'kit', air: 'mask', mask: 'air' };
   const tools = { kit: kitFile.items, plan: kitFile.plan };
   for (const tool of TOOL_IDS) {
     for (const lang of LANGS) {
       const X = lang === 'en' ? E : S;
       const pre = lang === 'en' ? EN : '';
       const url = `${SITE}${pre}/${tool}`;
-      const rows = tool === 'fridge' ? fridgeRows(lang) : tool === 'air' ? airRows(lang) : tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}${(x.sources || []).length ? `<br>${src(x, lang)}` : ''}</li>`).join('\n');
+      const rows = tool === 'fridge' ? fridgeRows(lang) : tool === 'air' ? airRows(lang) : tool === 'mask' ? maskRows(lang) : tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}${(x.sources || []).length ? `<br>${src(x, lang)}` : ''}</li>`).join('\n');
       const title = X[`${tool}PageTitle`];
       const html = seoPage({
         lang, title, desc: X[`${tool}PageDesc`], url, thPath: `/${tool}`, enPath: `${EN}/${tool}`,
@@ -1112,6 +1252,57 @@ ${hazardChips(lang)}
       writeSeo(`${lang === 'en' ? 'en/' : ''}${tool}.html`, html);
       if (lang === 'en' && thaiLeak(html)) warn(`en/${tool}.html contains Thai text outside Thai-tagged spans`);
     }
+  }
+  // /tools (v1.12.0): every tool by when it is used, then the agencies' own pages.
+  for (const lang of LANGS) {
+    const X = lang === 'en' ? E : S;
+    const pre = lang === 'en' ? EN : '';
+    const url = `${SITE}${pre}/tools`;
+    const KU = kitFile.ui[lang];
+    const group = (g) => (config.tools || []).filter((x) => x.group === g).map((x) => `<li><a href="${pre}/${x.id}"><b>${esc(x.icon)} ${esc(strings[lang][`hub${capM(x.id)}`])}</b></a> · ${esc(strings[lang][`hub${capM(x.id)}Sub`])}</li>`).join('\n');
+    const links = kitFile.links.list.map((x) => `<li><a href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a> · ${esc(lang === 'en' ? E.agencies?.[x.by] || x.by : x.by)} · ${esc(KU[x.kind === 'line' ? 'toolsLine' : 'toolsWeb'])}${x.note ? `<br>${esc(L2(x.note, lang))}<br>${src(x.note, lang)}` : ''}</li>`).join('\n');
+    const AL = kitFile.alerts;
+    const steps = (o) => `<p><b>${esc(o.label)}</b></p><ol>${o.steps.map((x) => `<li>${esc(L2(x, lang))}</li>`).join('')}</ol>`;
+    const alerts = `<h2 id="alerts">📲 ${esc(L2(AL.title, lang))}</h2>
+<p>${esc(L2(AL.intro, lang))}</p>
+${steps(AL.ios)}
+${steps(AL.android)}
+<p>${esc(L2(AL.note, lang))}</p>
+<ul>${AL.know.map((x) => `<li>${esc(x.icon)} ${esc(L2(x, lang))}</li>`).join('')}</ul>
+${src({ sources: [...new Set([AL.intro, AL.note, ...AL.know].flatMap((x) => x.sources))], verify: AL.verify }, lang)}`;
+    const checked = kitFile.links.list.map((x) => x.checked).sort()[0];
+    const html = seoPage({
+      lang, title: X.toolsPageTitle, desc: X.toolsPageDesc, url, thPath: '/tools', enPath: `${EN}/tools`,
+      image: `/og/${lang === 'en' ? 'en/' : ''}tools.png`,
+      ld: { '@context': 'https://schema.org', '@type': 'CollectionPage', '@id': `${url}#page`, url, name: X.toolsPageTitle, description: X.toolsPageDesc, inLanguage: lang, dateModified: seoUpdated, isPartOf: { '@id': `${SITE}${pre}/#website` }, isAccessibleForFree: true },
+      main: `<main>
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a> · ${lang === 'en' ? '<a href="/tools" lang="th" hreflang="th">ภาษาไทย</a>' : `<a href="${EN}/tools" lang="en" hreflang="en">English</a>`}</p>
+<h1>${esc(X.toolsPageH1)}</h1>
+<p class="play"><a class="cta" href="${pre}/?open=tools">${esc(X.toolsPageCta)}</a></p>
+<p>${esc(X.toolsPageIntro)}</p>
+<h2>${esc(KU.toolsHome)}</h2>
+<ul>
+${group('home')}
+</ul>
+<h2>${esc(KU.toolsNow)}</h2>
+<ul>
+${group('now')}
+</ul>
+<p class="check"><a href="${pre}/?open=guide">${esc(`📋 ${strings[lang].hubGuide}`)}</a></p>
+${alerts}
+<h2 id="links">${esc(X.toolsPageLinks)}</h2>
+<ul>
+${links}
+</ul>
+<p class="src">${esc(fill(KU.toolsLinksNote, { date: checked }))}</p>
+<h2 id="helplines">${esc(X.helplines)}</h2>
+${lang === 'en' ? helplineEn : helplineHtml}
+${hazardChips(lang)}
+<footer><p>${esc(strings[lang].disclaimer)}</p></footer>
+</main>`,
+    });
+    writeSeo(`${lang === 'en' ? 'en/' : ''}tools.html`, html);
+    if (lang === 'en' && thaiLeak(html)) warn('en/tools.html contains Thai text outside Thai-tagged spans');
   }
 }
 
@@ -1209,7 +1400,7 @@ Sitemap: ${SITE}/sitemap.xml
 `);
 
 // Each page lists its other-language version (hreflang), as Google asks.
-const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`]), ...TOOL_IDS.map((x) => [`/${x}`, `${EN}/${x}`])];
+const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`]), ...TOOL_IDS.map((x) => [`/${x}`, `${EN}/${x}`]), ['/tools', `${EN}/tools`]];
 writeSeo('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${sitemapPairs.flatMap(([th, en]) => [th, en].map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${seoUpdated}</lastmod>
@@ -1233,6 +1424,7 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 - One page per hazard, with only its lessons and a link that opens that game mode:
 ${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug} (Thai) · ${SITE}${EN}/${h.slug} (English)`).join('\n')}
 - Family tools that run on the device; nothing typed is sent: ${allTools.tools.map((tool) => `${md(E[`tool${capM(tool)}`].replace(/^\S+\s/, ''))}: ${SITE}/?open=${tool} (every line and its source: ${SITE}/${tool})`).join(' · ')}
+- All tools on one page, with links to the Thai agencies' own websites and LINE accounts (LINE ALERT, TMD warnings, river levels, flood and dust maps, planned power cuts, help after a disaster): ${SITE}/tools
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 

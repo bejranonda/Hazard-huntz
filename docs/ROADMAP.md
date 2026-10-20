@@ -31,7 +31,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0; the hub, the guides and the new pages in v1.9.0; the renamed tools, new titles and intros, how-to step 4, the heat phase names in v1.9.1; the 117 rewritten wrong answers in v1.9.2; the calculators' texts in v1.10.0, and their plain words in v1.10.1; the fridge's food lists, the medicine and breast-milk lines, the named helplines and the new start-screen and sharing texts in v1.11.0) |
-| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (76 rows since v1.11.1: row 76 for the under-2 line and the Air4Thai link on Android; rows 67–75 for food by food, ก+ and the copy buttons inside LINE; rows 64–65 rewritten for v1.10.1's taps) |
+| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (79 rows since v1.12.0: rows 77–79 for the mask tool, the agency links and the emergency-alert steps; row 76 for the under-2 line and the Air4Thai link on Android; rows 67–75 for food by food, ก+ and the copy buttons inside LINE; rows 64–65 rewritten for v1.10.1's taps) |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (28 addresses since v1.10.0: sixteen hazard pages, `/kit`, `/plan`, `/fridge` and `/air`; the Rich Results Test of the publisher added in v1.9.2) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
@@ -60,6 +60,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N22 | [Calculators in plain words (v1.10.1)](#n22-calculators-in-plain-words-v1101) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.10.1); the Thai read of the new words (L5) and the phone test of the taps (L6, rows 64–65) left |
 | N23 | [Food by food, and the app for its real readers (v1.11.0)](#n23-food-by-food-and-the-app-for-its-real-readers-v1110) | AI-ready (+ Owner review) | Done (20 Oct 2026, v1.11.0); the reviews (L5, L10), the phone test (L6, rows 67–75), three owner decisions, an "UPDATE:" post for the corrected cold-medicine lesson and the audit's leftovers (#83, #84) left |
 | N24 | [Masks and children under 2 (v1.11.1)](#n24-masks-and-children-under-2-v1111) | AI-ready (+ Owner review) | Done (20 Oct 2026, v1.11.1); a paediatrician's read (L10) and the Air4Thai phone test (#86) left |
+| N25 | [Masks, all tools and the agencies' own pages (v1.12.0)](#n25-masks-all-tools-and-the-agencies-own-pages-v1120) | AI-ready (+ Owner review) | Done (21 Oct 2026, v1.12.0); a doctor's read of the mask lines (#87), the alert steps on real phones (#89) and the monthly link check (#88) left |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -69,7 +70,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | P7 | [Heat and summer storms](#p7-heat-and-summer-storms) | AI-ready (research) + Owner review | Guides done (v1.9.0); game modes Todo |
 | P8 | [Earthquake and tsunami](#p8-earthquake-and-tsunami) | AI-ready (research) + Owner review | Guide done (v1.9.0, the tsunami line ⚠️); game mode Todo |
 | P9 | [A safety calendar: one hazard week at a time](#p9-a-safety-calendar-one-hazard-week-at-a-time) | Owner + AI | Todo |
-| P10 | [More calculators](#p10-more-calculators) | AI-ready (+ Owner review) | Todo (proposed in v1.10.0; heat today first, once a person confirms the TMD's page; v1.11.0 widened the fridge tool instead, food by food) |
+| P10 | [More calculators](#p10-more-calculators) | AI-ready (+ Owner review) | In progress (v1.12.0 added the mask tool; heat today by the announced level, water you have, tank chlorine, the emergency card, "I'm safe" and the go-bag are v1.13.0) |
 | V1 | [Version 2: the combined Prepare → Return run](#v1-version-2-the-combined-prepare--return-run) | AI-ready | Todo |
 | S1 | [Seasonal relaunch (every April–May)](#s1-seasonal-relaunch-every-aprilmay) | Owner + AI | Recurring |
 | S2 | [When something is in the news: the alert and the guide posts](#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts) | Owner (+ AI for a new guide) | Recurring (since v1.9.0) |
@@ -556,6 +557,15 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Why:** the owner asked "When and where we need to wear the mask, and which type then? … can be develop also as a tool?" (20 Oct 2026). The research found dust today's at-risk mask line covering babies.
 - **What shipped:** the under-2 line after every mask line in dust today, its shared text and `/air`; `mask: true` on the lines that mention a mask, held by the build; two sources. The mask tool itself is the next release.
 - **Done when:** a paediatrician has read the line (then `verify` may become `verified`).
+
+### N25. Masks, all tools and the agencies' own pages (v1.12.0)
+
+- **Who:** AI-ready + Owner (review) · **Status:** Done (21 Oct 2026, v1.12.0); the reviews and phone checks below are left · **Issues:** new #87, #88, #89
+- **Why:** the owner asked for research into more tools, for the app to be "a tool portal too", and "When and where we need to wear the mask, and which type then? … can be develop also as a tool?" (20 Oct 2026); then "Continue to make all features step by step till all accomplished", attractive, easy and worth recommending.
+- **How:** four researchers in parallel (masks; calculators with sourced numbers; official Thai tools to link; preparedness apps abroad), a fifth for the exact texts; every quote re-read on the saved page before it went in. Built in two releases: this one, and v1.13.0 for the calculators and cards ([P10](#p10-more-calculators)).
+- **What shipped:** the mask tool (`/mask`), the all-tools page (`/tools`) with DDPM's emergency-alert steps and 13 agency links, the links in each guide and hazard page, two seasonal tiles on the start screen, one list of tools in `config.json`, `npm run links`, an emoji test, 11 sources.
+- **Left out on purpose** (sources disagree, or none): how many masks to keep; masks indoors; reuse counts; tissue inside a mask, two surgical masks, a wet cloth; valves for illness; Singapore's "short trips need none"; evacuation distances; a mask for a carer at home (WHO and CDC only).
+- **Done when:** a paediatrician and a doctor have read the mask lines (#87); the alert steps and the LINE links were tried on an Android phone and an iPhone inside LINE (#89, [L6](#l6-real-phone-test-matrix) rows 77–79); `npm run links` runs monthly (#88).
 
 ## Later
 

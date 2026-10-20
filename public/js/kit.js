@@ -11,7 +11,7 @@ import {
   canNativeShare, nativeShare, shareChannel, copyText, canDownload, downloadBlob, imageSrc, openExternal, lineShareUrl,
 } from './share.js';
 import { track } from './analytics.js';
-import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airAdvice } from './kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airAdvice, maskAdvice } from './kitplan.js';
 import { modeLink } from './modes.js';
 
 let K = null;
@@ -279,6 +279,8 @@ export async function openFridge(from = 'start') {
   const hoursNow = () => ((s.end || Date.now()) - s.start) / HOUR;
   // The start screen's button says "ไฟดับมาเกิน 3 ชม.แล้ว" at once, not after a reload.
   const chip = () => {
+    // The start screen's tiles follow the season, but a power cut being counted keeps the fridge tile.
+    document.dispatchEvent(new CustomEvent('brm:hub'));
     const c = document.getElementById('fridge-chip');
     if (!c) return;
     const h = s.start ? Math.floor(hoursNow()) : -1;
@@ -438,7 +440,7 @@ export async function openFridge(from = 'start') {
 // all of it shown (since v1.11.0 the at-risk lines no longer wait for a tick:
 // the reader is often the one at risk). The unit stays on the device (brm:air);
 // the reading is never stored or sent.
-export async function openAir(from = 'start') {
+export async function openAir(from = 'start', colour = null) {
   await loadKit();
   track('tool_open', { mode: 'air', label: from });
   const A = K.air;
@@ -446,7 +448,7 @@ export async function openAir(from = 'start') {
   const s = {
     unit: A.units.some((x) => x.id === was?.unit) ? was.unit : A.units[0].id,
     value: '',
-    colour: null,
+    colour: A.levels.some((l) => l.id === colour) ? colour : null,
   };
   const save = () => store.set('air', { unit: s.unit });
   const range = (l) => {
@@ -473,6 +475,7 @@ export async function openAir(from = 'start') {
       <p class="kit-src">${esc(u('airAvg'))}</p>
     </details>
     <div class="air-out" id="air-out" aria-live="polite"></div>
+    <button class="btn secondary" type="button" id="air-mask">${esc(u('maskFromAir'))}</button>
     <div class="fr-share" id="air-share-row"></div>
     <button class="btn secondary" type="button" id="air-guide">${esc(u('airGuide'))}</button>
     <p class="kit-privacy">🔒 ${esc(u('airPrivacy'))}</p>
@@ -524,6 +527,8 @@ export async function openAir(from = 'start') {
   }
   $('#air-close').addEventListener('click', () => closeSheet());
   $('#air-guide').addEventListener('click', () => document.dispatchEvent(new CustomEvent('brm:guide', { detail: 'dust' })));
+  // Which mask, for whom: the mask tool with today's colour already picked (v1.12.0).
+  $('#air-mask').addEventListener('click', () => openMask('air', { why: 'dust', colour: advice()?.level.id || null }));
   textShare($('#air-share-row'), {
     label: u('airShare'), title: u('airTitle'), url: pageUrl('air'), mode: 'air',
     text: () => {
@@ -540,6 +545,145 @@ export async function openAir(from = 'start') {
       return lines.join('\n');
     },
   });
+}
+
+// ------------------------------------------------------------------ which mask
+
+// "Do I need a mask, and which one?" (/mask, /?open=mask, v1.12.0): one tap
+// at a time (what for; for dust, today's colour and who; for a clean-up, what)
+// → a status word, the lines, and how to wear it. Nothing is stored or sent
+// (tool_open and tool_share count the tool, never the answers).
+export async function openMask(from = 'start', pre = {}) {
+  await loadKit();
+  track('tool_open', { mode: 'mask', label: from });
+  const M = K.mask;
+  const A = K.air;
+  const s = { why: null, colour: null, who: null, what: null, ...pre };
+  const opt = (name, x, on) => `<button class="mk-opt${on ? ' is-on' : ''}" type="button" role="radio" aria-checked="${on}" data-q="${name}" data-v="${esc(x.id)}"><span class="mk-ico" aria-hidden="true">${esc(x.icon)}</span><span>${esc(L(x.label))}</span></button>`;
+  const flag = (x) => (x.verify && x.verify !== 'verified' ? ' <span class="partial">⚠️</span>' : '');
+  const lineText = (x) => (x.level ? L(x).replace('{name}', L(x.level.label).split(' · ')[0]) : L(x));
+  openSheet(`
+    <h2 id="sheet-title" tabindex="-1" autofocus>😷 ${esc(u('maskTitle'))}</h2>
+    <p class="sub">${esc(u('maskIntro'))}</p>
+    <div id="mk-qs"></div>
+    <div class="mk-out" id="mk-out" aria-live="polite"></div>
+    <div class="fr-share" id="mk-share-row" hidden></div>
+    <div class="btn-row mk-next" id="mk-next"></div>
+    <p class="kit-privacy">🔒 ${esc(u('maskPrivacy'))}</p>
+    <button class="btn secondary small" type="button" id="mk-close">${esc(u('close'))}</button>`, { label: u('maskTitle') });
+  const advice = () => maskAdvice(M, A, s);
+  const paint = (scroll = false) => {
+    const r = advice();
+    // The questions asked so far, each with its answer marked; the next one appears only when it is due.
+    const qs = [`<p class="kit-q" id="mk-why-q">${esc(u('maskWhyQ'))}</p><div class="mk-opts mk-why" role="radiogroup" aria-labelledby="mk-why-q">${M.why.map((x) => opt('why', x, s.why === x.id)).join('')}</div>`];
+    if (s.why === 'dust') {
+      qs.push(`<p class="kit-q" id="mk-colour-q">${esc(u('maskColourQ'))}</p><div class="air-colours mk-colours" role="radiogroup" aria-labelledby="mk-colour-q">${A.levels.map((l) => `<button class="air-colour${s.colour === l.id ? ' is-on' : ''}" type="button" role="radio" aria-checked="${s.colour === l.id}" data-q="colour" data-v="${esc(l.id)}"><span class="air-dot" style="background:${esc(l.colour)}"></span><span>${esc(L(l.label).split(' · ')[0])}</span></button>`).join('')}</div>`);
+      if (s.colour) qs.push(`<p class="kit-q" id="mk-who-q">${esc(u('maskWhoQ'))}</p><div class="mk-opts" role="radiogroup" aria-labelledby="mk-who-q">${M.who.map((x) => opt('who', x, s.who === x.id)).join('')}</div>`);
+    }
+    if (s.why === 'clean') qs.push(`<p class="kit-q" id="mk-what-q">${esc(u('maskWhatQ'))}</p><div class="mk-opts mk-one" role="radiogroup" aria-labelledby="mk-what-q">${M.what.map((x) => opt('what', x, s.what === x.id)).join('')}</div>`);
+    $('#mk-qs').innerHTML = qs.join('');
+    for (const b of $$('[data-q]', $('#mk-qs'))) {
+      b.addEventListener('click', () => {
+        const q = b.dataset.q;
+        s[q] = b.dataset.v;
+        // A new answer to an earlier question clears the later ones.
+        if (q === 'why') { s.colour = null; s.who = null; s.what = null; }
+        if (q === 'colour') s.who = s.who && s.why === 'dust' ? s.who : null;
+        paint(true);
+      });
+    }
+    const out = $('#mk-out');
+    const done = !r.ask;
+    $('#mk-share-row').hidden = !done;
+    if (!done) {
+      out.innerHTML = `<p class="fr-pick">${esc(u('maskPick'))}</p>`;
+      out.className = 'mk-out is-empty';
+      $('#mk-next').innerHTML = '';
+      return;
+    }
+    const ctx = [r.level ? u('maskLevel', { name: L(r.level.label).split(' · ')[0] }) : L(M.why.find((x) => x.id === s.why).label), r.who ? L(r.who.label) : '', r.what ? L(r.what.label) : ''].filter(Boolean).join(' · ');
+    const C = M.card;
+    const srcIds = [...new Set([...r.lines, ...(r.card ? [...C.fit, ...C.change, ...C.buy, ...C.cant] : [])].flatMap((x) => x.sources || []))];
+    const sec = (head, xs) => `<h4>${esc(head)}</h4><ul>${xs.map((x) => `<li>${esc(L(x))}${flag(x)}</li>`).join('')}</ul>`;
+    out.className = `mk-out is-${r.status.id}`;
+    out.innerHTML = `
+      <p class="mk-status"><span aria-hidden="true">${esc(r.status.icon)}</span> <b>${esc(L(r.status))}</b></p>
+      <p class="mk-ctx">${esc(ctx)}</p>
+      <ul class="mk-lines">${r.lines.map((x) => `<li><span class="mk-li-ico" aria-hidden="true">${esc(x.icon || (x.mask ? '😷' : '•'))}</span><span>${esc(lineText(x))}${flag(x)}</span></li>`).join('')}</ul>
+      ${r.card ? `<details class="mk-card"><summary>${esc(u('maskHow'))}</summary>${sec(u('maskFit'), C.fit)}${sec(u('maskChange'), C.change)}${sec(u('maskBuy'), C.buy)}<p class="kit-src">${esc(u('maskNoNumber'))}</p>${sec(u('maskCant'), C.cant)}</details>` : ''}
+      <p class="kit-src">${esc(u('source'))}: ${esc(agencies(srcIds))}${[...r.lines, ...(r.card ? C.cant : [])].some((x) => x.verify && x.verify !== 'verified') ? `<br>${esc(t('guidePartial'))}` : ''}</p>`;
+    const next = [];
+    if (s.why === 'dust') next.push(`<button class="btn secondary small" type="button" data-next="air">${esc(u('maskAir'))}</button>`);
+    const g = r.guide || (s.why === 'clean' ? 'return' : null);
+    if (g) next.push(`<button class="btn secondary small" type="button" data-next="guide" data-g="${esc(g)}">${esc(u('maskGuide', { name: t(`guide${g[0].toUpperCase()}${g.slice(1)}`) }))}</button>`);
+    $('#mk-next').innerHTML = next.join('');
+    for (const b of $$('[data-next]', $('#mk-next'))) {
+      b.addEventListener('click', () => (b.dataset.next === 'air' ? openAir('mask', s.colour) : document.dispatchEvent(new CustomEvent('brm:guide', { detail: b.dataset.g }))));
+    }
+    if (scroll) out.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  };
+  paint();
+  $('#mk-close').addEventListener('click', () => closeSheet());
+  textShare($('#mk-share-row'), {
+    label: u('maskShare'), title: u('maskTitle'), url: pageUrl('mask'), mode: 'mask',
+    text: () => {
+      const r = advice();
+      if (r.ask) return `${u('maskTitle')}\n${pageUrl('mask')}`;
+      const ctx = [r.level ? u('maskLevel', { name: L(r.level.label).split(' · ')[0] }) : L(M.why.find((x) => x.id === s.why).label), r.who ? L(r.who.label) : '', r.what ? L(r.what.label) : ''].filter(Boolean).join(' · ');
+      const ids = [...new Set(r.lines.flatMap((x) => x.sources || []))];
+      return [`😷 ${u('maskTitle')} ${ctx}`, `${r.status.icon} ${L(r.status)}`, ...r.lines.map((x) => `• ${lineText(x)}${x.verify && x.verify !== 'verified' ? ' ⚠️' : ''}`), `(${u('source')}: ${agencies(ids)})`, u('maskShareTail', { url: pageUrl('mask') })].join('\n');
+    },
+  });
+}
+
+// ------------------------------------------------------------------ all tools
+
+// One agency link as a row (the tools sheet and the guides): what it is, whose,
+// LINE or web, opening outside the app; a sourced note under it where needed
+// (the relief link: where to apply, and never tap a link in an SMS).
+const linkRow = (x) => `<li><a class="tl-link" href="${esc(x.url)}" target="_blank" rel="noopener" data-link="${esc(x.id)}"><span class="hub-ico" aria-hidden="true">${esc(x.icon)}</span><span class="hub-text"><b>${esc(L(x.label))}</b><small>${esc(agencyName(x.by))} · ${esc(u(x.kind === 'line' ? 'toolsLine' : 'toolsWeb'))}</small></span><span class="tl-ext" aria-hidden="true">↗</span></a>${x.note ? `<p class="tl-note">${esc(L(x.note))}</p>` : ''}</li>`;
+// "Turn on emergency alerts on your phone" (DDPM's Cell Broadcast steps, kit.json → alerts).
+const alertsCard = () => {
+  const X = K.alerts;
+  const steps = (o) => `<p class="tl-os">${esc(o.label)}</p><ol class="tl-steps">${o.steps.map((x) => `<li>${esc(L(x))}</li>`).join('')}</ol>`;
+  return `<details class="mk-card tl-alerts" id="tl-alerts"><summary>📲 ${esc(L(X.title))}</summary>
+    <p>${esc(L(X.intro))}</p>${steps(X.ios)}${steps(X.android)}<p class="kit-src">${esc(L(X.note))}</p>
+    <ul class="mk-lines">${X.know.map((x) => `<li><span class="mk-li-ico" aria-hidden="true">${esc(x.icon)}</span><span>${esc(L(x))}</span></li>`).join('')}</ul>
+    <p class="kit-src">${esc(u('source'))}: ${esc(agencies([...new Set([X.intro, X.note, ...X.know].flatMap((x) => x.sources))]))} · ⚠️ ${esc(t('guidePartial'))}</p></details>`;
+};
+
+// "All tools" (/tools, /?open=tools, v1.12.0): every tool by when it is used,
+// the guides, and the government's own websites and LINE accounts
+// (content/kit.json → links), which open outside the app.
+export async function openTools(from = 'start') {
+  await loadKit();
+  track('tool_open', { mode: 'tools', label: from });
+  const C = content();
+  const tools = C.config.tools || [];
+  const name = (id) => t(`hub${id[0].toUpperCase()}${id.slice(1)}`);
+  const row = (x) => `<button class="hub-btn tl-row" type="button" data-tool="${esc(x.id)}"><span class="hub-ico" aria-hidden="true">${esc(x.icon)}</span><span class="hub-text"><b>${esc(name(x.id))}</b><small>${esc(t(`hub${x.id[0].toUpperCase()}${x.id.slice(1)}Sub`))}</small></span><span class="hub-go" aria-hidden="true">›</span></button>`;
+  const links = K.links.list;
+  const checked = links.map((x) => x.checked).sort()[0];
+  const date = new Date(`${checked}T12:00:00+07:00`).toLocaleDateString(getLang() === 'en' ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Bangkok' });
+  openSheet(`
+    <h2 id="sheet-title" tabindex="-1" autofocus>🧰 ${esc(u('toolsTitle'))}</h2>
+    <p class="sub">${esc(u('toolsIntro'))}</p>
+    <button class="hub-btn hub-main tl-row" type="button" data-guides="1"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b>${esc(t('hubGuide'))}</b><small>${esc(t('hubGuideSub'))}</small></span><span class="hub-go" aria-hidden="true">›</span></button>
+    <h3>${esc(u('toolsHome'))}</h3>
+    <div class="tl-list">${tools.filter((x) => x.group === 'home').map(row).join('')}</div>
+    <h3>${esc(u('toolsNow'))}</h3>
+    <div class="tl-list">${tools.filter((x) => x.group === 'now').map(row).join('')}</div>
+    ${alertsCard()}
+    <h3>🔗 ${esc(u('toolsLinks'))}</h3>
+    <ul class="tl-links">${links.map(linkRow).join('')}</ul>
+    <p class="kit-src">${esc(u('toolsLinksNote', { date }))}</p>
+    <button class="btn secondary small" type="button" id="tl-close">${esc(u('close'))}</button>`, { label: u('toolsTitle') });
+  const open = { kit: () => openKit('tools'), plan: () => openPlan('tools'), fridge: () => openFridge('tools'), air: () => openAir('tools'), mask: () => openMask('tools') };
+  for (const b of $$('[data-tool]', $('#sheet'))) b.addEventListener('click', () => open[b.dataset.tool]?.());
+  $('[data-guides]', $('#sheet')).addEventListener('click', () => document.dispatchEvent(new CustomEvent('brm:guides')));
+  for (const a of $$('[data-link]', $('#sheet'))) a.addEventListener('click', () => track('link_click', { label: a.dataset.link }));
+  $('#tl-alerts').addEventListener('toggle', (e) => { if (e.target.open) track('link_click', { label: 'alerts' }); });
+  $('#tl-close').addEventListener('click', () => closeSheet());
 }
 
 // A text to send (LINE first): what a tool worked out, with the tool's link.
@@ -769,4 +913,12 @@ export function drawPlanCard(canvas, d, a) {
   ctx.fillText(d.url.replace(/^https?:\/\//, ''), W / 2, 1294);
   font(ctx, 24, 400);
   ctx.fillText(d.footer, W / 2, 1334);
+}
+
+// A guide's links to the agencies' own pages (kit.json → links[].guides), as chips.
+export async function guideLinks(guide) {
+  await loadKit();
+  const xs = K.links.list.filter((x) => x.guides.includes(guide));
+  if (!xs.length) return '';
+  return `<h3>${esc(u('guideLinks'))}</h3><ul class="tl-links">${xs.map(linkRow).join('')}</ul>`;
 }

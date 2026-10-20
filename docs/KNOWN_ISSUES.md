@@ -84,6 +84,9 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 83 | [Leftovers of visitor audit 3](#83-leftovers-of-visitor-audit-3) | Open (AI-ready, two owner decisions) | Low |
 | 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner) | — |
 | 86 | [Air4Thai's server sends the wrong certificate chain](#86-air4thais-server-sends-the-wrong-certificate-chain) | Owner (phone test; tell the PCD) | Medium |
+| 87 | [The mask tool's lines for children, pregnancy and heart or lung disease need a doctor's read](#87-the-mask-tools-lines-for-children-pregnancy-and-heart-or-lung-disease-need-a-doctors-read) | Owner | **Medium (review before posting `/mask` widely)** |
+| 88 | [Agency links can move; they are checked by hand, monthly](#88-agency-links-can-move-they-are-checked-by-hand-monthly) | By design; Owner: run `npm run links` monthly | Low |
+| 89 | [Emergency-alert menus differ by phone](#89-emergency-alert-menus-differ-by-phone) | Owner (phone test) | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -896,6 +899,38 @@ On 20 Oct 2026 `https://air4thai.pcd.go.th/webV3/` answered `curl` with "SSL cer
 
 - **Where the app links it:** `config.json → modes` (the dust mode's check link), dust today's "ไม่รู้ว่าวันนี้สีอะไร? ดูใน Air4Thai", the dust guide's line 1 and `/pm25`.
 - **What would close it:** a real-phone test inside LINE on Android ([06-test-checklist](06-test-checklist.md), [ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)). If it warns, add GISTDA's PM2.5 page (`pm25.gistda.or.th`, which itself says official alerts are Air4Thai's) as the second link, and tell the PCD (the fix is on their server: send Let's Encrypt's chain).
+
+### 87. The mask tool's lines for children, pregnancy and heart or lung disease need a doctor's read
+
+**Status:** Owner · **Severity:** Medium: review before posting `/mask` widely
+
+The mask tool (v1.12.0) gives when from the PCD's notice and which kind from the DOH (6 Feb 2025). The answers that matter most to the app's readers rest on thinner ground:
+
+- **Children under 2: no mask** (the DDC spokesperson, InfoQuest, 27 Jan 2025; Health Canada agrees). The same article also lists muslin masks as suiting under-2s, so the line is ⚠️ `partial`.
+- **Children of 2 to 5: "a 3-layer surgical mask that fits"** (the DOH says young children may use a surgical mask instead of an N95; the DDC article says surgical masks suit children from 2). No source gives a child size; ⚠️.
+- **Pregnancy, older people, a long-term illness:** "an N95, or a 3-layer surgical mask instead" (the DOH). Singapore's MOH also says not to wear an N95 for long in later pregnancy; left out (one foreign source).
+- **Heart or lung disease:** "follow your doctor's advice" (the PCD). "Ask before wearing an N95" is Singapore's alone and is left out.
+- **Masks can't filter chemical fumes or the gases in smoke:** a Chulalongkorn academic (Amarin TV, 6 Jul 2021) and Health Canada; no Thai agency statement was read; ⚠️.
+- **What would close it:** a paediatrician and a doctor (lung or heart) read the dust answers; an occupational-health reader (the DDC's กองโรคจากการประกอบอาชีพฯ) the clean-up and chemical-fire answers ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)); a Thai reader the two words for the kinds, "หน้ากาก N95" and "หน้ากากอนามัย" ([L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
+
+### 88. Agency links can move; they are checked by hand, monthly
+
+**Status:** By design; Owner: run `npm run links` monthly · **Severity:** Low
+
+Since v1.12.0 the all-tools page, the guides and the hazard pages link 13 agency pages (`kit.json → links`), each with the date it was checked. Government sites move pages, and some open on a special page first, so the links go to deep pages, never a home page (the build refuses the TMD's, RID's, the OIC's and the DOH's home pages), and LINE accounts by their exact id.
+
+- **`npm run links`** opens each one and says ok, ERR or BLK (a bot check). On 21 Oct 2026: 11 of 13 answered; Air4Thai gave 503 to Node ([#86](#86-air4thais-server-sends-the-wrong-certificate-chain)), and PEA's planned-cuts page answered with its firewall's "Unauthorized Request Blocked", as it did to the researcher's headless browser. Neither is proof that the page is gone: open them on a phone.
+- **The build warns** when a link's `checked` date is over 120 days old.
+- **Look-alikes:** a Play Store search for "Thai Disaster Alert" shows foreign apps first, and DDPM's older "DPM Alert" is stale; the app names THAI DISASTER ALERT in the alert steps but doesn't link a store page (the two stores need two links, and LINE's browser may not leave for a store).
+
+### 89. Emergency-alert menus differ by phone
+
+**Status:** Owner (phone test) · **Severity:** Low
+
+The all-tools page's "📲 เปิดรับข้อความเตือนภัยในมือถือ" gives DDPM's steps (Thansettakij, 19 Jan 2026): on iPhone, Settings → Notifications → the bottom → Emergency Alerts (or TH-ALERT) and Amber Alerts; on Android, Settings → Safety and emergency → Emergency alerts → allow, all kinds. Thairath (9 Jul 2026) says the menus differ a little by make and model ("การแจ้งเตือนฉุกเฉินไร้สาย" on some Android phones), so the card says so and is ⚠️.
+
+- **Left out:** the alert levels (only "National Alert" for the January test comes from DDPM; the Extreme/Informational counts come from an opposition analysis) and "full screen" (the sources say a sound and a pop-up).
+- **What would close it:** row 79 of [06-test-checklist](06-test-checklist.md) on a Samsung, an Oppo or Vivo, and an iPhone; reword the steps to what the phones show.
 
 ---
 

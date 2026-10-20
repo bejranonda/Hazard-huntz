@@ -12,7 +12,7 @@ import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, setGuides, propFor, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
-import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice } from '../public/js/kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice, maskAdvice } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -642,6 +642,89 @@ test('dust today: the PCD bands to the decimal, AQI too, and who gets which line
   }
   assert.match(A.baby.th, /2 ขวบ/);
   assert.equal(A.baby.verify, 'partial', 'one Thai news report, which contradicts itself once: a paediatrician confirms');
+});
+
+test('which mask: the PCD\'s colours decide who, the DOH the kind; never a mask for a baby or in a house fire (v1.12.0)', () => {
+  const K = load('kit');
+  const M = K.mask;
+  const A = K.air;
+  const sources = load('sources').sources;
+  // One question at a time.
+  assert.deepEqual(maskAdvice(M, A, {}), { ask: 'why' });
+  assert.deepEqual(maskAdvice(M, A, { why: 'dust' }), { ask: 'colour' });
+  assert.deepEqual(maskAdvice(M, A, { why: 'dust', colour: 'orange' }), { ask: 'who' });
+  assert.deepEqual(maskAdvice(M, A, { why: 'clean' }), { ask: 'what' });
+  // When: everyone from orange, the people at risk from yellow (the notice's at-risk: over 60, up to 5, pregnant, heart or lung).
+  const st = (colour, who) => maskAdvice(M, A, { why: 'dust', colour, who }).status.id;
+  for (const who of ['adult', 'kid', 'elder', 'pregnant', 'heart']) {
+    const risk = M.who.find((x) => x.id === who).risk;
+    assert.equal(st('blue', who), 'none', `blue ${who}`);
+    assert.equal(st('green', who), 'none', `green ${who}`);
+    assert.equal(st('yellow', who), risk ? 'wear' : 'none', `yellow ${who}`);
+    assert.equal(st('orange', who), 'wear', `orange ${who}`);
+    assert.equal(st('red', who), 'stay', `red ${who}`);
+  }
+  for (const colour of A.levels.map((l) => l.id)) {
+    const r = maskAdvice(M, A, { why: 'dust', colour, who: 'baby' });
+    assert.equal(r.status.id, 'baby', `${colour}: a child under 2 wears no mask`);
+    assert.ok(!r.card && r.lines[0] === A.baby, `${colour}: only the under-2 line, no how-to-wear card`);
+  }
+  // Which kind: adults an N95 first; the people at risk may use a surgical mask; children 2–5 a surgical mask; heart or lung: the doctor's advice.
+  const kind = (who) => maskAdvice(M, A, { why: 'dust', colour: 'orange', who }).lines.map((x) => x.th);
+  assert.ok(kind('adult').includes(M.dust.type.adult.th) && kind('elder').includes(M.dust.type.risk.th) && kind('kid').includes(M.dust.type.kid.th));
+  assert.ok(kind('heart').includes(M.dust.doctor.th) && !kind('elder').includes(M.dust.doctor.th));
+  // Not yet: says from which colour, for this person.
+  const yellowAdult = maskAdvice(M, A, { why: 'dust', colour: 'yellow', who: 'adult' });
+  assert.equal(yellowAdult.lines[0].level.id, 'orange');
+  assert.equal(maskAdvice(M, A, { why: 'dust', colour: 'green', who: 'elder' }).lines[0].level.id, 'yellow');
+  // A house fire is "get out", a chemical fire "get away": no mask, no card.
+  assert.equal(maskAdvice(M, A, { why: 'fire' }).status.id, 'out');
+  assert.equal(maskAdvice(M, A, { why: 'chem' }).status.id, 'leave');
+  assert.ok(!maskAdvice(M, A, { why: 'fire' }).card && !maskAdvice(M, A, { why: 'chem' }).card);
+  assert.equal(maskAdvice(M, A, { why: 'fire' }).guide, 'fire');
+  // Clean-up: mould and broken boards an N95, dried mud a surgical mask (the DDC's manual); keep children out.
+  assert.equal(maskAdvice(M, A, { why: 'clean', what: 'mould' }).status.id, 'n95');
+  assert.equal(maskAdvice(M, A, { why: 'clean', what: 'board' }).status.id, 'n95');
+  assert.equal(maskAdvice(M, A, { why: 'clean', what: 'mud' }).status.id, 'surgical');
+  assert.ok(maskAdvice(M, A, { why: 'sick' }).lines.includes(A.baby), 'illness: the under-2 line too');
+  // Every line in every answer has a source.
+  const all = [...Object.values(M.dust.type), M.dust.next, M.dust.doctor, ...M.dust.always, ...M.what.flatMap((w) => M.clean[w.id].lines), ...M.clean.always, ...M.sick.lines, ...M.chem.lines, ...M.fire.lines, ...Object.values(M.card).flat()];
+  for (const x of all) assert.ok(x.sources.length && x.sources.every((id) => sources[id]), x.th);
+  assert.ok(!JSON.stringify(M).match(/ชิ้นต่อ|ชิ้น\/|per day/), 'no count of masks: no source gives one');
+});
+
+test('all tools: one list in config, two seasonal tiles per mode, government links that are https and deep (v1.12.0)', () => {
+  const C = load('config');
+  const K = load('kit');
+  const ids = C.tools.map((x) => x.id);
+  for (const m of C.modes) {
+    const two = C.hub.season[m.id];
+    assert.equal(two.length, 2, `${m.id}: two tiles`);
+    for (const id of two) assert.ok(ids.includes(id) && !C.hub.always.includes(id), `${m.id}: ${id}`);
+  }
+  assert.deepEqual(C.hub.season.dust, ['air', 'mask'], 'dust season: dust today and the mask tool');
+  for (const x of K.links.list) {
+    assert.match(x.url, /^https:\/\//, x.id);
+    if (x.kind === 'line') assert.match(x.url, /^https:\/\/line\.me\/R\/ti\/p\/@[a-z0-9_.-]+$/, x.id);
+    const u = new URL(x.url);
+    assert.ok(!(u.pathname === '/' && ['www.tmd.go.th', 'tmd.go.th', 'www.rid.go.th', 'www.oic.or.th', 'anamai.moph.go.th'].includes(u.hostname)), `${x.id}: not a home page that opens with a special page`);
+    for (const g of x.guides) assert.ok(C.guides.some((y) => y.id === g), `${x.id}: guide ${g}`);
+  }
+  assert.ok(K.links.list.some((x) => x.id === 'linealert') && K.links.list.some((x) => x.id === 'ddpm1784'), 'LINE ALERT and DDPM 1784 are on the list');
+});
+
+test('emoji in the content are Unicode 11 or older (newer ones are empty boxes on older phones, rule 64)', () => {
+  // Emoji added in Unicode 12 and later, by code point (12.0 to 15.1).
+  const newer = [[0x1F6D5, 0x1F6DF], [0x1F6FA, 0x1F6FC], [0x1F7E0, 0x1F7F0], [0x1F90C, 0x1F90F], [0x1F971, 0x1F972], [0x1F977, 0x1F979], [0x1F97B, 0x1F97B], [0x1F9A3, 0x1F9AF], [0x1F9BA, 0x1F9BF], [0x1F9C3, 0x1F9CF], [0x1FA70, 0x1FAFF]];
+  const bad = [];
+  for (const f of fs.readdirSync(path.join(ROOT, 'public/content')).filter((x) => x.endsWith('.json'))) {
+    const text = fs.readFileSync(path.join(ROOT, 'public/content', f), 'utf8');
+    for (const ch of text) {
+      const cp = ch.codePointAt(0);
+      if (newer.some(([a, b]) => cp >= a && cp <= b)) bad.push(`${f}: ${ch} U+${cp.toString(16).toUpperCase()}`);
+    }
+  }
+  assert.deepEqual(bad, [], bad.join(', '));
 });
 
 test('structured data: one publisher, and each start page describes the app in its own language', () => {

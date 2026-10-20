@@ -111,9 +111,9 @@ window.renderAll = async (site) => {
   }
 
   // /kit, /plan and /fridge: their link previews (v1.9.0, fridge v1.10.0)
-  for (const tool of ['kit', 'plan', 'fridge', 'air']) {
+  for (const tool of ['kit', 'plan', 'fridge', 'air', 'mask', 'tools']) {
     c = canvas();
-    const look = tool === 'air' ? 'dust' : 'stock'; // the dust tool wears the mask
+    const look = tool === 'air' || tool === 'mask' ? 'dust' : 'stock'; // the dust and mask tools wear the mask
     drawOG(c, { kind: 'checklist', mode: look, line1: og[`${tool}Line1`], line2: og[`${tool}Line2`], line3: og[`${tool}Pill`], url }, assets);
     out[`og/${tool}.png`] = c.toDataURL('image/png');
     c = canvas();

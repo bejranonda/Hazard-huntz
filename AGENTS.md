@@ -39,6 +39,7 @@ This file is for any AI coding assistant working on this repository. Claude Code
 | `npm run probe` | Measures tap-area overlaps over two years of houses in every mode, plus flood and smoke timings | Slot, size or water-curve changes |
 | `npm run docs` | Regenerates the summary and the safety table in `docs/01` from `items.json` (a normal build warns when it is out of date) | Any `items.json` / `sources.json` change |
 | `npm run check:docs` | Checks every relative link and anchor in the Markdown | Any doc change |
+| `npm run links` | Opens every agency link the app shows (`kit.json → links`) and says ok, ERR or BLK (a bot check); then update each `checked` date | Monthly, and before a release that touches the links |
 | `SITE_URL=… npm run images` | Re-renders the previews, checklists, cards, carousel posts and icons; `-- --only share/carousel` renders one folder only, and `--only a,b` several paths (v1.9.0) | Copy, rank, checklist, lesson-text or domain changes (the build warns when the carousel is stale) |
 | `npx wrangler@latest pages dev public` | Local site with `/api/e` | Manual testing |
 

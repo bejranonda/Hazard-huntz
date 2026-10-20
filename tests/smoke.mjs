@@ -688,7 +688,7 @@ try {
     const llms = await (await fetch(`${BASE}/llms.txt`)).text();
     check('/learn, sitemap.xml and llms.txt link every hazard page', hz.every((h) => learn.includes(`href="/${h.slug}"`) && sitemap.includes(`${site}/${h.slug}</loc>`) && sitemap.includes(`${site}/en/${h.slug}</loc>`) && llms.includes(`${site}/${h.slug} `)));
     const tools = [...new Set(hz.flatMap((h) => h.tools))];
-    check('/learn and llms.txt link every tool (the home check, the plan card, the fridge, dust today)', tools.length === 4 && tools.every((tool) => learn.includes(`href="/?open=${tool}"`) && llms.includes(`${site}/?open=${tool}`)), tools.join(', '));
+    check('/learn and llms.txt link every tool (the home check, the plan card, the fridge, dust today, the mask tool)', tools.length === CFG.tools.length && tools.every((tool) => learn.includes(`href="/?open=${tool}"`) && llms.includes(`${site}/?open=${tool}`)), tools.join(', '));
 
     // The smallest phone: every control is 44 px, and a hazard page's first line
     // (and the helplines above it) are on the first screen, before any game button.
@@ -929,6 +929,97 @@ try {
       h1(html) === STR.seo.th.airPageH1 && h1(en) === STR.seo.en.airPageH1 && (html.match(/class="dot"/g) || []).length === 5 && html.includes('37.6–75.0') && html.includes('ratchakitcha.soc.go.th') && en.includes('href="/en/?open=air"') && pm.includes('/?open=air'), '');
   }
 
+  // 11d. Which mask, and all tools (v1.12.0): one tap at a time to a status word;
+  // a baby never gets a mask, a house fire never sends anyone to look for one;
+  // the tools sheet lists every tool and the agencies' own pages.
+  {
+    const M = KIT.mask;
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.goto(`${BASE}/?open=mask&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.mk-opt');
+    const first = await page.evaluate(() => ({ opts: document.querySelectorAll('.mk-opt').length, out: document.querySelector('#mk-out').innerText, share: document.querySelector('#mk-share-row').hidden }));
+    check('mask: the five situations come first, nothing is answered before a tap, no share yet', first.opts === M.why.length && first.out.includes(KIT.ui.th.maskPick.replace('👆 ', '')) && first.share, JSON.stringify(first));
+    await page.click('.mk-opt[data-v="dust"]');
+    await page.click('.air-colour[data-v="orange"]');
+    await page.click('.mk-opt[data-v="baby"]');
+    const out = () => page.evaluate(() => ({ status: document.querySelector('.mk-status')?.innerText.trim(), text: document.querySelector('#mk-out').innerText, card: !!document.querySelector('.mk-card'), cls: document.querySelector('#mk-out').className }));
+    let o = await out();
+    check('mask: orange dust, a child under 2 → "no mask", the under-2 line, no how-to-wear card', o.status.includes(M.status.baby.th) && o.text.includes(KIT.air.baby.th) && !o.card, JSON.stringify(o));
+    await page.click('.mk-opt[data-v="elder"]');
+    o = await out();
+    check('mask: orange dust, someone over 60 → wear one going out, an N95 or a surgical mask (the DOH), with how to wear it', o.status.includes(M.status.wear.th) && o.text.includes(M.dust.type.risk.th) && o.card, JSON.stringify(o).slice(0, 200));
+    await page.click('.air-colour[data-v="yellow"]');
+    await page.click('.mk-opt[data-v="adult"]');
+    o = await out();
+    check('mask: yellow dust, an adult → not yet, wear one from orange (the PCD notice)', o.status.includes(M.status.none.th) && o.text.includes('ส้ม'), JSON.stringify(o).slice(0, 200));
+    const smallM = await smallControls(page);
+    check('mask controls >= 44 px', !smallM.length, smallM.join(', '));
+    await page.click('[data-t="copy"]');
+    await page.click('.mk-opt[data-v="fire"]');
+    o = await out();
+    const fireBtn = await page.$('[data-next="guide"][data-g="fire"]');
+    check('mask: a fire in the house → "get out" (DDPM), no mask, no card, and the fire guide one tap away', o.status.includes(M.status.out.th) && !o.card && !!fireBtn && !/N95/.test(o.text), JSON.stringify(o).slice(0, 200));
+    await page.click('.mk-opt[data-v="chem"]');
+    o = await out();
+    check('mask: a factory fire nearby → get away; masks can\'t filter the fumes', o.status.includes(M.status.leave.th) && o.text.includes(M.chem.lines[1].th), JSON.stringify(o).slice(0, 200));
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(500);
+    const mEv = events.filter((e) => /^tool_/.test(e[0]) && e[1] === 'mask');
+    check('mask: only counts are sent (tool_open, tool_share), never an answer', mEv.some((e) => e[0] === 'tool_open') && mEv.some((e) => e[0] === 'tool_share') && !sent.some((b) => /elder|baby|orange/.test(b)), JSON.stringify(mEv));
+    check('no page errors (mask)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.goto(`${BASE}/?open=air&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.air-colour');
+    await page.click('.air-colour:has(input[value="orange"])');
+    await page.click('#air-mask');
+    await page.waitForSelector('.mk-opt[data-v="adult"]');
+    const pre = await page.evaluate(() => ({ why: document.querySelector('.mk-opt.is-on')?.dataset.v, colour: document.querySelector('.air-colour.is-on')?.dataset.v }));
+    check('dust today → "which mask?" opens the mask tool on dust and today\'s colour, asking who', pre.why === 'dust' && pre.colour === 'orange', JSON.stringify(pre));
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await newPage({ width: 360, height: 640 });
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    await page.click('[data-open="tools"]');
+    await page.waitForSelector('.tl-links');
+    const t = await page.evaluate(() => ({
+      tools: [...document.querySelectorAll('.tl-row[data-tool]')].map((b) => b.dataset.tool),
+      links: [...document.querySelectorAll('.tl-link')].map((a) => ({ href: a.getAttribute('href'), target: a.target, rel: a.rel })),
+      alerts: !!document.querySelector('#tl-alerts'),
+    }));
+    check('all tools: every tool in config order, every agency link (https, opens outside, noopener), and how to turn on emergency alerts',
+      JSON.stringify(t.tools) === JSON.stringify(CFG.tools.map((x) => x.id)) && t.links.length === KIT.links.list.length && t.links.every((x) => x.href.startsWith('https://') && x.target === '_blank' && x.rel.includes('noopener')) && t.alerts, JSON.stringify(t).slice(0, 200));
+    const smallT = await smallControls(page);
+    check('all tools controls >= 44 px', !smallT.length, smallT.join(', '));
+    await page.evaluate(() => { for (const a of document.querySelectorAll('.tl-link')) a.addEventListener('click', (e) => e.preventDefault()); });
+    await page.click('.tl-link[data-link="linealert"]');
+    await page.click('.tl-row[data-tool="mask"]');
+    await page.waitForSelector('.mk-opt');
+    check('all tools → a tool opens it (the mask tool)', true);
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForTimeout(500);
+    check('all tools: a tap on an agency link counts as link_click with the link\'s id only', events.some((e) => e[0] === 'link_click' && e[2] === 'linealert'), JSON.stringify(events.filter((e) => e[0] === 'link_click')));
+    await page.waitForFunction(() => history.state?.brm);
+    await page.goto(`${BASE}/?open=checklist-return`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('#cl-links .tl-link');
+    const g = await page.evaluate(() => ({ ids: [...document.querySelectorAll('#cl-links .tl-link')].map((a) => a.dataset.link), note: document.querySelector('#cl-links .tl-note')?.innerText }));
+    const wantG = KIT.links.list.filter((x) => x.guides.includes('return')).map((x) => x.id);
+    check('after the water: the guide links the agencies\' own pages (relief with where to apply and "never tap a link in an SMS")', JSON.stringify(g.ids) === JSON.stringify(wantG) && g.note === KIT.links.list.find((x) => x.id === 'relief').note.th, JSON.stringify(g));
+    check('no page errors (tools)', !page.errors.length, page.errors.join(' | '));
+    await ctx.close();
+    const mask = await (await fetch(`${BASE}/mask`)).text();
+    const maskEn = await (await fetch(`${BASE}/en/mask`)).text();
+    const tools = await (await fetch(`${BASE}/tools`)).text();
+    const toolsEn = await (await fetch(`${BASE}/en/tools`)).text();
+    const map = await (await fetch(`${BASE}/sitemap.xml`)).text();
+    check('/mask and /tools (and /en/): every situation and its sources, every agency link, the alert steps; both in the sitemap',
+      h1(mask) === STR.seo.th.maskPageH1 && h1(maskEn) === STR.seo.en.maskPageH1 && mask.replace(/<[^>]+>/g, '').includes(KIT.air.baby.th) && mask.includes('ddc.moph.go.th') && h1(tools) === STR.seo.th.toolsPageH1 && h1(toolsEn) === STR.seo.en.toolsPageH1
+      && KIT.links.list.every((x) => tools.includes(x.url.replaceAll('&', '&amp;'))) && tools.replace(/<[^>]+>/g, '').includes(KIT.alerts.ios.steps[1].th) && toolsEn.includes('href="/en/?open=tools"') && map.includes('/tools</loc>') && map.includes('/mask</loc>'), '');
+  }
+
   // 12. Tools first (v1.9.0): what to do for any hazard, what to keep and the
   // family plan on the first screen, the game below; the owner's alert puts one
   // guide on top until its end date; any guide prints as a plain A4 list.
@@ -941,8 +1032,14 @@ try {
         alert: !document.querySelector('#alert-card').hidden,
         alertText: document.querySelector('#alert-card').textContent,
       }));
-      // v1.10.0: two calculators follow (the fridge in a power cut, dust today), 2 × 2 with the first two tools.
-      check(`${w}x${h}: "what to do", "check your supplies" and "family plan" are on the first screen; the fridge and dust tools follow`, pos.hub.length === 5 && pos.hub.slice(0, 3).every((b) => b <= h), pos.hub.map(Math.round).join(','));
+      // v1.10.0: two calculators follow, 2 × 2 with the first two tools; since v1.12.0 they follow the
+      // season (config.json → hub.season) and "all tools" comes last.
+      check(`${w}x${h}: "what to do", "check your supplies" and "family plan" are on the first screen; two seasonal tools and "all tools" follow`, pos.hub.length === 6 && pos.hub.slice(0, 3).every((b) => b <= h), pos.hub.map(Math.round).join(','));
+      if (w === 360) {
+        const tiles = await page.$$eval('.hub-btn[data-slot]', (bs) => bs.map((b) => b.dataset.open));
+        const want = CFG.hub.season[START.mode];
+        check(`${SMOKE_DATE}: the two seasonal tiles are ${want.join(' and ')} (config.json → hub.season)`, JSON.stringify(tiles) === JSON.stringify(want), tiles.join(','));
+      }
       if (w === 360) check(`${SMOKE_DATE}: the alert card ${ALERT ? `shows ${ALERT}` : 'is hidden'} (config.alert, until its end date)`, pos.alert === !!ALERT && (!ALERT || pos.alertText.includes(STR.th[`guide${capM(ALERT)}`])), pos.alertText.trim());
       await ctx.close();
     }

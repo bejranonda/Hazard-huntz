@@ -31,9 +31,10 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` / `copylist` ("🛒 คัดลอกรายการที่ยังขาด", v1.11.0) | the score, 0–100 (%) |
 | `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
 | `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` / `copylist` ("📋 คัดลอกแผนเป็นข้อความ", v1.11.0) | 0 |
-| `tool_open` (v1.10.0) | A calculator opened: the fridge in a power cut or dust today | `fridge` / `air` | `start` (the hub's tile) / `link` (`/?open=fridge` or `/?open=air`, from a post, a page, `/learn`, `llms.txt` or the app's shortcut) / `result` (after a power-cut or dust round; since v1.11.0 from the "เตรียมบ้านต่อ" row) / `guide` (a guide's "เตรียมบ้านต่อ", and since v1.11.0 the power-cut guide's "🥛 ไฟดับอยู่ตอนนี้?") | – |
+| `tool_open` (v1.10.0) | A calculator opened: the fridge in a power cut or dust today; since v1.12.0 the mask tool and the all-tools page | `fridge` / `air` / `mask` / `tools` | `start` (the hub's tile) / `link` (`/?open=fridge` or `/?open=air`, from a post, a page, `/learn`, `llms.txt` or the app's shortcut) / `result` (after a power-cut or dust round; since v1.11.0 from the "เตรียมบ้านต่อ" row) / `guide` (a guide's "เตรียมบ้านต่อ", and since v1.11.0 the power-cut guide's "🥛 ไฟดับอยู่ตอนนี้?") | – |
 | `tool_share` (v1.10.0) | A channel tapped under "📤 ส่งให้คนที่บ้าน" in a calculator | `fridge` / `air` | `native` / `line` / `copy` | – |
 | `big_text` (v1.11.0) | "ก+" / "A+" tapped (larger text on the start screen and the sheets) | – | `on` / `off` (the state after the tap) | – |
+| `link_click` (v1.12.0) | An agency link tapped (the all-tools page or a guide), or the emergency-alert steps opened | the guide's id, when tapped in a guide | the link's id (`linealert`, `tmdwarn`, `thaiwater`, `relief`…; `kit.json → links`) or `alerts` | – |
 
 ## The numbers you asked for
 
@@ -284,6 +285,13 @@ GROUP BY state
 | Is it reaching the sharer's family? | `kit_share` and `plan_share` ÷ their `*_open` events; `tool_share` ÷ `tool_open` | Already collected |
 
 A picture forwarded inside LINE is copied by LINE and never reaches the server, so the furthest reach is invisible to every count: treat each share figure as a floor. Never combine buckets into anything that could single out a device.
+
+## Masks and all tools (v1.12.0)
+
+One new event, `link_click`, in both allowlists: a tap on an agency's own page (LINE ALERT, the TMD's warnings, ThaiWater…) from the all-tools page or a guide, with the link's id as the label (and the guide as the mode), or `alerts` when the emergency-alert steps are opened. The mask tool counts as `tool_open` and `tool_share` with mode `mask`, the all-tools page as `tool_open` with mode `tools`; what was answered (the situation, the colour, who) is never sent.
+
+- **Do people use the links?** `link_click` by label, against `tool_open` with mode `tools`. Few taps on a link that is on the page every day means it can go; many on `relief` after a flood means the relief note is read.
+- **Who comes for masks?** `tool_open` with mode `mask` by label: `air` (from dust today), `start` (the hub's seasonal tile), `tools`, `link`.
 
 ## Thai and English split
 

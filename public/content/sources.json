@@ -122,7 +122,8 @@
       "title": "คู่มือความปลอดภัยในการดูแลบ้านหลังน้ำลด (กองโรคจากการประกอบอาชีพและสิ่งแวดล้อม)",
       "url": "https://ddc.moph.go.th/uploads/publish/1761920260602112057.pdf",
       "date": "2025-11",
-      "kind": "official"
+      "kind": "official",
+      "note": "Read on 20 Oct 2026 (the PDF, Nov 2025). Mould: 'ใส่อุปกรณ์คุ้มครองความปลอดภัยส่วนบุคคล ได้แก่ รองเท้าบูทยาง ถุงมือยาง แว่นตา ผ้าหรือหน้ากาก N-95' and 'สวมหน้ากากอนามัยชนิด N 95', open doors and windows; people with allergies, asthma or lung disease take extra care. Mud: 'ฝุ่นจากดินโคลนทั่วไปสวมหน้ากากอนามัย แต่กรณีต้องรื้อถอนฝ้าเพดาน หรือกระเบื้องที่แตกหัก และไม่แน่ใจว่ามีแร่ใยหินหรือไม่ ต้องระวังการแตกหัก และสวมหน้ากาก ชนิด N95 ขึ้นไป'; a dry floor with dust: a vacuum cleaner, not a broom. 'ไม่ควรนำเด็กและสัตว์เลี้ยงเข้าไปในพื้นที่น้ำท่วมจนกว่าจะแน่ใจว่าจัดการความปลอดภัยเป็นที่เรียบร้อยแล้ว'. Generators and petrol pumps not in poorly ventilated places."
     },
     "ddc-lepto": {
       "agency": "กรมควบคุมโรค",
@@ -434,6 +435,102 @@
       "kind": "international",
       "note": "Read on 20 Oct 2026 (published May 2024, page date 6 Oct 2026). 'Respirator masks shouldn't be used by: children under 2 years of age; someone who has trouble breathing while wearing the mask; someone who needs help to remove it.' A well-fitting NIOSH-certified N95 or equivalent (KN95 or KF94) reduces fine particles outdoors; 'It doesn't protect against the gases in smoke.' A cloth, medical or surgical mask is not a respirator; a scarf, bandana, neck gaiter or face shield won't protect you. Fit: the mask pulls in when you breathe in, no air escapes at the edges when you breathe out. Facial hair prevents a tight fit. In extreme heat a mask may add to heat stress: prioritise staying cool. Used to cross-check Thai advice, never as the only source."
     },
+    "doh-maskchoice-2568": {
+      "agency": "กรมอนามัย",
+      "title": "คนกรุง เตรียมรับมือ ฝุ่น PM2.5 กทม. พุ่งสูงขึ้น 7-8 ก.พ.นี้ (ฐานเศรษฐกิจ อ้างรัฐมนตรีว่าการกระทรวงสาธารณสุขและอธิบดีกรมอนามัย)",
+      "url": "https://www.thansettakij.com/health-wellness/wellbeing/618944",
+      "date": "2025-02-06",
+      "kind": "secondary",
+      "note": "Thansettakij quoting the MOPH minister and DOH Director-General Dr Amporn Benjaponpitak, read word for word on 20 Oct 2026. 'ควรเลือกใช้หน้ากาก N95 เป็นอันดับแรก', certified to an international standard such as NIOSH (US), EN149:2001 (Europe) or GB2626-2019 (China), in a size that fits the face, with or without a valve. A surgical mask also works (50–70%): synthetic, at least 3 layers with a filter in the middle, standard มอก. 2424-2565. Wear it over the nose and under the chin and test the fit; if breathing is hard, the chest tight, tired, a headache or nausea, take it off at once and protect yourself another way, such as going indoors. 'เด็กเล็ก ผู้สูงอายุ หญิงตั้งครรภ์ ผู้มีโรคประจำตัว อาจเลือกใช้หน้ากากอนามัยแทนหน้ากาก N95'. Replace it when loose, harder to breathe through, torn, dirty or wet; never share it; never wash and reuse it; 'ไม่ควรสวมหน้ากาก N95 ขณะออกกำลังกาย'. Throw it away in a sealed bag in a bin with a lid, then wash your hands."
+    },
+    "doh-chemfire-2564": {
+      "agency": "กรมอนามัย",
+      "title": "กรมอนามัย แนะวิธีปฏิบัติเมื่อเกิดเพลิงไหม้ สารเคมีรั่วไหล (ฐานเศรษฐกิจ อ้างอธิบดีกรมอนามัย หลังเหตุไฟไหม้โรงงานกิ่งแก้ว)",
+      "url": "https://www.thansettakij.com/general-news/486489",
+      "date": "2021-07-05",
+      "kind": "secondary",
+      "note": "Thansettakij quoting DOH Director-General Dr Suwannachai Wattanayingcharoenchai after the Ming Dih factory fire, read word for word on 20 Oct 2026. 1 'อพยพออกจากพื้นที่ทันทีตามคำแนะนำของหน่วยงานราชการ และอยู่เหนือลม หรืออยู่ในอากาศที่ถ่ายเทสะดวก หลีกเลี่ยงการสูดดมควัน'; 2 after smoke or vapour, leave the area, wash skin with soap and water, rinse eyes many times, call 1669; dizziness, headache or nausea from the vapour: move to fresh air at once; 3 never go back in for someone trapped, tell the officials; 4 follow official information; 5 after the fire, don't go near or touch the chemicals until officials allow it. No mask is named. The provincial DDPM office asked people within at least 5 km to leave (that event only; the app gives no distance)."
+    },
+    "chula-chemmask-2564": {
+      "agency": "จุฬาลงกรณ์มหาวิทยาลัย",
+      "title": "อาจารย์เจษฎ์ เผย ควันสารพิษ โรงงานกิ่งแก้ว หน้ากาก N95 ป้องกันไม่ได้ เครื่องฟอกอากาศ ไม่ช่วย (อมรินทร์ทีวี อ้าง รศ.ดร.เจษฎา เด่นดวงบริพันธ์)",
+      "url": "https://www.amarintv.com/news/social/87735",
+      "date": "2021-07-06",
+      "kind": "academic",
+      "note": "Amarin TV quoting Assoc Prof Dr Jessada Denduangboripant (Biology, Faculty of Science, Chulalongkorn University), read on 20 Oct 2026: 'หน้ากากอนามัยทางการแพทย์ หรือหน้ากาก n95 ก็ไม่สามารถกรองไอระเหยสารเคมีนี้ได้นะครับ ต้องใช้หน้ากากสำหรับป้องกันสารเคมีโดยเฉพาะเท่านั้น' and 'ถ้าทำได้ อพยพไปที่อื่นชั่วคราว เป็นการดีที่สุด'; home air purifiers don't filter the chemicals. An academic's statement, not an agency's."
+    },
+    "ddc-resp-2569": {
+      "agency": "กรมควบคุมโรค",
+      "title": "สธ. เฝ้าระวังไข้หวัดใหญ่-โควิด เน้นจับตา 'โรงเรียน-เรือนจำ-บ้านพักผู้สูงอายุ' (ฐานเศรษฐกิจ อ้างอธิบดีกรมควบคุมโรค)",
+      "url": "https://www.thansettakij.com/health-wellness/health/666337",
+      "date": "2026-08-13",
+      "kind": "secondary",
+      "note": "Thansettakij quoting DDC Director-General Dr Monthian Khanasawat, read word for word on 20 Oct 2026. 'ปิด ล้าง เลี่ยง หยุด': ปิด 'ปิดปากและจมูกเมื่อมีอาการไอ จาม สวมหน้ากากอนามัยเมื่ออยู่ในสถานที่แออัดหรือสถานที่ที่มีกลุ่มคนจำนวนมาก'; ล้าง 'หมั่นล้างมือด้วยน้ำและสบู่เป็นประจำ'; เลี่ยง 'หลีกเลี่ยงการคลุกคลีกับผู้ป่วย'; หยุด 'หากประชาชนมีอาการป่วย ควรหลีกเลี่ยงการใกล้ชิดผู้อื่น สวมหน้ากากอนามัยทุกครั้งเมื่อจำเป็นต้องออกจากบ้าน และรีบเข้ารับการตรวจวินิจฉัยหรือพบแพทย์ โดยเฉพาะผู้ที่อยู่ในกลุ่มเสี่ยง'. Crowded places named: schools, workplaces, care homes for older people, prisons, hospitals (สถานพยาบาล); good ventilation; flu vaccine for at-risk groups."
+    },
+    "ocpb-mask-2569": {
+      "agency": "สคบ.",
+      "title": "หน้ากากอนามัย ใช้อย่างไรให้ปลอดภัย (สำนักงานคณะกรรมการคุ้มครองผู้บริโภค)",
+      "url": "https://www.ocpb.go.th/images/article/article_20260320104630.pdf",
+      "date": "2026-03-20",
+      "kind": "official",
+      "note": "Read word for word on 20 Oct 2026. 1 'หน้ากากชนิด N95 หรือเทียบเท่าสามารถกรองฝุ่น PM2.5 ได้อย่างมีประสิทธิภาพ'; 2 a medical mask protects against larger dust and droplets to some degree; 3 'หน้ากากผ้าช่วยลดฝุ่นขนาดใหญ่ แต่ไม่เหมาะกับสถานการณ์ที่มีค่าฝุ่น PM2.5 สูง'. Masks are label-controlled goods: a Thai label with the type, the brand, the maker or importer, how to use it and warnings; avoid masks with no clear origin or label. Use: snug over nose and mouth; don't touch the front; 'เปลี่ยนหน้ากากใหม่เมื่อสกปรก ชื้น หรือชำรุด'; a single-use mask is not reused."
+    },
+    "rama-n95-2558": {
+      "agency": "โรงพยาบาลรามาธิบดี (ม.มหิดล)",
+      "title": "ขั้นตอนการใส่ N95 mask และการถอด (คณะกรรมการป้องกันและควบคุมการติดเชื้อในโรงพยาบาล โรงพยาบาลรามาธิบดี)",
+      "url": "https://www.rama.mahidol.ac.th/ic/sites/default/files/public/put%20on%20N95.pdf",
+      "date": "2015-06-23",
+      "kind": "academic",
+      "note": "The hospital's infection-control poster, read on 20 Oct 2026. Putting on an N95: wash hands; lower strap below the ears, upper strap above; 'กดโครงลวดให้แนบสันจมูก'; fit test: 'ใช้มือสองข้างโอบรอบหน้ากากหายใจออกแรงกว่าปกติถ้าแนบสนิทจะไม่มีการรั่วของลมหายใจ'. Taking it off: by the straps, lower then upper, throw it away, wash hands."
+    },
+    "cb-ddpm-2569": {
+      "agency": "ปภ.",
+      "title": "วิธีเช็กและเปิดรับแจ้งเตือนภัย (Cell Broadcast) บนสมาร์ทโฟน (ฐานเศรษฐกิจ ที่มา: กรม ปภ.)",
+      "url": "https://www.thansettakij.com/general-news/649344",
+      "date": "2026-01-19",
+      "kind": "secondary",
+      "note": "Thansettakij citing DDPM, read word for word on 20 Oct 2026. 'รองรับบนสมาร์ทโฟนระบบ 4G และ 5G ที่ใช้ iOS เวอร์ชัน 18 ขึ้นไป หรือ Android เวอร์ชัน 11 ขึ้นไป'; Cell Broadcast 'ไม่ต้องสมัคร ไม่ต้องใช้อินเทอร์เน็ต และไม่จำเป็นต้องรู้หมายเลขโทรศัพท์'. iPhone: 1 การตั้งค่า (Settings) 2 การแจ้งเตือน (Notifications) 3 เลื่อนลงด้านล่างสุด 4 เปิดใช้งาน Amber Alerts และ Emergency Alerts (หรือ TH-ALERT หากมีให้เลือก). Android: 1 การตั้งค่า 2 ความปลอดภัยและเหตุฉุกเฉิน (Safety and Emergency) 3 การแจ้งเตือนภัย 4 เปิดสวิตช์ อนุญาตการแจ้งเตือน 5 เปิดการแจ้งเตือน ทุกเมนู. 'ปภ.ย้ำ เปิดไว้ดีกว่า ไม่พลาดข่าวสารฉุกเฉิน'."
+    },
+    "cb-test-2569": {
+      "agency": "ปภ.",
+      "title": "ปภ.เตรียมทดสอบระบบเตือนภัย Cell Broadcast 20 ม.ค.69 เช็กการตั้งค่าที่นี่ (ฐานเศรษฐกิจ อ้าง ปภ.)",
+      "url": "https://www.thansettakij.com/general-news/649301",
+      "date": "2026-01-19",
+      "kind": "secondary",
+      "note": "Thansettakij quoting DDPM, read word for word on 20 Oct 2026. An alert tone and an automatic message for about 8 seconds ('ความยาวประมาณ 8 วินาที'), 'แม้โทรศัพท์จะปิดเสียง ล็อคหน้าจอ หรืออยู่ในโหมดสั่น'; 'ข้อความแจ้งเตือนจะไม่มีการแนบลิงก์ และส่งในชื่อ DDPM เท่านั้น'. The test text was in Thai and English; whether real alerts are bilingual is not stated. The PRD's English page of 17 Jan 2026 says the same (8 seconds, no links, iOS 18 and Android 11 and higher)."
+    },
+    "cb-menu-2569": {
+      "agency": "ปภ.",
+      "title": "รู้จัก Cell Broadcast คืออะไร (ไทยรัฐ อธิบายวิธีตั้งค่า)",
+      "url": "https://www.thairath.co.th/lifestyle/life/2908863",
+      "date": "2026-07-09",
+      "kind": "secondary",
+      "note": "Thairath's explainer, read on 20 Oct 2026: 'เมนูคำสั่งอาจมีความแตกต่างกันเล็กน้อย ขึ้นอยู่กับรุ่นและยี่ห้อของโทรศัพท์'; update the phone to Android 11 or iOS 18 or later; on iPhone the heading may read 'การแจ้งเตือนฉุกเฉิน (TH-ALERT)', on some Android phones 'การแจ้งเตือนฉุกเฉินไร้สาย'; allow every kind of alert. Messages end with DDPM."
+    },
+    "ddpm-app-2569": {
+      "agency": "ปภ.",
+      "title": "ปภ.เตือน 71 จังหวัด-กทม. ระวังฝนถล่ม น้ำท่วมขัง น้ำท่วมฉับพลัน น้ำป่าไหลหลาก",
+      "url": "https://www.naewna.com/local/967400",
+      "date": "2026-05-28",
+      "kind": "secondary",
+      "note": "Read on 18 Oct 2026 (Naewna). DDPM: follow warnings on the 'THA DISASTER ALERT' app; 'หากมีประกาศแจ้งเตือนขอให้ประชาชนปฏิบัติตามคำแนะนำจากทางราชการอย่างเคร่งครัด' (if a warning is issued, follow official instructions strictly); tells provinces that, where a hazard is likely at natural sites such as waterfalls and caves, they 'ประกาศแจ้งเตือนและปิดกั้นไม่ให้บุคคลเข้าพื้นที่' (warn and close the area to people); help via LINE 'ปภ.รับแจ้งเหตุ1784' and hotline 1784, 24 hours. Re-read on 20 Oct 2026 for the all-tools page: the app is spelled THAI DISASTER ALERT in Khaosod English and Thairath English (3 Sep 2026) and on its store listing."
+    },
+    "police-fakelink-2569": {
+      "agency": "สำนักงานตำรวจแห่งชาติ (บช.น.)",
+      "title": "ระวัง! น้ำท่วม มิจฯ ส่ง SMS แอดไลน์ อ้างหน่วยงานรัฐ สำรวจทรัพย์สิน (กรุงเทพธุรกิจ อ้างสำนักงานตำรวจแห่งชาติ)",
+      "url": "https://www.bangkokbiznews.com/news/1255183",
+      "date": "2026-10-06",
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting the Royal Thai Police, read word for word on 20 Oct 2026: scammers send SMS and LINE messages claiming to be a government agency, 'ขอสำรวจบ้าน สำรวจทรัพย์สิน', asking people to tap a link to confirm details or register for flood relief: 'อย่าหลงเชื่อ' — a trick to steal data and money from bank accounts."
+    },
+    "ddpm-relief-2569": {
+      "agency": "ปภ.",
+      "title": "เปิดลงทะเบียน เยียวยาน้ำท่วม 2569 ผ่านแอปฯ ทางรัฐ (ไทยพีบีเอส อ้าง ปภ.)",
+      "url": "https://www.thaipbs.or.th/news/content/559005",
+      "date": "2026-10-02",
+      "kind": "secondary",
+      "note": "Thai PBS quoting DDPM, read word for word on 20 Oct 2026: two ways to apply. 1 the ทางรัฐ app: 'บริการทั้งหมด' → 'ลงทะเบียนตรวจสอบสิทธิ' → 'ยื่นขอรับเงินเยียวยาผู้ประสบภัยตามมติ ครม.' → fill in the form. 2 in person: 'ยื่นเอกสารด้วยตนเอง ที่องค์กรปกครองส่วนท้องถิ่นในพื้นที่ /สำนักงานเขตในพื้นที่ กทม.' DDPM's relief site (relief.disaster.go.th) lists the schemes and checks a registration."
+    },
     "who-smoke-2566": {
       "agency": "องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป",
       "title": "Public health advice during the wildfires: how to protect your health and keep safe (Q&A)",
@@ -588,14 +685,6 @@
       "date": "2025-06-27",
       "kind": "secondary",
       "note": "Read on 18 Oct 2026 (Thansettakij). DDPM and Nan province: low-lying residents move belongings up high; 'ดูแลกลุ่มเปราะบาง เช่น เด็กเล็ก ผู้สูงอายุ ผู้ป่วยติดเตียง' (look after vulnerable people such as young children, older people, bedridden patients); 'ประชาชนที่อาศัยอยู่ที่ลาดเชิงเขาให้เฝ้าดินโคลนถล่ม'; follow local official news closely; Cell Broadcast alerts were sent to phones; help via LINE 'ปภ.รับแจ้งเหตุ 1784' or hotline 1784, 24 hours."
-    },
-    "ddpm-app-2569": {
-      "agency": "ปภ.",
-      "title": "ปภ.เตือน 71 จังหวัด-กทม. ระวังฝนถล่ม น้ำท่วมขัง น้ำท่วมฉับพลัน น้ำป่าไหลหลาก",
-      "url": "https://www.naewna.com/local/967400",
-      "date": "2026-05-28",
-      "kind": "secondary",
-      "note": "Read on 18 Oct 2026 (Naewna). DDPM: follow warnings on the 'THA DISASTER ALERT' app; 'หากมีประกาศแจ้งเตือนขอให้ประชาชนปฏิบัติตามคำแนะนำจากทางราชการอย่างเคร่งครัด' (if a warning is issued, follow official instructions strictly); tells provinces that, where a hazard is likely at natural sites such as waterfalls and caves, they 'ประกาศแจ้งเตือนและปิดกั้นไม่ให้บุคคลเข้าพื้นที่' (warn and close the area to people); help via LINE 'ปภ.รับแจ้งเหตุ1784' and hotline 1784, 24 hours."
     },
     "readygov-landslide": {
       "agency": "Ready.gov (FEMA สหรัฐฯ)",

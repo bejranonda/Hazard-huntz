@@ -1224,7 +1224,8 @@
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
-            ]
+            ],
+            "icon": "🏠"
           },
           {
             "th": "ถ้าต้องออกไป ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้ง",
@@ -1330,6 +1331,926 @@
       "verify": "partial",
       "verifyNote": "The DDC spokesperson (InfoQuest, 27 Jan 2025) says no mask of any kind under 2 years; the same article also lists muslin masks as suiting under-2s, so a paediatrician should confirm. Health Canada agrees (respirators not for children under 2)."
     }
+  },
+  "mask": {
+    "_readme": "ใส่หน้ากากไหม แบบไหน? (/mask, /?open=mask, v1.12.0) แตะทีละข้อ: ใส่เพื่ออะไร (why) ถ้าเป็นฝุ่น ถามสีของวันนี้ (ใช้ระดับเดียวกับ air.levels: บรรทัดที่มี mask: true บอกว่าระดับนั้นใครต้องใส่) แล้วถามว่าใครจะใส่ (who) ถ้าเป็นการเก็บกวาด ถามว่าเก็บอะไร (what) คำตอบ = status คำเดียว + บรรทัดหลัก + ข้ออื่น และการ์ดวิธีใส่ (card) ทุกบรรทัดต้องมี sources ตัวเลขทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ) ไม่มีการนับจำนวนหน้ากาก เพราะไม่มีหน่วยงานไหนให้ตัวเลข",
+    "why": [
+      {
+        "id": "dust",
+        "icon": "🌫️",
+        "label": {
+          "th": "ฝุ่น PM2.5 หรือควันจากการเผา",
+          "en": "PM2.5 dust, or smoke from burning"
+        }
+      },
+      {
+        "id": "clean",
+        "icon": "🧹",
+        "label": {
+          "th": "เก็บกวาดบ้านหลังน้ำลด",
+          "en": "Cleaning up after a flood"
+        }
+      },
+      {
+        "id": "sick",
+        "icon": "🤧",
+        "label": {
+          "th": "ไอ มีไข้ หรือไปที่คนเยอะ",
+          "en": "A cough or fever, or a crowded place"
+        }
+      },
+      {
+        "id": "chem",
+        "icon": "🏭",
+        "label": {
+          "th": "โรงงานหรือโกดังไฟไหม้ใกล้บ้าน",
+          "en": "A factory or warehouse fire nearby"
+        }
+      },
+      {
+        "id": "fire",
+        "icon": "🔥",
+        "label": {
+          "th": "ไฟไหม้ในบ้าน",
+          "en": "A fire in your home"
+        }
+      }
+    ],
+    "who": [
+      {
+        "id": "adult",
+        "icon": "🧑",
+        "label": {
+          "th": "ผู้ใหญ่ หรือเด็กโตกว่า 5 ขวบ",
+          "en": "An adult, or a child over 5"
+        },
+        "type": "adult",
+        "sources": [
+          "pcd-aqi-2566"
+        ]
+      },
+      {
+        "id": "kid",
+        "icon": "🧒",
+        "label": {
+          "th": "เด็ก 2–5 ขวบ",
+          "en": "A child aged 2 to 5"
+        },
+        "risk": true,
+        "type": "kid",
+        "sources": [
+          "pcd-aqi-2566",
+          "ddc-mask-2568"
+        ]
+      },
+      {
+        "id": "baby",
+        "icon": "👶",
+        "label": {
+          "th": "เด็กต่ำกว่า 2 ขวบ",
+          "en": "A child under 2"
+        },
+        "baby": true,
+        "sources": [
+          "ddc-mask-2568"
+        ]
+      },
+      {
+        "id": "elder",
+        "icon": "🧓",
+        "label": {
+          "th": "ผู้สูงอายุ 60 ปีขึ้นไป",
+          "en": "Someone over 60"
+        },
+        "risk": true,
+        "type": "risk",
+        "sources": [
+          "pcd-aqi-2566"
+        ]
+      },
+      {
+        "id": "pregnant",
+        "icon": "🤰",
+        "label": {
+          "th": "คนท้อง",
+          "en": "Someone pregnant"
+        },
+        "risk": true,
+        "type": "risk",
+        "sources": [
+          "pcd-aqi-2566"
+        ]
+      },
+      {
+        "id": "heart",
+        "icon": "❤️",
+        "label": {
+          "th": "คนเป็นโรคหัวใจหรือโรคปอด",
+          "en": "Someone with heart or lung disease"
+        },
+        "risk": true,
+        "type": "risk",
+        "doctor": true,
+        "sources": [
+          "pcd-aqi-2566"
+        ]
+      }
+    ],
+    "what": [
+      {
+        "id": "mould",
+        "icon": "🍄",
+        "label": {
+          "th": "เชื้อรา",
+          "en": "Mould"
+        }
+      },
+      {
+        "id": "mud",
+        "icon": "🥾",
+        "label": {
+          "th": "ฝุ่นจากโคลนที่แห้งแล้ว",
+          "en": "Dust from dried mud"
+        }
+      },
+      {
+        "id": "board",
+        "icon": "🧱",
+        "label": {
+          "th": "รื้อฝ้าหรือกระเบื้องที่แตก",
+          "en": "Taking down broken ceiling boards or tiles"
+        }
+      }
+    ],
+    "status": {
+      "none": {
+        "icon": "🙂",
+        "th": "ยังไม่ต้องใส่",
+        "en": "No mask needed yet"
+      },
+      "wear": {
+        "icon": "😷",
+        "th": "ใส่เมื่อออกนอกบ้าน",
+        "en": "Wear one when you go out"
+      },
+      "stay": {
+        "icon": "🏠",
+        "th": "อยู่ในบ้าน ถ้าต้องออก ใส่ทุกครั้ง",
+        "en": "Stay in; if you must go out, wear one"
+      },
+      "baby": {
+        "icon": "👶",
+        "th": "ไม่ใส่หน้ากาก",
+        "en": "No mask at this age"
+      },
+      "n95": {
+        "icon": "😷",
+        "th": "ใส่หน้ากาก N95",
+        "en": "Wear an N95"
+      },
+      "surgical": {
+        "icon": "😷",
+        "th": "ใส่หน้ากากอนามัย",
+        "en": "Wear a surgical mask"
+      },
+      "leave": {
+        "icon": "🏃",
+        "th": "ออกห่างก่อน หน้ากากกันไม่ได้",
+        "en": "Get away: a mask won’t protect you"
+      },
+      "out": {
+        "icon": "🚪",
+        "th": "หนีออกจากบ้าน",
+        "en": "Get out of the house"
+      }
+    },
+    "dust": {
+      "type": {
+        "adult": {
+          "th": "เลือกหน้ากาก N95 ก่อน ขนาดพอดีหน้า",
+          "en": "Choose an N95 first, in a size that fits your face",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified",
+          "icon": "😷"
+        },
+        "risk": {
+          "th": "ใช้ N95 หรือหน้ากากอนามัย 3 ชั้นแทนก็ได้",
+          "en": "An N95, or a 3-layer surgical mask instead",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified",
+          "icon": "😷"
+        },
+        "kid": {
+          "th": "ใช้หน้ากากอนามัย 3 ชั้น ขนาดพอดีหน้าเด็ก",
+          "en": "A 3-layer surgical mask that fits the child’s face",
+          "sources": [
+            "doh-maskchoice-2568",
+            "ddc-mask-2568"
+          ],
+          "verify": "partial",
+          "verifyNote": "The DOH says young children may use a surgical mask instead of an N95, and the DDC article says surgical masks suit children from 2 (the same article contradicts itself once); neither gives a child size. A paediatrician confirms.",
+          "icon": "😷"
+        }
+      },
+      "next": {
+        "th": "ถ้าฝุ่นถึงสี{name} ให้ใส่ทุกครั้งที่ออกนอกบ้าน",
+        "en": "From {name} up, wear one every time you go out",
+        "sources": [
+          "pcd-aqi-2566"
+        ],
+        "verify": "verified",
+        "icon": "📅"
+      },
+      "doctor": {
+        "th": "ทำตามที่หมอแนะนำ",
+        "en": "Follow your doctor’s advice",
+        "sources": [
+          "pcd-aqi-2566"
+        ],
+        "verify": "verified",
+        "icon": "🏥"
+      },
+      "always": [
+        {
+          "th": "อย่าใส่ N95 ตอนออกกำลังกาย ออกกำลังในบ้านแทน",
+          "en": "Don’t exercise in an N95: exercise indoors instead",
+          "sources": [
+            "doh-maskchoice-2568",
+            "doh-10ways-2564"
+          ],
+          "verify": "verified",
+          "icon": "🏃"
+        },
+        {
+          "th": "ใส่แล้วหายใจไม่สะดวก แน่นหน้าอก ปวดหัว หรือคลื่นไส้ ให้ถอดออก แล้วเข้าไปอยู่ในบ้าน",
+          "en": "If it makes breathing hard, or you get a tight chest, a headache or feel sick, take it off and go indoors",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified",
+          "icon": "❗"
+        }
+      ]
+    },
+    "clean": {
+      "mould": {
+        "status": "n95",
+        "lines": [
+          {
+            "th": "ใส่หน้ากาก N95 ถุงมือยาง รองเท้าบูทยาง และแว่นตา",
+            "en": "An N95, rubber gloves, rubber boots and goggles",
+            "sources": [
+              "ddc-manual"
+            ],
+            "verify": "verified",
+            "icon": "😷"
+          },
+          {
+            "th": "เปิดประตูหน้าต่าง ห้ามเปิดพัดลมหรือแอร์ตอนเช็ดรา",
+            "en": "Open doors and windows; no fan or air-con while you wipe the mould",
+            "sources": [
+              "anamai-mould"
+            ],
+            "verify": "verified",
+            "icon": "🚪"
+          },
+          {
+            "th": "อย่าเช็ดแห้ง ใช้ผ้าชุบน้ำผสมผงซักฟอก",
+            "en": "Don’t wipe it dry: use a cloth dipped in water and detergent",
+            "sources": [
+              "ddc-manual",
+              "anamai-mould"
+            ],
+            "verify": "verified",
+            "icon": "🧽"
+          }
+        ]
+      },
+      "mud": {
+        "status": "surgical",
+        "lines": [
+          {
+            "th": "ฝุ่นจากโคลนแห้ง ใส่หน้ากากอนามัย",
+            "en": "Dust from dried mud: a surgical mask",
+            "sources": [
+              "ddc-manual"
+            ],
+            "verify": "verified",
+            "icon": "😷"
+          },
+          {
+            "th": "ใช้เครื่องดูดฝุ่น อย่ากวาด ฝุ่นจะฟุ้ง",
+            "en": "Use a vacuum cleaner, not a broom, so the dust doesn’t fly",
+            "sources": [
+              "ddc-manual"
+            ],
+            "verify": "verified",
+            "icon": "🧹"
+          }
+        ]
+      },
+      "board": {
+        "status": "n95",
+        "lines": [
+          {
+            "th": "ไม่แน่ใจว่ามีแร่ใยหินไหม ค่อยๆ รื้อ อย่าให้แตก",
+            "en": "Not sure whether it has asbestos? Take it down slowly, without breaking it",
+            "sources": [
+              "ddc-manual"
+            ],
+            "verify": "verified",
+            "icon": "🧱"
+          },
+          {
+            "th": "ใส่หน้ากาก N95 ขึ้นไป",
+            "en": "Wear an N95 or better",
+            "sources": [
+              "ddc-manual"
+            ],
+            "verify": "verified",
+            "icon": "😷"
+          }
+        ]
+      },
+      "always": [
+        {
+          "th": "คนเป็นภูมิแพ้ หอบหืด หรือโรคปอด ระวังเชื้อราเป็นพิเศษ",
+          "en": "Allergies, asthma or lung disease: take extra care with mould",
+          "sources": [
+            "ddc-manual"
+          ],
+          "verify": "verified",
+          "icon": "🌬️"
+        },
+        {
+          "th": "ยังไม่พาเด็กและสัตว์เลี้ยงเข้าบ้าน จนกว่าจะจัดการให้ปลอดภัย",
+          "en": "Keep children and pets out until the house has been made safe",
+          "sources": [
+            "ddc-manual"
+          ],
+          "verify": "verified",
+          "icon": "👶"
+        }
+      ]
+    },
+    "sick": {
+      "status": "surgical",
+      "lines": [
+        {
+          "th": "ป่วย ไอ มีไข้ ใส่หน้ากากอนามัยทุกครั้งที่ต้องออกจากบ้าน แล้วไปหาหมอ",
+          "en": "Ill, coughing or feverish? Wear a surgical mask every time you must go out, and see a doctor",
+          "sources": [
+            "ddc-resp-2569"
+          ],
+          "verify": "verified",
+          "icon": "🤒"
+        },
+        {
+          "th": "ไปที่คนเยอะ เช่น โรงพยาบาล โรงเรียน ใส่หน้ากากอนามัย",
+          "en": "Crowded places, such as hospitals and schools: a surgical mask",
+          "sources": [
+            "ddc-resp-2569"
+          ],
+          "verify": "verified",
+          "icon": "🏥"
+        },
+        {
+          "th": "ป่วยอยู่ เลี่ยงอยู่ใกล้คนอื่น และเลี่ยงคลุกคลีกับคนป่วย",
+          "en": "When ill, keep away from others; and keep your distance from someone who is ill",
+          "sources": [
+            "ddc-resp-2569"
+          ],
+          "verify": "verified",
+          "icon": "↔️"
+        },
+        {
+          "th": "ไอ จาม ปิดปากปิดจมูก ล้างมือด้วยน้ำและสบู่บ่อยๆ",
+          "en": "Cover coughs and sneezes; wash your hands with soap and water often",
+          "sources": [
+            "ddc-resp-2569"
+          ],
+          "verify": "verified",
+          "icon": "🧼"
+        }
+      ]
+    },
+    "chem": {
+      "status": "leave",
+      "lines": [
+        {
+          "th": "ทำตามเจ้าหน้าที่ ถ้าให้อพยพ ไปทันที ไปอยู่เหนือลม เลี่ยงสูดควัน",
+          "en": "Do what officials say: if told to leave, go at once, upwind, and keep out of the smoke",
+          "sources": [
+            "doh-chemfire-2564"
+          ],
+          "verify": "verified",
+          "icon": "🏃"
+        },
+        {
+          "th": "หน้ากากอนามัยและ N95 กรองไอสารเคมีไม่ได้",
+          "en": "Surgical masks and N95s can’t filter chemical fumes",
+          "sources": [
+            "chula-chemmask-2564",
+            "hc-respirator-2569"
+          ],
+          "verify": "partial",
+          "icon": "🚫",
+          "verifyNote": "A Chulalongkorn academic (Amarin TV, 6 Jul 2021) and Health Canada (gases in smoke); no Thai agency statement was read."
+        },
+        {
+          "th": "สูดควันแล้วเวียนหัว คลื่นไส้ ไปที่อากาศดีทันที แล้วโทร 1669",
+          "en": "Dizzy or sick after breathing it? Get to fresh air at once and call 1669",
+          "sources": [
+            "doh-chemfire-2564"
+          ],
+          "verify": "verified",
+          "icon": "🚑"
+        },
+        {
+          "th": "มีคนติดอยู่ อย่ากลับเข้าไปเอง บอกเจ้าหน้าที่",
+          "en": "Someone trapped? Don’t go back in: tell the officials",
+          "sources": [
+            "doh-chemfire-2564"
+          ],
+          "verify": "verified",
+          "icon": "🙅"
+        },
+        {
+          "th": "ไฟสงบแล้ว อย่าเข้าใกล้หรือจับสารเคมี จนกว่าเจ้าหน้าที่อนุญาต",
+          "en": "After the fire, don’t go near or touch the chemicals until officials say so",
+          "sources": [
+            "doh-chemfire-2564"
+          ],
+          "verify": "verified",
+          "icon": "⛔"
+        }
+      ]
+    },
+    "fire": {
+      "status": "out",
+      "guide": "fire",
+      "lines": [
+        {
+          "th": "เอาผ้าปิดจมูกและปาก ก้มต่ำ คลานออกไป",
+          "en": "Cover your nose and mouth with cloth, keep low and crawl out",
+          "sources": [
+            "ddpm-fire10-2569"
+          ],
+          "verify": "verified",
+          "icon": "⬇️"
+        },
+        {
+          "th": "แตะประตูก่อนเปิด ถ้าร้อนอย่าเปิด",
+          "en": "Feel a door before opening it: if it’s hot, don’t",
+          "sources": [
+            "ddpm-fire10-2569"
+          ],
+          "verify": "verified",
+          "icon": "🚪"
+        },
+        {
+          "th": "ห้ามใช้ลิฟต์",
+          "en": "Never use a lift",
+          "sources": [
+            "ddpm-fire10-2569"
+          ],
+          "verify": "verified",
+          "icon": "🚫"
+        },
+        {
+          "th": "ไฟไหม้ใหญ่ โทร 199",
+          "en": "A serious fire: call 199",
+          "sources": [
+            "ddpm-fire10-2569"
+          ],
+          "verify": "verified",
+          "icon": "☎️"
+        }
+      ]
+    },
+    "card": {
+      "fit": [
+        {
+          "th": "ครอบจมูกถึงใต้คาง ให้แนบหน้า",
+          "en": "Over the nose and under the chin, snug",
+          "sources": [
+            "doh-maskchoice-2568",
+            "doh-mask-2565"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "กดลวดให้แนบสันจมูก",
+          "en": "Press the wire onto the bridge of your nose",
+          "sources": [
+            "rama-n95-2558"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "เอามือสองข้างโอบหน้ากาก หายใจออกแรงๆ ลมไม่รั่วตามขอบ แปลว่าแนบดี",
+          "en": "Cup it with both hands and breathe out hard: no air at the edges means a good fit",
+          "sources": [
+            "rama-n95-2558"
+          ],
+          "verify": "verified"
+        }
+      ],
+      "change": [
+        {
+          "th": "เปลี่ยนเมื่อหลวม หายใจลำบากขึ้น ขาด เปื้อน หรือเปียก",
+          "en": "Change it when it’s loose, harder to breathe through, torn, dirty or wet",
+          "sources": [
+            "doh-maskchoice-2568",
+            "ocpb-mask-2569"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "ไม่ใช้ร่วมกับคนอื่น ไม่ซักแล้วเอามาใช้ใหม่",
+          "en": "Don’t share it, and don’t wash it to wear again",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "ทิ้ง: ใส่ถุงปิดให้สนิท ลงถังที่มีฝา แล้วล้างมือ",
+          "en": "To throw it away: a sealed bag, a bin with a lid, then wash your hands",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified"
+        }
+      ],
+      "buy": [
+        {
+          "th": "มีฉลากภาษาไทย บอกชนิด ผู้ผลิต และวิธีใช้",
+          "en": "A Thai label saying the type, the maker and how to use it",
+          "sources": [
+            "ocpb-mask-2569"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "N95: กล่องบอกมาตรฐาน เช่น NIOSH, EN149 หรือ GB2626",
+          "en": "An N95: the box names a standard such as NIOSH, EN149 or GB2626",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "หน้ากากอนามัย: อย่างน้อย 3 ชั้น มีแผ่นกรองชั้นกลาง",
+          "en": "A surgical mask: at least 3 layers, with a filter in the middle",
+          "sources": [
+            "doh-maskchoice-2568"
+          ],
+          "verify": "verified"
+        }
+      ],
+      "cant": [
+        {
+          "th": "หน้ากากผ้ากันฝุ่นเล็กได้น้อย ไม่พอวันฝุ่นสูง",
+          "en": "A cloth mask stops little fine dust: not enough on high-dust days",
+          "sources": [
+            "ocpb-mask-2569",
+            "ddc-mask-2568"
+          ],
+          "verify": "verified"
+        },
+        {
+          "th": "หน้ากากกันฝุ่น กันแก๊สและไอสารเคมีไม่ได้",
+          "en": "A dust mask doesn’t stop gases or chemical fumes",
+          "sources": [
+            "hc-respirator-2569",
+            "chula-chemmask-2564"
+          ],
+          "verify": "partial",
+          "verifyNote": "Health Canada (gases in smoke) and a Chulalongkorn academic (chemical fumes); no Thai agency statement was read."
+        }
+      ]
+    }
+  },
+  "links": {
+    "_readme": "เว็บและแอปของหน่วยงานรัฐ (หน้าเครื่องมือทั้งหมด /tools และคู่มือแต่ละภัย ตาม guides) by = หน่วยงาน (ชื่อเดียวกับ sources) kind: line = บัญชี LINE ทางการ (เพิ่มเพื่อนได้เลย ไม่ต้องลงแอป) web = เว็บ checked = วันที่เปิดดูว่าใช้ได้ (ตรวจใหม่ทุกเดือนด้วย npm run links) ลิงก์ไปหน้าลึกเสมอ ไม่ใช่หน้าแรกของเว็บ (บางเว็บเปิดหน้าแรกเป็นหน้าพิเศษก่อน) LINE ใช้ id ที่ตรวจแล้วเท่านั้น ระวังบัญชีปลอม",
+    "list": [
+      {
+        "id": "linealert",
+        "icon": "📢",
+        "label": {
+          "th": "LINE ALERT รับข่าวเตือนภัยใน LINE",
+          "en": "LINE ALERT: disaster warnings in LINE"
+        },
+        "by": "ปภ.",
+        "url": "https://line.me/R/ti/p/@linealert",
+        "kind": "line",
+        "checked": "2026-10-20",
+        "guides": [
+          "prepare",
+          "landslide",
+          "storm",
+          "quake",
+          "heat"
+        ]
+      },
+      {
+        "id": "tmdwarn",
+        "icon": "🌧️",
+        "label": {
+          "th": "ประกาศเตือนฝน พายุ",
+          "en": "Rain and storm warnings"
+        },
+        "by": "กรมอุตุนิยมวิทยา",
+        "url": "https://www.tmd.go.th/warning-and-events/warning-storm",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "prepare",
+          "landslide",
+          "storm",
+          "heat"
+        ]
+      },
+      {
+        "id": "thaiwater",
+        "icon": "🌊",
+        "label": {
+          "th": "ระดับน้ำในแม่น้ำใกล้บ้าน (ThaiWater)",
+          "en": "River levels near you (ThaiWater)"
+        },
+        "by": "สสน.",
+        "url": "https://www.thaiwater.net/water/wl",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "prepare",
+          "landslide"
+        ]
+      },
+      {
+        "id": "gistdaflood",
+        "icon": "🛰️",
+        "label": {
+          "th": "แผนที่น้ำท่วมจากดาวเทียม",
+          "en": "Satellite flood map"
+        },
+        "by": "สทอภ. (GISTDA)",
+        "url": "https://disaster.gistda.or.th/flood",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "prepare",
+          "return"
+        ]
+      },
+      {
+        "id": "air4thai",
+        "icon": "🌫️",
+        "label": {
+          "th": "ค่าฝุ่นวันนี้ (Air4Thai)",
+          "en": "Dust today (Air4Thai)"
+        },
+        "by": "กรมควบคุมมลพิษ",
+        "url": "https://air4thai.pcd.go.th/webV3/",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "dust"
+        ]
+      },
+      {
+        "id": "gistdapm",
+        "icon": "🗺️",
+        "label": {
+          "th": "ค่าฝุ่นรายตำบล",
+          "en": "PM2.5 by subdistrict"
+        },
+        "by": "สทอภ. (GISTDA)",
+        "url": "https://pm25.gistda.or.th/",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "dust"
+        ]
+      },
+      {
+        "id": "tmdquake",
+        "icon": "🌏",
+        "label": {
+          "th": "แผ่นดินไหวล่าสุด",
+          "en": "Latest earthquakes"
+        },
+        "by": "กรมอุตุนิยมวิทยา",
+        "url": "https://earthquake.tmd.go.th/",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "quake"
+        ]
+      },
+      {
+        "id": "meacut",
+        "icon": "💡",
+        "label": {
+          "th": "ประกาศดับไฟล่วงหน้า กทม. นนทบุรี สมุทรปราการ",
+          "en": "Planned power cuts: Bangkok, Nonthaburi, Samut Prakan"
+        },
+        "by": "กฟน.",
+        "url": "https://www.mea.or.th/public-relations/power-outage-notifications/power-outage-maintainence-announcement",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "stock"
+        ]
+      },
+      {
+        "id": "peacut",
+        "icon": "💡",
+        "label": {
+          "th": "ประกาศดับไฟล่วงหน้า จังหวัดอื่น",
+          "en": "Planned power cuts: other provinces"
+        },
+        "by": "กฟภ.",
+        "url": "https://eservice.pea.co.th/PowerOutage",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "stock"
+        ]
+      },
+      {
+        "id": "ddpm1784",
+        "icon": "🆘",
+        "label": {
+          "th": "แจ้งเหตุ ขอความช่วยเหลือทาง LINE (1784)",
+          "en": "Report a disaster or ask for help on LINE (1784)"
+        },
+        "by": "ปภ.",
+        "url": "https://line.me/R/ti/p/@1784ddpm",
+        "kind": "line",
+        "checked": "2026-10-20",
+        "guides": [
+          "prepare",
+          "return",
+          "landslide",
+          "storm",
+          "quake"
+        ]
+      },
+      {
+        "id": "relief",
+        "icon": "🤝",
+        "label": {
+          "th": "ขอรับเงินช่วยเหลือหลังภัย",
+          "en": "Claiming help after a disaster"
+        },
+        "by": "ปภ.",
+        "url": "https://relief.disaster.go.th/",
+        "kind": "web",
+        "checked": "2026-10-20",
+        "guides": [
+          "return"
+        ],
+        "note": {
+          "th": "ยื่นในแอปทางรัฐ หรือที่ อบต. เทศบาล สำนักงานเขต · SMS หรือ LINE ที่ให้กดลิงก์ \"สำรวจบ้าน\" หรือรับเงิน อย่ากด",
+          "en": "Apply in the Tang Rat app, or at your local council or district office · Don’t tap links in an SMS or LINE message offering a \"house survey\" or money",
+          "sources": [
+            "ddpm-relief-2569",
+            "police-fakelink-2569"
+          ],
+          "verify": "verified"
+        }
+      },
+      {
+        "id": "oic",
+        "icon": "🛡️",
+        "label": {
+          "th": "ถามเรื่องเคลมประกัน บ้าน รถ (สายด่วน 1186)",
+          "en": "Insurance claims for home and car (hotline 1186)"
+        },
+        "by": "คปภ.",
+        "url": "https://line.me/R/ti/p/@oicconnect",
+        "kind": "line",
+        "checked": "2026-10-20",
+        "guides": [
+          "return"
+        ]
+      },
+      {
+        "id": "antifake",
+        "icon": "🔎",
+        "label": {
+          "th": "เช็กข่าวลือก่อนส่งต่อ",
+          "en": "Check a rumour before you forward it"
+        },
+        "by": "ศูนย์ต่อต้านข่าวปลอม",
+        "url": "https://line.me/R/ti/p/@antifakenewscenter",
+        "kind": "line",
+        "checked": "2026-10-20",
+        "guides": []
+      }
+    ]
+  },
+  "alerts": {
+    "_readme": "การ์ด \"เปิดรับข้อความเตือนภัยในมือถือ\" (Cell Broadcast) ในหน้าเครื่องมือทั้งหมด ขั้นตอนตามที่ ปภ. ประกาศ เมนูอาจต่างกันตามยี่ห้อ จึงเป็น partial",
+    "title": {
+      "th": "เปิดรับข้อความเตือนภัยในมือถือ",
+      "en": "Turn on emergency alerts on your phone"
+    },
+    "intro": {
+      "th": "ปภ. ส่งข้อความเตือนภัยถึงมือถือทุกเครื่องในพื้นที่เสี่ยง ไม่ต้องสมัคร ไม่ต้องใช้อินเทอร์เน็ต ใช้ได้กับ iPhone ที่เป็น iOS 18 ขึ้นไป และ Android 11 ขึ้นไป",
+      "en": "DDPM sends warnings to every phone in an area at risk: no sign-up and no internet needed, on iPhones with iOS 18 or later and Android 11 or later",
+      "sources": [
+        "cb-ddpm-2569"
+      ],
+      "verify": "verified"
+    },
+    "ios": {
+      "label": "iPhone",
+      "steps": [
+        {
+          "th": "การตั้งค่า",
+          "en": "Settings"
+        },
+        {
+          "th": "การแจ้งเตือน",
+          "en": "Notifications"
+        },
+        {
+          "th": "เลื่อนลงล่างสุด",
+          "en": "Scroll to the very bottom"
+        },
+        {
+          "th": "เปิด Emergency Alerts (หรือ TH-ALERT) และ Amber Alerts",
+          "en": "Turn on Emergency Alerts (or TH-ALERT) and Amber Alerts"
+        }
+      ]
+    },
+    "android": {
+      "label": "Android",
+      "steps": [
+        {
+          "th": "การตั้งค่า",
+          "en": "Settings"
+        },
+        {
+          "th": "ความปลอดภัยและเหตุฉุกเฉิน",
+          "en": "Safety and emergency"
+        },
+        {
+          "th": "การแจ้งเตือนภัย (บางรุ่น: การแจ้งเตือนฉุกเฉินไร้สาย)",
+          "en": "Emergency alerts (on some phones: Wireless emergency alerts)"
+        },
+        {
+          "th": "เปิด อนุญาตการแจ้งเตือน และเปิดทุกเมนู",
+          "en": "Turn on \"Allow alerts\", and every kind of alert"
+        }
+      ]
+    },
+    "note": {
+      "th": "ชื่อเมนูอาจต่างกันบ้างตามรุ่นและยี่ห้อ",
+      "en": "Menu names differ a little by make and model",
+      "sources": [
+        "cb-menu-2569"
+      ],
+      "verify": "verified"
+    },
+    "know": [
+      {
+        "icon": "🔊",
+        "th": "มีเสียงดังราว 8 วินาที แม้ปิดเสียง ล็อกจอ หรือเปิดสั่นไว้",
+        "en": "It sounds for about 8 seconds, even on silent, locked or on vibrate",
+        "sources": [
+          "cb-test-2569"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "🔗",
+        "th": "ข้อความจริงส่งในชื่อ DDPM และไม่มีลิงก์ให้กด",
+        "en": "Real messages come from DDPM and have no link to tap",
+        "sources": [
+          "cb-test-2569"
+        ],
+        "verify": "verified"
+      },
+      {
+        "icon": "📱",
+        "th": "ติดตามแอป THAI DISASTER ALERT และ LINE ปภ.รับแจ้งเหตุ 1784 ด้วย",
+        "en": "Also follow the THAI DISASTER ALERT app and DDPM’s LINE account for 1784",
+        "sources": [
+          "ddpm-app-2569"
+        ],
+        "verify": "verified"
+      }
+    ],
+    "verify": "partial",
+    "verifyNote": "The steps are DDPM’s, through a news report; menu names differ by make and model (Thairath), so a person checks them on an Android phone and an iPhone."
   },
   "ui": {
     "th": {
@@ -1454,7 +2375,36 @@
       "cardMissingN": "ยังขาด {n} อย่าง เช่น",
       "kitCopy": "🛒 คัดลอกรายการที่ยังขาด",
       "kitCopyHead": "ของที่บ้านเรายังขาด (บ้านเรา {n} คน)",
-      "planCopy": "📋 คัดลอกแผนเป็นข้อความ"
+      "planCopy": "📋 คัดลอกแผนเป็นข้อความ",
+      "maskTitle": "ใส่หน้ากากไหม แบบไหน?",
+      "maskIntro": "แตะทีละข้อ แล้วดูว่าต้องใส่ไหม ใส่แบบไหน",
+      "maskWhyQ": "ใส่หน้ากากเพื่ออะไร?",
+      "maskColourQ": "วันนี้ฝุ่นสีอะไร?",
+      "maskWhoQ": "ใครจะใส่?",
+      "maskWhatQ": "เก็บกวาดอะไร?",
+      "maskPick": "👆 แตะเลือกด้านบน แล้วคำตอบจะขึ้นตรงนี้",
+      "maskHow": "😷 วิธีใส่ให้แนบ เมื่อไรต้องเปลี่ยน ซื้อแบบไหน",
+      "maskFit": "ใส่ให้แนบ",
+      "maskChange": "เปลี่ยนและทิ้ง",
+      "maskBuy": "ซื้อแบบไหน",
+      "maskCant": "หน้ากากกันไม่ได้",
+      "maskLevel": "ฝุ่นสี{name}",
+      "maskShare": "📤 ส่งคำตอบให้คนที่บ้าน",
+      "maskShareTail": "เช็กเองได้ที่ {url}",
+      "maskAir": "🌫️ ฝุ่นวันนี้ ต้องทำอะไรอีก",
+      "maskGuide": "📋 {name}: ต้องทำอะไร",
+      "maskPrivacy": "คำตอบอยู่ในเครื่องนี้ ไม่ส่งไปที่ไหน",
+      "maskNoNumber": "ไม่มีหน่วยงานไหนบอกจำนวนหน้ากากต่อคนต่อวัน แอปจึงไม่นับให้",
+      "maskFromAir": "😷 ใส่หน้ากากแบบไหน? เด็ก ผู้สูงอายุ คนท้อง",
+      "toolsTitle": "เครื่องมือทั้งหมด",
+      "toolsIntro": "ฟรี ไม่ต้องสมัคร แตะใช้ได้เลย",
+      "toolsHome": "เตรียมไว้ก่อน",
+      "toolsNow": "ใช้ตอนเกิดเหตุ",
+      "toolsLinks": "เว็บและบัญชี LINE ของหน่วยงานรัฐ",
+      "toolsLinksNote": "ลิงก์ไปที่หน่วยงานโดยตรง ตรวจว่าใช้ได้ล่าสุด {date} บัญชี LINE กดแล้วเพิ่มเพื่อนได้เลย",
+      "toolsLine": "LINE",
+      "toolsWeb": "เว็บ",
+      "guideLinks": "🔗 ดูข้อมูลจากหน่วยงาน"
     },
     "en": {
       "title": "Check your supplies: how ready is our home?",
@@ -1578,7 +2528,36 @@
       "cardMissingN": "Still missing {n}, including",
       "kitCopy": "🛒 Copy what we still need",
       "kitCopyHead": "What our home still needs ({n} people)",
-      "planCopy": "📋 Copy the plan as text"
+      "planCopy": "📋 Copy the plan as text",
+      "maskTitle": "Do I need a mask, and which one?",
+      "maskIntro": "Tap one answer at a time to see whether to wear one, and which kind",
+      "maskWhyQ": "What’s the mask for?",
+      "maskColourQ": "What colour is the dust today?",
+      "maskWhoQ": "Who’s wearing it?",
+      "maskWhatQ": "What are you cleaning?",
+      "maskPick": "👆 Tap above and the answer appears here",
+      "maskHow": "😷 How to wear it, when to change it, which to buy",
+      "maskFit": "A good fit",
+      "maskChange": "Changing and throwing away",
+      "maskBuy": "Which to buy",
+      "maskCant": "What a mask can’t do",
+      "maskLevel": "{name} dust",
+      "maskShare": "📤 Send the answer to your family",
+      "maskShareTail": "Check for yourself: {url}",
+      "maskAir": "🌫️ Dust today: what else to do",
+      "maskGuide": "📋 {name}: what to do",
+      "maskPrivacy": "Your answers stay on this phone and are sent nowhere",
+      "maskNoNumber": "No agency gives a number of masks per person per day, so the app doesn’t count them",
+      "maskFromAir": "😷 Which mask? Children, older people, pregnancy",
+      "toolsTitle": "All tools",
+      "toolsIntro": "Free, no sign-up: tap and use",
+      "toolsHome": "Get ready",
+      "toolsNow": "When it happens",
+      "toolsLinks": "Government websites and LINE accounts",
+      "toolsLinksNote": "These go straight to the agencies; last checked {date}. A LINE account opens in LINE, ready to add",
+      "toolsLine": "LINE",
+      "toolsWeb": "Web",
+      "guideLinks": "🔗 From the agencies"
     }
   }
 }

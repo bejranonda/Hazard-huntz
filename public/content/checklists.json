@@ -99,7 +99,7 @@
         "sprite": "tvmud"
       },
       {
-        "icon": "⚠️",
+        "icon": "⚡",
         "th": "เจอสายไฟขาด อยู่ห่าง 3–5 เมตร แจ้ง 1130 หรือ 1129",
         "en": "Downed line: stay 3–5 m away and call 1130 or 1129",
         "sprite": "wire"
@@ -333,7 +333,7 @@
         "sprite": "plugs-done"
       },
       {
-        "icon": "⚠️",
+        "icon": "⛽",
         "th": "เครื่องปั่นไฟตั้งนอกบ้านเท่านั้น ใช้ไฟฉายแทนเทียน",
         "en": "Generators outdoors only; torches, not candles",
         "sprite": "generator"
@@ -425,7 +425,7 @@
         "verify": "verified"
       },
       {
-        "icon": "⚠️",
+        "icon": "🏃",
         "phase": "during",
         "th": "ดินเริ่มมีรอยแยก รีบอพยพไปที่ปลอดภัยทันที",
         "en": "Ground starting to crack? Move to a safe place at once",

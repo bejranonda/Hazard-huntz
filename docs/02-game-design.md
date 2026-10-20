@@ -164,11 +164,11 @@
 | **Hub** | "📋 ต้องทำอะไร เมื่อเกิดภัย" (the guide picker), "🎒 เช็กของจำเป็น" (the home check; shows "บ้านเราพร้อม 64%" once checked), "📝 แผนครอบครัว" (the plan card). All three on the first screen at 320 × 460 and 360 × 640. Since v1.10.0 two more tiles, "🥛 ไฟดับ: ตู้เย็น" and "😷 ฝุ่นวันนี้", make a 2 × 2 grid with the check and the plan ([below](#calculators-the-fridge-dust-today-and-the-pills-v1100)) |
 | **"🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"** | The label above the gecko and the mode cards, which work as before |
 | **Guide picker** | The nine guides as tiles, in `config.json → guides` order (since v1.9.1: 🌊 น้ำท่วม: ก่อนน้ำมา, 🧹 น้ำท่วม: หลังน้ำลด, ⛰️ น้ำป่า ดินถล่ม, ⛈️ พายุ ฟ้าผ่า, 🏚️ แผ่นดินไหว, 🔥 ไฟไหม้, 🔦 ไฟดับ, 🌡️ อากาศร้อนจัด, 😷 ฝุ่น PM2.5), the alert's first with "ช่วงนี้" |
-| **A guide** (v1.9.1 layout) | The title; phase jump chips; "☎️ โทรฟรี" 1784 · 199 · 1669 (tap to dial); 10 lines, grouped "ก่อนเกิด / ขณะเกิด / หลังเกิด" where they have phases (the heat guide names its own: เตรียมไว้ก่อน / วันที่ร้อนจัด / ถ้ามีคนเป็นลมแดด), ⚠️ on lines under review; the agencies, small, and one ⚠️ footnote; ▶ the game when there is one; 📖 the hazard page with every line's sources; "เตรียมบ้านต่อ": 🎒 เช็กของจำเป็น, 📝 แผนครอบครัว; "ส่งต่อให้คนที่บ้าน": four share buttons and the picture as a thumbnail; 🖨️ print; "← เรื่องอื่น" and "เสร็จแล้ว". ✕ at the top and the phone's back button close it ([KNOWLEDGE §30.2](KNOWLEDGE.md#302-sheets-the-back-button-and-sharing)) |
+| **A guide** (v1.9.1 layout) | The title; phase jump chips; "☎️ โทรฟรี" 1784 · 199 · 1669 (tap to dial; since v1.11.0 the guide's own numbers, each with whom it reaches under it, "1130 / ไฟดับ กทม. นนทบุรี สมุทรปราการ", and the power-cut guide first offers "🥛 ไฟดับอยู่ตอนนี้? ดูว่าของในตู้เย็นอะไรต้องทิ้ง"); 10 lines, grouped "ก่อนเกิด / ขณะเกิด / หลังเกิด" where they have phases (the heat guide names its own: เตรียมไว้ก่อน / วันที่ร้อนจัด / ถ้ามีคนเป็นลมแดด), ⚠️ on lines under review; the agencies, small, and one ⚠️ footnote; ▶ the game when there is one; 📖 the hazard page with every line's sources; "เตรียมบ้านต่อ": 🎒 เช็กของจำเป็น, 📝 แผนครอบครัว; "ส่งต่อให้คนที่บ้าน": four share buttons and the picture as a thumbnail; 🖨️ print; "← เรื่องอื่น" and "เสร็จแล้ว". ✕ at the top and the phone's back button close it ([KNOWLEDGE §30.2](KNOWLEDGE.md#302-sheets-the-back-button-and-sharing)) |
 | **A friend's challenge** | Hides the alert, the hub and the game label: the challenge is why they came |
 
 - **Guides with a game and without.** Prepare, Return, dust, fire and the power cut keep their 10-item checklists as their guides, and ▶ starts the round. Flash floods and landslides, storms and lightning, earthquakes and extreme heat have guides only: every line carries its own sources and a phase, and their hazard pages lead with the guide.
-- **The result screen's "📋 เช็กลิสต์ 10 ข้อ"** opens that mode's guide; "← เรื่องอื่น" leads to the rest. The old checklist tabs are gone.
+- **The result screen's "📋 เช็กลิสต์ 10 ข้อ"** opens that mode's guide; "← เรื่องอื่น" leads to the rest. The old checklist tabs are gone. Since v1.11.0 the button carries the guide's real title ("📋 เตรียมบ้านก่อนน้ำมา 10 ข้อ") in a "เตรียมบ้านต่อ" row right under share and challenge, with the hazard's tools and the check link ([KNOWLEDGE §33.12](KNOWLEDGE.md#3312-the-result-screens-next-steps)).
 - **Print:** a guide or the home check's list prints as a plain A4 list with tick boxes, for the fridge door or an older relative; the button is hidden in in-app browsers, which can't print.
 - **Guardrails:** the guides follow the same content rules as the lessons: sourced, no deaths or injuries, no blame, calm wording ("รีบอพยพทันที" is an action, not a threat). What sources disagree on is left out.
 
@@ -176,47 +176,52 @@
 
 **The idea:** the owner liked the home check's "put in values and it works out what to prepare and how much", and asked for more like it. Three tools now work that way, each from numbers an agency gives, each in a sheet over the start screen, keeping its answers on the device and ending in a text to send. Details, sources and checks: [KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100).
 
+**Food by food, and for everyone at home (v1.11.0).** The fridge now answers the owner's "ของอะไรในตู้เย็นได้นานแค่ไหน": the fridge's 4 hours decide when, and each food's row of FoodSafety.gov's or USDA FSIS's charts decides what, so the card lists what will have to go (or must go now) and what keeps, and the freezer lists its packs once its time is up. Medicine is never "throw it out" (insulin 28 days at 15–30 °C; other cold medicine "check the label"), breast milk has its own cards, an unanswered freezer counts as half full, and "💡 ไฟมาแล้ว" keeps the answer. Dust today shows the at-risk lines without any tick, under the lines for everyone, with no line twice. Details: [KNOWLEDGE §33](KNOWLEDGE.md#33-food-by-food-in-a-power-cut-and-the-whole-app-for-its-real-readers-v1110).
+
 **In plain words (v1.10.1).** The owner couldn't read the first fridge tool ("I cannot understand, please review and validate the UI and UX, try to improve and use general simple language"): it counted before it was asked, had two ways to set the time, three facts on every line and the source under every row. Both sheets now follow [GUIDELINES rule 82](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit): one question at a time, by a tap; nothing started before it; the answer as a word first, large, then one line; no jargon up front; the sources once, at the bottom ([KNOWLEDGE §32.10](KNOWLEDGE.md#3210-the-plain-words-pass-v1101)).
 
 ```
- FRIDGE (sheet), after tapping "3 ชม."   DUST TODAY (sheet), after tapping orange
+ FRIDGE (sheet, v1.11.0), after "3 ชม."  DUST TODAY (sheet, v1.11.0), orange
 ┌──────────────────────────────┐      ┌──────────────────────────────┐
-│ 🥛 ไฟดับ: ของในตู้เย็นยังกินได้ไหม? │      │ 😷 ฝุ่นวันนี้ บ้านเราต้องทำอะไร?  │
+│ 🥛 ไฟดับ: ของในตู้เย็นยังกินได้ไหม? │      │ 🌫️ ฝุ่นวันนี้ บ้านเราต้องทำอะไร?  │
 │ ไฟดับมานานเท่าไรแล้ว?            │      │ ค่าฝุ่นตอนนี้เป็นสีอะไร?          │
-│ [เพิ่งดับ][1 ชม.][2 ชม.][3 ชม.]   │      │ [ฟ้า][เขียว][เหลือง][ส้ม][แดง]  │
-│ [4 ชม.][6 ชม.][12 ชม.][1 วัน]    │      │ ▸ 🔢 รู้ตัวเลข? ใส่ตัวเลขแทน      │
-│ [2 วัน]                        │      │ ในบ้านมีใคร … [👶][🧓][🤰][❤️] │
-│ ⏱️ ไฟดับมาแล้ว 3 ชม. แอปจะนับ…    │      │ ┌ ● สีส้ม · เริ่มมีผลต่อสุขภาพ ┐ │
-│ [💡 ไฟมาแล้ว]                    │      │ │                           │ │
-│ คำตอบ                          │      │ │ ทุกคนในบ้าน                │ │
-│ ┃🥛 ของในตู้เย็น                 │      │ │ · ใส่หน้ากากกันฝุ่น PM2.5 … │ │
-│ ┃⏳ ใกล้ครบ 4 ชม.                │      │ │ · ออกกำลังหนักๆ นอกบ้าน     │ │
-│ ┃เหลืออีกราว 1 ชม. ถ้าไม่เปิดตู้     │      │ │   ให้สั้นลง               │ │
-│ ┃❄️ ของในช่องแช่แข็ง              │      │ │ สำหรับเด็กเล็ก …           │ │
-│ ┃✅ ยังเก็บได้                    │      │ └─────────────────────────┘ │
-│ ┃เหลืออีกราว 45 ชม. ถ้าไม่เปิด…     │      │ ที่มา: กรมควบคุมมลพิษ …        │
-│ ┃ช่องแช่แข็งมีของ [เต็มช่อง][ครึ่งช่อง] │      │ [🌐 Air4Thai] 📤 ส่งให้คนที่บ้าน │
-│ [💊 มียาที่ต้องเก็บในตู้เย็น]        │      │ [😷 วิธีป้องกันฝุ่น 10 ข้อ] [ปิด] │
-│ จำไว้ 🚪 … 🚫 … 🥫 …              │      └──────────────────────────────┘
-│ ⚠️ ตัวเลขชั่วโมงมาจาก CDC … ที่มา: … │
+│ [เพิ่งดับ][1 ชม.][2 ชม.]          │      │ [ฟ้า][เขียว][เหลือง][ส้ม][แดง]  │
+│ [3 ชม.][4 ชม.][6 ชม.]           │      │ [ยังไม่รู้สี? 🌐 … (Air4Thai)]   │
+│ [12 ชม.][1 วัน][2 วัน]           │      │ ▸ 🔢 รู้ตัวเลข? ใส่ตัวเลขแทน      │
+│ ไม่ตรงกับปุ่มไหน ให้เลือกเวลาที่นานกว่า │      │ ┌ ● สีส้ม · เริ่มมีผลต่อสุขภาพ ┐ │
+│ ▸ 🕘 จำได้ว่าไฟดับตอนกี่โมง?        │      │ │ ทุกคนในบ้าน                │ │
+│ ⏱️ ไฟดับมาแล้ว 3 ชม. … [💡 ไฟมาแล้ว] │      │ │ · ใส่หน้ากากกันฝุ่น PM2.5 … │ │
+│ [💊 มียา… เช่น อินซูลิน] [🤱 นมแม่]  │      │ │ · ออกกำลังหนักๆ … ให้สั้นลง │ │
+│ คำตอบ                          │      │ │ สำหรับเด็กเล็ก ผู้สูงอายุ …   │ │
+│ ┃🥛 ของในตู้เย็น ⏳ ใกล้ครบ 4 ชม.   │      │ │ ทำตามข้อด้านบน และ          │ │
+│ ┃เหลืออีกราว 1 ชม. ถ้าไม่เปิดตู้     │      │ │ · เลี่ยงการออกกำลังหนักๆ …  │ │
+│ ┃❌ ถ้าเกิน 4 ชม. ต้องทิ้ง          │      │ │ เพิ่มเติม…โรคประจำตัว       │ │
+│ ┃ 🥩 … 🌭 … 🍛 … 🍚 … 🥚 … (9)    │      │ └─────────────────────────┘ │
+│ ┃✅ ไม่ต้องทิ้งเพราะไฟดับ           │      │ ที่มา: กรมควบคุมมลพิษ …        │
+│ ┃ 🥕 … 🍞 … 🧀 … 🍯 … (4)         │      │ 📤 ส่งให้คนที่บ้าน                │
+│ ┃ของที่ไม่อยู่ในรายการ ไม่แน่ใจให้ทิ้ง  │      │ [📋 ห้องปลอดฝุ่น 10 ข้อ] [ปิด]    │
+│ ┃❄️ ของในช่องแช่แข็ง ✅ ยังแข็งอยู่    │      └──────────────────────────────┘
+│ ┃ช่องแช่แข็งมีของ (ไม่แน่ใจ…) [ครึ่ง][เต็ม] │
+│ จำไว้ 🚪 … 🚫 … 🌡️ … 🥫 …          │
+│ ⚠️ เวลาและรายการมาจากหน่วยงานสหรัฐฯ … │
 │ 📤 ส่งให้คนที่บ้าน  [🎒] [ปิด]        │
 └──────────────────────────────┘
 ```
 
 | Element | ไฟดับ: ตู้เย็น (`/fridge`, `/?open=fridge`) | ฝุ่นวันนี้ (`/air`, `/?open=air`) | ยาพอกี่วัน? (in the home check) |
 |---|---|---|---|
-| Asks | "ไฟดับมานานเท่าไรแล้ว?": one of 9 buttons, เพิ่งดับ to 2 วัน (`fridge.quick`); in the freezer's card, full or half full; a tick for cold medicine. Nothing is counted before a tap | "ค่าฝุ่นตอนนี้เป็นสีอะไร?": five colours first; or, behind "🔢 รู้ตัวเลข? ใส่ตัวเลขแทน", the kind of number (PM2.5 or Thailand's AQI) and the number; who at home needs extra care (starts from the home check) | Pills left, pills a day |
-| Shows | A card per part: a status word ("ยังกินได้" / "ใกล้ครบ 4 ชม." / "เกิน 4 ชม.แล้ว"), then one line (the time left "about", or what to do); a coloured left edge; "จำไว้" in three lines; the sources once | The colour and level ("สีส้ม · เริ่มมีผลต่อสุขภาพ") with its band; what everyone at home does; what the ticked people do; the lines for a long-term illness; the agencies, with the DOH's two lines named | "⏳ พออีก 4 วัน ต้องมีเพิ่ม 5 เม็ด จะพอ 7 วัน" or "✅ พออีก 7 วัน ครบ 7 วันแล้ว" |
-| Numbers from | The US CDC and Ready.gov (⚠️, said once on screen) | The PCD's notice in the Royal Gazette (2023); the DOH for two lines | The home check's 7 days (`moph-7days`, ⚠️) |
-| Kept | `brm:fridge`: when the power went off and the button tapped, so the count goes on after closing; the hub tile says "⏱️ ไฟดับมาเกิน 5 ชม.แล้ว" | `brm:air`: the unit and the ticks, never the reading | Nothing |
-| Ways in | The hub's 🥛 tile, `/fridge`, the power-cut and storm guides' next steps, the power-cut result, `/ready`, `/storm`, a shortcut | The hub's 😷 tile ("ค่าฝุ่นนี้ ต้องทำอะไร"), `/air`, the dust guide's next steps, the dust result, `/pm25`, a shortcut | The home check's list, when 💊 is ticked |
+| Asks | "ไฟดับมานานเท่าไรแล้ว?": one of 9 buttons, เพิ่งดับ to 2 วัน (`fridge.quick`), or since v1.11.0 the clock time it went off; in the freezer's card, half full (the default since v1.11.0) or full; ticks for cold medicine (such as insulin) and, since v1.11.0, stored breast milk. Nothing is counted before a tap | "ค่าฝุ่นตอนนี้เป็นสีอะไร?": five colours first, with "ยังไม่รู้สี? 🌐 … (Air4Thai)" under them; or, behind "🔢 รู้ตัวเลข? ใส่ตัวเลขแทน", the kind of number (PM2.5 or Thailand's AQI) and the number. Until v1.11.0 also who at home needs extra care; since then nobody is asked | Pills left, pills a day |
+| Shows | A card per part: a status word ("ยังกินได้" / "ใกล้ครบ 4 ชม." / "เกิน 4 ชม.แล้ว"), then one line (the time left "about", or what to do); a coloured left edge; since v1.11.0, food by food under the fridge (9 to throw out, 4 that keep) and pack by pack under the freezer, insulin, other medicine ("🔎 … ดูฉลากก่อนใช้", never "ทิ้ง") and breast milk; "จำไว้" in four lines; the sources once | The colour and level ("สีส้ม · เริ่มมีผลต่อสุขภาพ") with its band; what everyone at home does; since v1.11.0 always what young children, older people, pregnant women and people with a long-term illness do as well, only the lines not already given; the agencies, with the DOH's two lines named | "⏳ พออีก 4 วัน ต้องมีเพิ่ม 5 เม็ด จะพอ 7 วัน" or "✅ พออีก 7 วัน ครบ 7 วันแล้ว" |
+| Numbers from | The US CDC and Ready.gov; since v1.11.0 also FoodSafety.gov, USDA FSIS, the US FDA (insulin) and the UK FSA, with Siriraj Hospital on insulin (⚠️, said once on screen) | The PCD's notice in the Royal Gazette (2023); the DOH for two lines | The home check's 7 days (`moph-7days`, ⚠️) |
+| Kept | `brm:fridge`: when the power went off and the button tapped (since v1.11.0 also when it came back, and the breast-milk tick), so the count goes on after closing; the hub tile says "⏱️ ไฟดับมาเกิน 5 ชม.แล้ว", and after the power is back "💡 ไฟมาแล้ว ดูว่าต้องทิ้งอะไร" | `brm:air`: the unit (until v1.11.0 also the ticks), never the reading | Nothing |
+| Ways in | The hub's 🥛 tile, `/fridge`, the power-cut and storm guides' next steps (since v1.11.0 also the power-cut guide's first button), the power-cut result, `/ready`, `/storm`, a shortcut | The hub's 🌫️ tile ("ดูสีฝุ่น รู้ว่าต้องทำอะไร"; 😷 until v1.11.0), `/air`, the dust guide's next steps, the dust result, `/pm25`, a shortcut | The home check's list, when 💊 is ticked |
 
-- **The hub** is now the main guide button and a 2 × 2 grid (🎒 📝 / 🥛 😷). The first three tools stay on the first screen at 320 × 460 and 360 × 640; the calculators' row follows ([KNOWN_ISSUES #77](KNOWN_ISSUES.md#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones)).
+- **The hub** is now the main guide button and a 2 × 2 grid (🎒 📝 / 🥛 🌫️), with "🔒 ฟรี ไม่ต้องสมัคร ไม่ขอข้อมูลส่วนตัว" under it and "ก+" at the top for larger text (v1.11.0). The first three tools stay on the first screen at 320 × 460 and 360 × 640; the calculators' row follows ([KNOWN_ISSUES #77](KNOWN_ISSUES.md#77-the-fridge-and-dust-tiles-are-below-the-first-screen-on-the-smallest-phones)).
 - **Rounding:** each status comes from the exact time, so it never looks safer than the source; times on screen read "about" (ราว), to the minute, and a time left of 3 hours or more in whole hours, while the time off keeps its minutes (v1.10.1; v1.10.0's time off up and time left down read "59 นาที" just after a tap).
 - **The unit question:** behind "รู้ตัวเลข?", the dust tool asks whether the number is µg/m³ or Thailand's AQI, because the same number is a different colour (AQI 152 orange, 152 µg/m³ red), and sends people with a foreign app to the PM2.5 number. The colour, first, needs no unit.
 - **Plain words:** the dust advice is in everyday words with the notice's meaning and strength kept: ให้น้อยลง (reduce), ให้สั้นลง (limit), เลี่ยง (avoid), งด (stop) stay four different words.
-- **After the answer:** in both tools the answer scrolls into view after a tap (or a number); "📤 ส่งให้คนที่บ้าน" sends the result as text (LINE, the phone's share sheet, copy) with the tool's link; the fridge's 🎒 opens the home check, and the dust tool's "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" the dust guide. When a sheet opens, its title takes the focus, so no button looks chosen.
-- **Guardrails:** no number of our own, a foreign figure flagged on screen, no promise that food is safe ("ราว"), no medical advice in the pills (arithmetic only), and nothing typed or read leaves the phone.
+- **After the answer:** in both tools the answer scrolls into view after a tap (or a number); "📤 ส่งให้คนที่บ้าน" sends the result as text (LINE, the phone's share sheet, copy) with the tool's link; the fridge's 🎒 opens the home check, and the dust tool's "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" ("📋 ห้องปลอดฝุ่น 10 ข้อ" since v1.11.0) the dust guide. Since v1.11.0 the fridge's text starts with the clock time the power went off ("ไฟดับตั้งแต่ราว 21:10 น. (3 ชม.แล้ว)") and lists what to throw out and keep, because it is read later. When a sheet opens, its title takes the focus, so no button looks chosen.
+- **Guardrails:** no number of our own, a foreign figure flagged on screen, no promise that food is safe ("ราว"), no medical advice in the pills (arithmetic only), and nothing typed or read leaves the phone. Since v1.11.0: never "throw it out" for medicine, a verdict per food only from a named chart row (น้ำปลา left out, "ของที่ไม่อยู่ในรายการ ไม่แน่ใจให้ทิ้ง" under every list), and the at-risk advice never behind a tick ([GUIDELINES rules 83–86](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 
 ## Playing a round
 
@@ -408,12 +413,12 @@ Hazard-huntz/               (repository root = Cloudflare Pages root directory)
 │   │   ├── round.js        timer, water / smoke / haze / dark (darkLevel, hoursOut, lostAfter), choices, score (pure, unit-tested)
 │   │   ├── run.js          v1 single round / v2 combo structure
 │   │   ├── scene.js        inline SVG rooms, sprites, tap areas, water, smoke (redrawn by geometry, v1.9.1), haze, the dark (_dark), badges (wet, smoked, spoiled; a dash for a tapped decoy), room tabs with the lost mark
-│   │   ├── cards.js        canvas: result card (the ending bubble under the gecko, endingBubble, v1.9.2), checklists (a plain layout for guides without sprites, v1.9.0), link previews; a theme per mode and guide (THEMES: stock since v1.7.0; landslide, storm, quake, heat since v1.9.0)
+│   │   ├── cards.js        canvas: result card (the ending bubble under the gecko, endingBubble, v1.9.2), checklists (a plain layout for guides without sprites, v1.9.0), link previews; a theme per mode and guide (THEMES: stock since v1.7.0; landslide, storm, quake, heat since v1.9.0); drawCalls, the numbers with their names on a guide's picture and the plan card (v1.11.0)
 │   │   ├── svgdraw.js      tiny SVG→canvas renderer (no image decoding)
 │   │   ├── share.js        Web Share + LINE/FB/X/copy/save, challenge links; openExternal keeps the game's tab (v1.9.1)
 │   │   ├── collection.js   safety book: playable lessons, merge learned ids (pure, unit-tested)
-│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing, print (loaded on open, v1.8.0); the cards link /kit and /plan (v1.9.0); the calculators (v1.10.0): openFridge, openAir, the pills, textShare (a result sent as text)
-│   │   ├── kitplan.js      the household's list, score and missing things from kit.json; fridgePlan, medDays, airLevel, airAdvice (v1.10.0) (pure, unit-tested)
+│   │   ├── kit.js          the home check and the plan card: sheets, kit and plan cards, sharing, print (loaded on open, v1.8.0); the cards link /kit and /plan (v1.9.0); the calculators (v1.10.0): openFridge, openAir, the pills, textShare (a result sent as text); food by food, the time box and "ไฟมาแล้ว" with an end, and copy-as-text for the plan and the missing list (shareImage's copy, v1.11.0)
+│   │   ├── kitplan.js      the household's list, score and missing things from kit.json; fridgePlan, medDays, airLevel, airAdvice (v1.10.0); fridgeFoods, overAs and the half-full default, the at-risk lines for everyone (v1.11.0) (pure, unit-tested)
 │   │   ├── mascot.js       น้องจก (SVG, faces, props: hood, torch, mask, firehat, and helmet and sunhat since v1.9.2)
 │   │   ├── ui.js           screens, the bottom sheet (its ✕, v1.9.1), the back button's history entries for the game and result screens and sheets (settleHistory, setScreenBack, v1.9.2), toasts; canPrint and printList (an A4 list for a guide or the kit, v1.9.0)
 │   │   ├── util.js         $, esc, store, dates, inAppBrowser; keepTogether: setKeepTogether, keptSpans, keepWordsIn, observeKeptWords (v1.9.1)

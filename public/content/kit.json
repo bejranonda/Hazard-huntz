@@ -383,21 +383,21 @@
     }
   ],
   "fridge": {
-    "_readme": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม? (/fridge, /?open=fridge) แตะเวลาที่ไฟดับ (quick, ชั่วโมง) แล้วแต่ละช่องบอกสถานะสั้นๆ (say) กับรายละเอียด (ok / over / note) ชั่วโมงทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ) แหล่งเป็นต่างประเทศ จึงเป็น partial",
+    "_readme": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม? (/fridge, /?open=fridge) แตะเวลาที่ไฟดับ (quick, ชั่วโมง) แล้วแต่ละช่องบอกสถานะสั้นๆ (say) กับรายละเอียด (ok / over / note) ของแต่ละอย่าง (foods: after = discard ทิ้ง / keep เก็บได้ เมื่อเกินเวลาของตู้เย็น; frozen: crystals = ยังมีเกล็ดน้ำแข็ง, thawed = ละลายหมด, refreeze / discard) ตามตารางของ FoodSafety.gov และ USDA FSIS ชั่วโมงและตัวเลขทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ) แหล่งเป็นต่างประเทศ จึงเป็น partial ตัวเลือกแรกของ freezer คือค่าเริ่มต้น (ครึ่งช่อง 24 ชม. ที่ปลอดภัยกว่า)",
     "maxHours": 72,
     "freezer": [
-      {
-        "id": "full",
-        "label": {
-          "th": "เต็มช่อง",
-          "en": "Full"
-        }
-      },
       {
         "id": "half",
         "label": {
           "th": "ครึ่งช่อง",
           "en": "Half full"
+        }
+      },
+      {
+        "id": "full",
+        "label": {
+          "th": "เต็มช่อง",
+          "en": "Full"
         }
       }
     ],
@@ -429,13 +429,19 @@
           "en": "if the door stays shut"
         },
         "over": {
-          "th": "ทิ้งเนื้อสัตว์ ปลา ไข่ นม และอาหารที่เหลือ",
-          "en": "Throw out meat, fish, eggs, milk and leftovers"
+          "th": "ดูรายการด้านล่างว่าอะไรต้องทิ้ง อะไรเก็บได้",
+          "en": "See the list below: what to throw out, what to keep"
         },
         "sources": [
-          "cdc-food-outage"
+          "cdc-food-outage",
+          "foodsafety-outage"
         ],
-        "verify": "partial"
+        "verify": "partial",
+        "tip": {
+          "th": "มีกระติกกับน้ำแข็ง? ย้ายของสดไปใส่ แล้วเติมน้ำแข็งให้เย็นตลอด",
+          "en": "Got a cool box and ice? Move the fresh food into it and keep it topped up with ice"
+        },
+        "tipAt": "soon"
       },
       {
         "id": "freezer",
@@ -450,8 +456,8 @@
         },
         "say": {
           "ok": {
-            "th": "ยังเก็บได้",
-            "en": "Still safe"
+            "th": "ยังแข็งอยู่",
+            "en": "Still frozen"
           },
           "soon": {
             "th": "ใกล้ครบเวลา",
@@ -467,11 +473,54 @@
           "en": "if it stays shut"
         },
         "over": {
-          "th": "ห้ามชิมเพื่อดู ไม่แน่ใจให้ทิ้ง",
-          "en": "Never taste it to check; if in doubt, throw it out"
+          "th": "ดูทีละห่อตามรายการด้านล่าง",
+          "en": "Check each pack, as listed below"
         },
         "sources": [
-          "cdc-food-outage"
+          "cdc-food-outage",
+          "foodsafety-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "insulin",
+        "if": "med",
+        "icon": "💉",
+        "label": {
+          "th": "อินซูลิน",
+          "en": "Insulin"
+        },
+        "days": 28,
+        "say": {
+          "ok": {
+            "th": "ยังใช้ได้",
+            "en": "Still usable"
+          },
+          "soon": {
+            "th": "ใกล้ครบ 28 วัน",
+            "en": "Nearly 28 days"
+          },
+          "over": {
+            "th": "เกิน 28 วันแล้ว",
+            "en": "Over 28 days"
+          }
+        },
+        "ok": {
+          "th": "เก็บนอกตู้เย็นได้ถึง 28 วัน ถ้าไม่ร้อนเกิน 30°C ไม่โดนแดด และห้ามแช่แข็ง",
+          "en": "Keeps out of the fridge for up to 28 days at up to 30°C, out of the sun; never freeze it"
+        },
+        "note": {
+          "th": "ห้องร้อนเกิน 30°C ยาจะค่อยๆ เสื่อม แต่ถ้ายังไม่มียาใหม่ ใช้ต่อได้ แล้วรีบหามาเปลี่ยน",
+          "en": "Above 30°C it slowly loses strength, but if there is no new supply yet, keep using it and replace it soon"
+        },
+        "over": {
+          "th": "ถามเภสัชกรหรือโรงพยาบาล แล้วหายาใหม่มาเปลี่ยน",
+          "en": "Ask a pharmacist or the hospital, and get a new supply"
+        },
+        "sources": [
+          "fda-insulin",
+          "siriraj-insulin",
+          "fda-drugs-disaster"
         ],
         "verify": "partial"
       },
@@ -480,8 +529,8 @@
         "if": "med",
         "icon": "💊",
         "label": {
-          "th": "ยาที่ต้องเก็บในตู้เย็น",
-          "en": "Medicine that must be kept cold"
+          "th": "ยาอื่นที่ต้องเก็บในตู้เย็น",
+          "en": "Other medicine that must be kept cold"
         },
         "days": 1,
         "say": {
@@ -496,22 +545,108 @@
           "over": {
             "th": "เกิน 1 วันแล้ว",
             "en": "Over a day"
+          },
+          "check": {
+            "th": "เกิน 1 วันแล้ว ดูฉลากก่อนใช้",
+            "en": "Over a day: check the label"
           }
         },
         "ok": {
           "th": "อีกราว {left} จะครบ 1 วัน",
-          "en": "About {left} until a day"
+          "en": "About {left} until it has been a day"
         },
         "note": {
-          "th": "ถ้าไฟดับเกิน 1 วัน Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้",
-          "en": "If the power is off over a day, Ready.gov says throw it out unless the label says it can be kept out of the fridge"
+          "th": "ถ้าไฟดับเกิน 1 วัน ให้ดูฉลากยา ถ้าไม่ได้บอกว่าเก็บนอกตู้เย็นได้ ให้ถามเภสัชกรก่อนใช้",
+          "en": "If the power is off over a day, check the label; if it does not say it can be kept out of the fridge, ask a pharmacist before using it"
         },
         "over": {
-          "th": "Ready.gov แนะให้ทิ้ง เว้นแต่ฉลากยาบอกว่าเก็บนอกตู้เย็นได้",
-          "en": "Ready.gov says throw it out unless the label says it can be kept out of the fridge"
+          "th": "ฉลากไม่ได้บอกว่าเก็บนอกตู้เย็นได้ ถามเภสัชกรก่อนใช้ ยาที่ขาดไม่ได้ อย่าเพิ่งทิ้ง ใช้ไปก่อนจนกว่าจะได้ยาใหม่",
+          "en": "If the label does not say it can be kept out of the fridge, ask a pharmacist before using it; never throw away a medicine you cannot do without, keep using it until you get a new supply"
         },
         "sources": [
-          "readygov-outage"
+          "readygov-outage",
+          "fda-drugs-disaster"
+        ],
+        "verify": "partial",
+        "overAs": "check"
+      },
+      {
+        "id": "milk",
+        "if": "milk",
+        "icon": "🤱",
+        "label": {
+          "th": "นมแม่ในตู้เย็น",
+          "en": "Breast milk in the fridge"
+        },
+        "hours": 4,
+        "say": {
+          "ok": {
+            "th": "ยังใช้ได้",
+            "en": "Still fine"
+          },
+          "soon": {
+            "th": "ใกล้ครบ {h} ชม.",
+            "en": "Nearly {h} hours"
+          },
+          "over": {
+            "th": "เกิน {h} ชม.แล้ว",
+            "en": "Over {h} hours"
+          }
+        },
+        "cond": {
+          "th": "ถ้าไม่เปิดตู้",
+          "en": "if the door stays shut"
+        },
+        "over": {
+          "th": "นมที่ไม่เย็นแล้ว ไม่แน่ใจให้ทิ้ง",
+          "en": "Milk that is no longer cold: if in doubt, throw it out"
+        },
+        "sources": [
+          "cdc-emergency-feeding"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "milkFrozen",
+        "if": "milk",
+        "icon": "🤱",
+        "label": {
+          "th": "นมแม่ในช่องแช่แข็ง",
+          "en": "Breast milk in the freezer"
+        },
+        "hoursBy": {
+          "half": 24,
+          "full": 48
+        },
+        "say": {
+          "ok": {
+            "th": "ยังแข็งอยู่",
+            "en": "Still frozen"
+          },
+          "soon": {
+            "th": "ใกล้ครบเวลา",
+            "en": "Nearly time"
+          },
+          "over": {
+            "th": "เกิน {h} ชม.แล้ว",
+            "en": "Over {h} hours"
+          }
+        },
+        "cond": {
+          "th": "ถ้าไม่เปิดช่องแช่แข็ง",
+          "en": "if it stays shut"
+        },
+        "tip": {
+          "th": "อุดช่องว่างในช่องแช่แข็งด้วยกระดาษหนังสือพิมพ์หรือขวดน้ำแช่แข็ง จะเย็นนานขึ้น",
+          "en": "Fill the gaps in the freezer with crumpled newspaper or frozen bottles of water, so it stays cold longer"
+        },
+        "tipAt": "always",
+        "over": {
+          "th": "ดูทีละถุง: ยังมีเกล็ดน้ำแข็ง แช่แข็งต่อได้ · ละลายหมดแต่ยังเย็น ใส่ตู้เย็น ใช้ภายในวันถัดไป หรือทิ้ง · ห้ามแช่แข็งซ้ำนมที่ละลายแล้ว",
+          "en": "Check each bag: still has ice crystals, refreeze it · fully thawed but still cold, put it in the fridge and use it within the next day, or throw it out · never refreeze thawed milk"
+        },
+        "sources": [
+          "cdc-emergency-feeding"
         ],
         "verify": "partial"
       }
@@ -541,6 +676,17 @@
         "verify": "partial"
       },
       {
+        "icon": "🌡️",
+        "text": {
+          "th": "ห้องร้อนหรือเปิดตู้บ่อย ของจะอยู่ได้สั้นกว่าเวลาข้างบน",
+          "en": "In a hot room, or with the door opened often, food keeps less long than the times above"
+        },
+        "sources": [
+          "uk-fsa-powercut"
+        ],
+        "verify": "partial"
+      },
+      {
         "icon": "🥫",
         "text": {
           "th": "กระป๋องที่บุบ บวม รั่ว หรือเป็นสนิม ให้ทิ้ง",
@@ -563,6 +709,306 @@
       12,
       24,
       48
+    ],
+    "foods": [
+      {
+        "id": "meat",
+        "icon": "🥩",
+        "label": {
+          "th": "เนื้อสัตว์ ปลา กุ้ง ทั้งดิบและสุก",
+          "en": "Meat, fish and prawns, raw or cooked"
+        },
+        "short": {
+          "th": "เนื้อสัตว์ ปลา กุ้ง",
+          "en": "meat, fish, prawns"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "balls",
+        "icon": "🌭",
+        "label": {
+          "th": "ลูกชิ้น ไส้กรอก หมูยอ แฮม",
+          "en": "Meatballs, sausages, Thai pork roll, ham"
+        },
+        "short": {
+          "th": "ลูกชิ้น ไส้กรอก",
+          "en": "meatballs, sausages"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "dishes",
+        "icon": "🍛",
+        "label": {
+          "th": "กับข้าวที่เหลือ แกง ต้ม ผัด เต้าหู้",
+          "en": "Leftover dishes: curries, soups, stir-fries, tofu"
+        },
+        "short": {
+          "th": "กับข้าวที่เหลือ",
+          "en": "leftovers"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "rice",
+        "icon": "🍚",
+        "label": {
+          "th": "ข้าวสุก ข้าวเหนียว เส้นสด ขนมจีน",
+          "en": "Cooked rice, sticky rice, fresh noodles, khanom jeen"
+        },
+        "short": {
+          "th": "ข้าวสุก เส้นสด",
+          "en": "cooked rice, fresh noodles"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "eggs",
+        "icon": "🥚",
+        "label": {
+          "th": "ไข่ ทั้งดิบและต้ม",
+          "en": "Eggs, raw or boiled"
+        },
+        "short": {
+          "th": "ไข่",
+          "en": "eggs"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage",
+          "cdc-food-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "milk",
+        "icon": "🥛",
+        "label": {
+          "th": "นมสด นมที่เปิดแล้ว นมเปรี้ยว โยเกิร์ต น้ำเต้าหู้",
+          "en": "Fresh milk, opened milk, drinking yoghurt, yoghurt, soy milk"
+        },
+        "short": {
+          "th": "นม โยเกิร์ต",
+          "en": "milk, yoghurt"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "formula",
+        "icon": "🍼",
+        "label": {
+          "th": "นมผงที่ชงแล้ว",
+          "en": "Made-up baby formula"
+        },
+        "short": {
+          "th": "นมผงที่ชงแล้ว",
+          "en": "made-up formula"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "cdc-emergency-feeding"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "cut",
+        "icon": "🥭",
+        "label": {
+          "th": "ผักผลไม้ที่หั่นแล้ว ผักสลัดถุง",
+          "en": "Cut fruit and vegetables, bagged salad"
+        },
+        "short": {
+          "th": "ผักผลไม้ที่หั่นแล้ว",
+          "en": "cut fruit and veg"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage",
+          "cdc-food-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "cream",
+        "icon": "🍰",
+        "label": {
+          "th": "เค้กครีม ขนมไส้ครีม สังขยา",
+          "en": "Cream cakes, cream-filled pastries, custard"
+        },
+        "short": {
+          "th": "ขนมครีม สังขยา",
+          "en": "cream cakes, custard"
+        },
+        "after": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "whole",
+        "icon": "🥕",
+        "label": {
+          "th": "ผักผลไม้ทั้งลูกที่ยังไม่หั่น ผักสมุนไพรสด",
+          "en": "Whole fruit and vegetables, not cut; fresh herbs"
+        },
+        "short": {
+          "th": "ผักผลไม้ทั้งลูก",
+          "en": "whole fruit and veg"
+        },
+        "after": "keep",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "bread",
+        "icon": "🍞",
+        "label": {
+          "th": "ขนมปัง เค้กที่ไม่มีครีม",
+          "en": "Bread, cakes without cream"
+        },
+        "short": {
+          "th": "ขนมปัง",
+          "en": "bread"
+        },
+        "after": "keep",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "butter",
+        "icon": "🧀",
+        "label": {
+          "th": "เนย มาการีน ชีสแข็ง ชีสแผ่น",
+          "en": "Butter, margarine, hard cheese, cheese slices"
+        },
+        "short": {
+          "th": "เนย ชีสแข็ง",
+          "en": "butter, hard cheese"
+        },
+        "after": "keep",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "sauces",
+        "icon": "🍯",
+        "label": {
+          "th": "ซีอิ๊ว ซอสมะเขือเทศ แยม เนยถั่ว",
+          "en": "Soy sauce, ketchup, jam, peanut butter"
+        },
+        "short": {
+          "th": "ซีอิ๊ว ซอส แยม",
+          "en": "soy sauce, ketchup, jam"
+        },
+        "after": "keep",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      }
+    ],
+    "frozen": [
+      {
+        "id": "meat",
+        "icon": "🥩",
+        "label": {
+          "th": "เนื้อสัตว์ ปลา กุ้ง",
+          "en": "Meat, fish and prawns"
+        },
+        "crystals": "refreeze",
+        "thawed": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "meals",
+        "icon": "🥟",
+        "label": {
+          "th": "อาหารแช่แข็งสำเร็จรูป เกี๊ยว ซาลาเปา",
+          "en": "Frozen ready meals, dumplings, steamed buns"
+        },
+        "crystals": "refreeze",
+        "thawed": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "icecream",
+        "icon": "🍦",
+        "label": {
+          "th": "ไอศกรีม",
+          "en": "Ice cream"
+        },
+        "crystals": "discard",
+        "thawed": "discard",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      },
+      {
+        "id": "bread",
+        "icon": "🍞",
+        "label": {
+          "th": "ขนมปัง",
+          "en": "Bread"
+        },
+        "crystals": "refreeze",
+        "thawed": "refreeze",
+        "sources": [
+          "foodsafety-outage",
+          "fsis-outage"
+        ],
+        "verify": "partial"
+      }
     ]
   },
   "air": {
@@ -908,24 +1354,23 @@
       "planMake": "สร้างการ์ดแผนครอบครัว",
       "planEmpty": "กรอกอย่างน้อย 1 ช่องก่อนนะ",
       "planShareTitle": "การ์ดแผนครอบครัว",
-      "planKeep": "เซฟไว้ในมือถือทุกคน และเก็บสำเนาไว้ในกระเป๋าฉุกเฉิน",
-      "planShareText": "แผนครอบครัวของบ้านเรา 📝 เซฟไว้ในมือถือทุกคนนะ ทำของบ้านคุณได้ที่ 👉 {url} #บ้านรอดไหม",
+      "planKeep": "เซฟไว้ในมือถือทุกคน และพิมพ์เก็บไว้กับเอกสารสำคัญ",
+      "planShareText": "ทำการ์ดแผนครอบครัวของบ้านเราแล้ว 📝 ดูรูปการ์ดที่ส่งในกลุ่ม แล้วเซฟไว้ในมือถือทุกคนนะ ทำของบ้านคุณได้ที่ 👉 {url} #บ้านรอดไหม",
       "planDate": "ทำเมื่อ {date}",
       "helpLabel": "เบอร์ช่วยเหลือ โทรฟรี",
       "close": "ปิด",
       "fridgeTitle": "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?",
-      "fridgeIntro": "แตะว่าไฟดับมานานเท่าไร แล้วดูคำตอบด้านล่าง",
+      "fridgeIntro": "แตะว่าไฟดับมานานเท่าไร แล้วดูว่าของแต่ละอย่างยังกินได้ไหม",
       "fridgeHours": "ไฟดับมานานเท่าไรแล้ว?",
       "fridgeElapsed": "{h} ชม. {m} นาที",
-      "fridgeFreezer": "ช่องแช่แข็งมีของ",
-      "fridgeMed": "มียาที่ต้องเก็บในตู้เย็น",
+      "fridgeFreezer": "ช่องแช่แข็งมีของ (ไม่แน่ใจ เลือกครึ่งช่อง)",
+      "fridgeMed": "มียาที่ต้องเก็บในตู้เย็น เช่น อินซูลิน",
       "fridgeNowHead": "คำตอบ",
       "fridgeAlways": "จำไว้",
-      "fridgeIntl": "ตัวเลขชั่วโมงมาจาก CDC และ Ready.gov ของสหรัฐฯ ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานไทย",
+      "fridgeIntl": "เวลาและรายการมาจากหน่วยงานสหรัฐฯ (CDC, FoodSafety.gov, USDA, FDA) เรื่องอินซูลินตรงกับโรงพยาบาลศิริราช ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานรัฐของไทย",
       "fridgeReset": "ไฟมาแล้ว",
       "fridgeShare": "📤 ส่งให้คนที่บ้าน",
-      "fridgeShareHead": "ไฟดับมาแล้ว {elapsed}",
-      "fridgeShareTail": "เช็กของบ้านคุณ: {url}",
+      "fridgeShareTail": "เช็กตู้เย็นเอง: {url}",
       "fridgeKit": "🎒 เช็กของจำเป็นสำหรับไฟดับ",
       "hours": "{n} ชม.",
       "minutes": "{n} นาที",
@@ -937,26 +1382,24 @@
       "medEnough": "✅ พออีก {days} วัน ครบ {target} วันแล้ว",
       "medShort": "⏳ พออีก {days} วัน ต้องมีเพิ่ม {need} เม็ด จะพอ {target} วัน",
       "airTitle": "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?",
-      "airIntro": "ดูสีค่าฝุ่นในแอป เช่น Air4Thai แล้วแตะสีเดียวกันด้านล่าง",
+      "airIntro": "ดูสีค่าฝุ่นตอนนี้ แล้วแตะสีเดียวกันด้านล่าง รู้ทันทีว่าทุกคนในบ้านควรทำอะไร",
       "airUnit": "ตัวเลขนี้เป็นแบบไหน?",
       "airValue": "ตัวเลข",
       "airAvg": "ใช้ตัวเลขจากแอปของไทย เช่น Air4Thai แอปต่างประเทศใช้ AQI คนละแบบ ให้ใส่ตัวเลข PM2.5 แทน สีตามเกณฑ์ใช้ค่าเฉลี่ย 24 ชั่วโมง",
-      "airCheck": "🌐 ดูค่าฝุ่นใน Air4Thai",
-      "airWho": "ในบ้านมีใครต้องระวังเป็นพิเศษไหม?",
+      "airCheck": "ยังไม่รู้สี? 🌐 เปิดดูในเว็บกรมควบคุมมลพิษ (Air4Thai)",
       "airLevel": "สี{name}",
       "airRange": "{lo}–{hi} {unit}",
       "airRangeTop": "{lo} {unit} ขึ้นไป",
       "airAll": "ทุกคนในบ้าน",
       "airRisk": "สำหรับ{who}",
       "airChronic": "เพิ่มเติมสำหรับคนมีโรคประจำตัว",
-      "airRiskHint": "ถ้าในบ้านมีเด็กเล็ก ผู้สูงอายุ คนท้อง หรือคนมีโรคประจำตัว ติ๊กด้านบน จะเห็นคำแนะนำเพิ่ม",
       "airNone": "แตะสีด้านบน แล้วคำแนะนำจะขึ้นตรงนี้",
       "airSame": "ทำแบบเดียวกับทุกคน",
       "airShare": "📤 ส่งให้คนที่บ้าน",
       "airShareHead": "ฝุ่นตอนนี้ {value} สี{name}",
       "airShareColour": "ฝุ่นตอนนี้ สี{name}",
-      "airShareTail": "เช็กของบ้านคุณ: {url}",
-      "airGuide": "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ",
+      "airShareTail": "เช็กสีฝุ่นเอง: {url}",
+      "airGuide": "📋 ห้องปลอดฝุ่น 10 ข้อ",
       "airPrivacy": "คำตอบอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน",
       "airBy": "({agency})",
       "fridgeJust": "เพิ่งดับ",
@@ -964,10 +1407,38 @@
       "fridgeDays": "{n} วัน",
       "fridgeCounting": "⏱️ ไฟดับมาแล้ว {elapsed} แอปจะนับเวลาต่อให้ ปิดแล้วเปิดใหม่ได้",
       "fridgePick": "แตะเวลาด้านบน แล้วคำตอบจะขึ้นตรงนี้",
-      "fridgeCleared": "ล้างเวลาแล้ว",
       "fridgeLeft": "เหลืออีกราว {left} {cond}",
       "airColourQ": "ค่าฝุ่นตอนนี้เป็นสีอะไร?",
-      "airNumber": "รู้ตัวเลข? ใส่ตัวเลขแทน"
+      "airNumber": "รู้ตัวเลข? ใส่ตัวเลขแทน",
+      "fridgeMilk": "มีนมแม่แช่ไว้",
+      "fridgeTossIf": "❌ ถ้าเกิน {h} ชม. ต้องทิ้ง",
+      "fridgeToss": "❌ ทิ้ง",
+      "fridgeKeepIf": "✅ ไม่ต้องทิ้งเพราะไฟดับ",
+      "fridgeKeep": "✅ เก็บได้ ถ้าไม่ขึ้นรา ไม่มีกลิ่น สี หรือเนื้อผิดปกติ",
+      "fridgeOther": "ของที่ไม่อยู่ในรายการ ไม่แน่ใจให้ทิ้ง",
+      "fridgeCrystals": "ยังมีเกล็ดน้ำแข็ง",
+      "fridgeThawed": "ละลายหมด ไม่เย็นแล้ว",
+      "fridgeRefreeze": "แช่แข็งต่อได้",
+      "fridgeDiscard": "ทิ้ง",
+      "fridgeMelting": "ทิ้ง ถ้าเริ่มละลาย",
+      "fridgeBack": "💡 ไฟมาแล้ว หลังดับไปราว {elapsed} คำตอบด้านล่างคือของที่ต้องจัดการ",
+      "fridgeAgain": "↺ เริ่มนับใหม่",
+      "fridgeClock": "🕘 จำได้ว่าไฟดับตอนกี่โมง?",
+      "fridgeClockUse": "ใช้เวลานี้",
+      "fridgeShareSince": "ไฟดับตั้งแต่ราว {at} ({elapsed}แล้ว)",
+      "fridgeShareBack": "ไฟมาแล้ว หลังดับไปราว {elapsed}",
+      "fridgeShareToss": "❌ ทิ้ง: {list}",
+      "fridgeShareKeep": "✅ เก็บได้: {list}",
+      "fridgeCleared": "ล้างเวลาแล้ว",
+      "fridgeHint": "ไม่ตรงกับปุ่มไหน ให้เลือกเวลาที่นานกว่า",
+      "fridgeCountingJust": "⏱️ ไฟเพิ่งดับ แอปจะนับเวลาต่อให้ ปิดแล้วเปิดใหม่ได้",
+      "medNone": "⏳ ยาหมดแล้ว ต้องมีอย่างน้อย {need} เม็ด จะพอ {target} วัน",
+      "airAlso": "ทำตามข้อด้านบน และ",
+      "picHint": "👆 วิธีส่งทั้งการ์ด: กดค้างที่รูป แล้วกด \"บันทึกรูปภาพ\" จากนั้นส่งรูปในกลุ่มไลน์",
+      "cardMissingN": "ยังขาด {n} อย่าง เช่น",
+      "kitCopy": "🛒 คัดลอกรายการที่ยังขาด",
+      "kitCopyHead": "ของที่บ้านเรายังขาด (บ้านเรา {n} คน)",
+      "planCopy": "📋 คัดลอกแผนเป็นข้อความ"
     },
     "en": {
       "title": "Check your supplies: how ready is our home?",
@@ -1007,24 +1478,23 @@
       "planMake": "Make our plan card",
       "planEmpty": "Fill in at least one box first",
       "planShareTitle": "Family plan card",
-      "planKeep": "Save it on everyone's phone, and keep a copy in the emergency bag",
-      "planShareText": "Our family plan 📝 Save it on your phone. Make one for your home 👉 {url} #BaanRodMai",
+      "planKeep": "Save it on everyone's phone, and keep a printed copy with your important documents",
+      "planShareText": "We've made our family plan card 📝 see the picture in the chat and save it on everyone's phone. Make one for your home 👉 {url} #BaanRodMai",
       "planDate": "Made {date}",
       "helpLabel": "Thai helplines, free to call",
       "close": "Close",
       "fridgeTitle": "Power cut: is the food in the fridge still safe?",
-      "fridgeIntro": "Tap how long the power has been off, and see the answer below.",
+      "fridgeIntro": "Tap how long the power has been off, and see whether each kind of food is still safe.",
       "fridgeHours": "How long has the power been off?",
       "fridgeElapsed": "{h} h {m} min",
-      "fridgeFreezer": "The freezer is",
-      "fridgeMed": "There is medicine that must be kept cold",
+      "fridgeFreezer": "The freezer is (if unsure, pick half full)",
+      "fridgeMed": "There is medicine that must be kept cold, such as insulin",
       "fridgeNowHead": "The answer",
       "fridgeAlways": "Remember",
-      "fridgeIntl": "The hours come from the US CDC and Ready.gov; no Thai agency advice on this was found.",
+      "fridgeIntl": "The times and the lists come from US agencies (CDC, FoodSafety.gov, USDA, FDA); on insulin they match Siriraj Hospital. No Thai government advice on this was found.",
       "fridgeReset": "The power's back",
       "fridgeShare": "📤 Send to the family",
-      "fridgeShareHead": "The power has been off for {elapsed}",
-      "fridgeShareTail": "Check yours: {url}",
+      "fridgeShareTail": "Check your own fridge: {url}",
       "fridgeKit": "🎒 Check the supplies for a power cut",
       "hours": "{n} h",
       "minutes": "{n} min",
@@ -1033,29 +1503,27 @@
       "medLeft": "Pills left",
       "medPerDay": "Pills a day",
       "medHint": "One medicine at a time: see if it lasts at least {target} days",
-      "medEnough": "✅ Lasts {days} more days: {target} or more",
-      "medShort": "⏳ Lasts {days} more days; {need} more pills make {target} days",
+      "medEnough": "✅ Enough for {days} days, at least the {target}-day minimum",
+      "medShort": "⏳ Enough for {days} days; {need} more pills cover {target} days",
       "airTitle": "Dust today: what should we do at home?",
-      "airIntro": "Look at the dust colour in an app such as Air4Thai, and tap the same colour below.",
+      "airIntro": "Find the dust colour now and tap the same colour below: you will see what everyone at home should do.",
       "airUnit": "Which number is it?",
       "airValue": "The number",
       "airAvg": "Use the number from a Thai app such as Air4Thai. Apps from abroad use a different AQI, so put in the PM2.5 number instead. The colours are for the 24-hour average.",
-      "airCheck": "🌐 See the reading on Air4Thai",
-      "airWho": "Is anyone at home who needs extra care?",
+      "airCheck": "Don't know the colour? 🌐 See it on the PCD's Air4Thai",
       "airLevel": "{name}",
       "airRange": "{lo}–{hi} {unit}",
       "airRangeTop": "{lo} {unit} and over",
       "airAll": "Everyone at home",
       "airRisk": "For {who}",
       "airChronic": "Also, for people with a long-term illness",
-      "airRiskHint": "If anyone at home is a young child, older, pregnant or has a long-term illness, tick above to see more advice.",
       "airNone": "Tap a colour above and the advice shows here.",
       "airSame": "The same as everyone",
       "airShare": "📤 Send to the family",
       "airShareHead": "The dust now: {value}, {name}",
       "airShareColour": "The dust now: {name}",
-      "airShareTail": "Check yours: {url}",
-      "airGuide": "😷 10 ways to keep dust out of the house",
+      "airShareTail": "Check it yourself: {url}",
+      "airGuide": "📋 10 things to do on PM2.5 days",
       "airPrivacy": "Your answers stay on this device; nothing is sent.",
       "airBy": "— {agency}",
       "fridgeJust": "Just now",
@@ -1063,10 +1531,38 @@
       "fridgeDays": "{n} days",
       "fridgeCounting": "⏱️ Off for {elapsed} so far. The app keeps counting, even if you close it.",
       "fridgePick": "Tap a time above and the answer shows here.",
-      "fridgeCleared": "Time cleared",
       "fridgeLeft": "About {left} left, {cond}",
       "airColourQ": "What colour is the dust now?",
-      "airNumber": "Know the number? Put it in instead"
+      "airNumber": "Know the number? Put it in instead",
+      "fridgeMilk": "There is stored breast milk",
+      "fridgeTossIf": "❌ After {h} hours, throw out",
+      "fridgeToss": "❌ Throw out",
+      "fridgeKeepIf": "✅ No need to throw out because of the power cut",
+      "fridgeKeep": "✅ Keep, unless it is mouldy or smells, looks or feels odd",
+      "fridgeOther": "Anything not on the list: if in doubt, throw it out",
+      "fridgeCrystals": "Still has ice crystals",
+      "fridgeThawed": "Fully thawed, no longer cold",
+      "fridgeRefreeze": "refreeze",
+      "fridgeDiscard": "throw out",
+      "fridgeMelting": "throw out once it starts to melt",
+      "fridgeBack": "💡 The power is back after about {elapsed} off. The answer below is what to sort out.",
+      "fridgeAgain": "↺ Start again",
+      "fridgeClock": "🕘 Remember what time it went off?",
+      "fridgeClockUse": "Use this time",
+      "fridgeShareSince": "The power has been off since about {at} ({elapsed})",
+      "fridgeShareBack": "The power is back after about {elapsed} off",
+      "fridgeShareToss": "❌ Throw out: {list}",
+      "fridgeShareKeep": "✅ Keep: {list}",
+      "fridgeCleared": "Time cleared",
+      "fridgeHint": "Between two buttons? Pick the longer time.",
+      "fridgeCountingJust": "⏱️ It has just gone off. The app keeps counting, even if you close it.",
+      "medNone": "⏳ None left: {need} pills are needed to cover {target} days",
+      "airAlso": "All of the above, and:",
+      "picHint": "👆 To send the whole card: press and hold the picture, choose \"Save image\", then send the picture in the chat",
+      "cardMissingN": "Still missing {n}, including",
+      "kitCopy": "🛒 Copy what we still need",
+      "kitCopyHead": "What our home still needs ({n} people)",
+      "planCopy": "📋 Copy the plan as text"
     }
   }
 }

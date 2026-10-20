@@ -230,16 +230,19 @@ function renderStart() {
   const kitChip = $('#kit-chip');
   if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('hubKitScore', { pct: kitSaved.pct }) : t('hubKitSub');
   // The fridge: "ไฟดับมา 3 ชม.แล้ว" while a power cut is being counted (up to 3 days).
+  // After "the power's back", it says so for a day: there is still food to sort out.
   const cut = store.get('fridge', null);
   const offH = cut?.start ? Math.floor((Date.now() - cut.start) / 3600e3) : -1;
+  const back = cut?.end && Date.now() - cut.end < 24 * 3600e3;
   const fridgeChip = $('#fridge-chip');
-  if (fridgeChip) fridgeChip.textContent = offH < 0 || offH > 72 ? t('hubFridgeSub') : offH ? t('hubFridgeRunning', { h: offH }) : t('hubFridgeJust');
+  if (fridgeChip) fridgeChip.textContent = back ? t('hubFridgeBack') : offH < 0 || offH > 72 || cut?.end ? t('hubFridgeSub') : offH ? t('hubFridgeRunning', { h: offH }) : t('hubFridgeJust');
 
-  // The owner's alert (config.alert, until its end date): that guide, first.
+  // The owner's alert (config.alert, until its end date): that guide, first; it says until when.
+  const alertUntil = (cfg) => new Date(`${cfg.alert.until}T12:00:00+07:00`).toLocaleDateString(getLang() === 'en' ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', timeZone: 'Asia/Bangkok' });
   const alertId = activeAlert(content().config, today);
   const alertEl = $('#alert-card');
   if (alertId && content().checklists[alertId] && !state.challenge) {
-    alertEl.innerHTML = `<button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(guideOf(alertId)?.icon || '📢')}</span><span>${esc(t('alertCard', { name: t(mk('guide', alertId)) }))}</span><span aria-hidden="true">›</span></button>`;
+    alertEl.innerHTML = `<button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(guideOf(alertId)?.icon || '📢')}</span><span>${esc(t('alertCard', { name: t(mk('guide', alertId)), until: alertUntil(content().config) }))}</span><span aria-hidden="true">›</span></button>`;
     alertEl.hidden = false;
     $('#alert-open').addEventListener('click', () => openChecklist(alertId, 'alert'));
   } else alertEl.hidden = true;
@@ -308,6 +311,21 @@ function bindGlobal() {
     $('#btn-lang').textContent = t('langSwitch');
     applyStaticStrings();
     renderStart();
+  });
+
+  // Larger text (v1.11.0, for older readers): the start screen and every sheet at 115 %,
+  // not the game's room, whose tap areas are measured. Kept on this device only.
+  const bigBtn = $('#btn-big');
+  const paintBig = () => {
+    const on = !!store.get('big', false);
+    document.documentElement.classList.toggle('big', on);
+    bigBtn?.setAttribute('aria-pressed', String(on));
+  };
+  paintBig();
+  bigBtn?.addEventListener('click', () => {
+    store.set('big', !store.get('big', false));
+    paintBig();
+    track('big_text', { label: store.get('big', false) ? 'on' : 'off' });
   });
 
   const soundBtn = $('#btn-sound');
@@ -804,6 +822,8 @@ async function showResult(result) {
       <span class="who">${esc(L(h.who))}<span class="what">${esc(L(h.what))}</span></span>
     </a></li>`).join('');
   const fUrl = forecastUrl(mode);
+  // v1.11.0: what to do next for the home sits right under share, not three screens down.
+  const hzTools = (C.config.hazards?.[modeOf(mode)?.hazard]?.tools || []).filter((x) => TOOLS[x]);
 
   $('#result').innerHTML = `
     <div class="card-wrap">
@@ -831,16 +851,19 @@ async function showResult(result) {
       <button class="btn secondary small" type="button" id="btn-other">${esc(t('playOther', { mode: t(mk('mode', other)) }))}</button>
       <button class="btn secondary small" type="button" id="btn-random">🎲 ${esc(t('playRandom'))}</button>
     </div>
+    <h2 class="section-title">${esc(t('guideNext'))}</h2>
+    <div class="result-next">
+      <button class="btn secondary" type="button" id="btn-checklist">📋 ${esc(L(C.checklists[mode]?.title) || t('checklists'))}</button>
+      ${hzTools.includes('kit') ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
+      ${hzTools.filter((x) => x !== 'kit').map((x) => `<button class="btn secondary" type="button" data-result-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}
+      ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
+    </div>
     <h2 class="section-title">${esc(t('lessonTitle'))}</h2>
     <ul class="lessons">${lessons}</ul>
-    <button class="btn secondary small" type="button" id="btn-home">${esc(t('home'))}</button>
     <h2 class="section-title">${esc(t('helpTitle'))}</h2>
     <ul class="help-list">${help}</ul>
     <p class="note">${esc(t('helpNote'))}</p>
-    ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
-    ${(C.config.hazards?.[modeOf(mode)?.hazard]?.tools || []).includes('kit') ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
-    ${(C.config.hazards?.[modeOf(mode)?.hazard]?.tools || []).filter((x) => x === 'fridge' || x === 'air').map((x) => `<button class="btn secondary" type="button" data-result-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}
-    <button class="btn secondary small" type="button" id="btn-checklist">📋 ${esc(t('checklists'))}</button>
+    <button class="btn secondary small" type="button" id="btn-home">${esc(t('home'))}</button>
     <p class="note">${esc(t('disclaimer'))}</p>`;
   showScreen('result');
   const resultGecko = new Gecko($('#result-gecko'), { prop: modeOf(mode)?.prop || 'none' });
@@ -989,7 +1012,7 @@ function goHome() {
 // check, the family plan card and, since v1.10.0, the calculators that take
 // the household's answers and work out what to do (the fridge in a power cut,
 // the dust today). Each has a page of its own (/kit, /plan, /fridge, /air) and ?open=<id>.
-const TOOLS = { kit: '🎒', plan: '📝', fridge: '🥛', air: '😷' };
+const TOOLS = { kit: '🎒', plan: '📝', fridge: '🥛', air: '🌫️' };
 const toolName = (x) => t(`hub${x[0].toUpperCase()}${x.slice(1)}`);
 async function openTool(which, from, mode = '') {
   try {
@@ -1010,6 +1033,13 @@ async function openTool(which, from, mode = '') {
 const guideList = () => (content().config.guides || []).filter((g) => content().checklists[g.id]);
 const guideIds = () => guideList().map((g) => g.id);
 const guideOf = (id) => guideList().find((g) => g.id === id);
+// The numbers that fit the guide (config.json → guides[].calls: 1130 and 1129 in a power cut,
+// 199 first for a fire), each with its short name; the first three main ones otherwise.
+const guideCalls = (id) => {
+  const C = content();
+  const nums = guideOf(id)?.calls || C.helplines.filter((h) => h.main).slice(0, 3).map((h) => h.number);
+  return nums.map((n) => C.helplines.find((h) => h.number === n)).filter(Boolean);
+};
 
 async function openGuides(from = 'start') {
   const C = content();
@@ -1064,17 +1094,19 @@ async function openChecklist(mode, from = '') {
   }).join('');
   const agencies = [...new Set(list.items.flatMap((it) => it.sources || []).map((s) => C.sources[s]?.agency).filter(Boolean))].map(agencyName);
   const partial = list.items.some((it) => it.verify === 'partial');
-  const calls = C.helplines.filter((h) => h.main).slice(0, 3);
+  const calls = guideCalls(mode);
   const tools = (hz?.tools || []).filter((x) => TOOLS[x]);
   openSheet(`
     <h2 id="sheet-title">${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
     ${sections.length > 1 ? `<nav class="phase-jump" aria-label="${esc(t('guideJump'))}">${sections.map((sec) => `<button class="phase-chip phase-${sec.phase}" type="button" data-jump="${sec.phase}">${esc(sec.head)}</button>`).join('')}</nav>` : ''}
-    <p class="tel-row"><span>☎️ <span class="lbl">${esc(t('telFree'))}</span></span>${calls.map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}" data-help="${esc(h.number)}">${esc(h.number)}</a>`).join('')}</p>
+    ${g?.now && TOOLS[g.now] ? `<button class="btn guide-now-btn" type="button" data-tool="${esc(g.now)}">${esc(t(`guideNow${g.now[0].toUpperCase()}${g.now.slice(1)}`))}</button>` : ''}
+    <p class="tel-row"><span>☎️ <span class="lbl">${esc(t('telFree'))}</span></span>${calls.map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}" data-help="${esc(h.number)}"><b>${esc(h.number)}</b>${h.short ? `<small>${esc(L(h.short))}</small>` : ''}</a>`).join('')}</p>
     ${listHtml}
     ${agencies.length || partial ? `<p class="src guide-src">${agencies.length ? `${esc(t('source'))}: ${esc(agencies.join(' · '))}` : ''}${partial ? `<br>${esc(t('guidePartial'))}` : ''}</p>` : ''}
     <div class="guide-actions">
       ${modeIds().includes(mode) ? `<button class="btn" type="button" id="cl-play">${esc(t('guidePlay'))}</button>` : ''}
       ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
+      ${modeIds().includes(mode) && forecastUrl(mode) ? `<a class="btn blue small" id="cl-forecast" href="${esc(forecastUrl(mode))}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     </div>
     ${tools.length ? `<h3>${esc(t('guideNext'))}</h3>
     <div class="btn-row guide-next">${tools.map((x) => `<button class="btn secondary small" type="button" data-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}</div>` : ''}
@@ -1111,7 +1143,7 @@ async function openChecklist(mode, from = '') {
       sections: sections.map((sec) => ({ head: sec.head, items: sec.items.map((it) => ({ text: L(it), note: it.verify === 'partial' ? t('partialItem') : '' })) })),
       foot: [
         agencies.length ? `${t('source')}: ${agencies.join(' · ')}` : '',
-        `${t('clHelpLabel')}: ${C.helplines.filter((h) => h.main).map((h) => h.number).join(' · ')}`,
+        `${t('clHelpLabel')}: ${guideCalls(mode).map((h) => `${h.number} ${L(h.short)}`).join(' · ')}`,
         t('printNote', { url: `${siteUrl().replace(/^https?:\/\//, '')}${pre}/checklist/${mode}`, date: formatHouseDate(bangkokDateKey(), getLang()) }),
         t('disclaimer'),
       ].filter(Boolean),
@@ -1164,6 +1196,7 @@ export function checklistData(mode) {
     items: list.items.map((it) => ({ text: L(it), sprite: it.sprite })),
     helpLabel: t('clHelpLabel'),
     helpNumbers: main.join('  ·  '),
+    calls: guideCalls(mode).map((h) => ({ number: h.number, name: L(h.short) })),
     url: siteUrl(),
     forward: t('clForward'),
     footer: t('cardFooter'),

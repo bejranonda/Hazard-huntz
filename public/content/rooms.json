@@ -3,7 +3,7 @@
   "rooms": [
     {
       "id": "front", "order": 1, "enabled": true, "art": "/art/rooms/front.svg",
-      "name": { "th": "หน้าบ้าน", "en": "Front yard" },
+      "name": { "th": "หน้าบ้าน", "en": "Front of the house" },
       "slots": [
         { "id": "fr-door", "x": 148, "y": 480, "tags": ["door"], "excludes": ["fr-floor-b", "fr-pot"] },
         { "id": "fr-car", "x": 270, "y": 594, "tags": ["car"], "excludes": ["fr-floor-d"] },

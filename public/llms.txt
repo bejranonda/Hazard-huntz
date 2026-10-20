@@ -13,9 +13,9 @@
   - Storms, strong wind and lightning: readying the house and staying safe: https://baanrodmai.autobahn.bot/storm (Thai) · https://baanrodmai.autobahn.bot/en/storm (English)
   - Earthquakes: readying the home, and what to do during and after: https://baanrodmai.autobahn.bot/quake (Thai) · https://baanrodmai.autobahn.bot/en/quake (English)
   - Extreme heat: keeping everyone at home safe from heatstroke: https://baanrodmai.autobahn.bot/heat (Thai) · https://baanrodmai.autobahn.bot/en/heat (English)
-- Family tools that run on the device; nothing typed is sent: Check how ready your home is (free, 1 minute): https://baanrodmai.autobahn.bot/?open=kit (every line and its source: https://baanrodmai.autobahn.bot/kit) · Make your family plan card: https://baanrodmai.autobahn.bot/?open=plan (every line and its source: https://baanrodmai.autobahn.bot/plan) · Dust today: what this reading means at home: https://baanrodmai.autobahn.bot/?open=air (every line and its source: https://baanrodmai.autobahn.bot/air) · Power cut: how long the food in the fridge stays safe: https://baanrodmai.autobahn.bot/?open=fridge (every line and its source: https://baanrodmai.autobahn.bot/fridge)
+- Family tools that run on the device; nothing typed is sent: Check your supplies: how ready is your home? (free, 1 minute): https://baanrodmai.autobahn.bot/?open=kit (every line and its source: https://baanrodmai.autobahn.bot/kit) · Make your family plan card: https://baanrodmai.autobahn.bot/?open=plan (every line and its source: https://baanrodmai.autobahn.bot/plan) · Dust today: tap the colour, see what to do at home: https://baanrodmai.autobahn.bot/?open=air (every line and its source: https://baanrodmai.autobahn.bot/air) · Power cut: what in the fridge to throw out, what to keep: https://baanrodmai.autobahn.bot/?open=fridge (every line and its source: https://baanrodmai.autobahn.bot/fridge)
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
-- Last content update: 2026-10-19
+- Last content update: 2026-10-20
 
 ## Before the flood (ก่อนน้ำมา: เตรียมบ้านให้ทัน)
 

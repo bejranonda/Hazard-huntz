@@ -37,18 +37,37 @@ export function kitMissing(plan, have = [], n = 3) {
 
 // Power cut: how much longer what is in the fridge stays safe (content/kit.json
 // → fridge). hours: since the power went off (fractions allowed); freezer:
-// 'full' | 'half'; med: medicine that must be kept cold is at home.
-// status: 'ok', 'soon' (an hour or less left; display only) or 'over'.
-export function fridgePlan(cfg, { hours = 0, freezer = 'full', med = false } = {}) {
+// 'half' | 'full' (unknown → the first option, half: the shorter, safer time);
+// med: medicine that must be kept cold is at home; milk: stored breast milk.
+// status: 'ok', 'soon' (an hour or less left; display only), 'over', or the
+// part's own overAs ('check' for medicine: never "throw it out", v1.11.0).
+export function fridgePlan(cfg, { hours = 0, freezer = null, med = false, milk = false } = {}) {
   const h = Math.max(0, Number(hours) || 0);
   const fz = cfg.freezer.some((x) => x.id === freezer) ? freezer : cfg.freezer[0].id;
+  const has = { med, milk };
   return cfg.parts
-    .filter((p) => !p.if || (p.if === 'med' && med))
+    .filter((p) => !p.if || has[p.if])
     .map((p) => {
       const limit = p.hours ?? p.hoursBy?.[fz] ?? (p.days != null ? p.days * 24 : 0);
       const left = limit - h;
-      return { id: p.id, part: p, limit, left: Math.max(0, left), status: left <= 0 ? 'over' : left <= 1 ? 'soon' : 'ok' };
+      return { id: p.id, part: p, limit, left: Math.max(0, left), status: left <= 0 ? p.overAs || 'over' : left <= 1 ? 'soon' : 'ok' };
     });
+}
+
+// Food by food (v1.11.0, FoodSafety.gov's and USDA FSIS's charts): the fridge's
+// time decides when, each food's row decides what. Before the fridge's time is
+// up everything is still safe (door shut); after it, "discard" foods go and
+// "keep" foods stay. In the freezer, once its time is up, each pack is checked:
+// still has ice crystals → the food's crystals verdict, fully thawed → thawed.
+export function fridgeFoods(cfg, plan) {
+  const at = Object.fromEntries(plan.map((x) => [x.id, x]));
+  return {
+    over: at.fridge?.status === 'over',
+    toss: cfg.foods.filter((f) => f.after === 'discard'),
+    keep: cfg.foods.filter((f) => f.after === 'keep'),
+    frozenOver: at.freezer?.status === 'over',
+    frozen: cfg.frozen,
+  };
 }
 
 // Daily medicine: how many days the pills left last, and how many more make
@@ -78,15 +97,23 @@ export function airLevel(cfg, { unit = 'pm', value = null, colour = null } = {})
   return cfg.levels.find((l) => l[unit] == null || v <= l[unit]) || null;
 }
 
+// What to do at that level: the lines for everyone, then (always, since v1.11.0:
+// the reader is often the one at risk) the extra lines for the people at risk
+// and for people with a long-term illness, without repeating a line already
+// given above. groups: who the household said is at home (named in the share text).
 export function airAdvice(cfg, answers = {}, groups = []) {
   const level = airLevel(cfg, answers);
   if (!level) return null;
-  const on = cfg.groups.filter((g) => groups.includes(g.id));
+  const seen = new Set(level.all.map((x) => x.th));
+  const fresh = (xs) => xs.filter((x) => !seen.has(x.th) && seen.add(x.th));
+  const risk = fresh(level.risk);
+  const chronic = fresh(level.chronic);
   return {
     level,
     all: level.all,
-    risk: on.length ? level.risk : [],
-    chronic: on.some((g) => g.chronic) ? level.chronic : [],
-    who: on,
+    risk,
+    chronic,
+    riskSame: level.risk.length > 0 && !risk.length,
+    who: cfg.groups.filter((g) => groups.includes(g.id)),
   };
 }

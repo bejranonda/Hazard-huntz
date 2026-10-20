@@ -165,6 +165,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .logo-a { color: var(--teal); }
 .logo-b { color: var(--coral); -webkit-text-stroke: 0; }
 .tagline { margin: 4px 0 6px; color: var(--ink-2); font-size: 17px; }
+.trust-line { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; text-align: center; }
 .hero-mascot { display: flex; align-items: flex-end; gap: 6px; }
 .bubble-hero { max-width: 210px; margin-bottom: 70px; text-align: left; }
 .has-challenge .hero-mascot { display: none; }
@@ -709,7 +710,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 }
 .help-list .num { font-size: 24px; font-weight: 600; color: var(--sky-dark); }
 .help-list .who { font-weight: 600; line-height: 1.3; }
-.help-list .what { display: block; font-weight: 400; font-size: 14px; color: var(--ink-2); }
+.help-list .what { display: block; font-weight: 400; font-size: 15px; color: var(--ink-2); }
 .note { margin: 0; font-size: 13px; color: var(--ink-2); text-align: center; }
 
 /* share sheet */
@@ -738,7 +739,8 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .ico-copy { background: var(--teal); }
 .ico-save { background: var(--coral); }
 .ico-native { background: var(--sky); }
-.save-hint { margin: 6px 0 0; padding: 8px 12px; border-radius: 12px; background: #FFF0DC; font-size: 14px; }
+.save-hint { margin: 6px 0 0; padding: 8px 12px; border-radius: 12px; background: #FFF0DC; font-size: 15px; }
+.pic-hint { margin: 2px 0 10px; }
 .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
 .seg button { min-height: 44px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); font-weight: 600; cursor: pointer; }
 .seg button[aria-pressed="true"] { border-color: var(--ink); background: var(--sun); }
@@ -851,7 +853,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .kit-flag { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 12px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); cursor: pointer; font-size: 15px; }
 .kit-flag input, .kit-row input { width: 24px; height: 24px; flex: 0 0 24px; accent-color: var(--ok); }
 .kit-flag:has(input:checked) { border-color: var(--ink); background: var(--sun); }
-.kit-privacy { margin: 12px 0; padding: 8px 12px; border-radius: 12px; background: var(--ok-bg); font-size: 14px; }
+.kit-privacy { margin: 12px 0; padding: 8px 12px; border-radius: 12px; background: var(--ok-bg); font-size: 15px; }
 .kit-house { margin: 0; color: var(--ink-2); }
 .kit-meter { height: 14px; margin: 8px 0 4px; border-radius: 7px; background: #E3E6F3; overflow: hidden; }
 .kit-meter span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .25s ease; }
@@ -862,7 +864,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .kit-ico { font-size: 24px; line-height: 1.2; }
 .kit-text { display: flex; flex-direction: column; gap: 2px; font-size: 16px; }
 .kit-qty { color: #1A56B8; font-weight: 600; font-size: 15px; }
-.kit-src { color: var(--ink-2); font-size: 13px; }
+.kit-src { color: var(--ink-2); font-size: 14px; }
 .kit-note { display: block; margin: 6px 0 10px; }
 /* the fridge in a power cut (v1.10.0): tap how long the power has been off,
    then one card per part: a word that answers the question, and one line */
@@ -880,19 +882,38 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .fr-card.is-ok { border-left-color: #1A56B8; }
 .fr-card.is-soon { border-left-color: #C4610A; }
 .fr-card.is-over { border-left-color: #B3261E; }
+.fr-card.is-check { border-left-color: #C4610A; }
 .fr-card p { margin: 0; }
 .fr-card-head { font-size: 16px; }
 .fr-say { margin-top: 2px !important; font-size: 22px; font-weight: 600; line-height: 1.3; }
 .fr-card.is-ok .fr-say { color: #1A56B8; }
 .fr-card.is-soon .fr-say { color: #9A4A05; }
 .fr-card.is-over .fr-say { color: #B3261E; }
+.fr-card.is-check .fr-say { color: #9A4A05; }
 .fr-detail { font-size: 16px; }
-.fr-note { margin-top: 4px !important; color: var(--ink-2); font-size: 14px; }
+.fr-note { margin-top: 4px !important; color: var(--ink-2); font-size: 15px; }
+.fr-tip { margin-top: 6px !important; font-size: 15px; }
+/* food by food (v1.11.0): what to throw out, what to keep */
+.fr-group { margin-top: 10px !important; font-size: 16px; font-weight: 600; }
+.fr-group.is-toss { color: #B3261E; }
+.fr-group.is-keep { color: #1A56B8; }
+.fr-foods { margin: 4px 0 0; padding: 0; list-style: none; }
+.fr-foods li { display: flex; gap: 8px; align-items: flex-start; padding: 5px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.4; }
+.fr-foods li:first-child { border-top: 0; }
+.fr-foods small { display: block; color: var(--ink-2); font-size: 15px; }
+.fr-ico { flex: 0 0 26px; font-size: 20px; line-height: 1.2; text-align: center; }
+.fr-other { margin-top: 8px !important; color: var(--ink-2); font-size: 15px; }
+.fr-flags { display: grid; gap: 8px; margin-top: 12px; }
+.fr-hint { margin: 6px 0 0; color: var(--ink-2); font-size: 15px; }
+.fr-clock { margin-top: 2px; }
+.fr-clock > summary { display: flex; align-items: center; min-height: 44px; color: var(--ink-2); font-size: 16px; cursor: pointer; }
+.fr-clock-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fr-clock-row input { min-height: 48px; padding: 0 10px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); color: var(--ink); font: inherit; font-size: 18px; }
+.fr-clock-row .btn { width: auto; margin: 0; padding: 0 14px; }
 .fr-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; margin-top: 8px; }
 .fr-seg > span { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; }
 /* a title that takes the focus when a tool opens (so no button looks chosen) shows no ring */
 .sheet h2[tabindex="-1"]:focus { outline: none; }
-.fr-med { margin-top: 10px; }
 .fr-always { margin: 0 0 8px; padding: 0; list-style: none; }
 .fr-always li { margin: 6px 0; font-size: 16px; }
 .fr-share { margin: 12px 0 4px; }
@@ -903,6 +924,8 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .air-value input { max-width: 180px; }
 .air-num { margin-top: 10px; }
 .air-colours { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.air-check { margin: 10px 0 0; }
+.air-also { margin: -4px 0 2px; color: var(--ink-2); font-size: 15px; }
 .air-colour { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 64px; padding: 6px 2px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); font-size: 15px; font-weight: 600; cursor: pointer; }
 .air-colour .air-dot { width: 26px; height: 26px; }
 .air-colour input { position: absolute; opacity: 0; pointer-events: none; }
@@ -918,14 +941,14 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .air-badge small { color: var(--ink-2); font-size: 14px; }
 .air-list { margin: 2px 0 4px; padding-left: 20px; }
 .air-list li { margin: 3px 0; font-size: 16px; }
-.air-by { color: var(--ink-2); font-size: 13px; }
+.air-by { color: var(--ink-2); font-size: 14px; }
 .air-none, .air-same { margin: 4px 0; color: var(--ink-2); }
 .air-hint { display: block; margin: 8px 0 0; }
 /* "how many days will the pills last?" under the home check's medicine line (v1.10.0) */
 .kit-calc { margin: 4px 0 14px; padding: 4px 12px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); }
 .kit-calc summary { display: flex; align-items: center; min-height: 44px; font-weight: 600; cursor: pointer; }
 .calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.calc-field { display: grid; gap: 4px; font-size: 14px; color: var(--ink-2); }
+.calc-field { display: grid; gap: 4px; font-size: 15px; color: var(--ink-2); }
 .calc-field input { min-height: 48px; padding: 6px 10px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 20px; font-weight: 600; background: #fff; color: var(--ink); }
 .calc-field input:focus { border-color: var(--ink); outline: none; }
 .calc-out { margin: 10px 0 2px; font-size: 16px; font-weight: 600; }
@@ -936,12 +959,12 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .plan-label { font-weight: 600; }
 .plan-field input { min-height: 48px; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 16px; background: #fff; color: var(--ink); }
 .plan-field input:focus { border-color: var(--ink); outline: none; }
-.plan-field small { color: var(--ink-2); font-size: 13px; }
+.plan-field small { color: var(--ink-2); font-size: 15px; }
 #kit-share, #kit-plan, #kit-close, #plan-make, #plan-back, #plan-close, #kit-go { margin-top: 10px; }
 
 /* ---------- the start screen's tools (v1.9.0): what to do, what to keep, the family plan ---------- */
 .hub { align-self: stretch; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 4px; text-align: left; }
-.hub-btn { display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
+.hub-btn { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 56px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
 .hub-btn:active { transform: translateY(2px); box-shadow: none; }
 .hub-main { grid-column: 1 / -1; min-height: 64px; border-color: var(--ink); background: var(--sun); box-shadow: var(--press); }
 .hub-ico { flex: 0 0 auto; font-size: 26px; line-height: 1; }
@@ -968,16 +991,20 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .phase-during { color: #9A4A05; }
 .check-list .partial { font-size: 14px; }
 .guide-actions { display: grid; gap: 8px; margin: 10px 0 4px; }
+.guide-now-btn { margin: 8px 0 4px; }
 .guide-actions .btn { margin: 0; text-decoration: none; display: flex; align-items: center; justify-content: center; }
 /* Jump to a phase: someone reading during an earthquake wants "during" now. */
 .phase-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 2px; }
 .phase-chip { min-height: 44px; padding: 6px 14px; border: 2px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink-2); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
-.phase-chip.phase-during { border-color: #E7B98A; color: #9A4A05; }
+/* every chip looks alike, so none looks chosen (the orange border made "ขณะเกิด" look selected) */
+.phase-chip.phase-during { color: #9A4A05; }
 .phase { scroll-margin-top: 44px; }
 .tel-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0 2px; font-size: 14px; color: var(--ink-2); }
-.tel-chip { display: inline-grid; place-items: center; min-width: 64px; min-height: 44px; padding: 0 12px; border-radius: 999px; background: #FDE3DA; color: #8A2E12; font-size: 17px; font-weight: 600; text-decoration: none; }
+.tel-chip { display: inline-grid; place-items: center; min-width: 64px; min-height: 44px; padding: 4px 12px; border-radius: 18px; background: #FDE3DA; color: #8A2E12; font-size: 17px; font-weight: 600; text-decoration: none; line-height: 1.2; text-align: center; }
+/* v1.11.0: the name under the number ("1669 / เจ็บป่วย"), so it is clear whom each number reaches */
+.tel-chip small { display: block; max-width: 9.5em; font-size: 13px; font-weight: 500; line-height: 1.25; }
 @media (max-width: 340px) { .tel-row .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
-.guide-src { margin: 10px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+.guide-src { margin: 10px 0 0; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
 .guide-next { margin: 6px 0 4px; }
 .guide-next .btn { margin: 0; }
 .guide-pic { display: flex; align-items: center; gap: 12px; margin: 10px 0; }
@@ -1004,3 +1031,10 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
   #print-area small { display: block; color: #555; font-size: 9.5pt; }
   #print-area .p-foot { margin: 3mm 0 0; font-size: 10pt; color: #333; }
 }
+
+/* larger text (v1.11.0, the ก+ button): the start screen and the sheets at 115 %; the
+   game's room keeps its measured tap areas. At 360 px this lays out like a 313 px screen. */
+html.big #screen-start, html.big .sheet { zoom: 1.15; }
+#btn-big[aria-pressed="true"] { border-color: var(--ink); background: var(--sun); }
+.result-next { display: grid; gap: 8px; }
+.result-next .btn { margin: 0; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; }

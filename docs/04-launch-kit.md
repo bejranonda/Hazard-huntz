@@ -12,6 +12,8 @@ What the research says about Thai audiences:
 - In this flood, coping humour spread fastest (*น้ำรอการระบาย*).
 - AI-generated flood images, mocking victims or rescuers, and politics all drew backlash.
 
+**Who receives it (v1.11.0, [07-audience.md](07-audience.md)).** The person who posts or forwards is often not the one who needs it. Seven personas: the morning forwarder (60–72, forwards pictures, dislikes links), the family organiser (28–50, sends one picture to the parents' group), the community relay (อสม., village heads, district LINE admins, who ask "who says so, and can I print it?"), the grandparent carer or older person living alone (who may never open a link, and gets paper or a picture on someone else's screen), the household in the water's path (needs the next hour's list, nothing to answer), the condo and office worker (dust weeks, quakes, power cuts), and the migrant worker or foreign resident (pictures that work without Thai). So: **post the picture first, with the link under it;** name the agency and the helpline in the caption; keep it warm and short; and give partners an A4 version to print. About one in three Thais over 60 isn't online at all, and a forwarded picture never shows in any count: treat every share figure as a floor. The research corrects one figure used below: there are about **1.07M** อสม. (DHSS, 2023), not 1.04M.
+
 ---
 
 ## 1. Phased plan
@@ -259,9 +261,9 @@ Rules for these posts: never shame a low score ("ยังขาดอีกน�
 
 ### The fridge and dust today (v1.10.0)
 
-Two calculators that answer a question of the moment, each with a page and a preview of its own ([KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100)). They are worth a post when the moment comes, and not much before.
+Two calculators that answer a question of the moment, each with a page and a preview of its own ([KNOWLEDGE §32](KNOWLEDGE.md#32-calculators-the-fridge-dust-today-the-pills-v1100); food by food since v1.11.0, [§33](KNOWLEDGE.md#33-food-by-food-in-a-power-cut-and-the-whole-app-for-its-real-readers-v1110)). They are worth a post when the moment comes, and not much before. Since v1.11.0 the fridge tool is also the post for **the morning after a power cut**: it says, food by food, what to throw out and what to keep, and its answer stays when the power is back.
 
-- **`/fridge`: "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?"** Post it **during or right after a power cut** (a storm, a planned cut announced for the area, a long cut in the news) and **before the next storm season**, next to the storm guide (`/checklist/storm`) and the power cut's `/ready`. People tap how long the power has been off ("เพิ่งดับ", "3 ชม."… since v1.10.1) and the phone keeps the count, so the link is useful the moment the power goes. Its preview is `og/fridge.png` (the power-cut look). **Name the source next to the hours:** they are the US CDC's and Ready.gov's, and no Thai agency gives them yet ([KNOWN_ISSUES #74](KNOWN_ISSUES.md#74-the-fridge-hours-rest-on-us-guidance-only)); never present them as Thai advice, and never promise that food is safe ("ราว 4 ชั่วโมง", not "ปลอดภัยแน่นอน"). Whether to post it before a Thai source is found is the owner's call.
+- **`/fridge`: "ไฟดับ: ของในตู้เย็นยังกินได้ไหม?"** Post it **during or right after a power cut** (a storm, a planned cut announced for the area, a long cut in the news) and **before the next storm season**, next to the storm guide (`/checklist/storm`) and the power cut's `/ready`. People tap how long the power has been off ("เพิ่งดับ", "3 ชม."… since v1.10.1) and the phone keeps the count, so the link is useful the moment the power goes. Its preview is `og/fridge.png` (the power-cut look). **Name the source next to the hours:** they are the US CDC's and Ready.gov's (since v1.11.0 the food lists FoodSafety.gov's and USDA's, insulin's the US FDA's), and no Thai agency gives them yet ([KNOWN_ISSUES #74](KNOWN_ISSUES.md#74-the-fridge-hours-rest-on-us-guidance-only), [#79](KNOWN_ISSUES.md#79-the-fridges-food-lists-rest-on-us-charts)); never present them as Thai advice, and never promise that food is safe ("ราว 4 ชั่วโมง", not "ปลอดภัยแน่นอน"). Whether to post it before a Thai source is found is the owner's call.
 - **`/air`: "ฝุ่นวันนี้ บ้านเราต้องทำอะไร?"** Post it **from December** with the dust posts, and on any day the haze is in the news. Its preview is `og/air.png` (the gecko in its mask). The colours are the PCD's notice (the 24-hour average, µg/m³): ฟ้า 0–15.0 · เขียว 15.1–25.0 · เหลือง 25.1–37.5 · ส้ม 37.6–75.0 · แดง 75.1 ขึ้นไป. Quote them only with "ค่าเฉลี่ย 24 ชั่วโมง" and the PCD's name, and say that the tool reads the colour or the number people put in; it doesn't measure the air. Don't use 🟢 🟡 🟠 in the text: they are Unicode 12 and show as empty boxes on older phones ([GUIDELINES rule 64](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 - **The pills** ("ยาพอกี่วัน?") sit inside the home check (`/kit`), under the daily-medicine line; mention them in a home-check post for families with an older relative on daily medicine.
 - **Privacy is part of the message, again:** the time, the reading and who is at home stay on the phone.
@@ -286,6 +288,25 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 **LINE family groups:**
 
 > ไฟดับอยู่ไหม? 💛 แตะว่าไฟดับมานานเท่าไร แล้วดูว่าของในตู้เย็นยังกินได้อีกราวกี่ชั่วโมง 👉 https://baanrodmai.autobahn.bot/fridge
+
+**Facebook: the fridge, food by food** (v1.11.0; the morning after a power cut, or with a screenshot of the lists at "6 ชม."). Quote the tool's own lines, and keep "ไม่แน่ใจให้ทิ้ง":
+
+> ไฟมาแล้ว ของในตู้เย็นอะไรต้องทิ้ง อะไรเก็บได้? 🥛
+>
+> ตู้เย็นที่ไม่เปิดประตู เก็บของสดได้ราว 4 ชั่วโมง ถ้าไฟดับนานกว่านั้น
+> ❌ ทิ้ง: เนื้อสัตว์ ปลา กุ้ง · ลูกชิ้น ไส้กรอก · กับข้าวที่เหลือ · ข้าวสุก เส้นสด · ไข่ · นม โยเกิร์ต · นมผงที่ชงแล้ว · ผักผลไม้ที่หั่นแล้ว · ขนมครีม สังขยา
+> ✅ เก็บได้ ถ้าไม่ขึ้นรา ไม่มีกลิ่น สี หรือเนื้อผิดปกติ: ผักผลไม้ทั้งลูก · ขนมปัง · เนย ชีสแข็ง · ซีอิ๊ว ซอส แยม
+> ของที่ไม่อยู่ในรายการ ไม่แน่ใจให้ทิ้ง และห้ามชิมเพื่อดูว่าเสียไหม
+> (ตามแนวทางของหน่วยงานสหรัฐฯ ยังไม่พบคำแนะนำเรื่องนี้จากหน่วยงานรัฐของไทย)
+>
+> แตะว่าไฟดับมานานเท่าไร แล้วดูทีละอย่าง 👉 https://baanrodmai.autobahn.bot/fridge
+> #บ้านรอดไหม #ไฟดับ
+
+**LINE family groups: medicine** (v1.11.0; for families with someone on insulin; post it with the picture of the tool, not alone):
+
+> ไฟดับ ยาที่ต้องแช่เย็น อย่าเพิ่งทิ้ง 💛 อินซูลินเก็บนอกตู้เย็นได้ถึง 28 วัน ถ้าไม่ร้อนเกิน 30°C ไม่โดนแดด และห้ามแช่แข็ง (องค์การอาหารและยาสหรัฐฯ) ยาอื่นให้ดูฉลาก ถ้าไม่แน่ใจถามเภสัชกร เช็กได้ที่ 👉 https://baanrodmai.autobahn.bot/fridge
+
+Rules for the two new drafts: post them only after the Thai reviews of the food list and the medicine lines, or with the US source named as above ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)); never write "ทิ้งยา" or any number for insulin above 30 °C; don't add น้ำปลา, กะทิ or anything else the tool leaves out; and never show a real person's medicine or a spoiled fridge.
 
 **Facebook: dust today** (from December, or a hazy day; with the preview or a screenshot of the colours):
 
@@ -449,7 +470,7 @@ Give every partner the same **ready-to-forward kit**:
 |---|---|---|
 | **Community pages:** village, condo and moo-baan pages; juristic offices (นิติบุคคล) | Trusted, hyper-local, many older followers | Pin the checklist image; share the daily house in the evening |
 | **District offices** (Bangkok's 50 สำนักงานเขต) and **อบต. / เทศบาล** | They run LINE groups and shelters | Post the checklist in their LINE OA or groups; print A4 checklists for shelters |
-| **อสม.** (about 1.04M village health volunteers) through provincial health offices | Already forward health info in LINE groups | Forward the Return checklist (leptospirosis, food, fever) |
+| **อสม.** (about 1.07M village health volunteers, [07-audience](07-audience.md#32-อสม-village-health-volunteers)) through provincial health offices | Already forward health info in LINE groups | Forward the Return checklist (leptospirosis, food, fever) |
 | **Schools and education offices** | Teachers' LINE groups reach parents fast | "Play with your parents" homework, using the challenge link |
 | **Volunteer and rescue foundations, relief drives** | Hand out relief bags | Print the checklist (add a QR code to your link) to go in relief bags |
 | **Weather and flood info pages** | Fastest reach in this flood | Offer it as a free public-good tool; let them post with their own commentary |
@@ -480,6 +501,7 @@ The game is evergreen: content is in JSON, dates are generic and the daily house
 | **August–October (central and north peak)** | Prepare default during warnings; Return as water recedes (same switch as this year). |
 | **November–December (southern monsoon)** | A push to southern pages and provinces. PEA 1129 covers the south, so put it first in posts. Link `/?mode=prepare` (or `/flood`): the rain switch ends on 30 Nov and the season calendar has no southern floods, so from December the plain `/` recommends dust ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). |
 | **Off-season** | The checklist pages stay up and are useful year-round. Share the yearly "what Thais learned" stats. |
+| **TODO (v1.11.0): a regional posting calendar** | One table of which guide to post where and when, by region: the South's floods in November–December, the North in August–September, the Central region and Bangkok's edges in September–October (the audience research's flood months), and the app's own season calendar for dust (December–March) and fire (April), so that southern pages get the flood guide while Bangkok gets dust ([07-audience §8](07-audience.md#8-design-and-content-implications-in-priority-order), [KNOWN_ISSUES #84](KNOWN_ISSUES.md#84-ideas-from-the-audience-research-not-built-yet)). Not written yet. |
 
 When your forecast app is ready, set `forecastStatusUrl` and the recommended mode will follow live rain warnings with no manual switching.
 

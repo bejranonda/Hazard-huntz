@@ -28,11 +28,12 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0), or a hazard page from a guide's "📖" (v1.9.0) | – | the topic (e.g. `health`), `book`, or the guide's id (e.g. `quake`) | – |
 | `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) / `fridge` (the fridge tool's "🎒 เช็กของจำเป็นสำหรับไฟดับ", v1.10.0) | – |
-| `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | the score, 0–100 (%) |
+| `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` / `copylist` ("🛒 คัดลอกรายการที่ยังขาด", v1.11.0) | the score, 0–100 (%) |
 | `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
-| `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` | 0 |
-| `tool_open` (v1.10.0) | A calculator opened: the fridge in a power cut or dust today | `fridge` / `air` | `start` (the hub's tile) / `link` (`/?open=fridge` or `/?open=air`, from a post, a page, `/learn`, `llms.txt` or the app's shortcut) / `result` (after a power-cut or dust round) / `guide` (a guide's "เตรียมบ้านต่อ") | – |
+| `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` / `copylist` ("📋 คัดลอกแผนเป็นข้อความ", v1.11.0) | 0 |
+| `tool_open` (v1.10.0) | A calculator opened: the fridge in a power cut or dust today | `fridge` / `air` | `start` (the hub's tile) / `link` (`/?open=fridge` or `/?open=air`, from a post, a page, `/learn`, `llms.txt` or the app's shortcut) / `result` (after a power-cut or dust round; since v1.11.0 from the "เตรียมบ้านต่อ" row) / `guide` (a guide's "เตรียมบ้านต่อ", and since v1.11.0 the power-cut guide's "🥛 ไฟดับอยู่ตอนนี้?") | – |
 | `tool_share` (v1.10.0) | A channel tapped under "📤 ส่งให้คนที่บ้าน" in a calculator | `fridge` / `air` | `native` / `line` / `copy` | – |
+| `big_text` (v1.11.0) | "ก+" / "A+" tapped (larger text on the start screen and the sheets) | – | `on` / `off` (the state after the tap) | – |
 
 ## The numbers you asked for
 
@@ -249,6 +250,41 @@ GROUP BY day, event, mode ORDER BY day
 
 Share rate of a calculator = its `tool_share` rows ÷ its `tool_open` rows, both counted per action, not per person. **[unverified]** on real data; no players yet.
 
+## Larger text and the real readers (v1.11.0)
+
+One new event, `big_text`, in both allowlists (`functions/api/e.js`, `public/js/analytics.js`): the label is `on` or `off`, the state after the tap; nothing else ([KNOWLEDGE §33.11](KNOWLEDGE.md#3311-the-start-screen-the-alerts-date-the-trust-line-and-ก)). The choice itself stays on the device (`brm:big`), and so does everything v1.11.0 added to the tools: the time the power came back and the breast-milk tick (`brm:fridge`); `brm:air` now keeps only the kind of number. "📋 คัดลอกแผนเป็นข้อความ" and "🛒 คัดลอกรายการที่ยังขาด" put text on the clipboard only; a tap on either counts as `plan_share` or `kit_share` with the new label `copylist`, never the text.
+
+- **How many visitors want larger text?** `big_text` with `on`, against `view` per day. A visitor who turns it on and off counts twice, so read it as taps, not people. If it is common, that is the case for text sizes that follow the phone's own setting ([KNOWN_ISSUES #81](KNOWN_ISSUES.md#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)).
+- **The power-cut guide's new button** arrives as `tool_open` · `fridge` · `guide`, together with the guides' "เตรียมบ้านต่อ"; there is no separate label for it.
+
+```sql
+SELECT blob3 AS state, SUM(_sample_interval) AS n
+FROM baanrodmai_events
+WHERE blob1 = 'big_text' AND timestamp > NOW() - INTERVAL '7' DAY
+GROUP BY state
+```
+
+**[unverified]** on real data; no players yet.
+
+**Signals for the audience research** ([07-audience §10](07-audience.md#10-signals-the-owner-could-watch-anonymous-counts-only)). Ideas, not built, unless marked "already collected". Each new one needs **the owner's decision** and an entry in both allowlists:
+
+| Question | Signal | Status |
+|---|---|---|
+| Are older forwarders reaching it? | The hour of day (Bangkok time) of `view` and `checklist_open`; a peak around 04:00–07:00 and 20:00–22:00 matches the older LINE pattern | Already collected (the timestamp) |
+| Do pictures travel further than links? | Per guide, `view` with the label `checklist` ÷ `checklist_save`; the share-channel split (`save`, `native` against `line`) | Already collected |
+| Is the game still needed as a hook? | `checklist_open` by label against `round_start` per day | Already collected ([Tools first](#tools-first-v190)) |
+| Which channel brought them? | Web Analytics referrers (line.me, facebook.com, tiktok.com, t.co); chat apps often send none, so a large "direct" share is expected **[unverified]** | Web Analytics |
+| Which kind of partner works? | An allowlisted `?src=` code (`osm`, `school`, `oa`, `openchat`, `condo`, `fb`, `tiktok`), read on the device and sent as a label on `view`: channel types, never people | **New: owner decision** |
+| Is it opened inside LINE or Facebook? | A coarse in-app bucket (`line`, `fb`, `tiktok`, `ig`, `other`) worked out on the device, sending only the bucket, never the user agent; the guidelines say no user agent is stored | **New: owner decision** |
+| How many visitors need bigger text? | `big_text` (above) | Collected since v1.11.0 |
+| Is paper used? | `print` by guide; views of a print-pack page, if one is added | Already collected / a new page |
+| Do people use it with no signal? | A flag on `view` when the page was served offline by the service worker, sent later in the batch | **New: owner decision** |
+| Who reads the English? | Web Analytics' country split for `/en/` paths, and `blob4` = `en` | Already collected |
+| Does it follow real events? | `checklist_open` per guide per day, and `help_click` (1784, 1669), against ปภ.'s daily reports | Already collected |
+| Is it reaching the sharer's family? | `kit_share` and `plan_share` ÷ their `*_open` events; `tool_share` ÷ `tool_open` | Already collected |
+
+A picture forwarded inside LINE is copied by LINE and never reaches the server, so the furthest reach is invisible to every count: treat each share figure as a floor. Never combine buckets into anything that could single out a device.
+
 ## Thai and English split
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
@@ -276,5 +312,5 @@ GROUP BY label
 
 - **Free plan:** 100,000 data points written per day and 10,000 queries per day. Data is kept for 3 months.
 - **Quota math:** one session sends about 4–8 events in a single request. If you approach the limit, set `config.analytics.sampleRate` to `0.5` or `0.2`; the queries above stay correct.
-- **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers, the plan card's text and the calculators' answers (when the power went off, who is at home; never the dust reading) stay in the player's own browser (`localStorage`).
-- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both, and so were `guide_open` and `print` (v1.9.0) and `tool_open` and `tool_share` (v1.10.0).
+- **Events are anonymous counts.** There is nothing to ask consent for under PDPA. Scores, streaks, the home check's answers, the plan card's text and the calculators' answers (when the power went off and, since v1.11.0, when it came back, the freezer, the medicine and breast-milk ticks, the kind of dust number; never the dust reading; until v1.11.0 also who is at home) and the larger-text choice stay in the player's own browser (`localStorage`).
+- **A new event goes into both allowlists** (`public/js/analytics.js` and `functions/api/e.js`) in the same commit; an event missing from the Function's list is dropped without an error. `plan_open` (v1.8.1) was added to both, and so were `guide_open` and `print` (v1.9.0), `tool_open` and `tool_share` (v1.10.0) and `big_text` (v1.11.0).

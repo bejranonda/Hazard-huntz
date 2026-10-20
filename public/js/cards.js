@@ -468,21 +468,48 @@ export function drawChecklist(canvas, d, assets) {
   roundRect(ctx, 30, fy, W - 60, 204, 30);
   ctx.fill();
   ctx.fillStyle = SUN;
-  font(ctx, 36);
   ctx.textAlign = 'center';
-  ctx.fillText(d.helpLabel, W / 2, fy + 56);
-  ctx.fillStyle = '#FFFFFF';
-  fitText(ctx, d.helpNumbers, W - 120, 50, 32);
-  ctx.fillText(d.helpNumbers, W / 2, fy + 122);
-  font(ctx, 34, 400);
-  ctx.fillStyle = '#FFE08A';
-  ctx.fillText(d.url.replace(/^https?:\/\//, ''), W / 2, fy + 178);
+  if (d.calls?.length) {
+    // v1.11.0: the guide's own numbers, each with its name under it ("1669 / เจ็บป่วย"),
+    // so a picture forwarded on its own says whom each number reaches.
+    font(ctx, 34);
+    ctx.fillText(d.helpLabel, W / 2, fy + 44);
+    drawCalls(ctx, d.calls, { x: 60, w: W - 120, y: fy + 98, num: 48, name: 23 });
+    font(ctx, 30, 400);
+    ctx.fillStyle = '#FFE08A';
+    ctx.fillText(d.url.replace(/^https?:\/\//, ''), W / 2, fy + 188);
+  } else {
+    font(ctx, 36);
+    ctx.fillText(d.helpLabel, W / 2, fy + 56);
+    ctx.fillStyle = '#FFFFFF';
+    fitText(ctx, d.helpNumbers, W - 120, 50, 32);
+    ctx.fillText(d.helpNumbers, W / 2, fy + 122);
+    font(ctx, 34, 400);
+    ctx.fillStyle = '#FFE08A';
+    ctx.fillText(d.url.replace(/^https?:\/\//, ''), W / 2, fy + 178);
+  }
   font(ctx, 38);
   ctx.fillStyle = CORAL;
   ctx.fillText(d.forward, W / 2, fy + 262);
   font(ctx, 26, 400);
   ctx.fillStyle = INK2;
   ctx.fillText(d.footer, W / 2, H - 26);
+}
+
+// Helpline numbers in columns, each with its short name under it ("1669 / เจ็บป่วย"),
+// on a dark box (the guide picture, the plan card). y: the numbers' baseline.
+export function drawCalls(ctx, calls, { x, w, y, num, name }) {
+  const colW = w / calls.length;
+  ctx.textAlign = 'center';
+  calls.forEach((c, i) => {
+    const cx = x + colW * (i + 0.5);
+    ctx.fillStyle = '#FFFFFF';
+    font(ctx, num);
+    ctx.fillText(c.number, cx, y);
+    ctx.fillStyle = '#F6E7D6';
+    font(ctx, name, 400);
+    wrapText(ctx, c.name, colW - 14).slice(0, 2).forEach((ln, k) => ctx.fillText(ln, cx, y + name * 1.3 + k * name * 1.1));
+  });
 }
 
 // ---------------- link preview 1200x630 ----------------

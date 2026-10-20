@@ -12,7 +12,7 @@ import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, setGuides, propFor, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
-import { kitPlan, kitScore, kitMissing, fridgePlan, medDays, airLevel, airAdvice } from '../public/js/kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -533,9 +533,10 @@ test('power cut: the fridge keeps 4 h, a full freezer 48 h, a half one 24 h, col
   const F = load('kit').fridge;
   const at = (hours, o = {}) => Object.fromEntries(fridgePlan(F, { hours, ...o }).map((x) => [x.id, x]));
   let p = at(0);
-  assert.deepEqual(Object.keys(p), ['fridge', 'freezer'], 'no medicine row unless there is cold medicine');
+  assert.deepEqual(Object.keys(p), ['fridge', 'freezer'], 'no medicine or milk rows unless they are at home');
   assert.equal(p.fridge.left, 4);
-  assert.equal(p.freezer.left, 48);
+  assert.equal(p.freezer.left, 24, 'v1.11.0: unanswered, the freezer counts as half full (the shorter, safer time)');
+  assert.equal(at(0, { freezer: 'full' }).freezer.left, 48);
   p = at(3.5);
   assert.equal(p.fridge.status, 'soon');
   assert.equal(p.fridge.left, 0.5);
@@ -544,17 +545,56 @@ test('power cut: the fridge keeps 4 h, a full freezer 48 h, a half one 24 h, col
   assert.equal(p.freezer.status, 'ok');
   p = at(30, { freezer: 'half', med: true });
   assert.equal(p.freezer.status, 'over');
-  assert.equal(p.med.status, 'over');
+  assert.equal(p.med.status, 'check', 'v1.11.0: medicine past a day says "check the label", never "throw it out"');
+  assert.equal(p.insulin.status, 'ok', 'insulin keeps out of the fridge for up to 28 days (US FDA, Siriraj)');
   assert.equal(at(30, { freezer: 'full' }).freezer.left, 18);
   assert.equal(at(23, { med: true }).med.status, 'soon');
   assert.equal(at(-5).fridge.left, 4, 'a time in the future counts as just now');
-  assert.equal(at(0, { freezer: 'nonsense' }).freezer.limit, 48, 'an unknown freezer answer falls back to the first option');
+  assert.equal(at(0, { freezer: 'nonsense' }).freezer.limit, 24, 'an unknown freezer answer falls back to the first option (half)');
+  p = at(5, { milk: true, freezer: 'full' });
+  assert.equal(p.milk.status, 'over', 'breast milk in the fridge: the fridge\'s 4 hours');
+  assert.equal(p.milkFrozen.status, 'ok');
+  assert.equal(at(48, { milk: true, freezer: 'full' }).milkFrozen.status, 'over');
   // Every figure is in its source's own words (the build checks it too).
   const sources = load('sources').sources || load('sources');
   for (const part of F.parts) {
     const said = part.sources.map((id) => `${sources[id].title} ${sources[id].note}`).join(' ');
     for (const v of [part.hours, ...Object.values(part.hoursBy || {})].filter(Boolean)) assert.ok(new RegExp(`\\b${v} hours`).test(said), `${part.id}: ${v} hours`);
     assert.equal(part.verify, 'partial', `${part.id}: international guidance stays partial`);
+  }
+  const ins = F.parts.find((x) => x.id === 'insulin');
+  const insSaid = ins.sources.map((id) => `${sources[id].title} ${sources[id].note}`).join(' ');
+  assert.ok(/up to 28 days/.test(insSaid) && /86°F/.test(insSaid) && /15–30/.test(insSaid), 'insulin: 28 days at 15–30°C (59–86°F) in the FDA\'s words');
+  assert.ok(!F.parts.some((x) => /^(med|insulin)$/.test(x.id) && /ทิ้ง/.test(x.say.check?.th || x.say.over.th)), 'no medicine status word says throw it out');
+});
+
+test('power cut, food by food: the fridge\'s 4 hours decide when, each food\'s chart row decides what (v1.11.0)', () => {
+  const F = load('kit').fridge;
+  const foods = (hours, o = {}) => fridgeFoods(F, fridgePlan(F, { hours, ...o }));
+  let f = foods(3.9);
+  assert.equal(f.over, false, 'before 4 hours nothing in the fridge has to go (door shut)');
+  f = foods(4);
+  assert.equal(f.over, true);
+  const toss = f.toss.map((x) => x.id);
+  const keep = f.keep.map((x) => x.id);
+  for (const id of ['meat', 'balls', 'dishes', 'rice', 'eggs', 'milk', 'formula', 'cut', 'cream']) assert.ok(toss.includes(id), `${id} is thrown out after 4 hours (FoodSafety.gov, USDA FSIS, CDC)`);
+  for (const id of ['whole', 'bread', 'butter', 'sauces']) assert.ok(keep.includes(id), `${id} keeps (the charts' "Keep" / "Safe")`);
+  assert.equal(toss.length + keep.length, F.foods.length);
+  assert.equal(foods(23).frozenOver, false, 'a half-full freezer holds 24 hours');
+  assert.equal(foods(24).frozenOver, true);
+  assert.equal(foods(24, { freezer: 'full' }).frozenOver, false);
+  const z = Object.fromEntries(F.frozen.map((x) => [x.id, x]));
+  assert.deepEqual([z.meat.crystals, z.meat.thawed], ['refreeze', 'discard']);
+  assert.deepEqual([z.icecream.crystals, z.icecream.thawed], ['discard', 'discard'], 'ice cream: thrown out even with ice crystals (FoodSafety.gov)');
+  assert.deepEqual([z.bread.crystals, z.bread.thawed], ['refreeze', 'refreeze']);
+  // Left out on purpose: fish sauce (a cupboard condiment in Thailand; the US row says "fish sauces"),
+  // opened fruit juice and coconut (the US sources disagree), mayonnaise (its rule needs a thermometer).
+  const all = JSON.stringify([F.foods, F.frozen]);
+  for (const w of ['น้ำปลา', 'น้ำผลไม้', 'มะพร้าว', 'มายองเนส']) assert.ok(!all.includes(w), `${w} is left out`);
+  for (const x of [...F.foods, ...F.frozen]) {
+    assert.ok(x.sources.length && x.sources.every((id) => load('sources').sources[id]), `${x.id}: sourced`);
+    assert.equal(x.verify, 'partial', `${x.id}: US guidance stays partial`);
+    assert.ok(x.label.th && x.label.en, `${x.id}: both languages`);
   }
 });
 
@@ -577,12 +617,18 @@ test('dust today: the PCD bands to the decimal, AQI too, and who gets which line
   for (const [v, id] of [[25, 'blue'], [26, 'green'], [50, 'green'], [51, 'yellow'], [100, 'yellow'], [101, 'orange'], [200, 'orange'], [201, 'red']]) assert.equal(lv('aqi', v), id, `AQI ${v}`);
   for (const bad of [-1, 'abc', '', null, 1000]) assert.equal(lv('pm', bad), null, `nothing for ${bad}`);
   assert.equal(airLevel(A, { colour: 'orange', value: 3 }).id, 'orange', 'a picked colour wins over a number');
-  const alone = airAdvice(A, { unit: 'pm', value: 50 }, []);
-  assert.ok(alone.all.length && !alone.risk.length && !alone.chronic.length, 'no one at risk: the lines for everyone only');
-  const kids = airAdvice(A, { unit: 'pm', value: 50 }, ['kids']);
-  assert.ok(kids.risk.length && !kids.chronic.length);
+  // v1.11.0: the at-risk and long-term-illness lines are always shown (the reader
+  // is often the one at risk), and never repeat a line given for everyone.
+  const orange = airAdvice(A, { unit: 'pm', value: 50 });
+  assert.ok(orange.all.length && orange.risk.length && orange.chronic.length, 'orange: everyone, the people at risk and long-term illness, without ticking anyone');
+  for (const l of A.levels) {
+    const r = airAdvice(A, { colour: l.id });
+    const lines = [...r.all, ...r.risk, ...r.chronic].map((x) => x.th);
+    assert.equal(new Set(lines).size, lines.length, `${l.id}: no line twice`);
+    assert.equal(r.riskSame, l.risk.length > 0 && l.risk.every((x) => l.all.some((a) => a.th === x.th)), `${l.id}: "the same as everyone" only when every at-risk line is already given`);
+  }
   const ill = airAdvice(A, { unit: 'pm', value: 90 }, ['chronic']);
-  assert.ok(ill.chronic.length && ill.who[0].id === 'chronic', 'red: the long-term illness lines');
+  assert.ok(ill.chronic.length && ill.who[0].id === 'chronic', 'red: the long-term illness lines; who is named for the share text');
   // Every line has a source; a line from the DOH says so (the PCD notice is the rest).
   const sources = load('sources').sources;
   for (const l of A.levels) for (const x of [...l.all, ...l.risk, ...l.chronic]) assert.ok(x.sources.length && x.sources.every((id) => sources[id]), `${l.id}: ${x.th}`);

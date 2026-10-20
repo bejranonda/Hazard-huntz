@@ -233,6 +233,15 @@ for (const g of GUIDES) {
   guideSeen.add(g.id);
   if (!HAZARDS[g.hazard]) err(`${where}: hazard "${g.hazard}" is not in hazards`);
   if (!g.icon) err(`${where}: no icon`);
+  // "Power off right now?": a guide can open a tool first (config.json → guides[].now).
+  if (g.now != null) {
+    if (!TOOL_IDS.includes(g.now)) err(`${where}: now "${g.now}" is not a tool`);
+    for (const l of LANGS) if (!strings[l]?.[`guideNow${capM(g.now)}`]) err(`strings.json: ${l}.guideNow${capM(g.now)} is missing`);
+  }
+  if (g.calls != null) {
+    if (!Array.isArray(g.calls) || !g.calls.length || g.calls.length > 4) err(`${where}: calls must list 1–4 helpline numbers`);
+    for (const n of g.calls || []) if (!helplines.helplines.some((x) => x.number === n)) err(`${where}: calls "${n}" is not in helplines.json`);
+  }
   const mode = MODES.find((m) => m.id === g.id);
   if (mode && mode.hazard !== g.hazard) err(`${where}: the mode's hazard is "${mode.hazard}"`);
   for (const l of LANGS) if (!strings[l]?.[`guide${capM(g.id)}`]) err(`strings.json: ${l}.guide${capM(g.id)} is missing`);
@@ -299,6 +308,7 @@ for (const mode of MODE_IDS) {
 for (const h of helplines.helplines) {
   if (!/^\d{3,5}$/.test(h.number)) err(`helplines.json: bad number "${h.number}"`);
   if (h.source && !sources[h.source]) err(`helplines.json ${h.number}: unknown source "${h.source}"`);
+  if (!h.short?.th || !h.short?.en) err(`helplines.json ${h.number}: needs a short name in th and en (shown under the number)`);
 }
 for (const [id, s] of Object.entries(sources)) {
   if (!/^https?:\/\//.test(s.url || '')) err(`sources.json ${id}: url must start with http(s)://`);
@@ -350,32 +360,66 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
   const uiTh = Object.keys(kitFile.ui?.th || {});
   for (const k of uiTh) if (!kitFile.ui?.en?.[k]) err(`kit.json: ui.en.${k} is missing`);
   // The fridge in a power cut (v1.10.0): every hour figure is in one of its
-  // sources' title or note, like the home check's amounts.
+  // sources' title or note, like the home check's amounts; since v1.11.0 so is
+  // every other number in its texts (28 days, 30°C), and each food's verdict
+  // comes from a chart row (discard or keep; refreeze or discard in the freezer).
   const F = kitFile.fridge;
   if (!F) err('kit.json: fridge is missing');
   else {
     const fz = new Set((F.freezer || []).map((x) => x.id));
+    const saidBy = (ids) => (ids || []).map((sid) => `${sources[sid]?.title || ''} ${sources[sid]?.note || ''}`).join(' ');
+    const numIn = (v, said) => new RegExp(`(^|[^0-9])${v}([^0-9]|$)`).test(said);
+    const numbersSaid = (x, where, said) => {
+      for (const t of [x?.th, x?.en]) for (const m of String(t || '').replace(/\{\w+\}/g, '').match(/\d+/g) || []) if (Number(m) > 1 && !numIn(m, said)) err(`${where}: ${m} is not in any of its sources' title or note`);
+    };
+    const cited = (x, where) => {
+      if (!['verified', 'partial'].includes(x.verify)) err(`${where}: verify must be verified or partial`);
+      if (!(x.sources || []).length) err(`${where}: needs sources`);
+      for (const sid of x.sources || []) if (!sources[sid]) err(`${where}: unknown source "${sid}"`);
+    };
     for (const x of F.freezer || []) text(x.label, `kit.json fridge.freezer ${x.id}`);
     for (const p of F.parts || []) {
       const where = `kit.json fridge part ${p.id}`;
       for (const k of ['label', 'over']) text(p[k], `${where} ${k}`);
-      for (const k of ['ok', 'soon', 'over']) text(p.say?.[k], `${where} say.${k}`);
+      for (const k of ['ok', 'soon', 'over', ...(p.overAs ? [p.overAs] : [])]) text(p.say?.[k], `${where} say.${k}`);
+      if (p.overAs && p.overAs !== 'check') err(`${where}: overAs can only be check (no "throw it out" for medicine)`);
       if (!p.cond && !p.ok) err(`${where}: needs cond (the condition, e.g. "if the door stays shut") or ok (its own line)`);
-      for (const k of ['cond', 'ok', 'note']) if (p[k]) text(p[k], `${where} ${k}`);
-      if (p.if && p.if !== 'med') err(`${where}: "if" can only be med`);
-      if (!['verified', 'partial'].includes(p.verify)) err(`${where}: verify must be verified or partial`);
-      if (!(p.sources || []).length) err(`${where}: needs sources`);
-      for (const sid of p.sources || []) if (!sources[sid]) err(`${where}: unknown source "${sid}"`);
-      const said = (p.sources || []).map((sid) => `${sources[sid]?.title || ''} ${sources[sid]?.note || ''}`).join(' ');
+      for (const k of ['cond', 'ok', 'note', 'tip']) if (p[k]) text(p[k], `${where} ${k}`);
+      if (p.tip && !['soon', 'always'].includes(p.tipAt)) err(`${where}: tipAt must be soon or always`);
+      if (p.if && !['med', 'milk'].includes(p.if)) err(`${where}: "if" can only be med or milk`);
+      cited(p, where);
+      const said = saidBy(p.sources);
       const nums = [p.hours, ...Object.values(p.hoursBy || {}), p.days].filter((v) => v != null);
       if (nums.length !== 1 + (p.hoursBy ? Object.keys(p.hoursBy).length - 1 : 0)) err(`${where}: give one of hours, hoursBy or days`);
       for (const v of nums) {
         if (!(Number.isInteger(v) && v > 0)) err(`${where}: ${v} must be a whole number`);
-        else if (v > 1 && !new RegExp(`(^|[^0-9])${v}([^0-9]|$)`).test(said)) err(`${where}: ${v} is not in any of its sources' title or note`);
+        else if (v > 1 && !numIn(v, said)) err(`${where}: ${v} is not in any of its sources' title or note`);
       }
+      for (const k of ['label', 'cond', 'ok', 'note', 'tip', 'over']) numbersSaid(p[k], `${where} ${k}`, said);
+      for (const k of Object.keys(p.say || {})) numbersSaid(p.say[k], `${where} say.${k}`, said);
       if (p.hoursBy) for (const k of Object.keys(p.hoursBy)) if (!fz.has(k)) err(`${where}: hoursBy.${k} is not a freezer option`);
       if (p.hoursBy && [...fz].some((k) => p.hoursBy[k] == null)) err(`${where}: hoursBy needs every freezer option`);
     }
+    for (const id of ['fridge', 'freezer']) if (!(F.parts || []).some((p) => p.id === id)) err(`kit.json fridge: the ${id} part is missing (the foods hang on it)`);
+    const ids = new Set();
+    for (const f of F.foods || []) {
+      const where = `kit.json fridge food ${f.id}`;
+      if (ids.has(`f:${f.id}`)) err(`${where}: duplicate id`);
+      ids.add(`f:${f.id}`);
+      text(f.label, where);
+      text(f.short, `${where} short`);
+      if (!['discard', 'keep'].includes(f.after)) err(`${where}: after must be discard or keep (the chart's verdict)`);
+      cited(f, where);
+    }
+    for (const f of F.frozen || []) {
+      const where = `kit.json fridge frozen ${f.id}`;
+      if (ids.has(`z:${f.id}`)) err(`${where}: duplicate id`);
+      ids.add(`z:${f.id}`);
+      text(f.label, where);
+      for (const k of ['crystals', 'thawed']) if (!['refreeze', 'discard'].includes(f[k])) err(`${where}: ${k} must be refreeze or discard (the chart's verdict)`);
+      cited(f, where);
+    }
+    if (!(F.foods || []).some((f) => f.after === 'discard') || !(F.foods || []).some((f) => f.after === 'keep')) err('kit.json fridge.foods: needs foods to throw out and foods to keep');
     for (const [i, a] of (F.always || []).entries()) {
       text(a.text, `kit.json fridge.always[${i}]`);
       if (!(a.sources || []).length) err(`kit.json fridge.always[${i}]: needs sources`);
@@ -533,7 +577,9 @@ const ALERT_RE = /<div class="alert-card" id="alert-card"[^>]*>(?:<button[\s\S]*
 const alertHtml = (S) => {
   if (!(ALERT.guide && GUIDE_IDS.includes(ALERT.guide) && ALERT.until >= TODAY)) return '<div class="alert-card" id="alert-card" hidden></div>';
   const g = GUIDES.find((x) => x.id === ALERT.guide);
-  const text = fill(S.alertCard, { name: S[`guide${capM(ALERT.guide)}`] });
+  // v1.11.0: it says until when ("ช่วงนี้ถึง 25 ต.ค.: …"), in the Bangkok calendar.
+  const until = new Date(`${ALERT.until}T12:00:00+07:00`).toLocaleDateString(S === strings.en ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', timeZone: 'Asia/Bangkok' });
+  const text = fill(S.alertCard, { name: S[`guide${capM(ALERT.guide)}`], until });
   return `<div class="alert-card" id="alert-card"><button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(g.icon || '📢')}</span><span>${esc(text)}</span><span aria-hidden="true">›</span></button></div>`;
 };
 if (!ALERT_RE.test(indexHtml)) err('index.html: the #alert-card element is missing');
@@ -623,7 +669,9 @@ const S = seo.th, E = seo.en;
 const seoFiles = [];
 const writeSeo = (rel, body) => { fs.writeFileSync(path.join(PUB, rel), body); seoFiles.push(rel); };
 const T = (o) => esc(o?.th ?? '');
-const En = (o) => (o?.en ? `<span class="en" lang="en">${esc(o.en)}</span>` : '');
+// Thai pages are Thai only since v1.11.0: the English twin under every line made /flood
+// about 50 screens long on a phone, and /en/ pages (hreflang) serve English readers.
+const En = () => '';
 const L2 = (o, lang) => (lang === 'en' ? o?.en : o?.th) ?? '';
 const LEARN_URL = `${SITE}/learn`;
 const roomOrder = roomsFile.rooms.map((r) => r.id);
@@ -685,10 +733,10 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 .src a,.help a{display:inline-block;min-height:44px;line-height:44px}
 .src a,.help a{min-width:44px;text-align:center}
 .tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
-.tix li{margin:0}.tix a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
-.top a,.check a{display:inline-flex;align-items:center;min-height:44px}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
-.jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.jump a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:2px solid #f2c48d;border-radius:999px;background:#fff;text-decoration:none;font-size:.92em;box-sizing:border-box}
-.tel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tel a{display:inline-grid;place-items:center;min-width:64px;min-height:44px;padding:0 12px;border-radius:999px;background:#FDE3DA;color:#8A2E12;font-weight:600;text-decoration:none;box-sizing:border-box}
+.tix li{margin:0}.tix a{display:inline-block;min-height:44px;padding:9px 12px;line-height:1.4;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
+.top a,.check a{display:inline-block;min-height:44px;padding:10px 0;line-height:1.5;box-sizing:border-box}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.jump a{display:inline-block;min-height:44px;padding:9px 14px;line-height:1.4;border:2px solid #f2c48d;border-radius:999px;background:#fff;text-decoration:none;font-size:.92em;box-sizing:border-box}
+.tel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tel a{display:inline-grid;place-items:center;min-width:64px;min-height:44px;padding:2px 10px;border-radius:18px;background:#FDE3DA;color:#8A2E12;font-weight:600;text-decoration:none;box-sizing:border-box;line-height:1.2;text-align:center}.tel small{display:block;max-width:11em;font-size:.72em;font-weight:500;line-height:1.2}
 h2,h3{scroll-margin-top:8px}.top{font-size:.9em;margin:0}
 h2 .en{display:inline;margin-left:.4em;font-size:.7em}
 @media (max-width:380px){.tel .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}h1{font-size:1.3em;line-height:1.25;margin:.2em 0}h2{font-size:1.2em;margin-top:.9em}.tel a{min-width:56px}.jump,.tel{margin:4px 0}main{padding-top:8px}.top{font-size:.85em}}`;
@@ -735,7 +783,7 @@ ${lang === 'th' ? keepHtml(main) : main}
 const thaiLeak = (html) => /[฀-๿]/.test(html.replace(/lang="th"[^>]*>[^<]*</g, '').replace(/<script[\s\S]*?<\/script>/g, '').replace(/href="[^"]*"/g, ''));
 
 // Shared blocks: lessons by mode, the modes' checklists and the helplines.
-const sectionsTh = (ids) => ids.map((id) => `<h2 id="${id}">${esc(S[`section${capM(id)}`])} <span class="en" lang="en">${esc(E[`section${capM(id)}`])}</span></h2>
+const sectionsTh = (ids) => ids.map((id) => `<h2 id="${id}">${esc(S[`section${capM(id)}`])}</h2>
 ${lessonsBy[id].map(lessonHtml).join('\n')}`).join('\n');
 // A checklist, grouped by phase (before, during, after) when it has them. The
 // guides with no game carry a source on every line, shown under the line.
@@ -750,7 +798,7 @@ const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((la
 const checklistsTh = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
   let n = 0;
   const hp = title ? level + 1 : level;
-  return `${title ? `<h${level} id="cl-${m}">${T(checklists[m].title)} ${En(checklists[m].title)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp} id="${m}-${g.p}">${esc(phaseName(checklists[m], g.p, 'th'))} <span class="en" lang="en">${esc(phaseName(checklists[m], g.p, 'en'))}</span></h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.th)} ${c.en ? `<span class="en" lang="en">${esc(c.en)}</span>` : ''}${clSrc(c, 'th')}</li>`)).join('')}</ol>`).join('\n')}`;
+  return `${title ? `<h${level} id="cl-${m}">${T(checklists[m].title)} ${En(checklists[m].title)}</h${level}>\n` : ''}${phaseGroups(checklists[m]).map((g) => `${g.p ? `<h${hp} id="${m}-${g.p}">${esc(phaseName(checklists[m], g.p, 'th'))}</h${hp}>\n` : ''}<ol start="${n + 1}">${g.items.map((c) => (n++, `<li>${esc(c.th)}${clSrc(c, 'th')}</li>`)).join('')}</ol>`).join('\n')}`;
 }).join('\n');
 const helplineHtml = `<ul class="help">${helplines.helplines.map((h) => `<li><a href="tel:${h.number}"><b>${h.number}</b></a> ${T(h.who)}: ${T(h.what)}</li>`).join('')}</ul>`;
 
@@ -776,7 +824,12 @@ const checkLinks = (lang, ids) => {
 
 // The top of a hazard page, for someone reading it while it happens: a jump to
 // each list (or each phase of a guide) and the three main helplines.
-const telRow = (lang) => `<p class="tel"><span>☎️ <span class="lbl">${esc(strings[lang].telFree)}</span></span>${helplines.helplines.filter((x) => x.main).slice(0, 3).map((x) => `<a href="tel:${x.number}">${x.number}</a>`).join('')}</p>`;
+// v1.11.0: the guide's own numbers (config.json → guides[].calls), each with its short name.
+const callsOf = (gid) => {
+  const nums = GUIDES.find((g) => g.id === gid)?.calls || helplines.helplines.filter((x) => x.main).slice(0, 3).map((x) => x.number);
+  return nums.map((n) => helplines.helplines.find((x) => x.number === n)).filter(Boolean);
+};
+const telRow = (lang, gid) => `<p class="tel"><span>☎️ <span class="lbl">${esc(strings[lang].telFree)}</span></span>${callsOf(gid).map((x) => `<a href="tel:${x.number}"><b>${x.number}</b>${x.short ? `<small>${esc(L2(x.short, lang))}</small>` : ''}</a>`).join('')}</p>`;
 const jumpRow = (lang, h, lists) => {
   const guideOnly = !h.modes.length;
   const links = guideOnly
@@ -892,7 +945,7 @@ for (const h of hazardList) {
 <p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/${h.slug}" lang="en" hreflang="en">English</a></p>
 <h1>${esc(S[`hazard${H}H1`])}</h1>
 ${jumpRow('th', h, lists)}
-${telRow('th')}
+${telRow('th', h.modes[0] || h.guides[0])}
 ${h.modes.length ? `${checklistsTh(lists, 2)}
 ${picture('th')}
 <p>${esc(S[`hazard${H}Intro`])}</p>
@@ -921,7 +974,7 @@ ${hazardChips('th', h.id)}
 <p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a> · <a href="/${h.slug}" lang="th" hreflang="th">ภาษาไทย</a></p>
 <h1>${esc(E[`hazard${H}H1`])}</h1>
 ${jumpRow('en', h, lists)}
-${telRow('en')}
+${telRow('en', h.modes[0] || h.guides[0])}
 ${h.modes.length ? `${checklistsEn(lists, 2)}
 ${picture('en')}
 <p>${esc(E[`hazard${H}Intro`])}</p>
@@ -963,17 +1016,35 @@ ${hazardChips('en', h.id)}
     return [r, x.for ? fill(X.kitIf, { who: flagLabel(x.for, lang) }) : ''].filter(Boolean).join(' · ');
   };
   const src = (x, lang) => `<span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(x.sources, lang)}${x.verify !== 'verified' ? ` · <span class="flag">⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>`;
-  // The fridge (v1.10.0): each part with how long it keeps, then what holds however long.
+  // The fridge (v1.10.0): each part with how long it keeps, then what holds however long;
+  // since v1.11.0 food by food (what to throw out, what to keep) under the fridge and the freezer.
   const F = kitFile.fridge;
   const keeps = (p, lang) => {
     const X = lang === 'en' ? E : S;
-    if (!p.cond) return L2(p.note || p.ok, lang);
+    if (!p.cond) return [p.ok && !L2(p.ok, lang).includes('{') ? L2(p.ok, lang) : '', L2(p.note, lang)].filter(Boolean).join(' ');
     const sep = lang === 'en' ? ', ' : ' ';
     if (p.hoursBy) return `${F.freezer.map((z) => `${L2(z.label, lang)}: ${fill(X.fridgeKeeps, { h: p.hoursBy[z.id] })}`).join(' · ')}${sep}${L2(p.cond, lang)}`;
     return `${fill(X.fridgeKeeps, { h: p.hours })}${sep}${L2(p.cond, lang)}`;
   };
+  const FU = (lang) => kitFile.ui[lang];
+  const foodList = (xs, lang) => xs.map((f) => `${f.icon} ${L2(f.label, lang)}`).join(' · ');
+  const frozenLine = (f, lang) => {
+    const v = (x) => FU(lang)[x === 'refreeze' ? 'fridgeRefreeze' : 'fridgeDiscard'];
+    if (f.crystals === f.thawed) return `${f.icon} ${L2(f.label, lang)}: ${f.crystals === 'discard' ? FU(lang).fridgeMelting : v(f.crystals)}`;
+    return `${f.icon} ${L2(f.label, lang)}: ${FU(lang).fridgeCrystals} → ${v(f.crystals)}, ${FU(lang).fridgeThawed} → ${v(f.thawed)}`;
+  };
+  const after = (p, lang) => {
+    const X = lang === 'en' ? E : S;
+    const lower = (x) => (lang === 'en' ? x.replace(/^./, (c) => c.toLowerCase()) : x);
+    if (p.id === 'fridge') {
+      return `<br>${esc(X.fridgeAfter)}<br>${esc(FU(lang).fridgeToss)}: ${esc(foodList(F.foods.filter((f) => f.after === 'discard'), lang))}<br>${esc(FU(lang).fridgeKeep)}: ${esc(foodList(F.foods.filter((f) => f.after === 'keep'), lang))}<br>${esc(FU(lang).fridgeOther)}`;
+    }
+    if (p.id === 'freezer') return `<br>${esc(X.fridgeAfter)} ${esc(lower(L2(p.over, lang)))}<br>${F.frozen.map((f) => esc(frozenLine(f, lang))).join('<br>')}`;
+    if (p.cond || p.overAs) return `<br>${esc(X.fridgeAfter)} ${esc(lower(L2(p.over, lang)))}`;
+    return '';
+  };
   const fridgeRows = (lang) => [
-    ...F.parts.map((p) => `<li><b>${esc(p.icon)} ${esc(L2(p.label, lang))}</b> · ${esc(keeps(p, lang))}${p.cond ? `<br>${esc((lang === 'en' ? E : S).fridgeAfter)} ${esc(lang === 'en' ? L2(p.over, lang).replace(/^./, (c) => c.toLowerCase()) : L2(p.over, lang))}` : ''}<br>${src(p, lang)}</li>`),
+    ...F.parts.map((p) => `<li><b>${esc(p.icon)} ${esc(L2(p.label, lang))}</b> · ${esc(keeps(p, lang))}${after(p, lang)}<br>${src({ sources: [...new Set([...p.sources, ...(p.id === 'fridge' ? F.foods : p.id === 'freezer' ? F.frozen : []).flatMap((f) => f.sources)])], verify: p.verify }, lang)}</li>`),
     ...F.always.map((a) => `<li><b>${esc(a.icon)} ${esc(L2(a.text, lang))}</b><br>${src(a, lang)}</li>`),
   ].join('\n');
   // Dust today (v1.10.0): each colour with its band and what each group does.
@@ -997,7 +1068,7 @@ ${hazardChips('en', h.id)}
       const X = lang === 'en' ? E : S;
       const pre = lang === 'en' ? EN : '';
       const url = `${SITE}${pre}/${tool}`;
-      const rows = tool === 'fridge' ? fridgeRows(lang) : tool === 'air' ? airRows(lang) : tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}<br>${src(x, lang)}</li>`).join('\n');
+      const rows = tool === 'fridge' ? fridgeRows(lang) : tool === 'air' ? airRows(lang) : tools[tool].map((x) => `<li><b>${esc(x.icon)} ${esc(L2(x.label, lang))}</b>${tool === 'kit' && rule(x, lang) ? ` · ${esc(rule(x, lang))}` : ''}${tool === 'plan' && x.hint ? `<br>${esc(L2(x.hint, lang))}` : ''}${(x.sources || []).length ? `<br>${src(x, lang)}` : ''}</li>`).join('\n');
       const title = X[`${tool}PageTitle`];
       const html = seoPage({
         lang, title, desc: X[`${tool}PageDesc`], url, thPath: `/${tool}`, enPath: `${EN}/${tool}`,

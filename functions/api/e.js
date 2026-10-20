@@ -9,7 +9,7 @@ const ALLOWED = new Set([
   'challenge_open', 'challenge_play', 'checklist_open', 'checklist_save',
   'help_click', 'forecast_click', 'lang', 'learn_open',
   'kit_open', 'kit_share', 'plan_open', 'plan_share', 'guide_open', 'print',
-  'tool_open', 'tool_share',
+  'tool_open', 'tool_share', 'big_text',
 ]);
 const MAX_EVENTS = 25;
 const MAX_BODY = 4096;

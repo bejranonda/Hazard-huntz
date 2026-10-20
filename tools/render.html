@@ -101,6 +101,8 @@ window.renderAll = async (site) => {
       items: checklists[id].items.map((it) => ({ text: it.th, sprite: it.sprite })),
       helpLabel: 'เบอร์ช่วยเหลือ โทรฟรี',
       helpNumbers: main.join('  ·  '),
+      // v1.11.0: the guide's own numbers with their names (config.json → guides[].calls)
+      calls: (config.guides.find((g) => g.id === id).calls || main.slice(0, 3)).map((n) => helplines.helplines.find((h) => h.number === n)).map((h) => ({ number: h.number, name: h.short.th })),
       url,
       forward: 'ส่งต่อด้วยความห่วงใย ♥',
       footer: th.cardFooter,

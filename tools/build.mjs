@@ -257,6 +257,8 @@ for (const g of GUIDES) {
   if (!HAZARDS[g.hazard]) err(`${where}: hazard "${g.hazard}" is not in hazards`);
   if (!g.icon) err(`${where}: no icon`);
   // "Power off right now?": a guide can open a tool first (config.json → guides[].now).
+  // A guide may list its own tools (the two flood guides differ, v1.13.0); else its hazard's.
+  if (g.tools != null && (!Array.isArray(g.tools) || !g.tools.length || g.tools.some((x) => !TOOL_IDS.includes(x)))) err(`${where}: tools must be a list of tools (${TOOL_IDS.join(', ')})`);
   if (g.now != null) {
     if (!TOOL_IDS.includes(g.now)) err(`${where}: now "${g.now}" is not a tool`);
     for (const l of LANGS) if (!strings[l]?.[`guideNow${capM(g.now)}`]) err(`strings.json: ${l}.guideNow${capM(g.now)} is missing`);
@@ -548,6 +550,9 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
       if (b.guide && !GUIDE_IDS.includes(b.guide)) err(`kit.json mask.${k}: guide "${b.guide}" is not a guide`);
       b.lines.forEach((x, i) => line(x, `kit.json mask.${k}[${i}]`));
     }
+    // Illness answers get the under-2 line without dust today's dust words.
+    if (!M.baby) err('kit.json mask.baby: the under-2 line for answers that are not about dust is missing');
+    else line(M.baby, 'kit.json mask.baby');
     for (const k of ['fit', 'change', 'buy', 'cant']) (M.card?.[k] || []).forEach((x, i) => line(x, `kit.json mask.card.${k}[${i}]`));
     // A house fire never sends anyone to look for a mask: no mask status, no card.
     if (['n95', 'surgical'].includes(M.fire?.status)) err('kit.json mask.fire: a house fire is "get out", never a mask');
@@ -576,7 +581,10 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
     if (!strings.seo?.en?.agencies?.[x.by] && !/^[\x20-\x7E]+$/.test(x.by || '')) err(`${where}: no English name for "${x.by}" in seo.en.agencies`);
   }
   if (!(LK?.list || []).length) err('kit.json: links is missing');
-  for (const x of LK?.list || []) if (x.note) line(x.note, `kit.json links ${x.id} note`);
+  for (const x of LK?.list || []) {
+    if (x.note) line(x.note, `kit.json links ${x.id} note`);
+    if (x.warn) line(x.warn, `kit.json links ${x.id} warn`);
+  }
   // Turning on emergency alerts (DDPM's Cell Broadcast steps, v1.12.0).
   const AL = kitFile.alerts;
   if (!AL) err('kit.json: alerts is missing');
@@ -813,6 +821,7 @@ const localize = (html) => html
     (tag, _, key) => (typeof enText[key] === 'string' ? tag.replace(/aria-label="[^"]*"/, `aria-label="${esc(enText[key])}"`) : tag))
   .replace(ALERT_RE, alertHtml(enText))
   .replace(/href="\/learn"/g, `href="${EN}/learn"`)
+  .replace('<link rel="manifest" href="/manifest.webmanifest">', `<link rel="manifest" href="${EN}/manifest.webmanifest">`)
   .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2');
 const enIndexLd = JSON.parse(JSON.stringify(indexLd));
 enIndexLd['@graph'][0] = { ...enIndexLd['@graph'][0], '@id': `${SITE}${EN}/#website`, url: `${SITE}${EN}/`, name: ogEn.siteName, alternateName: ['Baan Rod Mai?', og.siteName], inLanguage: 'en' };
@@ -824,6 +833,18 @@ const enIndexHtml = page(localize(indexHtml), ogBlock({
   url: `${SITE}${EN}/`, canonical: `${SITE}${EN}/`, ld: enIndexLd, lang: 'en', alternates: alt('/', `${EN}/`),
 }), ogEn.defaultTitle);
 write('en/index.html', enIndexHtml);
+// The English app installs as an English app (v1.13.0, visitor audit 4): its own
+// manifest, from the Thai one, with English names, start page and shortcuts.
+{
+  const M = JSON.parse(fs.readFileSync(path.join(PUB, 'manifest.webmanifest'), 'utf8'));
+  const name = (u) => { const id = new URL(u, SITE).searchParams.get('open'); return enText[`hub${capM(id)}`] || id; };
+  const enM = {
+    ...M, name: strings.seo.en.manifestName, short_name: strings.seo.en.manifestShort, description: ogEn.defaultDesc, lang: 'en', start_url: `${EN}/?source=pwa`,
+    shortcuts: M.shortcuts.map((x) => ({ ...x, name: name(x.url), short_name: name(x.url), url: `${EN}${x.url}` })),
+  };
+  if (M.name !== strings.seo.th.manifestName) warn('manifest.webmanifest: its name differs from strings.json seo.th.manifestName');
+  write('en/manifest.webmanifest', `${JSON.stringify(enM, null, 2)}\n`);
+}
 
 for (const { code: m, id: mode } of MODES) {
   const cap = capM(mode);
@@ -937,7 +958,7 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 .src a,.help a{min-width:44px;text-align:center}
 .tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .tix li{margin:0}.tix a{display:inline-block;min-height:44px;padding:9px 12px;line-height:1.4;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
-.top a,.check a{display:inline-block;min-height:44px;padding:10px 0;line-height:1.5;box-sizing:border-box}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
+.top a,.check a,a.tool-a{display:inline-block;min-height:44px;padding:10px 0;line-height:1.5;box-sizing:border-box}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
 .jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.jump a{display:inline-block;min-height:44px;padding:9px 14px;line-height:1.4;border:2px solid #f2c48d;border-radius:999px;background:#fff;text-decoration:none;font-size:.92em;box-sizing:border-box}
 .tel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tel a{display:inline-grid;place-items:center;min-width:64px;min-height:44px;padding:2px 10px;border-radius:18px;background:#FDE3DA;color:#8A2E12;font-weight:600;text-decoration:none;box-sizing:border-box;line-height:1.2;text-align:center}.tel small{display:block;max-width:11em;font-size:.72em;font-weight:500;line-height:1.2}
 h2,h3{scroll-margin-top:8px}.top{font-size:.9em;margin:0}
@@ -1359,7 +1380,7 @@ ${hazardChips('en', h.id)}
 ${rows}
 </ol>
 <p class="play"><a class="cta" href="${pre}/?open=${tool}">${esc(X[`${tool}PageCta`])}</a></p>
-<p class="check"><a href="${pre}/${nextTool[tool]}">${esc(X[`${nextTool[tool]}PageTitle`])}</a></p>
+<p class="check"><a href="${pre}/${nextTool[tool]}">${esc(strings[lang][`hub${capM(nextTool[tool])}`])}</a></p>
 <p class="src">${esc(X.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
 <h2 id="helplines">${esc(X.helplines)}</h2>
 ${lang === 'en' ? helplineEn : helplineHtml}
@@ -1377,8 +1398,8 @@ ${hazardChips(lang)}
     const pre = lang === 'en' ? EN : '';
     const url = `${SITE}${pre}/tools`;
     const KU = kitFile.ui[lang];
-    const group = (g) => (config.tools || []).filter((x) => x.group === g).map((x) => `<li><a href="${pre}/${x.id}"><b>${esc(x.icon)} ${esc(strings[lang][`hub${capM(x.id)}`])}</b></a> · ${esc(strings[lang][`hub${capM(x.id)}Sub`])}</li>`).join('\n');
-    const links = kitFile.links.list.map((x) => `<li><a href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a> · ${esc(lang === 'en' ? E.agencies?.[x.by] || x.by : x.by)} · ${esc(KU[x.kind === 'line' ? 'toolsLine' : 'toolsWeb'])}${x.note ? `<br>${esc(L2(x.note, lang))}<br>${src(x.note, lang)}` : ''}</li>`).join('\n');
+    const group = (g) => (config.tools || []).filter((x) => x.group === g).map((x) => `<li><a class="tool-a" href="${pre}/${x.id}"><b>${esc(x.icon)} ${esc(strings[lang][`hub${capM(x.id)}`])}</b></a> · ${esc(strings[lang][`hub${capM(x.id)}Sub`])}</li>`).join('\n');
+    const links = kitFile.links.list.map((x) => `<li><a href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a> · ${esc(lang === 'en' ? E.agencies?.[x.by] || x.by : x.by)} · ${esc(KU[x.kind === 'line' ? 'toolsLine' : 'toolsWeb'])}${x.note ? `<br>${esc(L2(x.note, lang))}<br>${src(x.note, lang)}` : ''}${x.warn ? `<br>🚫 ${esc(L2(x.warn, lang))}<br>${src(x.warn, lang)}` : ''}</li>`).join('\n');
     const AL = kitFile.alerts;
     const steps = (o) => `<p><b>${esc(o.label)}</b></p><ol>${o.steps.map((x) => `<li>${esc(L2(x, lang))}</li>`).join('')}</ol>`;
     const alerts = `<h2 id="alerts">📲 ${esc(L2(AL.title, lang))}</h2>

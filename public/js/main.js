@@ -1124,7 +1124,8 @@ async function openChecklist(mode, from = '') {
   const agencies = [...new Set(list.items.flatMap((it) => it.sources || []).map((s) => C.sources[s]?.agency).filter(Boolean))].map(agencyName);
   const partial = list.items.some((it) => it.verify === 'partial');
   const calls = guideCalls(mode);
-  const tools = (hz?.tools || []).filter((x) => TOOLS[x]);
+  // A guide's own tools first (the two flood guides differ, v1.13.0), else its hazard's.
+  const tools = (g?.tools || hz?.tools || []).filter((x) => TOOLS[x]);
   openSheet(`
     <h2 id="sheet-title">${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
     ${sections.length > 1 ? `<nav class="phase-jump" aria-label="${esc(t('guideJump'))}">${sections.map((sec) => `<button class="phase-chip phase-${sec.phase}" type="button" data-jump="${sec.phase}">${esc(sec.head)}</button>`).join('')}</nav>` : ''}

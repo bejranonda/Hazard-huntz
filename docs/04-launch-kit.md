@@ -331,6 +331,52 @@ Rules for the two new drafts: post them only after the Thai reviews of the food 
 
 Rules for these posts: no photos of real haze victims, hospital scenes or spoiled food; no blame on the electricity authorities or anyone else for a cut or for the dust; the tool's numbers only, each with its agency, and nothing of your own (no "safe for 6 hours if…", no brand of mask or purifier); for the fridge, the US source named every time.
 
+### Masks, all tools and six more tools (v1.12.0–v1.13.0)
+
+Each has a page and a preview of its own ([KNOWLEDGE §34](KNOWLEDGE.md#34-masks-all-tools-and-six-more-tools-v1111v1130)). Post each when its moment comes; quote the tool's words as they are on screen, each number with its agency, and nothing of your own.
+
+- **`/tools` ("🧰 เครื่องมือทั้งหมด")** is the one link to pin: in a LINE OpenChat's notes, a Facebook page's pinned post, a community's LINE OA menu. It carries every tool, DDPM's steps to turn on emergency alerts, and the agencies' own pages.
+- **`/safe` ("💬 ส่งข่าวว่าปลอดภัย")**: before the storm season, and **at once** when an alert is out (a storm, a flash flood, a quake felt in Bangkok). It is the tool most likely to be used on a bad day; try it on an Android and an iPhone first ([06 row 83](06-test-checklist.md)).
+- **`/bag` and `/info`**: any weekend, for "prepare with your parents" posts; the card is the one to suggest for an older relative on daily medicine.
+- **`/tank` ("🚰 ล้างถังพักน้ำ")**: as the water goes down, with the after-the-flood guide (`/checklist/return`); name the MWA and the DDC with the dose.
+- **`/hot` ("🌡️ ร้อนวันนี้")**: in the hot season (March to May), on days the TMD announces "อันตราย"; **only after a person has opened the TMD's heat-index page** ([KNOWN_ISSUES #90](KNOWN_ISSUES.md#90-heat-today-rests-on-news-reports-quoting-the-agencies)).
+- **`/water`**: during a long power cut or a water cut, and with the home-check posts.
+- **`/mask`**: from December with the dust posts, after a flood with the clean-up, and when a factory fire is in the news (its answer is "move away", not a mask). Only after a doctor's read of the children's, pregnancy and heart or lung lines ([#87](KNOWN_ISSUES.md#87-the-mask-tools-lines-for-children-pregnancy-and-heart-or-lung-disease-need-a-doctors-read)).
+
+These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
+
+**LINE family groups: "I'm safe"** (when an alert is out):
+
+> ทุกคนปลอดภัยดีไหม? 💛 กดสถานะของตัวเอง แล้วส่งข้อความเดียวกลับมาในกลุ่มนี้ได้เลย 👉 https://baanrodmai.autobahn.bot/safe
+> (ถ้าต้องการความช่วยเหลือ โทร 1784 หรือ 1669 ก่อนนะ)
+
+**Facebook: the bag and the card** (a weekend; with the preview or a screenshot of the bag's list):
+
+> วันหยุดนี้ ชวนพ่อแม่จัดกระเป๋าฉุกเฉินกันไหม? 🧳
+>
+> กระเป๋าใบเดียวที่หยิบไปได้ทันทีเมื่อต้องออกจากบ้าน: น้ำและอาหารแห้ง ไฟฉาย ชุดปฐมพยาบาล สำเนาเอกสารในถุงกันน้ำ ยาประจำตัว…
+> ติ๊กของที่มีแล้ว แอปบอกว่ายังขาดอะไร และส่งรายการให้คนในบ้านได้
+> 🆔 คนที่ทานยาประจำ ทำ "บัตรข้อมูลฉุกเฉิน" ไว้ด้วย: ยา โรคประจำตัว แพ้ยา เบอร์ญาติ เก็บเป็นรูปในมือถือ
+>
+> 🔒 สิ่งที่พิมพ์และติ๊ก อยู่ในมือถือของคุณเท่านั้น
+>
+> จัดกระเป๋า 👉 https://baanrodmai.autobahn.bot/bag
+> ทำบัตร 👉 https://baanrodmai.autobahn.bot/info
+> #บ้านรอดไหม #กระเป๋าฉุกเฉิน
+
+**Facebook: the tank** (as the water goes down):
+
+> น้ำลดแล้ว ถังพักน้ำที่น้ำท่วมถึง ต้องล้างก่อนใช้ 🚰
+>
+> ใส่ขนาดถังและชนิดคลอรีน แอปบอกว่าต้องใช้เท่าไร พร้อมขั้นตอนทีละข้อ
+> เช่น ถัง 1,000 ลิตร ใช้คลอรีนน้ำ 5% ราว 100 มล. (ตาม กปน. และกรมควบคุมโรค)
+> ⚠️ ห้ามลงไปในถัง อาจขาดอากาศหายใจ · ใส่ถุงมือยาง · ห้ามผสมกับน้ำยาล้างห้องน้ำ
+>
+> คำนวณคลอรีน 👉 https://baanrodmai.autobahn.bot/tank
+> #บ้านรอดไหม #หลังน้ำลด
+
+Rules for these posts: as above; no photos of real damage or of people hurt; "I'm safe" asks people to send it to the family themselves, never to post where they are in public.
+
 ### When something happens: the 5-minute playbook
 
 Hazards don't keep to a calendar: a quake abroad, a storm warning, a heatwave or a flash flood can be the topic of the day without notice. Every hazard has a "what to do" guide, a picture and a page, so the answer takes minutes, not a release ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).
@@ -508,7 +554,7 @@ When your forecast app is ready, set `forecastStatusUrl` and the recommended mod
 ## 6. Launch-day checklist
 
 - [x] Domain live (https://baanrodmai.autobahn.bot); `config.json → siteUrl` set; `npm run images` re-rendered with the domain and committed (6 Oct 2026)
-- [ ] Sitemap (28 addresses since v1.10.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan`, `/fridge`, `/air` (with their twins) submitted for indexing; `/`, `/learn` and `/pm25` JSON-LD pass the Rich Results Test (since v1.9.2 with a publisher)
+- [ ] Sitemap (44 addresses since v1.13.0) submitted in Google Search Console and Bing Webmaster Tools, and the sixteen hazard pages and `/kit`, `/plan`, `/fridge`, `/air`, `/mask`, `/tools`, `/hot`, `/water`, `/tank`, `/info`, `/safe`, `/bag` (with their twins) submitted for indexing; `/`, `/learn` and `/pm25` JSON-LD pass the Rich Results Test (since v1.9.2 with a publisher)
 - [ ] `forecastAppUrl` set (the "เช็กระดับน้ำล่วงหน้า" button appears)
 - [ ] Preview checked in Facebook Sharing Debugger and in a LINE chat for `/`, `/c/p8?h=…`, `/checklist/prepare`
 - [ ] Hazard pages `/flood`, `/pm25`, `/fire` and `/ready` (and `/en/…`) open, their ▶ button opens the right mode, and their previews show their own title and checklist image in Facebook and LINE; the same for the guide pages `/landslide`, `/storm`, `/quake`, `/heat` and for `/kit`, `/plan` and a `/checklist/<id>` of a new guide

@@ -31,7 +31,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0; the hub, the guides and the new pages in v1.9.0; the renamed tools, new titles and intros, how-to step 4, the heat phase names in v1.9.1; the 117 rewritten wrong answers in v1.9.2; the calculators' texts in v1.10.0, and their plain words in v1.10.1; the fridge's food lists, the medicine and breast-milk lines, the named helplines and the new start-screen and sharing texts in v1.11.0) |
-| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (85 rows since v1.13.0: rows 80–85 for the six new tools inside LINE; rows 77–79 for the mask tool, the agency links and the emergency-alert steps; row 76 for the under-2 line and the Air4Thai link on Android; rows 67–75 for food by food, ก+ and the copy buttons inside LINE; rows 64–65 rewritten for v1.10.1's taps) |
+| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (87 rows since v1.13.1: rows 86–87 for the English install and a tank size in คิว; rows 80–85 for the six new tools inside LINE; rows 77–79 for the mask tool, the agency links and the emergency-alert steps; row 76 for the under-2 line and the Air4Thai link on Android; rows 67–75 for food by food, ก+ and the copy buttons inside LINE; rows 64–65 rewritten for v1.10.1's taps) |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (28 addresses since v1.10.0: sixteen hazard pages, `/kit`, `/plan`, `/fridge` and `/air`; the Rich Results Test of the publisher added in v1.9.2) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
@@ -62,6 +62,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N24 | [Masks and children under 2 (v1.11.1)](#n24-masks-and-children-under-2-v1111) | AI-ready (+ Owner review) | Done (20 Oct 2026, v1.11.1); a paediatrician's read (L10) and the Air4Thai phone test (#86) left |
 | N25 | [Masks, all tools and the agencies' own pages (v1.12.0)](#n25-masks-all-tools-and-the-agencies-own-pages-v1120) | AI-ready (+ Owner review) | Done (21 Oct 2026, v1.12.0); a doctor's read of the mask lines (#87), the alert steps on real phones (#89) and the monthly link check (#88) left |
 | N26 | [Six more tools (v1.13.0)](#n26-six-more-tools-v1130) | AI-ready (+ Owner review) | Done (21 Oct 2026, v1.13.0); the reviews of heat today (#90), the foreign lines (#91) and the soak time (#92), and the phone checks (L6 rows 80–85) left |
+| N27 | [Visitor audit 4 (v1.13.1)](#n27-visitor-audit-4-v1131) | AI-ready (+ Owner) | Done (21 Oct 2026, v1.13.1); the host's cookie (#93, Owner) and the leftovers (#94) left |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -577,6 +578,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **What shipped:** heat today (`/hot`, by the level announced, no formula), water you have (`/water`), tank chlorine (`/tank`), the emergency info card (`/info`), "I'm safe" (`/safe`) and the bag (`/bag`), each with its own page and preview; the tools joined to each other (the home check → water and the bag; the plan → the card and "I'm safe"); new season tiles; the app's descriptions rewritten; 13 sources.
 - **Left out on purpose:** a heat-index formula ([#78](KNOWN_ISSUES.md#78-a-heat-index-calculator-is-not-built)); CPR in heat today; the BMA's 11.00–15.00; "Message in a Bottle"; a location in "I'm safe" (nothing is sent by the app); amounts for a bag (no source gives them for Thai homes); boiling times (sources differ).
 - **Done when:** the reviews in [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) step 7b are done; rows 80–85 of the phone test ([L6](#l6-real-phone-test-matrix)) are filled.
+
+### N27. Visitor audit 4 (v1.13.1)
+
+- **Who:** AI-ready + Owner · **Status:** Done (21 Oct 2026, v1.13.1) · **Issues:** fixed F131–F163; new #93, #94
+- **Why:** the owner's process: validate and test the UI and UX as visitors, and cross-validate the output ([APPROACH §34](APPROACH_AND_METHOD.md#34-visitor-audit-4-two-auditors-on-the-live-site-one-decision-list-v1131)).
+- **What shipped:** the water answer in view; every phone number a button; numbers at the top of all tools; "‹ back" to the tool or list a tool was opened from; the card's tab and footer; the tank reading decimals and asking about คิว; an English install with its own manifest; the illness mask answer without dust words; one ⚠️ on the alert card; arrows on fold-out cards; 11 Thai words kept whole; previews with each tool's look and icon; per-guide tools for the two flood guides; English wording and capitals; contrast on two small texts; the About text true about the host's cookie.
+- **Left:** the cookie itself (#93: the owner turns off JavaScript detections); the phone's Back, a household measure for chlorine, larger preview text, shortcuts for the newer tools (#94).
+- **Done when:** #93 is closed by the owner and the leftovers in #94 are built or dropped with a reason.
 
 ## Later
 

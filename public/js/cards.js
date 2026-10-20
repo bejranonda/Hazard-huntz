@@ -539,6 +539,23 @@ export function drawOG(canvas, d, assets) {
   ctx.stroke();
   const face = d.kind === 'challenge' ? (d.score >= 8 ? 'cheer' : 'happy') : 'happy';
   drawGecko(ctx, assets, 70, 90, 360, 400, face, propOf(d.mode || 'prepare'));
+  // A tool's own icon as a sticker on the gecko's circle (v1.13.0), so each
+  // preview says what the tool is at chat size. Drawn only by tools/render.html,
+  // where an emoji font is installed; players' phones never draw a preview.
+  if (d.badge) {
+    ctx.beginPath();
+    ctx.arc(408, 132, 78, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fill();
+    ctx.lineWidth = 7;
+    ctx.strokeStyle = INK;
+    ctx.stroke();
+    ctx.font = '88px "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(d.badge, 408, 138);
+    ctx.textBaseline = 'alphabetic';
+  }
 
   const cx = 800;
   logo(ctx, cx, 120, 88, d.logo, 620);

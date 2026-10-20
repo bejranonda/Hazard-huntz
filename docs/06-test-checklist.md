@@ -131,6 +131,8 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 83 | "I'm safe" (v1.13.0): `/?open=safe` from LINE on Android and an iPhone, tap ย้ายไปที่ปลอดภัยแล้ว, type a place: does "LINE" open the chat picker with the message, does "SMS" open the messages app with the text filled in (Android and iOS write the link differently), and does "คัดลอกข้อความ" copy? Tap ต้องการความช่วยเหลือ: do 1784 and 1669 dial? | | | | | | | | |
 | 84 | The bag (v1.13.0): `/?open=bag` after answering the home check with a baby and a pet: are the baby and pet rows there? Tick 3, close and reopen; then "📤 ส่งรายการ" and print (Chrome or Safari, not LINE, [KNOWN_ISSUES #63](KNOWN_ISSUES.md#63-printing-isnt-offered-in-in-app-browsers)) | | | | | | | | |
 | 85 | The start screen's season tiles (v1.13.0): on the live site today, are the two tiles under the main three what the season says ([KNOWLEDGE §34](KNOWLEDGE.md#34-masks-all-tools-and-six-more-tools-v1111v1130)), and is "🧰 เครื่องมือทั้งหมด" on the first or second screen at 360 × 640? Hand the phone to an older relative: can they find "น้ำพอกี่วัน" without help? | | | | | | | | |
+| 86 | Installing in English (v1.13.1): open `https://baanrodmai.autobahn.bot/en/` in Chrome on Android (not inside LINE), menu → Add to Home screen / Install app: is the name "Baan Rod Mai?", does the icon open `/en/`, and are the long-press shortcuts in English? Repeat from `/` for the Thai app | | | | | | | | |
+| 87 | A tank size in คิว (v1.13.1): `/?open=tank` from LINE, tap the "ขนาดอื่น (ลิตร)" box: does the keyboard have a decimal point? Type 1.5: does it ask "หมายถึง 1.5 คิว (1,500 ลิตร) ใช่ไหม?", and does the tap give 1,500 litres? | | | | | | | | |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 
@@ -150,7 +152,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 
 ## Performance budget (checked by the build)
 
-The build's `budget` line prints the current numbers. In v1.13.0 the start screen is **294 KB** and the first game screen **309 KB** (the tools' code grew with eight tools in v1.12.0–v1.13.0). In v1.11.0:
+The build's `budget` line prints the current numbers. In v1.13.1 the start screen is **296 KB** and the first game screen **311 KB** (294 and 309 in v1.13.0) (the tools' code grew with eight tools in v1.12.0–v1.13.0). In v1.11.0:
 
 - Start screen: **264 KB** compressed (HTML + CSS + JS + content JSON + fonts; 254 KB in v1.10.1, 253 KB in v1.10.0, 243 KB in v1.9.2, 240 KB in v1.9.1, 232 KB in v1.9.0, 209 KB in v1.8.0–1.8.1). It counts every file in `js/`, including the tools' `kit.js` and `kitplan.js` (about 15.5 KB in v1.11.0, 13.3 KB in v1.10.1, 12.9 KB in v1.10.0, 6.6 KB before), which load only when a tool opens ([KNOWN_ISSUES #59](KNOWN_ISSUES.md#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached)), and `sources.json`, whose notes the game never shows (about 14 KB in v1.9.0, more since v1.11.0's seven sources: the file is 30.5 KB compressed) ([KNOWN_ISSUES #62](KNOWN_ISSUES.md#62-source-notes-are-downloaded-by-every-visitor)).
 - First game screen: **279 KB** (adds the first room and the sprites; 269 KB in v1.10.1, 268 KB in v1.10.0, 258 KB in v1.9.2, 254 KB in v1.9.1, 247 KB in v1.9.0, 223 KB in v1.8.0–1.8.1).

@@ -480,3 +480,13 @@ On 20 Oct 2026 the owner asked for research into "this kind calculator or useful
 6. **Validate in layers:** the build; unit tests (44); smoke checks on three pinned days (197); a visitor walk of every new tool at 320 × 568 and 360 × 640 in Thai and English, which found the "1 people" bug of v1.8.0 and three smaller slips; axe-core; and an independent cross-check written from the sources (2,263 agree, 0 disagree).
 7. **Say the limits plainly.** Heat today rests on news reports quoting the agencies; "I'm safe" and some bag and card lines rest on foreign guidance; nothing has been tried on a real phone. Each is a flag with what would close it, not a footnote.
 
+## 34. Visitor audit 4: two auditors on the live site, one decision list (v1.13.1)
+
+Straight after v1.13.0 went live, two auditors walked it in parallel, read-only, each returning findings as text with screenshots:
+
+1. **Auditor A, an older relative in LINE** (65, Thai only, a cheap Android phone, ก+ sometimes), at 360 × 640 and 320 × 568 with LINE's user agent, through the start screen, all tools, each of the eleven tools from nothing, the tool pages as a link from a chat, and the previews at chat size: 20 findings, no blocker.
+2. **Auditor B, an English reader and a consistency checker,** at 390 × 844 and 360 × 640: every tool in English, one name per tool across eight places, the numbers against the sources' notes, every join between tools and guides, and the network for anything typed: 20 findings, four major, and a table of every name each tool has.
+3. **One decision list.** Six findings overlapped (the water answer off-screen, the heat preview, Back, the card's tab, the heat link, the tools description). Each was checked against a screenshot or the code before it was fixed; one could not be fixed from the repository (the host's cookie, #93) and one needs a source (a household measure for chlorine), and both went to KNOWN_ISSUES with the rest of the leftovers (#94).
+4. **One batch, then the checks:** the build, the unit tests (the illness answer's under-2 line), four new smoke checks for the majors (the back link and the water answer, a tank of "1.5", 1669 to tap, the English install), the walk again on the changed screens, and the previews re-rendered and looked at.
+5. **Meanwhile a new question** (the owner's "Can we display the status of PM2.5 by using the GPS coordinates of user?") was researched while the auditors ran, without touching their work: the agencies' feeds were tried directly, and the answer reported with what was tested and what wasn't.
+

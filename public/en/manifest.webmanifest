@@ -1,0 +1,109 @@
+{
+  "name": "Baan Rod Mai? Get your home ready for any disaster",
+  "short_name": "Baan Rod Mai?",
+  "description": "What to do in a flood, flash flood, storm, earthquake, fire, power cut, heatwave or PM2.5 dust; your supplies and emergency bag, a family plan, an emergency info card and a safe message for the family; the fridge in a power cut, dust and heat today, which mask, how long your water lasts and cleaning a water tank; links to Thai agencies; and a 60-second game to remember it. Every line has its source. Free, no sign-up.",
+  "lang": "en",
+  "start_url": "/en/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF4E3",
+  "theme_color": "#FFF4E3",
+  "shortcuts": [
+    {
+      "name": "Check your supplies",
+      "short_name": "Check your supplies",
+      "url": "/en/?open=kit&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "What to do in a disaster",
+      "short_name": "What to do in a disaster",
+      "url": "/en/?open=guide&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Family plan",
+      "short_name": "Family plan",
+      "url": "/en/?open=plan&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Power cut: fridge",
+      "short_name": "Power cut: fridge",
+      "url": "/en/?open=fridge&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Dust today",
+      "short_name": "Dust today",
+      "url": "/en/?open=air&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "All tools",
+      "short_name": "All tools",
+      "url": "/en/?open=tools&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -4,6 +4,21 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.13.1] — 2026-10-21
+
+**Visitor audit 4: the new tools as an older relative and an English reader find them.** Two auditors walked the live v1.13.0 in parallel (an older relative in LINE at 360 and 320 px with ก+; an English reader and a consistency checker at 390 and 360 px): 40 findings, six shared, four major. 33 are fixed here ([KNOWN_ISSUES F131–F163](docs/KNOWN_ISSUES.md#in-v1131-21-oct-2026), [ROADMAP N27](docs/ROADMAP.md#n27-visitor-audit-4-v1131)); one needs the owner ([#93](docs/KNOWN_ISSUES.md#93-cloudflares-bot-detection-sets-a-cookie)) and the rest are listed ([#94](docs/KNOWN_ISSUES.md#94-leftovers-of-visitor-audit-4)). No advice, number or source changed; no item, room or slot: **houses and challenge links are the same.**
+
+### Fixed
+
+- **The majors:** the emergency card's English names ran under the gecko (now two lines); the tank dropped decimals, so "1.5" gave 2 ml for what was likely 1.5 คิว (it now reads decimals and asks "หมายถึง 1.5 คิว (1,500 ลิตร) ใช่ไหม?" under 100 litres); installing from `/en/` gave a Thai app (a generated `/en/manifest.webmanifest`); the About text promised no cookies while the host's bot detection sets one (the text now says so; the owner can turn it off, #93).
+- **Easier to use:** the water tool says its answer where the bottles are; every phone number is a button (heat today's 1669 was text); all tools opens with 1784, 199 and 1669; a tool opened from another or from the list says "‹ back" to it; the bag's "ตอบ 2 ข้อ" goes to the two questions and back; fold-out cards show ▾; the card's tab says "คนที่ 1" and then the name.
+- **Clearer:** one ⚠️ on the alert card; the relief link's scam warning on its own line; contrast on the notes and the season badge; the illness mask answer without dust words; "แทน N95"; the card's own footer; the guide buttons with the guides' own titles; the before-the-flood guide offers the home check, the bag and the plan, and the after-the-flood guide the tank, masks and the home check; English capitals, question marks and "aged 60 or over"; the water rule naming the PRD once; the plan's share text true without the picture; 11 Thai words kept whole.
+- **Previews:** each tool in its hazard's look with its own icon as a sticker (heat today in the sun hat, not the fire helmet), and `/tools`'s description and preview list the newer tools.
+
+### Checks
+
+Build clean (start screen 296 KB, first game 311 KB); 44 unit tests; 200 smoke checks on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (three new for the majors); the changed screens walked again at 320 and 360 px in Thai and English; the 24 tool previews re-rendered and looked at. Not run: real phones, and the Cloudflare setting (#93).
+
 ## [1.13.0] — 2026-10-21
 
 **Six more tools: heat today, water, the tank, the emergency card, "I'm safe" and the bag.** The second half of the owner's "Continue to make all features step by step till all accomplished" (20 Oct 2026), after v1.12.0's masks and all-tools page, and of "Try to research to answer your questions yourself too": the open questions (which heat levels, which chlorine doses, what to tell 1669, what a bag holds) were researched, not asked ([ROADMAP N26](docs/ROADMAP.md#n26-six-more-tools-v1130)). Each tool asks one thing at a time by a tap, answers with a status word first, says its sources once and keeps what is typed or counted on the phone ([GUIDELINES rule 82](docs/GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). No item, room, slot or band changed: **houses and challenge links are the same.**
@@ -26,7 +41,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ### Checks
 
-Build clean (start screen 294 KB, first game 309 KB); 44 unit tests (one new: the six tools' logic); SMOKE_N smoke checks on 18 Oct 2026, and on 5 Dec 2026 and 10 Apr 2027 (14 new: each tool, its controls at 44 px, its page, the English counts, nothing typed ever sent); a visitor walk of the six tools at 320 × 568 (Thai) and 360 × 640 (Thai and English), no errors and no sideways scroll, which found the "1 people" bug, a capital letter mid-sentence, a repeated heading in heat today and a line break in "เบื้องต้น", all fixed; axe clean on the six sheets and their pages; an independent cross-check (a scratch script with its own rules written from the sources, not `kitplan.js`) of water for 1–10 people and 216 mixes of bottles and other litres, the tank at 12 sizes and three chlorines, masks at every colour for every person and every other situation, the four heat bands, the bag's rows and the message's place: **2,263 agree, 0 disagree**. Not run: real phones.
+Build clean (start screen 294 KB, first game 309 KB); 44 unit tests (one new: the six tools' logic); 197 smoke checks on 18 Oct 2026, and on 5 Dec 2026 and 10 Apr 2027 (14 new: each tool, its controls at 44 px, its page, the English counts, nothing typed ever sent); a visitor walk of the six tools at 320 × 568 (Thai) and 360 × 640 (Thai and English), no errors and no sideways scroll, which found the "1 people" bug, a capital letter mid-sentence, a repeated heading in heat today and a line break in "เบื้องต้น", all fixed; axe clean on the six sheets and their pages; an independent cross-check (a scratch script with its own rules written from the sources, not `kitplan.js`) of water for 1–10 people and 216 mixes of bottles and other litres, the tank at 12 sizes and three chlorines, masks at every colour for every person and every other situation, the four heat bands, the bag's rows and the message's place: **2,263 agree, 0 disagree**. Not run: real phones.
 
 ## [1.12.0] — 2026-10-21
 

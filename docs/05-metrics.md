@@ -300,6 +300,7 @@ No new event. Heat today, water, the tank, the emergency card, "I'm safe" and th
 - **Which tools earn their tile?** `tool_open` by mode and label `start`, against the season tiles of the day (`config.json → hub.season`). A tool opened mostly from `link` is a posting tool; one opened from nothing at all is a candidate to move down the all-tools page.
 - **Is "I'm safe" used in an emergency?** `tool_share` with mode `safe` by day, against the alert dates (`config.json → alert`). A spike after a storm or a quake says the button is found when it matters.
 - **Do the tools lead into each other?** `tool_open` with label `kit` (water, the bag) and `plan` (the card, "I'm safe").
+- **Since v1.13.1** a tool opened again from its "‹ back" link counts with label `back` (the list itself isn't counted again), and a tap on a phone number in heat today, "I'm safe" or all tools is `help_click` with the number as label and the tool as mode.
 
 
 ## Thai and English split

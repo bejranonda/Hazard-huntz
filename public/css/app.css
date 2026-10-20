@@ -212,7 +212,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
   right: 14px;
   padding: 2px 10px;
   border-radius: 999px;
-  background: var(--coral);
+  background: #B8452A;
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -1064,6 +1064,10 @@ html.big #screen-start, html.big .sheet { zoom: 1.15; }
 .mk-li-ico { flex: 0 0 24px; text-align: center; }
 .mk-card { margin: 10px 0 4px; padding: 2px 12px 6px; border: 2px solid var(--line); border-radius: 12px; background: #FFF8EC; }
 .mk-card summary { display: flex; align-items: center; min-height: 44px; font-weight: 600; cursor: pointer; }
+/* A fold-out card says it opens: an arrow that turns when it is open (v1.13.0, audit 4). */
+.mk-card > summary::after, .kit-calc > summary::after, .fr-clock > summary::after { content: '▾'; margin-left: auto; padding-left: 10px; font-size: 18px; transition: transform .2s; }
+.mk-card[open] > summary::after, .kit-calc[open] > summary::after, .fr-clock[open] > summary::after { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .mk-card > summary::after, .kit-calc > summary::after, .fr-clock > summary::after { transition: none; } }
 .mk-card h4 { margin: 8px 0 2px; font-size: 15px; }
 .mk-card ul { margin: 2px 0; padding-left: 20px; }
 .mk-card li { margin: 3px 0; font-size: 15px; }
@@ -1078,7 +1082,12 @@ html.big #screen-start, html.big .sheet { zoom: 1.15; }
 .tl-ext { color: var(--ink-2); font-size: 18px; }
 .mk-out.is-empty { padding: 0; border: 0; background: none; }
 .mk-next { display: grid; grid-template-columns: 1fr; }
-.tl-note { margin: 2px 4px 4px 10px; color: var(--warn); font-size: 14px; line-height: 1.4; }
+.tl-note { margin: 2px 4px 4px 10px; color: #9A4708; font-size: 14px; line-height: 1.4; }
+.tl-warn { color: #8A2E12; font-weight: 600; }
+.tl-back { display: inline-block; margin: 0 0 2px; padding: 10px 2px; line-height: 24px; font-size: 15px; font-weight: 600; text-decoration: none; }
+.tl-calls { margin: 4px 0 10px; }
+.wt-live { margin: 2px 0 8px; padding: 2px 4px 2px 12px; border-radius: 12px; background: #E6F4FB; font-size: 17px; }
+.wt-live .link { font-size: 15px; }
 .tl-alerts p { margin: 6px 0; font-size: 15px; }
 .tl-os { margin: 8px 0 0; font-weight: 700; }
 .tl-steps { margin: 2px 0 6px; padding-left: 22px; }

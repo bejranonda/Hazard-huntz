@@ -90,8 +90,10 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 90 | [Heat today rests on news reports quoting the agencies](#90-heat-today-rests-on-news-reports-quoting-the-agencies) | Owner | **Medium (review before posting `/hot` widely)** |
 | 91 | [Six tools rest partly on foreign guidance](#91-six-tools-rest-partly-on-foreign-guidance) | Owner | Low |
 | 92 | [The tank's soak time: overnight or 3 hours](#92-the-tanks-soak-time-overnight-or-3-hours) | By design (v1.13.0); Owner: the reviewer picks | Low |
+| 93 | [Cloudflare's bot detection sets a cookie](#93-cloudflares-bot-detection-sets-a-cookie) | Owner (a Cloudflare setting) | **Medium (the privacy promise)** |
+| 94 | [Leftovers of visitor audit 4](#94-leftovers-of-visitor-audit-4) | Open (AI-ready, one needs a source) | Low |
 
-Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
+Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
 ---
 
@@ -971,9 +973,69 @@ The MWA's leaflet says leave the chlorine in overnight ("แช่ทิ้ง�
 
 - **What would close it:** a reviewer (or the MWA) says which to give, or that both are fine.
 
+### 93. Cloudflare's bot detection sets a cookie
+
+**Status:** Owner (a Cloudflare setting) · **Severity:** Medium: the app promises no cookies
+
+Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the first page view loads Cloudflare's `/cdn-cgi/challenge-platform/…/jsd/main.js` and ends with a `cf_clearance` cookie (HttpOnly, Secure, a year long) on `.autobahn.bot`, the parent domain. The app sets no cookie of its own, and Web Analytics is cookieless; this one comes from Cloudflare's bot protection ("JavaScript detections", part of Bot Fight Mode or Super Bot Fight Mode), a setting of the whole `autobahn.bot` zone, so it may affect the owner's other sites too.
+
+- **Since v1.13.1** the About text says so: "แอปไม่ใช้คุกกี้ (ระบบกันบอตของผู้ให้บริการเว็บอาจตั้งคุกกี้ความปลอดภัยไว้ 1 ตัว)" / "the app sets no cookies (the web host's bot protection may set one security cookie)".
+- **What would close it:** the owner turns off JavaScript detections for the zone (Cloudflare dashboard → the `autobahn.bot` zone → Security → Bots), or adds a rule that skips them for `baanrodmai.autobahn.bot`; then the About text goes back to "ไม่ใช้คุกกี้" and a live headless check (`context.cookies()` after a page load) shows none. An assistant doesn't change the zone's security settings ([GUIDELINES rule 96](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+
+### 94. Leftovers of visitor audit 4
+
+**Status:** Open (AI-ready, one needs a source) · **Severity:** Low
+
+- **The phone's Back still closes the sheet.** Since v1.13.1 a tool opened from another tool or from the list says "‹ เครื่องมือทั้งหมด" or "‹ เช็กของจำเป็น" at its top, but the phone's Back button closes the sheet; a tool opened from a guide has no way back to the guide (the guide case of [#83](#83-leftovers-of-visitor-audit-3)). A sheet stack in the history would close both.
+- **A household measure for the tank** (A17): "8 กรัม" and "100 มล." with no spoon or cup, and people know "น้ำยาฟอกผ้าขาว", not "คลอรีนน้ำ 5%". Needs a Thai source that gives the equivalent; none was found.
+- **Previews at chat size** (A16): the second line is about 8 px at 300 px wide. v1.13.1 gave each tool its own look and icon; a larger second line needs a new layout.
+- **Names that still differ** (B12): the game's mode "หลังน้ำลด" and the guide "10 ข้อเช็กก่อนกลับเข้าบ้าน" are the same subject under two names; the buttons now use the guide's own title.
+- **Where the heat level is announced** (B8): the TMD's warning page lists heat warnings only in the hot season; whether it shows the heat-index level is **[unverified]** ([#90](#90-heat-today-rests-on-news-reports-quoting-the-agencies)).
+- **App shortcuts** for the seven newer tools: the manifest has shortcuts for the home check, the guides, the plan, the fridge, dust today and all tools.
+
 ---
 
 ## Fixed
+
+### In v1.13.1 (21 Oct 2026)
+
+Found by visitor audit 4 on the live v1.13.0: auditor A an older relative in LINE at 360 × 640 and 320 × 568 with ก+ (20 findings, A1–A20), auditor B an English reader and a consistency checker at 390 and 360 px (20, B1–B20); six overlapped. Every finding was checked against a screenshot or the code before it was fixed ([ROADMAP N27](ROADMAP.md#n27-visitor-audit-4-v1131)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F131 | A1, B11: **The water tool's answer appeared off-screen**: after a tap on + only the count changed; the answer was below "อื่นๆ (ลิตร)" (top 657 on a 640 px screen) | A line under "มีน้ำดื่มเท่าไร?" says the answer as you count ("💧 พอดื่มราว 2 วัน · ดูรายละเอียด"); "ดูรายละเอียด" scrolls to the full answer |
+| F132 | A2: **Heat today's "โทร 1669 ทันที" was plain text** | A 1669 button (tap to call, with "เจ็บป่วย") under the first aid; `telChips()` draws every tool's numbers the same way, and taps count as `help_click` |
+| F133 | A3: **No phone numbers near the top**: the start screen's list is below the game; the all-tools sheet had none | The all-tools sheet opens with 1784, 199 and 1669 as buttons |
+| F134 | A4: **The emergency card's two copy buttons** read alike and did different things | "📋 คัดลอกข้อมูลในบัตร" / "Copy the card's details" for the card's text; the share row's "คัดลอกข้อความ" stays the message with the link |
+| F135 | A5: **"กระเป๋าฉุกเฉิน" was clipped on its hub tile with ก+ at 320 px**: kept whole by `keepTogether`, it couldn't wrap | "กระเป๋า" and "ฉุกเฉิน" are kept separately, so the title wraps between them |
+| F136 | A6, B6: **Heat today's preview**: "อา\|การ", the fire helmet instead of the sun hat, "ตามกทม."; the English pill was cut off | อาการ kept whole; the heat guide's look and sun hat; "ตาม กทม."; "Thai agencies' advice, free" |
+| F137 | A7: **Thai words broken mid-word**: ขา\|หนีบ, เบา\|หวาน, โรง\|พยาบาล, รถ\|พยาบาล, ล่วง\|หน้า, ส่วน\|ตัว, ต่าง\|ประเทศ, ปวด\|หัว, ทะเบียน\|บ้าน, เฝ้า\|ระวัง, บ้าน\|รอดไหม | All 11 added to `config.json → keepTogether` |
+| F138 | A8: **The alert card ended "· ⚠️ ⚠️ ข้อที่มีป้ายนี้…"** with no line marked | ⚠️ on the line that needs it (menus differ by phone), and the note once |
+| F139 | A9: **Fold-out cards didn't look like they open** | A ▾ that turns when open, on every fold-out card in the tools |
+| F140 | A10: **The bag's "แก้คำตอบ"** opened the home check's list and left the person there; before any answer it said "change answers" | From the bag, the home check asks its two questions and goes back to the bag; with no answers the link says "ตอบ 2 ข้อ" |
+| F141 | A11, B7: **No way back to the list** from a tool opened from all tools, or to a tool opened from another tool | "‹ เครื่องมือทั้งหมด", "‹ เช็กของจำเป็น"… at the top of a tool opened from one; the phone's Back still closes the sheet ([#94](#94-leftovers-of-visitor-audit-4)) |
+| F142 | A12: **The relief link's scam warning** ran on after where to apply, in orange 14 px at 3.81:1; the game card's "แนะนำช่วงนี้" badge was white on coral at 2.57:1 | The warning is its own line, "🚫 อย่ากดลิงก์ใน SMS หรือ LINE ที่ให้ "สำรวจบ้าน" หรือรับเงิน" (`links[].warn`, sourced and checked by the build); notes at 5.9:1, the badge 5.35:1 |
+| F143 | A13, B14: **The card's person tab read "ทำบัตรของ 1"**, even after a name was typed | "คนที่ 1" / "Person 1", and the name as it is typed |
+| F144 | A14, B8: **"ดูประกาศกรมอุตุฯ"** promised the level; the page shows the TMD's weather warnings | "ดูประกาศเตือนของกรมอุตุฯ" / "The TMD's weather warnings" |
+| F145 | A15: **`/tools`'s tool links were 19 px tall** | 44 px, like the other links on the pages |
+| F146 | A16, B5: **The previews looked alike** (water, the card and all tools the same gecko), and `/tools`'s description and preview named only the older tools | Each tool its hazard's look and its own icon as a sticker; the description and preview list the newer tools (rule 59) |
+| F147 | A18: **"ใช้ N95 หรือหน้ากากอนามัย 3 ชั้นแทนก็ได้"**: instead of what? | "ใช้ N95 หรือจะใช้หน้ากากอนามัย 3 ชั้นแทน N95 ก็ได้"; same advice, same source |
+| F148 | A19: **The emergency card's footer** said "ติดต่อช่างหรือเจ้าหน้าที่" (the plan card's) | "บัตรนี้เจ้าของบัตรกรอกเอง · ทำบัตรได้ฟรี" |
+| F149 | A20: **The water tool's bottle buttons** were read out as "ลดจำนวนคน ขวดเล็ก…" | "ลดจำนวน" / "เพิ่มจำนวน" for the bottles |
+| F150 | B1: **On the emergency card, an English name ran under the gecko** ("Emergency information: Somchai Jaidee") | A title too long for one line wraps to two, clear of the gecko |
+| F151 | B2: **The tank dropped decimals**: "1.5" became 15 litres and 2 ml, where 1.5 คิว needs 150 ml | Decimals are read ("1.5", "1,5"; "1,500" stays fifteen hundred); under 100 litres the tool asks "หมายถึง 1.5 คิว (1,500 ลิตร) ใช่ไหม?" instead of answering |
+| F152 | B4: **Installing from `/en/` gave a Thai app** | The build writes `/en/manifest.webmanifest` (English name, `/en/?source=pwa`, English shortcuts) and `/en/` links it |
+| F153 | B9: **Masks for illness ended with dust today's under-2 line** ("…a room that keeps the dust out") | `mask.baby`, the same advice without the dust words, for answers that aren't about dust |
+| F154 | B10: **Capitals mid-sentence in English**: "From Orange up", "Signs of heatstroke: A very hot body", "Dry food: Enough for…" | Lower case inside the sentence (`midSentence()`) |
+| F155 | B12: **A guide's name on a tool's button differed from the guide's own title** | The button carries the guide's title ("📋 อากาศร้อนจัด ดูแลกันได้ 10 ข้อ") |
+| F156 | B13: **The related-tool link on tool pages** carried the page title and the brand | The tool's name |
+| F157 | B15: **The plan's share text** asked people to look at a picture that LINE's share doesn't send | "ทำแผนครอบครัวของบ้านเราแล้ว 📝 ทำของบ้านคุณได้ฟรีที่ …", true with or without the picture |
+| F158 | B16: **English wording**: the water questions had no "?"; the tank said "stood with chlorine… Enter its size" next to buttons | "How many people live here?", "…disinfected with chlorine… Pick its size" (Thai "เลือกขนาดถัง") |
+| F159 | B17: **The water rule named the PRD differently** from the sources line, and the shared text doubled the brackets | "…ตามกรมประชาสัมพันธ์" / "…from the Government Public Relations Department", no brackets |
+| F160 | B18: **"Someone over 60"** against Thai "60 ปีขึ้นไป" | "Someone aged 60 or over" |
+| F161 | B19: **The guide for before a flood offered the tank and masks**, which are for after (both flood guides used the hazard's tools) | `config.json → guides[].tools`: before a flood the home check, the bag, the plan; after it the tank, masks, the home check (the build checks them) |
+| F162 | B20: **"ใช้ คลอรีนน้ำ 5%"** had a stray space | "ใช้คลอรีนน้ำ 5% ราว 100 มล." |
+| F163 | B3: **The About text promised no cookies**, and the host's bot detection sets one | The text says so until the owner turns it off ([#93](#93-cloudflares-bot-detection-sets-a-cookie)) |
 
 ### In v1.13.0 (21 Oct 2026)
 

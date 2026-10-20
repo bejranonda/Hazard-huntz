@@ -686,7 +686,8 @@ test('which mask: the PCD\'s colours decide who, the DOH the kind; never a mask 
   assert.equal(maskAdvice(M, A, { why: 'clean', what: 'mould' }).status.id, 'n95');
   assert.equal(maskAdvice(M, A, { why: 'clean', what: 'board' }).status.id, 'n95');
   assert.equal(maskAdvice(M, A, { why: 'clean', what: 'mud' }).status.id, 'surgical');
-  assert.ok(maskAdvice(M, A, { why: 'sick' }).lines.includes(A.baby), 'illness: the under-2 line too');
+  assert.ok(maskAdvice(M, A, { why: 'sick' }).lines.includes(M.baby), 'illness: the under-2 line too, without the dust words');
+  assert.ok(!/ฝุ่น/.test(M.baby.th) && M.baby.sources.includes('ddc-mask-2568'));
   // Every line in every answer has a source.
   const all = [...Object.values(M.dust.type), M.dust.next, M.dust.doctor, ...M.dust.always, ...M.what.flatMap((w) => M.clean[w.id].lines), ...M.clean.always, ...M.sick.lines, ...M.chem.lines, ...M.fire.lines, ...Object.values(M.card).flat()];
   for (const x of all) assert.ok(x.sources.length && x.sources.every((id) => sources[id]), x.th);

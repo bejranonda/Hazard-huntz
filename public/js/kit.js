@@ -5,7 +5,7 @@
 
 import { $, $$, esc, store, bangkokDateKey, formatHouseDate } from './util.js';
 import { t, L, getLang, siteUrl, content, agencyName } from './content.js';
-import { openSheet, closeSheet, toast, canPrint, printList } from './ui.js';
+import { openSheet as uiOpenSheet, closeSheet, toast, canPrint, printList } from './ui.js';
 import { kit as draw, loadCardAssets, canvasToBlob, wrapText, drawCalls } from './cards.js';
 import {
   canNativeShare, nativeShare, shareChannel, copyText, canDownload, downloadBlob, imageSrc, openExternal, lineShareUrl,
@@ -26,6 +26,26 @@ async function loadKit() {
 const ONE = { people: 'person', days: 'day', litres: 'litre', pills: 'pill' };
 const one = (s) => (getLang() === 'en' ? s.replace(/(^|[^\d.,])1 (people|days|litres|pills)\b/g, (_, a, w) => `${a}1 ${ONE[w]}`) : s);
 const u = (key, vars = {}) => one(String(K.ui[getLang()]?.[key] ?? K.ui.th[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`));
+// A tool opened from another tool (or from the list of all tools) says, at its
+// top, how to get back there: "‹ เครื่องมือทั้งหมด", "‹ เช็กของจำเป็น". The phone's
+// Back still closes the sheet (v1.13.0, visitor audit 4). Each open… function
+// marks where it was opened from; the next sheet it opens carries the link.
+let pendingBack = null;
+const BACK = { tools: () => openTools('back'), kit: () => openKit('back'), plan: () => openPlan('back'), bag: () => openBag('back'), air: () => openAir('back'), mask: () => openMask('back'), water: () => openWater('back'), info: () => openInfo('back'), safe: () => openSafe('back') };
+function openSheet(html, opts) {
+  uiOpenSheet(html, opts);
+  const from = pendingBack;
+  pendingBack = null;
+  if (!BACK[from]) return;
+  const name = from === 'tools' ? u('toolsBack') : t(`hub${from[0].toUpperCase()}${from.slice(1)}`);
+  $('#sheet-body').insertAdjacentHTML('afterbegin', `<button class="link tl-back" type="button" id="tl-back">‹ ${esc(name)}</button>`);
+  $('#tl-back').addEventListener('click', BACK[from]);
+}
+// Phone numbers as tap-to-call chips, each with whom it reaches (helplines.json → short).
+const telChips = (numbers) => numbers.map((n) => content().helplines.find((h) => h.number === n)).filter(Boolean).map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}" data-help="${esc(h.number)}"><b>${esc(h.number)}</b><small>${esc(L(h.short))}</small></a>`).join('');
+const bindTel = (mode) => { for (const a of $$('.tel-chip[data-help]', $('#sheet'))) a.addEventListener('click', () => track('help_click', { label: a.dataset.help, mode })); };
+// A number typed by hand: "1,500" is fifteen hundred; "1,5" and "1.5" are one and a half.
+const typedNumber = (x) => { const v = String(x).replace(/\s/g, ''); return Number(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v) ? v.replace(/,/g, '') : v.replace(',', '.')) || 0; };
 // A name that starts a button reads in lower case inside an English sentence.
 const midSentence = (x) => (getLang() === 'en' ? x.replace(/^\p{Lu}(?!\p{Lu})/u, (c) => c.toLowerCase()) : x);
 // /kit and /plan are pages with their own link preview (a sample card) that open the tool.
@@ -37,11 +57,15 @@ function saved() {
   return s && typeof s === 'object' ? s : null;
 }
 
+let kitReturn = null;
 export async function openKit(from = 'start', mode = '') {
   await loadKit();
+  pendingBack = from;
   track('kit_open', { label: from, mode });
   const s = saved();
-  if (s?.answered) showList(s);
+  // From the bag ("change answers" / "answer 2 questions"): the questions, then back to the bag.
+  kitReturn = from === 'bag' ? () => openBag('kitedit') : null;
+  if (s?.answered && !kitReturn) showList(s);
   else showQuestions(s || { people: K.people.default, flags: [], have: [] });
 }
 
@@ -68,7 +92,9 @@ function showQuestions(s) {
   $('#kit-go').addEventListener('click', () => {
     const flags = $$('.kit-flag input', $('#sheet')).filter((i) => i.checked).map((i) => i.value);
     const next = { ...s, people: n, flags, answered: true, have: s.have || [] };
-    showList(next);
+    const back = kitReturn;
+    kitReturn = null;
+    if (back) { persist(next, kitPlan(K, next)); back(); } else showList(next);
   });
 }
 
@@ -180,7 +206,7 @@ function showList(s) {
       canvas, title: u('shareTitle'), text: u('shareText', { pct: sc.pct, url }), url, filename: 'baanrodmai-kit.png',
       event: 'kit_share', value: sc.pct, back: () => showList(s), backLabel: u('back'),
       // "What we still need": the missing rows with their amounts, for the shopping trip.
-      copy: allMissing.length ? { label: u('kitCopy'), text: () => [u('kitCopyHead', { n: plan.people }), ...allMissing.map((x) => `• ${L(x.item.label)}${qtyText(x) ? `: ${qtyText(x)}` : ''}`), pageUrl('kit')].join('\n') } : null,
+      copy: allMissing.length ? { label: u('kitCopy'), text: () => [u('kitCopyHead', { n: plan.people }), ...allMissing.map((x) => `• ${L(x.item.label)}${qtyText(x) ? `: ${midSentence(qtyText(x))}` : ''}`), pageUrl('kit')].join('\n') } : null,
     });
   });
 }
@@ -190,6 +216,7 @@ function showList(s) {
 // `again`: back from the card to the form, which is not a new arrival.
 export async function openPlan(from = 'start', again = false) {
   await loadKit();
+  pendingBack = from;
   if (!again) track('plan_open', { label: from });
   const p = store.get('plan', null) || {};
   openSheet(`
@@ -283,6 +310,7 @@ function fridgeSaved() {
 
 export async function openFridge(from = 'start') {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'fridge', label: from });
   const F = K.fridge;
   // start: when the power went off (null until a time is tapped); end: when "the power's back" was tapped.
@@ -453,6 +481,7 @@ export async function openFridge(from = 'start') {
 // the reading is never stored or sent.
 export async function openAir(from = 'start', colour = null) {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'air', label: from });
   const A = K.air;
   const was = store.get('air', null);
@@ -566,13 +595,14 @@ export async function openAir(from = 'start', colour = null) {
 // (tool_open and tool_share count the tool, never the answers).
 export async function openMask(from = 'start', pre = {}) {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'mask', label: from });
   const M = K.mask;
   const A = K.air;
   const s = { why: null, colour: null, who: null, what: null, ...pre };
   const opt = (name, x, on) => `<button class="mk-opt${on ? ' is-on' : ''}" type="button" role="radio" aria-checked="${on}" data-q="${name}" data-v="${esc(x.id)}"><span class="mk-ico" aria-hidden="true">${esc(x.icon)}</span><span>${esc(L(x.label))}</span></button>`;
   const flag = (x) => (x.verify && x.verify !== 'verified' ? ' <span class="partial">⚠️</span>' : '');
-  const lineText = (x) => (x.level ? L(x).replace('{name}', L(x.level.label).split(' · ')[0]) : L(x));
+  const lineText = (x) => (x.level ? L(x).replace('{name}', midSentence(L(x.level.label).split(' · ')[0])) : L(x));
   openSheet(`
     <h2 id="sheet-title" tabindex="-1" autofocus>😷 ${esc(u('maskTitle'))}</h2>
     <p class="sub">${esc(u('maskIntro'))}</p>
@@ -652,15 +682,15 @@ export async function openMask(from = 'start', pre = {}) {
 // One agency link as a row (the tools sheet and the guides): what it is, whose,
 // LINE or web, opening outside the app; a sourced note under it where needed
 // (the relief link: where to apply, and never tap a link in an SMS).
-const linkRow = (x) => `<li><a class="tl-link" href="${esc(x.url)}" target="_blank" rel="noopener" data-link="${esc(x.id)}"><span class="hub-ico" aria-hidden="true">${esc(x.icon)}</span><span class="hub-text"><b>${esc(L(x.label))}</b><small>${esc(agencyName(x.by))} · ${esc(u(x.kind === 'line' ? 'toolsLine' : 'toolsWeb'))}</small></span><span class="tl-ext" aria-hidden="true">↗</span></a>${x.note ? `<p class="tl-note">${esc(L(x.note))}</p>` : ''}</li>`;
+const linkRow = (x) => `<li><a class="tl-link" href="${esc(x.url)}" target="_blank" rel="noopener" data-link="${esc(x.id)}"><span class="hub-ico" aria-hidden="true">${esc(x.icon)}</span><span class="hub-text"><b>${esc(L(x.label))}</b><small>${esc(agencyName(x.by))} · ${esc(u(x.kind === 'line' ? 'toolsLine' : 'toolsWeb'))}</small></span><span class="tl-ext" aria-hidden="true">↗</span></a>${x.note ? `<p class="tl-note">${esc(L(x.note))}</p>` : ''}${x.warn ? `<p class="tl-note tl-warn">🚫 ${esc(L(x.warn))}</p>` : ''}</li>`;
 // "Turn on emergency alerts on your phone" (DDPM's Cell Broadcast steps, kit.json → alerts).
 const alertsCard = () => {
   const X = K.alerts;
   const steps = (o) => `<p class="tl-os">${esc(o.label)}</p><ol class="tl-steps">${o.steps.map((x) => `<li>${esc(L(x))}</li>`).join('')}</ol>`;
   return `<details class="mk-card tl-alerts" id="tl-alerts"><summary>📲 ${esc(L(X.title))}</summary>
-    <p>${esc(L(X.intro))}</p>${steps(X.ios)}${steps(X.android)}<p class="kit-src">${esc(L(X.note))}</p>
+    <p>${esc(L(X.intro))}</p>${steps(X.ios)}${steps(X.android)}<p class="kit-src">${esc(L(X.note))}${X.verify !== 'verified' ? ' ⚠️' : ''}</p>
     <ul class="mk-lines">${X.know.map((x) => `<li><span class="mk-li-ico" aria-hidden="true">${esc(x.icon)}</span><span>${esc(L(x))}</span></li>`).join('')}</ul>
-    <p class="kit-src">${esc(u('source'))}: ${esc(agencies([...new Set([X.intro, X.note, ...X.know].flatMap((x) => x.sources))]))} · ⚠️ ${esc(t('guidePartial'))}</p></details>`;
+    <p class="kit-src">${esc(u('source'))}: ${esc(agencies([...new Set([X.intro, X.note, ...X.know].flatMap((x) => x.sources))]))}${X.verify !== 'verified' ? `<br>${esc(t('guidePartial'))}` : ''}</p></details>`;
 };
 
 // "All tools" (/tools, /?open=tools, v1.12.0): every tool by when it is used,
@@ -668,7 +698,8 @@ const alertsCard = () => {
 // (content/kit.json → links), which open outside the app.
 export async function openTools(from = 'start') {
   await loadKit();
-  track('tool_open', { mode: 'tools', label: from });
+  pendingBack = from;
+  if (from !== 'back') track('tool_open', { mode: 'tools', label: from });
   const C = content();
   const tools = C.config.tools || [];
   const name = (id) => t(`hub${id[0].toUpperCase()}${id.slice(1)}`);
@@ -679,6 +710,7 @@ export async function openTools(from = 'start') {
   openSheet(`
     <h2 id="sheet-title" tabindex="-1" autofocus>🧰 ${esc(u('toolsTitle'))}</h2>
     <p class="sub">${esc(u('toolsIntro'))}</p>
+    <p class="tel-row tl-calls"><span>☎️ <span class="lbl">${esc(t('telFree'))}</span></span>${telChips(['1784', '199', '1669'])}</p>
     <button class="hub-btn hub-main tl-row" type="button" data-guides="1"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b>${esc(t('hubGuide'))}</b><small>${esc(t('hubGuideSub'))}</small></span><span class="hub-go" aria-hidden="true">›</span></button>
     <h3>${esc(u('toolsHome'))}</h3>
     <div class="tl-list">${tools.filter((x) => x.group === 'home').map(row).join('')}</div>
@@ -691,6 +723,7 @@ export async function openTools(from = 'start') {
     <button class="btn secondary small" type="button" id="tl-close">${esc(u('close'))}</button>`, { label: u('toolsTitle') });
   const open = { kit: openKit, plan: openPlan, fridge: openFridge, air: openAir, mask: openMask, hot: openHot, water: openWater, tank: openTank, info: openInfo, safe: openSafe, bag: openBag };
   for (const b of $$('[data-tool]', $('#sheet'))) b.addEventListener('click', () => open[b.dataset.tool]?.('tools'));
+  bindTel('tools');
   $('[data-guides]', $('#sheet')).addEventListener('click', () => document.dispatchEvent(new CustomEvent('brm:guides')));
   for (const a of $$('[data-link]', $('#sheet'))) a.addEventListener('click', () => track('link_click', { label: a.dataset.link }));
   $('#tl-alerts').addEventListener('toggle', (e) => { if (e.target.open) track('link_click', { label: 'alerts' }); });
@@ -707,7 +740,8 @@ const srcOnce = (xs) => {
   return `<p class="kit-src">${esc(u('source'))}: ${esc(agencies([...new Set(list.flatMap((x) => x.sources || []))]))}${partial ? `<br>${esc(t('guidePartial'))}` : ''}</p>`;
 };
 const scrollTo = (el) => el?.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-const guideBtn = (id, label) => `<button class="btn secondary small" type="button" data-guide-open="${esc(id)}">${esc(label)}</button>`;
+// A guide's button carries the guide's own title, as the picker and the guide do (v1.13.0, audit 4).
+const guideBtn = (id, label) => `<button class="btn secondary small" type="button" data-guide-open="${esc(id)}">${esc(content().checklists?.[id] ? `📋 ${L(content().checklists[id].title)}` : label)}</button>`;
 const bindGuideBtns = () => { for (const b of $$('[data-guide-open]', $('#sheet'))) b.addEventListener('click', () => document.dispatchEvent(new CustomEvent('brm:guide', { detail: b.dataset.guideOpen }))); };
 // The household, as the home check knows it (people and who), for the water and the bag.
 const household = () => {
@@ -718,6 +752,7 @@ const household = () => {
 // Heat today (/hot): the level announced → what to do; heatstroke signs and first aid always one tap away.
 export async function openHot(from = 'start') {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'hot', label: from });
   const H = K.hot;
   const tmd = K.links.list.find((x) => x.id === 'tmdwarn');
@@ -733,6 +768,7 @@ export async function openHot(from = 'start') {
     <details class="mk-card hot-aid" id="hot-aid"><summary>${esc(u('hotSigns'))} · ${esc(u('hotAid'))}</summary>
       <p><b>${esc(L(H.signs))}</b></p><p>${esc(L(H.sweat))}</p>
       <h4>${esc(u('hotAid'))}</h4><ol class="tl-steps">${H.aid.map((x) => `<li>${esc(x.icon)} ${esc(L(x))}</li>`).join('')}</ol>
+      <p class="tel-row">${telChips(['1669'])}</p>
       ${srcOnce([H.signs, H.sweat, ...H.aid])}
     </details>
     <div class="fr-share" id="hot-share-row" hidden></div>
@@ -756,6 +792,7 @@ export async function openHot(from = 'start') {
   };
   paint();
   for (const b of $$('.hot-level', $('#sheet'))) b.addEventListener('click', () => { pick = b.dataset.v; paint(true); });
+  bindTel('hot');
   bindGuideBtns();
   $('#hot-close').addEventListener('click', () => closeSheet());
   textShare($('#hot-share-row'), {
@@ -763,7 +800,7 @@ export async function openHot(from = 'start') {
     text: () => {
       const r = hotAdvice(H, pick);
       if (!r) return `${u('hotTitle')}\n${pageUrl('hot')}`;
-      return [u('hotShareHead', { name: L(r.level.label) }), range(r.level), ...r.all.map((x) => `• ${L(x)}`), ...r.risk.map((x) => `• ${u('hotRisk')}: ${L(x)}`), `${u('hotSigns')}: ${L(H.signs)}`, `☎️ ${L(H.aid[0])}`, `(${u('source')}: ${agencies([...new Set([...r.all, ...r.risk, H.signs].flatMap((x) => x.sources))])})`, u('hotShareTail', { url: pageUrl('hot') })].join('\n');
+      return [u('hotShareHead', { name: L(r.level.label) }), range(r.level), ...r.all.map((x) => `• ${L(x)}`), ...r.risk.map((x) => `• ${u('hotRisk')}: ${L(x)}`), `${u('hotSigns')}: ${midSentence(L(H.signs))}`, `☎️ ${L(H.aid[0])}`, `(${u('source')}: ${agencies([...new Set([...r.all, ...r.risk, H.signs].flatMap((x) => x.sources))])})`, u('hotShareTail', { url: pageUrl('hot') })].join('\n');
     },
   });
 }
@@ -771,6 +808,7 @@ export async function openHot(from = 'start') {
 // Water we have (/water): bottles and jugs counted → days at the home check's amount.
 export async function openWater(from = 'start') {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'water', label: from });
   const W = K.water;
   const rule = K.items.find((x) => x.id === 'water');
@@ -785,9 +823,10 @@ export async function openWater(from = 'start') {
     <p class="kit-q" id="wt-people-label">${esc(u('waterPeople'))}</p>
     <div class="stepper" role="group" aria-labelledby="wt-people-label"><button class="step-btn" type="button" data-p="-1" aria-label="${esc(u('less'))}">−</button><output id="wt-n" aria-live="polite">${s.people}</output><button class="step-btn" type="button" data-p="1" aria-label="${esc(u('more'))}">+</button></div>
     <p class="kit-q">${esc(u('waterHave'))}</p>
-    <div class="wt-sizes">${W.sizes.map((x) => `<div class="wt-size"><span class="mk-ico" aria-hidden="true">${esc(x.icon)}</span><span class="wt-name">${esc(L(x.label))}</span><span class="wt-step"><button class="step-btn" type="button" data-s="${esc(x.id)}" data-d="-1" aria-label="${esc(u('less'))} ${esc(L(x.label))}">−</button><output id="wt-${esc(x.id)}">${s.counts[x.id] || 0}</output><button class="step-btn" type="button" data-s="${esc(x.id)}" data-d="1" aria-label="${esc(u('more'))} ${esc(L(x.label))}">+</button></span></div>`).join('')}</div>
+    <p class="wt-live" id="wt-live" aria-live="polite" hidden></p>
+    <div class="wt-sizes">${W.sizes.map((x) => `<div class="wt-size"><span class="mk-ico" aria-hidden="true">${esc(x.icon)}</span><span class="wt-name">${esc(L(x.label))}</span><span class="wt-step"><button class="step-btn" type="button" data-s="${esc(x.id)}" data-d="-1" aria-label="${esc(u('lessItem'))} ${esc(L(x.label))}">−</button><output id="wt-${esc(x.id)}">${s.counts[x.id] || 0}</output><button class="step-btn" type="button" data-s="${esc(x.id)}" data-d="1" aria-label="${esc(u('moreItem'))} ${esc(L(x.label))}">+</button></span></div>`).join('')}</div>
     <label class="calc-field wt-other"><span>${esc(u('waterOther'))}</span><input type="text" id="wt-other" inputmode="decimal" autocomplete="off" value="${esc(s.other)}"></label>
-    <div class="air-out" id="wt-out" aria-live="polite"></div>
+    <div class="air-out" id="wt-out"></div>
     <div class="fr-share" id="wt-share-row" hidden></div>
     <div class="btn-row mk-next"><button class="btn secondary small" type="button" id="wt-kit">${esc(u('waterKit'))}</button></div>
     <p class="kit-privacy">🔒 ${esc(u('waterPrivacy'))}</p>
@@ -800,6 +839,10 @@ export async function openWater(from = 'start') {
     const r = calc();
     const box = $('#wt-out');
     $('#wt-share-row').hidden = !r.litres;
+    const live = $('#wt-live');
+    live.hidden = !r.litres;
+    if (r.litres) live.innerHTML = `💧 <b>${esc(r.days ? u('waterDays', { d: r.days }) : u('waterLess'))}</b> · <button class="link" type="button" id="wt-more">${esc(u('waterMore'))}</button>`;
+    $('#wt-more')?.addEventListener('click', () => scrollTo(box));
     if (!r.litres) { box.innerHTML = `<p class="air-none">${esc(u('waterPick'))}</p>`; box.className = 'air-out'; return; }
     box.className = `air-out wt-out ${r.enough ? 'is-ok' : 'is-short'}`;
     box.innerHTML = `<p class="mk-status"><span aria-hidden="true">💧</span> <b>${esc(r.days ? u('waterDays', { d: r.days }) : u('waterLess'))}</b></p>
@@ -827,16 +870,17 @@ export async function openWater(from = 'start') {
 // Chlorine for a water tank (/tank): its size and the chlorine → how much; the steps and the care always shown.
 export async function openTank(from = 'start') {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'tank', label: from });
   const T = K.tank;
-  const s = { litres: null, type: null };
+  const s = { litres: null, type: null, small: null };
   const fmt = (n) => (getLang() === 'th' ? n.toLocaleString('th-TH') : n.toLocaleString('en-GB'));
   openSheet(`
     <h2 id="sheet-title" tabindex="-1" autofocus>🚰 ${esc(u('tankTitle'))}</h2>
     <p class="sub">${esc(u('tankIntro'))}</p>
     <p class="kit-q" id="tk-size-q">${esc(u('tankSize'))}</p>
     <div class="mk-opts tk-sizes" role="radiogroup" aria-labelledby="tk-size-q">${T.sizes.map((n) => `<button class="mk-opt tk-size" type="button" role="radio" aria-checked="false" data-l="${n}"><span>${esc(u('tankLitres', { n: fmt(n) }))}</span></button>`).join('')}</div>
-    <label class="calc-field wt-other"><span>${esc(u('tankOther'))}</span><input type="text" id="tk-other" inputmode="numeric" autocomplete="off"></label>
+    <label class="calc-field wt-other"><span>${esc(u('tankOther'))}</span><input type="text" id="tk-other" inputmode="decimal" autocomplete="off"></label>
     <p class="kit-q" id="tk-type-q">${esc(u('tankType'))}</p>
     <div class="mk-opts mk-one" role="radiogroup" aria-labelledby="tk-type-q">${T.types.map((x) => `<button class="mk-opt tk-type" type="button" role="radio" aria-checked="false" data-t="${esc(x.id)}"><span class="mk-ico" aria-hidden="true">🧪</span><span>${esc(L(x.label))}</span></button>`).join('')}</div>
     <div class="air-out" id="tk-out" aria-live="polite"></div>
@@ -852,8 +896,17 @@ export async function openTank(from = 'start') {
   const paint = (scroll) => {
     for (const b of $$('.tk-size', $('#sheet'))) { const on = Number(b.dataset.l) === s.litres; b.classList.toggle('is-on', on); b.setAttribute('aria-checked', String(on)); }
     for (const b of $$('.tk-type', $('#sheet'))) { const on = b.dataset.t === s.type; b.classList.toggle('is-on', on); b.setAttribute('aria-checked', String(on)); }
-    const r = tankDose(T, s);
     const box = $('#tk-out');
+    // Under 100 litres is not a tank: "1.5" usually means 1.5 คิว (cubic metres,
+    // as the MWA's leaflet counts), so ask instead of answering for 1.5 litres.
+    if (s.small) {
+      $('#tk-share-row').hidden = true;
+      box.className = 'air-out';
+      box.innerHTML = `<p class="air-none">${esc(u('tankSmall'))}</p><button class="btn secondary small" type="button" id="tk-cubic">${esc(u('tankCubic', { v: fmt(s.small), l: fmt(Math.round(s.small * 1000)) }))}</button>`;
+      $('#tk-cubic').addEventListener('click', () => { s.litres = Math.round(s.small * 1000); s.small = null; $('#tk-other').value = String(s.litres); paint(!!s.type); });
+      return;
+    }
+    const r = tankDose(T, s);
     $('#tk-share-row').hidden = !r;
     if (!r) { box.innerHTML = `<p class="air-none">${esc(u('tankPick'))}</p>`; box.className = 'air-out'; return; }
     box.className = 'air-out tk-out';
@@ -863,9 +916,9 @@ export async function openTank(from = 'start') {
     if (scroll) scrollTo(box);
   };
   paint();
-  for (const b of $$('.tk-size', $('#sheet'))) b.addEventListener('click', () => { s.litres = Number(b.dataset.l); $('#tk-other').value = ''; paint(!!s.type); });
+  for (const b of $$('.tk-size', $('#sheet'))) b.addEventListener('click', () => { s.litres = Number(b.dataset.l); s.small = null; $('#tk-other').value = ''; paint(!!s.type); });
   for (const b of $$('.tk-type', $('#sheet'))) b.addEventListener('click', () => { s.type = b.dataset.t; paint(!!s.litres); });
-  $('#tk-other').addEventListener('input', (e) => { s.litres = Number(e.target.value.replace(/[^0-9]/g, '')) || null; paint(); });
+  $('#tk-other').addEventListener('input', (e) => { const v = typedNumber(e.target.value); s.small = v > 0 && v < 100 ? v : null; s.litres = v >= 100 ? Math.round(v) : null; paint(); });
   bindGuideBtns();
   $('#tk-close').addEventListener('click', () => closeSheet());
   textShare($('#tk-share-row'), {
@@ -882,6 +935,7 @@ export async function openTank(from = 'start') {
 // on the phone (the plan card's layout). Kept on this device only (brm:info), several people.
 export async function openInfo(from = 'start', again = false) {
   await loadKit();
+  pendingBack = from;
   if (!again) track('tool_open', { mode: 'info', label: from });
   const I = K.info;
   const st = store.get('info', null);
@@ -889,7 +943,7 @@ export async function openInfo(from = 'start', again = false) {
   data.cur = Math.min(data.cur, data.cards.length - 1);
   const save = () => store.set('info', data);
   const card = () => data.cards[data.cur];
-  const who = (c, i) => c.name || `${u('infoPerson')} ${i + 1}`;
+  const who = (c, i) => c.name || u('infoNth', { n: i + 1 });
   openSheet(`
     <h2 id="sheet-title" tabindex="-1" autofocus>🆔 ${esc(u('infoTitle'))}</h2>
     <p class="sub">${esc(u('infoIntro'))}</p>
@@ -909,6 +963,7 @@ export async function openInfo(from = 'start', again = false) {
     <button class="btn secondary small" type="button" id="info-close">${esc(u('close'))}</button>`, { label: u('infoTitle') });
   const read = () => Object.fromEntries(I.fields.map((f) => [f.id, ($(`.plan-form input[name="${f.id}"]`)?.value || '').trim().slice(0, f.max)]));
   for (const input of $$('.plan-form input', $('#sheet'))) input.addEventListener('change', () => { data.cards[data.cur] = read(); save(); });
+  $('.plan-form input[name="name"]').addEventListener('input', (e) => { const tab = $('.info-person.is-on span'); if (tab) tab.textContent = e.target.value.trim() || u('infoNth', { n: data.cur + 1 }); });
   for (const b of $$('.info-person', $('#sheet'))) {
     b.addEventListener('click', () => {
       data.cards[data.cur] = read();
@@ -933,7 +988,7 @@ export async function openInfo(from = 'start', again = false) {
       logo: [t('logoA'), t('logoB')], title: v.name ? `${u('infoCardTitle')}: ${v.name}` : u('infoCardTitle'), date: u('planDate', { date: formatHouseDate(date, getLang()) }),
       rows: I.fields.filter((f) => f.id !== 'name').map((f) => ({ label: L(f.label), value: v[f.id] })),
       helpLabel: u('helpLabel'), helpNumbers: calls.map((h) => h.number).join('  ·  '), calls: calls.map((h) => ({ number: h.number, name: L(h.short) })),
-      keep: u('infoKeepCard'), url: pageUrl('info'), footer: t('cardFooter'),
+      keep: u('infoKeepCard'), url: pageUrl('info'), footer: u('infoFooter'),
     }, assets);
     shareImage({
       canvas, title: u('infoShareTitle'), text: u('infoShareText', { url: pageUrl('info') }), url: pageUrl('info'), filename: 'baanrodmai-info.png',
@@ -946,6 +1001,7 @@ export async function openInfo(from = 'start', again = false) {
 // "I'm safe" (/safe): how you are → one message, sent by LINE or SMS; needing help shows the numbers first.
 export async function openSafe(from = 'start') {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'safe', label: from });
   const Sf = K.safe;
   const C = content();
@@ -960,7 +1016,7 @@ export async function openSafe(from = 'start') {
     <p class="sub">${esc(u('safeIntro'))}</p>
     <p class="kit-q" id="sf-q">${esc(u('safeQ'))}</p>
     <div class="mk-opts mk-one" role="radiogroup" aria-labelledby="sf-q">${Sf.status.map((x) => `<button class="mk-opt sf-status" type="button" role="radio" aria-checked="false" data-v="${esc(x.id)}"><span class="mk-ico" aria-hidden="true">${esc(x.icon)}</span><span>${esc(L(x.label))}</span></button>`).join('')}</div>
-    <div class="sf-help" id="sf-help" hidden><p><b>${esc(u('safeCallFirst'))}</b></p><p class="tel-row">${(Sf.status.find((x) => x.id === 'help').calls || []).map((n) => C.helplines.find((h) => h.number === n)).filter(Boolean).map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}"><b>${esc(h.number)}</b><small>${esc(L(h.short))}</small></a>`).join('')}</p>${line ? `<ul class="tl-links">${linkRow(line)}</ul>` : ''}</div>
+    <div class="sf-help" id="sf-help" hidden><p><b>${esc(u('safeCallFirst'))}</b></p><p class="tel-row">${telChips(Sf.status.find((x) => x.id === 'help').calls || [])}</p>${line ? `<ul class="tl-links">${linkRow(line)}</ul>` : ''}</div>
     <div id="sf-form" hidden>
       <label class="plan-field" id="sf-where-row"><span class="plan-label">📍 ${esc(u('safeWhere'))}</span><input type="text" id="sf-where" maxlength="60" placeholder="${esc(u('safeWherePh'))}" autocomplete="off"></label>
       ${places.length ? `<div class="kit-flags sf-places">${places.map((p) => `<button class="mk-opt sf-place" type="button" data-p="${esc(p)}"><span>📝 ${esc(p)}</span></button>`).join('')}</div>` : ''}
@@ -1008,12 +1064,14 @@ export async function openSafe(from = 'start') {
   }
   for (const a of $$('[data-link]', $('#sheet'))) a.addEventListener('click', () => track('link_click', { label: a.dataset.link, mode: 'safe' }));
   $('#sf-plan').addEventListener('click', () => openPlan('safe'));
+  bindTel('safe');
   $('#sf-close').addEventListener('click', () => closeSheet());
 }
 
 // The emergency bag (/bag): what every bag holds and what our people add; ticks kept on this device (brm:bag).
 export async function openBag(from = 'start') {
   await loadKit();
+  pendingBack = from;
   track('tool_open', { mode: 'bag', label: from });
   const B = K.bag;
   const hh = household();
@@ -1024,7 +1082,7 @@ export async function openBag(from = 'start') {
   openSheet(`
     <h2 id="sheet-title" tabindex="-1" autofocus>🧳 ${esc(u('bagTitle'))}</h2>
     <p class="sub">${esc(L(B.what))}</p>
-    <p class="kit-house">${hh.known ? `${esc(u('household', { n: hh.people }))}${flagNames.length ? ` · ${esc(flagNames.join(' · '))}` : ''} · <button class="link" type="button" id="bag-edit">${esc(u('edit'))}</button>` : `${esc(u('bagNoKit'))} <button class="link" type="button" id="bag-edit">${esc(u('edit'))}</button>`}</p>
+    <p class="kit-house">${hh.known ? `${esc(u('household', { n: hh.people }))}${flagNames.length ? ` · ${esc(flagNames.join(' · '))}` : ''} · <button class="link" type="button" id="bag-edit">${esc(u('edit'))}</button>` : `${esc(u('bagNoKit'))} <button class="link" type="button" id="bag-edit">${esc(u('bagAnswer'))}</button>`}</p>
     <div class="kit-meter" aria-hidden="true"><span id="bag-bar"></span></div>
     <p class="kit-score"><b id="bag-count"></b></p>
     <p class="sub">${esc(u('bagIntro'))}</p>
@@ -1223,11 +1281,15 @@ export function drawPlanCard(canvas, d, a) {
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = INK;
-  fitText(ctx, plainText(d.title), 700, 64, 44);
-  ctx.fillText(plainText(d.title), 60, 200);
-  font(ctx, 32, 400);
+  // A title too long for one line at 44 px (an English name on the emergency
+  // card) wraps to two, so it never runs under the gecko (v1.13.0, audit 4).
+  const title = plainText(d.title);
+  fitText(ctx, title, 720, 64, 44);
+  const two = ctx.measureText(title).width > 720;
+  if (two) { font(ctx, 44); wrapText(ctx, title, 720).slice(0, 2).forEach((ln, i) => ctx.fillText(ln, 60, 160 + i * 54)); } else ctx.fillText(title, 60, 200);
+  font(ctx, two ? 30 : 32, 400);
   ctx.fillStyle = INK2;
-  ctx.fillText(plainText(d.date), 60, 256);
+  ctx.fillText(plainText(d.date), 60, two ? 270 : 256);
   // Every field, in the largest text that fits between the header and the
   // helplines (y 320–1010). A field left empty gets a dotted line, so a
   // printed copy can be filled in by hand.

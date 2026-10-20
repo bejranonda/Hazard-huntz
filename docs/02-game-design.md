@@ -223,6 +223,25 @@
 - **After the answer:** in both tools the answer scrolls into view after a tap (or a number); "📤 ส่งให้คนที่บ้าน" sends the result as text (LINE, the phone's share sheet, copy) with the tool's link; the fridge's 🎒 opens the home check, and the dust tool's "😷 วิธีป้องกันฝุ่นในบ้าน 10 ข้อ" ("📋 ห้องปลอดฝุ่น 10 ข้อ" since v1.11.0) the dust guide. Since v1.11.0 the fridge's text starts with the clock time the power went off ("ไฟดับตั้งแต่ราว 21:10 น. (3 ชม.แล้ว)") and lists what to throw out and keep, because it is read later. When a sheet opens, its title takes the focus, so no button looks chosen.
 - **Guardrails:** no number of our own, a foreign figure flagged on screen, no promise that food is safe ("ราว"), no medical advice in the pills (arithmetic only), and nothing typed or read leaves the phone. Since v1.11.0: never "throw it out" for medicine, a verdict per food only from a named chart row (น้ำปลา left out, "ของที่ไม่อยู่ในรายการ ไม่แน่ใจให้ทิ้ง" under every list), and the at-risk advice never behind a tick ([GUIDELINES rules 83–86](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 
+## A tool for each moment (v1.12.0–v1.13.0)
+
+**The idea:** the owner asked for the app to be "a tool portal too" and then for every suggested tool to be built, attractive and easy enough that people tell others ([KNOWLEDGE §34](KNOWLEDGE.md#34-masks-all-tools-and-six-more-tools-v1111v1130)). Every tool follows the calculators' pattern: one question at a time by a tap, nothing answered before it, a status word first, the sources once, a text to send, what is typed kept on the phone, a page and a preview.
+
+| Tool | Asks | Shows | Kept |
+|---|---|---|---|
+| 😷 ใส่หน้ากากไหม แบบไหน? (`/mask`) | What for → (dust) the colour and who, (clean-up) what | When ("😷 ใส่เมื่อออกนอกบ้าน", "🙂 ยังไม่ต้องใส่" with from which colour, "👶 ไม่ใส่หน้ากาก"), which kind, how to wear it; a fire at home: "🚪 หนีออกจากบ้าน" only | nothing |
+| 🧰 เครื่องมือทั้งหมด (`/tools`) | — | The guides, the tools in two groups, the emergency-alert steps, 13 agencies' own pages | nothing |
+| 🌡️ ร้อนวันนี้ (`/hot`) | The heat-index level announced today (four coloured buttons with their ranges) | What everyone does, then the people at risk; the heatstroke signs and first aid, open from "อันตราย" | nothing |
+| 💧 น้ำพอกี่วัน (`/water`) | People (from the home check), then + and − per bottle size | "พอดื่มราว 2 วัน", the litres, how much more for 3 days | `brm:water` |
+| 🚰 ล้างถังพักน้ำ (`/tank`) | The tank's size, then the chlorine | "ใช้ คลอรีนน้ำ 5% ราว 100 มล.", the steps, take care | nothing |
+| 🆔 บัตรข้อมูลฉุกเฉิน (`/info`) | Seven short fields | A card picture to save, a copy as text, up to six people; what to tell 1669 | `brm:info` |
+| 💬 ส่งข่าวว่าปลอดภัย (`/safe`) | ✅ / 🏃 / 🆘, then an optional place and note | The message with the time, sent by LINE, SMS or a copy; 1784 and 1669 first for 🆘 | nothing |
+| 🧳 กระเป๋าฉุกเฉิน (`/bag`) | Ticks (who is at home comes from the home check) | 12 things for every bag plus rows for a baby, an older person, medicine and a pet; "จัดแล้ว 3 จาก 14"; print; a text of what is missing | `brm:bag` |
+
+- **The hub:** the guides, the home check and the plan first; then two tiles that follow the season (`config.json → hub.season`: the flood season the bag and the fridge, after a flood the tank and masks, dust dust today and masks, the hot season heat today and dust today, the power cut the fridge and water); then "🧰 เครื่องมือทั้งหมด", full width.
+- **Joins:** the home check offers water and the bag; the plan the card and "I'm safe" (whose place buttons are the plan's meeting places); the bag the card; dust today "😷 ใส่หน้ากากแบบไหน?"; each guide its tools and agency links; each hazard page the same.
+- **Guardrails:** a fire at home is never a mask question; heat today computes nothing; the tank's water is never for drinking; "I'm safe" sends nothing by itself and adds no location; no amounts for a bag (no source gives them); lines only a foreign agency gives are ⚠️.
+
 ## Playing a round
 
 - **Tap a target:** the timer pauses and a bottom sheet shows 3 choices. Since v1.9.2 each wrong choice gives the reason a real person would give for that mistake ("ปล่อยไว้ในลิ้นชักเหมือนเดิม เสียก็ไปขอทำใหม่ได้"), so the right one can't be spotted by its length: it is the longest in 17 of 82 sets in Thai. The answers are lettered ก ข ค (A B C in English), shuffled for each house; until v1.9.1 each had an icon for its kind of action, and the right one was often the odd icon out ([KNOWLEDGE §31.1](KNOWLEDGE.md#311-wrong-answers-that-dont-give-the-right-one-away)).

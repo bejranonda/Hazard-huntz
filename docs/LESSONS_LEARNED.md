@@ -659,5 +659,24 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* v1.13.0's build checks were inserted by a script after the line `const T = kitFile.tank;`. That line already stood earlier in `build.mjs`, so about 690 lines were copied in twice. It was found before the commit and repaired by keeping the text before the first copy and after the second.
 - *Do this:* assert the anchor's count is 1 before a scripted replace; afterwards compare `git diff --stat` with the change you meant; prefer edits whose old text is unique by construction.
+- *It happened again* in v1.13.1: a check inserted after a line inside a loop closed the loop early and left the loop's own lines outside it. It was caught by reading the spliced region before the build ran; read the lines around every scripted insertion, not only the count.
 - *Encoded in:* [GUIDELINES rule 90](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**C25. The host can break a promise the code keeps.**
+
+- *What happened:* the About text said "ไม่ใช้คุกกี้" ("no cookies"), and the app's code sets none. Visitor audit 4 found a `cf_clearance` cookie on `.autobahn.bot` all the same, set by Cloudflare's bot detection, a setting of the whole domain that the repository can't see ([KNOWN_ISSUES #93](KNOWN_ISSUES.md#93-cloudflares-bot-detection-sets-a-cookie)).
+- *Do this:* check a privacy promise on the live site in a fresh browser (cookies, third-party scripts, requests), not only in the code; make the text true at once, and report a host setting to the owner instead of changing it.
+- *Encoded in:* [GUIDELINES rule 96](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); the About text since v1.13.1.
+
+**D27. Test the number people type, not the one the tool expects.**
+
+- *What happened:* every check of the tank tool tapped a size button or typed "700". The English auditor typed "1.5", as a tank is often sold and counted in คิว, and got 2 ml of chlorine for what would be 1,500 litres, because the field kept only the digits (F151).
+- *Do this:* for every typed field, try a decimal with a point and with a comma, a thousands separator, a unit people use instead (คิว, cubic metres), and a value too small or too large to be what the tool is for; the tool asks about the last kind instead of answering.
+- *Encoded in:* [GUIDELINES rule 95](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); `typedNumber()` and the tank's question in `kit.js`; the smoke check "audit 4: … a tank of "1.5" asks about 1.5 คิว…".
+
+**D28. Don't change the version while the smoke test runs.**
+
+- *What happened:* v1.13.1's version was bumped in `config.json` while the 10 Apr 2027 smoke run was going, and before the build rewrote `js/version.js`. The app saw code and content from different releases, did what it should (`refreshStaleApp()` clears the caches and reloads once), and the download check counted every file twice: 558 KB against the 500 KB limit. One rebuild and a re-measure (289 KB, each file once) showed the cause; nothing in the app was wrong.
+- *Do this:* bump the version, build, then run the smoke tests; never edit `public/` or the content while a run is going. When a size check fails, list what it counted before shrinking anything: a file counted twice is a reload, not weight.
+- *Encoded in:* the order in [AGENTS §4](../AGENTS.md#4-definition-of-done) (build, then tests); this lesson.
 

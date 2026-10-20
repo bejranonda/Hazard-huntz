@@ -156,7 +156,9 @@ export function maskAdvice(M, air, { why = null, colour = null, who = null, what
   }
   const b = M[why];
   const masked = b.status === 'n95' || b.status === 'surgical';
-  return { why, status: st(b.status), lines: [...b.lines, ...(masked && air.baby ? [air.baby] : [])], card: masked, guide: b.guide || null };
+  // Not dust: the under-2 line without the dust room (M.baby), else dust today's.
+  const baby = M.baby || air.baby;
+  return { why, status: st(b.status), lines: [...b.lines, ...(masked && baby ? [baby] : [])], card: masked, guide: b.guide || null };
 }
 
 // Heat today (/hot, v1.13.0, content/kit.json → hot): the level announced

@@ -1111,6 +1111,35 @@ try {
     const enTank = await en.page.evaluate(() => document.querySelector('#tk-out').innerText);
     check('English: one person and 3 litres read "About 1 day" and "1 person at home"; "About 100 ml of liquid chlorine"', enWater.includes('About 1 day') && !/1 days|1 people/.test(enWater) && enWater.includes('1 person at home') && enTank.includes('100 ml of liquid chlorine'), `${enWater.slice(0, 80)} | ${enTank.slice(0, 60)}`);
     await en.ctx.close();
+    // Visitor audit 4 (v1.13.0): a way back to the list, the water answer in view,
+    // a tank size in คิว, 1669 to tap, and the English app installs in English.
+    const a4 = await newPage({ width: 360, height: 640 });
+    await a4.page.goto(`${BASE}/?open=tools&debug=1`, { waitUntil: 'networkidle' });
+    await a4.page.waitForSelector('[data-tool="water"]');
+    await a4.page.click('[data-tool="water"]');
+    await a4.page.waitForSelector('#tl-back');
+    await a4.page.click('[data-s="b1500"][data-d="1"]');
+    const live = await a4.page.evaluate(() => { const el = document.querySelector('#wt-live'); const r = el.getBoundingClientRect(); return { shown: !el.hidden, text: el.innerText, inView: r.top >= 0 && r.bottom <= innerHeight }; });
+    await a4.page.click('#tl-back');
+    await a4.page.waitForSelector('[data-tool="tank"]');
+    const backOk = await a4.page.evaluate(() => !!document.querySelector('.tl-calls a.tel-chip[href="tel:1784"]'));
+    await a4.page.click('[data-tool="tank"]');
+    await a4.page.waitForSelector('#tk-other');
+    await a4.page.click('.tk-type[data-t="l5"]');
+    await a4.page.fill('#tk-other', '1.5');
+    const hint = await a4.page.evaluate(() => ({ text: document.querySelector('#tk-out').innerText, btn: !!document.querySelector('#tk-cubic') }));
+    await a4.page.click('#tk-cubic');
+    const cubic = await a4.page.evaluate(() => document.querySelector('#tk-out').innerText);
+    check('audit 4: water opened from all tools says "‹ all tools" and shows its answer in view after one tap; back on the list, 1784 is a button; a tank of "1.5" asks about 1.5 คิว, and 1,500 litres of 5% is 150 ml', live.shown && live.inView && backOk && hint.btn && !/มล\./.test(hint.text) && cubic.includes('150 มล.'), JSON.stringify({ live, backOk, hint, cubic: cubic.slice(0, 60) }));
+    await a4.page.waitForFunction(() => history.state?.brm);
+    await a4.page.goto(`${BASE}/?open=hot&debug=1`, { waitUntil: 'networkidle' });
+    await a4.page.waitForSelector('.hot-level');
+    const tel1669 = await a4.page.evaluate(() => !!document.querySelector('#hot-aid a.tel-chip[href="tel:1669"]'));
+    const enMan = await fetch(`${BASE}/en/manifest.webmanifest`).then((r) => r.json()).catch(() => ({}));
+    const enIdx = await fetch(`${BASE}/en/index.html`).then((r) => r.text());
+    check('audit 4: heat today\'s first aid has 1669 to tap; /en/ installs as an English app (its own manifest, start page /en/, English shortcuts)', tel1669 && enIdx.includes('href="/en/manifest.webmanifest"') && enMan.start_url === '/en/?source=pwa' && enMan.lang === 'en' && (enMan.shortcuts || []).every((x) => x.url.startsWith('/en/') && !/[\u0E00-\u0E7F]/.test(x.name)), JSON.stringify({ tel1669, start: enMan.start_url }));
+    check('no page errors (audit 4 checks)', !a4.page.errors.length, a4.page.errors.join(' | '));
+    await a4.ctx.close();
   }
 
   // 12. Tools first (v1.9.0): what to do for any hazard, what to keep and the

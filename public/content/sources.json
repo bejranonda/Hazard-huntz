@@ -418,6 +418,22 @@
       "kind": "secondary",
       "note": "PPTV quoting the DOH deputy Director-General, read on 15 Oct 2026. N95 must fit, snug, covering nose and under the chin; surgical masks 3 layers; cloth at least 2 layers; replace when loose, hard to breathe through, torn, dirty or wet. At-risk: children, pregnant women, older people, people with chronic illness. Red level: at-risk groups stay in; chronic patients keep at least 5 days of medicine. The colour ranges in this article use the scale before the 2023 change, so the game does not quote them."
     },
+    "ddc-mask-2568": {
+      "agency": "กรมควบคุมโรค",
+      "title": "PM 2.5 ยังไม่ไปไหน! สธ.แนะใส่ Mask ให้ถูกต้อง ป้องกันฝุ่นได้จริง (อินโฟเควสท์ อ้างโฆษกกระทรวงสาธารณสุขและโฆษกกรมควบคุมโรค)",
+      "url": "https://www.infoquest.co.th/2025/464667",
+      "date": "2025-01-27",
+      "kind": "secondary",
+      "note": "InfoQuest quoting the MOPH spokesperson on PM2.5 and DDC spokesperson Dr Jurai Wongsawat, read word for word on 20 Oct 2026. Children under 2 years: 'เด็กเล็กที่อายุน้อยกว่า 2 ปี ไม่แนะนำให้ใส่หน้ากากทุกชนิด ซึ่งถ้าค่าฝุ่นเยอะ อาจต้องปรับที่สิ่งแวดล้อม และไม่ควรพาเด็กเล็กไปสัมผัสฝุ่น'. The same article lists a muslin mask as suiting children under 2 and says N95 does not suit young children aged 2 and over, which contradicts that sentence; the app follows the plain sentence and asks a paediatrician to confirm. Mask by colour (yellow: vulnerable groups a surgical mask outdoors; orange and red: N95 or equivalent outdoors for the vulnerable, surgical masks indoors) is left out: the DOH and Singapore's MOH disagree about masks indoors. Filtration: N95 about 95%, surgical 50–70%, 3-layer cotton 40.90%, muslin 37.80%."
+    },
+    "hc-respirator-2569": {
+      "agency": "สำนักงานสาธารณสุขแคนาดา (PHAC)",
+      "title": "Using a respirator mask during wildfire smoke events",
+      "url": "https://www.canada.ca/en/public-health/services/publications/healthy-living/using-respirator-mask-during-wildfire-smoke-events.html",
+      "date": "2026-10-06",
+      "kind": "international",
+      "note": "Read on 20 Oct 2026 (published May 2024, page date 6 Oct 2026). 'Respirator masks shouldn't be used by: children under 2 years of age; someone who has trouble breathing while wearing the mask; someone who needs help to remove it.' A well-fitting NIOSH-certified N95 or equivalent (KN95 or KF94) reduces fine particles outdoors; 'It doesn't protect against the gases in smoke.' A cloth, medical or surgical mask is not a respirator; a scarf, bandana, neck gaiter or face shield won't protect you. Fit: the mask pulls in when you breathe in, no air escapes at the edges when you breathe out. Facial hair prevents a tight fit. In extreme heat a mask may add to heat stress: prioritise staying cool. Used to cross-check Thai advice, never as the only source."
+    },
     "who-smoke-2566": {
       "agency": "องค์การอนามัยโลก (WHO) ภูมิภาคยุโรป",
       "title": "Public health advice during the wildfires: how to protect your health and keep safe (Q&A)",

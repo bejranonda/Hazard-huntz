@@ -633,6 +633,15 @@ test('dust today: the PCD bands to the decimal, AQI too, and who gets which line
   const sources = load('sources').sources;
   for (const l of A.levels) for (const x of [...l.all, ...l.risk, ...l.chronic]) assert.ok(x.sources.length && x.sources.every((id) => sources[id]), `${l.id}: ${x.th}`);
   assert.deepEqual(A.groups.filter((g) => g.from).map((g) => g.from).sort(), ['baby', 'elder', 'meds'], 'who is at home starts from the home check');
+  // v1.11.1: every level that says "wear a mask" also says children under 2 wear none
+  // (the at-risk group "up to 5" would otherwise put a mask on a baby).
+  for (const l of A.levels) {
+    const r = airAdvice(A, { colour: l.id });
+    const says = [...r.all, ...r.risk, ...r.chronic].some((x) => /หน้ากาก/.test(x.th));
+    assert.equal(!!r.baby, says, `${l.id}: the under-2 line ${says ? 'follows the mask line' : 'stays away without one'}`);
+  }
+  assert.match(A.baby.th, /2 ขวบ/);
+  assert.equal(A.baby.verify, 'partial', 'one Thai news report, which contradicts itself once: a paediatrician confirms');
 });
 
 test('structured data: one publisher, and each start page describes the app in its own language', () => {

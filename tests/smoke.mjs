@@ -903,6 +903,8 @@ try {
     o = await out();
     const extra = (l) => l.risk.find((x) => !l.all.some((a) => a.th === x.th));
     check("dust: Thailand's AQI 137 is orange, with the at-risk lines for young children", o.text.includes(A.levels[3].label.th) && o.text.includes(extra(A.levels[3]).th) && o.text.includes('เด็กเล็ก'), o.text.slice(0, 120));
+    const baby = () => page.evaluate(() => document.querySelector('#air-out .air-baby')?.innerText || '');
+    check('dust: orange says "wear a mask", so it also says children under 2 wear none (v1.11.1)', (await baby()).includes(A.baby.th), await baby());
     await page.click('.air-colour:has(input[value="yellow"])');
     o = await out();
     const twice = await page.$$eval('#air-out .air-list li', (lis) => { const t = lis.map((li) => li.firstChild.textContent.trim()); return t.length - new Set(t).size; });
@@ -916,6 +918,8 @@ try {
     await page.waitForTimeout(500);
     const toolEv = events.filter((e) => /^tool_/.test(e[0]) && e[1] === 'air');
     check('dust: only counts are sent (tool_open, tool_share), never the reading', toolEv.some((e) => e[0] === 'tool_open') && toolEv.some((e) => e[0] === 'tool_share') && toolEv.every((e) => !e[3]) && !sent.some((b) => b.includes('82.4')), JSON.stringify(toolEv));
+    await page.click('.air-colour:has(input[value="blue"])');
+    check('dust: blue says nothing about masks, so no under-2 line either', !(await baby()), await baby());
     check('no page errors (dust)', !page.errors.length, page.errors.join(' | '));
     await ctx.close();
     const html = await (await fetch(`${BASE}/air`)).text();

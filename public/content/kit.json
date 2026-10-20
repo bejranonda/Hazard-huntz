@@ -1012,7 +1012,7 @@
     ]
   },
   "air": {
-    "_readme": "ฝุ่นวันนี้ บ้านเราทำอะไร? (/air, /?open=air) ช่วงค่าฝุ่นและข้อควรปฏิบัติตามประกาศกรมควบคุมมลพิษ พ.ศ. 2566 (ค่าเฉลี่ย 24 ชั่วโมง) บรรทัดของกรมอนามัยบอกชื่อหน่วยงานไว้ ตัวเลขทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ)",
+    "_readme": "ฝุ่นวันนี้ บ้านเราทำอะไร? (/air, /?open=air) ช่วงค่าฝุ่นและข้อควรปฏิบัติตามประกาศกรมควบคุมมลพิษ พ.ศ. 2566 (ค่าเฉลี่ย 24 ชั่วโมง) บรรทัดของกรมอนามัยบอกชื่อหน่วยงานไว้ ตัวเลขทุกตัวต้องอยู่ใน title หรือ note ของ sources (build ตรวจ) · บรรทัดที่บอกให้ใส่หน้ากากมี mask: true แล้วจะมีข้อ baby (เด็กต่ำกว่า 2 ขวบ ไม่ใส่หน้ากาก) ตามมาเสมอ (v1.11.1)",
     "units": [
       {
         "id": "pm",
@@ -1113,7 +1113,8 @@
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
-            ]
+            ],
+            "mask": true
           },
           {
             "th": "ออกกำลังหนักๆ นอกบ้านให้น้อยลง",
@@ -1150,7 +1151,8 @@
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
-            ]
+            ],
+            "mask": true
           },
           {
             "th": "ออกกำลังหนักๆ นอกบ้านให้สั้นลง",
@@ -1176,7 +1178,8 @@
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
-            ]
+            ],
+            "mask": true
           },
           {
             "th": "เลี่ยงการออกกำลังหนักๆ นอกบ้าน",
@@ -1229,7 +1232,8 @@
             "sources": [
               "pcd-aqi-2566",
               "pcd-aqi-thaipbs-2566"
-            ]
+            ],
+            "mask": true
           },
           {
             "th": "ถ้ามีอาการผิดปกติ รีบไปหาหมอ",
@@ -1313,7 +1317,19 @@
           "en": "people with a long-term illness"
         }
       }
-    ]
+    ],
+    "baby": {
+      "icon": "👶",
+      "th": "เด็กต่ำกว่า 2 ขวบ ไม่ควรใส่หน้ากากทุกชนิด ให้อยู่ในห้องที่กันฝุ่นได้ และอย่าพาไปที่ฝุ่นเยอะ",
+      "en": "Children under 2 shouldn’t wear any kind of mask: keep them in a room that keeps the dust out, and away from dusty places",
+      "sources": [
+        "ddc-mask-2568",
+        "doh-dustroom-2569",
+        "hc-respirator-2569"
+      ],
+      "verify": "partial",
+      "verifyNote": "The DDC spokesperson (InfoQuest, 27 Jan 2025) says no mask of any kind under 2 years; the same article also lists muslin masks as suiting under-2s, so a paediatrician should confirm. Health Canada agrees (respirators not for children under 2)."
+    }
   },
   "ui": {
     "th": {

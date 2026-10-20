@@ -4,6 +4,23 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.11.1] — 2026-10-20
+
+**Dust today no longer puts a mask on a baby.** The owner asked (20 Oct 2026) "When and where we need to wear the mask, and which type then?", and the research for it found that dust today's at-risk lines ("ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้งที่ออกนอกบ้าน" at yellow and orange) cover the group "เด็กไม่เกิน 5 ขวบ", babies included. The lines follow the PCD's notice, which has no infant exception, but the DDC spokesperson (InfoQuest, 27 Jan 2025) says "เด็กเล็กที่อายุน้อยกว่า 2 ปี ไม่แนะนำให้ใส่หน้ากากทุกชนิด", and Health Canada agrees (respirators "shouldn't be used by children under 2"). No item, room, slot or band changed: **houses and challenge links are the same** ([ROADMAP N24](docs/ROADMAP.md#n24-masks-and-children-under-2-v1111)).
+
+### Fixed
+
+- **Every dust level that says "wear a mask" now also says** "👶 เด็กต่ำกว่า 2 ขวบ ไม่ควรใส่หน้ากากทุกชนิด ให้อยู่ในห้องที่กันฝุ่นได้ และอย่าพาไปที่ฝุ่นเยอะ ⚠️" (กรมควบคุมโรค · กรมอนามัย · สำนักงานสาธารณสุขแคนาดา), in the tool, its shared text and `/air` ([F129](docs/KNOWN_ISSUES.md#in-v1111-20-oct-2026)). It is ⚠️ `partial`: the same news article also lists muslin masks as suiting under-2s, so a paediatrician confirms ([ROADMAP L10](docs/ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)). The lines that mention a mask carry `mask: true` in `kit.json → air`, and the build fails if one doesn't, or if the under-2 line (`air.baby`) is missing or cites a number its sources don't have.
+
+### Added
+
+- Two sources (121 in all): `ddc-mask-2568` (InfoQuest quoting the MOPH and DDC spokespeople, 27 Jan 2025, read word for word) and `hc-respirator-2569` (the Public Health Agency of Canada, page date 6 Oct 2026, `international`).
+- [KNOWN_ISSUES #86](docs/KNOWN_ISSUES.md#86-air4thais-server-sends-the-wrong-certificate-chain): Air4Thai's server sends the wrong intermediate certificates, so `curl` refuses it; Chromium opens it; an Android in-app browser may warn. The app links it from dust today and the dust mode; a phone test decides.
+
+### Checks
+
+Build clean; 40 unit tests (the dust test now checks the under-2 line at every level); 165 smoke checks on 18 Oct 2026 (two new); `npm run check:docs`. Not run: real phones.
+
 ## [1.11.0] — 2026-10-20
 
 **Food by food in a power cut, and the whole app for its real readers.** On 20 Oct 2026 the owner wrote: "# fridge — จริงแล้วควรคำนวณว่า ของอะไรในตู้เย็นได้นานแค่ไหน # usability — Please analyse the usability and practical use of the app, the try to improve and revise the whole app. # target and main users — Please research who can be potential users who get from line and social media in Thailand." ("Fridge: really, it should work out how long each thing in the fridge keeps"), with the usual process: UI/UX suggestions validated for consistency, a test as visitors, the output validated and cross-validated, frank suggestions, the integration, every doc updated and a commit. Four research agents worked in parallel: the fridge's sources food by food; the Thai audience on LINE and social media (now [docs/07-audience.md](docs/07-audience.md), 50 sources); visitor audit A, an older relative in LINE's in-app browser at 360 × 640 and 320 × 568 with the text at 1.3× (28 findings, one blocker); and visitor audit B, a parent preparing at the weekend, an English reader and a consistency check at 390, 360 and 768 px (29 findings, nine major). Their findings became one decision list, built in batches ([ROADMAP N23](docs/ROADMAP.md#n23-food-by-food-and-the-app-for-its-real-readers-v1110), [KNOWLEDGE §33](docs/KNOWLEDGE.md#33-food-by-food-in-a-power-cut-and-the-whole-app-for-its-real-readers-v1110), [APPROACH §32](docs/APPROACH_AND_METHOD.md#32-four-researchers-in-parallel-then-one-decision-list-v1110)). The audit's one blocker was ours: since v1.10.0 the fridge tool said "Ready.gov แนะให้ทิ้ง" for any cold medicine after a day, insulin included, which the US FDA says keeps 28 days at 15–30 °C (F96). The same "discard" was in the game's power-cut lesson `s-medcold` since v1.7.0; found while documenting, it was reworded in this release (F128), so **an "UPDATE:" post is due**. No item, room, slot or `houseVersion` changed, and no hour, dust band or dust line: **houses and challenge links are the same,** and the game's advice is the same except that one lesson.

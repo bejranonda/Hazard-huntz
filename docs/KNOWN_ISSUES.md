@@ -83,8 +83,9 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 82 | ["power: Bangkok area" stands for MEA's three provinces](#82-power-bangkok-area-stands-for-meas-three-provinces) | Owner (the English read) | Low |
 | 83 | [Leftovers of visitor audit 3](#83-leftovers-of-visitor-audit-3) | Open (AI-ready, two owner decisions) | Low |
 | 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner) | — |
+| 86 | [Air4Thai's server sends the wrong certificate chain](#86-air4thais-server-sends-the-wrong-certificate-chain) | Owner (phone test; tell the PCD) | Medium |
 
-Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3).
+Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
 ---
 
@@ -887,9 +888,27 @@ The audience research of 20 Oct 2026 ([07-audience.md](07-audience.md)) found th
 - **A `?src=` channel code and an in-app-browser bucket** on `view`, counting channel types, never people. **The owner decides:** both are new data, and the guidelines say no user agent is stored ([05-metrics](05-metrics.md#larger-text-and-the-real-readers-v1110)).
 - **The real-phone pass on Android 10–11** inside LINE and Facebook: about 12 % of Thai Android traffic runs Android 11 or older ([06-test-checklist](06-test-checklist.md), [#3](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers)).
 
+### 86. Air4Thai's server sends the wrong certificate chain
+
+**Status:** Owner (phone test; tell the PCD) · **Severity:** Medium
+
+On 20 Oct 2026 `https://air4thai.pcd.go.th/webV3/` answered `curl` with "SSL certificate problem: unable to get local issuer certificate". `openssl s_client` showed why: the server's own certificate is from Let's Encrypt (YR1), but the chain it sends is Sectigo's and USERTrust's, which don't sign it. Chromium 141 opened the page (it fetches the missing certificate itself); whether LINE's and Facebook's in-app browsers on Android do, or show a security warning, is **[unverified]**.
+
+- **Where the app links it:** `config.json → modes` (the dust mode's check link), dust today's "ไม่รู้ว่าวันนี้สีอะไร? ดูใน Air4Thai", the dust guide's line 1 and `/pm25`.
+- **What would close it:** a real-phone test inside LINE on Android ([06-test-checklist](06-test-checklist.md), [ROADMAP L6](ROADMAP.md#l6-real-phone-test-matrix)). If it warns, add GISTDA's PM2.5 page (`pm25.gistda.or.th`, which itself says official alerts are Air4Thai's) as the second link, and tell the PCD (the fix is on their server: send Let's Encrypt's chain).
+
 ---
 
 ## Fixed
+
+### In v1.11.1 (20 Oct 2026)
+
+Found by the research for the owner's question on masks ([ROADMAP N24](ROADMAP.md#n24-masks-and-children-under-2-v1111)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F129 | **Dust today told the parents of a baby to put a mask on it.** At yellow and orange its at-risk lines say "ใส่หน้ากากกันฝุ่น PM2.5 ทุกครั้งที่ออกนอกบ้าน", and since v1.11.0 they show to everyone, under a heading that names "เด็กเล็ก" (the group "เด็กไม่เกิน 5 ขวบ"). The PCD's notice has no infant exception; the DDC spokesperson (InfoQuest, 27 Jan 2025) says no mask of any kind under 2 years, and Health Canada agrees | Every level whose lines mention a mask (`mask: true`) adds "👶 เด็กต่ำกว่า 2 ขวบ ไม่ควรใส่หน้ากากทุกชนิด ให้อยู่ในห้องที่กันฝุ่นได้ และอย่าพาไปที่ฝุ่นเยอะ ⚠️" (`kit.json → air.baby`, ⚠️ `partial` until a paediatrician reads it) in the tool, the shared text and `/air`. The build fails on a mask line without `mask: true` and on a missing or unsourced under-2 line; a unit test checks every level and two smoke checks the sheet (orange shows it, blue doesn't). |
+
 
 ### In v1.0.0, during the handoff review (6 Oct 2026)
 

@@ -457,6 +457,22 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
       }
       prev = l;
     }
+    // v1.11.1: the levels that say "wear a mask" (mask: true) bring the line on who must not.
+    if ((A.levels || []).some((l) => [...(l.all || []), ...(l.risk || []), ...(l.chronic || [])].some((x) => x.mask))) {
+      const b = A.baby;
+      if (!b) err('kit.json air: lines say "wear a mask" (mask: true) but there is no baby line (children under 2 wear none)');
+      else {
+        text(b, 'kit.json air.baby');
+        if (!['verified', 'partial'].includes(b.verify)) err('kit.json air.baby: verify must be verified or partial');
+        if (b.verify === 'partial' && !b.verifyNote) err('kit.json air.baby: a partial line needs a verifyNote');
+        if (!(b.sources || []).length) err('kit.json air.baby: needs sources');
+        for (const sid of b.sources || []) if (!sources[sid]) err(`kit.json air.baby: unknown source "${sid}"`);
+        const bs = said(b.sources || []);
+        for (const t of [b.th, b.en]) for (const m of String(t || '').match(/\d+/g) || []) if (!has(bs, m)) err(`kit.json air.baby: ${m} is not in any of its sources' title or note`);
+      }
+    }
+    for (const x of (A.levels || []).flatMap((l) => [...(l.all || []), ...(l.risk || []), ...(l.chronic || [])])) if (x.mask && !/หน้ากาก/.test(x.th)) err(`kit.json air: "${x.th}" has mask: true but says nothing about a mask`);
+    for (const x of (A.levels || []).flatMap((l) => [...(l.all || []), ...(l.risk || []), ...(l.chronic || [])])) if (!x.mask && /หน้ากาก/.test(x.th)) err(`kit.json air: "${x.th}" talks about a mask: mark it mask: true so the under-2 line follows`);
     for (const g of A.groups || []) {
       text(g.label, `kit.json air group ${g.id}`);
       if (g.from && !(kitFile.flags || []).some((f) => f.id === g.from)) err(`kit.json air group ${g.id}: from "${g.from}" is not a home-check answer`);
@@ -1059,7 +1075,7 @@ ${hazardChips('en', h.id)}
     const part = (head, xs) => (xs.length ? `<br>${esc(head)} ${esc(xs.map((x) => `${L2(x, lang)}${by(x)}`).join(' · '))}` : '');
     const ids = [...new Set([...l.all, ...l.risk, ...l.chronic].flatMap((x) => x.sources))];
     return `<li><b><span class="dot" style="background:${esc(l.colour)}"></span> ${esc(L2(l.label, lang))}</b> · PM2.5 ${band} µg/m³ · AQI ${aqi}${part(X.airForAll, l.all)}${part(X.airForRisk, l.risk)}${part(X.airForChronic, l.chronic)}<br>${src({ sources: ids, verify: 'verified' }, lang)}</li>`;
-  }).join('\n');
+  }).join('\n') + (A.baby ? `\n<li><b>${esc(A.baby.icon)} ${esc(L2(A.baby, lang))}</b><br>${src(A.baby, lang)}</li>` : '');
   const privacyKey = { kit: 'privacy', plan: 'planPrivacy', fridge: 'fridgePrivacy', air: 'airPrivacy' };
   const nextTool = { kit: 'plan', plan: 'kit', fridge: 'kit', air: 'kit' };
   const tools = { kit: kitFile.items, plan: kitFile.plan };
@@ -1321,7 +1337,7 @@ if (gz > 500 * 1024) err(`initial load is ${(gz / 1024).toFixed(0)} KB compresse
     // the guides with no game cite their own sources (checklists.json)
     for (const l of Object.values(checklists)) for (const x of l?.items || []) for (const id of x.sources || []) used.add(id);
     for (const h of helplines.helplines) if (h.source) used.add(h.source);
-    for (const k of [...(kitFile.items || []), ...(kitFile.plan || []), ...(kitFile.fridge?.parts || []), ...(kitFile.fridge?.always || []), ...(kitFile.air?.levels || []).flatMap((l) => [...l.all, ...l.risk, ...l.chronic])]) for (const id of k.sources || []) used.add(id);
+    for (const k of [...(kitFile.items || []), ...(kitFile.plan || []), ...(kitFile.fridge?.parts || []), ...(kitFile.fridge?.always || []), ...(kitFile.air?.levels || []).flatMap((l) => [...l.all, ...l.risk, ...l.chronic]), ...(kitFile.air?.baby ? [kitFile.air.baby] : [])]) for (const id of k.sources || []) used.add(id);
     const refs = Object.entries(sources)
       .sort((a, b) => a[1].agency.localeCompare(b[1].agency, 'th') || a[0].localeCompare(b[0]))
       .map(([id, s]) => `- **[${id}]** ${s.agency} — ${s.title}${s.date ? ` (${s.date})` : ''} · _${kindLabel[s.kind] || s.kind}_${used.has(id) ? '' : ' · not cited yet'}  \n  <${s.url}>${s.note ? `  \n  ${s.note}` : ''}`)

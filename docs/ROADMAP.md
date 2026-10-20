@@ -31,7 +31,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | L3 | [Set the forecast-app link](#l3-set-the-forecast-app-link) | Owner + AI | Done (11 Oct 2026): link set; live status endpoint optional |
 | L4 | [Review the 21 flagged (⚠️) safety items](#l4-review-the-21-flagged-safety-items) | Owner + AI | Todo |
 | L5 | [Second native reader for the Thai copy](#l5-second-native-reader-for-the-thai-copy) | Owner + AI | Todo (the home check's and plan card's text added in v1.8.0; the hub, the guides and the new pages in v1.9.0; the renamed tools, new titles and intros, how-to step 4, the heat phase names in v1.9.1; the 117 rewritten wrong answers in v1.9.2; the calculators' texts in v1.10.0, and their plain words in v1.10.1; the fridge's food lists, the medicine and breast-milk lines, the named helplines and the new start-screen and sharing texts in v1.11.0) |
-| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (75 rows since v1.11.0: rows 67–75 for food by food, ก+ and the copy buttons inside LINE; rows 64–65 rewritten for v1.10.1's taps) |
+| L6 | [Real-phone test matrix](#l6-real-phone-test-matrix) | Owner + AI | Todo (76 rows since v1.11.1: row 76 for the under-2 line and the Air4Thai link on Android; rows 67–75 for food by food, ก+ and the copy buttons inside LINE; rows 64–65 rewritten for v1.10.1's taps) |
 | L7 | [Soft launch, then the launch phases](#l7-soft-launch-then-the-launch-phases) | Owner | Todo |
 | L8 | [Search consoles and AI-search check](#l8-search-consoles-and-ai-search-check) | Owner + AI | Todo (28 addresses since v1.10.0: sixteen hazard pages, `/kit`, `/plan`, `/fridge` and `/air`; the Rich Results Test of the publisher added in v1.9.2) |
 | L9 | [Link FloodWatch and the game to each other](#l9-link-floodwatch-and-the-game-to-each-other) | Owner + AI | Half done: game → FloodWatch is live |
@@ -59,6 +59,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N21 | [Calculators from the home check's idea (v1.10.0)](#n21-calculators-from-the-home-checks-idea-v1100) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.10.0); the Thai read (L5), the phone checks (L6, rows 64–66) and the review of the fridge hours and the dust tool (L10) left; its screens redone in plain words in v1.10.1 (N22) |
 | N22 | [Calculators in plain words (v1.10.1)](#n22-calculators-in-plain-words-v1101) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.10.1); the Thai read of the new words (L5) and the phone test of the taps (L6, rows 64–65) left |
 | N23 | [Food by food, and the app for its real readers (v1.11.0)](#n23-food-by-food-and-the-app-for-its-real-readers-v1110) | AI-ready (+ Owner review) | Done (20 Oct 2026, v1.11.0); the reviews (L5, L10), the phone test (L6, rows 67–75), three owner decisions, an "UPDATE:" post for the corrected cold-medicine lesson and the audit's leftovers (#83, #84) left |
+| N24 | [Masks and children under 2 (v1.11.1)](#n24-masks-and-children-under-2-v1111) | AI-ready (+ Owner review) | Done (20 Oct 2026, v1.11.1); a paediatrician's read (L10) and the Air4Thai phone test (#86) left |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -548,6 +549,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - **The owner decides:** the home check's add-ons per hazard (N95 masks, an extinguisher, boots and gloves, sandbags, closed shoes) and a "not needed here" answer (B5, B10; `/kit`'s title still says "รับมือทุกภัย"); the dust guide and dust today at orange (B8, [#76](KNOWN_ISSUES.md#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red)); a `?src=` channel code and an in-app-browser bucket on `view` (privacy; [05-metrics](05-metrics.md#larger-text-and-the-real-readers-v1110))
   - **The owner's reviews:** the food list and its Thai names, eggs and ลูกชิ้น / หมูยอ ([#79](KNOWN_ISSUES.md#79-the-fridges-food-lists-rest-on-us-charts)); the insulin and medicine wording, ideally with a Thai pharmacist ([#80](KNOWN_ISSUES.md#80-insulin-above-30-c-has-no-number)); the breast-milk lines, with a nurse or the DOH's breastfeeding centre; "power: Bangkok area" ([#82](KNOWN_ISSUES.md#82-power-bangkok-area-stands-for-meas-three-provinces)) ([L5](#l5-second-native-reader-for-the-thai-copy), [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons))
   - **The phone test:** rows 67–75 ([L6](#l6-real-phone-test-matrix)), on Android 10–11 inside LINE and Facebook as well as a current phone
+
+### N24. Masks and children under 2 (v1.11.1)
+
+- **Who:** AI-ready + Owner (review) · **Status:** Done (20 Oct 2026, v1.11.1); a paediatrician's read of the line ([L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)) and the Air4Thai phone test ([#86](KNOWN_ISSUES.md#86-air4thais-server-sends-the-wrong-certificate-chain)) left · **Issues:** fixed F129; new #86
+- **Why:** the owner asked "When and where we need to wear the mask, and which type then? … can be develop also as a tool?" (20 Oct 2026). The research found dust today's at-risk mask line covering babies.
+- **What shipped:** the under-2 line after every mask line in dust today, its shared text and `/air`; `mask: true` on the lines that mention a mask, held by the build; two sources. The mask tool itself is the next release.
+- **Done when:** a paediatrician has read the line (then `verify` may become `verified`).
 
 ## Later
 

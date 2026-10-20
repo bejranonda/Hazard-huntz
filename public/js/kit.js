@@ -495,13 +495,14 @@ export async function openAir(from = 'start') {
       return;
     }
     const who = whoText(A.groups);
-    const srcIds = [...new Set([...r.all, ...r.risk, ...r.chronic].flatMap((x) => x.sources))];
+    const srcIds = [...new Set([...r.all, ...r.risk, ...r.chronic, ...(r.baby ? [r.baby] : [])].flatMap((x) => x.sources))];
     box.style.setProperty('--lv', r.level.colour);
     box.innerHTML = `
       <div class="air-badge"><span class="air-dot" style="background:${esc(r.level.colour)}"></span><span><b>${esc(u('airLevel', { name: L(r.level.label) }))}</b><small>${esc(range(r.level))}</small></span></div>
       <h3>${esc(u('airAll'))}</h3><ul class="air-list">${r.all.map(li).join('')}</ul>
       ${r.risk.length ? `<h3>${esc(u('airRisk', { who }))}</h3><p class="air-also">${esc(u('airAlso'))}</p><ul class="air-list">${r.risk.map(li).join('')}</ul>` : r.riskSame ? `<h3>${esc(u('airRisk', { who }))}</h3><p class="air-same">${esc(u('airSame'))}</p>` : ''}
       ${r.chronic.length ? `<h3>${esc(u('airChronic'))}</h3><ul class="air-list">${r.chronic.map(li).join('')}</ul>` : ''}
+      ${r.baby ? `<p class="air-baby"><span aria-hidden="true">${esc(r.baby.icon)}</span> <span>${esc(L(r.baby))}${r.baby.verify !== 'verified' ? ' ⚠️' : ''} <small>(${esc(agencies(r.baby.sources))})</small></span></p>` : ''}
       <p class="kit-src">${esc(u('source'))}: ${esc(agencies(srcIds))}</p>`;
   };
   paint();
@@ -534,7 +535,8 @@ export async function openAir(from = 'start') {
       const lines = [head, `${u('airAll')}: ${r.all.map((x) => L(x)).join(' · ')}`];
       if (r.risk.length) lines.push(`${u('airRisk', { who: whoText(A.groups) })}: ${r.risk.map((x) => L(x)).join(' · ')}`);
       if (r.chronic.length) lines.push(`${u('airChronic')}: ${r.chronic.map((x) => L(x)).join(' · ')}`);
-      lines.push(`(${u('source')}: ${agencies([...new Set([...r.all, ...r.risk, ...r.chronic].flatMap((x) => x.sources))])})`, u('airShareTail', { url: pageUrl('air') }));
+      if (r.baby) lines.push(`${r.baby.icon} ${L(r.baby)}`);
+      lines.push(`(${u('source')}: ${agencies([...new Set([...r.all, ...r.risk, ...r.chronic, ...(r.baby ? [r.baby] : [])].flatMap((x) => x.sources))])})`, u('airShareTail', { url: pageUrl('air') }));
       return lines.join('\n');
     },
   });

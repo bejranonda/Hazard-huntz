@@ -115,5 +115,7 @@ export function airAdvice(cfg, answers = {}, groups = []) {
     chronic,
     riskSame: level.risk.length > 0 && !risk.length,
     who: cfg.groups.filter((g) => groups.includes(g.id)),
+    // Every level that says "wear a mask" also says who must not (v1.11.1: under 2s).
+    baby: [...level.all, ...level.risk, ...level.chronic].some((x) => x.mask) ? cfg.baby || null : null,
   };
 }

@@ -943,6 +943,9 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .air-list li { margin: 3px 0; font-size: 16px; }
 .air-by { color: var(--ink-2); font-size: 14px; }
 .air-none, .air-same { margin: 4px 0; color: var(--ink-2); }
+/* v1.11.1: whenever a level says "wear a mask", who must not (children under 2) */
+.air-baby { display: flex; gap: 8px; align-items: flex-start; margin: 10px 0 4px; padding: 8px 10px; border-radius: 12px; background: #FFF4D6; font-size: 16px; font-weight: 600; line-height: 1.45; }
+.air-baby small { color: var(--ink-2); font-size: 14px; font-weight: 400; }
 .air-hint { display: block; margin: 8px 0 0; }
 /* "how many days will the pills last?" under the home check's medicine line (v1.10.0) */
 .kit-calc { margin: 4px 0 14px; padding: 4px 12px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); }

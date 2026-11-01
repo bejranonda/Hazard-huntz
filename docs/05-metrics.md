@@ -24,7 +24,8 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `guide_open` (v1.9.0) | The guide picker opened | – | `start` (the hub's "📋 ต้องทำอะไร เมื่อเกิดภัย") / `link` (`/?open=guide`, also the app's shortcut) / `guide` ("← เรื่องอื่น" from a guide) | – |
 | `print` (v1.9.0) | "🖨️ พิมพ์เก็บไว้" tapped (never in in-app browsers, which hide it) | the guide's id, or – for the home check | `guide` / `kit` | – |
 | `help_click` | Helpline tapped (tel:) | mode or –; since v1.9.1 the guide's id for a guide's ☎️ chips | the number, e.g. `1784` | – |
-| `forecast_click` | "เช็กระดับน้ำ" tapped | mode or – | `start` / `result` / `help` | – |
+| `forecast_click` | "เช็กระดับน้ำ" (since v1.14.0 "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)") tapped | mode or – | `start` / `result` / `help` | – |
+| (none) | The ภัยรอบบ้าน link (v1.14.0) | — | — | — |
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0), or a hazard page from a guide's "📖" (v1.9.0) | – | the topic (e.g. `health`), `book`, or the guide's id (e.g. `quake`) | – |
 | `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) / `fridge` (the fridge tool's "🎒 เช็กของจำเป็นสำหรับไฟดับ", v1.10.0) | – |
@@ -47,6 +48,7 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | **Checklist downloads** | `checklist_save` by label, plus Web Analytics views of `/share/checklist-*.png` and `/checklist/*` | Track the trend |
 | **Help-channel clicks** | `help_click` by number | Track; a spike in 1784 or 1669 can signal a real need |
 | **Forecast-app clicks** | `forecast_click` by placement | Track (your app's own analytics show conversion) |
+| **ภัยรอบบ้าน clicks** | not counted here (v1.14.0: no new tracking); ภัยรอบบ้าน's own Web Analytics shows `baanrodmai.autobahn.bot` as a referrer if it has them | — |
 | **Learning signal** | Average `round_end` score per mode over time | Rising averages in the daily house mean the lessons stick |
 
 ## Querying (Analytics Engine SQL API)

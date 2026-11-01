@@ -4,7 +4,34 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.14.0] — 2026-11-02
+
+**Fit with the family: this app says what to do; ภัยรอบบ้าน says what is happening.** From the owner's brief of 1 Nov 2026 ("make this app fit with the owner's two other apps"), checked claim by claim against this repository and the sister apps' live pages, with two researchers sourcing the advice only this app may write. No item, room or slot changed, so houses and challenge links are the same. ([ROADMAP N30](docs/ROADMAP.md#n30-fit-with-the-family-v1140), [docs/10](docs/10-family.md))
+
+### Changed
+
+- **The start screen states no live condition.** The hand-set `rainWarningActive` switch is removed (the build fails if it returns), and the gecko's lines no longer say "ฝนจะมาอีกระลอก", "น้ำลดแล้ว" or "ฝุ่นมาอีกแล้ว": "ถ้าน้ำมา บ้านเราพร้อมไหม? มาเตรียมกัน!", "หลังน้ำลด อย่าเพิ่งวางใจ ตรวจบ้านก่อนเข้าอยู่", "วันฝุ่นเยอะ บ้านเรากันฝุ่นได้ไหม? มาเช็กกัน!" (drafts for the owner, #98). A unit test reads every gecko line.
+- **The season picks ก่อนน้ำมา by its own months** (May–November), dust December–March, fire April; หลังน้ำลด is never recommended to the whole country by itself, only from a link.
+- **FloodWatch is the rivers' link,** "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)", after ภัยรอบบ้าน and a secondary button in the guides and on the result.
+- **An alert needs its source:** `config.json → alert` takes `source`, the https link of the agency notice (the build checks); the expired landslide alert is cleared.
+
+### Added
+
+- **"📍 ดูภัยที่ตำบลของคุณตอนนี้"** to ภัยรอบบ้าน (`config.json → riskAppUrl`, `/` or `/en` by the reader's language) on the start screen, every guide, the result screen, the help sheet, the eight hazard pages and `/air`, `/hot`, `/mask`. Nothing about the reader goes with it, and it sends no event.
+- **`kit.json → flood`** for ภัยรอบบ้าน's levels (`watch`, `warn`, `danger` = ติดตามไว้, เตรียมตัว, เสี่ยงสูง) and eight lines for while the water is rising, from DDPM's warning levels and alerts and RID's release notices; on `/flood#during` and `#levels` (with `#level-watch`, `#level-warn`, `#level-danger`), in Thai and English. The build checks that no flood line names a river, canal or city.
+- **`kit.json → uv` and `/uv`** (+ `/en/uv`): what to do at each UV index level from WHO's own words (0–2, 3–7, 8–10, 11+; one message from 8 up), with the TMD's and the MOPH's advice and a link to the TMD's UV forecast; in the sitemap and `llms.txt`.
+- **14 sources** (DDPM ×6, RID ×2, WHO ×3, TMD, MOPH, DOH; 159 in all) and the Royal Irrigation Department's English name.
+- **Tests:** `npm test` 46 (the gecko's lines; the advice file ภัยรอบบ้าน reads: PM2.5 tops 15/25/37.5/75, heat floors 27/33/42/52, the flood ids and first lines, UV bands with no gap, every linked page); `npm run smoke` 209 with section 14 (the link in both languages, ภัยรอบบ้าน before FloodWatch, nothing sent when following it, `/flood#during`, `/uv`, every hazard page).
+- **Sources grouped by agency** on `/flood#during` and `/uv` ("ปภ.: 2026, 2026, 2024", each year its own link), after the visitor walk found DDPM's full English name three times under one line.
+- **[docs/10-family.md](docs/10-family.md):** who does what, the contract with ภัยรอบบ้าน, and the hand-back list for a ภัยรอบบ้าน session.
+
+### Fixed
+
+- F164–F169 ([KNOWN_ISSUES](docs/KNOWN_ISSUES.md#in-v1140-2-nov-2026)): the start screen's live claims, "after the flood" for the whole country, FloodWatch as the only route to "now", the expired alert, `/uv` 404, no "during" on `/flood`.
+
 ### Docs
+
+- ROADMAP N30 (and N28, N29 superseded: "around my home" is ภัยรอบบ้าน's), GUIDELINES rules 100–101, KNOWLEDGE §37, APPROACH §37, KNOWN_ISSUES #98–#101 (and #13, #44, #47, #95 updated), LESSONS A11, B21, C27, test-checklist rows 88–90, HANDOFF, README, AGENTS, docs 02–04, 08 and 09 marked superseded for building.
 
 - **Open data for "around my home" (research, 21 Oct 2026; no code changed).** The owner asked whether the app could show PM2.5 from the user's position, what would bring people back to see the situation and the risks around their home, whether a position could "tell the risk in any dimension", and to learn from FloodWatch how to read open APIs. New [docs/08-open-data.md](docs/08-open-data.md): FloodWatch's method and what carries over; 30+ Thai and global sources tried live with this site's origin (auth, CORS, licence, result); how the position stays on the phone (lists and subdistrict codes; point APIs only at build time); timestamp and missing-value pitfalls; what needs the owner; a three-phase proposal. Also ROADMAP N28, APPROACH §35, KNOWLEDGE §35, GUIDELINES rule 98, KNOWN_ISSUES #95 (and on #93: Bot Fight Mode must stay off), LESSONS B18–B19, HANDOFF, README and AGENTS.
 - **The full research record** ([docs/research/open-data-2026-10-21.md](docs/research/open-data-2026-10-21.md)): every one of the 113 calls with its URL, status, size and CORS reply (keys removed), the lead's own calls, each source's coverage, licence and verdict by hazard, the six DMR layers, FloodWatch's method, source list and pitfalls, and the corrections. Corrected in docs/08: 113 calls, not 114; the DMR's flash-flood subdistrict layer (1,084) is on `gis.dmr.go.th`.

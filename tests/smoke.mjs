@@ -1416,6 +1416,61 @@ try {
     await ctx.close();
   }
 
+  // 14. The family (v1.14.0): this app says what to do; ภัยรอบบ้าน (Thai Risk) says what is
+  // happening now. Its link in the reader's language from the start screen and every guide,
+  // FloodWatch after it for the rivers; nothing about the reader goes with it; the advice
+  // ภัยรอบบ้าน copies (/flood#during, /uv) is on the pages it links.
+  {
+    const RISK = CFG.riskAppUrl;
+    const NOW = /อีกระลอก|มาอีกแล้ว|น้ำลดแล้ว|is coming|is back|water's gone/i;
+    for (const [lang, path0, want] of [['th', '/', RISK], ['en', '/en/', `${RISK}en`]]) {
+      const { ctx, page } = await newPage({ width: 320, height: 568, ua: UA.line });
+      await ctx.route(/risk\.autobahn\.bot/, (r) => r.fulfill({ status: 200, body: 'ok' }));
+      await page.goto(`${BASE}${path0}`, { waitUntil: 'networkidle' });
+      const st = await page.evaluate(() => {
+        const a = document.querySelector('#risk-link');
+        const r = a.getBoundingClientRect();
+        return { href: a.getAttribute('href'), hidden: a.hidden, h: r.height, w: r.width, target: a.target, rel: a.rel, hero: document.querySelector('#hero-bubble').textContent };
+      });
+      check(`${lang}: the start screen links ภัยรอบบ้าน (${want}) in its language, 44 px or more, and the gecko states nothing about this week`,
+        st.href === want && !st.hidden && st.h >= 44 && st.target === '_blank' && /noopener/.test(st.rel) && !NOW.test(st.hero), JSON.stringify(st));
+      // A guide: ภัยรอบบ้าน first, FloodWatch after it as the rivers' link.
+      await page.click('.hub-main');
+      await page.waitForSelector('.guide-grid');
+      await page.click('[data-guide="prepare"]');
+      await page.waitForSelector('#cl-risk');
+      const g = await page.evaluate(() => {
+        const r = document.querySelector('#cl-risk'); const f = document.querySelector('#cl-forecast');
+        return { risk: r.getAttribute('href'), flood: f?.getAttribute('href') || null, order: f ? !!(r.compareDocumentPosition(f) & Node.DOCUMENT_POSITION_FOLLOWING) : null, h: r.getBoundingClientRect().height };
+      });
+      check(`${lang}: a guide links ภัยรอบบ้าน first, then FloodWatch for the rivers`, g.risk === want && g.flood === CFG.forecastAppUrl && g.order === true && g.h >= 44, JSON.stringify(g));
+      const before = sent.length;
+      const [popup] = await Promise.all([page.waitForEvent('popup', { timeout: 5000 }).catch(() => null), page.click('#cl-risk')]);
+      await page.waitForTimeout(300);
+      const after = sent.slice(before).join(' ');
+      check(`${lang}: following the ภัยรอบบ้าน link opens it with no position and sends no event about it`, popup && popup.url().startsWith(want) && !/[?#]/.test(popup.url().slice(want.length)) && !/risk/i.test(after), `${popup?.url()} ${after}`);
+      await ctx.close();
+    }
+    // /flood#during and /uv carry the lines ภัยรอบบ้าน copies, in both languages; /uv is in the sitemap.
+    const flTh = await (await fetch(`${BASE}/flood`)).text();
+    const flEn = await (await fetch(`${BASE}/en/flood`)).text();
+    // the text without the build's kept-word spans and entities
+    const plain = (html) => html.replace(/<[^>]+>/g, '').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+    const during = (html) => (/<h2 id="during">[\s\S]*?<\/ol>/.exec(html)?.[0].match(/<li>/g) || []).length;
+    check('/flood and /en/flood: a #during section with every line and the three levels, after the lists (the jump row keeps two chips, so the list stays on the first screen)', [flTh, flEn].every((h) => during(h) === KIT.flood.during.length
+      && KIT.flood.levels.every((l) => h.includes(`id="level-${l.id}"`)) && h.indexOf('id="during"') > h.indexOf('id="cl-return"')) && plain(flTh).includes(KIT.flood.levels[0].all[0].th) && plain(flEn).includes(KIT.flood.levels[0].all[0].en),
+      `${during(flTh)} ${during(flEn)}`);
+    const uvTh = await (await fetch(`${BASE}/uv`)).text();
+    const uvEn = await (await fetch(`${BASE}/en/uv`)).text();
+    const map = await (await fetch(`${BASE}/sitemap.xml`)).text();
+    check('/uv and /en/uv: every UV level with its lines and sources, ภัยรอบบ้าน and the TMD forecast linked, in the sitemap',
+      [uvTh, uvEn].every((h) => KIT.uv.levels.every((l) => h.includes(`id="uv-${l.id}"`)) && h.includes('who.int') && h.includes('ozone.tmd.go.th'))
+      && uvTh.includes(`href="${RISK}"`) && uvEn.includes(`href="${RISK}en"`) && map.includes('/uv</loc>') && map.includes('/en/uv</loc>'));
+    const hzOk = CFG.guides.map((g) => CFG.hazards[g.hazard]?.slug).filter(Boolean);
+    const pages = await Promise.all([...new Set(hzOk)].map(async (slug) => [slug, await (await fetch(`${BASE}/${slug}`)).text(), await (await fetch(`${BASE}/en/${slug}`)).text()]));
+    check('every hazard page links ภัยรอบบ้าน in its own language', pages.every(([, th, en]) => th.includes(`href="${RISK}"`) && en.includes(`href="${RISK}en"`)), pages.filter(([, th, en]) => !(th.includes(`href="${RISK}"`) && en.includes(`href="${RISK}en"`))).map(([s]) => s).join(','));
+  }
+
   check('analytics beacons received', beacons > 0, String(beacons));
 } finally {
   await browser.close();

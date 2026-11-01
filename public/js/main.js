@@ -4,7 +4,7 @@ import { $, $$, esc, observeKeptWords, store, bangkokDateKey, formatHouseDate, i
 import { randomHouseKey, isValidHouseKey } from './rng.js';
 import {
   loadContent, content, t, L, setLang, getLang, pickLine, pickLineFor, rankTitle, sourceList,
-  siteUrl, forecastUrl, applyStaticStrings, langPath, tm, agencyName,
+  siteUrl, forecastUrl, riskUrl, applyStaticStrings, langPath, tm, agencyName,
 } from './content.js';
 import { modeList, modeIds, modeOf, mk, cap, recommend, activeAlert } from './modes.js';
 import { APP_VERSION } from './version.js';
@@ -216,6 +216,15 @@ function renderStart() {
   const bookBtn = $('#btn-book');
   bookBtn.textContent = t('bookChip', { n: book.n, total: book.total });
   bookBtn.hidden = false;
+
+  // ภัยรอบบ้าน (v1.14.0): what is happening now at the reader's subdistrict is the
+  // sister app's to say; this app says what to do. In the reader's language.
+  const rl = $('#risk-link');
+  const rUrl = riskUrl();
+  if (rl) {
+    if (rUrl) rl.href = rUrl;
+    rl.hidden = !rUrl;
+  }
 
   const fUrl = forecastUrl(defaultMode);
   const fl = $('#forecast-link-start');
@@ -884,7 +893,8 @@ async function showResult(result) {
       <button class="btn secondary" type="button" id="btn-checklist">📋 ${esc(L(C.checklists[mode]?.title) || t('checklists'))}</button>
       ${hzTools.includes('kit') ? `<button class="btn blue" type="button" id="btn-kit">${esc(t('kitFromResult'))}</button>` : ''}
       ${hzTools.filter((x) => x !== 'kit').map((x) => `<button class="btn secondary" type="button" data-result-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}
-      ${fUrl ? `<a class="btn blue" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
+      ${riskUrl() ? `<a class="risk-link" id="btn-risk" href="${esc(riskUrl())}" target="_blank" rel="noopener"><span class="risk-ico" aria-hidden="true">📍</span><span class="risk-text"><b>${esc(t('riskLinkGuide'))}</b></span><span class="risk-go" aria-hidden="true">›</span></a>` : ''}
+      ${fUrl ? `<a class="btn secondary" id="btn-forecast" href="${esc(fUrl)}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     </div>
     <h2 class="section-title">${esc(t('lessonTitle'))}</h2>
     <ul class="lessons">${lessons}</ul>
@@ -1136,8 +1146,9 @@ async function openChecklist(mode, from = '') {
     <div class="guide-actions">
       ${modeIds().includes(mode) ? `<button class="btn" type="button" id="cl-play">${esc(t('guidePlay'))}</button>` : ''}
       ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
-      ${modeIds().includes(mode) && forecastUrl(mode) ? `<a class="btn blue small" id="cl-forecast" href="${esc(forecastUrl(mode))}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     </div>
+    ${riskUrl() ? `<a class="risk-link risk-guide" id="cl-risk" href="${esc(riskUrl())}" target="_blank" rel="noopener"><span class="risk-ico" aria-hidden="true">📍</span><span class="risk-text"><b>${esc(t('riskLinkGuide'))}</b></span><span class="risk-go" aria-hidden="true">›</span></a>` : ''}
+    ${modeIds().includes(mode) && forecastUrl(mode) ? `<a class="btn secondary small" id="cl-forecast" href="${esc(forecastUrl(mode))}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
     <div id="cl-links"></div>
     ${tools.length ? `<h3>${esc(t('guideNext'))}</h3>
     <div class="btn-row guide-next">${tools.map((x) => `<button class="btn secondary small" type="button" data-tool="${x}">${TOOLS[x]} ${esc(toolName(x))}</button>`).join('')}</div>` : ''}
@@ -1299,6 +1310,7 @@ function openHelp() {
     <h2 id="sheet-title">${esc(t('helpTitle'))}</h2>
     <ul class="help-list">${help}</ul>
     <p class="note">${esc(t('helpNote'))}</p>
+    ${riskUrl() ? `<a class="btn blue" id="help-risk" href="${esc(riskUrl())}" target="_blank" rel="noopener">📍 ${esc(t('riskLink'))}</a>` : ''}
     ${links.map(([id, u]) => `<a class="btn blue" href="${esc(u)}" target="_blank" rel="noopener" data-forecast="${esc(id)}">${esc(tm('forecastIcon', id))} ${esc(tm('forecastLong', id))}</a>`).join('')}
     <button class="btn secondary small" type="button" id="help-close">${esc(t('close'))}</button>`);
   $('#help-close').addEventListener('click', () => closeSheet());

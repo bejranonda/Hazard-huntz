@@ -1,5 +1,7 @@
 # 08. Open data for "around my home": what the app could read, and how
 
+> **Superseded for building (1 Nov 2026).** "What is happening around my home" is the owner's sister app ภัยรอบบ้าน (Thai Risk, https://risk.autobahn.bot), which already reads most of these sources; this app links it and supplies its advice ([ROADMAP N30](ROADMAP.md#n30-fit-with-the-family-v1140), [GUIDELINES rule 100](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). What follows stays as a research record.
+
 > Researched on 21 Oct 2026 (Bangkok) for the owner's questions "Can we display the status of PM2.5 in our app by using the GPS coordinates of user?", "ถ้าจะให้ app นี้ เป็น app ที่คนเปิดมาดูบ่อย ควรเป็นยังไง" (with the risks: ร้อนจัด แผ่นดินไหว ฝุ่น น้ำ มลภาวะ ภัยธรรมชาติ), "if you know the coordinate from user, we can tell the risk in any dimension?" and "Please learn flood2026-research how to read the current open API around the world, and research for searching our own needs." Nothing here is built yet: it is the evidence for the two features proposed in [ROADMAP N28](ROADMAP.md#n28-home-today-and-home-risk-proposed).
 
 How it was done ([APPROACH §35](APPROACH_AND_METHOD.md#35-open-data-learn-from-the-sister-project-then-test-every-source-live-research-21-oct-2026)):

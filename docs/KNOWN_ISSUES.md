@@ -92,11 +92,15 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 92 | [The tank's soak time: overnight or 3 hours](#92-the-tanks-soak-time-overnight-or-3-hours) | By design (v1.13.0); Owner: the reviewer picks | Low |
 | 93 | [Cloudflare's bot detection sets a cookie](#93-cloudflares-bot-detection-sets-a-cookie) | Owner (a Cloudflare setting) | **Medium (the privacy promise)** |
 | 94 | [Leftovers of visitor audit 4](#94-leftovers-of-visitor-audit-4) | Open (AI-ready, one needs a source) | Low |
-| 95 | [Live data for "around my home" isn't read yet](#95-live-data-for-around-my-home-isnt-read-yet) | Not built (Owner: yes or no, two keys, a licence, one decision) | — |
+| 95 | [Live data for "around my home" isn't read yet](#95-live-data-for-around-my-home-isnt-read-yet) | By design since v1.14.0: it is ภัยรอบบ้าน's | — |
 | 96 | [The PDPA and the traffic-data rule apply once a server keeps anything about a person](#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person) | Owner (a Thai lawyer, before any per-person data) | **High if ignored** (fines of 1–5 M baht a breach) |
 | 97 | [Web Push can't reach readers inside LINE or Facebook](#97-web-push-cant-reach-readers-inside-line-or-facebook) | Platform limit | Medium (decides whether push is worth building) |
+| 98 | [The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name](#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name) | Owner (the words) | Low |
+| 99 | [The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) | Owner (a Thai read; DDPM's own page) | **Medium (ภัยรอบบ้าน shows them)** |
+| 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (a Thai read) | Medium |
+| 101 | [The family's words and colours differ](#101-the-familys-words-and-colours-differ) | Owner (one decision) | Low |
 
-Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
+Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
 ---
 
@@ -215,7 +219,7 @@ If `config.json → forecastStatusUrl` is set, the start screen fetches it from 
 - send `Access-Control-Allow-Origin: *` (or this site's origin)
 - answer within **1.5 s** with `{"rainWarning": true|false}`
 
-Otherwise the manual `rainWarningActive` switch is used, until its end date `rainWarningUntil`. Nothing breaks, but the automation silently does nothing. When it does answer, its answer beats the manual switch both ways (`recommend()` in `modes.js`).
+Otherwise the season decides (`modes[].months`). Nothing breaks, but the automation silently does nothing. The manual `rainWarningActive` switch it used to fall back on was removed in v1.14.0: what is happening now is ภัยรอบบ้าน's ([F164](#in-v1140-2-nov-2026)). Whether to keep this hook at all is the owner's call; ภัยรอบบ้าน makes it unnecessary for the start screen's choice.
 
 ---
 
@@ -264,7 +268,7 @@ See [02-game-design.md](02-game-design.md#version-2-combined-run-structured-not-
 
 ### 95. Live data for "around my home" isn't read yet
 
-**Status:** Not built (researched 21 Oct 2026) · **Owner:** a yes or no, two API keys, a licence and one decision
+**Status:** By design since v1.14.0 (1 Nov 2026): live data is the sister app ภัยรอบบ้าน's (Thai Risk, https://risk.autobahn.bot), which this app links from the start screen, every guide and the hazard pages ([GUIDELINES rule 100](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). Nothing below is to be built here; it stays as the record of what was found.
 
 The app shows no live situation: dust today, heat today and the fridge ask the reader for the colour, the level or the hours, and the alert card is set by hand. The owner asked whether the app could show PM2.5 from the user's position and tell "the situation around my home" for every hazard. The research ([docs/08-open-data.md](08-open-data.md), [ROADMAP N28](ROADMAP.md#n28-home-today-and-home-risk-proposed)) found the data published and machine-readable, but not yet usable as the app stands:
 
@@ -289,6 +293,50 @@ Today the app keeps nothing about anyone: what people answer stays in `localStor
 - **The 2021 notification on computer traffic data** (Royal Gazette เล่ม 138 ตอนพิเศษ 188 ง) asks service providers, listing "Web Services" and health and lifestyle digital services, to keep traffic data at least 90 days and to verify every user's identity. Whether a free, anonymous preparedness site is in scope is **[unverified]**; it pulls against "no logs".
 - **The GDPR** may apply too if the owner is established in the EU.
 - **What would close it:** a Thai lawyer reads the plan before any push, account or LINE Official Account is built; then a privacy notice in the app (th and en), the retention period in code, consent on a tap, and a way to delete. Until then a server holds no per-person data.
+
+### 98. The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name
+
+**Status:** Owner (the words) · **Severity:** Low
+
+The brief for v1.14.0 asked the owner for the words of the line that replaced "ฝนจะมาอีกระลอก มาเตรียมบ้านกัน!". Rather than leave the false line live until an answer, v1.14.0 ships drafts that claim nothing about this week (F164), for the owner to change in `strings.json`:
+
+- `heroPrepare` "ถ้าน้ำมา บ้านเราพร้อมไหม? มาเตรียมกัน!" / "If the water comes, is the house ready? Let's get it ready!"
+- `heroReturn` "หลังน้ำลด อย่าเพิ่งวางใจ ตรวจบ้านก่อนเข้าอยู่" / "After a flood, stay sharp: check the house before moving back."
+- `heroDust` "วันฝุ่นเยอะ บ้านเรากันฝุ่นได้ไหม? มาเช็กกัน!" / "On dusty days, can the house keep the dust out? Let's check!"
+- `riskLink` "ดูภัยที่ตำบลของคุณตอนนี้" (the brief's own words) / "See the risks at your subdistrict now"; `riskLinkSub` "ฝน น้ำ ฝุ่น ร้อน ทุกตำบล ที่เว็บ ภัยรอบบ้าน"; `riskLinkGuide` "ตอนนี้ที่ตำบลของคุณเป็นอย่างไร? ดูที่ ภัยรอบบ้าน"
+- `forecastLong` "ระดับน้ำในแม่น้ำ คลอง (FloodWatch)" / "River and canal levels (FloodWatch)"
+
+None says "the rainy season" for the whole country. A unit test fails if a gecko line says "อีกระลอก", "มาอีกแล้ว", "น้ำลดแล้ว", "is coming", "is back" or "water's gone" again.
+
+- **What would close it:** the owner's words, or a "fine as they are" ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
+
+### 99. The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID
+
+**Status:** Owner (a Thai read; DDPM's own page) · **Severity:** Medium: ภัยรอบบ้าน shows them beside its flood level
+
+`kit.json → flood` (three levels and eight lines for while the water rises, v1.14.0) quotes DDPM and the Royal Irrigation Department through news reports (InfoQuest, The Standard, Krungthep Turakij, Thansettakij, MGR Online, 2022–2026): disaster.go.th answered 403 and prd.go.th 404 to the research host on 1–2 Nov 2026, and rid.go.th an empty script page. No province's own flood manual was found online. Two lines are ⚠️ `partial`: the emergency bag at ติดตามไว้ (DDPM gives it with no level; putting it there is ours) and "don't walk or drive through fast-flowing floodwater" (DDPM's walking line names a depth above the knee, left out as a wading depth, so the app's line is stricter).
+
+- **DDPM's levels are not ภัยรอบบ้าน's.** DDPM's 1–5 warning levels (InfoQuest, 24 Sep 2024; The Standard, 21 Jun 2025) are warnings DDPM issues; ภัยรอบบ้าน's level is computed from data. The lines borrow DDPM's actions and never its orders: เสี่ยงสูง says to leave "when officials tell you to".
+- **A colour is not the same everywhere:** DWR's flags have three colours, Rangsit's four, DDPM's levels five. No line says "red flag = evacuate".
+- **What would close it:** a Thai reader (ideally from DDPM) reads the eleven lines against DDPM's own page; then `verify` can stay or change ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+
+### 100. The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours
+
+**Status:** Owner (a Thai read) · **Severity:** Medium
+
+`kit.json → uv` and `/uv` (v1.14.0) follow WHO's Global Solar UV Index guide (2002, its Figure 2 checked against the page image) and its 2022 Q&A and fact sheet. WHO has no Thai version, so the Thai lines are the app's translation. The TMD's own UV page shows a clear-sky forecast with WHO's colour bands and no advice per level; the TMD's, the MOPH's and the DOH's advice reached the research only through news reports (PPTV 2024, MGR Online 2023 and 2015). The 3–7 lines and the 0–2 line are ⚠️ `partial` (WHO alone ties them to a level); the 8+ lines are `verified` (WHO and the TMD say the same). Left out: hours (WHO "midday"; the TMD, DOH and MOPH 09.00–15.00; a dermatology institute 10.00–15.00), SPF numbers (15+, 30, 50, 50–60+), burn times (WHO advises against them), and WHO's annexed "children below one year must never stay in direct sun" (an example adapted from other countries).
+
+- **WHO gives one message from 8 up.** ภัยรอบบ้าน's split of 8–10 (เตรียมตัว) and 11+ (เสี่ยงสูง) is its own; `veryhigh` and `extreme` share WHO's lines, and `extreme` adds the MOPH's "ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด", said in an 11+ warning.
+- **What would close it:** a Thai read of the translation (and ideally the DOH's or the Institute of Dermatology's), and the TMD's own page with advice per level if one is found ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+
+### 101. The family's words and colours differ
+
+**Status:** Owner (one decision) · **Severity:** Low
+
+- **UV at 11+:** this app says "สูงจัด" (the MOPH's word, through a news report); ภัยรอบบ้าน says "สูงที่สุด". Which word the TMD itself uses for each of the five bands is **[unverified]** (its page shows colours only).
+- **Colours:** the two apps draw levels in different palettes; one palette for the family is the owner's open decision, so v1.14.0 changes no colour (the ภัยรอบบ้าน link uses the hub's existing teal).
+- **Levels:** ภัยรอบบ้าน's four words (ยังไม่น่าห่วง · ติดตามไว้ · เตรียมตัว · เสี่ยงสูง) label `kit.json → flood.levels` as they are; this app doesn't rename them, nor the agencies' band words.
+- **What would close it:** the owner picks the words and a palette for the family ([docs/10](10-family.md)).
 
 ---
 
@@ -525,9 +573,9 @@ The home check's answers, ticks and score (`brm:kit`) and the plan card's text (
 
 `config.featuredTopic` puts one topic on the start screen. Nothing switches it on from the news; the owner sets it (now `"health"`, for the disease warnings in September–October 2026).
 
-**It ends by itself (v1.6.0).** `config.featuredTopicUntil` is its last day (now `2026-11-15`, Bangkok date, that day included); from the next day the topic is off without anyone touching it. The rain warning works the same way with `rainWarningUntil` (now `2026-11-30`). Before v1.6.0 neither had an end, so a forgotten switch would have kept "ฝนจะมาอีกระลอก" and the diseases-after-floods topic on the start screen into the dust season ([F32](#in-v160-18-oct-2026)). Set an end date every time you turn a switch on; the build warns about a switch with no end date or one whose date has passed, and its `start` line shows what today's visitors see.
+**It ends by itself (v1.6.0).** `config.featuredTopicUntil` is its last day (now `2026-11-15`, Bangkok date, that day included); from the next day the topic is off without anyone touching it. The rain warning worked the same way with `rainWarningUntil` until v1.14.0 removed it ([F164](#in-v1140-2-nov-2026)). Before v1.6.0 neither had an end, so a forgotten switch would have kept "ฝนจะมาอีกระลอก" and the diseases-after-floods topic on the start screen into the dust season ([F32](#in-v160-18-oct-2026)). Set an end date every time you turn a switch on; the build warns about a switch with no end date or one whose date has passed, and its `start` line shows what today's visitors see.
 
-When no topic is in the news, the start screen features the topic of the recommended mode (dust → 😷 `air` in December–March, fire → 🔥 `fire` in April). A `?mode=` link brings that mode's own topic first. In the flood months nothing is featured unless the owner sets a topic. Leaving a topic on for months makes it wallpaper, so the owner still decides when to end it early or extend it.
+When no topic is in the news, the start screen features the topic of the recommended mode (dust → 😷 `air` in December–March, fire → 🔥 `fire` in April). A `?mode=` link brings that mode's own topic first. In the flood months (ก่อนน้ำมา, May–November) nothing is featured unless the owner sets a topic. Leaving a topic on for months makes it wallpaper, so the owner still decides when to end it early or extend it.
 
 The alert card of v1.9.0 (`config.json → alert`) is the third hand-set switch and follows the same rule ([#64](#64-the-alert-must-be-cleared-or-renewed-by-hand)).
 
@@ -600,7 +648,7 @@ The 6 ✅ items rest on Thai agencies, some cross-checked with Ready.gov: food f
 
 `config.modes[].months` (dust December–March, fire April, flood May–November; the power cut, v1.7.0, has none) was chosen by us from the general pattern (Bangkok's dust peaks December–February and the North's February–April; dry, windy months raise fire risk). No Thai agency publishes a month-by-month hazard calendar that we could find **[unverified]**. The North's dust season runs later than Bangkok's, so a northern player in April sees fire recommended, not dust. The owner can change the months, and `rainWarningActive` still overrides them until `rainWarningUntil` (now 30 Nov 2026).
 
-The south floods later, in the November–January monsoon. The model has one calendar for the whole country, so it doesn't cover that: once the rain switch ends on 30 Nov, the start screen recommends dust from December. Campaigns for the south use `/?mode=prepare`, which opens the game on flood preparation whatever the date, or `/flood`, the flood lessons with play buttons. Extending `rainWarningUntil` instead would change the start screen for the whole country.
+The south floods later, in the November–January monsoon. The model has one calendar for the whole country, so it doesn't cover December and January there: from December the start screen recommends dust. Since v1.14.0 that matters less: the calendar only picks which game card is big, ก่อนน้ำมา counts its own months (May–November, so หลังน้ำลด is never recommended to the whole country), and whether water is coming where the reader lives is ภัยรอบบ้าน's, which every guide and the start screen link. Campaigns for the south use `/?mode=prepare` or `/flood`.
 
 **The power cut is year-round, never the default.** Its `months` is empty, so `seasonalMode()` never picks it, and the start screen never recommends it by itself; it is always one of the small cards. People reach it through its card, `/?mode=stock`, the `/ready` page and posts. Power cuts and storms don't follow a calendar we could source, so a post after a planned cut or a storm is the way to feature it ([04-launch-kit](04-launch-kit.md#power-cuts-and-home-stock-v170-any-time-of-year)). For a week, `featuredTopic: "food"` with an end date puts the 💧 water-and-food topic on the start screen (6 of its 10 lessons are power-cut lessons since v1.7.0).
 
@@ -1037,6 +1085,19 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.14.0 (2 Nov 2026)
+
+Found while fitting this app to the owner's other two apps (ภัยรอบบ้าน and FloodWatch), from the owner's brief of 1 Nov 2026 and checked against both apps' live pages ([docs/10](10-family.md), [APPROACH §37](APPROACH_AND_METHOD.md#37-fitting-the-family-check-the-brief-then-source-what-the-sister-app-needs-v1140)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F164 | **The start screen stated a live condition it couldn't source.** The gecko said "ฝนจะมาอีกระลอก มาเตรียมบ้านกัน!" from the hand-set `rainWarningActive` (on until 30 Nov 2026), "น้ำลดแล้ว" in the after-the-flood mode and "ฝุ่นมาอีกแล้ว" in the dust mode, for the whole country; in November the south's east coast is in its wettest months while most of the country dries | The switch is removed (the build fails if it returns); the three lines claim nothing about this week; the start screen links ภัยรอบบ้าน, which says what is happening at the reader's subdistrict; a unit test reads every gecko line ([GUIDELINES rule 100](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)) |
+| F165 | **The season recommended "after the flood" to the whole country** from June to November whenever the switch was off: `seasonalMode()` skipped the flood modes' own months | Each mode's months decide: ก่อนน้ำมา May–November (its months were already in `config.json`), dust December–March, fire April; หลังน้ำลด opens only from a link |
+| F166 | **FloodWatch was the only route to "now"** (the start screen's, the guides', the result's and the help sheet's water-level link), while the owner has said it may close | ภัยรอบบ้าน first, in the reader's language, everywhere; FloodWatch after it as "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)", the rivers' link ([docs/10](10-family.md)) |
+| F167 | **An expired alert stayed in `config.json`** (landslide, until 25 Oct 2026; hidden by its date, warned by the build) | Cleared; since v1.14.0 an alert also needs `source`, the https link of the agency notice it rests on (the build checks) |
+| F168 | **`/uv` answered 404**, and UV was the one hazard on ภัยรอบบ้าน with neither a line nor a guide | `kit.json → uv` (WHO's bands and messages, the TMD's and MOPH's words) and `/uv` + `/en/uv`, in the sitemap and `llms.txt` |
+| F169 | **`/flood` had nothing for while the water is rising**; ภัยรอบบ้าน's flood row at เสี่ยงสูง linked a page about before and after | `/flood#during` (eight lines) and `#levels` (what to do first at ติดตามไว้, เตรียมตัว, เสี่ยงสูง), from `kit.json → flood` |
 
 ### In v1.13.1 (21 Oct 2026)
 

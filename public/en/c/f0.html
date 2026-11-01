@@ -61,7 +61,7 @@
     <header class="hero">
       <h1 id="logo-title" class="logo"><span class="logo-a" data-i18n="logoA">Baan </span><span class="logo-b" data-i18n="logoB">Rod Mai?</span></h1>
       <p class="tagline" data-i18n="tagline">Get your home ready for any disaster: what to do, what to keep, and a 60-second game</p>
-      <div class="alert-card" id="alert-card"><button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">⛰️</span><span>Until 25 Oct: Flash floods and landslides · what to do</span><span aria-hidden="true">›</span></button></div>
+      <div class="alert-card" id="alert-card" hidden></div>
       <nav class="hub" id="hub" aria-label="Get your home ready" data-i18n-aria="hubLabel">
         <button class="hub-btn hub-main" type="button" data-open="guide"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b data-i18n="hubGuide">What to do in a disaster</b><small data-i18n="hubGuideSub">Floods, earthquakes, storms, fire and more</small></span><span class="hub-go" aria-hidden="true">›</span></button>
         <button class="hub-btn" type="button" data-open="kit"><span class="hub-ico" aria-hidden="true">🎒</span><span class="hub-text"><b data-i18n="hubKit">Check your supplies</b><small id="kit-chip" data-i18n="hubKitSub">Sized for your household</small></span></button>
@@ -70,10 +70,11 @@
         <button class="hub-btn" type="button" data-open="air" data-slot="2"><span class="hub-ico" aria-hidden="true">🌫️</span><span class="hub-text"><b data-i18n="hubAir">Dust today</b><small data-i18n="hubAirSub">Tap the colour, see what to do</small></span></button>
         <button class="hub-btn hub-all" type="button" data-open="tools"><span class="hub-ico" aria-hidden="true">🧰</span><span class="hub-text"><b data-i18n="hubTools">All tools</b><small data-i18n="hubToolsSub">and government sites: warnings, river levels</small></span><span class="hub-go" aria-hidden="true">›</span></button>
       </nav>
+      <a class="risk-link" id="risk-link" href="https://risk.autobahn.bot/en" target="_blank" rel="noopener"><span class="risk-ico" aria-hidden="true">📍</span><span class="risk-text"><b data-i18n="riskLink">See the risks at your subdistrict now</b><small data-i18n="riskLinkSub">Rain, floods, dust and heat for every subdistrict, on Thai Risk</small></span><span class="risk-go" aria-hidden="true">›</span></a>
       <p class="trust-line" data-i18n="trustLine">🔒 Free, no sign-up, no personal data asked</p>
       <p class="game-label" data-i18n="gameLabel">🎮 Or learn it in a 60-second game</p>
       <div class="hero-mascot">
-        <div class="bubble bubble-hero" id="hero-bubble" data-i18n="heroPrepare">More rain is coming. Let's get the house ready!</div>
+        <div class="bubble bubble-hero" id="hero-bubble" data-i18n="heroPrepare">If the water comes, is the house ready? Let's get it ready!</div>
         <div class="gecko-host gecko-big" id="hero-gecko"></div>
       </div>
     </header>
@@ -138,7 +139,7 @@
       <p data-i18n="disclaimer">For learning only. If unsure, ask a technician or the authorities.</p>
       <a class="link" href="/en/learn" data-i18n="learnLink">Read every safety lesson</a><br>
       <button class="link" type="button" data-open="about" data-i18n="aboutLink">Sources · Privacy</button>
-      <div class="app-version" id="app-version">v1.13.1</div>
+      <div class="app-version" id="app-version">v1.14.0</div>
     </footer>
   </section>
 

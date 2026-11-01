@@ -8,8 +8,9 @@ The game is a static site in `public/`, plus one tiny Pages Function (`functions
 |---|---|---|
 | `[DOMAIN]` | `public/content/config.json → siteUrl` (**set to `https://baanrodmai.autobahn.bot`**), or the `SITE_URL` environment variable when the project is *not* managed by `wrangler.toml` | e.g. `https://baanrodmai.pages.dev` or your custom domain. Used in share links, link-preview tags, the SEO files and the images. |
 | `[FORECAST_APP_URL]` | `public/content/config.json → forecastAppUrl` (**set to `https://flood.autobahn.bot/`**, BKK FloodWatch) | Your water-level app. The "เช็กระดับน้ำล่วงหน้า" buttons stay hidden until this is a real `https://` link. |
+| (v1.14.0) | `public/content/config.json → riskAppUrl` (**`https://risk.autobahn.bot/`**, ภัยรอบบ้าน) | The sister app that says what is happening at the reader's subdistrict; linked from the start screen, every guide and the hazard pages (`/en` added for English). Must be https and end in `/` (the build checks). See [10-family.md](10-family.md). |
 
-Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends the right mode automatically; if the call fails or times out, `rainWarningActive` is used until its end date `rainWarningUntil`.
+Optional: `forecastStatusUrl` can point at a JSON endpoint on your forecast app returning `{"rainWarning": true}`. The start screen then recommends Prepare while it says `true`; if the call fails or times out, the season decides. The hand-set switch `rainWarningActive` was removed in v1.14.0; `riskAppUrl` links ภัยรอบบ้าน, the sister app for what is happening now.
 
 ## The live setup
 
@@ -91,8 +92,8 @@ The calculators (v1.10.0):
 From now on:
 
 - **Editing content** (fixing a tip, switching the default mode): edit the JSON in `public/content/` on GitHub and commit. Cloudflare rebuilds and publishes in about a minute.
-- **Putting a guide on the start screen (v1.9.0):** set `"alert": { "guide": "<id>", "until": "YYYY-MM-DD" }` (see above), and clear it after.
-- **Switching the recommended mode:** set `"rainWarningActive": true` with an end date, `"rainWarningUntil": "YYYY-MM-DD"` (a Bangkok date, that day included), before a rain wave. It turns itself off after that day; set it to `false` earlier if the water recedes sooner. The same goes for `featuredTopic` and `featuredTopicUntil`. The build's `start` line shows what the start screen recommends today, and it warns about a switch with no end date.
+- **Putting a guide on the start screen (v1.9.0):** set `"alert": { "guide": "<id>", "until": "YYYY-MM-DD", "source": "https://…" }` (see above; `source` is the agency notice, required since v1.14.0), and clear it after.
+- **The recommended mode** follows `modes[].months` by itself (v1.14.0: no rain switch). `featuredTopic` still takes an end date, `featuredTopicUntil`. The build's `start` line shows what the start screen recommends today, and it warns about a date that has passed.
 - **Rollback:** Pages → Deployments → pick an earlier one → *Rollback*.
 
 ## Option B: Wrangler direct upload (from your computer)

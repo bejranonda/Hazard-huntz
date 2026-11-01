@@ -136,6 +136,15 @@ export function forecastUrl(mode) {
   return /^https?:\/\/[^[\]]+$/.test(u) ? u : null;
 }
 
+// ภัยรอบบ้าน (Thai Risk, config.riskAppUrl): what is happening now at the
+// reader's subdistrict, in the reader's language (its English is at /en).
+// Nothing about the reader goes with the link (v1.14.0).
+export function riskUrl() {
+  const u = C.config.riskAppUrl || '';
+  if (!/^https:\/\/[^\s/]+\/$/.test(u)) return null;
+  return getLang() === 'en' ? `${u}en` : u;
+}
+
 // i18n for static markup: <el data-i18n="key"> and data-i18n-aria.
 export function applyStaticStrings(root = document) {
   for (const el of root.querySelectorAll('[data-i18n]')) {

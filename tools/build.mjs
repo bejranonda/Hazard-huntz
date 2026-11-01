@@ -141,7 +141,11 @@ const realDay = (s) => {
   return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
 };
 const TODAY = new Date(Date.now() + 7 * 3600 * 1000).toISOString().slice(0, 10); // Bangkok
-for (const [flag, until] of [['rainWarningActive', 'rainWarningUntil'], ['featuredTopic', 'featuredTopicUntil']]) {
+// v1.14.0: the hand-set rain switch is gone (a switch can't know whether rain is
+// coming where the reader lives; that is ภัยรอบบ้าน's job). A config that still
+// carries it fails, so an old copy can't bring the claim back.
+for (const k of ['rainWarningActive', 'rainWarningUntil']) if (k in config) err(`config.json: ${k} was removed in v1.14.0 (the start screen states no live conditions; link riskAppUrl instead)`);
+for (const [flag, until] of [['featuredTopic', 'featuredTopicUntil']]) {
   const u = config[until];
   if (u != null && !realDay(u)) err(`config.json: ${until} must be a real date YYYY-MM-DD (found ${JSON.stringify(u)})`);
   else if (config[flag] && u == null) warn(`config.json: ${flag} is on with no ${until}, so it stays on until someone turns it off`);
@@ -187,7 +191,7 @@ const carouselPartial = [];
 // Since v1.12.0 the list is config.json → tools (id, icon, group); /tools lists them all.
 const TOOL_IDS = (config.tools || []).map((x) => x.id);
 const KNOWN_TOOLS = ['kit', 'plan', 'fridge', 'air', 'mask', 'hot', 'water', 'tank', 'info', 'safe', 'bag'];
-const RESERVED = new Set(['c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts', 'tools', ...KNOWN_TOOLS]);
+const RESERVED = new Set(['uv', 'c', 'checklist', 'en', 'learn', 'api', 'js', 'css', 'content', 'art', 'fonts', 'icons', 'og', 'share', 'index', 'sw', 'robots', 'sitemap', 'llms', 'manifest', 'posts', 'tools', ...KNOWN_TOOLS]);
 {
   const seen = new Set();
   for (const x of config.tools || []) {
@@ -302,6 +306,8 @@ if (ALERT.guide != null) {
   if (!GUIDE_IDS.includes(ALERT.guide)) err(`config.json: alert.guide "${ALERT.guide}" is not a guide`);
   if (!realDay(ALERT.until)) err('config.json: alert.until must be a real date YYYY-MM-DD (an alert always ends by itself)');
   else if (ALERT.until < TODAY) warn(`config.json: alert.until (${ALERT.until}) has passed, so the alert is off; clear it or give a new end date`);
+  // v1.14.0: a hand-set alert says something is happening, so it names the agency's notice it rests on.
+  if (!/^https:\/\/\S+$/.test(ALERT.source || '')) err('config.json: alert.source must be the https link of the agency notice the alert rests on');
 }
 // Thai words that never break across lines (util.js → keepWords). Short, Thai
 // only: a long glued run could stop a narrow line from breaking at all.
@@ -344,6 +350,9 @@ for (const k of keysTh) if (!keysEn.has(k)) warn(`strings.json: "${k}" has no En
 
 const isPlaceholder = (u) => !u || /\[[A-Z_]+\]/.test(u);
 if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is still a placeholder (the forecast button stays hidden)');
+// ภัยรอบบ้าน (Thai Risk): "what is happening now" at the reader's subdistrict (v1.14.0). Its English is at /en.
+if (!/^https:\/\/[^\s/]+\/$/.test(config.riskAppUrl || '')) err('config.json: riskAppUrl must be an https address ending in / (ภัยรอบบ้าน, the sister app for what is happening now)');
+const riskUrl = (lang) => (lang === 'en' ? `${config.riskAppUrl}en` : config.riskAppUrl);
 
 // The home check: every item and plan field is sourced; every number in a
 // quantity appears in one of its sources' title or note, so a count can't be
@@ -673,6 +682,48 @@ if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is s
     }
     if ([...(BG.every || []), ...Object.values(BG.extra || {}).flat()].some((x) => /เทียน|candle/i.test(`${x.label.th} ${x.label.en}`))) err('kit.json bag: no candles (torches, not candles)');
   }
+  // v1.14.0: advice the sister app ภัยรอบบ้าน (Thai Risk) copies word for word,
+  // by its own levels: flood (ติดตามไว้ · เตรียมตัว · เสี่ยงสูง) and UV (by the UV index).
+  const FL = kitFile.flood;
+  if (!FL) err('kit.json: flood is missing (ภัยรอบบ้าน reads its lines)');
+  else {
+    const want = ['watch', 'warn', 'danger'];
+    if (JSON.stringify((FL.levels || []).map((l) => l.id)) !== JSON.stringify(want)) err(`kit.json flood.levels: must be ${want.join(', ')}, in that order (ภัยรอบบ้าน's levels above "nothing notable yet")`);
+    for (const l of FL.levels || []) {
+      const where = `kit.json flood level ${l.id}`;
+      text(l.label, where);
+      if (!(l.all || []).length) err(`${where}: needs at least one line`);
+      (l.all || []).forEach((x, j) => line(x, `${where} line ${j}`));
+    }
+    if (!(FL.during || []).length) err('kit.json flood.during: needs lines (the /flood#during section)');
+    (FL.during || []).forEach((x, i) => line(x, `kit.json flood.during[${i}]`));
+    // Every place in Thailand, whatever set the level: no river, canal or city named ("น้ำอาจมาถึง").
+    for (const x of [...(FL.levels || []).flatMap((l) => l.all || []), ...(FL.during || [])]) {
+      if (/แม่น้ำ|ลำคลอง|\briver\b|\bcanal\b|กรุงเทพ|Bangkok|หาดใหญ่|Hat Yai|เชียงใหม่|Chiang Mai/i.test(`${x.th} ${x.en}`)) err(`kit.json flood: "${x.th}" names a river, a canal or a city; a line must fit every place`);
+    }
+    for (const k of ['title', 'intro', 'levelsTitle']) text(FL[k], `kit.json flood.${k}`);
+  }
+  const UV = kitFile.uv;
+  if (!UV) err('kit.json: uv is missing (ภัยรอบบ้าน reads its lines)');
+  else {
+    let prevHi = -1;
+    for (const [i, l] of (UV.levels || []).entries()) {
+      const where = `kit.json uv level ${l.id}`;
+      text(l.label, where);
+      if (!Number.isInteger(l.lo) || (l.hi != null && !Number.isInteger(l.hi))) err(`${where}: lo and hi are whole UV index numbers`);
+      if (l.lo <= prevHi) err(`${where}: the bands must rise without a gap`);
+      if (prevHi >= 0 && l.lo !== prevHi + 1) err(`${where}: starts at ${l.lo}, not right after ${prevHi}`);
+      if ((i === UV.levels.length - 1) !== (l.hi == null)) err(`${where}: only the top level is open (hi: null)`);
+      prevHi = l.hi ?? Infinity;
+      if (!(l.all || []).length) err(`${where}: needs at least one line`);
+      (l.all || []).forEach((x, j) => line(x, `${where} line ${j}`));
+      const ss = said([...new Set((l.all || []).flatMap((x) => x.sources || []))]);
+      for (const v of [l.lo, l.hi].filter((x) => x != null && x > 0)) if (!new RegExp(`(^|[^0-9])${v}([^0-9]|$)`).test(ss)) err(`${where}: ${v} is not in the sources of its lines`);
+    }
+    for (const k of ['title', 'intro', 'h1', 'desc']) text(UV[k], `kit.json uv.${k}`);
+    (UV.notes || []).forEach((x, i) => line(x, `kit.json uv.notes[${i}]`));
+    if (UV.link && (!/^https:\/\//.test(UV.link.url || '') || !UV.link.label?.th || !UV.link.label?.en)) err('kit.json uv.link: an https url and a label in both languages');
+  }
 }
 
 // Stop here on content errors: the pages below assume the content is complete.
@@ -799,6 +850,9 @@ indexHtml = indexHtml.replace(ALERT_RE, alertHtml(strings.th));
 // page's does: text edited there can't go stale in index.html (rule 59).
 indexHtml = indexHtml.replace(/(<([a-z0-9]+)\b[^>]*\bdata-i18n="(\w+)"[^>]*>)([^<]*)(<\/\2>)/g,
   (m, open, tag, key, text, close) => (typeof strings.th[key] === 'string' && !/\{\w+\}/.test(strings.th[key]) ? `${open}${esc(strings.th[key])}${close}` : m));
+// ภัยรอบบ้าน's address comes from config.json → riskAppUrl (v1.14.0).
+if (!/id="risk-link" href="[^"]*"/.test(indexHtml)) err('index.html: the #risk-link element (ภัยรอบบ้าน) is missing');
+indexHtml = indexHtml.replace(/id="risk-link" href="[^"]*"/, `id="risk-link" href="${riskUrl('th')}"`);
 // The Thai <title> is generated too, so it names every hazard the game covers.
 indexHtml = indexHtml.replace(/<title>[^<]*<\/title>/, `<title>${esc(og.defaultTitle)}</title>`);
 indexHtml = indexHtml.replace(OG_RE, ogBlock({
@@ -821,6 +875,7 @@ const localize = (html) => html
     (tag, _, key) => (typeof enText[key] === 'string' ? tag.replace(/aria-label="[^"]*"/, `aria-label="${esc(enText[key])}"`) : tag))
   .replace(ALERT_RE, alertHtml(enText))
   .replace(/href="\/learn"/g, `href="${EN}/learn"`)
+  .replace(`id="risk-link" href="${config.riskAppUrl}"`, `id="risk-link" href="${riskUrl('en')}"`)
   .replace('<link rel="manifest" href="/manifest.webmanifest">', `<link rel="manifest" href="${EN}/manifest.webmanifest">`)
   .replace(/(<button class="chip" id="btn-lang"[^>]*>)EN(<\/button>)/, '$1ไทย$2');
 const enIndexLd = JSON.parse(JSON.stringify(indexLd));
@@ -908,6 +963,37 @@ const srcLinks = (ids, lang = 'th') => (ids || []).filter((id) => sources[id])
     const name = lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag;
     return `<a href="${esc(sources[id].url)}">${esc(name)}${sources[id].date ? ` (${esc(sources[id].date.slice(0, 4))})` : ''}</a>`;
   }).join(' · ');
+// v1.14.0: the family's shared lines (kit.json → flood, uv), each with its sources.
+// Grouped by agency, each year its own link ("ปภ.: 2026, 2024"), so a line with three
+// DDPM reports doesn't read the agency's full name three times (visitor walk, v1.14.0).
+const kitSrcSpan = (xs, lang) => {
+  const X = lang === 'en' ? E : S;
+  const partial = xs.some((x) => x.verify !== 'verified');
+  const groups = new Map();
+  for (const id of new Set(xs.flatMap((x) => x.sources || []))) {
+    if (!sources[id]) continue;
+    const ag = sources[id].agency;
+    if (!groups.has(ag)) groups.set(ag, []);
+    groups.get(ag).push(id);
+  }
+  const parts = [...groups].map(([ag, ids]) => `${esc(lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag)}: ${ids.map((id) => `<a href="${esc(sources[id].url)}">${esc(sources[id].date ? sources[id].date.slice(0, 4) : '·')}</a>`).join(', ')}`);
+  return `<span class="src">${esc(X.sources)}: ${parts.join(' · ')}${partial ? ` · <span class="flag">⚠️ ${esc(X.partialNote)}</span>` : ''}</span>`;
+};
+const kitText = (x, lang) => `${esc(L2(x, lang))}${x.verify !== 'verified' ? ' ⚠️' : ''}`;
+// /flood#during: while the water is rising, and what to do first at each of ภัยรอบบ้าน's levels.
+const floodDuring = (lang) => {
+  const F = kitFile.flood;
+  if (!F) return '';
+  return `<h2 id="during">${esc(L2(F.title, lang))}</h2>
+<p>${esc(L2(F.intro, lang))}</p>
+<ol>
+${F.during.map((x) => `<li>${kitText(x, lang)}<br>${kitSrcSpan([x], lang)}</li>`).join('\n')}
+</ol>
+<h3 id="levels">${esc(L2(F.levelsTitle, lang))}</h3>
+<ul>
+${F.levels.map((l) => `<li id="level-${l.id}"><b>${esc(L2(l.label, lang))}</b><br>${l.all.map((x) => kitText(x, lang)).join('<br>')}<br>${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
+</ul>`;
+};
 const lessonHtml = (it) => {
   const right = it.choices.find((c) => c.correct);
   const wet = it.wet ? it.wet.choices.find((c) => c.correct) : null;
@@ -1044,6 +1130,9 @@ const agencyLinks = (lang, h) => {
   return `<p class="check"><b>${esc(X.toolsPageLinks)}:</b> ${xs.map((x) => `<a href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a>`).join(' · ')}</p>`;
 };
 const toolLinks = (lang, h) => h.tools.map((tool) => `<p class="check"><a href="${lang === 'en' ? EN : ''}/?open=${tool}">${esc((lang === 'en' ? E : S)[`tool${capM(tool)}`])}</a></p>`).join('\n');
+// ภัยรอบบ้าน (v1.14.0): what is happening now at the reader's subdistrict, in
+// the page's language; FloodWatch and Air4Thai follow as extra links.
+const riskLine = (lang) => `<p class="check"><a href="${esc(riskUrl(lang))}" rel="noopener">📍 ${esc(strings[lang].riskLinkGuide)}</a></p>`;
 // "Check before you go" (FloodWatch, Air4Thai), once per address.
 const checkLinks = (lang, ids) => {
   const seen = new Set();
@@ -1179,8 +1268,10 @@ ${jumpRow('th', h, lists)}
 ${telRow('th', h.modes[0] || h.guides[0])}
 ${h.modes.length ? `${checklistsTh(lists, 2)}
 ${picture('th')}
+${h.id === 'flood' ? floodDuring('th') : ''}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${playLinks('th', h.modes)}
+${riskLine('th')}
 ${checkLinks('th', h.modes)}
 ${toolLinks('th', h)}
 ${agencyLinks('th', h)}
@@ -1188,6 +1279,7 @@ ${agencyLinks('th', h)}
 ${sectionsTh(h.modes)}` : `${checklistsTh(lists, 2, false)}
 ${picture('th')}
 <p>${esc(S[`hazard${H}Intro`])}</p>
+${riskLine('th')}
 ${toolLinks('th', h)}
 ${agencyLinks('th', h)}
 <p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
@@ -1210,9 +1302,11 @@ ${jumpRow('en', h, lists)}
 ${telRow('en', h.modes[0] || h.guides[0])}
 ${h.modes.length ? `${checklistsEn(lists, 2)}
 ${picture('en')}
+${h.id === 'flood' ? floodDuring('en') : ''}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 ${playLinks('en', h.modes)}
+${riskLine('en')}
 ${checkLinks('en', h.modes)}
 ${toolLinks('en', h)}
 ${agencyLinks('en', h)}
@@ -1221,6 +1315,7 @@ ${sectionsEn(h.modes)}` : `${checklistsEn(lists, 2, false)}
 ${picture('en')}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
+${riskLine('en')}
 ${toolLinks('en', h)}
 ${agencyLinks('en', h)}
 <p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
@@ -1233,6 +1328,44 @@ ${hazardChips('en', h.id)}
   });
   writeSeo(`en/${h.slug}.html`, enHtml);
   if (thaiLeak(enHtml)) warn(`en/${h.slug}.html contains Thai text outside Thai-tagged spans`);
+}
+
+// /uv (v1.14.0): what to do at each UV index level, from WHO's own words, for
+// the sister app ภัยรอบบ้าน, whose UV row links here. A page, not a tool.
+if (kitFile.uv) {
+  const U = kitFile.uv;
+  for (const lang of LANGS) {
+    const X = lang === 'en' ? E : S;
+    const pre = lang === 'en' ? EN : '';
+    const url = `${SITE}${pre}/uv`;
+    const title = L2(U.title, lang);
+    const heat = HAZARDS.heat;
+    const html = seoPage({
+      lang, title, desc: L2(U.desc, lang), url, thPath: '/uv', enPath: `${EN}/uv`,
+      image: `/og/${lang === 'en' ? 'en/' : ''}checklist-heat.png`,
+      ld: { '@context': 'https://schema.org', '@type': 'Article', '@id': `${url}#article`, url, mainEntityOfPage: url, headline: L2(U.h1, lang), name: title, description: L2(U.desc, lang), inLanguage: lang, dateModified: seoUpdated, isPartOf: { '@id': `${SITE}${pre}/#website` }, isAccessibleForFree: true, author: PUBLISHER, publisher: PUBLISHER, citation: [...new Set(U.levels.flatMap((l) => l.all.flatMap((x) => x.sources)))].filter((id) => sources[id]).map((id) => sources[id].url) },
+      main: `<main>
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a> · ${lang === 'en' ? '<a href="/uv" lang="th" hreflang="th">ภาษาไทย</a>' : `<a href="${EN}/uv" lang="en" hreflang="en">English</a>`}</p>
+<h1>${esc(L2(U.h1, lang))}</h1>
+<p>${esc(L2(U.intro, lang))}</p>
+${riskLine(lang)}
+<ul>
+${U.levels.map((l) => `<li id="uv-${l.id}"><b>${esc(L2(l.label, lang))}</b><br>${l.all.map((x) => kitText(x, lang)).join('<br>')}<br>${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
+</ul>
+${(U.notes || []).length ? `<ul>\n${U.notes.map((x) => `<li>${kitText(x, lang)}<br>${kitSrcSpan([x], lang)}</li>`).join('\n')}\n</ul>` : ''}
+${U.link ? `<p class="check"><a href="${esc(U.link.url)}" rel="noopener">${esc(U.link.icon || '')} ${esc(L2(U.link.label, lang))}</a></p>` : ''}
+${heat ? `<p class="check"><a href="${pre}/${heat.slug}">📋 ${esc(L2(checklists.heat.title, lang))}</a></p>` : ''}
+<p class="check"><a href="${pre}/hot">${esc(strings[lang].hubHot)}</a></p>
+<p class="src">${esc(X.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<h2 id="helplines">${esc(X.helplines)}</h2>
+${lang === 'en' ? helplineEn : helplineHtml}
+${hazardChips(lang)}
+<footer><p>${esc(strings[lang].disclaimer)}</p></footer>
+</main>`,
+    });
+    writeSeo(`${lang === 'en' ? 'en/' : ''}uv.html`, html);
+    if (lang === 'en' && thaiLeak(html)) warn('en/uv.html contains Thai text outside Thai-tagged spans');
+  }
 }
 
 // /kit and /plan: plain pages for the home check and the plan card, with their
@@ -1375,6 +1508,7 @@ ${hazardChips('en', h.id)}
 <p class="play"><a class="cta" href="${pre}/?open=${tool}">${esc(X[`${tool}PageCta`])}</a></p>
 <p>${esc(X[`${tool}PageIntro`])}</p>
 <p class="tip">🔒 ${esc(L2({ th: kitFile.ui.th[privacyKey[tool]], en: kitFile.ui.en[privacyKey[tool]] }, lang))}</p>
+${['air', 'hot', 'mask'].includes(tool) ? riskLine(lang) : ''}
 <h2>${esc(X[`${tool}PageList`])}</h2>
 <ol>
 ${rows}
@@ -1539,7 +1673,7 @@ Sitemap: ${SITE}/sitemap.xml
 `);
 
 // Each page lists its other-language version (hreflang), as Google asks.
-const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`]), ...TOOL_IDS.map((x) => [`/${x}`, `${EN}/${x}`]), ['/tools', `${EN}/tools`]];
+const sitemapPairs = [['/', `${EN}/`], ['/learn', `${EN}/learn`], ...hazardList.map((h) => [`/${h.slug}`, `${EN}/${h.slug}`]), ...TOOL_IDS.map((x) => [`/${x}`, `${EN}/${x}`]), ['/tools', `${EN}/tools`], ...(kitFile.uv ? [['/uv', `${EN}/uv`]] : [])];
 writeSeo('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${sitemapPairs.flatMap(([th, en]) => [th, en].map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${seoUpdated}</lastmod>
@@ -1563,7 +1697,7 @@ writeSeo('llms.txt', `# ${og.siteName} (Baan Rod Mai?)
 - One page per hazard, with only its lessons and a link that opens that game mode:
 ${hazardList.map((h) => `  - ${md(E[`hazard${capM(h.id)}H1`])}: ${SITE}/${h.slug} (Thai) · ${SITE}${EN}/${h.slug} (English)`).join('\n')}
 - Family tools that run on the device; nothing typed is sent: ${allTools.tools.map((tool) => `${md(E[`tool${capM(tool)}`].replace(/^\S+\s/, ''))}: ${SITE}/?open=${tool} (every line and its source: ${SITE}/${tool})`).join(' · ')}
-- All tools on one page, with links to the Thai agencies' own websites and LINE accounts (LINE ALERT, TMD warnings, river levels, flood and dust maps, planned power cuts, help after a disaster): ${SITE}/tools
+${kitFile.uv ? `- What to do at each UV index level, from WHO's own words: ${SITE}/uv (Thai) · ${SITE}${EN}/uv (English)\n` : ''}- What is happening now at a subdistrict (warnings, rain, rivers, dust, heat) is the sister app ภัยรอบบ้าน (Thai Risk): ${config.riskAppUrl} · ${riskUrl('en')}; this app says what to do\n- All tools on one page, with links to the Thai agencies' own websites and LINE accounts (LINE ALERT, TMD warnings, river levels, flood and dust maps, planned power cuts, help after a disaster): ${SITE}/tools
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
 - Last content update: ${seoUpdated}
 
@@ -1710,7 +1844,7 @@ function finish() {
     const pick = recommend(config, TODAY.replace(/-/g, ''));
     const until = (k) => (config[k] ? ` until ${config[k]}` : '');
     console.log(`site      ${SITE}`);
-    console.log(`start     ${TODAY}: ${pick.mode} (${pick.why}${pick.why === 'warning' ? until('rainWarningUntil') : ''}) · featured ${pick.topic || 'none'}${pick.topic && pick.topic === config.featuredTopic ? until('featuredTopicUntil') : ''}${ALERT.guide && ALERT.until >= TODAY ? ` · alert ${ALERT.guide} until ${ALERT.until}` : ''}`);
+    console.log(`start     ${TODAY}: ${pick.mode} (${pick.why}) · featured ${pick.topic || 'none'}${pick.topic && pick.topic === config.featuredTopic ? until('featuredTopicUntil') : ''}${ALERT.guide && ALERT.until >= TODAY ? ` · alert ${ALERT.guide} until ${ALERT.until}` : ''}`);
     console.log(`items     ${itemsFile.items.length} (+${itemsFile.decoys.length} decoys), sources ${Object.keys(sources).length}`);
     console.log(`pages     ${written.length} link-preview pages`);
     console.log(`seo       ${seoFiles.join(', ')} (${nLessons} lessons on /learn)`);

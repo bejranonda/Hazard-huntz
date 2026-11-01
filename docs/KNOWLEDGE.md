@@ -44,6 +44,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 34. [Masks, all tools and six more tools (v1.11.1–v1.13.0)](#34-masks-all-tools-and-six-more-tools-v1111v1130)
 35. [Open data for "around my home" (research, 21 Oct 2026)](#35-open-data-for-around-my-home-research-21-oct-2026)
 36. [With a server of our own (research, 21 Oct 2026)](#36-with-a-server-of-our-own-research-21-oct-2026)
+37. [The family: ภัยรอบบ้าน, FloodWatch and this app (v1.14.0)](#37-the-family-ภัยรอบบ้าน-floodwatch-and-this-app-v1140)
 
 ---
 
@@ -275,7 +276,8 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - **`carousel.json`** (v1.6.1, not loaded by the game): `sets.<hazard>` (the lessons per post set, `outage` since v1.7.0) and the frame text in `th` and `en` (§26); since v1.9.0 also `guidesTitle`, `guidesIntro` and `guideCaption` for the guide pictures on `/posts` (§29.9).
 - **`helplines.json`:** `{number, main, who{th,en}, what{th,en}, short{th,en}, source}`. Numbers have 3–5 digits. `main: true` puts the number on the cards. `short` (v1.11.0, required by the build) is the name shown under the number on a guide's chips, its print footer and picture, the hazard pages and the plan card ("1669 / เจ็บป่วย", §33.9).
 - **`config.json`:**
-  - `rainWarningActive` and its end date `rainWarningUntil`, `featuredTopic` and `featuredTopicUntil` (§25.1), and since v1.9.0 `alert: { guide, until }` (§29.5)
+  - `featuredTopic` and `featuredTopicUntil` (§25.1), and since v1.9.0 `alert: { guide, until }` (§29.5; `source` required since v1.14.0); `rainWarningActive` and `rainWarningUntil` until v1.14.0, when they were removed (§37)
+  - `riskAppUrl` (v1.14.0): ภัยรอบบ้าน, the sister app for what is happening now (§37)
   - `keepTogether` (v1.9.1): 217 Thai words, 2–14 letters each, that never break across lines (§30.1)
   - `forecastAppUrl`, `forecastStatusUrl`, `siteUrl`, `version`, `houseVersion`
   - `modes` (the registry, §22.3), `topics` (§21), `guides` (v1.9.0: the guides in display order, `{id, hazard, icon, prop?}`, §29.2; `prop`, v1.9.2, is the gecko's accessory on the picture of a guide with no game, §31.4), `hazards` (the hazard pages' slugs, §25.4, a hazard needing a mode or, since v1.9.0, a guide; and since v1.8.0 optional `tools`, `["kit", "plan"]` on `outage` and, since v1.8.1, on `flood`, and since v1.9.0 on `landslide`, `storm`, `quake` and `heat`: links on those pages to the home check and the plan card, and the 🎒 button on their modes' result screens, §28.2; since v1.10.0 the list may also hold `fridge` (on `outage` and `storm`) and `air` (on `dust`), §32.5; since v1.11.0 `fire` has `["plan"]`, §33.9). Since v1.11.0 a guide may also have `calls` (1–4 numbers from `helplines.json`, the ones its sheet, print footer, picture and hazard page show, §33.9) and `now` (a tool id: a button into that tool at the top of the guide, with the string `guideNow<Tool>`; only the power cut's `fridge`), both checked by the build
@@ -297,7 +299,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 - each checklist has exactly 10 items, and their sprites exist
 - helpline numbers are 3–5 digits with known sources
 - source URLs are `http(s)`
-- `rainWarningUntil` and `featuredTopicUntil` are real `YYYY-MM-DD` dates (v1.6.0)
+- `featuredTopicUntil` is a real `YYYY-MM-DD` date (v1.6.0); since v1.14.0 `rainWarningActive` or `rainWarningUntil` in the config fails the build, `riskAppUrl` must be an https address ending in `/`, and an alert needs an https `source`
 - every hazard has a slug in `config.json → hazards` that is valid, unique and not a site path, and its `seo` strings exist in both languages (v1.6.0)
 - a mode whose threat is `dark` has `round.<mode>.hours`; `lostAfter` is used only in such a mode and lies between 0 and its hours (v1.7.0)
 - `config.json → guides` and the guides (v1.9.0, §29.2): each guide's hazard, icon, strings and checklist; every checklist is a guide; a guide with no game has 10 lines, phases in order, existing sources on every line and a valid `verify` (with a `verifyNote` when `partial`); `config.json → alert` names a guide and has a real end date; a guide's `prop` is one the gecko has (v1.9.2)
@@ -730,7 +732,7 @@ The time-zone rule matters: many Thais set their phones to English, and the game
 ## 19. The water-level link (BKK FloodWatch)
 
 - `config.json → forecastAppUrl` is `https://flood.autobahn.bot/`: **BKK FloodWatch**, canal and river water levels across Thailand, the owner's own Autobahn Bot project (confirmed 11 Oct 2026).
-- The "เช็กระดับน้ำล่วงหน้า" / "Water levels" button shows on the start screen, the result screen and the help sheet, only when this is a real `https://` address (`forecastUrl()` in `content.js`, which takes the address from `modeLink()` in `modes.js`; since v1.6.0 the `/flood` page links it too). It opens in a new tab and is counted as `forecast_click`.
+- Since v1.14.0 it is the rivers' extra link, "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)", after the link to ภัยรอบบ้าน (§37). Before: the "เช็กระดับน้ำล่วงหน้า" / "Water levels" button showed on the start screen, the result screen and the help sheet, only when this is a real `https://` address (`forecastUrl()` in `content.js`, which takes the address from `modeLink()` in `modes.js`; since v1.6.0 the `/flood` page links it too). It opens in a new tab and is counted as `forecast_click`.
 - `flood.autobahn.bot` is a different live site: **never redirect it to the game**. Both sites sit on `autobahn.bot` and can link to each other.
 - Optional and not set: `forecastStatusUrl`, a small endpoint returning `{"rainWarning": true|false}` with CORS, so the start screen could pick the recommended mode from live data ([KNOWN_ISSUES #13](KNOWN_ISSUES.md#13-forecaststatusurl-needs-cors-and-a-fast-answer)). When it answers, its answer beats the manual switch both ways (`recommend()`, §25.2).
 
@@ -809,12 +811,12 @@ The review and the IFRC document were read through their summaries; the numbers 
 |---|---|---|---|
 | December–March | PM2.5 dust and smoke (Bangkok Dec–Feb, the North Feb–Apr) | `dust` | 12, 1, 2, 3 |
 | April (dry season, all year in practice) | House fire | `fire` | 4 |
-| May–November | Flood | `prepare` (rain warning on) / `return` | 5–11 / — |
+| May–November | Flood | `prepare` (since v1.14.0 by its own months) / `return` (only from a link) | 5–11 / — |
 | March–May | Heat, summer storms | not built (P7) | — |
 | Any time, 26 Dec anniversary | Earthquake, tsunami | not built (P8) | — |
 | Any time (v1.7.0) | Power cuts, home stock | `stock` | none: never the default (§27) |
 
-The month table is ours, not an agency's ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). `seasonalMode(month, rainWarning)` in `modes.js`: a rain warning → `prepare`; else the first non-flood mode whose `months` include the month; else `return`. Since v1.6.0 the start screen calls it through `recommend()`, which adds the switches' end dates and `?mode=` links (§25.2).
+The month table is ours, not an agency's ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). `seasonalMode(month, rainWarning)` in `modes.js`: a live rain warning → `prepare`; else the first mode whose `months` include the month (since v1.14.0 the flood modes count too, so `prepare` covers May–November); else `return`. Since v1.6.0 the start screen calls it through `recommend()`, which adds the switches' end dates and `?mode=` links (§25.2).
 
 ### 22.3 The mode registry
 
@@ -911,7 +913,7 @@ Built 18 Oct 2026 (ROADMAP N12). Nothing here touches items, rooms, slots or `ho
 
 | Switch | End date | Now | What it does |
 |---|---|---|---|
-| `rainWarningActive` | `rainWarningUntil` | `true` until `2026-11-30` | Recommends ก่อนน้ำมา (Prepare) first |
+| `rainWarningActive` (removed in v1.14.0) | `rainWarningUntil` | — | Recommended ก่อนน้ำมา (Prepare) first; it stated a live condition nobody could keep true (§37) |
 | `featuredTopic` | `featuredTopicUntil` | `"health"` until `2026-11-15` | Puts that topic's card on the start screen |
 
 - `switchOn(value, until, dayKey)` in `modes.js` (pure): off when `value` is empty; on when there is no `until`; otherwise on while `dayKey` (`YYYYMMDD`, the Bangkok date from `bangkokDateKey()`) is on or before `until`. So `2026-11-30` is on for all of 30 Nov in Bangkok and off from 00:00 on 1 Dec.
@@ -925,8 +927,8 @@ Built 18 Oct 2026 (ROADMAP N12). Nothing here touches items, rooms, slots or `ho
 | Order | Rule | Mode | `why` |
 |---|---|---|---|
 | 1 | `want` is a mode id in the registry, in any letter case | that mode | `link` |
-| 2 | The rain warning is on: the forecast app's answer when it gave one (`true` or `false`), otherwise `switchOn(rainWarningActive, rainWarningUntil, dayKey)` | `prepare` | `live` or `warning` |
-| 3 | The first non-flood mode whose `months` include the Bangkok month (`seasonalMode()`, §22.2) | `dust` (Dec–Mar), `fire` (Apr) | `season` |
+| 2 | A forecast app answered `true` (`forecastStatusUrl`, not set; since v1.14.0 there is no manual switch) | `prepare` | `live` |
+| 3 | The first mode whose `months` include the Bangkok month (`seasonalMode()`, §22.2) | `prepare` (May–Nov, since v1.14.0), `dust` (Dec–Mar), `fire` (Apr) | `season` |
 | 4 | Otherwise | `return` | `season` |
 
 The power cut (`stock`, v1.7.0) has no `months`, so rule 3 never picks it: it is recommended only through rule 1, a `?mode=stock` link (its topic, 💧 `food`, is then featured).
@@ -2575,3 +2577,59 @@ Nothing here is built. The summary and recommendation are [docs/09-server.md](09
 - **Push:** `PushManager` unsupported in Android WebView and iOS WKWebView; iOS 16.4+ only from the Home Screen. LINE OA: 300 free messages a month; Basic 1,280 baht (15,000), Pro 1,780 baht (35,000), VAT 7 % extra; area targeting by 8 regions. LINE Notify ended 31 Mar 2025. DDPM's Cell Broadcast nationwide in 2025; LINE ALERT `@LINEALERT`.
 - **The law:** PDPA s.6, s.19, s.22, s.23, s.24, s.28, s.37(3)–(5), s.41, ss.82–84; fines of 7 M baht (2024) and 14.5 M baht across five cases (2025); the 2021 traffic-data notification's 90 days. A lawyer reads the plan before any per-person data ([#96](KNOWN_ISSUES.md#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person)).
 - **Terms binding a server:** Open-Meteo non-commercial means no subscriptions or advertising, limits per IP or per Cloudflare user; TMD's NWP API 60 a minute and 100,000 datapoints an hour, registration with personal details; FIRMS 5,000 per 10 min; BMKG 60 a minute per IP with credit; EMSC CC BY 4.0; Nominatim no autocomplete; OSM derived databases over 100 features stay ODbL.
+
+## 37. The family: ภัยรอบบ้าน, FloodWatch and this app (v1.14.0)
+
+Built 1–2 Nov 2026 from the owner's brief ([ROADMAP N30](ROADMAP.md#n30-fit-with-the-family-v1140)); the page both apps can point to is [docs/10-family.md](10-family.md); the rules are [GUIDELINES rules 100–101](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit). Items, rooms and slots are unchanged, so no house or challenge link changes.
+
+### 37.1 Who does what
+
+| App | Says | Address |
+|---|---|---|
+| บ้านรอดไหม (this app) | what to do | https://baanrodmai.autobahn.bot |
+| ภัยรอบบ้าน (Thai Risk) | what is happening at the reader's subdistrict, now and for 3 days | https://risk.autobahn.bot (`/en`) |
+| FloodWatch | rivers and canals against their banks | https://flood.autobahn.bot |
+
+### 37.2 What changed here
+
+- **`config.json`:** `rainWarningActive` and `rainWarningUntil` removed (the build fails if they return); `riskAppUrl` added (`https://risk.autobahn.bot/`; English is `riskAppUrl + 'en'`); the expired alert cleared, and an alert now needs `source` (an https link); `keepTogether` gains "ภัยรอบบ้าน".
+- **`modes.js`:** `seasonalMode()` takes the first mode whose `months` include the month, flood modes included (ก่อนน้ำมา May–November); `recommend()` puts ก่อนน้ำมา first early only on a live answer (`forecastStatusUrl`, not set) and never on a switch; `why` is `link`, `live` or `season`.
+- **The links:** `riskUrl()` in `content.js` (the reader's language); `#risk-link` on the start screen (static in `index.html`, its address written by the build for both languages and set again by `renderStart()` on a language switch); `#cl-risk` in every guide sheet, before `#cl-forecast` (FloodWatch, now a secondary button); `#btn-risk` on the result screen; `#help-risk` in the help sheet; `riskLine()` in the build on the eight hazard pages and on `/air`, `/hot` and `/mask`. None carries a place, a position or an event. Style `.risk-link`: the hub's teal (`#BFE0DD` / `#EAF6F5`), at least 52 px tall.
+- **The gecko's lines** (`heroPrepare`, `heroReturn`, `heroDust`) claim nothing about this week ([KNOWN_ISSUES #98](KNOWN_ISSUES.md#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name)); FloodWatch's labels say "rivers and canals" (`forecastLong`, `forecastIcon` 🌊).
+
+### 37.3 `kit.json → flood` (for ภัยรอบบ้าน and `/flood#during`)
+
+| Level (`id`) | ภัยรอบบ้าน's word | First line (`all[0]`) | Second line |
+|---|---|---|---|
+| `watch` | ติดตามไว้ | คอยฟังประกาศเตือนจากทางราชการ และทำตามคำแนะนำ | เตรียมกระเป๋าฉุกเฉิน เอกสารสำคัญ ยาประจำตัว ไว้ใกล้มือ ⚠️ |
+| `warn` | เตรียมตัว | น้ำอาจมาถึง ยกของและเครื่องใช้ไฟฟ้าขึ้นที่สูงไว้ก่อน | เตรียมพาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัย |
+| `danger` | เสี่ยงสูง | พาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา | ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784 |
+
+- **`during` (eight lines):** move belongings, appliances and documents up at once; switch off the power where the water may reach, only while dry; take children, older people and anyone bedridden somewhere safe first; move the car and pets; keep away from power lines and poles; don't walk or drive through fast-flowing floodwater ⚠️; leave by a safe route, not the way the water flows; leave at once when officials say, 1784.
+- **Sources:** DDPM's five warning levels (InfoQuest 24 Sep 2024: ระดับ 3 เตรียมพร้อม … เตรียมพร้อมอพยพกลุ่มเปราะบาง, ระดับ 4 ให้อพยพ … ขนย้ายสิ่งของขึ้นที่สูง, ระดับ 5 ต้องอพยพ; The Standard 21 Jun 2025: ระดับ 1 ติดตามข่าวสาร, ระดับ 2 เฝ้าระวังอย่างใกล้ชิด); DDPM's alerts of 2025–2026 (Krungthep Turakij, Thansettakij); RID on dam releases (Sep 2026); `ddpm-mea`, `ddpm-south`, `ddpm-noru`, `mea-2022`, `pea-943`. All news reports quoting the agency ([#99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid)).
+- **The mapping is ours:** ติดตามไว้ ≈ DDPM 1–2, เตรียมตัว ≈ 3, เสี่ยงสูง ≈ 4's actions without its order. DWR's flags (green follow news, yellow prepare, red move when told) agree.
+- **Left out:** wading depths ("เหนือเข่า"), electric-shock distances, "red flag = evacuate" (3, 4 and 5-colour schemes differ), "แจ้งกำนัน ผู้ใหญ่บ้าน" (Bangkok has none; 1784 instead), RID's 1460 (an owner's choice), place names and heights.
+- **Build checks:** ids exactly `watch`, `warn`, `danger`; a line per level; every line `line()`-checked (sources exist, `verify`, numbers in a source: "1784"); no river, canal or city named.
+
+### 37.4 `kit.json → uv` and `/uv`
+
+| Level (`id`) | UV index | Lines | `verify` |
+|---|---|---|---|
+| `low` | 0–2 | ไม่ต้องป้องกันเป็นพิเศษ ออกไปข้างนอกได้ตามปกติ | partial (WHO only) |
+| `protect` | 3–7 | ช่วงเที่ยงวัน หลบเข้าที่ร่ม · ออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด สวมหมวก · ใส่แว่นกันแดดด้วย | partial (WHO ties them to 3–7; the DOH names no level) |
+| `veryhigh` | 8–10 | ช่วงเที่ยงวัน เลี่ยงออกไปกลางแจ้ง · ต้องออกไป ให้หาที่ร่มไว้เสมอ · เสื้อแขนยาว ครีมกันแดด หมวกปีกกว้าง ต้องมีครบ · ใส่แว่นกันแดด ปกป้องดวงตา · เด็กและคนผิวแพ้ง่าย ให้อยู่ในร่มช่วงเที่ยงวัน | verified (WHO and the TMD) |
+| `extreme` | 11+ | the same, then ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด (the MOPH, in an 11+ warning) | verified |
+
+- **WHO's own words** (Global Solar UV Index, 2002, Figure 2, p. 8): 1–2 "No protection required"; 3–7 "Seek shade during midday hours! Slip on a shirt, slop on sunscreen and slap on a hat!"; 8, 9, 10, 11+ "Avoid being outside during midday hours! Make sure you seek shade! Shirt, sunscreen and hat are a must!". Table 1, p. 6: Low < 2, Moderate 3–5, High 6–7, Very high 8–10, Extreme 11+; "rounded to the nearest whole number". The guide calls grading advice by level of "little scientific basis".
+- **The TMD** forecasts a clear-sky UV index for 77 stations every half hour, 7 days ahead (`ozone.tmd.go.th/ORC/uvi_forecast/uvi-YYYY-MM-DD.csv`), drawn in WHO's colours, with no advice per level; its map colours decimals without rounding first. `/uv` links its page.
+- **Notes for any level:** sunscreen is not more time in the sun; clouds or a cool day don't stop UV (WHO, ⚠️).
+- **Left out:** hours (sources give 09.00–15.00 or 10.00–15.00; WHO says midday), SPF numbers (15+, 30, 50, 50–60+), burn times (WHO advises against them; the TMD's own picture shows them on a non-WHO scale), the annex line about babies under one ([#100](KNOWN_ISSUES.md#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours)).
+- **Build checks:** whole-number bands rising with no gap, only the top open, each edge in its lines' sources; `notes` and `link` checked.
+
+### 37.5 Checks and numbers
+
+- **`npm test`: 46** (two new: no gecko line states a live condition; the advice file ภัยรอบบ้าน reads keeps its shape and numbers). **Smoke:** section 14 adds the ภัยรอบบ้าน link in both languages on the start screen and in a guide (ภัยรอบบ้าน before FloodWatch; following it carries nothing and sends no event), `/flood#during` and `/uv` in both languages, and every hazard page's link.
+- **Cross-check with ภัยรอบบ้าน (2 Nov 2026):** every line it copies today matches `kit.json` word for word (5 PM2.5 lines, 4 heat lines, the under-2 line); every path it links answers 200; its one advice line of its own is UV's ([docs/10 §5](10-family.md#5-what-ภัยรอบบ้าน-or-floodwatch-should-check-frank)).
+- **`npm run smoke`: 209** on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (200 in v1.13.1).
+- **Sources on these pages** are grouped by agency, each year its own link ("ปภ.: 2026, 2026, 2024"; `kitSrcSpan()` in the build): a line with three DDPM reports read DDPM's full English name three times in the visitor walk.
+- **Weight:** the start screen 302 KB compressed (297 before: `kit.json` carries the new lines).

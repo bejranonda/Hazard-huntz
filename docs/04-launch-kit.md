@@ -20,9 +20,9 @@ What the research says about Thai audiences:
 
 | Phase | When | Game setting | Focus |
 |---|---|---|---|
-| 0. Soft launch | Day −1 → 0 | `rainWarningActive: true` | Real-phone QA ([06-test-checklist.md](06-test-checklist.md)). Check the domain and images (done 6 Oct 2026), check previews in LINE and Facebook. Send to 20–30 friends and fix the copy. |
-| 1. Prepare first | Now → the next rain wave | `rainWarningActive: true` with `rainWarningUntil` set to the last day of the warning (Prepare is the default) | Posts lead with ก่อนน้ำมา. Push the *เตรียมบ้านก่อนน้ำมา 10 ข้อ* image. Run a daily "บ้านวันนี้" challenge. |
-| 2. Return as water recedes | When ปภ. reports water receding in most affected provinces, or your forecast shows 3+ dry days | Set `rainWarningActive: false`, or let `rainWarningUntil` end it (Return is the default in the flood months). Both modes stay available. | Lead with หลังน้ำลด. Push *ก่อนกลับเข้าบ้าน 10 ข้อ*. Target shelters, evacuees and volunteers cleaning houses. |
+| 0. Soft launch | Day −1 → 0 | The season (no switch since v1.14.0) | Real-phone QA ([06-test-checklist.md](06-test-checklist.md)). Check the domain and images (done 6 Oct 2026), check previews in LINE and Facebook. Send to 20–30 friends and fix the copy. |
+| 1. Prepare first | Now → the next rain wave | Prepare is the default May–November by itself; link `/?mode=prepare` in posts | Posts lead with ก่อนน้ำมา. Push the *เตรียมบ้านก่อนน้ำมา 10 ข้อ* image. Run a daily "บ้านวันนี้" challenge. |
+| 2. Return as water recedes | When ปภ. reports water receding in most affected provinces, or your forecast shows 3+ dry days | Link `/?mode=return` and `/flood#return` in posts for the places where the water has gone; the app never says so to the whole country (v1.14.0). Both modes stay available. | Lead with หลังน้ำลด. Push *ก่อนกลับเข้าบ้าน 10 ข้อ*. Target shelters, evacuees and volunteers cleaning houses. |
 | 3. Sustain | 2–6 weeks | Daily house | A weekly "บ้านแห่งสัปดาห์" challenge. Share what players learned, e.g. "73% เลือกเรียกช่างไฟ" from the [metrics](05-metrics.md). Thank volunteers. |
 
 You don't have to pick one region: the "แนะนำช่วงนี้" badge only changes which button comes first. Areas still under water can tap หลังน้ำลด at any time.
@@ -138,7 +138,7 @@ Rules: post the images as they are (the sources are printed on them); don't crop
 
 ### When the dust season starts (v1.5.0, from December)
 
-Nothing needs switching off. The switches end by themselves: the rain warning after `rainWarningUntil` (now 30 Nov 2026) and the news topic after `featuredTopicUntil` (now 15 Nov 2026), so from 1 December the start screen recommends ฝุ่น PM2.5 and features 😷 by itself. Whenever you turn a switch on, give it an end date (the build warns if you don't). To feature the dust topic during a bad week, set `featuredTopic: "air"` with `featuredTopicUntil`.
+Nothing needs switching off. The season changes by itself, and the news topic ends after `featuredTopicUntil` (now 15 Nov 2026), so from 1 December the start screen recommends ฝุ่น PM2.5 and features 😷 by itself. Whenever you turn a switch on, give it an end date (the build warns if you don't). To feature the dust topic during a bad week, set `featuredTopic: "air"` with `featuredTopicUntil`.
 
 Links for dust posts:
 

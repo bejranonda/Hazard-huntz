@@ -1088,6 +1088,118 @@
       "date": "2021-02-22",
       "kind": "international",
       "note": "Read on 20 Oct 2026 (updated 22 Feb 2021): store at least one gallon of water per person per day for several days, for drinking and sanitation; 'Children, nursing mothers and sick people may need more water'; 'In very hot temperatures, water needs can double'; 'Never ration drinking water unless ordered to do so by authorities'."
+    },
+    "ddpm-levels-2567": {
+      "agency": "ปภ.",
+      "title": "ปภ. ระดับการแจ้งเตือนภัย 5 ระดับ (อินโฟเควสท์ อ้างอธิบดี ปภ.): ระดับ 3 เตรียมพร้อมรับสถานการณ์ เตรียมพร้อมอพยพกลุ่มเปราะบาง ระดับ 4 ให้อพยพ ขนย้ายสิ่งของขึ้นที่สูง ระดับ 5 ต้องอพยพ",
+      "url": "https://www.infoquest.co.th/2024/432359",
+      "date": "2024-09-24",
+      "kind": "secondary",
+      "note": "InfoQuest quoting the DDPM Director-General, read on 2 Nov 2026 (Bangkok): '1. ระดับ 3 (สีเหลือง) ให้เตรียมพร้อมรับสถานการณ์ และปฏิบัติตามคำแนะนำของหน่วยงานราชการที่เกี่ยวข้อง และเตรียมพร้อมอพยพกลุ่มเปราะบาง 2. ระดับ 4 (สีส้ม) ให้อพยพ และปฏิบัติตามคำแนะนำของหน่วยงานราชการที่เกี่ยวข้อง โดยให้อพยพกลุ่มเปราะบางออกจากพื้นที่น้ำท่วม และขนย้ายสิ่งของขึ้นที่สูง 3. ระดับ 5 (สีแดง) ต้องอพยพ และปฏิบัติตามข้อสั่งการทันที'. DDPM's levels are warnings it issues; ภัยรอบบ้าน's levels are computed from data, so the app's lines borrow the actions, not the orders."
+    },
+    "ddpm-levels-2568": {
+      "agency": "ปภ.",
+      "title": "ปภ. ระดับเตือนภัย 1–5 (The Standard, ปภ. หารือ กทม. เรื่อง Cell Broadcast): ระดับ 1 ติดตามข่าวสาร ระดับ 2 เฝ้าระวังอย่างใกล้ชิด ระดับ 3 เตรียมพร้อม ขนย้ายสิ่งของขึ้นที่สูง",
+      "url": "https://thestandard.co/bma-to-use-cell-broadcast-for-flood-pm25-warnings/",
+      "date": "2025-06-21",
+      "kind": "secondary",
+      "note": "The Standard on DDPM's briefing to the BMA, read on 2 Nov 2026 (Bangkok): 'ระดับ 1 แจ้งข่าว คือให้ติดตามสถานการณ์ข้อมูลข่าวสาร / ระดับ 2 ให้ติดตามเฝ้าระวังสถานการณ์อย่างใกล้ชิด / ระดับ 3 ให้เตรียมพร้อมรับสถานการณ์ เช่น อพยพ เคลื่อนย้ายกลุ่มเปราะบาง ขนย้ายสิ่งของขึ้นที่สูง / ระดับ 4 ให้อพยพและปฏิบัติตามคำแนะนำ / ระดับ 5 ต้องอพยพและปฏิบัติตามข้อสั่งการทันที'. Cell Broadcast is used from level 3 up."
+    },
+    "ddpm-overtop-2569": {
+      "agency": "ปภ.",
+      "title": "ปภ. แจ้งเตือนน้ำอาจล้นตลิ่ง (ฐานเศรษฐกิจ): เฝ้าระวังติดตามระดับน้ำและข่าวสารจากหน่วยงานราชการในพื้นที่; เมื่อน้ำเริ่มล้น ยกของขึ้นที่สูงทันที เคลื่อนย้ายรถ เคลื่อนย้ายกลุ่มเปราะบาง",
+      "url": "https://www.thansettakij.com/general-news/666867",
+      "date": "2026-08-19",
+      "kind": "secondary",
+      "note": "Thansettakij quoting a DDPM alert, read on 2 Nov 2026 (Bangkok): 'เฝ้าระวังติดตามระดับน้ำ และข้อมูลข่าวสารการแจ้งเตือนจากหน่วยงานราชการในพื้นที่อย่างใกล้ชิด' and, once water starts to overtop, 'ยกของขึ้นที่สูงทันที เคลื่อนย้ายรถทันที เคลื่อนย้ายกลุ่มเปราะบาง หากต้องการอพยพ ขอความช่วยเหลือให้แจ้งกำนัน ผู้ใหญ่บ้าน และ อปท.ในพื้นที่'. The same template on 15 Sep 2026: https://www.thansettakij.com/general-news/668955. Place names in the alerts are left out of the app's lines."
+    },
+    "ddpm-alert-2568": {
+      "agency": "ปภ.",
+      "title": "ปภ. แจ้งเตือนน้ำล้นตลิ่ง (กรุงเทพธุรกิจ): ดูแลกลุ่มเปราะบาง เช่น ผู้สูงอายุ ผู้ป่วยติดเตียง ติดตามข่าวสารราชการ ขอความช่วยเหลือโทร 1784",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1201427",
+      "date": "2025-10-02",
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting DDPM, read on 2 Nov 2026 (Bangkok): 'เตรียมยกของขึ้นที่สูง ดูแลกลุ่มเปราะบาง เช่น ผู้สูงอายุ ผู้ป่วยติดเตียง ติดตามข่าวสารราชการในพื้นที่อย่างใกล้ชิด'; 'แจ้งเหตุและขอความช่วยเหลือได้ทางไลน์ ปภ.รับแจ้งเหตุ 1784 … หรือโทรสายด่วนนิรภัย (ปภ.) 1784 (ตลอด 24 ชั่วโมง)'. A second alert the same day (https://www.bangkokbiznews.com/news/news-update/1201430): 'เคลื่อนย้ายกลุ่มเปราะบางไปยังที่ปลอดภัย … และปฏิบัติตามคำแนะนำของเจ้าหน้าที่อย่างเคร่งครัด'."
+    },
+    "ddpm-rising-2569": {
+      "agency": "ปภ.",
+      "title": "ปภ. แนะรับมือน้ำล้นตลิ่ง (กรุงเทพธุรกิจ): น้ำขึ้นเร็ว รีบยกทรัพย์สินและเครื่องใช้ไฟฟ้าขึ้นที่สูงทันที สับคัทเอาต์ในจุดที่น้ำอาจท่วมถึง ดูแลเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ผู้พิการ",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1254960",
+      "date": "2026-10-04",
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting DDPM, read on 2 Nov 2026 (Bangkok): 'ย้ายสิ่งของขึ้นที่สูง หากสังเกตเห็นระดับน้ำเพิ่มสูงขึ้นอย่างรวดเร็ว ให้รีบยกทรัพย์สินและเครื่องใช้ไฟฟ้าขึ้นที่สูงทันที'; 'ระวังอันตรายจากไฟฟ้า ตรวจสอบปลั๊กไฟ อุปกรณ์ไฟฟ้า และสับคัทเอาต์ในจุดที่น้ำอาจท่วมถึงเพื่อป้องกันไฟดูด'; 'ดูแลกลุ่มเปราะบาง ให้การดูแลเป็นพิเศษแก่เด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง และผู้พิการ'."
+    },
+    "ddpm-urgent-2569": {
+      "agency": "ปภ.",
+      "title": "ปภ. แจ้งเตือนน้ำล้นตลิ่ง (กรุงเทพธุรกิจ): ยกของขึ้นที่สูงโดยด่วน เคลื่อนย้ายรถไปที่สูง เก็บทรัพย์สินมีค่าและเอกสารสำคัญ อพยพกลุ่มเปราะบาง",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1241134",
+      "date": "2026-07-01",
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting DDPM, read on 2 Nov 2026 (Bangkok): 'ให้ยกของขึ้นที่สูงโดยด่วน เคลื่อนย้ายรถไปที่สูง เก็บทรัพย์สินมีค่าและเอกสารสำคัญ ระวังไฟฟ้าดูด อพยพกลุ่มเปราะบาง และปฏิบัติตามคำแนะนำของเจ้าหน้าที่'."
+    },
+    "rid-chaophraya-2569": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน ปรับการระบายน้ำ (กรุงเทพธุรกิจ): ติดตามประกาศอย่างใกล้ชิด เตรียมพร้อมรับมือ เคลื่อนย้ายสิ่งของ ทรัพย์สิน และสัตว์เลี้ยงขึ้นที่สูงหรือพื้นที่ปลอดภัย",
+      "url": "https://www.bangkokbiznews.com/news/1252986",
+      "date": "2026-09-22",
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting RID, read on 2 Nov 2026 (Bangkok): 'ติดตามประกาศอย่างใกล้ชิด ติดตามข่าวสาร สถานการณ์น้ำ และประกาศแจ้งเตือนจากกรมชลประทาน กรมป้องกันและบรรเทาสาธารณภัย และหน่วยงานราชการในท้องถิ่นอย่างต่อเนื่อง'; 'เตรียมพร้อมรับมือ เคลื่อนย้ายสิ่งของ ทรัพย์สิน และสัตว์เลี้ยง ขึ้นที่สูงหรือพื้นที่ปลอดภัย'. The dam and river are left out of the app's lines."
+    },
+    "rid-release-2569": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน เพิ่มการระบายน้ำจากเขื่อน (กรุงเทพธุรกิจ, ฐานเศรษฐกิจ): ประชาชนริมน้ำและที่ลุ่มต่ำ ยกของขึ้นที่สูง เคลื่อนย้ายยานพาหนะ สัตว์เลี้ยง ไปยังพื้นที่ปลอดภัย ติดตามประกาศอย่างใกล้ชิด",
+      "url": "https://www.bangkokbiznews.com/news/news-update/1254026",
+      "date": "2026-09-28",
+      "kind": "secondary",
+      "note": "Krungthep Turakij quoting RID on a dam release, read on 2 Nov 2026 (Bangkok): 'ประชาชนที่อาศัยริมแม่น้ำและพื้นที่ลุ่มต่ำ ขอให้ยกของขึ้นที่สูง … และติดตามการประกาศแจ้งเตือนสถานการณ์น้ำอย่างใกล้ชิด', asked even though the water was expected to stay within the banks, 'เพื่อให้ผู้ที่อาศัยอยู่ติดริมน้ำได้เตรียมความพร้อมล่วงหน้า'. RID's regional office 13 on another release (Thansettakij, 30 Sep 2026, https://www.thansettakij.com/general-news/670276): 'ติดตามสถานการณ์น้ำอย่างใกล้ชิด พร้อมเตรียมยกสิ่งของขึ้นที่สูง เคลื่อนย้ายยานพาหนะ สัตว์เลี้ยง และอุปกรณ์การเกษตรไปยังพื้นที่ปลอดภัย'."
+    },
+    "who-uvi-guide-2002": {
+      "agency": "องค์การอนามัยโลก (WHO)",
+      "title": "Global Solar UV Index: A Practical Guide (WHO, WMO, UNEP, ICNIRP) — UVI 1–2 'No protection required'; 3–7 'Protection required. Seek shade during midday hours! Slip on a shirt, slop on sunscreen and slap on a hat!'; 8, 9, 10, 11+ 'Extra protection. Avoid being outside during midday hours! Make sure you seek shade! Shirt, sunscreen and hat are a must!'",
+      "url": "https://www.who.int/publications/i/item/9241590076",
+      "date": "2002-06-13",
+      "kind": "international",
+      "note": "WHO/SDE/OEH/02.2, the PDF read read on 2 Nov 2026 (Bangkok) (iris.who.int bitstream 94a908ec-14ee-4bb4-84eb-ace483c9eb51). Table 1, p. 6: LOW '< 2', MODERATE '3 TO 5', HIGH '6 TO 7', VERY HIGH '8 TO 10', EXTREME '11+'; 'The UVI should be presented as a single value rounded to the nearest whole number.' Figure 2, p. 8, as in the title: one message for 8 and above. P. 8: 'if sun protection is required, this should include all protective means, i.e. clothing, sunglasses, shade and sunscreen'; 'Above the threshold value of 3, protection is necessary, and this message should be reinforced at UVI values of 8 and above'; 'Protect babies and young children: this is particularly important'; 'Sunscreen should never be used to prolong the duration of sun exposure.' Burn times are not recommended (p. 6). No Thai version exists; the app's Thai lines are its own translation."
+    },
+    "who-uvi-qa-2022": {
+      "agency": "องค์การอนามัยโลก (WHO)",
+      "title": "Radiation: The ultraviolet (UV) index — 0 to 2 'You can safely enjoy being outside!'; 3 to 7 'Seek shade during midday hours! Slip on a shirt, slop on sunscreen and slap on hat!'; 8 and above 'Avoid being outside during midday hours! Make sure you seek shade! Shirt, sunscreen and hat are a must!'",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/radiation-the-ultraviolet-(uv)-index",
+      "date": "2022-06-20",
+      "kind": "international",
+      "note": "WHO Q&A, read on 2 Nov 2026 (Bangkok): 'If sun protection is required, this should include all protective means, i.e. clothing, hat and sunglasses, shade and sunscreen.'"
+    },
+    "who-uv-factsheet-2022": {
+      "agency": "องค์การอนามัยโลก (WHO)",
+      "title": "Ultraviolet radiation (fact sheet) — sun protection when the UV index is 3 and above: limit time in the midday sun, seek shade, protective clothing, a broad-brimmed hat, sunglasses, sunscreen",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/ultraviolet-radiation",
+      "date": "2022-06-21",
+      "kind": "international",
+      "note": "WHO fact sheet, read on 2 Nov 2026 (Bangkok): 'Sun protection is recommended when the ultraviolet index is 3 and above.' 'Sunscreens should not be used for extending time spent in the sun.' 'UVR levels are highest under cloudless skies but can be high even with cloud cover.'"
+    },
+    "tmd-uv-pptv-2567": {
+      "agency": "กรมอุตุนิยมวิทยา",
+      "title": "กรมอุตุฯ แนะป้องกันรังสี UV เมื่อดัชนียูวีสูงมากจนถึงสูงจัด (พีพีทีวี): อยู่ในร่ม โดยเฉพาะเด็กและผู้มีผิวแพ้ง่าย ถ้าต้องออก สวมหมวกปีกกว้างหรือกางร่ม ใส่แว่นกันแดด เสื้อผ้าป้องกันแดด ทาครีมกันแดด",
+      "url": "https://www.pptvhd36.com/news/%E0%B8%AA%E0%B8%B1%E0%B8%87%E0%B8%84%E0%B8%A1/222457",
+      "date": "2024-04-25",
+      "kind": "secondary",
+      "note": "PPTV Online quoting the TMD, read on 2 Nov 2026 (Bangkok): 'ควรอยู่ในที่พักอาศัย อาคาร ในร่ม หรือที่กำบังแสงแดด โดยเฉพาะเด็กและผู้ที่มีสุขภาพผิวหนัง อ่อนไหวหรือภูมิแพ้ … เนื่องจากมีค่าดัชนียูวีในระดับสูงมากจนถึงสูงจัด … ควรสวมหมวกปีกกว้าง หรือกางร่มที่ช่วยให้ร่มเงาได้ถึงผิวคอ … ควรใส่แว่นกันแดด ปกป้องดวงตา … ควรสวมชุดป้องกันรังสี … ควรทาครีมกันแดด'. Its hours and SPF numbers are left out: sources disagree. The TMD's own UV page (ozone.tmd.go.th/UV_index.htm) shows a clear-sky UV index forecast with WHO's colour bands and no advice per level."
+    },
+    "moph-uv-mgr-2566": {
+      "agency": "กระทรวงสาธารณสุข",
+      "title": "สธ. เตือนดัชนียูวีสูงจัด (11 ขึ้นไป) ตามข้อมูลกรมอุตุฯ (ผู้จัดการออนไลน์): หลีกเลี่ยงการออกแดด หากจำเป็นใช้เวลาให้น้อยที่สุด สวมหมวกปีกกว้าง แว่นกันแดด ทาครีมกันแดด",
+      "url": "https://mgronline.com/qol/detail/9660000031886",
+      "date": "2023-04-05",
+      "kind": "secondary",
+      "note": "MGR Online quoting the MOPH Permanent Secretary, read on 2 Nov 2026 (Bangkok): provinces where 'ค่าดัชนียูวีอยู่ในระดับสูงจัด (มากกว่า 11 ขึ้นไป) หรือระดับสีม่วง'; 'ขอให้หลีกเลี่ยงการออกแดด … หากจำเป็นควรใช้เวลาให้น้อยที่สุด … สวมหมวกปีกกว้าง แว่นกันแดด และทาครีมกันแดด'. Said in a heat-and-UV warning; its water and light-clothes advice is about heat. The same quote: https://www.thansettakij.com/health/wellbeing/561179."
+    },
+    "doh-uv-mgr-2558": {
+      "agency": "กรมอนามัย",
+      "title": "อธิบดีกรมอนามัย แนะหลีกเลี่ยงแดดช่วงที่มีรังสียูวีมาก (ผู้จัดการออนไลน์): ใส่เสื้อแขนยาว กางร่มหรือใส่หมวกปีกกว้าง ทาครีมกันแดด แว่นตากันแดด",
+      "url": "https://mgronline.com/qol/detail/9580000049088",
+      "date": "2015-04-29",
+      "kind": "secondary",
+      "note": "MGR Online quoting the DOH Director-General, read on 2 Nov 2026 (Bangkok): 'หลีกเลี่ยงการตากแดดในช่วงเวลาที่มีรังสียูวีมากๆ … หากจำเป็นต้องตากแดดก็ควรใส่เสื้อแขนยาวคอปิด กางร่มหรือใส่หมวกปีกกว้าง ทาครีมกันแดดเป็นประจำ'; 'ควรป้องกันสายตาหรือถนอมสายตาด้วยแว่นตากันแดดที่มีคุณภาพ'. No UV index level is named; its burn time and hours are left out."
     }
   }
 }

@@ -704,3 +704,21 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* matching TMD's warning polygons against all 7,425 subdistrict centres looked like a way to tell a household "your subdistrict is inside today's warning" more precisely than by province. Measured, the 150 polygons were the 18 listed provinces' outlines: 1,379 of the 1,380 subdistricts inside them were in those provinces, and every difference was a coastline. The precise method would have cost a server, 138 ms a warning and a 3 KB file, to be slightly less accurate than comparing two province codes on the phone.
 - *Do this:* before building a finer method, compute it once on real data next to the simplest key the source already gives, and keep the simple one unless the finer one changes answers.
 - *Encoded in:* [GUIDELINES rule 99](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWLEDGE §36.2](KNOWLEDGE.md#362-facts-to-reuse-when-it-is-built).
+
+**A11. Know the owner's other apps before proposing a feature.**
+
+- *What happened:* on 21 Oct 2026 this app's docs proposed "around my home" (N28) and a server to feed it (N29), with two research rounds behind them. The owner already had ภัยรอบบ้าน (Thai Risk) doing exactly that, at version 0.11 by 1 Nov, and it already copied this app's advice word for word. Nobody looked; the proposals were superseded on 1 Nov.
+- *Do this:* before proposing a new product area, look for the owner's other apps (sites on the same domain, links into this app's pages, the repositories the owner can list) and ask which one owns it. A sister app that copies your content is a contract: write it down ([docs/10](10-family.md)).
+- *Encoded in:* [GUIDELINES rules 100–101](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [ROADMAP N28–N30](ROADMAP.md#n30-fit-with-the-family-v1140).
+
+**B21. A brief's facts are inputs too.**
+
+- *What happened:* the owner's brief of 1 Nov 2026 said "on 1 Nov 2026 TMD had no notice in force" and "WHO's advice tiers (UV index 3–7, 8–10, 11+)". TMD had issued a numbered notice at 15:50 that day (no CAP alert was in force after 08:00), and WHO gives one message from 8 up; 3–7, 8–10, 11+ is ภัยรอบบ้าน's grouping. The owner had said "do not need to believe all".
+- *Do this:* check each factual claim in a brief against the source before building on it, say which held and which didn't, and act on what the source says; the principle of the ask usually survives a wrong example.
+- *Encoded in:* [APPROACH §37](APPROACH_AND_METHOD.md#37-fitting-the-family-check-the-brief-then-source-what-the-sister-app-needs-v1140) step 1.
+
+**C27. An end date fixes a forgotten switch, not a false one.**
+
+- *What happened:* v1.6.0 gave the rain switch an end date (C16), so "ฝนจะมาอีกระลอก" would stop by itself on 30 Nov. It was still false somewhere every day it was on: one switch for a whole country can't know where rain is coming, and the season told everyone "the water has gone" for half the year.
+- *Do this:* a line that states a current condition needs a source for the reader's place; without one, write a line that is true anywhere ("ถ้าน้ำมา บ้านเราพร้อมไหม?") and link the app that knows the place.
+- *Encoded in:* [GUIDELINES rule 100](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); the unit test on the gecko's lines; the build's error on `rainWarningActive`.

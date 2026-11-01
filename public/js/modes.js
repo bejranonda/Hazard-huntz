@@ -51,15 +51,19 @@ export const mk = (base, id) => `${base}${cap(id)}`;
 export const codesRe = () => `[${MODES.map((m) => m.code).join('')}]`;
 export const idsRe = () => MODES.map((m) => m.id).join('|');
 
-// The recommended mode: a rain warning means flood preparation; otherwise the
-// first non-flood mode in season (Bangkok month); otherwise after-the-flood.
+// The recommended mode: a live rain warning means flood preparation; otherwise
+// the first mode whose months (config.json → modes[].months, Bangkok month)
+// include this one; otherwise after-the-flood. Since v1.14.0 flood preparation
+// counts its own months (May–November), so the app never recommends "after the
+// flood" to the whole country by itself: whether water is coming or has gone
+// where the reader lives is ภัยรอบบ้าน's (Thai Risk's) to say, not this app's.
 export function seasonalMode(month, rainWarning) {
   if (rainWarning && modeOf('prepare')) return 'prepare';
-  const inSeason = MODES.find((m) => m.hazard !== 'flood' && (m.months || []).includes(month));
+  const inSeason = MODES.find((m) => (m.months || []).includes(month));
   return inSeason ? inSeason.id : (modeOf('return') ? 'return' : MODES[0].id);
 }
 
-// A hand-set switch (rainWarningActive, featuredTopic) with an optional end
+// A hand-set switch (featuredTopic, the alert) with an optional end
 // date: on while dayKey (YYYYMMDD, Bangkok) is on or before until ("YYYY-MM-DD",
 // inclusive). A switch nobody turns off ends by itself.
 export function switchOn(value, until, dayKey) {
@@ -88,17 +92,19 @@ export function modeLink(config, id) {
 
 // What the start screen recommends on a Bangkok day:
 //   want  a mode id from a ?mode= link (ignored unless it is in the registry)
-//   live  the forecast app's rain warning, when it answered (true/false)
-// Returns { mode, topic, why } with why = link | live | warning | season.
+//   live  a forecast app's rain warning, when it answered (true/false)
+// Returns { mode, topic, why } with why = link | live | season. The hand-set
+// rain switch (rainWarningActive) was removed in v1.14.0: a switch can't know
+// whether rain is coming where the reader lives.
 export function recommend(config, dayKey, { want = null, live = null } = {}) {
   const linked = want ? MODES.find((m) => m.id === String(want).toLowerCase()) : null;
-  const warning = typeof live === 'boolean' ? live : switchOn(config.rainWarningActive, config.rainWarningUntil, dayKey);
+  const warning = live === true;
   const mode = linked ? linked.id : seasonalMode(Number(String(dayKey).slice(4, 6)), warning);
   const news = switchOn(config.featuredTopic, config.featuredTopicUntil, dayKey) ? config.featuredTopic : null;
   const own = MODES.find((m) => m.id === mode)?.topic || null;
   const topic = linked ? own || news : news || own;
   let why = 'season';
   if (linked) why = 'link';
-  else if (mode === 'prepare' && warning) why = typeof live === 'boolean' ? 'live' : 'warning';
+  else if (mode === 'prepare' && warning) why = 'live';
   return { mode, topic, why };
 }

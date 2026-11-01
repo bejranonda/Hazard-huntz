@@ -277,30 +277,80 @@ test('hand-set switches end by themselves on their end date (Bangkok, inclusive)
 test('the start screen recommends a mode, a topic and says why', () => {
   // A fixed config, so the test never depends on today's date or on config.json.
   const cfg = {
-    rainWarningActive: true, rainWarningUntil: '2026-11-30',
     featuredTopic: 'health', featuredTopicUntil: '2026-11-15',
     forecastAppUrl: 'https://flood.example/',
   };
   const r = (day, opt) => recommend(cfg, day, opt);
-  assert.deepEqual(r('20261018'), { mode: 'prepare', topic: 'health', why: 'warning' });
-  assert.deepEqual(r('20261116'), { mode: 'prepare', topic: null, why: 'warning' });
+  // v1.14.0: no hand-set rain switch; each mode's own months decide (flood preparation May–November).
+  assert.deepEqual(r('20261018'), { mode: 'prepare', topic: 'health', why: 'season' });
+  assert.deepEqual(r('20261116'), { mode: 'prepare', topic: null, why: 'season' });
   assert.deepEqual(r('20261201'), { mode: 'dust', topic: 'air', why: 'season' });
   assert.deepEqual(r('20270410'), { mode: 'fire', topic: 'fire', why: 'season' });
-  assert.deepEqual(r('20270615'), { mode: 'return', topic: null, why: 'season' });
-  // The forecast app's answer beats the manual switch, both ways.
+  assert.deepEqual(r('20270615'), { mode: 'prepare', topic: null, why: 'season' });
+  // The app never recommends "after the flood" to the whole country by itself: only a link opens it.
+  for (const day of days) assert.notEqual(r(day).mode, 'return', day);
+  // A live answer from a forecast app (when one is configured) can still put flood preparation first.
   assert.deepEqual(r('20261201', { live: true }), { mode: 'prepare', topic: null, why: 'live' });
-  assert.deepEqual(r('20261018', { live: false }), { mode: 'return', topic: 'health', why: 'season' });
+  assert.deepEqual(r('20261018', { live: false }), { mode: 'prepare', topic: 'health', why: 'season' });
+  // An old config that still carries the removed switch changes nothing.
+  assert.deepEqual(recommend({ ...cfg, rainWarningActive: true, rainWarningUntil: '2099-12-31' }, '20261201'), { mode: 'dust', topic: 'air', why: 'season' });
   // A ?mode= link wins and brings its own topic first; unknown ids are ignored.
   assert.deepEqual(r('20261018', { want: 'Dust' }), { mode: 'dust', topic: 'air', why: 'link' });
   assert.deepEqual(r('20261018', { want: 'return' }), { mode: 'return', topic: 'health', why: 'link' });
   assert.deepEqual(r('20261018', { want: 'heat' }), r('20261018'));
-  // "Check before you go": dust → Air4Thai, flood modes → the forecast app, fire → none.
+  // "Check before you go": dust → Air4Thai, flood modes → the river app, fire → none.
   assert.match(modeLink(cfg, 'dust'), /air4thai/);
   assert.equal(modeLink(cfg, 'prepare'), 'https://flood.example/');
   assert.equal(modeLink(cfg, 'return'), 'https://flood.example/');
   assert.equal(modeLink(cfg, 'fire'), '');
   // Every day of a year gives a mode in the registry.
   for (const day of days) assert.ok(modeList().some((m) => m.id === recommend(C.config, day).mode));
+});
+
+test('the start screen states no live conditions; "now" is ภัยรอบบ้าน\'s (v1.14.0)', () => {
+  // What is happening where the reader lives is the sister app's to say (config.riskAppUrl).
+  assert.ok(!('rainWarningActive' in C.config) && !('rainWarningUntil' in C.config), 'the rain switch is gone');
+  assert.match(C.config.riskAppUrl, /^https:\/\/[^\s/]+\/$/);
+  // The gecko's line on the start screen, one per mode, in both languages: no claim about this week.
+  const S = load('strings');
+  const NOW = /อีกระลอก|มาอีกแล้ว|น้ำลดแล้ว|is coming|is back|has gone|the water's gone/i;
+  for (const lang of ['th', 'en']) {
+    for (const m of modeList()) {
+      const line = S[lang][mk('hero', m.id)];
+      assert.ok(line && !NOW.test(line), `${lang} hero${m.id}: ${line}`);
+    }
+  }
+  // A hand-set alert rests on an agency's notice.
+  if (C.config.alert) assert.match(C.config.alert.source || '', /^https:\/\//);
+});
+
+test('the advice file ภัยรอบบ้าน reads keeps its shape and its numbers (v1.14.0, GUIDELINES rule 101)', () => {
+  // ภัยรอบบ้าน (Thai Risk) copies these lines word for word and checks them (npm run check:advice there).
+  // A change here must be on purpose, with a note to the owner, so both apps change together.
+  const kit = load('kit');
+  const first = (l) => l.all?.[0];
+  assert.deepEqual(kit.air.levels.map((l) => l.pm), [15, 25, 37.5, 75, null], 'PM2.5 band tops');
+  assert.deepEqual(kit.hot.levels.map((l) => Number(l.lo)), [27, 33, 42, 52], 'heat-index band floors');
+  for (const l of [...kit.air.levels, ...kit.hot.levels]) assert.ok(first(l)?.th && first(l)?.en, `${l.id}: a first line in both languages`);
+  // Flood: one entry per ภัยรอบบ้าน level above "nothing notable yet", each with a sourced first line.
+  assert.deepEqual(kit.flood.levels.map((l) => l.id), ['watch', 'warn', 'danger']);
+  assert.deepEqual(kit.flood.levels.map((l) => l.label.th), ['ติดตามไว้', 'เตรียมตัว', 'เสี่ยงสูง'], 'ภัยรอบบ้าน\'s own words, not renamed');
+  for (const l of kit.flood.levels) assert.ok(first(l)?.th && first(l)?.en && first(l).sources.length, l.id);
+  // Whatever set the level (rain, a river or canal, a notice, a flag, a dam), anywhere in Thailand.
+  const lines = [...kit.flood.levels.flatMap((l) => l.all), ...kit.flood.during];
+  for (const x of lines) assert.ok(!/แม่น้ำ|ลำคลอง|กรุงเทพ|หาดใหญ่|\briver\b|\bcanal\b|Bangkok/i.test(`${x.th} ${x.en}`), x.th);
+  // The top level is never an order the data can't give: leaving is "when officials tell you".
+  assert.ok(kit.flood.levels[2].all.some((x) => /เจ้าหน้าที่ให้อพยพ/.test(x.th)));
+  // UV: whole UV-index bands with no gap (0–2, 3–7, 8–10, 11+); WHO gives one message from 8 up.
+  assert.deepEqual(kit.uv.levels.map((l) => [l.lo, l.hi]), [[0, 2], [3, 7], [8, 10], [11, null]]);
+  const vh = kit.uv.levels.find((l) => l.id === 'veryhigh').all.map((x) => x.th);
+  const ex = kit.uv.levels.find((l) => l.id === 'extreme').all.map((x) => x.th);
+  assert.deepEqual(ex.slice(0, vh.length), vh, '8–10 and 11+ share WHO\'s message');
+  // Every page ภัยรอบบ้าน links answers (generated), in both languages.
+  for (const slug of ['air', 'flood', 'hot', 'landslide', 'mask', 'pm25', 'quake', 'storm', 'uv']) {
+    for (const pre of ['', 'en/']) assert.ok(fs.existsSync(new URL(`../public/${pre}${slug}.html`, import.meta.url)), `${pre}${slug}.html`);
+  }
+  assert.match(fs.readFileSync(new URL('../public/flood.html', import.meta.url), 'utf8'), /id="during"/);
 });
 
 test('home check: amounts follow the household, special items follow the answers', () => {

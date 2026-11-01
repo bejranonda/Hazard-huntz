@@ -2494,6 +2494,474 @@
     "verify": "partial",
     "verifyNote": "The bands and advice come through news reports quoting the BMA and the DOH; the TMD's heat-index page could not be read (KNOWN_ISSUES #78). The hours (11–15 or 13–16), the age for older people (60 or 65) and body temperatures differ between sources and are left out."
   },
+  "flood": {
+    "_readme": "v1.14.0: คำแนะนำน้ำท่วมตามระดับของ ภัยรอบบ้าน (Thai Risk) ซึ่งคัดลอกไปแสดงคำต่อคำ: watch = ติดตามไว้ · warn = เตรียมตัว · danger = เสี่ยงสูง (ระดับ ยังไม่น่าห่วง ไม่มีบรรทัด) ทุกบรรทัดต้องใช้ได้ทุกที่ ไม่ว่าอะไรทำให้ระดับขึ้น (ฝนหนัก แม่น้ำ/คลองล้นตลิ่ง ประกาศกรมอุตุฯ ธงเตือน เขื่อนระบาย) จึงเขียนว่า 'น้ำอาจมาถึง' ไม่ใช่ 'เมื่อแม่น้ำขึ้น' และไม่เอ่ยชื่อเมือง (build ตรวจ) ระดับของ ภัยรอบบ้าน คำนวณจากข้อมูล ไม่ใช่คำสั่งอพยพ ระดับสูงสุดจึงบอกให้ออก 'เมื่อเจ้าหน้าที่ให้อพยพ' · during = หน้า /flood#during ระหว่างน้ำกำลังมา · เปลี่ยน id หรือบรรทัดแรกของแต่ละระดับ ต้องบอกเจ้าของ เพราะ ภัยรอบบ้าน ตรวจตาม (npm run check:advice ที่นั่น)",
+    "title": {
+      "th": "ระหว่างน้ำกำลังมา ทำอะไรก่อน",
+      "en": "While the water is rising: what to do first"
+    },
+    "intro": {
+      "th": "ทำตามประกาศและคำแนะนำของเจ้าหน้าที่ในพื้นที่ก่อนเสมอ ข้อเหล่านี้มาจากคำแนะนำของ ปภ. และกรมชลประทาน",
+      "en": "Always follow your local officials first. These lines come from DDPM's and the Royal Irrigation Department's advice."
+    },
+    "levelsTitle": {
+      "th": "ภัยรอบบ้าน บอกระดับน้ำท่วมที่ตำบลของคุณ ทำสิ่งนี้ก่อน",
+      "en": "When Thai Risk shows a flood level at your subdistrict, do this first"
+    },
+    "levels": [
+      {
+        "id": "watch",
+        "label": {
+          "th": "ติดตามไว้",
+          "en": "Keep an eye on it"
+        },
+        "all": [
+          {
+            "th": "คอยฟังประกาศเตือนจากทางราชการ และทำตามคำแนะนำ",
+            "en": "Keep listening for official warnings, and do what they advise",
+            "sources": [
+              "ddpm-levels-2568",
+              "ddpm-overtop-2569",
+              "rid-chaophraya-2569",
+              "ddpm-south"
+            ],
+            "verify": "verified",
+            "icon": "📢"
+          },
+          {
+            "th": "เตรียมกระเป๋าฉุกเฉิน เอกสารสำคัญ ยาประจำตัว ไว้ใกล้มือ",
+            "en": "Keep your emergency bag, important documents and regular medicines close to hand",
+            "sources": [
+              "ddpm-mea",
+              "ddpm-south",
+              "ddpm-noru"
+            ],
+            "verify": "partial",
+            "verifyNote": "DDPM gives this as general preparation with no warning level attached; putting it at ติดตามไว้ is the app's choice (DDPM's levels 1–2 ask people to follow the news).",
+            "icon": "🎒"
+          }
+        ]
+      },
+      {
+        "id": "warn",
+        "label": {
+          "th": "เตรียมตัว",
+          "en": "Get ready"
+        },
+        "all": [
+          {
+            "th": "น้ำอาจมาถึง ยกของและเครื่องใช้ไฟฟ้าขึ้นที่สูงไว้ก่อน",
+            "en": "Water may reach you: move belongings and electrical appliances up high now",
+            "sources": [
+              "ddpm-mea",
+              "ddpm-levels-2568",
+              "rid-release-2569"
+            ],
+            "verify": "verified",
+            "icon": "⬆️"
+          },
+          {
+            "th": "เตรียมพาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัย",
+            "en": "Get ready to take children, older people and anyone bedridden somewhere safe",
+            "sources": [
+              "ddpm-levels-2567",
+              "ddpm-alert-2568",
+              "ddpm-rising-2569"
+            ],
+            "verify": "verified",
+            "icon": "🧓"
+          }
+        ]
+      },
+      {
+        "id": "danger",
+        "label": {
+          "th": "เสี่ยงสูง",
+          "en": "High risk"
+        },
+        "all": [
+          {
+            "th": "พาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา",
+            "en": "Take children, older people and anyone bedridden somewhere safe before the water comes",
+            "sources": [
+              "ddpm-levels-2567",
+              "ddpm-overtop-2569",
+              "ddpm-alert-2568",
+              "ddpm-noru"
+            ],
+            "verify": "verified",
+            "icon": "🧓"
+          },
+          {
+            "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
+            "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
+            "sources": [
+              "ddpm-mea",
+              "ddpm-levels-2567",
+              "ddpm-alert-2568"
+            ],
+            "verify": "verified",
+            "icon": "🚨"
+          }
+        ]
+      }
+    ],
+    "during": [
+      {
+        "th": "ยกของ เครื่องใช้ไฟฟ้า เอกสารสำคัญ ขึ้นที่สูงทันที",
+        "en": "Move belongings, appliances and important documents up high straight away",
+        "sources": [
+          "ddpm-rising-2569",
+          "ddpm-urgent-2569",
+          "ddpm-overtop-2569"
+        ],
+        "verify": "verified",
+        "icon": "⬆️"
+      },
+      {
+        "th": "สับคัตเอาต์จุดที่น้ำอาจท่วมถึง ทำตอนตัวแห้งเท่านั้น",
+        "en": "Switch off the power for anywhere the water may reach, only while you are dry",
+        "sources": [
+          "ddpm-rising-2569",
+          "ddpm-mea",
+          "mea-2022",
+          "pea-943"
+        ],
+        "verify": "verified",
+        "icon": "⚡"
+      },
+      {
+        "th": "พาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อน",
+        "en": "Take children, older people and anyone bedridden somewhere safe first",
+        "sources": [
+          "ddpm-levels-2567",
+          "ddpm-overtop-2569",
+          "ddpm-rising-2569",
+          "ddpm-noru"
+        ],
+        "verify": "verified",
+        "icon": "🧓"
+      },
+      {
+        "th": "ย้ายรถและสัตว์เลี้ยงไปที่สูงหรือที่ปลอดภัย",
+        "en": "Move the car and pets to high ground or somewhere safe",
+        "sources": [
+          "ddpm-urgent-2569",
+          "ddpm-south",
+          "rid-release-2569"
+        ],
+        "verify": "verified",
+        "icon": "🚗"
+      },
+      {
+        "th": "อยู่ห่างสายไฟและเสาไฟฟ้า",
+        "en": "Keep away from power lines and electricity poles",
+        "sources": [
+          "ddpm-south",
+          "ddpm-noru"
+        ],
+        "verify": "verified",
+        "icon": "🔌"
+      },
+      {
+        "th": "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว",
+        "en": "Don't walk or drive through fast-flowing floodwater",
+        "sources": [
+          "ddpm-south",
+          "ddpm-noru"
+        ],
+        "verify": "partial",
+        "verifyNote": "DDPM advises against crossing fast water above the knee and driving through deep floodwater; the app leaves the depth out (no wading depths) and so says it more strictly than DDPM.",
+        "icon": "🚫"
+      },
+      {
+        "th": "ถ้าต้องอพยพ ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล",
+        "en": "If you have to leave, take a safe route, not the way the water is flowing",
+        "sources": [
+          "ddpm-noru",
+          "ddpm-south"
+        ],
+        "verify": "verified",
+        "icon": "🧭"
+      },
+      {
+        "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
+        "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
+        "sources": [
+          "ddpm-mea",
+          "ddpm-levels-2567",
+          "ddpm-alert-2568"
+        ],
+        "verify": "verified",
+        "icon": "🚨"
+      }
+    ]
+  },
+  "uv": {
+    "_readme": "v1.14.0: รังสียูวี ทำอะไรตามค่าดัชนียูวี (UV index) ของ WHO สำหรับหน้า /uv และ ภัยรอบบ้าน (คัดลอกคำต่อคำ) · lo/hi = ค่าดัชนียูวีจำนวนเต็ม (ปัดเศษก่อนเทียบ ตามที่ WHO บอก) · WHO ให้คำแนะนำเดียวกันตั้งแต่ 8 ขึ้นไป ระดับ veryhigh กับ extreme จึงใช้บรรทัดเดียวกัน (ภัยรอบบ้าน แยก 8–10 เป็นเตรียมตัว 11 ขึ้นไปเป็นเสี่ยงสูง เป็นการเลือกของ ภัยรอบบ้าน ไม่ใช่ของ WHO) · ไม่ใส่ชั่วโมง ค่า SPF หรือเวลาที่ผิวไหม้ เพราะแหล่งไม่ตรงกัน และ WHO ไม่แนะนำให้บอกเวลาผิวไหม้ · ภาษาไทยเป็นคำแปลของแอป ไม่มีฉบับทางการ",
+    "title": {
+      "th": "รังสียูวี (UV) สูง ทำอย่างไร ตามระดับดัชนียูวี",
+      "en": "High UV: what to do at each UV index level"
+    },
+    "h1": {
+      "th": "ดัชนียูวีเท่านี้ ทำอะไร",
+      "en": "What to do at each UV index level"
+    },
+    "desc": {
+      "th": "ดัชนียูวี 3 ขึ้นไปต้องป้องกันแดด 8 ขึ้นไปต้องป้องกันเป็นพิเศษ ตามคำแนะนำขององค์การอนามัยโลก (WHO) และกรมอุตุนิยมวิทยา",
+      "en": "From a UV index of 3, protect yourself from the sun; from 8, take extra care. From the World Health Organization (WHO) and the Thai Meteorological Department."
+    },
+    "intro": {
+      "th": "ดัชนียูวีบอกว่าแดดเผาผิวและตาได้แรงแค่ไหน ช่วงเที่ยงวันสูงสุด ฟ้ามีเมฆหรืออากาศไม่ร้อนก็ยังสูงได้ กรมอุตุนิยมวิทยาพยากรณ์ค่าของแต่ละจังหวัดทุกวัน (เมื่อฟ้าโปร่ง)",
+      "en": "The UV index says how strongly the sun can burn skin and eyes. It peaks around midday, and can be high on a cloudy or cool day. The Thai Meteorological Department forecasts it for each province every day (for a clear sky)."
+    },
+    "link": {
+      "url": "https://ozone.tmd.go.th/UV_index.htm",
+      "icon": "☀️",
+      "label": {
+        "th": "ค่าดัชนียูวีพยากรณ์ รายจังหวัด (กรมอุตุนิยมวิทยา)",
+        "en": "UV index forecast by province (Thai Meteorological Department)"
+      },
+      "checked": "2026-11-02"
+    },
+    "levels": [
+      {
+        "id": "low",
+        "lo": 0,
+        "hi": 2,
+        "label": {
+          "th": "ต่ำ (0–2)",
+          "en": "Low (0–2)"
+        },
+        "all": [
+          {
+            "th": "ไม่ต้องป้องกันเป็นพิเศษ ออกไปข้างนอกได้ตามปกติ",
+            "en": "No special protection needed: you can be outside as usual",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022"
+            ],
+            "verify": "partial",
+            "verifyNote": "WHO only (\"No protection required\"); no Thai agency gives a line for a low UV index.",
+            "icon": "🙂"
+          }
+        ]
+      },
+      {
+        "id": "protect",
+        "lo": 3,
+        "hi": 7,
+        "label": {
+          "th": "ปานกลางถึงสูง (3–7): ต้องป้องกันแดด",
+          "en": "Moderate to high (3–7): protection needed"
+        },
+        "all": [
+          {
+            "th": "ช่วงเที่ยงวัน หลบเข้าที่ร่ม",
+            "en": "Around midday, keep to the shade",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "doh-uv-mgr-2558"
+            ],
+            "verify": "partial",
+            "verifyNote": "WHO ties this to a UV index of 3–7; the DOH gives the same action without naming a level.",
+            "icon": "⛱️"
+          },
+          {
+            "th": "ออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด สวมหมวก",
+            "en": "Out in the sun: long sleeves, sunscreen and a hat",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "doh-uv-mgr-2558"
+            ],
+            "verify": "partial",
+            "verifyNote": "WHO says \"a shirt\"; \"long sleeves\" is the DOH's wording, given without a UV index level.",
+            "icon": "👒"
+          },
+          {
+            "th": "ใส่แว่นกันแดดด้วย",
+            "en": "Wear sunglasses too",
+            "sources": [
+              "who-uvi-qa-2022",
+              "who-uvi-guide-2002",
+              "doh-uv-mgr-2558"
+            ],
+            "verify": "partial",
+            "verifyNote": "WHO: protection \"should include all protective means, i.e. clothing, hat and sunglasses, shade and sunscreen\"; not in its short 3–7 message.",
+            "icon": "🕶️"
+          }
+        ]
+      },
+      {
+        "id": "veryhigh",
+        "lo": 8,
+        "hi": 10,
+        "label": {
+          "th": "สูงมาก (8–10): ป้องกันเป็นพิเศษ",
+          "en": "Very high (8–10): extra protection"
+        },
+        "all": [
+          {
+            "th": "ช่วงเที่ยงวัน เลี่ยงออกไปกลางแจ้ง",
+            "en": "Around midday, avoid being outdoors",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "tmd-uv-pptv-2567",
+              "moph-uv-mgr-2566"
+            ],
+            "verify": "verified",
+            "icon": "🏠"
+          },
+          {
+            "th": "ต้องออกไป ให้หาที่ร่มไว้เสมอ",
+            "en": "If you must go out, always find shade",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "tmd-uv-pptv-2567"
+            ],
+            "verify": "verified",
+            "icon": "⛱️"
+          },
+          {
+            "th": "เสื้อแขนยาว ครีมกันแดด หมวกปีกกว้าง ต้องมีครบ",
+            "en": "Long sleeves, sunscreen and a wide-brimmed hat are a must",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "tmd-uv-pptv-2567",
+              "doh-uv-mgr-2558"
+            ],
+            "verify": "verified",
+            "icon": "👒"
+          },
+          {
+            "th": "ใส่แว่นกันแดด ปกป้องดวงตา",
+            "en": "Wear sunglasses to protect your eyes",
+            "sources": [
+              "tmd-uv-pptv-2567",
+              "moph-uv-mgr-2566",
+              "who-uvi-qa-2022"
+            ],
+            "verify": "verified",
+            "icon": "🕶️"
+          },
+          {
+            "th": "เด็กและคนผิวแพ้ง่าย ให้อยู่ในร่มช่วงเที่ยงวัน",
+            "en": "Keep children and people with sensitive skin out of the midday sun",
+            "sources": [
+              "tmd-uv-pptv-2567",
+              "who-uvi-guide-2002"
+            ],
+            "verify": "verified",
+            "icon": "👶"
+          }
+        ]
+      },
+      {
+        "id": "extreme",
+        "lo": 11,
+        "hi": null,
+        "label": {
+          "th": "สูงจัด (11 ขึ้นไป): ป้องกันเป็นพิเศษ",
+          "en": "Extreme (11+): extra protection"
+        },
+        "all": [
+          {
+            "th": "ช่วงเที่ยงวัน เลี่ยงออกไปกลางแจ้ง",
+            "en": "Around midday, avoid being outdoors",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "tmd-uv-pptv-2567",
+              "moph-uv-mgr-2566"
+            ],
+            "verify": "verified",
+            "icon": "🏠"
+          },
+          {
+            "th": "ต้องออกไป ให้หาที่ร่มไว้เสมอ",
+            "en": "If you must go out, always find shade",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "tmd-uv-pptv-2567"
+            ],
+            "verify": "verified",
+            "icon": "⛱️"
+          },
+          {
+            "th": "เสื้อแขนยาว ครีมกันแดด หมวกปีกกว้าง ต้องมีครบ",
+            "en": "Long sleeves, sunscreen and a wide-brimmed hat are a must",
+            "sources": [
+              "who-uvi-guide-2002",
+              "who-uvi-qa-2022",
+              "tmd-uv-pptv-2567",
+              "doh-uv-mgr-2558"
+            ],
+            "verify": "verified",
+            "icon": "👒"
+          },
+          {
+            "th": "ใส่แว่นกันแดด ปกป้องดวงตา",
+            "en": "Wear sunglasses to protect your eyes",
+            "sources": [
+              "tmd-uv-pptv-2567",
+              "moph-uv-mgr-2566",
+              "who-uvi-qa-2022"
+            ],
+            "verify": "verified",
+            "icon": "🕶️"
+          },
+          {
+            "th": "เด็กและคนผิวแพ้ง่าย ให้อยู่ในร่มช่วงเที่ยงวัน",
+            "en": "Keep children and people with sensitive skin out of the midday sun",
+            "sources": [
+              "tmd-uv-pptv-2567",
+              "who-uvi-guide-2002"
+            ],
+            "verify": "verified",
+            "icon": "👶"
+          },
+          {
+            "th": "ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด",
+            "en": "If you really must go out, keep your time in the sun short",
+            "sources": [
+              "moph-uv-mgr-2566"
+            ],
+            "verify": "verified",
+            "icon": "⏱️"
+          }
+        ]
+      }
+    ],
+    "notes": [
+      {
+        "th": "ครีมกันแดดไม่ได้ทำให้อยู่กลางแดดได้นานขึ้น",
+        "en": "Sunscreen is not a reason to stay in the sun longer",
+        "sources": [
+          "who-uvi-guide-2002",
+          "who-uv-factsheet-2022"
+        ],
+        "verify": "partial",
+        "verifyNote": "WHO only.",
+        "icon": "🧴"
+      },
+      {
+        "th": "ฟ้ามีเมฆ หรืออากาศไม่ร้อน ยูวีก็ยังสูงได้",
+        "en": "Clouds or a cool day don't stop UV",
+        "sources": [
+          "who-uv-factsheet-2022"
+        ],
+        "verify": "partial",
+        "verifyNote": "WHO only.",
+        "icon": "☁️"
+      }
+    ]
+  },
   "water": {
     "_readme": "น้ำดื่มที่มี พอกี่วัน? (/water, v1.13.0) คิดจากข้อ water ของเช็กของจำเป็น (คนละกี่ลิตรต่อวัน กี่วัน) ขนาดภาชนะเป็นขนาดที่คนกดเลือก ไม่ใช่คำแนะนำ ห้ามแนะนำให้ลดน้ำดื่ม",
     "sizes": [

@@ -162,10 +162,11 @@
 |---|---|
 | **Alert card** (optional) | "ช่วงนี้: {guide} · ดูว่าต้องทำอะไร ›" while `config.json → alert` is on (an owner-set guide with an end date); opens that guide |
 | **Hub** | "📋 ต้องทำอะไร เมื่อเกิดภัย" (the guide picker), "🎒 เช็กของจำเป็น" (the home check; shows "บ้านเราพร้อม 64%" once checked), "📝 แผนครอบครัว" (the plan card). All three on the first screen at 320 × 460 and 360 × 640. Since v1.10.0 two more tiles, "🥛 ไฟดับ: ตู้เย็น" and "😷 ฝุ่นวันนี้", make a 2 × 2 grid with the check and the plan ([below](#calculators-the-fridge-dust-today-and-the-pills-v1100)) |
-| **"🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"** | The label above the gecko and the mode cards, which work as before |
+| **"📍 ดูภัยที่ตำบลของคุณตอนนี้"** (v1.14.0) | Under the hub: opens ภัยรอบบ้าน (Thai Risk) in the reader's language, which says what is happening at their subdistrict; nothing about the reader goes with it. The same link is in every guide (before FloodWatch's rivers link), on the result and on the hazard pages ([docs/10](10-family.md)) |
+| **"🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"** | The label above the gecko and the mode cards, which work as before | (since v1.14.0 the gecko's line claims nothing about this week)
 | **Guide picker** | The nine guides as tiles, in `config.json → guides` order (since v1.9.1: 🌊 น้ำท่วม: ก่อนน้ำมา, 🧹 น้ำท่วม: หลังน้ำลด, ⛰️ น้ำป่า ดินถล่ม, ⛈️ พายุ ฟ้าผ่า, 🏚️ แผ่นดินไหว, 🔥 ไฟไหม้, 🔦 ไฟดับ, 🌡️ อากาศร้อนจัด, 😷 ฝุ่น PM2.5), the alert's first with "ช่วงนี้" |
 | **A guide** (v1.9.1 layout) | The title; phase jump chips; "☎️ โทรฟรี" 1784 · 199 · 1669 (tap to dial; since v1.11.0 the guide's own numbers, each with whom it reaches under it, "1130 / ไฟดับ กทม. นนทบุรี สมุทรปราการ", and the power-cut guide first offers "🥛 ไฟดับอยู่ตอนนี้? ดูว่าของในตู้เย็นอะไรต้องทิ้ง"); 10 lines, grouped "ก่อนเกิด / ขณะเกิด / หลังเกิด" where they have phases (the heat guide names its own: เตรียมไว้ก่อน / วันที่ร้อนจัด / ถ้ามีคนเป็นลมแดด), ⚠️ on lines under review; the agencies, small, and one ⚠️ footnote; ▶ the game when there is one; 📖 the hazard page with every line's sources; "เตรียมบ้านต่อ": 🎒 เช็กของจำเป็น, 📝 แผนครอบครัว; "ส่งต่อให้คนที่บ้าน": four share buttons and the picture as a thumbnail; 🖨️ print; "← เรื่องอื่น" and "เสร็จแล้ว". ✕ at the top and the phone's back button close it ([KNOWLEDGE §30.2](KNOWLEDGE.md#302-sheets-the-back-button-and-sharing)) |
-| **A friend's challenge** | Hides the alert, the hub and the game label: the challenge is why they came |
+| **A friend's challenge** | Hides the alert, the hub, the ภัยรอบบ้าน link and the game label: the challenge is why they came |
 
 - **Guides with a game and without.** Prepare, Return, dust, fire and the power cut keep their 10-item checklists as their guides, and ▶ starts the round. Flash floods and landslides, storms and lightning, earthquakes and extreme heat have guides only: every line carries its own sources and a phase, and their hazard pages lead with the guide.
 - **The result screen's "📋 เช็กลิสต์ 10 ข้อ"** opens that mode's guide; "← เรื่องอื่น" leads to the rest. The old checklist tabs are gone. Since v1.11.0 the button carries the guide's real title ("📋 เตรียมบ้านก่อนน้ำมา 10 ข้อ") in a "เตรียมบ้านต่อ" row right under share and challenge, with the hazard's tools and the check link ([KNOWLEDGE §33.12](KNOWLEDGE.md#3312-the-result-screens-next-steps)).
@@ -271,11 +272,11 @@
 - One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in one row, four of them since v1.7.0. Their names shrink with the screen (`clamp(12px, 3.9vw, 16px)`), so every Thai name stays on one line at 320 px; English names wrap to two lines. The gecko's line, prop and the featured topic change to match.
 - **What is recommended** comes from one pure function, `recommend()` in `modes.js` (v1.6.0; [KNOWLEDGE §25.2](KNOWLEDGE.md#252-what-the-start-screen-recommends)), in this order:
   1. a `?mode=` link (`/?mode=dust`): that mode, with its own topic featured
-  2. a rain warning: Prepare. That is `config.json → rainWarningActive: true` until its end date `rainWarningUntil` (now 30 Nov 2026), or the forecast app's live answer when there is one
-  3. the mode in season (`modes[].months`, Bangkok month): dust December–March, fire April. The power cut has no months, so it is never picked here.
-  4. otherwise Return
+  2. a live rain warning from a forecast app (`forecastStatusUrl`, not set): Prepare. The hand-set switch `rainWarningActive` was removed in v1.14.0: whether rain is coming where the reader lives is ภัยรอบบ้าน's to say, and the start screen links it.
+  3. the mode in season (`modes[].months`, Bangkok month): ก่อนน้ำมา May–November (counted since v1.14.0), dust December–March, fire April. The power cut and หลังน้ำลด have no months, so they are never picked here: the app never tells the whole country "the water has gone".
+  4. otherwise Return (no month is left without a mode today)
 - **`?mode=` links** are for posts and campaigns. Only the five mode ids count (`prepare`, `return`, `dust`, `fire`, `stock`, any letter case); `/?mode=heat` is ignored, a friend's challenge link wins over it, and it never starts a round by itself. Visitors from abroad get `/en/?mode=…`.
-- **The forecast app** can answer through `forecastStatusUrl` with `{ "rainWarning": true|false }` within 1.5 s; its answer beats the manual switch both ways. If the call fails, the manual switch is used.
+- **The forecast app** can answer through `forecastStatusUrl` with `{ "rainWarning": true|false }` within 1.5 s; if the call fails, the season decides.
 - **The hazard pages** (`/flood`, `/pm25`, `/fire`, v1.6.0, and `/ready`, v1.7.0) are another way in: plain pages that since v1.9.1 open with the checklist and the free helplines, then a ▶ button to `/?mode=<id>` and the hazard's lessons.
 
 ## Feel

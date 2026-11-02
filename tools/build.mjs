@@ -966,6 +966,28 @@ const srcLinks = (ids, lang = 'th') => (ids || []).filter((id) => sources[id])
 // v1.14.0: the family's shared lines (kit.json → flood, uv), each with its sources.
 // Grouped by agency, each year its own link ("ปภ.: 2026, 2024"), so a line with three
 // DDPM reports doesn't read the agency's full name three times (visitor walk, v1.14.0).
+// Each link's label is the source's year; when one agency has two sources in the same year, its month
+// too ("ต.ค. 2026", "Oct 2026"), and the day if that still repeats. "2026, 2026, 2026" told a visitor
+// nothing (arrival audit, v1.14.1).
+const SRC_MONTHS = {
+  th: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+};
+const srcDates = (ids, lang) => {
+  const d = ids.map((id) => sources[id].date || '');
+  const fmt = (x, depth) => {
+    if (!x) return '·';
+    const [y, m, day] = x.split('-');
+    if (depth === 0 || !m) return y;
+    const mon = SRC_MONTHS[lang][+m - 1];
+    return depth === 1 || !day ? `${mon} ${y}` : `${+day} ${mon} ${y}`;
+  };
+  return d.map((x, i) => {
+    let depth = 0;
+    while (depth < 2 && d.some((o, j) => j !== i && o && fmt(o, depth) === fmt(x, depth))) depth++;
+    return fmt(x, depth);
+  });
+};
 const kitSrcSpan = (xs, lang) => {
   const X = lang === 'en' ? E : S;
   const partial = xs.some((x) => x.verify !== 'verified');
@@ -976,10 +998,13 @@ const kitSrcSpan = (xs, lang) => {
     if (!groups.has(ag)) groups.set(ag, []);
     groups.get(ag).push(id);
   }
-  const parts = [...groups].map(([ag, ids]) => `${esc(lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag)}: ${ids.map((id) => `<a href="${esc(sources[id].url)}">${esc(sources[id].date ? sources[id].date.slice(0, 4) : '·')}</a>`).join(', ')}`);
+  const parts = [...groups].map(([ag, ids]) => `${esc(lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag)}: ${srcDates(ids, lang).map((label, i) => `<a href="${esc(sources[ids[i]].url)}">${esc(label)}</a>`).join(', ')}`);
   return `<span class="src">${esc(X.sources)}: ${parts.join(' · ')}${partial ? ` · <span class="flag">⚠️ ${esc(X.partialNote)}</span>` : ''}</span>`;
 };
 const kitText = (x, lang) => `${esc(L2(x, lang))}${x.verify !== 'verified' ? ' ⚠️' : ''}`;
+// A level's lines, one bullet each: run together with <br>, the English lines read as one paragraph
+// (arrival audit, v1.14.1).
+const kitLines = (xs, lang) => `<ul class="ln">${xs.map((x) => `<li>${kitText(x, lang)}</li>`).join('')}</ul>`;
 // /flood#during: while the water is rising, and what to do first at each of ภัยรอบบ้าน's levels.
 const floodDuring = (lang) => {
   const F = kitFile.flood;
@@ -991,7 +1016,7 @@ ${F.during.map((x) => `<li>${kitText(x, lang)}<br>${kitSrcSpan([x], lang)}</li>`
 </ol>
 <h3 id="levels">${esc(L2(F.levelsTitle, lang))}</h3>
 <ul>
-${F.levels.map((l) => `<li id="level-${l.id}"><b>${esc(L2(l.label, lang))}</b><br>${l.all.map((x) => kitText(x, lang)).join('<br>')}<br>${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
+${F.levels.map((l) => `<li id="level-${l.id}"><b>${esc(L2(l.label, lang))}</b>${kitLines(l.all, lang)}${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
 </ul>`;
 };
 const lessonHtml = (it) => {
@@ -1047,7 +1072,7 @@ article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{
 .top a,.check a,a.tool-a{display:inline-block;min-height:44px;padding:10px 0;line-height:1.5;box-sizing:border-box}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
 .jump{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.jump a{display:inline-block;min-height:44px;padding:9px 14px;line-height:1.4;border:2px solid #f2c48d;border-radius:999px;background:#fff;text-decoration:none;font-size:.92em;box-sizing:border-box}
 .tel{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0}.tel a{display:inline-grid;place-items:center;min-width:64px;min-height:44px;padding:2px 10px;border-radius:18px;background:#FDE3DA;color:#8A2E12;font-weight:600;text-decoration:none;box-sizing:border-box;line-height:1.2;text-align:center}.tel small{display:block;max-width:11em;font-size:.72em;font-weight:500;line-height:1.2}
-h2,h3{scroll-margin-top:8px}.top{font-size:.9em;margin:0}
+h2,h3,li{scroll-margin-top:8px}.ln{margin:.1em 0 .2em;padding-left:1.2em}.ln li{margin:.1em 0}li:target{list-style:none;background:#fff;border-radius:10px;box-shadow:0 0 0 6px #fff,0 0 0 9px #f2c48d}.top{font-size:.9em;margin:0}
 h2 .en{display:inline;margin-left:.4em;font-size:.7em}
 @media (max-width:380px){.tel .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}h1{font-size:1.3em;line-height:1.25;margin:.2em 0}h2{font-size:1.2em;margin-top:.9em}.tel a{min-width:56px}.jump,.tel{margin:4px 0}main{padding-top:8px}.top{font-size:.85em}}`;
 // Thai words in config.json → keepTogether never break across lines (the
@@ -1152,7 +1177,12 @@ const callsOf = (gid) => {
 const telRow = (lang, gid) => `<p class="tel"><span>☎️ <span class="lbl">${esc(strings[lang].telFree)}</span></span>${callsOf(gid).map((x) => `<a href="tel:${x.number}"><b>${x.number}</b>${x.short ? `<small>${esc(L2(x.short, lang))}</small>` : ''}</a>`).join('')}</p>`;
 const jumpRow = (lang, h, lists) => {
   const guideOnly = !h.modes.length;
-  const links = guideOnly
+  // /flood (v1.14.1): the part for while the water is rising sits between the two checklists, in time order,
+  // with short labels so the three fit one row at 320 px in English (and two rows in Thai, the list still on screen)
+  const flood = h.id === 'flood' && kitFile.flood && lists.length === 2;
+  const links = flood
+    ? [[`cl-${lists[0]}`, strings[lang].floodJumpBefore], ['during', strings[lang].floodJumpDuring], [`cl-${lists[1]}`, strings[lang].floodJumpAfter]]
+    : guideOnly
     ? lists.flatMap((g) => phaseGroups(checklists[g]).filter((x) => x.p).map((x) => [`${g}-${x.p}`, phaseName(checklists[g], x.p, lang)]))
     : lists.length > 1 ? lists.map((g) => [`cl-${g}`, strings[lang][`mode${capM(g)}`] || L2(checklists[g].title, lang)]) : [];
   if (!links.length) return '';
@@ -1266,9 +1296,10 @@ for (const h of hazardList) {
 <h1>${esc(S[`hazard${H}H1`])}</h1>
 ${jumpRow('th', h, lists)}
 ${telRow('th', h.modes[0] || h.guides[0])}
-${h.modes.length ? `${checklistsTh(lists, 2)}
+${h.modes.length ? `${h.id === 'flood' && kitFile.flood ? `${checklistsTh(lists.slice(0, 1), 2)}
+${floodDuring('th')}
+${checklistsTh(lists.slice(1), 2)}` : checklistsTh(lists, 2)}
 ${picture('th')}
-${h.id === 'flood' ? floodDuring('th') : ''}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${playLinks('th', h.modes)}
 ${riskLine('th')}
@@ -1300,9 +1331,10 @@ ${hazardChips('th', h.id)}
 <h1>${esc(E[`hazard${H}H1`])}</h1>
 ${jumpRow('en', h, lists)}
 ${telRow('en', h.modes[0] || h.guides[0])}
-${h.modes.length ? `${checklistsEn(lists, 2)}
+${h.modes.length ? `${h.id === 'flood' && kitFile.flood ? `${checklistsEn(lists.slice(0, 1), 2)}
+${floodDuring('en')}
+${checklistsEn(lists.slice(1), 2)}` : checklistsEn(lists, 2)}
 ${picture('en')}
-${h.id === 'flood' ? floodDuring('en') : ''}
 <p>${esc(E[`hazard${H}Intro`])}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 ${playLinks('en', h.modes)}
@@ -1350,7 +1382,7 @@ if (kitFile.uv) {
 <p>${esc(L2(U.intro, lang))}</p>
 ${riskLine(lang)}
 <ul>
-${U.levels.map((l) => `<li id="uv-${l.id}"><b>${esc(L2(l.label, lang))}</b><br>${l.all.map((x) => kitText(x, lang)).join('<br>')}<br>${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
+${U.levels.map((l) => `<li id="uv-${l.id}"><b>${esc(L2(l.label, lang))}</b>${kitLines(l.all, lang)}${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
 </ul>
 ${(U.notes || []).length ? `<ul>\n${U.notes.map((x) => `<li>${kitText(x, lang)}<br>${kitSrcSpan([x], lang)}</li>`).join('\n')}\n</ul>` : ''}
 ${U.link ? `<p class="check"><a href="${esc(U.link.url)}" rel="noopener">${esc(U.link.icon || '')} ${esc(L2(U.link.label, lang))}</a></p>` : ''}

@@ -527,3 +527,14 @@ On 1 Nov 2026 the owner sent a brief for "this session has one job: make this ap
 7. **Walk it as a visitor in LINE's browser** at 320, 360 and 390 px in Thai and English: the start screen, a guide, `/flood#during`, `/uv`, the hazard and tool pages; two fixes came from the screenshots (a Thai name broken across lines, FloodWatch's button above ภัยรอบบ้าน's link).
 8. **Hand back, don't reach over.** What ภัยรอบบ้าน should change (show the flood lines, link `#during` and `/uv`, drop its own UV line, one word for UV 11+) is a list for the owner to paste into a ภัยรอบบ้าน session, not an edit to its repository ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
 9. **Check the hand-back on the sister app's live site, as a visitor.** When the owner said it was pasted, ภัยรอบบ้าน's live scripts were read again (v0.11.2: its flood and UV tables against `kit.json`, word for word; the old UV line gone; the 11+ word), its page opened in a headless browser at a fixed point in both languages with the UV card open, and every anchor it builds was looked up on this site. All five asks were met; one ("say clear-sky") it had already met in its own words. "Pasted" is not "shipped", and "shipped" is not "matches".
+
+## 38. Arriving from the sister app: walk in through its links (v1.14.1)
+
+After ภัยรอบบ้าน v0.11.2 shipped the hand-back, the owner asked to continue: test as visitors, validate and cross-validate the outcome, integrate.
+
+1. **List the doors.** Every link ภัยรอบบ้าน builds into this app came from its live `assess.js` (`guide(path)` and the anchors after it), with the words it shows: 14 links and anchors.
+2. **Walk in through each one, the way its readers do:** the live site, LINE's user agent, Thai and English, 320, 360 and 390 px. Record where the anchor lands, what the first screen shows against the link's words, and any script error; look at the screenshots. The v1.14.0 walk had started from this app's own start screen and missed what an arrival sees: an unmarked level, lines that ran together, no way to "during" from the top of `/flood`, "2026, 2026, 2026" (F170–F173).
+3. **Measure a layout fix before making it.** Six variants of the `/flood` chips were tried in a scratch page against the first-screen rule at 320 × 460; the short English labels won, and a smaller font was rejected for older readers.
+4. **Cross-check the numbers value by value, not edge by edge.** The sister app's tables were read as text (its code is not run here) and applied by the rule its own function states, against this app's functions, over every 0.01 step of each range plus the half-way values at each edge.
+5. **Read the third app too.** FloodWatch's live page showed links here that the docs said didn't exist (L9 "half done" since 12 Oct); the record was corrected and its own hand-back written ([docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)).
+

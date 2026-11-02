@@ -4,7 +4,28 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.14.1] — 2026-11-02
+
+**Arriving from ภัยรอบบ้าน.** After ภัยรอบบ้าน v0.11.2 took the hand-back, every page it links into this app was opened as a visitor arriving from it (its 14 links and anchors, Thai and English, 320, 360 and 390 px, LINE's browser), and the bands and lines both apps use were cross-checked value by value. No advice, number, source, item or slot changed, so houses and challenge links are the same. ([ROADMAP N31](docs/ROADMAP.md#n31-arriving-from-ภัยรอบบ้าน-v1141))
+
+### Changed
+
+- **`/flood` in time order:** before the water comes → while it is rising (`#during`, with ภัยรอบบ้าน's levels) → after it goes down, with a jump chip for each ("ก่อนน้ำมา · น้ำกำลังมา · หลังน้ำลด", "Before · While it rises · After"). Its title and description say "during" too.
+- **A level's lines are one bullet each** on `/uv` and in `/flood#levels`; joined by line breaks, the English lines read as one paragraph.
+
+### Added
+
+- **The level a link points at is marked:** arriving at `/uv#uv-<id>` (ภัยรอบบ้าน's UV card) or `/flood#level-<id>`, that level is drawn as a framed card.
+- **Tests:** `npm run smoke` 212 (+3: each source link of an agency has its own label; arriving at `/uv#uv-protect` in Thai and English); the `#during` check now holds the order and its jump chip.
+
+### Fixed
+
+- F170–F173 ([KNOWN_ISSUES](docs/KNOWN_ISSUES.md#in-v1141-2-nov-2026)): "while the water is rising" had no way in from the top of `/flood`; the linked level wasn't marked; a level's lines ran together; sources read "2026, 2026, 2026".
+
 ### Docs
+
+- **The cross-check:** 12,017 PM2.5 values, 4,001 heat-index values, 1,601 UV values and the three flood levels give the same band and the same words in both apps ([docs/10 §2](docs/10-family.md#2-what-ภัยรอบบ้าน-reads-from-this-app-the-contract)).
+- **FloodWatch has linked here since 14 Oct 2026** (its start screen, `/learn`, and the two checklists under every point), so [ROADMAP L9](docs/ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other) is done both ways; a hand-back for FloodWatch ([docs/10 §6](docs/10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)) asks for `/flood#during` between its two checklist links, `/flood` instead of `/learn`, and a link to ภัยรอบบ้าน.
 
 - **ภัยรอบบ้าน took the hand-back** (its v0.11.2, 2 Nov 2026), checked on its live site: the flood and UV first lines word for word, `/flood#during` and `/uv#uv-<id>` linked, its own UV line gone, "สูงจัด" for UV 11+ in both apps. Recorded in [docs/10 §4–§5](docs/10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session), HANDOFF, ROADMAP N30, KNOWLEDGE §37.5 and APPROACH §37 (step 9); KNOWN_ISSUES #101 is now "The family's colours differ".
 - **The removed rain switch, in four more places:** KNOWLEDGE §25's examples follow the v1.14.0 test (no `warning`, June gives `prepare`); README, `03-deploy` (an alert needs `source`), `04-launch-kit` and HANDOFF no longer say the switch ends on 30 Nov.

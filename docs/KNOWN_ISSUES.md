@@ -1086,6 +1086,17 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 
 ## Fixed
 
+### In v1.14.1 (2 Nov 2026)
+
+Found by opening every page ภัยรอบบ้าน links into this app as a visitor arriving from it (14 links and anchors, Thai and English, 320, 360 and 390 px, LINE's browser), after its v0.11.2 took the hand-back ([APPROACH §38](APPROACH_AND_METHOD.md#38-arriving-from-the-sister-app-walk-in-through-its-links-v1141)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F170 | **"While the water is rising" had no way in from the top of `/flood`:** it sat after both checklists with no jump chip (v1.14.0 dropped the chip because a third one pushed the English list below the first screen) | In time order, between the two lists, with short chips ("ก่อนน้ำมา · น้ำกำลังมา · หลังน้ำลด", "Before · While it rises · After"): one row at 320 px in English; in Thai the third chip takes a second row at 320 px and the list still starts on the first screen (smoke, 320 × 460) |
+| F171 | **Arriving at a level gave no sign of it:** ภัยรอบบ้าน links `/uv#uv-<id>` for the day's UV, and the page scrolled there with nothing to say which level was meant | `li:target` draws the level as a framed card, without its bullet, on `/uv` and `/flood#level-*`; smoke checks the frame and its place in Thai and English |
+| F172 | **A level's lines ran together** (joined by `<br>`): in English "Around midday, avoid being outdoors / If you must go out, always find shade …" read as one paragraph | One bullet per line (`kitLines()` in the build) |
+| F173 | **Sources read "2026, 2026, 2026"** under a flood line resting on three DDPM reports of one year: three links with one label | The month too when an agency's years repeat ("ต.ค. 2026", "Oct 2026"), and the day if that still repeats (`srcDates()`); smoke checks that no agency has two links with one label |
+
 ### In v1.14.0 (2 Nov 2026)
 
 Found while fitting this app to the owner's other two apps (ภัยรอบบ้าน and FloodWatch), from the owner's brief of 1 Nov 2026 and checked against both apps' live pages ([docs/10](10-family.md), [APPROACH §37](APPROACH_AND_METHOD.md#37-fitting-the-family-check-the-brief-then-source-what-the-sister-app-needs-v1140)).

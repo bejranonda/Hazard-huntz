@@ -2633,6 +2633,24 @@ Built 1–2 Nov 2026 from the owner's brief ([ROADMAP N30](ROADMAP.md#n30-fit-wi
 - **`npm test`: 46** (two new: no gecko line states a live condition; the advice file ภัยรอบบ้าน reads keeps its shape and numbers). **Smoke:** section 14 adds the ภัยรอบบ้าน link in both languages on the start screen and in a guide (ภัยรอบบ้าน before FloodWatch; following it carries nothing and sends no event), `/flood#during` and `/uv` in both languages, and every hazard page's link.
 - **Cross-check with ภัยรอบบ้าน (2 Nov 2026):** every line it copies today matches `kit.json` word for word (5 PM2.5 lines, 4 heat lines, the under-2 line); every path it links answers 200; its one advice line of its own is UV's ([docs/10 §5](10-family.md#5-what-ภัยรอบบ้าน-or-floodwatch-should-check-frank)).
 - **After the hand-back (2 Nov 2026):** ภัยรอบบ้าน v0.11.2 shows the flood and UV first lines word for word (its flood and UV tables carry this app's source ids), links `/flood#during` from เตรียมตัว and `/uv#uv-<id>` by the day's UV peak, dropped its own UV line and says "สูงจัด" for UV 11+; checked on its live site, scripts and a headless visit in both languages ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
-- **`npm run smoke`: 209** on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (200 in v1.13.1).
+- **`npm run smoke`: 209** on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (200 in v1.13.1; 212 in v1.14.1, §37.6).
 - **Sources on these pages** are grouped by agency, each year its own link ("ปภ.: 2026, 2026, 2024"; `kitSrcSpan()` in the build): a line with three DDPM reports read DDPM's full English name three times in the visitor walk.
 - **Weight:** the start screen 302 KB compressed (297 before: `kit.json` carries the new lines).
+
+### 37.6 Arriving from ภัยรอบบ้าน (v1.14.1)
+
+After ภัยรอบบ้าน v0.11.2 took the hand-back, every page it links here was opened as a visitor arriving from it ([APPROACH §38](APPROACH_AND_METHOD.md#38-arriving-from-the-sister-app-walk-in-through-its-links-v1141), [ROADMAP N31](ROADMAP.md#n31-arriving-from-ภัยรอบบ้าน-v1141)).
+
+| ภัยรอบบ้าน's link (its words) | Lands on | Found | Now |
+|---|---|---|---|
+| "ร้อนแบบนี้ ทำอย่างไร", "ฝุ่นวันนี้ ต้องทำอะไร", "ใส่หน้ากากไหม แบบไหน" | `/hot`, `/air`, `/mask` | the tool's first question on the first screen at 320 × 568 | unchanged |
+| "ดัชนียูวีเท่านี้ ทำอะไร" | `/uv#uv-<id>` by the day's UV peak | the level at the top, unmarked; its lines run together (`<br>`) | framed (`li:target`), one bullet per line |
+| "ฝนหนัก น้ำท่วม ทำอย่างไร", "ก่อนน้ำมา ทำอย่างไร" | `/flood`, `/flood#prepare` | the "before" list first | unchanged |
+| "ระหว่างน้ำกำลังมา ทำอะไรก่อน" | `/flood#during` | at the top; but from the top of `/flood` no chip led to it, and it sat after "after the flood" | between the lists, with a chip |
+| "พายุ ลมแรง", "น้ำป่า ดินถล่ม", "แผ่นดินไหว", "ควันไฟ ฝุ่น" | `/storm`, `/landslide`, `/quake`, `/pm25` | the guide's list first | unchanged |
+
+- **Measured:** 14 links × Thai and English × 320 × 568, 360 × 640 and 390 × 844, LINE's user agent, on the live site: no script error, no missing anchor, every anchor's top within 2 px of the screen's top.
+- **The chips on `/flood`:** `floodJumpBefore`, `floodJumpDuring`, `floodJumpAfter` in `strings.json` ("ก่อนน้ำมา · น้ำกำลังมา · หลังน้ำลด", "Before · While it rises · After"). Measured at 320 × 460: English one row, list at 385 px; Thai two rows (the third chip wraps), list at 402 px; both under the 412 px the first-screen rule allows. "Before the flood · Water rising · After the flood" put the English list at 435 px, and a smaller chip font was left out for older readers.
+- **Source labels:** `srcDates()` gives each link of an agency its year, the month too when a year repeats ("ต.ค. 2026, ก.ค. 2026, ส.ค. 2026"), the day if that still repeats.
+- **The cross-check** (scratch script, ภัยรอบบ้าน's `actions.js` read as text, never run): its PM, heat and UV tables, applied by the rule its `actionFor()` states (one decimal for PM2.5 and heat, a whole number for UV, then the first row whose `upto` the value doesn't pass), against `airLevel()` and `kit.json`'s `lo` / `hi`: 12,017 PM2.5, 4,001 heat-index and 1,601 UV values and the three flood ids, the same band and the same Thai and English line in every case.
+- **FloodWatch** (v0.98.0, seen live): links here since 14 Oct 2026 (its start screen, `/learn`, the two checklists under every point), not to `/flood#during` and not to ภัยรอบบ้าน; its hand-back is [docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session).

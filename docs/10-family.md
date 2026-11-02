@@ -31,6 +31,10 @@
 
 **The pages ภัยรอบบ้าน links**, each also under `/en`: `/air`, `/flood` (and since v1.14.0 `/flood#during`, `/flood#levels`, `/flood#level-watch`, `#level-warn`, `#level-danger`), `/hot`, `/landslide`, `/mask`, `/pm25`, `/quake`, `/storm`, and since v1.14.0 `/uv` (anchors `#uv-low`, `#uv-protect`, `#uv-veryhigh`, `#uv-extreme`).
 
+**Arriving here** (v1.14.1): every anchor lands at the top of the screen, and a level a link points at (`/uv#uv-<id>`, `/flood#level-<id>`) is drawn as a framed card. On `/flood` the parts run in time order, each with a jump chip: ก่อนน้ำมา (`#cl-prepare`) · น้ำกำลังมา (`#during`, then `#levels`) · หลังน้ำลด (`#cl-return`).
+
+**Cross-checked** (2 Nov 2026, against ภัยรอบบ้าน v0.11.2's tables, read as text and applied by the rule its `actionFor()` states): 12,017 PM2.5 values (0–120 µg/m³ by 0.01, and the half-way values at each edge), 4,001 heat-index values (20–60 °C by 0.01), 1,601 UV values (0–16 by 0.01) and the three flood ids give the same band and the same words, Thai and English, in both apps.
+
 **Held by a unit test** (`tests/run.mjs`, "the advice file ภัยรอบบ้าน reads"): the numbers, the ids, a first line per level, no river, canal or city in a flood line, 8–10 and 11+ sharing WHO's message, every linked page generated. A change to any of these is on purpose, with a note to the owner, so both apps change together.
 
 **Words that stay each owner's:** ภัยรอบบ้าน's four levels (ยังไม่น่าห่วง · ติดตามไว้ · เตรียมตัว · เสี่ยงสูง) and the agencies' band words (the heat bands เฝ้าระวัง … อันตรายมาก, the PCD's PM2.5 words). Colours aren't changed here: one palette for the family is the owner's open decision.
@@ -96,4 +100,28 @@ Please:
 
 - **ภัยรอบบ้าน wrote one advice line of its own** (the UV line above), against its own rule, and only from a peak of 6, while WHO's threshold is 3. **Fixed in its v0.11.2** (2 Nov 2026): it shows this app's line at every level.
 - **ภัยรอบบ้าน's FloodWatch link carries the point** (`flood.autobahn.bot/#p=<lat>,<lon>`, rounded to 0.01°, about 1 km), built from the point for every place, a GPS fix included (its `assess.js`, read 2 Nov 2026). Its own rule U17 keeps coordinates off the screen except for a searched place, because screenshots travel in family groups; a link copied from the page travels the same way. The fragment isn't sent when FloodWatch's page loads, but that page then asks its `/api/point` with it (FloodWatch strips the query from its logs). Fine if intended; worth saying in ภัยรอบบ้าน's privacy text, or linking FloodWatch by station instead. **Unchanged in v0.11.2** (2 Nov 2026): its owner's call.
-- **FloodWatch** has no link back to this app's flood guide; a "ทำอะไรก่อน" link to `/flood#during` beside a gauge at or over its bank would close the loop ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)). Still open.
+- **FloodWatch** links here (its start screen, `/learn`, and the two checklists under every point, since 14 Oct 2026), but not to `/flood` or to "while the water is rising" (`/flood#during`), and not to ภัยรอบบ้าน at all. Corrected on 2 Nov 2026: v1.14.0 said it had no link back. The hand-back is §6 ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
+
+## 6. Hand-back to FloodWatch (paste into a FloodWatch session)
+
+FloodWatch's links here are the owner's (its D-166), so this is a list for the owner, not an edit to FloodWatch. Seen live in FloodWatch v0.98.0 on 2 Nov 2026 (its page and `static/app.js`; FloodWatch is in Thai only).
+
+```
+From บ้านรอดไหม v1.14.1 (Hazard-huntz, 2 Nov 2026). Every page FloodWatch links here still answers:
+/, /learn, /checklist/prepare, /checklist/return.
+
+New since v1.14.0: /flood#during, "ระหว่างน้ำกำลังมา ทำอะไรก่อน": eight lines for while the water is rising
+(DDPM and RID, read through news reports), between "ก่อนน้ำมา" and "หลังน้ำลด" on /flood. /flood itself is
+the flood page (before, during, after, the helplines, a source on every line), narrower than /learn (all 81
+lessons, every hazard).
+
+Please consider:
+1. prepLinks(), in time order: เตรียมบ้านก่อนน้ำมา 10 ข้อ (/checklist/prepare) · ระหว่างน้ำกำลังมา ทำอะไรก่อน
+   (https://baanrodmai.autobahn.bot/flood#during) · ก่อนกลับเข้าบ้าน 10 ข้อ (/checklist/return). Where the
+   point's gauge is at or over its bank, the middle one could come first.
+2. The footer's "วิธีเตรียมบ้านรับน้ำ (บ้านรอดไหม?)": https://baanrodmai.autobahn.bot/flood rather than /learn.
+3. A link to ภัยรอบบ้าน (https://risk.autobahn.bot/) for rain, dust and heat at the reader's subdistrict, so
+   FloodWatch's readers already know it if FloodWatch closes.
+Keep ONWR's copy (data-site="onwr") without them, as now. No position needs to go with any of these links.
+```
+

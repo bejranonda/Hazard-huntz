@@ -680,6 +680,11 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* bump the version, build, then run the smoke tests; never edit `public/` or the content while a run is going. When a size check fails, list what it counted before shrinking anything: a file counted twice is a reload, not weight.
 - *Encoded in:* the order in [AGENTS §4](../AGENTS.md#4-definition-of-done) (build, then tests); this lesson.
 
+**D29. Walk in through the other app's door, not your own.**
+
+- *What happened:* v1.14.0's visitor walk started at this app's start screen and opened `/flood#during` and `/uv` from there; everything looked right. Walking in through ภัยรอบบ้าน's own links (from its live code) found four things the first walk couldn't: the UV level it points at was unmarked, a level's English lines ran together, "during" had no way in from the top of `/flood`, and three source links read "2026" (F170–F173).
+- *Do this:* when another app links in, list its links from its live code and open each one as its readers do (its language, LINE's browser, the smallest phones); ask of each first screen whether it answers the link's words.
+- *Encoded in:* [GUIDELINES rule 102](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), `tests/smoke.mjs` (arriving at `/uv#uv-protect`).
 
 **B18. Before researching a data source, read what the owner's other project already learned.**
 

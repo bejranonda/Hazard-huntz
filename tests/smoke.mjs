@@ -1457,15 +1457,32 @@ try {
     // the text without the build's kept-word spans and entities
     const plain = (html) => html.replace(/<[^>]+>/g, '').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
     const during = (html) => (/<h2 id="during">[\s\S]*?<\/ol>/.exec(html)?.[0].match(/<li>/g) || []).length;
-    check('/flood and /en/flood: a #during section with every line and the three levels, after the lists (the jump row keeps two chips, so the list stays on the first screen)', [flTh, flEn].every((h) => during(h) === KIT.flood.during.length
-      && KIT.flood.levels.every((l) => h.includes(`id="level-${l.id}"`)) && h.indexOf('id="during"') > h.indexOf('id="cl-return"')) && plain(flTh).includes(KIT.flood.levels[0].all[0].th) && plain(flEn).includes(KIT.flood.levels[0].all[0].en),
-      `${during(flTh)} ${during(flEn)}`);
+    // v1.14.1: in time order, before → while it rises → after, with a jump chip for each (the first-screen check of
+    // every hazard page at 320 × 460 above holds the list on screen)
+    const jumps = (html) => [.../<nav class="jump"[^>]*>([\s\S]*?)<\/nav>/.exec(html)?.[1].matchAll(/href="#([^"]+)"/g) || []].map((m) => m[1]).join(',');
+    check('/flood and /en/flood: a #during section with every line and the three levels, between the two lists, and a jump chip for it', [flTh, flEn].every((h) => during(h) === KIT.flood.during.length
+      && KIT.flood.levels.every((l) => h.includes(`id="level-${l.id}"`)) && h.indexOf('id="cl-prepare"') < h.indexOf('id="during"') && h.indexOf('id="during"') < h.indexOf('id="cl-return"')
+      && jumps(h) === 'cl-prepare,during,cl-return') && plain(flTh).includes(KIT.flood.levels[0].all[0].th) && plain(flEn).includes(KIT.flood.levels[0].all[0].en),
+      `${during(flTh)} ${during(flEn)} ${jumps(flTh)} ${jumps(flEn)}`);
     const uvTh = await (await fetch(`${BASE}/uv`)).text();
     const uvEn = await (await fetch(`${BASE}/en/uv`)).text();
     const map = await (await fetch(`${BASE}/sitemap.xml`)).text();
     check('/uv and /en/uv: every UV level with its lines and sources, ภัยรอบบ้าน and the TMD forecast linked, in the sitemap',
       [uvTh, uvEn].every((h) => KIT.uv.levels.every((l) => h.includes(`id="uv-${l.id}"`)) && h.includes('who.int') && h.includes('ozone.tmd.go.th'))
       && uvTh.includes(`href="${RISK}"`) && uvEn.includes(`href="${RISK}en"`) && map.includes('/uv</loc>') && map.includes('/en/uv</loc>'));
+    // Sources under the shared lines: no two links of one agency read the same ("2026, 2026, 2026" told nothing)
+    const srcDup = [flTh, flEn, uvTh, uvEn].flatMap((h) => [...h.matchAll(/<span class="src">([\s\S]*?)<\/span><\/li>/g)].map((m) => m[1]))
+      .flatMap((s) => s.split(' · ').map((g) => [...g.matchAll(/<a [^>]*>([^<]*)<\/a>/g)].map((m) => m[1]))).filter((xs) => new Set(xs).size !== xs.length);
+    check('the sources under the flood and UV lines: each link of an agency has its own label', srcDup.length === 0, JSON.stringify(srcDup.slice(0, 3)));
+    // Arriving from ภัยรอบบ้าน at a level (its UV card links /uv#uv-<id>): the level is at the top and marked
+    for (const lang of ['th', 'en']) {
+      const ctx = await browser.newContext({ viewport: { width: 320, height: 568 }, userAgent: UA.line, locale: lang === 'th' ? 'th-TH' : 'en-GB' });
+      const page = await ctx.newPage();
+      await page.goto(`${BASE}${lang === 'en' ? '/en' : ''}/uv#uv-protect`);
+      const t = await page.evaluate(() => { const el = document.getElementById('uv-protect'); const b = el.getBoundingClientRect(); return { top: Math.round(b.top), ring: getComputedStyle(el).boxShadow, lines: el.querySelectorAll('.ln > li').length }; });
+      check(`${lang}: arriving at /uv#uv-protect, the level is at the top, marked, one bullet per line`, t.top >= 0 && t.top < 40 && t.ring !== 'none' && t.lines === KIT.uv.levels.find((l) => l.id === 'protect').all.length, JSON.stringify(t));
+      await ctx.close();
+    }
     const hzOk = CFG.guides.map((g) => CFG.hazards[g.hazard]?.slug).filter(Boolean);
     const pages = await Promise.all([...new Set(hzOk)].map(async (slug) => [slug, await (await fetch(`${BASE}/${slug}`)).text(), await (await fetch(`${BASE}/en/${slug}`)).text()]));
     check('every hazard page links ภัยรอบบ้าน in its own language', pages.every(([, th, en]) => th.includes(`href="${RISK}"`) && en.includes(`href="${RISK}en"`)), pages.filter(([, th, en]) => !(th.includes(`href="${RISK}"`) && en.includes(`href="${RISK}en"`))).map(([s]) => s).join(','));

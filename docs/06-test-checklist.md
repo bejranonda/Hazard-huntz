@@ -136,6 +136,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 88 | The ภัยรอบบ้าน link (v1.14.0): open `https://baanrodmai.autobahn.bot` from a LINE chat, tap "📍 ดูภัยที่ตำบลของคุณตอนนี้": does ภัยรอบบ้าน open (inside LINE or in the phone's browser), in Thai, with nothing about your place in its address? Switch to English and tap again: does `risk.autobahn.bot/en` open? |  |  |  |  |  |  |  |  |
 | 89 | A guide's links (v1.14.0): open the flood guide (📋 → ก่อนน้ำมา): is "ตอนนี้ที่ตำบลของคุณเป็นอย่างไร? ดูที่ ภัยรอบบ้าน" above "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)", and do both open? |  |  |  |  |  |  |  |  |
 | 90 | The pages ภัยรอบบ้าน links (v1.14.0): send yourself `https://baanrodmai.autobahn.bot/flood#during` and `/uv` in a LINE chat and tap: does `/flood` open at "ระหว่างน้ำกำลังมา ทำอะไรก่อน", and do `/uv`'s levels read clearly on the phone? |  |  |  |  |  |  |  |  |
+| 91 | Arriving from ภัยรอบบ้าน (v1.14.1): open https://risk.autobahn.bot from a LINE chat, choose your subdistrict, open the UV row and tap "ดัชนียูวีเท่านี้ ทำอะไร": does `/uv` open at today's level, framed, one line per bullet? Open `/flood`: do "ก่อนน้ำมา · น้ำกำลังมา · หลังน้ำลด" each jump to their part? |  |  |  |  |  |  |  |  |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 

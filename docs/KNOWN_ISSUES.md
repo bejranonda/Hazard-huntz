@@ -98,7 +98,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 98 | [The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name](#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name) | Owner (the words) | Low |
 | 99 | [The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) | Owner (a Thai read; DDPM's own page) | **Medium (ภัยรอบบ้าน shows them)** |
 | 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (a Thai read) | Medium |
-| 101 | [The family's words and colours differ](#101-the-familys-words-and-colours-differ) | Owner (one decision) | Low |
+| 101 | [The family's colours differ](#101-the-familys-colours-differ) | Owner (one decision) | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -329,14 +329,14 @@ None says "the rainy season" for the whole country. A unit test fails if a gecko
 - **WHO gives one message from 8 up.** ภัยรอบบ้าน's split of 8–10 (เตรียมตัว) and 11+ (เสี่ยงสูง) is its own; `veryhigh` and `extreme` share WHO's lines, and `extreme` adds the MOPH's "ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด", said in an 11+ warning.
 - **What would close it:** a Thai read of the translation (and ideally the DOH's or the Institute of Dermatology's), and the TMD's own page with advice per level if one is found ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 
-### 101. The family's words and colours differ
+### 101. The family's colours differ
 
 **Status:** Owner (one decision) · **Severity:** Low
 
-- **UV at 11+:** this app says "สูงจัด" (the MOPH's word, through a news report); ภัยรอบบ้าน says "สูงที่สุด". Which word the TMD itself uses for each of the five bands is **[unverified]** (its page shows colours only).
+- **UV at 11+: settled on 2 Nov 2026.** Both apps say "สูงจัด": ภัยรอบบ้าน v0.11.2 took this app's word (the MOPH's, through a news report), since its "สูงที่สุด" had no source. Which word the TMD itself uses for each of the five bands is still **[unverified]** (its page shows colours only).
 - **Colours:** the two apps draw levels in different palettes; one palette for the family is the owner's open decision, so v1.14.0 changes no colour (the ภัยรอบบ้าน link uses the hub's existing teal).
 - **Levels:** ภัยรอบบ้าน's four words (ยังไม่น่าห่วง · ติดตามไว้ · เตรียมตัว · เสี่ยงสูง) label `kit.json → flood.levels` as they are; this app doesn't rename them, nor the agencies' band words.
-- **What would close it:** the owner picks the words and a palette for the family ([docs/10](10-family.md)).
+- **What would close it:** the owner picks a palette for the family ([docs/10](10-family.md)).
 
 ---
 

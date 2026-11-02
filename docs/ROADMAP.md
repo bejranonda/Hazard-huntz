@@ -65,7 +65,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N27 | [Visitor audit 4 (v1.13.1)](#n27-visitor-audit-4-v1131) | AI-ready (+ Owner) | Done (21 Oct 2026, v1.13.1); the host's cookie (#93, Owner) and the leftovers (#94) left |
 | N28 | [Home today and home risk (proposed)](#n28-home-today-and-home-risk-proposed) | — | **Superseded (1 Nov 2026):** the sister app ภัยรอบบ้าน (Thai Risk, risk.autobahn.bot) does this; this app links it ([N30](#n30-fit-with-the-family-v1140)). The research stays as a record ([docs/08](08-open-data.md)) |
 | N29 | [A server that publishes files (proposed)](#n29-a-server-that-publishes-files-proposed) | — | **Superseded (1 Nov 2026):** live data is ภัยรอบบ้าน's; [docs/09](09-server.md) stays as a record for it |
-| N30 | [Fit with the family: ภัยรอบบ้าน and FloodWatch (v1.14.0)](#n30-fit-with-the-family-v1140) | AI-ready (+ Owner review) | Done (2 Nov 2026, v1.14.0); the owner's words for the gecko lines and links, the Thai read of the new flood and UV lines, and the hand-back to ภัยรอบบ้าน left |
+| N30 | [Fit with the family: ภัยรอบบ้าน and FloodWatch (v1.14.0)](#n30-fit-with-the-family-v1140) | AI-ready (+ Owner review) | Done (2 Nov 2026, v1.14.0); ภัยรอบบ้าน took the hand-back (its v0.11.2, same day); the owner's words for the gecko lines and links, the Thai read of the new flood and UV lines and one palette left |
 | P1 | [Bathroom, bedroom and garage](#p1-bathroom-bedroom-and-garage) | Owner + AI | Todo |
 | P2 | [Accessibility pass with a screen reader](#p2-accessibility-pass-with-a-screen-reader) | Owner | Todo |
 | P3 | [Lighter preview images](#p3-lighter-preview-images) | AI-ready | Todo (optional) |
@@ -635,7 +635,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N30. Fit with the family (v1.14.0)
 
-- **Who:** AI-ready + Owner (review) · **Status:** Done (2 Nov 2026, v1.14.0); the owner's words (#98), the Thai reads of the new lines (#99, #100), one decision on words and colours (#101) and the hand-back to ภัยรอบบ้าน left · **Issues:** fixed F164–F169; new #98–#101
+- **Who:** AI-ready + Owner (review) · **Status:** Done (2 Nov 2026, v1.14.0); the hand-back done the same day (ภัยรอบบ้าน v0.11.2, checked on its live site); the owner's words (#98), the Thai reads of the new lines (#99, #100) and one palette (#101) left · **Issues:** fixed F164–F169; new #98–#101
 - **Why:** the owner's brief of 1 Nov 2026: "make this app fit with the owner's two other apps". บ้านรอดไหม says what to do; ภัยรอบบ้าน (Thai Risk) says what is happening at the reader's subdistrict; FloodWatch shows the rivers ([docs/10](10-family.md)).
 - **What shipped:**
   - the start screen states no live condition: the rain switch is gone, the gecko's lines are timeless, the season picks ก่อนน้ำมา by its own months and never "after the flood" for the whole country;
@@ -644,7 +644,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - `kit.json → uv` from WHO with the TMD's and the MOPH's words, and `/uv`;
   - a unit test that holds the advice file ภัยรอบบ้าน reads, and smoke checks for the links, the pages and that nothing about the reader goes with them;
   - N28 and N29 superseded: "around my home" is ภัยรอบบ้าน's.
-- **Done when:** the owner has set the words (#98) and the family's words and palette (#101); a Thai reader has read the flood and UV lines (#99, #100, [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) step 7c); ภัยรอบบ้าน shows the new lines and links `/flood#during` and `/uv` ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)); the phone test rows 88–90 are filled ([L6](#l6-real-phone-test-matrix)).
+- **Done when:** the owner has set the words (#98) and the family's palette (#101; the UV 11+ word is settled); a Thai reader has read the flood and UV lines (#99, #100, [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) step 7c); ภัยรอบบ้าน shows the new lines and links `/flood#during` and `/uv` ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session); done in its v0.11.2, 2 Nov 2026); the phone test rows 88–90 are filled ([L6](#l6-real-phone-test-matrix)).
 
 ## Later
 

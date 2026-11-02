@@ -47,6 +47,18 @@ UV follows WHO: protection from 3, extra protection from 8, one message for 8 an
 
 ## 4. Hand-back to ภัยรอบบ้าน (paste into a Thai Risk session)
 
+**Delivered and adopted on 2 Nov 2026.** The owner pasted the list below into a ภัยรอบบ้าน session, and ภัยรอบบ้าน v0.11.2 shipped it the same day. Checked on its live site (its scripts read again at 19:34 UTC, and its page opened at 13.75, 100.50 in Thai and English at 360 and 320 px, the UV card opened):
+
+| Asked | On ภัยรอบบ้าน v0.11.2 |
+|---|---|
+| 1. Show `flood.levels[].all[0]`; extend `check:advice` | **Done.** Its flood table holds the three first lines word for word, with this app's source ids, and no line at ยังไม่น่าห่วง. Its code says `npm run check:advice` compares every line with the live `kit.json`; that script is in its repository and was not run from here. |
+| 2. Link `/flood#during` from เตรียมตัว up | **Done:** "ระหว่างน้ำกำลังมา ทำอะไรก่อน" → `/flood#during` from level 2; below it "ก่อนน้ำมา ทำอย่างไร" → `/flood#prepare`. |
+| 3. Replace its own UV line with `uv.levels[].all[0]`, link `/uv` | **Done.** Its line "ช่วงสาย–บ่ายเลี่ยงแดดจัด…" is gone; the card shows this app's line for the day's peak (rounded, never milder than the UV now) and links `/uv#uv-<id>`. Seen live: a peak of 6 → "ช่วงเที่ยงวัน หลบเข้าที่ร่ม" / "Around midday, keep to the shade" and `/uv#uv-protect`. |
+| 4. One word for UV 11+ | **Done:** ภัยรอบบ้าน says "สูงจัด" (its decision D-122: "สูงที่สุด" had no source). The palette is still the owner's ([KNOWN_ISSUES #101](KNOWN_ISSUES.md#101-the-familys-colours-differ)). |
+| 5. Say the UV values are clear-sky | **Already said** in its own words before the hand-back: "ช่วงเที่ยง เมฆมากจะต่ำกว่านี้" beside the peak. |
+
+Every anchor it builds exists here, live, in both languages (`/flood#during`, `#prepare`, `/uv#uv-low` … `#uv-extreme`); its page showed no script error, and its 11 links into this app all open existing pages.
+
 ```
 From บ้านรอดไหม v1.14.0 (Hazard-huntz, 2 Nov 2026). Nothing in "What the apps already share" changed:
 air.levels[].all[0] + .pm (15/25/37.5/75), air.baby, hot.levels[].all[0] + .lo (27/33/42/52) are as before,
@@ -82,6 +94,6 @@ Please:
 
 ## 5. What ภัยรอบบ้าน or FloodWatch should check (frank)
 
-- **ภัยรอบบ้าน writes one advice line of its own** (the UV line above), against its own rule; and from a peak of 6, while WHO's threshold is 3.
-- **ภัยรอบบ้าน's FloodWatch link carries the point** (`flood.autobahn.bot/#p=<lat>,<lon>`, rounded to 0.01°, about 1 km), built from the point for every place, a GPS fix included (its `assess.js`, read 2 Nov 2026). Its own rule U17 keeps coordinates off the screen except for a searched place, because screenshots travel in family groups; a link copied from the page travels the same way. The fragment isn't sent when FloodWatch's page loads, but that page then asks its `/api/point` with it (FloodWatch strips the query from its logs). Fine if intended; worth saying in ภัยรอบบ้าน's privacy text, or linking FloodWatch by station instead.
-- **FloodWatch** has no link back to this app's flood guide; a "ทำอะไรก่อน" link to `/flood#during` beside a gauge at or over its bank would close the loop ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
+- **ภัยรอบบ้าน wrote one advice line of its own** (the UV line above), against its own rule, and only from a peak of 6, while WHO's threshold is 3. **Fixed in its v0.11.2** (2 Nov 2026): it shows this app's line at every level.
+- **ภัยรอบบ้าน's FloodWatch link carries the point** (`flood.autobahn.bot/#p=<lat>,<lon>`, rounded to 0.01°, about 1 km), built from the point for every place, a GPS fix included (its `assess.js`, read 2 Nov 2026). Its own rule U17 keeps coordinates off the screen except for a searched place, because screenshots travel in family groups; a link copied from the page travels the same way. The fragment isn't sent when FloodWatch's page loads, but that page then asks its `/api/point` with it (FloodWatch strips the query from its logs). Fine if intended; worth saying in ภัยรอบบ้าน's privacy text, or linking FloodWatch by station instead. **Unchanged in v0.11.2** (2 Nov 2026): its owner's call.
+- **FloodWatch** has no link back to this app's flood guide; a "ทำอะไรก่อน" link to `/flood#during` beside a gauge at or over its bank would close the loop ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)). Still open.

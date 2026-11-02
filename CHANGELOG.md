@@ -4,6 +4,11 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Docs
+
+- **ภัยรอบบ้าน took the hand-back** (its v0.11.2, 2 Nov 2026), checked on its live site: the flood and UV first lines word for word, `/flood#during` and `/uv#uv-<id>` linked, its own UV line gone, "สูงจัด" for UV 11+ in both apps. Recorded in [docs/10 §4–§5](docs/10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session), HANDOFF, ROADMAP N30, KNOWLEDGE §37.5 and APPROACH §37 (step 9); KNOWN_ISSUES #101 is now "The family's colours differ".
+- **The removed rain switch, in four more places:** KNOWLEDGE §25's examples follow the v1.14.0 test (no `warning`, June gives `prepare`); README, `03-deploy` (an alert needs `source`), `04-launch-kit` and HANDOFF no longer say the switch ends on 30 Nov.
+
 ## [1.14.0] — 2026-11-02
 
 **Fit with the family: this app says what to do; ภัยรอบบ้าน says what is happening.** From the owner's brief of 1 Nov 2026 ("make this app fit with the owner's two other apps"), checked claim by claim against this repository and the sister apps' live pages, with two researchers sourcing the advice only this app may write. No item, room or slot changed, so houses and challenge links are the same. ([ROADMAP N30](docs/ROADMAP.md#n30-fit-with-the-family-v1140), [docs/10](docs/10-family.md))

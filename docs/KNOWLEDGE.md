@@ -935,19 +935,21 @@ The power cut (`stock`, v1.7.0) has no `months`, so rule 3 never picks it: it is
 
 **The topic.** After a link: the linked mode's own `topic`, else the news topic. Otherwise: the news topic (`featuredTopic`, while `switchOn` says so), else the recommended mode's own topic. The flood modes have no topic of their own, so in the flood months only a news topic is featured.
 
-**Examples** from the unit test, on a fixed config (rain warning until 30 Nov 2026, `health` until 15 Nov 2026):
+**Examples** from the unit test, on a fixed config (`health` until 15 Nov 2026; since v1.14.0 no rain switch, and a config that still carries one changes nothing):
 
 | Day | Input | Mode | Topic | `why` |
 |---|---|---|---|---|
-| 18 Oct 2026 | | `prepare` | `health` | `warning` |
-| 16 Nov 2026 | | `prepare` | none | `warning` |
+| 18 Oct 2026 | | `prepare` | `health` | `season` |
+| 16 Nov 2026 | | `prepare` | none | `season` |
 | 1 Dec 2026 | | `dust` | `air` | `season` |
 | 10 Apr 2027 | | `fire` | `fire` | `season` |
-| 15 Jun 2027 | | `return` | none | `season` |
+| 15 Jun 2027 | | `prepare` | none | `season` |
 | 1 Dec 2026 | `live: true` | `prepare` | none | `live` |
-| 18 Oct 2026 | `live: false` | `return` | `health` | `season` |
+| 18 Oct 2026 | `live: false` | `prepare` | `health` | `season` |
 | 18 Oct 2026 | `want: 'Dust'` | `dust` | `air` | `link` |
 | 18 Oct 2026 | `want: 'return'` | `return` | `health` | `link` |
+
+No day of the year gives `return` by itself (the test walks every day); before v1.14.0 the rain switch gave `why: 'warning'` and June gave `return`.
 | 18 Oct 2026 | `want: 'heat'` | ignored: the same as no link | | |
 
 **The "check before you go" link.** `modeLink(config, id)`: the mode's own `link` (dust → Air4Thai), else `forecastAppUrl` for flood modes (BKK FloodWatch), else none (fire). `forecastUrl()` in `content.js` and the hazard pages both use it.
@@ -2630,6 +2632,7 @@ Built 1–2 Nov 2026 from the owner's brief ([ROADMAP N30](ROADMAP.md#n30-fit-wi
 
 - **`npm test`: 46** (two new: no gecko line states a live condition; the advice file ภัยรอบบ้าน reads keeps its shape and numbers). **Smoke:** section 14 adds the ภัยรอบบ้าน link in both languages on the start screen and in a guide (ภัยรอบบ้าน before FloodWatch; following it carries nothing and sends no event), `/flood#during` and `/uv` in both languages, and every hazard page's link.
 - **Cross-check with ภัยรอบบ้าน (2 Nov 2026):** every line it copies today matches `kit.json` word for word (5 PM2.5 lines, 4 heat lines, the under-2 line); every path it links answers 200; its one advice line of its own is UV's ([docs/10 §5](10-family.md#5-what-ภัยรอบบ้าน-or-floodwatch-should-check-frank)).
+- **After the hand-back (2 Nov 2026):** ภัยรอบบ้าน v0.11.2 shows the flood and UV first lines word for word (its flood and UV tables carry this app's source ids), links `/flood#during` from เตรียมตัว and `/uv#uv-<id>` by the day's UV peak, dropped its own UV line and says "สูงจัด" for UV 11+; checked on its live site, scripts and a headless visit in both languages ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
 - **`npm run smoke`: 209** on 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (200 in v1.13.1).
 - **Sources on these pages** are grouped by agency, each year its own link ("ปภ.: 2026, 2026, 2024"; `kitSrcSpan()` in the build): a line with three DDPM reports read DDPM's full English name three times in the visitor walk.
 - **Weight:** the start screen 302 KB compressed (297 before: `kit.json` carries the new lines).

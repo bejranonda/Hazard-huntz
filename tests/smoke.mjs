@@ -1464,7 +1464,8 @@ try {
     const jumps = (html) => [.../<nav class="jump"[^>]*>([\s\S]*?)<\/nav>/.exec(html)?.[1].matchAll(/href="#([^"]+)"/g) || []].map((m) => m[1]).join(',');
     check('/flood and /en/flood: a #during section with every line and the three levels, between the two lists, and a jump chip for it', [flTh, flEn].every((h) => during(h) === KIT.flood.during.length
       && KIT.flood.levels.every((l) => h.includes(`id="level-${l.id}"`)) && h.indexOf('id="cl-prepare"') < h.indexOf('id="during"') && h.indexOf('id="during"') < h.indexOf('id="cl-return"')
-      && jumps(h) === 'cl-prepare,during,cl-return') && plain(flTh).includes(KIT.flood.levels[0].all[0].th) && plain(flEn).includes(KIT.flood.levels[0].all[0].en),
+      && jumps(h) === 'cl-prepare,during,cl-return' && h.includes('id="flash"')) && plain(flTh).includes(KIT.flood.levels[0].all[0].th) && plain(flEn).includes(KIT.flood.levels[0].all[0].en)
+      && plain(flTh).includes(KIT.flood.flash.th) && plain(flEn).includes(KIT.flood.flash.en),
       `${during(flTh)} ${during(flEn)} ${jumps(flTh)} ${jumps(flEn)}`);
     const uvTh = await (await fetch(`${BASE}/uv`)).text();
     const uvEn = await (await fetch(`${BASE}/en/uv`)).text();

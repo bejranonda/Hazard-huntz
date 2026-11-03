@@ -699,8 +699,17 @@ const riskUrl = (lang) => (lang === 'en' ? `${config.riskAppUrl}en` : config.ris
     }
     if (!(FL.during || []).length) err('kit.json flood.during: needs lines (the /flood#during section)');
     (FL.during || []).forEach((x, i) => line(x, `kit.json flood.during[${i}]`));
+    // v1.14.3 (ภัยรอบบ้าน's B28): the line for water off the hills, which ภัยรอบบ้าน shows at เตรียมตัว
+    // when HII's flash-flood list set the level. It points to the guide that goes on (guide → its "during" phase).
+    if (FL.flash) {
+      text(FL.flash.label, 'kit.json flood.flash.label');
+      line(FL.flash, 'kit.json flood.flash');
+      const g = config.guides.find((x) => x.id === FL.flash.guide);
+      if (!g || !config.hazards[g.hazard]?.slug) err(`kit.json flood.flash.guide: "${FL.flash.guide}" is not a guide with a page`);
+      else if (!(checklists[g.id]?.items || []).some((x) => x.phase === 'during')) err(`kit.json flood.flash.guide: ${g.id} has no "during" part to link`);
+    }
     // Every place in Thailand, whatever set the level: no river, canal or city named ("น้ำอาจมาถึง").
-    for (const x of [...(FL.levels || []).flatMap((l) => l.all || []), ...(FL.during || [])]) {
+    for (const x of [...(FL.levels || []).flatMap((l) => l.all || []), ...(FL.during || []), ...(FL.flash ? [FL.flash] : [])]) {
       if (/แม่น้ำ|ลำคลอง|\briver\b|\bcanal\b|กรุงเทพ|Bangkok|หาดใหญ่|Hat Yai|เชียงใหม่|Chiang Mai/i.test(`${x.th} ${x.en}`)) err(`kit.json flood: "${x.th}" names a river, a canal or a city; a line must fit every place`);
     }
     for (const k of ['title', 'intro', 'levelsTitle']) text(FL[k], `kit.json flood.${k}`);
@@ -977,6 +986,8 @@ const SRC_MONTHS = {
 };
 const srcDates = (ids, lang) => {
   const d = ids.map((id) => sources[id].date || '');
+  // A source with no date shows its site's name instead of a dot (v1.14.3: "·" read as a broken link).
+  const site = (i) => { try { return new URL(sources[ids[i]].url).hostname.replace(/^www\./, ''); } catch { return '·'; } };
   const fmt = (x, depth) => {
     if (!x) return '·';
     const [y, m, day] = x.split('-');
@@ -985,6 +996,7 @@ const srcDates = (ids, lang) => {
     return depth === 1 || !day ? `${mon} ${y}` : `${+day} ${mon} ${y}`;
   };
   return d.map((x, i) => {
+    if (!x) return site(i);
     let depth = 0;
     while (depth < 2 && d.some((o, j) => j !== i && o && fmt(o, depth) === fmt(x, depth))) depth++;
     return fmt(x, depth);
@@ -1025,7 +1037,20 @@ ${F.during.map((x) => `<li>${kitText(x, lang)}<br>${kitSrcSpan([x], lang)}</li>`
 <h3 id="levels">${esc(L2(F.levelsTitle, lang))}</h3>
 <ul>
 ${F.levels.map((l) => `<li id="level-${l.id}"><b>${esc(L2(l.label, lang))}</b>${kitLines(l.all, lang)}${kitSrcSpan(l.all, lang)}</li>`).join('\n')}
-</ul>`;
+</ul>${floodFlash(lang)}`;
+};
+// /flood#flash (v1.14.3): water off the hills comes fast; its line, then the guide that goes on.
+const floodFlash = (lang) => {
+  const X = kitFile.flood?.flash;
+  if (!X) return '';
+  const g = config.guides.find((x) => x.id === X.guide);
+  const href = `${lang === 'en' ? EN : ''}/${config.hazards[g.hazard].slug}#${g.id}-during`;
+  return `
+<h3 id="flash">${esc(L2(X.label, lang))}</h3>
+<ul>
+<li>${kitText(X, lang)}<br>${kitSrcSpan([X], lang)}</li>
+</ul>
+<p class="check"><a href="${href}">📋 ${esc(L2(checklists[g.id].title, lang))}</a></p>`;
 };
 const lessonHtml = (it) => {
   const right = it.choices.find((c) => c.correct);

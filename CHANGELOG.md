@@ -4,6 +4,28 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.14.3] — 2026-11-03
+
+**Water off the hills, for ภัยรอบบ้าน (its question B28).** ภัยรอบบ้าน shows the เตรียมตัว line when HII's flash-flood list sets its flood row, and asked whether that line fits. It isn't wrong (DDPM's own flash-flood alert also says to lift belongings), but a flash flood comes fast: water off the hills now has a line of its own. No line ภัยรอบบ้าน already checks changed. ([ROADMAP N33](docs/ROADMAP.md#n33-water-off-the-hills-for-ภัยรอบบ้าน-v1143), [docs/10 §4](docs/10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session))
+
+### Added
+
+- **`kit.json → flood.flash`:** "เตรียมพร้อมอพยพ ถ้าน้ำห้วยขุ่นข้นหรือมีเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที" / "Be ready to leave. If a stream turns muddy or makes a loud odd noise, get somewhere safe at once", from DMR's and DWR's advice through news reports (⚠️), the same signs as the landslide guide. On `/flood#flash` (+ `/en/flood#flash`), followed by "📋 น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ" → `/landslide#landslide-during`.
+- **Tests:** the unit test holds `flood.flash`, its source rule, `/flood#flash` with its link in both languages and `/landslide#landslide-during`; the smoke check of `/flood` reads the flash line.
+
+### Changed
+
+- **`flood._readme`** lists the causes of ภัยรอบบ้าน's flood row as it stated them (a gauge against its bank, an agency's table, FloodWatch's look ahead, a late gauge, a tidal gauge, HII's flash-flood list); heavy rain and TMD's notices set its rain row.
+- **A source with no date** shows its site's name in the source line, not "·".
+
+### Fixed
+
+- F178–F180 ([KNOWN_ISSUES](docs/KNOWN_ISSUES.md#in-v1143-3-nov-2026)).
+
+### Docs
+
+- KNOWLEDGE §37.7 (v1.14.2) had been appended to the end of the file without a blank line before its heading (an insert that didn't find its place); fixed, and §37.8 added.
+
 ## [1.14.2] — 2026-11-03
 
 **FloodWatch's review.** FloodWatch answered the hand-back (2 Nov 2026, forwarded by the owner): cite the agencies' own dated documents, put when to leave first, keep the addresses, and don't count on FloodWatch: it is being handed over to ONWR and its site closes after the project. No item, slot or house changed; no line's words changed, only the order of "during" and the sources. ([ROADMAP N32](docs/ROADMAP.md#n32-floodwatchs-review-v1142), [docs/10 §6](docs/10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session))

@@ -65,6 +65,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N27 | [Visitor audit 4 (v1.13.1)](#n27-visitor-audit-4-v1131) | AI-ready (+ Owner) | Done (21 Oct 2026, v1.13.1); the host's cookie (#93, Owner) and the leftovers (#94) left |
 | N28 | [Home today and home risk (proposed)](#n28-home-today-and-home-risk-proposed) | — | **Superseded (1 Nov 2026):** the sister app ภัยรอบบ้าน (Thai Risk, risk.autobahn.bot) does this; this app links it ([N30](#n30-fit-with-the-family-v1140)). The research stays as a record ([docs/08](08-open-data.md)) |
 | N29 | [A server that publishes files (proposed)](#n29-a-server-that-publishes-files-proposed) | — | **Superseded (1 Nov 2026):** live data is ภัยรอบบ้าน's; [docs/09](09-server.md) stays as a record for it |
+| N33 | [Water off the hills, for ภัยรอบบ้าน (v1.14.3)](#n33-water-off-the-hills-for-ภัยรอบบ้าน-v1143) | AI-ready | Done (3 Nov 2026, v1.14.3); ภัยรอบบ้าน wires `flood.flash`; the line waits for DMR's own words (#99) |
 | N32 | [FloodWatch's review (v1.14.2)](#n32-floodwatchs-review-v1142) | AI-ready | Done (3 Nov 2026, v1.14.2); four ⚠️ parts wait for DDPM's own pages (#99), FloodWatch's closing notice is the owner's |
 | N31 | [Arriving from ภัยรอบบ้าน (v1.14.1)](#n31-arriving-from-ภัยรอบบ้าน-v1141) | AI-ready | Done (2 Nov 2026, v1.14.1); the phone row 91 is the owner's; FloodWatch answered the hand-back (N32) |
 | N30 | [Fit with the family: ภัยรอบบ้าน and FloodWatch (v1.14.0)](#n30-fit-with-the-family-v1140) | AI-ready (+ Owner review) | Done (2 Nov 2026, v1.14.0); ภัยรอบบ้าน took the hand-back (its v0.11.2, same day); the owner's words for the gecko lines and links, the Thai read of the new flood and UV lines and one palette left |
@@ -647,6 +648,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - a unit test that holds the advice file ภัยรอบบ้าน reads, and smoke checks for the links, the pages and that nothing about the reader goes with them;
   - N28 and N29 superseded: "around my home" is ภัยรอบบ้าน's.
 - **Done when:** the owner has set the words (#98) and the family's palette (#101; the UV 11+ word is settled); a Thai reader has read the flood and UV lines (#99, #100, [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) step 7c); ภัยรอบบ้าน shows the new lines and links `/flood#during` and `/uv` ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session); done in its v0.11.2, 2 Nov 2026); the phone test rows 88–90 are filled ([L6](#l6-real-phone-test-matrix)).
+
+### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
+
+- **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.14.3) · **Issues:** fixed F178–F180; #99 updated
+- **Why:** ภัยรอบบ้าน's B28: does the เตรียมตัว line fit HII's flash-flood list (water off the hills, fast, often at night)? It also corrected the causes of its flood row.
+- **What shipped:** `flood.flash` ("เตรียมพร้อมอพยพ ถ้าน้ำห้วยขุ่นข้นหรือมีเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที", ⚠️, from DMR's and DWR's advice through news reports and the same words as the landslide guide); `/flood#flash` with a link to `/landslide#landslide-during`; `flood._readme`'s causes as ภัยรอบบ้าน stated them; the tide answer (the เตรียมตัว line fits); tests; the hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+- **Done when:** ภัยรอบบ้าน shows `flood.flash` when HII's list set the level and checks it; DMR's own words are read (a person in Thailand, or DMR's files) so the ⚠️ can lift ([#99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid)).
 
 ### N32. FloodWatch's review (v1.14.2)
 

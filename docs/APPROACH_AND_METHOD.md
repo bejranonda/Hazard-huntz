@@ -548,3 +548,14 @@ FloodWatch answered the hand-back with six points (2 Nov 2026). Each got one of 
 4. **Prepare for the partner leaving.** FloodWatch said its site will close: the one-line change (`forecastAppUrl` to `""`) was tested on a copy of the repository before it is needed, with the build, unit and smoke tests.
 5. **Tell the app that copies the lines.** The words ภัยรอบบ้าน copies didn't change, but their sources did: a short addendum for its session ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
 
+## 40. A sister app's question about a line: check its premise, then add, don't rewrite (v1.14.3)
+
+ภัยรอบบ้าน asked (B28) whether the เตรียมตัว line fits water off the hills, and corrected its own earlier description of what raises its flood row.
+
+1. **Check the premise against the agency's own words.** The question assumed DDPM moves people first rather than lifting things; DDPM's own flash-flood alert (20 Aug 2026) lifted things too. DMR's advice is the part that differs. The answer took both.
+2. **Reuse what the app already says.** The landslide guide already had the sourced line for the signs ("น้ำห้วยขุ่นข้น เสียงดังผิดปกติ รีบอพยพทันที"); the flash line uses the same signs and action, so the two can't drift into two answers.
+3. **Add a field; never rewrite a line another app checks.** `flood.flash` sits beside the levels; `all[0]` and the ids are unchanged, so ภัยรอบบ้าน's live check keeps passing until it wires the new field.
+4. **Be honest about the source.** The new line rests on news reports quoting DMR and DWR, so it ships ⚠️ under rule 103, with what was tried (dmr.go.th's posts carry the advice in images; rid.go.th and DWR's warning site reset the connection from here that day).
+5. **Answer every part asked.** The tide got a written answer (the line fits, no new field) rather than silence.
+6. **Check that an insert landed where intended.** v1.14.2 appended KNOWLEDGE §37.7 at the end of the file because the heading it searched for didn't exist (`find()` returned −1); the text was right but a blank line was lost. Doc edits now assert that the place they look for exists.
+

@@ -337,7 +337,7 @@ test('the advice file ภัยรอบบ้าน reads keeps its shape and i
   assert.deepEqual(kit.flood.levels.map((l) => l.label.th), ['ติดตามไว้', 'เตรียมตัว', 'เสี่ยงสูง'], 'ภัยรอบบ้าน\'s own words, not renamed');
   for (const l of kit.flood.levels) assert.ok(first(l)?.th && first(l)?.en && first(l).sources.length, l.id);
   // Whatever set the level (rain, a river or canal, a notice, a flag, a dam), anywhere in Thailand.
-  const lines = [...kit.flood.levels.flatMap((l) => l.all), ...kit.flood.during];
+  const lines = [...kit.flood.levels.flatMap((l) => l.all), ...kit.flood.during, kit.flood.flash];
   for (const x of lines) assert.ok(!/แม่น้ำ|ลำคลอง|กรุงเทพ|หาดใหญ่|\briver\b|\bcanal\b|Bangkok/i.test(`${x.th} ${x.en}`), x.th);
   // The top level is never an order the data can't give: leaving is "when officials tell you".
   assert.ok(kit.flood.levels[2].all.some((x) => /เจ้าหน้าที่ให้อพยพ/.test(x.th)));
@@ -361,10 +361,16 @@ test('the advice file ภัยรอบบ้าน reads keeps its shape and i
   // A news report points to the agency's words; it isn't the source (FloodWatch's review). Every flood line cites an
   // agency's or a government's own document, or shows ⚠️ (partial) and says why.
   const src = load('sources').sources;
-  for (const x of [...kit.flood.levels.flatMap((l) => l.all), ...d]) {
+  for (const x of [...kit.flood.levels.flatMap((l) => l.all), ...d, kit.flood.flash]) {
     assert.ok(x.sources.every((id) => src[id]), x.th);
     assert.ok(x.sources.some((id) => src[id].kind !== 'secondary') || (x.verify === 'partial' && x.verifyNote), `${x.th}: an agency's own document, or ⚠️ with a note`);
   }
+  // Water off the hills (ภัยรอบบ้าน's B28, v1.14.3): its own line, shown when HII's flash-flood list set เตรียมตัว,
+  // on /flood#flash, with the guide that goes on at /landslide#landslide-during.
+  assert.ok(kit.flood.flash?.th && kit.flood.flash.en && kit.flood.flash.label?.th && kit.flood.flash.guide === 'landslide');
+  assert.match(fs.readFileSync(new URL('../public/flood.html', import.meta.url), 'utf8'), /id="flash"[\s\S]*href="\/landslide#landslide-during"/);
+  assert.match(fs.readFileSync(new URL('../public/en/flood.html', import.meta.url), 'utf8'), /id="flash"[\s\S]*href="\/en\/landslide#landslide-during"/);
+  for (const pre of ['', 'en/']) assert.match(fs.readFileSync(new URL(`../public/${pre}landslide.html`, import.meta.url), 'utf8'), /id="landslide-during"/);
   // The addresses FloodWatch links (its start screen, footer and the two checklists under every point) stay put.
   for (const page of ['index.html', 'learn.html', 'checklist/prepare.html', 'checklist/return.html']) {
     assert.ok(fs.existsSync(new URL(`../public/${page}`, import.meta.url)), page);

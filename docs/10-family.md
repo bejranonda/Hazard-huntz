@@ -26,6 +26,7 @@
 | `hot.levels[].all[0]` and `.lo` | the heat index by the DOH and TMD bands | floors 27 / 33 / 42 / 52 °C |
 | **`flood.levels[]`** (v1.14.0) | `id` `watch` · `warn` · `danger` = ติดตามไว้ · เตรียมตัว · เสี่ยงสูง; `label`; `all[]` of `{th, en, sources, verify}` | — |
 | **`flood.during[]`** (v1.14.0) | while the water is rising, eight lines (the `/flood#during` section) | — |
+| **`flood.flash`** (v1.14.3, ภัยรอบบ้าน's B28) | water off the hills: one line `{label, th, en, sources, verify, verifyNote, icon, guide}`, shown by ภัยรอบบ้าน in place of the เตรียมตัว line when HII's flash-flood list set the level; on `/flood#flash`, followed by a link to `/landslide#landslide-during` (`guide: "landslide"`) | — |
 | **`uv.levels[]`** (v1.14.0) | `id` `low` · `protect` · `veryhigh` · `extreme`; `lo`, `hi` whole UV index numbers; `label`; `all[]` | 0–2 / 3–7 / 8–10 / 11+ |
 | **`uv.notes[]`** (v1.14.0) | two lines for any level (sunscreen isn't more time in the sun; clouds don't stop UV) | — |
 
@@ -43,9 +44,11 @@
 
 ## 3. How the new lines fit every place
 
-ภัยรอบบ้าน's flood level can be set by measured heavy rain near the place, a river or canal at its bank, TMD's notice for the region (ติดตามไว้ only), an agency's table for its gauge (a city's flags, a gauge's flood zones), or a dam's release band naming the subdistrict. So each flood line:
+ภัยรอบบ้าน's **flood** row (its correction of 3 Nov 2026; heavy rain and TMD's notices set its **rain** row, not this one) rises, by the same rules everywhere in Thailand, on: a river or canal gauge near the place against its own bank (ติดตามไว้ to เสี่ยงสูง); an agency's own table for a gauge at the table's own level (a province's river steps to เสี่ยงสูง, a city's flag lines to เตรียมตัว, a dam's release bands naming the subdistrict at เตรียมตัว; a gauge's street zones add a line naming the streets, with no level of their own); FloodWatch's look ahead and upstream lines (to เตรียมตัว: a forecast alone never says เสี่ยงสูง); a late gauge that already said เตรียมตัว or more (keeps its level and says its age); a tidal gauge judged on its highest reading of 25 h (over its bank only at high tide, with its 25-h mean under the bank and the river not rising: เตรียมตัว, "ล้นตลิ่งช่วงน้ำขึ้น"; else เสี่ยงสูง like any gauge); and **HII's flash-flood list** (สสน., the subdistricts at risk of water off the hills in the next day: เตรียมตัว, "เสี่ยงน้ำป่า (สสน.)"). A large dam above the place is information, never a level. So each flood line:
 
 - says "น้ำอาจมาถึง" (water may arrive), never "เมื่อแม่น้ำขึ้น"; names no river, canal or city (the build checks);
+- **water off the hills gets its own line** (`flood.flash`, v1.14.3): the เตรียมตัว line isn't wrong for it (DDPM's own flash-flood alert of 20 Aug 2026 also says to lift belongings), but a flash flood comes fast, and what only it needs is to be ready to leave and to go at once when a stream turns muddy or roars (DMR, through news reports, so ⚠️); the rest is the landslide guide's "during" part (`/landslide#landslide-during`);
+- **a high tide over a bank fits the เตรียมตัว line as it is:** the water comes and goes with the tide, slowly and at known times, and lifting belongings and electrical appliances is the action the sources give for water over a bank; no agency text specific to tides was read here [unverified], so nothing was added;
 - borrows DDPM's actions, not its orders: DDPM's warning levels 1–5 are warnings DDPM issues, while ภัยรอบบ้าน's level is computed from data, so เสี่ยงสูง says to leave **when officials tell you to**;
 - rests, since v1.14.2, on the agencies' own documents where they could be found (FloodWatch's review: a news report points to the agency's words, it isn't the source): RID's own news pages (28 and 29 Sep 2026: "ยกสิ่งของ เครื่องใช้ไฟฟ้า และทรัพย์สินมีค่าขึ้นที่สูง", "ติดตามประกาศจากทางราชการอย่างใกล้ชิด"), PEA's own page (29 May 2025, the power), DDPM's own phone alert (Cell Broadcast, 20 Aug 2026, kept as screenshots on the Internet Archive) and a municipality's plan quoting the national plan's five colours (Pak Kret, 2021). DDPM's own site answered every automated reader with a bot check (3 Nov 2026). Three "during" lines (the safe route, fast-flowing water, power lines) and the pets in a fourth have no agency original yet, so they show ⚠️; a unit test holds the rule, and the page marks news reports "(ข่าว)".
 
@@ -108,6 +111,26 @@ warn   all[0] + rid-news-28880, pea-943
 danger all[0] + rid-news-28597, ddpm-cbs-laplae-2569
 Every id is in content/sources.json (title, url, date, kind, note). flood.during is reordered (when to leave
 first); /flood#during is where it was. The source line on /flood marks news reports "(ข่าว)".
+```
+
+**B28: water off the hills (v1.14.3, 3 Nov 2026).** ภัยรอบบ้าน asked whether the เตรียมตัว line fits HII's flash-flood list, and named the real causes of its flood row (§3). Answer: option 2, its own line. Paste:
+
+```
+From บ้านรอดไหม v1.14.3 (3 Nov 2026), on B28:
+- Choice 2: a line of its own for water off the hills.
+  Field: kit.json flood.flash = { label{th,en}, th, en, sources[], verify, verifyNote, icon, guide }
+    th "เตรียมพร้อมอพยพ ถ้าน้ำห้วยขุ่นข้นหรือมีเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที"
+    en "Be ready to leave. If a stream turns muddy or makes a loud odd noise, get somewhere safe at once"
+    sources dmr-signs-2568, dmr-watch-2567, dmr-riskvillage-2565, dwr-ews-2569 (all in content/sources.json)
+    verify "partial" (DMR's and DWR's words through news reports; DMR's own posts carry them in images)
+  Show it in place of flood.levels[warn].all[0] only when HII's flash-flood list set the level.
+  Link: /landslide#landslide-during (the landslide guide's "during" part: heavy rain, muddy or roaring
+  streams, cracking ground, flowing water), or /flood#flash (the line, then that link). Both under /en too.
+- all[0] of every level and the ids watch | warn | danger are unchanged.
+- Tide: the เตรียมตัว line fits a high tide over a bank as it is (slow, at known times; lifting
+  belongings is the action). No new field.
+- flood._readme now lists your flood row's causes (river or canal gauge, an agency's table, FloodWatch's
+  look ahead, a late gauge, a tidal gauge, HII's flash-flood list; a dam above is information).
 ```
 
 ## 5. What ภัยรอบบ้าน or FloodWatch should check (frank)

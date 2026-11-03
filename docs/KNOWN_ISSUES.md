@@ -320,7 +320,7 @@ None says "the rainy season" for the whole country. A unit test fails if a gecko
 - **DDPM's levels are not ภัยรอบบ้าน's.** DDPM's 1–5 warning levels (InfoQuest, 24 Sep 2024; The Standard, 21 Jun 2025) are warnings DDPM issues; ภัยรอบบ้าน's level is computed from data. The lines borrow DDPM's actions and never its orders: เสี่ยงสูง says to leave "when officials tell you to".
 - **A colour is not the same everywhere:** DWR's flags have three colours, Rangsit's four, DDPM's levels five. No line says "red flag = evacuate".
 - **Since v1.14.2 (FloodWatch's review: a news report points to the agency's words, it isn't the source):** the lines lead with the agencies' own documents where two researchers could find them on 3 Nov 2026: RID's own news pages (rid.go.th, 28–30 Sep 2026 and 26 Sep 2024: belongings and appliances up high, follow official notices, vehicles somewhere safe; read in a browser, since the site builds its pages by script), PEA's own page (29 May 2025: appliances up high, cut the downstairs power before the water, never touch a switch wet), DDPM's own phone alert (Cell Broadcast, 20 Aug 2026: "ให้ยกของขึ้นที่สูง เคลื่อนย้ายรถ เก็บทรัพย์สินมีค่าและเอกสารสำคัญ ระวังไฟฟ้าดูด ดูแลกลุ่มเปราะบาง", kept as two screenshots on the Internet Archive), the government's instruction to agencies published by RID (24 Aug 2026: move patients, older and bedridden people out first) and Pak Kret municipality's plan quoting the national plan's five colours (2021). The page marks news reports "(ข่าว)", and a unit test holds the rule.
-- **Still without an agency original, so ⚠️:** "ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล", "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว", "อยู่ห่างสายไฟและเสาไฟฟ้า", and the pets in "ย้ายรถและสัตว์เลี้ยง…". DDPM's own site (disaster.go.th and its provincial subdomains) answered every automated reader with a Cloudflare challenge; prd.go.th and thaigov.go.th the same; the Internet Archive couldn't be reached from the research host. Nothing was bypassed.
+- **Still without an agency original, so ⚠️:** "ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล", "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว", "อยู่ห่างสายไฟและเสาไฟฟ้า", the pets in "ย้ายรถและสัตว์เลี้ยง…", and since v1.14.3 the flash-flood line (`flood.flash`: DMR's and DWR's words through news reports; DMR's own warning posts on dmr.go.th, Oct 2026, carry their advice in images and files that weren't read). DDPM's own site (disaster.go.th and its provincial subdomains) answered every automated reader with a Cloudflare challenge; prd.go.th and thaigov.go.th the same; the Internet Archive couldn't be reached from the research host. Nothing was bypassed.
 - **For a person in Thailand (the quickest close):** open the national disaster plan 2564–2570 on disaster.go.th (the five levels), the Internet Archive's copy of disaster.go.th of 27 Sep 2026 (`/web/20260927100531/`), PRD's T-Alert page (prd.go.th …/id/39/iid/425692, archived 6 Aug 2026), PRD's August 2026 pages for Nan (iid 533309, 533361; DDPM's phone-alert advice), and PRD's iid 534015 ("หลีกเลี่ยงการเดินผ่านกระแสน้ำไหลเชี่ยว", reported) and 432703 (distance from poles, reported). A PRD page is a government channel here, so any of these that says a ⚠️ line can lift it.
 - **What would close it:** the four ⚠️ parts get an agency or government original (above), and a Thai reader (ideally from DDPM) reads the eleven lines; then `verify` can stay or change ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 
@@ -1101,6 +1101,16 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.14.3 (3 Nov 2026)
+
+From ภัยรอบบ้าน's question B28 (3 Nov 2026), forwarded by the owner ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F178 | **Water off the hills had only the general เตรียมตัว line** ("น้ำอาจมาถึง ยกของ…"), which ภัยรอบบ้าน shows when HII's flash-flood list sets the level; a flash flood comes fast, and what only it needs (be ready to leave; go at once when a stream turns muddy or roars) wasn't there | `flood.flash`, its own line (DMR and DWR, through news reports, ⚠️), on `/flood#flash` with a link to `/landslide#landslide-during`; the เตรียมตัว line is unchanged (DDPM's own flash-flood alert also says to lift belongings) |
+| F179 | **`flood._readme` named the wrong causes** of ภัยรอบบ้าน's flood row (heavy rain and TMD's notices, which set its rain row) and left out HII's flash-flood list | The causes as ภัยรอบบ้าน stated them: a gauge against its bank, an agency's table, FloodWatch's look ahead, a late gauge, a tidal gauge, HII's list; a dam above is information |
+| F180 | **A source with no date showed "·" as its link**, which read as a broken link | It shows its site's name (`srcDates()`) |
 
 ### In v1.14.2 (3 Nov 2026)
 

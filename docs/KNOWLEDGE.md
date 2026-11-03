@@ -2655,6 +2655,7 @@ After ภัยรอบบ้าน v0.11.2 took the hand-back, every page it l
 - **Source labels:** `srcDates()` gives each link of an agency its year, the month too when a year repeats ("ต.ค. 2026, ก.ค. 2026, ส.ค. 2026"), the day if that still repeats.
 - **The cross-check** (scratch script, ภัยรอบบ้าน's `actions.js` read as text, never run): its PM, heat and UV tables, applied by the rule its `actionFor()` states (one decimal for PM2.5 and heat, a whole number for UV, then the first row whose `upto` the value doesn't pass), against `airLevel()` and `kit.json`'s `lo` / `hi`: 12,017 PM2.5, 4,001 heat-index and 1,601 UV values and the three flood ids, the same band and the same Thai and English line in every case.
 - **FloodWatch** (v0.98.0, seen live): links here since 14 Oct 2026 (its start screen, `/learn`, the two checklists under every point), not to `/flood#during` and not to ภัยรอบบ้าน; its hand-back is [docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session).
+
 ### 37.7 FloodWatch's review: the agencies' own documents, leaving first, FloodWatch closing (v1.14.2)
 
 FloodWatch answered the hand-back on 2 Nov 2026 (forwarded by the owner; [docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)). Two researchers looked for DDPM's and RID's own documents on 3 Nov 2026; the lead re-read every quote used in the saved pages and images.
@@ -2677,3 +2678,12 @@ FloodWatch answered the hand-back on 2 Nov 2026 (forwarded by the owner; [docs/1
 - **Weight:** the start screen 304 KB compressed (302 before: the new sources' notes; [N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads) would take them out of what the game loads).
 - **For ภัยรอบบ้าน:** words and ids unchanged; the sources behind each level's lines changed (addendum in [docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
 
+### 37.8 Water off the hills: `flood.flash` (v1.14.3, ภัยรอบบ้าน's B28)
+
+- **The question:** ภัยรอบบ้าน shows the เตรียมตัว line when HII's flash-flood list (สสน., subdistricts at risk of water off the hills in the next day) sets its flood row. Does "น้ำอาจมาถึง ยกของและเครื่องใช้ไฟฟ้าขึ้นที่สูงไว้ก่อน" fit?
+- **What the sources say:** DDPM's own flash-flood alert (Cell Broadcast, 20 Aug 2026, "ระวังน้ำท่วมฉับพลัน น้ำป่าไหลหลาก … ที่ลาดเชิงเขา") asked to lift belongings, move the car, keep documents, beware of shocks and look after vulnerable people, so the line isn't wrong for it. DMR adds what only water off the hills needs: "เตรียมพร้อมอพยพไปยังสถานที่ปลอดภัย" and, at the signs (a muddy stream, a loud odd noise, cracking ground), "ให้รีบอพยพไปยังพื้นที่ปลอดภัยทันที" (news reports quoting DMR, 2022–2025); DWR's village warnings say the same in three colours. The premise that DDPM "usually moves people first rather than lifting things" was half right: DMR does, DDPM's own alert lifted things too.
+- **The line:** `flood.flash` = "เตรียมพร้อมอพยพ ถ้าน้ำห้วยขุ่นข้นหรือมีเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที" / "Be ready to leave. If a stream turns muddy or makes a loud odd noise, get somewhere safe at once"; the same signs and action as the landslide guide's line 7. `verify: partial` (rule 103: no agency original read; DMR's own warning posts on dmr.go.th, Oct 2026, carry their advice in images and files). `guide: "landslide"` → `/landslide#landslide-during`.
+- **On the page:** `/flood#flash` after `#levels`: the line, its sources, then "📋 น้ำป่า ดินถล่ม ทำอะไร 10 ข้อ". Checked at 320, 360 and 390 px in Thai and English: the heading at the top, no sideways scroll, the link 46–71 px tall.
+- **The tide:** a high tide over a bank (ภัยรอบบ้าน's tidal gauges, เตรียมตัว "ล้นตลิ่งช่วงน้ำขึ้น") fits the เตรียมตัว line as it is; no tide-specific agency text was read [unverified].
+- **Not changed:** the first line of every level and the ids (ภัยรอบบ้าน's check reads them, now with their source ids).
+- **Undated sources** show their site's name in the source line ("bangkokbiznews.com"), not "·".

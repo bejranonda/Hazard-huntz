@@ -728,6 +728,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* before citing a news report for an agency, open the agency's page the way a reader does (a browser, not only `curl`), name the kind of failure if it still fails, and show the reader which sources are the agency's own and which are news.
 - *Encoded in:* [GUIDELINES rule 103](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [APPROACH §39](APPROACH_AND_METHOD.md#39-a-sister-apps-review-act-on-the-content-record-the-rest-v1142).
 
+**B23. A question's premise is an input too: check it against the agency's own words.**
+
+- *What happened:* ภัยรอบบ้าน asked whether to replace "lift things" with "move people away" for flash floods, because DDPM "usually" says the latter. DDPM's own flash-flood alert (20 Aug 2026) said to lift things; DMR is the agency that says to leave at the signs. Taking the premise as given would have dropped DDPM's own advice; ignoring it would have missed DMR's.
+- *Do this:* before choosing an option a sister app offers, read the sources for its premise; answer with what each agency says, and add a field rather than rewrite a line another app checks.
+- *Encoded in:* [APPROACH §40](APPROACH_AND_METHOD.md#40-a-sister-apps-question-about-a-line-check-its-premise-then-add-dont-rewrite-v1143), [GUIDELINES rule 101](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
 **C27. An end date fixes a forgotten switch, not a false one.**
 
 - *What happened:* v1.6.0 gave the rain switch an end date (C16), so "ฝนจะมาอีกระลอก" would stop by itself on 30 Nov. It was still false somewhere every day it was on: one switch for a whole country can't know where rain is coming, and the season told everyone "the water has gone" for half the year.

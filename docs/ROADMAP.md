@@ -664,7 +664,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** AI-ready, at the owner's request ("suggest, then validate and make it finish", 4 Nov 2026) · **Status:** Done (4 Nov 2026, v1.15.1) · **Issues:** fixed F200–F204; #98 closed; #99, #100 with the read recorded; #101 deferred
 - **What:** read the fridge's status words (#103 A11), the flood and UV lines ภัยรอบบ้าน copies (#99, #100) and the gecko's words (#98) against the agencies' own words; reword only what reads unclear; keep every level's first line, id, number, source and `verify`; hand the changed shared lines back to ภัยรอบบ้าน.
-- **Also:** the fridge's share row waits for a time; the supplies tile shows a score only once something is ticked (the owner's phone photo).
+- **Also:** the fridge's share row waits for a time; the supplies tile shows a score only once something is ticked (the owner's phone photo). After the release, the owner's Android screenshots confirmed the tile and showed one line break inside "ที่เว็บ", fixed with `keepTogether` (F205).
 - **Done when:** the build, `npm test` and the smoke test on three dates pass; the pages are live; the hand-back is in [docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session); ภัยรอบบ้าน copies the lines (its `check:advice` passes) and the phone test row 93 is filled ([L6](#l6-real-phone-test-matrix)).
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 

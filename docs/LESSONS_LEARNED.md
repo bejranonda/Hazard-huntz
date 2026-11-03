@@ -756,10 +756,16 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 - *What happened:* opening the home check saved a score of 0 before anything was ticked, so the start screen said "บ้านเราพร้อม 0%" to someone who had only looked. The owner's phone photo showed it; no test had looked at the tile after a first visit.
 - *Do this:* show a score only once the reader has answered something; until then keep the tile's plain line. When the owner sends a screenshot, read every word on it as a first-time visitor would.
-- *Encoded in:* `main.js` and `kit.js` (the tile shows the score when it is above 0), `tests/smoke.mjs` (the tile before and after one tick).
+- *Encoded in:* `main.js` and `kit.js` (the tile shows the score when it is above 0), `tests/smoke.mjs` (the tile before and after one tick), [GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
 
 **B25. A Thai read starts from the agency's own words.**
 
 - *What happened:* asked to finish the Thai read of the shared flood and UV lines, the first drafts were the reader's own phrasing. The source notes already held the agencies' phrases ("ขอความช่วยเหลือ โทร 1784", "กระแสน้ำไหลเชี่ยว", "ใช้เวลาให้น้อยที่สุด", DMR's "น้ำในลำห้วยมีสีขุ่นข้น มีเสียงดังผิดปกติ"), and one draft change was wrong: "ผิวแพ้ง่าย" is the TMD's own sense, so it stayed.
 - *Do this:* before rewording a sourced line, read its sources' notes and prefer their words; change only what reads unclear, and leave lines another app shows (a level's first line) alone unless they are wrong.
 - *Encoded in:* [APPROACH §42](APPROACH_AND_METHOD.md#42-a-thai-read-the-owner-hands-over-v1151), [docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session).
+
+**C28. A reworded Thai line moves its break.**
+
+- *What happened:* v1.15.1 lengthened the ภัยรอบบ้าน link's line ("น้ำ" → "น้ำท่วม", "ร้อน" → "อากาศร้อน"). The reworded `/flood` and `/uv` lines were looked at on a phone-sized screen, but this one wasn't, and on the owner's Android phone it wrapped inside "ที่เว็บ" ("…ทุกตำบล ที่ / เว็บ ภัยรอบบ้าน"). The smoke test passed: it checks words that must never break, not every phrase.
+- *Do this:* after rewording any Thai line, read where it breaks at 320, 360, 393 and 412 px (a short script that reads each character's line top does it in seconds), and add a phrase that splits badly to `keepTogether`.
+- *Encoded in:* `config.json → keepTogether` ("ที่เว็บ"), [GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).

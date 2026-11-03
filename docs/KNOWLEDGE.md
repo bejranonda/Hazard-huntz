@@ -2748,3 +2748,12 @@ The owner asked for the Thai read of the shared lines to be finished (4 Nov 2026
 **Kept on purpose:** every level's first line (ภัยรอบบ้าน shows them); "เด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง" without "และ" (DDPM's way); "ผิวแพ้ง่าย" (the TMD's "ผิวหนังอ่อนไหวหรือภูมิแพ้"); "เลี่ยงออกไปกลางแจ้ง"; the game's "ไฟดับเกิน 4 ชม." tip (a rule of thumb, not a status at an exact time); `heroPrepare`, `heroDust`, `heroFire`, `heroStock`, `riskLink`, `riskLinkGuide`, `forecastLong`.
 
 **Also in v1.15.1:** the fridge's share row waits for a time; the supplies tile shows a score only once something is ticked.
+
+### 39.1 The owner's phone (4 Nov 2026)
+
+The owner sent two screenshots of the live v1.15.1 from an Android phone in Chrome (not inside LINE): the start screen and the home check with three people and nothing ticked.
+
+- **As designed:** the hub tiles and their two-line subtitles, the trust line, the game below, the version v1.15.1; the supplies tile says "ตามจำนวนคนในบ้าน" after a first look (F202); the check lists 11 lines for three people (27 litres of water, 3 days of food, 3 torches) with their sources and ⚠️ marks.
+- **Kept on purpose:** inside the check, "พร้อมแล้ว 0% (มี 0 จาก 11 อย่าง)" before any tick: it is progress beside the list, not a verdict on another screen ([GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+- **Fixed:** the ภัยรอบบ้าน link's line broke inside "ที่เว็บ" below 393 px; "ที่เว็บ" is in `keepTogether` (F205). Measured in headless Chromium: 320 and 360 px break "…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน", 393 and 412 px keep one line.
+- **Not covered by the photos:** the fridge, sharing, LINE's browser and an iPhone ([KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers), test checklist row 93).

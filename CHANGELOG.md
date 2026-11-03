@@ -4,6 +4,15 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Fixed
+
+- **The ภัยรอบบ้าน link's line** no longer breaks inside "ที่เว็บ" on phones under 393 px wide ("…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน"; `keepTogether`), seen on the owner's Android phone ([F205](docs/KNOWN_ISSUES.md#after-v1151-4-nov-2026-unreleased)).
+
+### Docs
+
+- **The owner's phone screenshots** (Android, Chrome, v1.15.0 and v1.15.1) recorded: the start screen and the home check read as designed; the tile's "0%" fix confirmed (KNOWN_ISSUES #3, test checklist row 93).
+- GUIDELINES rule 105 (words true at their edge, no score before an answer, a Thai read from the agency's words, measure a reworded line's break); LESSONS C28; KNOWLEDGE §39.1; APPROACH §42 step 7; HANDOFF, README, AGENTS.
+
 ## [1.15.1] — 2026-11-04
 
 **The Thai read.** The owner asked for the Thai read of the fridge's words, the flood and UV lines and the gecko's words to be finished ("suggest, then validate and make it finish", 4 Nov 2026). Every line was read against the agencies' own words in `sources.json`; where a line read unclear, it now uses the agency's phrase. No advice, number, source or `verify` changed, and no level's first line (what ภัยรอบบ้าน shows beside its level); no item or slot, so houses and challenge links are the same. This read is the app's, at the owner's request; a DDPM officer's or a health agency's read stays welcome. ([KNOWN_ISSUES F200–F204](docs/KNOWN_ISSUES.md#in-v1151-4-nov-2026))

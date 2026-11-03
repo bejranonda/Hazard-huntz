@@ -381,6 +381,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **Every source line comes from `srcGroups()`**: an agency once, then its links; news reports marked; no two links in a group with one label.
     - **A card never cuts whom a number reaches**, or any safety text: shrink, then wrap, never truncate.
     - **The app loads `sources-app.json`**; edit `sources.json` only (the build writes the copy; a test holds them equal).
+105. **Words that are true at their edge, no score before an answer, and a Thai read from the agency's words.** The fridge said "เกิน 4 ชม.แล้ว" at exactly 4 hours, the start screen said "บ้านเราพร้อม 0%" to someone who had only looked, and a reworded link line split "ที่|เว็บ" on the owner's phone (F200, F202, F205). Since v1.15.1:
+    - **A status that starts at a limit** (`left <= 0`) is worded so it is true at the limit and after it: "ครบ 4 ชม.แล้ว" / "4 hours or more", never "เกิน" / "over". Check every status word at the exact edge value, in both languages.
+    - **Outside a tool** (the start screen, a tile, a card someone else sees), a score shows only once the reader has answered something. Inside the tool, the count beside the list ("พร้อมแล้ว 0% (มี 0 จาก 11 อย่าง)") is progress and stays.
+    - **A Thai read starts from the sources' notes:** prefer the agency's own phrase, change only what reads unclear, and leave a line a sister app shows (a level's first line) alone unless it is wrong; every changed shared line goes into the hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+    - **A reworded Thai line moves its break:** measure it at 320, 360, 393 and 412 px after the change, and keep a phrase that splits badly together (`keepTogether`, rule 68), as "ที่เว็บ" in v1.15.1.
 
 ## 9. Working with AI assistants
 

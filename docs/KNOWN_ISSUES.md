@@ -130,6 +130,8 @@ What a headless test **cannot** show:
 - since v1.10.0 and v1.10.1: whether the fridge's count goes on after LINE is closed, now started by tapping a time ("3 ชม."), with the "⏱️ ไฟดับมาแล้ว …" line and "💡 ไฟมาแล้ว" (F93); whether an older relative reads the cards and the dust tool's colour-first screen without help; and whether the number box behind "รู้ตัวเลข?" opens and shows the number keyboard inside LINE (rows 64–65)
 - since v1.11.0 (rows 67–75): whether the fridge's food lists read clearly at 3 h and at 6 h on a real screen, and whether "💡 ไฟมาแล้ว" keeps the answer after LINE is closed; whether the "🕘 จำได้ว่าไฟดับตอนกี่โมง?" time box opens the phone's time picker inside LINE; the medicine and breast-milk ticks; whether "ก+" enlarges the start screen and the sheets inside LINE and on an iPhone (CSS `zoom`, [#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)); whether "📋 คัดลอกแผนเป็นข้อความ" and "🛒 คัดลอกรายการที่ยังขาด" put the text on the clipboard inside LINE; the named numbers on a guide and on its picture in a chat; dust today's at-risk lines with no ticks; and how long a Thai hazard page now is on a phone. The walk ran LINE's user agent in headless Chromium, which can't show any of these
 
+- **First real-phone screenshots (3–4 Nov 2026):** the owner sent the start screen of v1.15.0 and of v1.15.1 and the home check, from an Android phone in Chrome (not inside LINE). They read as designed, apart from "บ้านเราพร้อม 0%" after a first look (F202) and one line break (F205), both fixed. This is not the matrix: no iPhone, no in-app browser, no sharing yet.
+
 **To do:** run the 75-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
 
 ---
@@ -1121,6 +1123,16 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### After v1.15.1 (4 Nov 2026, unreleased)
+
+From the owner's two screenshots of the live v1.15.1 on an Android phone in Chrome (4 Nov 2026): the start screen and the home check.
+
+| # | Problem | Fix |
+|---|---|---|
+| F205 | **The ภัยรอบบ้าน link's line broke inside "ที่เว็บ"** ("…ทุกตำบล ที่ / เว็บ ภัยรอบบ้าน") on phones under 393 px wide: v1.15.1's longer wording ("น้ำท่วม", "อากาศร้อน") made it wrap, and Thai line breaking split the phrase | "ที่เว็บ" added to `config.json → keepTogether`: measured in headless Chromium at 320 and 360 px it now breaks "…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน", and stays on one line at 393 and 412 px |
+
+Also confirmed on the phone: the supplies tile says "ตามจำนวนคนในบ้าน" after a first look (F202), and the version reads v1.15.1. Inside the home check, "พร้อมแล้ว 0% (มี 0 จาก 11 อย่าง)" before any tick is progress beside the list and stays ([GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 
 ### In v1.15.1 (4 Nov 2026)
 

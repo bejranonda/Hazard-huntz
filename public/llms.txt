@@ -18,7 +18,7 @@
 - What is happening now at a subdistrict (warnings, rain, rivers, dust, heat) is the sister app ภัยรอบบ้าน (Thai Risk): https://risk.autobahn.bot/ · https://risk.autobahn.bot/en; this app says what to do
 - All tools on one page, with links to the Thai agencies' own websites and LINE accounts (LINE ALERT, TMD warnings, river levels, flood and dust maps, planned power cuts, help after a disaster): https://baanrodmai.autobahn.bot/tools
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
-- Last content update: 2026-11-03
+- Last content update: 2026-11-04
 
 ## Before the flood (ก่อนน้ำมา: เตรียมบ้านให้ทัน)
 

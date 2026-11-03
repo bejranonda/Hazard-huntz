@@ -371,9 +371,14 @@ test('the advice file ภัยรอบบ้าน reads keeps its shape and i
   assert.match(fs.readFileSync(new URL('../public/flood.html', import.meta.url), 'utf8'), /id="flash"[\s\S]*href="\/landslide#landslide-during"/);
   assert.match(fs.readFileSync(new URL('../public/en/flood.html', import.meta.url), 'utf8'), /id="flash"[\s\S]*href="\/en\/landslide#landslide-during"/);
   for (const pre of ['', 'en/']) assert.match(fs.readFileSync(new URL(`../public/${pre}landslide.html`, import.meta.url), 'utf8'), /id="landslide-during"/);
-  // The addresses FloodWatch links (its start screen, footer and the two checklists under every point) stay put.
+  // The addresses FloodWatch links: exactly these four (its start screen, its footer, the two checklists under every
+  // point; FloodWatch's own test pins the same set, 3 Nov 2026). If one must ever move, tell FloodWatch first.
   for (const page of ['index.html', 'learn.html', 'checklist/prepare.html', 'checklist/return.html']) {
     assert.ok(fs.existsSync(new URL(`../public/${page}`, import.meta.url)), page);
+  }
+  // FloodWatch's rule too: never say the bank will hold (no flood line promises a bank, a dyke or a wall keeps water out).
+  for (const x of [...kit.flood.levels.flatMap((l) => l.all), ...d, kit.flood.flash]) {
+    assert.ok(!/(ตลิ่ง|คันกั้นน้ำ|พนังกั้นน้ำ|กำแพงกั้นน้ำ).{0,20}(เอาอยู่|รับได้|รับไหว|ไม่ล้น|กั้นได้|ปลอดภัย)|banks? (will )?hold|levee|dyke|flood ?wall/i.test(`${x.th} ${x.en}`), x.th);
   }
 });
 

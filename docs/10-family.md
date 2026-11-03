@@ -8,7 +8,7 @@
 |---|---|---|
 | **บ้านรอดไหม** (this repository, Hazard-huntz) | **What to do.** Sourced guides, the home check, the family plan, the calculators, the game. No live data. | https://baanrodmai.autobahn.bot (English `/en/`) |
 | **ภัยรอบบ้าน · Thai Risk** | **What is happening** at the reader's subdistrict now and for 3 days, every hazard. Writes no advice of its own: its action lines are copied from this repository's `public/content/kit.json`, and its "what to do" links come here. | https://risk.autobahn.bot (English `/en`) |
-| **FloodWatch** | The rivers and canals: gauge levels against their banks. It is being handed over to ONWR, whose copy links none of the family, and its own site closes after the project (FloodWatch, 2 Nov 2026); ภัยรอบบ้าน keeps working without it. | https://flood.autobahn.bot |
+| **FloodWatch** | The rivers and canals: gauge levels against their banks. It is being handed over to ONWR, whose copy links none of the family (tested by FloodWatch), and its own site closes after the project, on no date yet: it follows ONWR's install (FloodWatch, 2–3 Nov 2026); ภัยรอบบ้าน keeps working without it. | https://flood.autobahn.bot |
 
 **In this app:**
 - The start screen, every guide, the result screen, the eight hazard pages and the dust, heat and mask pages link "📍 ดูภัยที่ตำบลของคุณตอนนี้" to ภัยรอบบ้าน in the reader's language (`config.json → riskAppUrl`). Nothing about the reader goes with the link (no place, no position, no event).
@@ -32,7 +32,7 @@
 
 **The pages ภัยรอบบ้าน links**, each also under `/en`: `/air`, `/flood` (and since v1.14.0 `/flood#during`, `/flood#levels`, `/flood#level-watch`, `#level-warn`, `#level-danger`), `/hot`, `/landslide`, `/mask`, `/pm25`, `/quake`, `/storm`, and since v1.14.0 `/uv` (anchors `#uv-low`, `#uv-protect`, `#uv-veryhigh`, `#uv-extreme`).
 
-**The pages FloodWatch links** (until it closes): `/`, `/learn`, `/checklist/prepare`, `/checklist/return`; held by the same unit test since v1.14.2. Keep them, and `#during`, where they are; if one ever moves, leave a redirect in `public/_redirects`.
+**The pages FloodWatch links** (until it closes): exactly `/`, `/learn`, `/checklist/prepare` and `/checklist/return`, which FloodWatch's own test pins too (FloodWatch, 3 Nov 2026); held by the same unit test since v1.14.2. FloodWatch doesn't link `/flood#during`; it is kept for ภัยรอบบ้าน (and for a FloodWatch station link its owner may add later). **If one of the four must ever move, tell FloodWatch first**, then leave a redirect in `public/_redirects`.
 
 **Arriving here** (v1.14.1): every anchor lands at the top of the screen, and a level a link points at (`/uv#uv-<id>`, `/flood#level-<id>`) is drawn as a framed card. On `/flood` the parts run in time order, each with a jump chip: ก่อนน้ำมา (`#cl-prepare`) · น้ำกำลังมา (`#during`, then `#levels`) · หลังน้ำลด (`#cl-return`).
 
@@ -172,3 +172,14 @@ Keep ONWR's copy (data-site="onwr") without them, as now. No position needs to g
 | Keep `#during` and the old addresses stable; redirect if anything moves | Held by tests; [GUIDELINES rule 101](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
 | In "during", put when to leave first, and never imply the house will stay dry | v1.14.2: "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที…" first, people before belongings; no line promises a dry house (a unit test reads them) |
 | The natural place for a ภัยรอบบ้าน link is FloodWatch's closing notice, if the owner posts one (about an hour with checks) | The owner's decision ([HANDOFF](../HANDOFF.md)) |
+
+**FloodWatch's second answer (3 Nov 2026, on v1.14.2, checked against its code):**
+
+| FloodWatch said | Here |
+|---|---|
+| It links exactly four of the addresses the test holds (`/`, `/learn`, `/checklist/prepare`, `/checklist/return`), not `/flood#during`; its own test pins the set; tell it first if one must move | Recorded in §2, the unit test's note and [GUIDELINES rule 101](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| ONWR's copy removes every บ้านรอดไหม link (tested); after FloodWatch's own site closes (no date yet; it follows ONWR's install), no FloodWatch page will link here. Dropping the rivers' link then is right; don't point it at ONWR's copy unless FloodWatch's owner gives a URL that ONWR has agreed to | [KNOWN_ISSUES #102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) corrected: it had said to use ONWR's copy if public |
+| "Nothing promises a dry house" matches FloodWatch's rule: never say the bank will hold | Held by the unit test since this answer (no flood line says a bank, dyke or wall keeps water out) |
+| Keep the four ⚠️ rather than work around DDPM's block; FloodWatch's way with a blocked page: the owner opens it by hand and keeps a dated copy as the source | [KNOWN_ISSUES #99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) and [GUIDELINES rule 103](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) say so |
+| Maybe later, FloodWatch's owner's call: a link to `/flood#during` from a station sheet when the river is over its bank | Nothing to do here; `#during` is held by the test |
+

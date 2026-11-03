@@ -2677,6 +2677,7 @@ FloodWatch answered the hand-back on 2 Nov 2026 (forwarded by the owner; [docs/1
 - **FloodWatch closing:** an empty `forecastAppUrl` now means "no rivers' link" (only a `[PLACEHOLDER]` warns). Tested on a copy: build clean, `npm test` 46, `npm run smoke` 212, no page links FloodWatch ([#102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)).
 - **Weight:** the start screen 304 KB compressed (302 before: the new sources' notes; [N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads) would take them out of what the game loads).
 - **For ภัยรอบบ้าน:** words and ids unchanged; the sources behind each level's lines changed (addendum in [docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+- **FloodWatch's second answer (3 Nov 2026):** it links exactly four addresses here (`/`, `/learn`, `/checklist/prepare`, `/checklist/return`; not `#during`), pinned by its own test; never say the bank will hold (now a unit-test check); keep the ⚠️ until the owner opens the blocked pages by hand and keeps dated copies; the rivers' link goes when FloodWatch closes, not to ONWR's copy without an agreed URL ([docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)).
 
 ### 37.8 Water off the hills: `flood.flash` (v1.14.3, ภัยรอบบ้าน's B28)
 

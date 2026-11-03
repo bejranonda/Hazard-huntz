@@ -4,6 +4,14 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Docs
+
+- **FloodWatch's second answer** (3 Nov 2026, checked against its code), recorded in [docs/10 §6](docs/10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session): it links exactly `/`, `/learn`, `/checklist/prepare` and `/checklist/return` (not `/flood#during`); tell it before one moves. KNOWN_ISSUES #102 corrected: when FloodWatch closes, drop the rivers' link; never point it at ONWR's copy without a URL from FloodWatch's owner that ONWR has agreed to. #99 and GUIDELINES rule 103: a blocked page is opened by hand and kept as a dated copy; the ⚠️ stays until then.
+
+### Added
+
+- **Test:** no flood line says a bank, dyke or wall will hold (FloodWatch's rule); the note on the four FloodWatch addresses says FloodWatch pins them too.
+
 ## [1.14.3] — 2026-11-03
 
 **Water off the hills, for ภัยรอบบ้าน (its question B28).** ภัยรอบบ้าน shows the เตรียมตัว line when HII's flash-flood list sets its flood row, and asked whether that line fits. It isn't wrong (DDPM's own flash-flood alert also says to lift belongings), but a flash flood comes fast: water off the hills now has a line of its own. No line ภัยรอบบ้าน already checks changed. ([ROADMAP N33](docs/ROADMAP.md#n33-water-off-the-hills-for-ภัยรอบบ้าน-v1143), [docs/10 §4](docs/10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session))

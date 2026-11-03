@@ -238,7 +238,7 @@ function renderStart() {
   // The home check: "บ้านเราพร้อม 70%" once this household has checked (stored on the device).
   const kitSaved = store.get('kit', null);
   const kitChip = $('#kit-chip');
-  if (kitChip) kitChip.textContent = kitSaved?.pct != null ? t('hubKitScore', { pct: kitSaved.pct }) : t('hubKitSub');
+  if (kitChip) kitChip.textContent = kitSaved?.pct > 0 ? t('hubKitScore', { pct: kitSaved.pct }) : t('hubKitSub');
   renderHub(defaultMode);
 
   // The owner's alert (config.alert, until its end date): that guide, first; it says until when.

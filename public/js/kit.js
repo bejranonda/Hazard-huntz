@@ -121,9 +121,10 @@ function persist(s, plan) {
   const sc = kitScore(plan, s.have);
   const keep = { people: s.people, flags: s.flags, have: s.have.filter((id) => plan.items.some((x) => x.id === id)), answered: true, pct: sc.pct, date: bangkokDateKey() };
   store.set('kit', keep);
-  // The start screen's button shows the new score at once, not after a reload.
+  // The start screen's button shows the new score at once, not after a reload;
+  // nothing ticked yet keeps its plain line, not "พร้อม 0%" for a first look.
   const chip = document.getElementById('kit-chip');
-  if (chip) chip.textContent = t('hubKitScore', { pct: sc.pct });
+  if (chip) chip.textContent = sc.pct > 0 ? t('hubKitScore', { pct: sc.pct }) : t('hubKitSub');
   return { keep, sc };
 }
 
@@ -295,8 +296,8 @@ export async function openPlan(from = 'start', again = false) {
 const HOUR = 3600e3;
 // Times read "about", to the nearest minute, so a time just tapped doesn't read
 // "59 นาที"; a time left of 3 hours or more reads in whole hours ("ราว 45 ชม.").
-// The time off keeps its minutes, so it never reads "4 ชม." when a card already
-// says "เกิน 4 ชม.แล้ว". ✅ ⏳ ❌ always come from the exact time.
+// The time off keeps its minutes, so it never reads "3 ชม. 59 นาที" when a card
+// already says "ครบ 4 ชม.แล้ว". ✅ ⏳ ❌ always come from the exact time.
 function span(hours, whole = false) {
   whole = whole && hours >= 3;
   const total = whole ? Math.round(hours) * 60 : Math.max(0, Math.round(hours * 60));
@@ -355,7 +356,7 @@ export async function openFridge(from = 'start') {
     <ul class="fr-always">${F.always.map((a) => `<li><span aria-hidden="true">${esc(a.icon)}</span> ${esc(L(a.text))}</li>`).join('')}</ul>
     <p class="kit-src">⚠️ ${esc(u('fridgeIntl'))}<br>${esc(u('source'))}: ${esc(agencies(srcIds))}</p>
     <p class="kit-privacy">🔒 ${esc(u('fridgePrivacy'))}</p>
-    <div class="fr-share" id="fr-share-row"></div>
+    <div class="fr-share" id="fr-share-row" hidden></div>
     <button class="btn secondary" type="button" id="fr-kit">${esc(u('fridgeKit'))}</button>
     <button class="btn secondary small" type="button" id="fr-close">${esc(u('close'))}</button>`, { label: u('fridgeTitle') });
   // One card per part: the word that answers the question, then one line.
@@ -408,6 +409,8 @@ export async function openFridge(from = 'start') {
   const tick = () => {
     if (!document.getElementById('fr-out')) return false;
     $('#fr-count').hidden = !s.start;
+    // Like the other tools, nothing to send before the one question is answered.
+    $('#fr-share-row').hidden = !s.start;
     $('#fr-reset').hidden = !!s.end;
     $('#fr-again').hidden = !s.end;
     for (const b of $$('.fr-time', $('#sheet'))) b.setAttribute('aria-checked', String(s.start != null && Number(b.dataset.h) === s.picked));

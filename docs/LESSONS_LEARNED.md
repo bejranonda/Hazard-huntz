@@ -745,3 +745,21 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* v1.6.0 gave the rain switch an end date (C16), so "ฝนจะมาอีกระลอก" would stop by itself on 30 Nov. It was still false somewhere every day it was on: one switch for a whole country can't know where rain is coming, and the season told everyone "the water has gone" for half the year.
 - *Do this:* a line that states a current condition needs a source for the reader's place; without one, write a line that is true anywhere ("ถ้าน้ำมา บ้านเราพร้อมไหม?") and link the app that knows the place.
 - *Encoded in:* [GUIDELINES rule 100](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit); the unit test on the gecko's lines; the build's error on `rainWarningActive`.
+
+**B24. At a limit, say the limit is reached, not passed.**
+
+- *What happened:* the fridge tool marked food "over" at exactly 4 hours (the CDC's limit, correctly) but said "เกิน 4 ชม.แล้ว", "more than 4 hours", which was false at the moment it first showed and read as if the reader was already late. Visitor audit 5 caught it (A11); the logic was right, the word wasn't.
+- *Do this:* when a status starts at a limit (`left <= 0`), word it so it is true at the limit and after it: "ครบ 4 ชม.แล้ว" / "4 hours or more". Check each status word at the exact edge value, in both languages.
+- *Encoded in:* `kit.json → fridge.parts[].say.over`, `tests/smoke.mjs` (tapping "4 ชม.").
+
+**A12. A score saved before an answer reads as a verdict.**
+
+- *What happened:* opening the home check saved a score of 0 before anything was ticked, so the start screen said "บ้านเราพร้อม 0%" to someone who had only looked. The owner's phone photo showed it; no test had looked at the tile after a first visit.
+- *Do this:* show a score only once the reader has answered something; until then keep the tile's plain line. When the owner sends a screenshot, read every word on it as a first-time visitor would.
+- *Encoded in:* `main.js` and `kit.js` (the tile shows the score when it is above 0), `tests/smoke.mjs` (the tile before and after one tick).
+
+**B25. A Thai read starts from the agency's own words.**
+
+- *What happened:* asked to finish the Thai read of the shared flood and UV lines, the first drafts were the reader's own phrasing. The source notes already held the agencies' phrases ("ขอความช่วยเหลือ โทร 1784", "กระแสน้ำไหลเชี่ยว", "ใช้เวลาให้น้อยที่สุด", DMR's "น้ำในลำห้วยมีสีขุ่นข้น มีเสียงดังผิดปกติ"), and one draft change was wrong: "ผิวแพ้ง่าย" is the TMD's own sense, so it stayed.
+- *Do this:* before rewording a sourced line, read its sources' notes and prefer their words; change only what reads unclear, and leave lines another app shows (a level's first line) alone unless they are wrong.
+- *Encoded in:* [APPROACH §42](APPROACH_AND_METHOD.md#42-a-thai-read-the-owner-hands-over-v1151), [docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session).

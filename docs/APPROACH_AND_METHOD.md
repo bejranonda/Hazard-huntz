@@ -570,3 +570,13 @@ The owner asked to "continue all to finish". The AI-ready work was clear (N18, #
 5. **What needs a person stays theirs.** Copy at a safety edge (the fridge's "4 hours"), an English reader's choices, the owner's decisions and the sister app's link went to #103 and the hand-back, not into this release.
 6. **When a tool is denied, do it the normal way.** One shell command that edited files was refused by a safety check that couldn't parse it (no removal was in it); the same edits were made with the file editor, nothing was worked around.
 
+## 42. A Thai read the owner hands over (v1.15.1)
+
+The owner asked to "suggest, then validate and make it finish" the Thai read of the fridge's words, the flood and UV lines and the gecko's words (#103, #99, #100, #98), which had waited for a native reader.
+
+1. **Print every line with its sources first** (Thai, English, `verify`, source ids), and the source notes next to it. The read is against the agencies' words, not taste.
+2. **Mark what reads wrong, not what could be different:** a missing "ถ้า", a phrase that isn't the agency's ("ต้องการคนช่วย" for DDPM's "ขอความช่วยเหลือ"), a word for equipment most homes don't have ("สับคัตเอาต์" alone), a status word false at its own edge ("เกิน" at exactly 4 hours), a heading that reads as a statement. Lists without "และ" stayed: DDPM writes them that way.
+3. **Protect the contract.** No level's first line, id, number, source id, `verify` or anchor changed, because ภัยรอบบ้าน shows them; every changed shared line goes into a paste-ready hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+4. **Apply with exact counts.** One script replaced each string only if it occurred the expected number of times (two for a line used twice), then parsed the JSON; the build regenerated every page.
+5. **Test the edges the words describe:** a smoke check taps "4 ชม." and reads "ครบ 4 ชม.แล้ว"; the start screen tile is read before and after one tick.
+6. **Say what the read is.** It is the app's read at the owner's request, recorded as such; a DDPM officer's or a health agency's read stays welcome, and the ⚠️ parts stay until an agency original is opened by hand.

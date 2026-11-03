@@ -2724,3 +2724,27 @@ Built 3 Nov 2026 ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the
 - `npm test` **48**; `npm run smoke` with the guide → tool → "‹ guide" walk in Thai and English; the build clean; `npm run check:docs` passing.
 - Visitor audit 5's measurements are in the session's scratch notes; what it left is [#103](KNOWN_ISSUES.md#103-leftovers-of-visitor-audit-5).
 
+## 39. The Thai read (v1.15.1)
+
+The owner asked for the Thai read of the shared lines to be finished (4 Nov 2026). Records: [KNOWN_ISSUES F200–F204](KNOWN_ISSUES.md#in-v1151-4-nov-2026), [#99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid), [#100](KNOWN_ISSUES.md#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours); method: [APPROACH §42](APPROACH_AND_METHOD.md#42-a-thai-read-the-owner-hands-over-v1151).
+
+| Line | Was | Now | Why (the source's own words) |
+|---|---|---|---|
+| `flood` danger 2, during 1 | ต้องการคนช่วย โทร 1784 | ขอความช่วยเหลือ โทร 1784 | DDPM: "ขอความช่วยเหลือ…โทรสายด่วนนิรภัย 1784" (`ddpm-alert-2568`) |
+| `flood.during` 3 | ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล | ใช้เส้นทางที่ปลอดภัย เลี่ยงทางที่น้ำไหลผ่าน | plainer; still ⚠️ (#99) |
+| `flood.during` 4 | …ผ่านน้ำท่วมที่ไหลเชี่ยว | …ผ่านกระแสน้ำที่ไหลเชี่ยว | PRD: "หลีกเลี่ยงการเดินผ่านกระแสน้ำไหลเชี่ยว" (reported) |
+| `flood.during` 7 | สับคัตเอาต์จุดที่น้ำอาจท่วมถึง… | ตัดไฟจุดที่น้ำอาจท่วมถึง (ปลดเบรกเกอร์หรือสับคัตเอาต์)… | PEA "ปลดสวิตช์ตัดกระแสไฟฟ้า", MEA "ปลดเมนเบรกเกอร์", DDPM "สับคัทเอาต์" |
+| `flood.flash` | ถ้าน้ำห้วยขุ่นข้นหรือมีเสียงดังผิดปกติ | ถ้าน้ำในลำห้วยขุ่นข้น หรือได้ยินเสียงดังผิดปกติ | DMR: "น้ำในลำห้วยมีสีขุ่นข้น มีเสียงดังผิดปกติ" (`dmr-signs-2568`) |
+| `flood.title`, `levelsTitle`, `intro` | ระหว่างน้ำกำลังมา…; ภัยรอบบ้าน บอก… ทำสิ่งนี้ก่อน | เมื่อน้ำกำลังมา…; เมื่อ ภัยรอบบ้าน บอก… ให้ทำสิ่งนี้ก่อน | the heading read as a statement |
+| `uv` protect 2 | ออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด สวมหมวก | ถ้าออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด และสวมหมวก | an "if" was missing |
+| `uv` veryhigh/extreme 2 | ต้องออกไป ให้หาที่ร่มไว้เสมอ | ถ้าต้องออกไป ให้หาที่ร่มเสมอ | the same |
+| `uv` extreme 6 | ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด | ถ้าจำเป็นต้องออกไป อยู่กลางแดดให้น้อยที่สุด | MOPH: "หากจำเป็นควรใช้เวลาให้น้อยที่สุด" |
+| `uv.notes` 1 | ครีมกันแดดไม่ได้ทำให้อยู่กลางแดดได้นานขึ้น | ทาครีมกันแดดแล้ว ก็ไม่ควรอยู่กลางแดดนานขึ้น | WHO: sunscreen should not be used to stay longer in the sun |
+| `uv.intro`, `desc` | แดดเผาผิวและตา… | แสงแดดทำร้ายผิวและดวงตา… | plainer |
+| `fridge.parts[].say.over` | เกิน 4 ชม.แล้ว / Over 4 hours | ครบ 4 ชม.แล้ว / 4 hours or more | true at the limit itself (`left <= 0`); the CDC's "after 4 hours" |
+| `heroReturn` | …ตรวจบ้านก่อนเข้าอยู่ | …ตรวจบ้านก่อนกลับเข้าอยู่ | the reader is moving back |
+| `riskLinkSub` | ฝน น้ำ ฝุ่น ร้อน… | ฝน น้ำท่วม ฝุ่น อากาศร้อน… | "น้ำ", "ร้อน" alone read clipped |
+
+**Kept on purpose:** every level's first line (ภัยรอบบ้าน shows them); "เด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง" without "และ" (DDPM's way); "ผิวแพ้ง่าย" (the TMD's "ผิวหนังอ่อนไหวหรือภูมิแพ้"); "เลี่ยงออกไปกลางแจ้ง"; the game's "ไฟดับเกิน 4 ชม." tip (a rule of thumb, not a status at an exact time); `heroPrepare`, `heroDust`, `heroFire`, `heroStock`, `riskLink`, `riskLinkGuide`, `forecastLong`.
+
+**Also in v1.15.1:** the fridge's share row waits for a time; the supplies tile shows a score only once something is ticked.

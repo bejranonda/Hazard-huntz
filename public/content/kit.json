@@ -420,8 +420,8 @@
             "en": "Nearly {h} hours"
           },
           "over": {
-            "th": "เกิน {h} ชม.แล้ว",
-            "en": "Over {h} hours"
+            "th": "ครบ {h} ชม.แล้ว",
+            "en": "{h} hours or more"
           }
         },
         "cond": {
@@ -464,8 +464,8 @@
             "en": "Nearly time"
           },
           "over": {
-            "th": "เกิน {h} ชม.แล้ว",
-            "en": "Over {h} hours"
+            "th": "ครบ {h} ชม.แล้ว",
+            "en": "{h} hours or more"
           }
         },
         "cond": {
@@ -501,8 +501,8 @@
             "en": "Nearly 28 days"
           },
           "over": {
-            "th": "เกิน 28 วันแล้ว",
-            "en": "Over 28 days"
+            "th": "ครบ 28 วันแล้ว",
+            "en": "28 days or more"
           }
         },
         "ok": {
@@ -543,12 +543,12 @@
             "en": "Nearly a day"
           },
           "over": {
-            "th": "เกิน 1 วันแล้ว",
-            "en": "Over a day"
+            "th": "ครบ 1 วันแล้ว",
+            "en": "A day or more"
           },
           "check": {
-            "th": "เกิน 1 วันแล้ว ดูฉลากก่อนใช้",
-            "en": "Over a day: check the label"
+            "th": "ครบ 1 วันแล้ว ดูฉลากก่อนใช้",
+            "en": "A day or more: check the label"
           }
         },
         "ok": {
@@ -589,8 +589,8 @@
             "en": "Nearly {h} hours"
           },
           "over": {
-            "th": "เกิน {h} ชม.แล้ว",
-            "en": "Over {h} hours"
+            "th": "ครบ {h} ชม.แล้ว",
+            "en": "{h} hours or more"
           }
         },
         "cond": {
@@ -628,8 +628,8 @@
             "en": "Nearly time"
           },
           "over": {
-            "th": "เกิน {h} ชม.แล้ว",
-            "en": "Over {h} hours"
+            "th": "ครบ {h} ชม.แล้ว",
+            "en": "{h} hours or more"
           }
         },
         "cond": {
@@ -2501,15 +2501,15 @@
   "flood": {
     "_readme": "v1.14.3: คำแนะนำน้ำท่วมตามระดับของ ภัยรอบบ้าน (Thai Risk) ซึ่งคัดลอกไปแสดงคำต่อคำ (บรรทัดแรก all[0] ของแต่ละระดับ): watch = ติดตามไว้ · warn = เตรียมตัว · danger = เสี่ยงสูง (ระดับ ยังไม่น่าห่วง ไม่มีบรรทัด) สิ่งที่ทำให้แถวน้ำท่วมของ ภัยรอบบ้าน ขึ้นระดับ ใช้กฎเดียวกันทั่วประเทศ: สถานีวัดน้ำแม่น้ำหรือคลองใกล้ที่นั้นเทียบกับตลิ่งของตัวเอง (ติดตามไว้ ถึง เสี่ยงสูง); ตารางของหน่วยงานสำหรับสถานีนั้น เช่น ขั้นระดับน้ำแม่น้ำของจังหวัด (ถึง เสี่ยงสูง) เส้นธงเตือนของเมือง (ถึง เตรียมตัว) และช่วงการระบายน้ำของเขื่อนที่ระบุตำบล (เตรียมตัว); การคาดการณ์ล่วงหน้าและสถานีต้นน้ำของ FloodWatch (ถึง เตรียมตัว เพราะคาดการณ์อย่างเดียวไม่บอก เสี่ยงสูง); สถานีที่ข้อมูลช้าแต่เคยบอก เตรียมตัว ขึ้นไป คงระดับไว้และบอกอายุข้อมูล; สถานีน้ำขึ้นน้ำลง ดูค่าสูงสุดใน 25 ชม. ล้นตลิ่งเฉพาะช่วงน้ำขึ้นหยุดที่ เตรียมตัว; และรายชื่อตำบลเสี่ยงน้ำป่าของ สสน. (เตรียมตัว) ซึ่ง ภัยรอบบ้าน แสดงบรรทัด flash แทน. ฝนหนักและประกาศกรมอุตุฯ อยู่ในแถวฝนของ ภัยรอบบ้าน ไม่ใช่แถวน้ำท่วม; เขื่อนใหญ่เหนือพื้นที่แสดงเป็นข้อมูล ไม่ใช่ระดับ. ทุกบรรทัดต้องใช้ได้ทุกที่ จึงเขียนว่า 'น้ำอาจมาถึง' ไม่ใช่ 'เมื่อแม่น้ำขึ้น' และไม่เอ่ยชื่อเมืองหรือแม่น้ำ (build ตรวจ) ระดับของ ภัยรอบบ้าน คำนวณจากข้อมูล ไม่ใช่คำสั่งอพยพ ระดับสูงสุดจึงบอกให้ออก 'เมื่อเจ้าหน้าที่ให้อพยพ' · flash = บรรทัดสำหรับน้ำป่า (หน้า /flood#flash ต่อด้วยคู่มือ /landslide#landslide-during) · during = หน้า /flood#during ระหว่างน้ำกำลังมา · เปลี่ยน id บรรทัดแรกของแต่ละระดับ หรือ flash ต้องบอกเจ้าของ เพราะ ภัยรอบบ้าน ตรวจตาม (npm run check:advice ที่นั่น)",
     "title": {
-      "th": "ระหว่างน้ำกำลังมา ทำอะไรก่อน",
+      "th": "เมื่อน้ำกำลังมา ทำอะไรก่อน",
       "en": "While the water is rising: what to do first"
     },
     "intro": {
-      "th": "ทำตามประกาศและคำแนะนำของเจ้าหน้าที่ในพื้นที่ก่อนเสมอ ข้อเหล่านี้มาจากประกาศและคำแนะนำของ ปภ. กรมชลประทาน และการไฟฟ้า",
+      "th": "ทำตามประกาศของเจ้าหน้าที่ในพื้นที่ก่อนเสมอ ข้อด้านล่างมาจากคำแนะนำของ ปภ. กรมชลประทาน และการไฟฟ้า",
       "en": "Always follow your local officials first. These lines come from the notices and advice of DDPM, the Royal Irrigation Department and the electricity authorities."
     },
     "levelsTitle": {
-      "th": "ภัยรอบบ้าน บอกระดับน้ำท่วมที่ตำบลของคุณ ทำสิ่งนี้ก่อน",
+      "th": "เมื่อ ภัยรอบบ้าน บอกระดับน้ำท่วมที่ตำบลของคุณ ให้ทำสิ่งนี้ก่อน",
       "en": "When Thai Risk shows a flood level at your subdistrict, do this first"
     },
     "levels": [
@@ -2606,7 +2606,7 @@
             "icon": "🧓"
           },
           {
-            "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
+            "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ขอความช่วยเหลือ โทร 1784",
             "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
             "sources": [
               "pakkret-plan-2564",
@@ -2625,8 +2625,8 @@
         "th": "ถ้าเสี่ยงน้ำป่า (น้ำจากเขา)",
         "en": "If it's a flash flood (water off the hills)"
       },
-      "th": "เตรียมพร้อมอพยพ ถ้าน้ำห้วยขุ่นข้นหรือมีเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที",
-      "en": "Be ready to leave. If a stream turns muddy or makes a loud odd noise, get somewhere safe at once",
+      "th": "เตรียมพร้อมอพยพ ถ้าน้ำในลำห้วยขุ่นข้น หรือได้ยินเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที",
+      "en": "Be ready to leave. If a stream turns muddy or you hear a loud, unusual noise, get somewhere safe at once",
       "sources": [
         "dmr-signs-2568",
         "dmr-watch-2567",
@@ -2640,7 +2640,7 @@
     },
     "during": [
       {
-        "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
+        "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ขอความช่วยเหลือ โทร 1784",
         "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
         "sources": [
           "pakkret-plan-2564",
@@ -2665,8 +2665,8 @@
         "icon": "🧓"
       },
       {
-        "th": "ถ้าต้องอพยพ ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล",
-        "en": "If you have to leave, take a safe route, not the way the water is flowing",
+        "th": "ถ้าต้องอพยพ ใช้เส้นทางที่ปลอดภัย เลี่ยงทางที่น้ำไหลผ่าน",
+        "en": "If you have to leave, take a safe route and avoid where the water is flowing",
         "sources": [
           "ddpm-noru",
           "ddpm-south"
@@ -2676,7 +2676,7 @@
         "verifyNote": "No document of DDPM's own was found for this line (DDPM's site turned automated readers away on 3 Nov 2026); it rests on news reports quoting DDPM."
       },
       {
-        "th": "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว",
+        "th": "อย่าเดินลุยหรือขับรถผ่านกระแสน้ำที่ไหลเชี่ยว",
         "en": "Don't walk or drive through fast-flowing floodwater",
         "sources": [
           "ddpm-south",
@@ -2711,8 +2711,8 @@
         "icon": "⬆️"
       },
       {
-        "th": "สับคัตเอาต์จุดที่น้ำอาจท่วมถึง ทำตอนตัวแห้งเท่านั้น",
-        "en": "Switch off the power for anywhere the water may reach, only while you are dry",
+        "th": "ตัดไฟจุดที่น้ำอาจท่วมถึง (ปลดเบรกเกอร์หรือสับคัตเอาต์) ทำตอนตัวแห้งเท่านั้น",
+        "en": "Switch off the power for anywhere the water may reach (at the breaker or main switch), only while you are dry",
         "sources": [
           "pea-943",
           "ddpm-rising-2569",
@@ -2749,11 +2749,11 @@
       "en": "What to do at each UV index level"
     },
     "desc": {
-      "th": "ดัชนียูวี 3 ขึ้นไปต้องป้องกันแดด 8 ขึ้นไปต้องป้องกันเป็นพิเศษ ตามคำแนะนำขององค์การอนามัยโลก (WHO) และกรมอุตุนิยมวิทยา",
+      "th": "ดัชนียูวีตั้งแต่ 3 ขึ้นไป ต้องป้องกันแดด ตั้งแต่ 8 ขึ้นไป ต้องป้องกันเป็นพิเศษ ตามคำแนะนำขององค์การอนามัยโลก (WHO) และกรมอุตุนิยมวิทยา",
       "en": "From a UV index of 3, protect yourself from the sun; from 8, take extra care. From the World Health Organization (WHO) and the Thai Meteorological Department."
     },
     "intro": {
-      "th": "ดัชนียูวีบอกว่าแดดเผาผิวและตาได้แรงแค่ไหน ช่วงเที่ยงวันสูงสุด ฟ้ามีเมฆหรืออากาศไม่ร้อนก็ยังสูงได้ กรมอุตุนิยมวิทยาพยากรณ์ค่าของแต่ละจังหวัดทุกวัน (เมื่อฟ้าโปร่ง)",
+      "th": "ดัชนียูวีบอกว่าแสงแดดทำร้ายผิวและดวงตาได้มากแค่ไหน ค่าสูงสุดช่วงเที่ยงวัน และแม้ฟ้ามีเมฆหรืออากาศไม่ร้อนก็ยังสูงได้ กรมอุตุนิยมวิทยาพยากรณ์ค่าของแต่ละจังหวัดทุกวัน (เป็นค่าเมื่อฟ้าโปร่ง)",
       "en": "The UV index says how strongly the sun can burn skin and eyes. It peaks around midday, and can be high on a cloudy or cool day. The Thai Meteorological Department forecasts it for each province every day (for a clear sky)."
     },
     "link": {
@@ -2810,8 +2810,8 @@
             "icon": "⛱️"
           },
           {
-            "th": "ออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด สวมหมวก",
-            "en": "Out in the sun: long sleeves, sunscreen and a hat",
+            "th": "ถ้าออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด และสวมหมวก",
+            "en": "If you go out in the sun: long sleeves, sunscreen and a hat",
             "sources": [
               "who-uvi-guide-2002",
               "who-uvi-qa-2022",
@@ -2857,7 +2857,7 @@
             "icon": "🏠"
           },
           {
-            "th": "ต้องออกไป ให้หาที่ร่มไว้เสมอ",
+            "th": "ถ้าต้องออกไป ให้หาที่ร่มเสมอ",
             "en": "If you must go out, always find shade",
             "sources": [
               "who-uvi-guide-2002",
@@ -2924,7 +2924,7 @@
             "icon": "🏠"
           },
           {
-            "th": "ต้องออกไป ให้หาที่ร่มไว้เสมอ",
+            "th": "ถ้าต้องออกไป ให้หาที่ร่มเสมอ",
             "en": "If you must go out, always find shade",
             "sources": [
               "who-uvi-guide-2002",
@@ -2968,8 +2968,8 @@
             "icon": "👶"
           },
           {
-            "th": "ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด",
-            "en": "If you really must go out, keep your time in the sun short",
+            "th": "ถ้าจำเป็นต้องออกไป อยู่กลางแดดให้น้อยที่สุด",
+            "en": "If you must go out, spend as little time in the sun as you can",
             "sources": [
               "moph-uv-mgr-2566"
             ],
@@ -2981,7 +2981,7 @@
     ],
     "notes": [
       {
-        "th": "ครีมกันแดดไม่ได้ทำให้อยู่กลางแดดได้นานขึ้น",
+        "th": "ทาครีมกันแดดแล้ว ก็ไม่ควรอยู่กลางแดดนานขึ้น",
         "en": "Sunscreen is not a reason to stay in the sun longer",
         "sources": [
           "who-uvi-guide-2002",
@@ -3844,7 +3844,7 @@
       "airColourQ": "ค่าฝุ่นตอนนี้เป็นสีอะไร?",
       "airNumber": "รู้ตัวเลข? ใส่ตัวเลขแทน",
       "fridgeMilk": "มีนมแม่แช่ไว้",
-      "fridgeTossIf": "❌ ถ้าเกิน {h} ชม. ต้องทิ้ง",
+      "fridgeTossIf": "❌ ถ้าครบ {h} ชม. ต้องทิ้ง",
       "fridgeToss": "❌ ทิ้ง",
       "fridgeKeepIf": "✅ ไม่ต้องทิ้งเพราะไฟดับ",
       "fridgeKeep": "✅ เก็บได้ ถ้าไม่ขึ้นรา ไม่มีกลิ่น สี หรือเนื้อผิดปกติ",
@@ -3863,7 +3863,7 @@
       "fridgeShareToss": "❌ ทิ้ง: {list}",
       "fridgeShareKeep": "✅ เก็บได้: {list}",
       "fridgeCleared": "ล้างเวลาแล้ว",
-      "fridgeHint": "ไม่ตรงกับปุ่มไหน ให้เลือกเวลาที่นานกว่า",
+      "fridgeHint": "ถ้าไม่มีปุ่มที่ตรง ให้เลือกเวลาที่นานกว่า",
       "fridgeCountingJust": "⏱️ ไฟเพิ่งดับ แอปจะนับเวลาต่อให้ ปิดแล้วเปิดใหม่ได้",
       "medNone": "⏳ ยาหมดแล้ว ต้องมีอย่างน้อย {need} เม็ด จะพอ {target} วัน",
       "airAlso": "ทำตามข้อด้านบน และ",

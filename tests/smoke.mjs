@@ -762,6 +762,7 @@ try {
     await page.click('.kit-flag:has(input[value="meds"])');
     await page.click('#kit-go');
     await page.waitForSelector('.kit-row');
+    const chipNone = (await page.textContent('#kit-chip')).trim();
     const list = await page.evaluate(() => ({
       water: document.querySelector('.kit-row input[data-id="water"]')?.closest('.kit-row').querySelector('.kit-qty')?.textContent,
       meds: !!document.querySelector('.kit-row input[data-id="meds"]'),
@@ -771,6 +772,9 @@ try {
     await page.click('.kit-row:has(input[data-id="water"])');
     const kept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:kit')));
     check('home check: answers and ticks are kept on the device', kept.people === 4 && kept.have.includes('water') && kept.flags.includes('meds'), JSON.stringify(kept));
+    const chipOne = (await page.textContent('#kit-chip')).trim();
+    check('home check: the start screen tile says its plain line until something is ticked, then the score (no "0%" for a first look, v1.15.1)',
+      chipNone === STR.th.hubKitSub && chipOne === STR.th.hubKitScore.replace('{pct}', kept.pct) && kept.pct > 0, `${chipNone} | ${chipOne}`);
     const smallL = await smallControls(page);
     check('home check controls >= 44 px (questions and list)', !smallQ.length && !smallL.length, [...smallQ, ...smallL].join(', '));
     // v1.10.0: "how many days will the pills last?" under the medicine line.
@@ -821,6 +825,8 @@ try {
     await page.waitForSelector('.fr-time');
     const fresh = await page.evaluate(() => ({ pick: !!document.querySelector('.fr-pick'), stored: localStorage.getItem('brm:fridge'), chosen: document.querySelectorAll('.fr-time[aria-checked="true"]').length, times: document.querySelectorAll('.fr-time').length }));
     check('fridge: nothing is counted until a time is tapped (no "1 นาที" out of nowhere); 9 times to tap', fresh.pick && !fresh.stored && !fresh.chosen && fresh.times === KIT.fridge.quick.length, JSON.stringify(fresh));
+    // v1.15.1: like the other tools, nothing to send before the one question is answered.
+    const shareBefore = await page.isVisible('#fr-share-row');
     const cards = () => page.$$eval('.fr-card', (cs) => cs.map((c) => ({ id: c.dataset.part, s: c.className.replace('fr-card ', ''), say: c.querySelector('.fr-say').textContent, d: c.querySelector('.fr-detail').textContent, groups: [...c.querySelectorAll('.fr-group')].map((g) => g.textContent), rows: [...c.querySelectorAll('.fr-foods')].map((l) => l.children.length) })));
     const F = KIT.fridge;
     const nToss = F.foods.filter((f) => f.after === 'discard').length;
@@ -831,9 +837,15 @@ try {
       c.length === 2 && c[0].s === 'is-soon' && c[0].d.includes('1 ชม.') && c[1].s === 'is-ok' && c[1].d.includes('21 ชม.') && (await page.getAttribute('.fr-time[data-h="3"]', 'aria-checked')) === 'true', JSON.stringify(c));
     check('fridge, food by food: before 4 hours, what will have to go after 4 hours and what keeps',
       c[0].groups[0] === KIT.ui.th.fridgeTossIf.replace('{h}', 4) && c[0].groups[1] === KIT.ui.th.fridgeKeepIf && c[0].rows[0] === nToss && c[0].rows[1] === nKeep, JSON.stringify(c[0]));
+    check('fridge: the share row shows only after a time is tapped (v1.15.1)', !shareBefore && (await page.isVisible('#fr-share-row')), String(shareBefore));
     await page.waitForTimeout(700); // the answer scrolls into view smoothly
     const onScreen = await page.evaluate(() => { const r = document.querySelector('.fr-card').getBoundingClientRect(); return r.top >= 0 && r.top < innerHeight; });
     check('fridge: the answer is on screen after the tap (360x640)', onScreen);
+    // At the limit itself the time is up: "ครบ 4 ชม.แล้ว", not "เกิน" (v1.15.1, #103 A11).
+    await page.click('.fr-time[data-h="4"]');
+    c = await cards();
+    check('fridge: "4 ชม." → the fridge reads "ครบ 4 ชม.แล้ว" and lists what to throw out (v1.15.1)',
+      c[0].s === 'is-over' && c[0].say.includes(F.parts[0].say.over.th.replace('{h}', 4)) && F.parts[0].say.over.th.startsWith('ครบ') && c[0].groups[0] === KIT.ui.th.fridgeToss, JSON.stringify(c[0]));
     await page.click('.fr-time[data-h="6"]');
     await page.click('.fr-seg .kit-flag:has(input[value="half"])');
     await page.click('.fr-flag:has(#fr-med)');

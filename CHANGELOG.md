@@ -4,6 +4,30 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.15.1] — 2026-11-04
+
+**The Thai read.** The owner asked for the Thai read of the fridge's words, the flood and UV lines and the gecko's words to be finished ("suggest, then validate and make it finish", 4 Nov 2026). Every line was read against the agencies' own words in `sources.json`; where a line read unclear, it now uses the agency's phrase. No advice, number, source or `verify` changed, and no level's first line (what ภัยรอบบ้าน shows beside its level); no item or slot, so houses and challenge links are the same. This read is the app's, at the owner's request; a DDPM officer's or a health agency's read stays welcome. ([KNOWN_ISSUES F200–F204](docs/KNOWN_ISSUES.md#in-v1151-4-nov-2026))
+
+### Changed
+
+- **Flood** (`kit.json → flood`, `/flood#during`; ภัยรอบบ้าน copies these): "ขอความช่วยเหลือ โทร 1784" (DDPM's phrase; it said "ต้องการคนช่วย"), "ใช้เส้นทางที่ปลอดภัย เลี่ยงทางที่น้ำไหลผ่าน", "กระแสน้ำที่ไหลเชี่ยว" (PRD's words), "ตัดไฟจุดที่น้ำอาจท่วมถึง (ปลดเบรกเกอร์หรือสับคัตเอาต์)" (most homes have breakers), the flash line in DMR's order ("ถ้าน้ำในลำห้วยขุ่นข้น หรือได้ยินเสียงดังผิดปกติ"), the headings "เมื่อน้ำกำลังมา ทำอะไรก่อน" and "เมื่อ ภัยรอบบ้าน บอกระดับน้ำท่วม… ให้ทำสิ่งนี้ก่อน", and an intro that says "ประกาศ" and "คำแนะนำ" once each.
+- **UV** (`kit.json → uv`, `/uv`): "ถ้าออกแดด…และสวมหมวก", "ถ้าต้องออกไป ให้หาที่ร่มเสมอ", "ถ้าจำเป็นต้องออกไป อยู่กลางแดดให้น้อยที่สุด" (the MOPH's "ใช้เวลาให้น้อยที่สุด"), "ทาครีมกันแดดแล้ว ก็ไม่ควรอยู่กลางแดดนานขึ้น" (WHO: sunscreen is not a reason to stay longer), and a plainer intro and description.
+- **The fridge** at its limit says the time is up, not past: "ครบ 4 ชม.แล้ว" / "4 hours or more" (it said "เกิน 4 ชม.แล้ว" at exactly 4 hours), the same for the freezer, breast milk, insulin's 28 days and other medicine's day; "❌ ถ้าครบ 4 ชม. ต้องทิ้ง"; the hint "ถ้าไม่มีปุ่มที่ตรง ให้เลือกเวลาที่นานกว่า".
+- **The gecko's words** (#98) are the app's now: kept, except "หลังน้ำลด อย่าเพิ่งวางใจ ตรวจบ้านก่อนกลับเข้าอยู่" and the ภัยรอบบ้าน link's line "ฝน น้ำท่วม ฝุ่น อากาศร้อน ทุกตำบล ที่เว็บ ภัยรอบบ้าน".
+- English twins follow where the Thai changed meaning: "take a safe route and avoid where the water is flowing", "(at the breaker or main switch)", "you hear a loud, unusual noise", "If you go out in the sun", "spend as little time in the sun as you can".
+
+### Fixed
+
+- **The fridge's share row** waits for a time to be tapped, like the other tools.
+- **The start screen's supplies tile** says "ตามจำนวนคนในบ้าน" until something is ticked; it said "บ้านเราพร้อม 0%" after a first look (seen on the owner's phone photo).
+
+### Docs
+
+- **The family palette (#101) is deferred by the owner** ("No need now"): each app keeps its colours.
+- **Hand-back to ภัยรอบบ้าน** for the changed shared lines ([docs/10 §4](docs/10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)); its `check:advice` reports them until its copies are updated.
+- KNOWN_ISSUES F200–F204 (#98 closed; #99, #100 with the read recorded; #103 A11 fixed), ROADMAP N30 and L10 step 7c, test checklist rows 90 and 93, HANDOFF, KNOWLEDGE §39, LESSONS A12, B24, B25, APPROACH §42, README, AGENTS.
+- No "UPDATE:" post is needed: the wording changed, not the advice.
+
 ## [1.15.0] — 2026-11-03
 
 **Lighter, and what the audits left.** The app stops downloading the source notes it never shows (N18): the start screen goes from 304 to 274 KB compressed. Visitor audit 3's AI-ready leftovers (#83) and visitor audit 5's findings (an independent walk of the live v1.14.3, 204 page loads and every sheet, in LINE's browser at 320, 360 and 390 px, Thai and English) are fixed, except where the owner or an English reader decides. No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([ROADMAP N18](docs/ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads), [N34](docs/ROADMAP.md#n34-visitor-audit-5-and-audit-3s-leftovers-v1150))

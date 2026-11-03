@@ -141,6 +141,32 @@ From บ้านรอดไหม v1.15.0 (3 Nov 2026): for "ก่อนน�
 Both anchors stay. /uv has its own link preview now. Nothing in kit.json changed.
 ```
 
+**The Thai read (v1.15.1, 4 Nov 2026).** The owner asked for the Thai read of the shared lines to be finished ([KNOWN_ISSUES #99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid), [#100](KNOWN_ISSUES.md#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours)). **No level's first line changed** (`flood.levels[].all[0]`, `uv.levels[].all[0]`), nor an id, a number, a source id, `verify` or an anchor; the lines below did, with the same advice. ภัยรอบบ้าน's `check:advice` compares every line, so it reports these until its copies are updated. The flash line here replaces the one in the B28 note above. Paste:
+
+```
+From บ้านรอดไหม v1.15.1 (4 Nov 2026): the Thai read of the shared lines. No level's first line
+(flood.levels[].all[0], uv.levels[].all[0]), id, number, source id, verify or anchor changed.
+Changed wording, same advice (Thai | English):
+- flood.levels[danger].all[1] and flood.during[0]:
+  "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ขอความช่วยเหลือ โทร 1784" | English unchanged
+- flood.during[2]: "ถ้าต้องอพยพ ใช้เส้นทางที่ปลอดภัย เลี่ยงทางที่น้ำไหลผ่าน"
+  | "If you have to leave, take a safe route and avoid where the water is flowing"
+- flood.during[3]: "อย่าเดินลุยหรือขับรถผ่านกระแสน้ำที่ไหลเชี่ยว" | English unchanged
+- flood.during[6]: "ตัดไฟจุดที่น้ำอาจท่วมถึง (ปลดเบรกเกอร์หรือสับคัตเอาต์) ทำตอนตัวแห้งเท่านั้น"
+  | "Switch off the power for anywhere the water may reach (at the breaker or main switch), only while you are dry"
+- flood.flash (B28): "เตรียมพร้อมอพยพ ถ้าน้ำในลำห้วยขุ่นข้น หรือได้ยินเสียงดังผิดปกติ รีบไปที่ปลอดภัยทันที"
+  | "Be ready to leave. If a stream turns muddy or you hear a loud, unusual noise, get somewhere safe at once"
+- flood.title: "เมื่อน้ำกำลังมา ทำอะไรก่อน" (was "ระหว่าง…"); if your link to /flood#during uses our
+  heading as its label, match it. flood.levelsTitle and flood.intro reworded too (page text).
+- uv.levels[protect].all[1]: "ถ้าออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด และสวมหมวก"
+  | "If you go out in the sun: long sleeves, sunscreen and a hat"
+- uv.levels[veryhigh].all[1] and [extreme].all[1]: "ถ้าต้องออกไป ให้หาที่ร่มเสมอ" | English unchanged
+- uv.levels[extreme].all[5]: "ถ้าจำเป็นต้องออกไป อยู่กลางแดดให้น้อยที่สุด"
+  | "If you must go out, spend as little time in the sun as you can"
+- uv.notes[0]: "ทาครีมกันแดดแล้ว ก็ไม่ควรอยู่กลางแดดนานขึ้น" | English unchanged
+Please copy these, run check:advice, and tell บ้านรอดไหม if anything else differs.
+```
+
 ## 5. What ภัยรอบบ้าน or FloodWatch should check (frank)
 
 - **ภัยรอบบ้าน wrote one advice line of its own** (the UV line above), against its own rule, and only from a peak of 6, while WHO's threshold is 3. **Fixed in its v0.11.2** (2 Nov 2026): it shows this app's line at every level.

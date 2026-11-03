@@ -95,12 +95,12 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 95 | [Live data for "around my home" isn't read yet](#95-live-data-for-around-my-home-isnt-read-yet) | By design since v1.14.0: it is ภัยรอบบ้าน's | — |
 | 96 | [The PDPA and the traffic-data rule apply once a server keeps anything about a person](#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person) | Owner (a Thai lawyer, before any per-person data) | **High if ignored** (fines of 1–5 M baht a breach) |
 | 97 | [Web Push can't reach readers inside LINE or Facebook](#97-web-push-cant-reach-readers-inside-line-or-facebook) | Platform limit | Medium (decides whether push is worth building) |
-| 98 | [The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name](#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name) | Owner (the words) | Low |
-| 99 | [The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) | Owner (a Thai read; DDPM's own page for four ⚠️ parts) | **Medium (ภัยรอบบ้าน shows them)**; since v1.14.2 most lines lead with the agencies' own documents |
-| 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (a Thai read) | Medium |
-| 101 | [The family's colours differ](#101-the-familys-colours-differ) | Owner (one decision) | Low |
+| 98 | [The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name](#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name) | Fixed in v1.15.1 ([F204](#in-v1151-4-nov-2026)) | — |
+| 99 | [The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) | Owner (DDPM's own page for four ⚠️ parts; the Thai read was done in v1.15.1) | **Medium (ภัยรอบบ้าน shows them)**; since v1.14.2 most lines lead with the agencies' own documents |
+| 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (optional: a health agency's read; the Thai read was done in v1.15.1) | Low |
+| 101 | [The family's colours differ](#101-the-familys-colours-differ) | Deferred by the owner ("No need now", 4 Nov 2026) | Low |
 | 102 | [FloodWatch closes after its handover; the rivers' link goes with it](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) | Owner (one line, when it closes) | Low |
-| 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Open (AI-ready, except where marked) | Low |
+| 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Open (AI-ready); A11 fixed in v1.15.1 | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -298,7 +298,7 @@ Today the app keeps nothing about anyone: what people answer stays in `localStor
 
 ### 98. The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name
 
-**Status:** Owner (the words) · **Severity:** Low
+**Status:** Fixed in v1.15.1 ([F204](#in-v1151-4-nov-2026)): the owner asked for the read to be finished (4 Nov 2026), and the words below are now the app's, two of them reworded · **Severity:** —
 
 The brief for v1.14.0 asked the owner for the words of the line that replaced "ฝนจะมาอีกระลอก มาเตรียมบ้านกัน!". Rather than leave the false line live until an answer, v1.14.0 ships drafts that claim nothing about this week (F164), for the owner to change in `strings.json`:
 
@@ -311,10 +311,11 @@ The brief for v1.14.0 asked the owner for the words of the line that replaced "�
 None says "the rainy season" for the whole country. A unit test fails if a gecko line says "อีกระลอก", "มาอีกแล้ว", "น้ำลดแล้ว", "is coming", "is back" or "water's gone" again.
 
 - **What would close it:** the owner's words, or a "fine as they are" ([ROADMAP L5](ROADMAP.md#l5-second-native-reader-for-the-thai-copy)).
+- **Closed in v1.15.1:** the owner said "suggest, then validate and make it finish" (4 Nov 2026). Kept: `heroPrepare`, `heroDust`, `riskLink` (the owner's own brief), `riskLinkGuide`, `forecastLong`. Changed: `heroReturn` "…ตรวจบ้านก่อนกลับเข้าอยู่" ("กลับ": the reader is moving back, as in DDPM's "ก่อนกลับเข้าบ้าน"), and `riskLinkSub` "ฝน น้ำท่วม ฝุ่น อากาศร้อน ทุกตำบล ที่เว็บ ภัยรอบบ้าน" ("น้ำ" and "ร้อน" alone read clipped; "อากาศร้อน" is the heat guide's word). The English twins stay.
 
 ### 99. The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID
 
-**Status:** Owner (a Thai read; DDPM's own page) · **Severity:** Medium: ภัยรอบบ้าน shows them beside its flood level
+**Status:** Owner (DDPM's own page for four ⚠️ parts; the Thai read was done in v1.15.1) · **Severity:** Medium: ภัยรอบบ้าน shows them beside its flood level
 
 `kit.json → flood` (three levels and eight lines for while the water rises, v1.14.0) quotes DDPM and the Royal Irrigation Department through news reports (InfoQuest, The Standard, Krungthep Turakij, Thansettakij, MGR Online, 2022–2026): disaster.go.th answered 403 and prd.go.th 404 to the research host on 1–2 Nov 2026, and rid.go.th an empty script page. No province's own flood manual was found online. Two lines are ⚠️ `partial`: the emergency bag at ติดตามไว้ (DDPM gives it with no level; putting it there is ours) and "don't walk or drive through fast-flowing floodwater" (DDPM's walking line names a depth above the knee, left out as a wading depth, so the app's line is stricter).
 
@@ -324,25 +325,27 @@ None says "the rainy season" for the whole country. A unit test fails if a gecko
 - **Still without an agency original, so ⚠️:** "ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล", "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว", "อยู่ห่างสายไฟและเสาไฟฟ้า", the pets in "ย้ายรถและสัตว์เลี้ยง…", and since v1.14.3 the flash-flood line (`flood.flash`: DMR's and DWR's words through news reports; DMR's own warning posts on dmr.go.th, Oct 2026, carry their advice in images and files that weren't read). DDPM's own site (disaster.go.th and its provincial subdomains) answered every automated reader with a Cloudflare challenge; prd.go.th and thaigov.go.th the same; the Internet Archive couldn't be reached from the research host. Nothing was bypassed.
 - **How to close it without working around a block (FloodWatch's way, 3 Nov 2026):** the owner opens each page by hand, keeps a dated copy (a saved PDF or screenshot with the date), and the source's `note` records who opened it, when, and where the copy is kept. Until then the ⚠️ stays.
 - **For a person in Thailand (the quickest close):** open the national disaster plan 2564–2570 on disaster.go.th (the five levels), the Internet Archive's copy of disaster.go.th of 27 Sep 2026 (`/web/20260927100531/`), PRD's T-Alert page (prd.go.th …/id/39/iid/425692, archived 6 Aug 2026), PRD's August 2026 pages for Nan (iid 533309, 533361; DDPM's phone-alert advice), and PRD's iid 534015 ("หลีกเลี่ยงการเดินผ่านกระแสน้ำไหลเชี่ยว", reported) and 432703 (distance from poles, reported). A PRD page is a government channel here, so any of these that says a ⚠️ line can lift it.
-- **What would close it:** the four ⚠️ parts get an agency or government original (above), and a Thai reader (ideally from DDPM) reads the eleven lines; then `verify` can stay or change ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+- **The Thai read (v1.15.1, 4 Nov 2026, at the owner's request):** every line read against the agencies' own words in `sources.json`. No level's first line changed (ภัยรอบบ้าน shows them). Changed, with the same advice: "ต้องการคนช่วย โทร 1784" → "ขอความช่วยเหลือ โทร 1784" (DDPM's phrase, `ddpm-alert-2568`); "ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล" → "ใช้เส้นทางที่ปลอดภัย เลี่ยงทางที่น้ำไหลผ่าน"; "น้ำท่วมที่ไหลเชี่ยว" → "กระแสน้ำที่ไหลเชี่ยว" (PRD's "กระแสน้ำไหลเชี่ยว"); "สับคัตเอาต์จุดที่…" → "ตัดไฟจุดที่น้ำอาจท่วมถึง (ปลดเบรกเกอร์หรือสับคัตเอาต์)…" (most homes have breakers: PEA "ปลดสวิตช์ตัดกระแสไฟฟ้า", MEA "ปลดเมนเบรกเกอร์", DDPM "สับคัทเอาต์"); the flash line in DMR's order ("ถ้าน้ำในลำห้วยขุ่นข้น หรือได้ยินเสียงดังผิดปกติ"); the headings "เมื่อน้ำกำลังมา ทำอะไรก่อน" and "เมื่อ ภัยรอบบ้าน บอก… ให้ทำสิ่งนี้ก่อน" (it read as a statement); the intro says "ประกาศ" and "คำแนะนำ" once each. Kept: "เด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง" without "และ", as DDPM writes it. The read is the app's, not an agency's; a DDPM officer's read stays welcome.
+- **What would close it:** the four ⚠️ parts get an agency or government original (above); then `verify` can stay or change ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 
 ### 100. The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours
 
-**Status:** Owner (a Thai read) · **Severity:** Medium
+**Status:** Owner (optional: a health agency's read; the Thai read was done in v1.15.1) · **Severity:** Low (was Medium until the Thai read)
 
 `kit.json → uv` and `/uv` (v1.14.0) follow WHO's Global Solar UV Index guide (2002, its Figure 2 checked against the page image) and its 2022 Q&A and fact sheet. WHO has no Thai version, so the Thai lines are the app's translation. The TMD's own UV page shows a clear-sky forecast with WHO's colour bands and no advice per level; the TMD's, the MOPH's and the DOH's advice reached the research only through news reports (PPTV 2024, MGR Online 2023 and 2015). The 3–7 lines and the 0–2 line are ⚠️ `partial` (WHO alone ties them to a level); the 8+ lines are `verified` (WHO and the TMD say the same). Left out: hours (WHO "midday"; the TMD, DOH and MOPH 09.00–15.00; a dermatology institute 10.00–15.00), SPF numbers (15+, 30, 50, 50–60+), burn times (WHO advises against them), and WHO's annexed "children below one year must never stay in direct sun" (an example adapted from other countries).
 
 - **WHO gives one message from 8 up.** ภัยรอบบ้าน's split of 8–10 (เตรียมตัว) and 11+ (เสี่ยงสูง) is its own; `veryhigh` and `extreme` share WHO's lines, and `extreme` adds the MOPH's "ต้องออกไปจริงๆ อยู่กลางแดดให้สั้นที่สุด", said in an 11+ warning.
-- **What would close it:** a Thai read of the translation (and ideally the DOH's or the Institute of Dermatology's), and the TMD's own page with advice per level if one is found ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+- **The Thai read (v1.15.1, 4 Nov 2026, at the owner's request):** no level's first line changed. Changed, with the same advice: "ถ้าออกแดด ใส่เสื้อแขนยาว ทาครีมกันแดด และสวมหมวก" and "ถ้าต้องออกไป ให้หาที่ร่มเสมอ" (an "if" was missing), "ถ้าจำเป็นต้องออกไป อยู่กลางแดดให้น้อยที่สุด" (the MOPH's "หากจำเป็นควรใช้เวลาให้น้อยที่สุด"), "ทาครีมกันแดดแล้ว ก็ไม่ควรอยู่กลางแดดนานขึ้น" (WHO: sunscreen is not a reason to stay longer; the old line read as a claim about sunscreen), and the intro ("แสงแดดทำร้ายผิวและดวงตา", not "เผาตา") and description. Kept: "ผิวแพ้ง่าย", the TMD's own sense ("ผิวหนังอ่อนไหวหรือภูมิแพ้"), and "เลี่ยงออกไปกลางแจ้ง".
+- **What would close it:** the TMD's own page with advice per level, if one is found; a read by the DOH or the Institute of Dermatology stays welcome ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 
 ### 101. The family's colours differ
 
-**Status:** Owner (one decision) · **Severity:** Low
+**Status:** Deferred by the owner ("One colour palette for the three apps > No need now", 4 Nov 2026) · **Severity:** Low
 
 - **UV at 11+: settled on 2 Nov 2026.** Both apps say "สูงจัด": ภัยรอบบ้าน v0.11.2 took this app's word (the MOPH's, through a news report), since its "สูงที่สุด" had no source. Which word the TMD itself uses for each of the five bands is still **[unverified]** (its page shows colours only).
 - **Colours:** the two apps draw levels in different palettes; one palette for the family is the owner's open decision, so v1.14.0 changes no colour (the ภัยรอบบ้าน link uses the hub's existing teal).
 - **Levels:** ภัยรอบบ้าน's four words (ยังไม่น่าห่วง · ติดตามไว้ · เตรียมตัว · เสี่ยงสูง) label `kit.json → flood.levels` as they are; this app doesn't rename them, nor the agencies' band words.
-- **What would close it:** the owner picks a palette for the family ([docs/10](10-family.md)).
+- **What would close it:** the owner picks a palette for the family ([docs/10](10-family.md)). Not now: each app keeps its own colours; the words for the levels are already shared. Reopen only when the owner asks.
 
 
 ### 102. FloodWatch closes after its handover; the rivers' link goes with it
@@ -366,7 +369,7 @@ Visitor audit 5 (3 Nov 2026, the live v1.14.3; [ROADMAP N34](ROADMAP.md#n34-visi
 
 - **A5, for ภัยรอบบ้าน:** its "ก่อนน้ำมา ทำอย่างไร" links `/flood#prepare`, the reasons for each step, far down the page; the 10 short steps are `/flood#cl-prepare` near the top. In the hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)); both anchors stay.
 - **A8:** on the plan and info cards' share sheets, "คัดลอกข้อความ" (the invitation) sits beside "คัดลอกแผนเป็นข้อความ" (the plan); add a heading over the invitation row and put the plan's copy first.
-- **A11, with the owner:** the fridge's share row shows before any time is tapped; choosing "4 ชม." reads "เกิน 4 ชม.แล้ว" (the CDC's limit is 4 hours, so the wording at the edge needs the Thai review, [#74](#74-the-fridge-hours-rest-on-us-guidance-only)).
+- ~~**A11:** the fridge's share row shows before any time is tapped; choosing "4 ชม." reads "เกิน 4 ชม.แล้ว"~~ Fixed in v1.15.1 ([F200, F201](#in-v1151-4-nov-2026)).
 - **A13:** heat today's level buttons have no °C, while its answers say "33.0–41.9 °C".
 - **A14:** the dust number box says nothing for "abc", an AQI of 1000 or Thai digits ("๘๐").
 - **Dates (also #83 B16):** the pages' "ปรับปรุงล่าสุด: 2026-11-03" is ISO; the app's cards use another format.
@@ -1118,6 +1121,18 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.15.1 (4 Nov 2026)
+
+The Thai read the owner asked to finish (4 Nov 2026: "suggest, then validate and make it finish") of the fridge's words (#103 A11), the flood and UV lines (#99, #100) and the gecko's words (#98), each line checked against the agencies' own words in `sources.json`, plus one thing seen on the owner's phone photo. No advice, number, source or `verify` changed; no item or slot, so houses and challenge links are the same.
+
+| # | Problem | Fix |
+|---|---|---|
+| F200 | **The fridge said "เกิน 4 ชม.แล้ว" at exactly 4 hours** (A11): the CDC's limit is reached, not passed, and "เกิน" read as if the reader was already late | At the limit and after it: "ครบ 4 ชม.แล้ว" / "4 hours or more"; the same for the freezer, breast milk, insulin's 28 days and other medicine's day ("ครบ 1 วันแล้ว ดูฉลากก่อนใช้"); "❌ ถ้าครบ 4 ชม. ต้องทิ้ง"; the hint "ถ้าไม่มีปุ่มที่ตรง ให้เลือกเวลาที่นานกว่า". The status logic is unchanged (`left <= 0`). Smoke check "fridge: "4 ชม." → the fridge reads "ครบ 4 ชม.แล้ว"" |
+| F201 | **The fridge's share row showed before any time was tapped** (A11), unlike the mask, heat, water and tank tools | It shows once a time is tapped. Smoke check "fridge: the share row shows only after a time is tapped" |
+| F202 | **"บ้านเราพร้อม 0%" on the start screen after a first look** at the home check (the owner's phone photo, 4 Nov 2026): opening the list saved a score of 0 before anything was ticked | The tile keeps "ตามจำนวนคนในบ้าน" until something is ticked, then the score. Smoke check "home check: the start screen tile says its plain line until something is ticked" |
+| F203 | **Flood and UV lines that read unclear in Thai** (#99, #100): a missing "ถ้า", "ต้องการคนช่วย", "สับคัตเอาต์" where most homes have breakers, "เผาตา", a levels heading that read as a statement | Reworded with the agencies' own words where they exist; no level's first line changed; details in [#99](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) and [#100](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours). ภัยรอบบ้าน copies these lines, so the hand-back lists each change ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)) |
+| F204 | **The gecko's words were drafts in the owner's name** (#98) | Read and kept, two reworded (`heroReturn`, `riskLinkSub`); [#98](#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name) |
 
 ### In v1.15.0 (3 Nov 2026)
 

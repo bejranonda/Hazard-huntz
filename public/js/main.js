@@ -1013,7 +1013,7 @@ function openShareSheet({ text, url, blob, file, mode, filename, imgSrc }) {
     </div>
     ${imgSrc ? `<img class="card-preview share-preview" src="${esc(imgSrc)}" alt="">` : ''}
     ${imgSrc && !saveOk ? `<p class="save-hint">💡 ${esc(t('saveHint'))}</p>` : ''}
-    ${app === 'line' && imgSrc ? `<a class="link" href="${esc(lineExternalUrl(location.href))}">${esc(t('openExternal'))}</a>` : ''}
+    ${app === 'line' && imgSrc ? `<a class="link" href="${esc(lineExternalUrl(url || location.href))}">${esc(t('openExternal'))}</a>` : ''}
     <button class="btn secondary small" type="button" id="share-close">${esc(t('close'))}</button>`);
   $('#share-close').addEventListener('click', () => closeSheet());
   for (const b of $$('[data-ch]', $('#sheet'))) {
@@ -1054,9 +1054,10 @@ function goHome() {
 // "tools" itself is the page that lists them all (/tools), not one of them.
 const TOOLS = {};
 const toolName = (x) => t(`hub${x[0].toUpperCase()}${x.slice(1)}`);
-async function openTool(which, from, mode = '') {
+async function openTool(which, from, mode = '', guide = null) {
   try {
     const m = await import('./kit.js');
+    m.setGuideReturn?.(guide);
     // Each tool opens with open<Id> in kit.js (openKit, openFridge, openHot…).
     const fn = m[`open${which[0].toUpperCase()}${which.slice(1)}`];
     await (fn ? fn(from, mode || undefined) : m.openKit(from, mode));
@@ -1135,9 +1136,10 @@ async function openChecklist(mode, from = '') {
   const partial = list.items.some((it) => it.verify === 'partial');
   const calls = guideCalls(mode);
   // A guide's own tools first (the two flood guides differ, v1.13.0), else its hazard's.
-  const tools = (g?.tools || hz?.tools || []).filter((x) => TOOLS[x]);
+  // the guide's "now" tool has its own button above, so it isn't repeated in the row (visitor audit 5 A10, v1.15.0)
+  const tools = (g?.tools || hz?.tools || []).filter((x) => TOOLS[x] && x !== g?.now);
   openSheet(`
-    <h2 id="sheet-title">${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
+    <h2 id="sheet-title" tabindex="-1" autofocus>${esc(g?.icon || '📋')} ${esc(L(list.title))}</h2>
     ${sections.length > 1 ? `<nav class="phase-jump" aria-label="${esc(t('guideJump'))}">${sections.map((sec) => `<button class="phase-chip phase-${sec.phase}" type="button" data-jump="${sec.phase}">${esc(sec.head)}</button>`).join('')}</nav>` : ''}
     ${g?.now && TOOLS[g.now] ? `<button class="btn guide-now-btn" type="button" data-tool="${esc(g.now)}">${esc(t(`guideNow${g.now[0].toUpperCase()}${g.now.slice(1)}`))}</button>` : ''}
     <p class="tel-row"><span>☎️ <span class="lbl">${esc(t('telFree'))}</span></span>${calls.map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}" data-help="${esc(h.number)}"><b>${esc(h.number)}</b>${h.short ? `<small>${esc(L(h.short))}</small>` : ''}</a>`).join('')}</p>
@@ -1145,7 +1147,7 @@ async function openChecklist(mode, from = '') {
     ${agencies.length || partial ? `<p class="src guide-src">${agencies.length ? `${esc(t('source'))}: ${esc(agencies.join(' · '))}` : ''}${partial ? `<br>${esc(t('guidePartial'))}` : ''}</p>` : ''}
     <div class="guide-actions">
       ${modeIds().includes(mode) ? `<button class="btn" type="button" id="cl-play">${esc(t('guidePlay'))}</button>` : ''}
-      ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}">${esc(t('guideRead'))}</a>` : ''}
+      ${hz ? `<a class="btn secondary small" id="cl-read" href="${pre}/${esc(hz.slug)}${modeIds().includes(mode) ? `#${esc(mode)}` : ''}">${esc(t('guideRead'))}</a>` : ''}
     </div>
     ${riskUrl() ? `<a class="risk-link risk-guide" id="cl-risk" href="${esc(riskUrl())}" target="_blank" rel="noopener"><span class="risk-ico" aria-hidden="true">📍</span><span class="risk-text"><b>${esc(t('riskLinkGuide'))}</b></span><span class="risk-go" aria-hidden="true">›</span></a>` : ''}
     ${modeIds().includes(mode) && forecastUrl(mode) ? `<a class="btn secondary small" id="cl-forecast" href="${esc(forecastUrl(mode))}" target="_blank" rel="noopener">${esc(tm('forecastIcon', mode))} ${esc(tm('forecastLong', mode))}</a>` : ''}
@@ -1158,7 +1160,7 @@ async function openChecklist(mode, from = '') {
       <img class="card-preview card-thumb" id="cl-img" alt="${esc(L(list.title))}">
       <p class="save-hint" id="cl-hint" hidden>💡 ${esc(t('saveHint'))}</p>
     </div>
-    ${inAppBrowser() === 'line' ? `<a class="link" href="${esc(lineExternalUrl(location.href))}">${esc(t('openExternal'))}</a>` : ''}
+    ${inAppBrowser() === 'line' ? `<a class="link" href="${esc(lineExternalUrl(`${pre}/checklist/${mode}`))}">${esc(t('openExternal'))}</a>` : ''}
     ${canPrint() ? `<button class="btn secondary small" type="button" id="cl-print">${esc(t('printBtn'))}</button>` : ''}
     <div class="btn-row">
       <button class="btn secondary small" type="button" id="cl-back">${esc(t('guideBack'))}</button>
@@ -1170,7 +1172,7 @@ async function openChecklist(mode, from = '') {
     b.addEventListener('click', () => $(`#gp-${b.dataset.jump}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   }
   for (const a of $$('.tel-chip', $('#sheet'))) a.addEventListener('click', () => track('help_click', { label: a.dataset.help, mode }));
-  for (const b of $$('[data-tool]', $('#sheet'))) b.addEventListener('click', () => openTool(b.dataset.tool, 'guide'));
+  for (const b of $$('[data-tool]', $('#sheet'))) b.addEventListener('click', () => openTool(b.dataset.tool, 'guide', '', mode));
   // The agencies' own pages for this guide (kit.json → links, v1.12.0), filled in when the tools' code is in.
   import('./kit.js').then((m) => m.guideLinks(mode)).then((html) => {
     const box = $('#cl-links');

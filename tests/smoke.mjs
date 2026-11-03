@@ -1185,7 +1185,7 @@ try {
       }));
       const isMode = CFG.modes.some((m) => m.id === id);
       const slug = CFG.hazards[CFG.guides.find((x) => x.id === id).hazard].slug;
-      if (!(g.title.includes(CHECKLISTS[id].title.th) && g.n === 10 && g.play === isMode && g.read === `/${slug}` && (isMode || g.src))) bad.push(`${id}: ${JSON.stringify(g)}`);
+      if (!(g.title.includes(CHECKLISTS[id].title.th) && g.n === 10 && g.play === isMode && g.read === (isMode ? `/${slug}#${id}` : `/${slug}`) && (isMode || g.src))) bad.push(`${id}: ${JSON.stringify(g)}`);
       const small = await smallControls(page);
       if (small.length) bad.push(`${id}: ${small.join(', ')}`);
       await page.click('#cl-back');
@@ -1446,6 +1446,14 @@ try {
       // with no forecastAppUrl (FloodWatch closed) the rivers' button is simply gone
       check(`${lang}: a guide links ภัยรอบบ้าน first, then FloodWatch for the rivers (if it is still set)`, g.risk === want && g.h >= 44
         && (CFG.forecastAppUrl ? g.flood === CFG.forecastAppUrl && g.order === true : g.flood === null), JSON.stringify(g));
+      // v1.15.0 (visitor audit 3 B12): a tool opened from the guide says "‹ <the guide>" at its top, and it leads back
+      const firstTool = await page.getAttribute('#sheet [data-tool]', 'data-tool');
+      await page.click(`#sheet [data-tool="${firstTool}"]`);
+      await page.waitForSelector('#tl-back');
+      const backText = (await page.textContent('#tl-back')).trim();
+      await page.click('#tl-back');
+      await page.waitForSelector('#cl-risk');
+      check(`${lang}: a tool opened from the guide (${firstTool}) says "‹ ${STR[lang].guidePrepare}" and leads back to the guide`, backText === `‹ ${STR[lang].guidePrepare}`, backText);
       const before = sent.length;
       const [popup] = await Promise.all([page.waitForEvent('popup', { timeout: 5000 }).catch(() => null), page.click('#cl-risk')]);
       await page.waitForTimeout(300);

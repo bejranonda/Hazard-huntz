@@ -686,6 +686,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* when another app links in, list its links from its live code and open each one as its readers do (its language, LINE's browser, the smallest phones); ask of each first screen whether it answers the link's words.
 - *Encoded in:* [GUIDELINES rule 102](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), `tests/smoke.mjs` (arriving at `/uv#uv-protect`).
 
+**D30. A card that truncates text can send someone to the wrong number.**
+
+- *What happened:* the plan card drew each helpline's "whom it reaches" in at most two lines, so 1130's "ไฟดับ กทม. นนทบุรี สมุทรปราการ" lost its last province on the card people keep; a family in Samut Prakan could have called 1129. The copied text and the pages were whole, so no text test saw it. An independent visitor audit did.
+- *Do this:* never `slice()` safety text to fit; shrink, then wrap. Look at every drawn card with its longest real label, and let an auditor who didn't build it walk the app.
+- *Encoded in:* `cards.js → drawCalls()`, [GUIDELINES rule 104](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
 **B18. Before researching a data source, read what the owner's other project already learned.**
 
 - *What happened:* asked how the app could show "the situation around my home", the first step was to read the owner's FloodWatch, which had read Thai agency APIs every ten minutes for weeks. Its sources document already said which endpoints work, which were refuted, which need a key, and each one's timezone and missing-value quirks; its fetch rules (never faster than the source, a 429 is an answer, raw responses archived, UTC) fitted this app with small changes. The live calls that followed then had to confirm and extend, not discover.

@@ -3,7 +3,8 @@
 import { store, setKeepTogether } from './util.js';
 import { setModes, setGuides, mk, codesRe, modeLink } from './modes.js';
 
-const FILES = ['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'];
+// sources-app.json: sources.json without the notes, written by the build (N18, v1.15.0)
+const FILES = ['config', 'strings', 'items', 'rooms', 'sources-app', 'checklists', 'helplines'];
 
 let C = null;
 let lang = 'th';

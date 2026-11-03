@@ -63,7 +63,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 54 | [Carousel images are committed and Thai only](#54-carousel-images-are-committed-and-thai-only) | By design | — |
 | 59 | [The home check's code is counted in the start-screen budget and precached](#59-the-home-checks-code-is-counted-in-the-start-screen-budget-and-precached) | By design | — |
 | 61 | [The game card is below the first screen on small phones](#61-the-game-card-is-below-the-first-screen-on-small-phones) | By design | — |
-| 62 | [Source notes are downloaded by every visitor](#62-source-notes-are-downloaded-by-every-visitor) | Open | Low |
+| 62 | [Source notes are downloaded by every visitor](#62-source-notes-are-downloaded-by-every-visitor) | Fixed in v1.15.0 ([F181](#in-v1150-3-nov-2026)) | — |
 | 63 | [Printing isn't offered in in-app browsers](#63-printing-isnt-offered-in-in-app-browsers) | Platform | — |
 | 64 | [The alert must be cleared or renewed by hand](#64-the-alert-must-be-cleared-or-renewed-by-hand) | By design | — |
 | 65 | [Loose ends from the v1.9.0 sweep](#65-loose-ends-from-the-v190-sweep) | Fixed in v1.9.0 | Low |
@@ -100,6 +100,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (a Thai read) | Medium |
 | 101 | [The family's colours differ](#101-the-familys-colours-differ) | Owner (one decision) | Low |
 | 102 | [FloodWatch closes after its handover; the rivers' link goes with it](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) | Owner (one line, when it closes) | Low |
+| 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Open (AI-ready, except where marked) | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -355,6 +356,20 @@ FloodWatch said on 2 Nov 2026 that it is preparing its handover to ONWR, that ON
 - **When:** no date yet; FloodWatch closes after ONWR's install.
 - **Traffic:** referrals from FloodWatch won't last; don't plan on them ([docs/05](05-metrics.md)).
 - **ภัยรอบบ้าน** also links FloodWatch for river detail; that is its own change.
+
+
+### 103. Leftovers of visitor audit 5
+
+**Status:** Open (AI-ready, except where marked) · **Severity:** Low
+
+Visitor audit 5 (3 Nov 2026, the live v1.14.3; [ROADMAP N34](ROADMAP.md#n34-visitor-audit-5-and-audit-3s-leftovers-v1150)) found 17 new things; v1.15.0 fixed 13 ([F188–F199](#in-v1150-3-nov-2026)) and A18 with B23. Left:
+
+- **A5, for ภัยรอบบ้าน:** its "ก่อนน้ำมา ทำอย่างไร" links `/flood#prepare`, the reasons for each step, far down the page; the 10 short steps are `/flood#cl-prepare` near the top. In the hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)); both anchors stay.
+- **A8:** on the plan and info cards' share sheets, "คัดลอกข้อความ" (the invitation) sits beside "คัดลอกแผนเป็นข้อความ" (the plan); add a heading over the invitation row and put the plan's copy first.
+- **A11, with the owner:** the fridge's share row shows before any time is tapped; choosing "4 ชม." reads "เกิน 4 ชม.แล้ว" (the CDC's limit is 4 hours, so the wording at the edge needs the Thai review, [#74](#74-the-fridge-hours-rest-on-us-guidance-only)).
+- **A13:** heat today's level buttons have no °C, while its answers say "33.0–41.9 °C".
+- **A14:** the dust number box says nothing for "abc", an AQI of 1000 or Thai digits ("๘๐").
+- **Dates (also #83 B16):** the pages' "ปรับปรุงล่าสุด: 2026-11-03" is ISO; the app's cards use another format.
 
 ---
 
@@ -790,7 +805,7 @@ The start screen now puts the alert card and the three tools above the game. Mea
 
 ### 62. Source notes are downloaded by every visitor
 
-**Status:** Open · **Severity:** Low
+**Status:** Fixed in v1.15.0 ([F181](#in-v1150-3-nov-2026)): the app loads `content/sources-app.json`, written by the build without the notes; the start screen went from 304 to 274 KB. Kept below as the record. · **Severity:** Low
 
 `sources.json` holds each source's `note`: what was read and quoted, for reviewers, the build and docs/01. The game never shows a note, but `content.js` loads the whole file before the start screen. The 36 sources of v1.9.0 have long notes, so `sources.json` grew from 12.0 to 23.8 KB compressed; about 14 KB of it is notes (about 9.6 KB from the new ones). That is most of the start screen's growth from 209 to 232 KB (the rest: the guides in `checklists.json`, +4.1 KB; new strings, +4.2 KB; code and CSS, about +3 KB).
 
@@ -971,7 +986,7 @@ Since v1.11.0 every number on a guide carries a short name under it (`helplines.
 
 ### 83. Leftovers of visitor audit 3
 
-**Status:** Open (AI-ready, except where marked) · **Severity:** Low
+**Status:** Open, mostly fixed in v1.15.0 (B12, B13, B23, B24, B29 and "U.S."; [F182–F187](#in-v1150-3-nov-2026)); B9 was answered by `/bag` in v1.13.0 (five guides link it, the flood "before" guide included); B17 is by design (below). Left: the units and dates, `/posts` pictures for the tools, the alert's issuer, and the owner's two decisions · **Severity:** Low
 
 Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent preparing at the weekend, an English reader and a consistency check) reported 57 findings between its two auditors (28 and 29); v1.11.0 fixed most of them, in the 30 rows F96–F125 ([In v1.11.0](#in-v1110-20-oct-2026)). These are left, with their audit ids ([ROADMAP N23](ROADMAP.md#n23-food-by-food-and-the-app-for-its-real-readers-v1110)):
 
@@ -980,7 +995,7 @@ Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent prepa
 - **Back from a tool opened inside a guide** (B12, A24) goes to the start screen, not back to the guide.
 - **One short and one long name per tool, checked by a test** (B13): the audit's naming table listed each tool's names across the hub, the guides, the results and the pages; v1.11.0 fixed the dust guide's button ([F105](#in-v1110-20-oct-2026)), but no test holds every tool to one short and one long name yet.
 - **Units and dates** (B16, the rest; the Thai µg/m³ was fixed, [F104](#in-v1110-20-oct-2026)): "ชม." and "ชั่วโมง" side by side; "60 วิ" in the texts while the Return round runs 50 s and the dust, fire and power-cut rounds 55 s; three date formats.
-- **The lesson count** (B17): the pages count 81 lessons, the app 79 (two wait for rooms that aren't open).
+- **The lesson count** (B17): the pages count 81 lessons, the app 79 (two wait for rooms that aren't open). **By design (v1.15.0):** the app's 📖 book counts what the game can show (79); the pages list every lesson (81).
 - **The same agency twice in a source line** (B23).
 - **An English 404 page** (B24): `/en/no-such-page` gets the one bilingual 404 page.
 - **`/posts` has no pictures for the tools** (B28).
@@ -1103,6 +1118,32 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.15.0 (3 Nov 2026)
+
+N18, visitor audit 3's AI-ready leftovers (#83) and visitor audit 5 (an independent walk of the live v1.14.3, 3 Nov 2026: 204 page loads, every sheet, LINE's browser at 320, 360 and 390 px, Thai and English; 0 blocker, 0 high, 6 medium, 11 low; [ROADMAP N34](ROADMAP.md#n34-visitor-audit-5-and-audit-3s-leftovers-v1150)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F181 | **Every visitor downloaded the source notes** the app never shows (#62): `sources.json` was 46.9 KB of the start screen's 304 KB compressed | The build writes `content/sources-app.json` (agency, title, link, date, kind; 15.6 KB) and the app loads it; `sources.json` stays whole for editing and for ภัยรอบบ้าน. 274 KB; every generated page unchanged; a unit test holds the copy |
+| F182 | **A tool opened from a guide led back to the start screen** (B12) | "‹ <the guide>" at the tool's top reopens the guide (smoke, Thai and English) |
+| F183 | **No test held one short and one long name per tool** (B13); `/kit`'s page said "…รับมือทุกภัย" while its sheet said "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?" | A unit test: the short name on the hub and `/tools`, the long name the same on the sheet and the page (the plan card's own heading excepted); `/kit`'s title, heading and preview take the sheet's name |
+| F184 | **The same agency twice in a source line** (B23; 11 of 44 lessons on `/flood`; 92 lines on 8 pages in audit 5's count, A18) | One agency name, then a link per source; news reports marked; the label unique within each group (740 source lines, none repeated) |
+| F185 | **`/en/no-such-page` got the bilingual 404** (B24) | `en/404.html`, English only, links in English |
+| F186 | **The plan form started with the shelter** (B29) | It starts with the meeting place and ends with the shelter |
+| F187 | **"U.S." and "US" both** in the English agency names | "U.S." throughout, the agencies' own spelling |
+| F188 | **The plan card cut whom 1130 reaches:** "ไฟดับ กทม. นนทบุรี" without "สมุทรปราการ" (A1) | The label shrinks to fit two lines, else takes a third (`drawCalls()`) |
+| F189 | **Heat today's sources were news reports with nothing to say so** (A2) | Marked " (ข่าว)", and one ⚠️ note on the page and in the sheet (`kit.json → hot.note`) |
+| F190 | **`/uv` previewed as the heat guide**, with no brand in its title (A3) | `og/uv.png` (+ English) and " · บ้านรอดไหม?" |
+| F191 | **"เปิดในเบราว์เซอร์" inside LINE opened the start screen** from a guide or a result (A4) | The guide's `/checklist/<id>`, or the result's own link |
+| F192 | **`/tools`'s agency links were 19 px tall** (A6) | 44 px (`a.tool-a`) |
+| F193 | **"อ่านเหตุผลและที่มาทีละข้อ" from the after-the-flood guide opened the top of `/flood`** (A7) | `/flood#return` (each mode's lessons) |
+| F194 | **The Air4Thai row looked like the dust-today tool** (A9: "ค่าฝุ่นวันนี้ (Air4Thai)", the same icon) | "ค่าฝุ่นจากสถานีวัดของ คพ. (Air4Thai)", 📡 |
+| F195 | **A guide's "now" tool appeared twice** (A10) | Not repeated in the tool row |
+| F196 | **A guide opened with a focus ring on its first button** (A12) | The heading takes the focus |
+| F197 | **1323 said "after the flood" on every page** (A15) | "หลังเกิดภัย" / "after a disaster" |
+| F198 | **American English:** "canned food" ×4, "A first aid kit" (A16) | "tinned", "first-aid" |
+| F199 | **At 320 px a line started "· English", or ended on a lone "·" before ⚠️** (A17) | The separator stays with what it introduces |
 
 ### In v1.14.3 (3 Nov 2026)
 

@@ -376,6 +376,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **"During" says when to leave first,** people before belongings, and never promises a dry house or says a bank, dyke or wall will hold (FloodWatch's rule too; a unit test reads every flood line).
     - **A page that blocks tools** is opened by the owner by hand, with a dated copy kept as the source and named in its `note`; until then the line keeps its ⚠️. Never work around the block.
     - **A partner that may close** is a link that can go with one line, tested before it is needed (`forecastAppUrl`, [#102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)).
+104. **One way to name a tool and to show a source, held by tests.** Visitor audits 3 and 5 found a tool called two ways, the same agency three times in one source line, and a helpline's last province cut from a card (F183, F184, F188). Since v1.15.0:
+    - **A tool has one short name** (`hub<Id>`: hub, `/tools`, buttons) **and one long name** (its sheet's title and its page's heading); a unit test compares them.
+    - **Every source line comes from `srcGroups()`**: an agency once, then its links; news reports marked; no two links in a group with one label.
+    - **A card never cuts whom a number reaches**, or any safety text: shrink, then wrap, never truncate.
+    - **The app loads `sources-app.json`**; edit `sources.json` only (the build writes the copy; a test holds them equal).
 
 ## 9. Working with AI assistants
 

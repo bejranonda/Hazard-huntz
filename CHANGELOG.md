@@ -4,6 +4,41 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.15.0] — 2026-11-03
+
+**Lighter, and what the audits left.** The app stops downloading the source notes it never shows (N18): the start screen goes from 304 to 274 KB compressed. Visitor audit 3's AI-ready leftovers (#83) and visitor audit 5's findings (an independent walk of the live v1.14.3, 204 page loads and every sheet, in LINE's browser at 320, 360 and 390 px, Thai and English) are fixed, except where the owner or an English reader decides. No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([ROADMAP N18](docs/ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads), [N34](docs/ROADMAP.md#n34-visitor-audit-5-and-audit-3s-leftovers-v1150))
+
+### Changed
+
+- **The app loads `content/sources-app.json`,** a copy of `sources.json` without the notes that the build writes (agency, title, link, date, kind). `sources.json` stays whole: it is the file to edit, and ภัยรอบบ้าน reads it. The service worker no longer caches the full file. Start screen 274 KB (304).
+- **Every source line on the pages** names an agency once, then a link per source, and marks news reports " (ข่าว)" / ", news report" (it was "กรมควบคุมโรค (2024) · กรมควบคุมโรค (2025) · กรมควบคุมโรค (2024)" on 11 of 44 lessons on `/flood`). A source with no date shows its site's name.
+- **The family plan form** starts with what the family knows (the meeting place, whom to call, who helps whom, medicine) and ends with the shelter, which may need looking up.
+- **`/kit`** has one long name everywhere: "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?" / "Check your supplies: how ready is our home?" (its page said "…รับมือทุกภัย", more than its list covers); its preview image re-drawn.
+- **`/uv`** has its own preview image ("ดัชนียูวีเท่านี้ ทำอะไร?") and the brand in its title (it showed the heat guide's picture).
+- **Heat today** says once, on the page and in the sheet, that its levels and advice come from news reports quoting the DOH and the BMA (#90).
+- **The Air4Thai row** in the agencies' links is "ค่าฝุ่นจากสถานีวัดของ คพ. (Air4Thai)" with 📡, not the same name and icon as the dust-today tool.
+- **The 1323 line** says "เหนื่อยใจหลังเกิดภัย" / "after a disaster" (it said "after the flood" on the quake, dust and heat pages too).
+- **British English:** "tinned food", "a first-aid kit"; "U.S. National Weather Service" like the other U.S. agencies' own names.
+
+### Fixed
+
+- **A tool opened from a guide** says "‹ <the guide>" at its top and leads back to it (it led to the start screen).
+- **The plan card's numbers** never lose whom they reach: the label shrinks to fit two lines, else takes a third ("ไฟดับ กทม. นนทบุรี" had lost "สมุทรปราการ").
+- **"เปิดในเบราว์เซอร์" inside LINE** opens the guide's own page (`/checklist/<id>`) or the result's link, not the start screen.
+- **"อ่านเหตุผลและที่มาทีละข้อ"** from the after-the-flood guide opens `/flood#return` (it opened the top of `/flood`, the before list).
+- **A guide's "now" tool** isn't repeated in its tool row (the power cut's fridge, heat's heat today).
+- **A guide sheet** opens with its heading focused, not a ringed first button.
+- **`/tools`'s agency links** are 44 px tall (they were 19 px).
+- **At 320 px** "· English" / "· ภาษาไทย" and the "· ⚠️" before a review note no longer start or end a line alone.
+- **An English 404** for `/en/…` (`en/404.html`); the Thai page stays bilingual for the rest.
+- F181–F199 ([KNOWN_ISSUES](docs/KNOWN_ISSUES.md#in-v1150-3-nov-2026)).
+
+### Added
+
+- **Tests:** `npm test` 48 (+2: the slim sources copy matches `sources.json` without notes, and the app loads it; each tool has one short and one long name, the same on the hub, `/tools`, its sheet and its page); `npm run smoke` adds the guide → tool → "‹ guide" walk in Thai and English.
+
+### Docs
+
 ### Docs
 
 - **FloodWatch's second answer** (3 Nov 2026, checked against its code), recorded in [docs/10 §6](docs/10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session): it links exactly `/`, `/learn`, `/checklist/prepare` and `/checklist/return` (not `/flood#during`); tell it before one moves. KNOWN_ISSUES #102 corrected: when FloodWatch closes, drop the rivers' link; never point it at ONWR's copy without a URL from FloodWatch's owner that ONWR has agreed to. #99 and GUIDELINES rule 103: a blocked page is opened by hand and kept as a dated copy; the ⚠️ stays until then.

@@ -7,6 +7,6 @@
     { "number": "1555", "main": true, "who": { "th": "กทม.", "en": "Bangkok (BMA)" }, "what": { "th": "แจ้งเหตุ ขอความช่วยเหลือในกรุงเทพฯ", "en": "Report problems and get help in Bangkok" }, "short": { "th": "กทม.", "en": "Bangkok" }, "source": "bma-1555" },
     { "number": "1130", "main": true, "who": { "th": "การไฟฟ้านครหลวง (กฟน.)", "en": "MEA electricity" }, "what": { "th": "ไฟฟ้า กรุงเทพฯ นนทบุรี สมุทรปราการ", "en": "Bangkok, Nonthaburi, Samut Prakan" }, "short": { "th": "ไฟดับ กทม. นนทบุรี สมุทรปราการ", "en": "power: Bangkok area" }, "source": "mea-1130" },
     { "number": "1129", "main": true, "who": { "th": "การไฟฟ้าส่วนภูมิภาค (กฟภ.)", "en": "PEA electricity" }, "what": { "th": "ไฟฟ้า 74 จังหวัดนอกเขต กฟน.", "en": "The other 74 provinces" }, "short": { "th": "ไฟดับ จังหวัดอื่น", "en": "power: other provinces" }, "source": "pea-service" },
-    { "number": "1323", "main": false, "who": { "th": "สายด่วนสุขภาพจิต", "en": "Mental health hotline" }, "what": { "th": "เครียด เหนื่อยใจหลังน้ำท่วม คุยได้ฟรี 24 ชม.", "en": "Stressed or worn out after the flood? Free, 24 h" }, "short": { "th": "สุขภาพจิต", "en": "mental health" }, "source": "dmh-1323" }
+    { "number": "1323", "main": false, "who": { "th": "สายด่วนสุขภาพจิต", "en": "Mental health hotline" }, "what": { "th": "เครียด เหนื่อยใจหลังเกิดภัย คุยได้ฟรี 24 ชม.", "en": "Stressed or worn out after a disaster? Free, 24 h" }, "short": { "th": "สุขภาพจิต", "en": "mental health" }, "source": "dmh-1323" }
   ]
 }

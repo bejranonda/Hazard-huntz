@@ -66,7 +66,7 @@
       "icon": "🥫",
       "label": {
         "th": "อาหารแห้ง อาหารกระป๋อง",
-        "en": "Dry and canned food"
+        "en": "Dry and tinned food"
       },
       "qty": {
         "days": 3,
@@ -142,7 +142,7 @@
       "icon": "⛑️",
       "label": {
         "th": "ชุดปฐมพยาบาล",
-        "en": "A first aid kit"
+        "en": "A first-aid kit"
       },
       "sources": [
         "ddpm-6kit",
@@ -262,28 +262,6 @@
   ],
   "plan": [
     {
-      "id": "shelter",
-      "icon": "🏫",
-      "label": {
-        "th": "ศูนย์พักพิงหรือจุดอพยพใกล้บ้าน",
-        "en": "The shelter or evacuation point near home"
-      },
-      "hint": {
-        "th": "รู้ไว้ก่อนว่าอยู่ไหน ไปทางไหน แล้วบอกทุกคนในบ้าน",
-        "en": "Know where it is and the way there, and tell everyone at home"
-      },
-      "placeholder": {
-        "th": "เช่น โรงเรียนในซอย",
-        "en": "e.g. the school down the street"
-      },
-      "max": 40,
-      "sources": [
-        "prd-flood",
-        "ddpm-noru"
-      ],
-      "verify": "verified"
-    },
-    {
       "id": "meet",
       "icon": "📍",
       "label": {
@@ -380,6 +358,28 @@
         "moph-7days"
       ],
       "verify": "partial"
+    },
+    {
+      "id": "shelter",
+      "icon": "🏫",
+      "label": {
+        "th": "ศูนย์พักพิงหรือจุดอพยพใกล้บ้าน",
+        "en": "The shelter or evacuation point near home"
+      },
+      "hint": {
+        "th": "รู้ไว้ก่อนว่าอยู่ไหน ไปทางไหน แล้วบอกทุกคนในบ้าน",
+        "en": "Know where it is and the way there, and tell everyone at home"
+      },
+      "placeholder": {
+        "th": "เช่น โรงเรียนในซอย",
+        "en": "e.g. the school down the street"
+      },
+      "max": 40,
+      "sources": [
+        "prd-flood",
+        "ddpm-noru"
+      ],
+      "verify": "verified"
     }
   ],
   "fridge": {
@@ -2021,10 +2021,10 @@
       },
       {
         "id": "air4thai",
-        "icon": "🌫️",
+        "icon": "📡",
         "label": {
-          "th": "ค่าฝุ่นวันนี้ (Air4Thai)",
-          "en": "Dust today (Air4Thai)"
+          "th": "ค่าฝุ่นจากสถานีวัดของ คพ. (Air4Thai)",
+          "en": "PCD station readings (Air4Thai)"
         },
         "by": "กรมควบคุมมลพิษ",
         "url": "https://air4thai.pcd.go.th/webV3/",
@@ -2492,7 +2492,11 @@
       }
     ],
     "verify": "partial",
-    "verifyNote": "The bands and advice come through news reports quoting the BMA and the DOH; the TMD's heat-index page could not be read (KNOWN_ISSUES #78). The hours (11–15 or 13–16), the age for older people (60 or 65) and body temperatures differ between sources and are left out."
+    "verifyNote": "The bands and advice come through news reports quoting the BMA and the DOH; the TMD's heat-index page could not be read (KNOWN_ISSUES #78). The hours (11–15 or 13–16), the age for older people (60 or 65) and body temperatures differ between sources and are left out.",
+    "note": {
+      "th": "⚠️ ระดับความร้อนและคำแนะนำในหน้านี้ มาจากข่าวที่อ้างกรมอนามัยและ กทม. ยังรอตรวจกับหน้าของหน่วยงานเอง",
+      "en": "⚠️ The heat levels and advice here come from news reports quoting the DOH and the BMA; they still wait for a check against the agencies' own pages."
+    }
   },
   "flood": {
     "_readme": "v1.14.3: คำแนะนำน้ำท่วมตามระดับของ ภัยรอบบ้าน (Thai Risk) ซึ่งคัดลอกไปแสดงคำต่อคำ (บรรทัดแรก all[0] ของแต่ละระดับ): watch = ติดตามไว้ · warn = เตรียมตัว · danger = เสี่ยงสูง (ระดับ ยังไม่น่าห่วง ไม่มีบรรทัด) สิ่งที่ทำให้แถวน้ำท่วมของ ภัยรอบบ้าน ขึ้นระดับ ใช้กฎเดียวกันทั่วประเทศ: สถานีวัดน้ำแม่น้ำหรือคลองใกล้ที่นั้นเทียบกับตลิ่งของตัวเอง (ติดตามไว้ ถึง เสี่ยงสูง); ตารางของหน่วยงานสำหรับสถานีนั้น เช่น ขั้นระดับน้ำแม่น้ำของจังหวัด (ถึง เสี่ยงสูง) เส้นธงเตือนของเมือง (ถึง เตรียมตัว) และช่วงการระบายน้ำของเขื่อนที่ระบุตำบล (เตรียมตัว); การคาดการณ์ล่วงหน้าและสถานีต้นน้ำของ FloodWatch (ถึง เตรียมตัว เพราะคาดการณ์อย่างเดียวไม่บอก เสี่ยงสูง); สถานีที่ข้อมูลช้าแต่เคยบอก เตรียมตัว ขึ้นไป คงระดับไว้และบอกอายุข้อมูล; สถานีน้ำขึ้นน้ำลง ดูค่าสูงสุดใน 25 ชม. ล้นตลิ่งเฉพาะช่วงน้ำขึ้นหยุดที่ เตรียมตัว; และรายชื่อตำบลเสี่ยงน้ำป่าของ สสน. (เตรียมตัว) ซึ่ง ภัยรอบบ้าน แสดงบรรทัด flash แทน. ฝนหนักและประกาศกรมอุตุฯ อยู่ในแถวฝนของ ภัยรอบบ้าน ไม่ใช่แถวน้ำท่วม; เขื่อนใหญ่เหนือพื้นที่แสดงเป็นข้อมูล ไม่ใช่ระดับ. ทุกบรรทัดต้องใช้ได้ทุกที่ จึงเขียนว่า 'น้ำอาจมาถึง' ไม่ใช่ 'เมื่อแม่น้ำขึ้น' และไม่เอ่ยชื่อเมืองหรือแม่น้ำ (build ตรวจ) ระดับของ ภัยรอบบ้าน คำนวณจากข้อมูล ไม่ใช่คำสั่งอพยพ ระดับสูงสุดจึงบอกให้ออก 'เมื่อเจ้าหน้าที่ให้อพยพ' · flash = บรรทัดสำหรับน้ำป่า (หน้า /flood#flash ต่อด้วยคู่มือ /landslide#landslide-during) · during = หน้า /flood#during ระหว่างน้ำกำลังมา · เปลี่ยน id บรรทัดแรกของแต่ละระดับ หรือ flash ต้องบอกเจ้าของ เพราะ ภัยรอบบ้าน ตรวจตาม (npm run check:advice ที่นั่น)",

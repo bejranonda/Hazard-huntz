@@ -32,10 +32,20 @@ const u = (key, vars = {}) => one(String(K.ui[getLang()]?.[key] ?? K.ui.th[key] 
 // marks where it was opened from; the next sheet it opens carries the link.
 let pendingBack = null;
 const BACK = { tools: () => openTools('back'), kit: () => openKit('back'), plan: () => openPlan('back'), bag: () => openBag('back'), air: () => openAir('back'), mask: () => openMask('back'), water: () => openWater('back'), info: () => openInfo('back'), safe: () => openSafe('back') };
+// A tool opened from a guide says "‹ <the guide>" at its top too (v1.15.0, visitor audit 3 B12): main.js
+// names the guide before opening the tool, and the link reopens it through the event the tools already use.
+let guideReturn = null;
+export function setGuideReturn(id) { guideReturn = id || null; }
 function openSheet(html, opts) {
   uiOpenSheet(html, opts);
   const from = pendingBack;
   pendingBack = null;
+  if (from === 'guide' && guideReturn && content().checklists[guideReturn]) {
+    const id = guideReturn;
+    $('#sheet-body').insertAdjacentHTML('afterbegin', `<button class="link tl-back" type="button" id="tl-back">‹ ${esc(t(`guide${id[0].toUpperCase()}${id.slice(1)}`))}</button>`);
+    $('#tl-back').addEventListener('click', () => document.dispatchEvent(new CustomEvent('brm:guide', { detail: id })));
+    return;
+  }
   if (!BACK[from]) return;
   const name = from === 'tools' ? u('toolsBack') : t(`hub${from[0].toUpperCase()}${from.slice(1)}`);
   $('#sheet-body').insertAdjacentHTML('afterbegin', `<button class="link tl-back" type="button" id="tl-back">‹ ${esc(name)}</button>`);
@@ -772,6 +782,7 @@ export async function openHot(from = 'start') {
       ${srcOnce([H.signs, H.sweat, ...H.aid])}
     </details>
     <div class="fr-share" id="hot-share-row" hidden></div>
+    ${H.verify !== 'verified' && H.note ? `<p class="kit-src">${esc(L(H.note))}</p>` : ''}
     <div class="btn-row mk-next">${guideBtn('heat', u('hotGuide'))}</div>
     <p class="kit-privacy">🔒 ${esc(u('hotPrivacy'))}</p>
     <button class="btn secondary small" type="button" id="hot-close">${esc(u('close'))}</button>`, { label: u('hotTitle') });

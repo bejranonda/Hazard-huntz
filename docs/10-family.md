@@ -133,6 +133,14 @@ From บ้านรอดไหม v1.14.3 (3 Nov 2026), on B28:
   look ahead, a late gauge, a tidal gauge, HII's flash-flood list; a dam above is information).
 ```
 
+**For ภัยรอบบ้าน, from visitor audit 5 (v1.15.0, 3 Nov 2026):** its flood row's "ก่อนน้ำมา ทำอย่างไร" links `/flood#prepare`, which is the reasons for each step, far down the page (6,486 px at 320 px). The 10 short steps are `/flood#cl-prepare`, near the top. Both anchors stay. `/uv` now has its own preview image. Paste:
+
+```
+From บ้านรอดไหม v1.15.0 (3 Nov 2026): for "ก่อนน้ำมา ทำอย่างไร" (below เตรียมตัว), please link
+/flood#cl-prepare (the 10 short steps, near the top) rather than /flood#prepare (the reasons, far down).
+Both anchors stay. /uv has its own link preview now. Nothing in kit.json changed.
+```
+
 ## 5. What ภัยรอบบ้าน or FloodWatch should check (frank)
 
 - **ภัยรอบบ้าน wrote one advice line of its own** (the UV line above), against its own rule, and only from a peak of 6, while WHO's threshold is 3. **Fixed in its v0.11.2** (2 Nov 2026): it shows this app's line at every level.

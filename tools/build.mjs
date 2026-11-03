@@ -968,12 +968,10 @@ const roomOrder = roomsFile.rooms.map((r) => r.id);
 const lessons = (mode) => itemsFile.items
   .filter((it) => it.mode === mode && it.enabled !== false)
   .sort((a, b) => roomOrder.indexOf(a.room) - roomOrder.indexOf(b.room));
-const srcLinks = (ids, lang = 'th') => (ids || []).filter((id) => sources[id])
-  .map((id) => {
-    const ag = sources[id].agency;
-    const name = lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag;
-    return `<a href="${esc(sources[id].url)}">${esc(name)}${sources[id].date ? ` (${esc(sources[id].date.slice(0, 4))})` : ''}</a>`;
-  }).join(' · ');
+// Every source line on the pages (lessons, guides, tools, the shared flood and UV lines) since v1.15.0: an agency's
+// name once, then a link per source (srcGroups below). Before, a lesson read "กรมควบคุมโรค (2024) · กรมควบคุมโรค (2025)
+// · กรมควบคุมโรค (2024)" (visitor audit 3, B23; 11 of 44 lessons on /flood).
+const srcLinks = (ids, lang = 'th') => srcGroups((ids || []).filter((id) => sources[id]), lang);
 // v1.14.0: the family's shared lines (kit.json → flood, uv), each with its sources.
 // Grouped by agency, each year its own link ("ปภ.: 2026, 2024"), so a line with three
 // DDPM reports doesn't read the agency's full name three times (visitor walk, v1.14.0).
@@ -1002,24 +1000,27 @@ const srcDates = (ids, lang) => {
     return fmt(x, depth);
   });
 };
-const kitSrcSpan = (xs, lang) => {
+// An agency's own document and a news report quoting it are told apart ("ปภ.: … · ปภ. (ข่าว): …"):
+// news reports point to the agency's words, they aren't its words (FloodWatch's review, v1.14.2).
+const srcGroups = (ids, lang) => {
   const X = lang === 'en' ? E : S;
-  const partial = xs.some((x) => x.verify !== 'verified');
-  // An agency's own document and a news report quoting it are told apart ("ปภ.: … · ปภ. (ข่าว): …"):
-  // news reports point to the agency's words, they aren't its words (FloodWatch's review, v1.14.2).
   const groups = new Map();
-  for (const id of new Set(xs.flatMap((x) => x.sources || []))) {
+  for (const id of new Set(ids)) {
     if (!sources[id]) continue;
     const key = `${sources[id].agency}\u0000${sources[id].kind === 'secondary' ? 'news' : ''}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(id);
   }
-  const parts = [...groups].map(([key, ids]) => {
+  return [...groups].map(([key, gIds]) => {
     const [ag, news] = key.split('\u0000');
     const name = `${lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag}${news ? X.srcNews : ''}`;
-    return `${esc(name)}: ${srcDates(ids, lang).map((label, i) => `<a href="${esc(sources[ids[i]].url)}">${esc(label)}</a>`).join(', ')}`;
-  });
-  return `<span class="src">${esc(X.sources)}: ${parts.join(' · ')}${partial ? ` · <span class="flag">⚠️ ${esc(X.partialNote)}</span>` : ''}</span>`;
+    return `${esc(name)}: ${srcDates(gIds, lang).map((label, i) => `<a href="${esc(sources[gIds[i]].url)}">${esc(label)}</a>`).join(', ')}`;
+  }).join(' · ');
+};
+const kitSrcSpan = (xs, lang) => {
+  const X = lang === 'en' ? E : S;
+  const partial = xs.some((x) => x.verify !== 'verified');
+  return `<span class="src">${esc(X.sources)}: ${srcGroups(xs.flatMap((x) => x.sources || []), lang)}${partial ? ` <span class="flag">· ⚠️ ${esc(X.partialNote)}</span>` : ''}</span>`;
 };
 const kitText = (x, lang) => `${esc(L2(x, lang))}${x.verify !== 'verified' ? ' ⚠️' : ''}`;
 // A level's lines, one bullet each: run together with <br>, the English lines read as one paragraph
@@ -1062,7 +1063,7 @@ const lessonHtml = (it) => {
 <p class="tip">${T(it.tip)} ${En(it.tip)}</p>
 ${it.why ? `<p><b>${esc(S.why)}:</b> ${T(it.why)}</p>` : ''}
 ${wet ? `<p><b>${esc(S.ifWet)}:</b> ${T(wet.label)} ${En(wet.label)}${it.wet.tip ? ` · ${T(it.wet.tip)}` : ''}</p>` : ''}
-<p class="src">${esc(S.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])])}${it.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc(S.partialNote)}</span>` : ''}</p>
+<p class="src">${esc(S.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])])}${it.verify === 'partial' ? ` <span class="flag">· ⚠️ ${esc(S.partialNote)}</span>` : ''}</p>
 </article>`;
 };
 const lessonsBy = Object.fromEntries(MODE_IDS.map((id) => [id, lessons(id)]));
@@ -1161,7 +1162,7 @@ const phaseGroups = (list) => {
 };
 // A guide can name its phases (heat: "if someone is ill from the heat", not "after").
 const phaseName = (list, p, lang) => list.phaseNames?.[p]?.[lang] || strings[lang][`phase${capM(p)}`];
-const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(c.sources, lang)}${c.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>` : '');
+const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(c.sources, lang)}${c.verify === 'partial' ? ` <span class="flag">· ⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>` : '');
 // title = false (a hazard page that is its guide): the H1 says it, so the phases are the headings.
 const checklistsTh = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
   let n = 0;
@@ -1226,7 +1227,7 @@ writeSeo('learn.html', seoPage({
   lang: 'th', title: learnTitle, desc: S.learnDesc, url: LEARN_URL, thPath: '/learn', enPath: `${EN}/learn`,
   image: '/og/default.png', ld: learnLd,
   main: `<main>
-<p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="${EN}/learn" lang="en" hreflang="en">English</a></p>
+<p class="top"><a href="/">${esc(og.siteName)}</a><span class="nw"> · <a href="${EN}/learn" lang="en" hreflang="en">English</a></span></p>
 <h1>${esc(S.learnH1)}</h1>
 <p>${esc(S.learnIntro)}</p>
 <p class="en" lang="en">${esc(E.learnIntro)}</p>
@@ -1259,7 +1260,7 @@ const enLesson = (it) => {
 <p class="tip">${esc(it.tip.en)}</p>
 ${it.why?.en ? `<p><b>${esc(E.why)}:</b> ${esc(it.why.en)}</p>` : ''}
 ${wet ? `<p><b>${esc(E.ifWet)}:</b> ${esc(wet.label.en)}${it.wet.tip?.en ? ` · ${esc(it.wet.tip.en)}` : ''}</p>` : ''}
-<p class="src">${esc(E.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])], 'en')}${it.verify === 'partial' ? ` · <span class="flag">⚠️ ${esc(E.partialNote)}</span>` : ''}</p>
+<p class="src">${esc(E.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])], 'en')}${it.verify === 'partial' ? ` <span class="flag">· ⚠️ ${esc(E.partialNote)}</span>` : ''}</p>
 </article>`;
 };
 const sectionsEn = (ids) => ids.map((id) => `<h2 id="${id}">${esc(E[`section${capM(id)}`])}</h2>
@@ -1276,7 +1277,7 @@ const learnEnHtml = seoPage({
   image: '/og/en/default.png',
   ld: { ...learnLd, '@id': `${LEARN_EN}#article`, url: LEARN_EN, mainEntityOfPage: LEARN_EN, headline: E.learnH1, name: learnTitleEn, description: E.learnDesc, inLanguage: 'en', image: `${SITE}/og/en/default.png` },
   main: `<main>
-<p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="/learn" lang="th" hreflang="th">ภาษาไทย</a></p>
+<p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a><span class="nw"> · <a href="/learn" lang="th" hreflang="th">ภาษาไทย</a></span></p>
 <h1>${esc(E.learnH1)}</h1>
 <p>${esc(E.learnIntro)}</p>
 <p class="tip">${esc(E.intlNote)}</p>
@@ -1325,7 +1326,7 @@ for (const h of hazardList) {
     lang: 'th', title: titleTh, desc: S[`hazard${H}Desc`], url: thUrl, thPath: `/${h.slug}`, enPath: `${EN}/${h.slug}`,
     image: `/og/checklist-${h.modes[0] || h.guides[0]}.png`, ld: ld('th', thUrl, titleTh),
     main: `<main>
-<p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/${h.slug}" lang="en" hreflang="en">English</a></p>
+<p class="top"><a href="/">${esc(og.siteName)}</a> · <a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a><span class="nw"> · <a href="${EN}/${h.slug}" lang="en" hreflang="en">English</a></span></p>
 <h1>${esc(S[`hazard${H}H1`])}</h1>
 ${jumpRow('th', h, lists)}
 ${telRow('th', h.modes[0] || h.guides[0])}
@@ -1360,7 +1361,7 @@ ${hazardChips('th', h.id)}
     lang: 'en', title: titleEn, desc: E[`hazard${H}Desc`], url: enUrl, thPath: `/${h.slug}`, enPath: `${EN}/${h.slug}`,
     image: `/og/en/checklist-${h.modes[0] || h.guides[0]}.png`, ld: ld('en', enUrl, titleEn),
     main: `<main>
-<p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a> · <a href="/${h.slug}" lang="th" hreflang="th">ภาษาไทย</a></p>
+<p class="top"><a href="${EN}/">${esc(ogEn.siteName)}</a> · <a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a><span class="nw"> · <a href="/${h.slug}" lang="th" hreflang="th">ภาษาไทย</a></span></p>
 <h1>${esc(E[`hazard${H}H1`])}</h1>
 ${jumpRow('en', h, lists)}
 ${telRow('en', h.modes[0] || h.guides[0])}
@@ -1403,14 +1404,15 @@ if (kitFile.uv) {
     const X = lang === 'en' ? E : S;
     const pre = lang === 'en' ? EN : '';
     const url = `${SITE}${pre}/uv`;
-    const title = L2(U.title, lang);
+    // with the brand, like every other page (visitor audit 5 A3, v1.15.0)
+    const title = `${L2(U.title, lang)} · ${(lang === 'en' ? ogEn : og).siteName}`;
     const heat = HAZARDS.heat;
     const html = seoPage({
       lang, title, desc: L2(U.desc, lang), url, thPath: '/uv', enPath: `${EN}/uv`,
-      image: `/og/${lang === 'en' ? 'en/' : ''}checklist-heat.png`,
+      image: `/og/${lang === 'en' ? 'en/' : ''}uv.png`,
       ld: { '@context': 'https://schema.org', '@type': 'Article', '@id': `${url}#article`, url, mainEntityOfPage: url, headline: L2(U.h1, lang), name: title, description: L2(U.desc, lang), inLanguage: lang, dateModified: seoUpdated, isPartOf: { '@id': `${SITE}${pre}/#website` }, isAccessibleForFree: true, author: PUBLISHER, publisher: PUBLISHER, citation: [...new Set(U.levels.flatMap((l) => l.all.flatMap((x) => x.sources)))].filter((id) => sources[id]).map((id) => sources[id].url) },
       main: `<main>
-<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a> · ${lang === 'en' ? '<a href="/uv" lang="th" hreflang="th">ภาษาไทย</a>' : `<a href="${EN}/uv" lang="en" hreflang="en">English</a>`}</p>
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a><span class="nw"> · ${lang === 'en' ? '<a href="/uv" lang="th" hreflang="th">ภาษาไทย</a>' : `<a href="${EN}/uv" lang="en" hreflang="en">English</a>`}</span></p>
 <h1>${esc(L2(U.h1, lang))}</h1>
 <p>${esc(L2(U.intro, lang))}</p>
 ${riskLine(lang)}
@@ -1448,7 +1450,7 @@ ${hazardChips(lang)}
       : q.days != null ? fill(X.kitDays, { days: q.days }) : '';
     return [r, x.for ? fill(X.kitIf, { who: flagLabel(x.for, lang) }) : ''].filter(Boolean).join(' · ');
   };
-  const src = (x, lang) => `<span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(x.sources, lang)}${x.verify !== 'verified' ? ` · <span class="flag">⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>`;
+  const src = (x, lang) => `<span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(x.sources, lang)}${x.verify !== 'verified' ? ` <span class="flag">· ⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>`;
   // The fridge (v1.10.0): each part with how long it keeps, then what holds however long;
   // since v1.11.0 food by food (what to throw out, what to keep) under the fridge and the freezer.
   const F = kitFile.fridge;
@@ -1520,6 +1522,9 @@ ${hazardChips(lang)}
     li(KU(lang).hotRisk, [H.risk], lang),
     li(KU(lang).hotSigns.replace(/^\S+\s/, ''), [H.signs, H.sweat], lang),
     li(KU(lang).hotAid, H.aid, lang),
+    // the whole tool rests on news reports quoting the agencies (#90): said once, since every line is "verified"
+    // against those reports (visitor audit 5 A2, v1.15.0)
+    H.verify !== 'verified' && H.note ? `<li class="src">${esc(L2(H.note, lang))}</li>` : '',
   ].join('\n');
   const waterRule = kitFile.items.find((x) => x.id === 'water');
   const waterRows = (lang) => [
@@ -1568,7 +1573,7 @@ ${hazardChips(lang)}
         image: `/og/${lang === 'en' ? 'en/' : ''}${tool}.png`,
         ld: { '@context': 'https://schema.org', '@type': 'WebPage', '@id': `${url}#page`, url, name: title, description: X[`${tool}PageDesc`], inLanguage: lang, dateModified: seoUpdated, isPartOf: { '@id': `${SITE}${pre}/#website` }, isAccessibleForFree: true },
         main: `<main>
-<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a> · ${lang === 'en' ? `<a href="/${tool}" lang="th" hreflang="th">ภาษาไทย</a>` : `<a href="${EN}/${tool}" lang="en" hreflang="en">English</a>`}</p>
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a><span class="nw"> · ${lang === 'en' ? `<a href="/${tool}" lang="th" hreflang="th">ภาษาไทย</a>` : `<a href="${EN}/${tool}" lang="en" hreflang="en">English</a>`}</span></p>
 <h1>${esc(X[`${tool}PageH1`])}</h1>
 <p class="play"><a class="cta" href="${pre}/?open=${tool}">${esc(X[`${tool}PageCta`])}</a></p>
 <p>${esc(X[`${tool}PageIntro`])}</p>
@@ -1598,7 +1603,8 @@ ${hazardChips(lang)}
     const url = `${SITE}${pre}/tools`;
     const KU = kitFile.ui[lang];
     const group = (g) => (config.tools || []).filter((x) => x.group === g).map((x) => `<li><a class="tool-a" href="${pre}/${x.id}"><b>${esc(x.icon)} ${esc(strings[lang][`hub${capM(x.id)}`])}</b></a> · ${esc(strings[lang][`hub${capM(x.id)}Sub`])}</li>`).join('\n');
-    const links = kitFile.links.list.map((x) => `<li><a href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a> · ${esc(lang === 'en' ? E.agencies?.[x.by] || x.by : x.by)} · ${esc(KU[x.kind === 'line' ? 'toolsLine' : 'toolsWeb'])}${x.note ? `<br>${esc(L2(x.note, lang))}<br>${src(x.note, lang)}` : ''}${x.warn ? `<br>🚫 ${esc(L2(x.warn, lang))}<br>${src(x.warn, lang)}` : ''}</li>`).join('\n');
+    // a.tool-a: 44 px tall like every other link (visitor audit 5 A6, v1.15.0: 19 px rows of agency links)
+    const links = kitFile.links.list.map((x) => `<li><a class="tool-a" href="${esc(x.url)}" rel="noopener">${esc(x.icon)} ${esc(L2(x.label, lang))}</a> · ${esc(lang === 'en' ? E.agencies?.[x.by] || x.by : x.by)} · ${esc(KU[x.kind === 'line' ? 'toolsLine' : 'toolsWeb'])}${x.note ? `<br>${esc(L2(x.note, lang))}<br>${src(x.note, lang)}` : ''}${x.warn ? `<br>🚫 ${esc(L2(x.warn, lang))}<br>${src(x.warn, lang)}` : ''}</li>`).join('\n');
     const AL = kitFile.alerts;
     const steps = (o) => `<p><b>${esc(o.label)}</b></p><ol>${o.steps.map((x) => `<li>${esc(L2(x, lang))}</li>`).join('')}</ol>`;
     const alerts = `<h2 id="alerts">📲 ${esc(L2(AL.title, lang))}</h2>
@@ -1614,7 +1620,7 @@ ${src({ sources: [...new Set([AL.intro, AL.note, ...AL.know].flatMap((x) => x.so
       image: `/og/${lang === 'en' ? 'en/' : ''}tools.png`,
       ld: { '@context': 'https://schema.org', '@type': 'CollectionPage', '@id': `${url}#page`, url, name: X.toolsPageTitle, description: X.toolsPageDesc, inLanguage: lang, dateModified: seoUpdated, isPartOf: { '@id': `${SITE}${pre}/#website` }, isAccessibleForFree: true },
       main: `<main>
-<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a> · ${lang === 'en' ? '<a href="/tools" lang="th" hreflang="th">ภาษาไทย</a>' : `<a href="${EN}/tools" lang="en" hreflang="en">English</a>`}</p>
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/learn">${esc(fill(X.allLessons, { n: nLessons }))}</a><span class="nw"> · ${lang === 'en' ? '<a href="/tools" lang="th" hreflang="th">ภาษาไทย</a>' : `<a href="${EN}/tools" lang="en" hreflang="en">English</a>`}</span></p>
 <h1>${esc(X.toolsPageH1)}</h1>
 <p class="play"><a class="cta" href="${pre}/?open=tools">${esc(X.toolsPageCta)}</a></p>
 <p>${esc(X.toolsPageIntro)}</p>
@@ -1726,6 +1732,22 @@ writeSeo('404.html', seoPage({
 <p class="check"><a href="/learn">${esc(fill(S.allLessons, { n: nLessons }))}</a> · <a href="${EN}/" lang="en">English</a></p>
 </main>`,
 }).replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">'));
+// An English "not found" page for /en/… (v1.15.0, #83 B24): Cloudflare Pages serves the nearest 404.html up the
+// path, so /en/no-such-page gets this one, in English only, with links that stay in English.
+{
+  const en404 = seoPage({
+    lang: 'en', title: `${E.notFoundTitle} · ${ogEn.siteName}`, desc: E.notFoundBody, url: `${SITE}${EN}/`, thPath: '/', enPath: `${EN}/`,
+    image: '/og/en/default.png', ld: null,
+    main: `<main>
+<h1>${esc(E.notFoundTitle)}</h1>
+<p>${esc(E.notFoundBody)}</p>
+<p class="play"><a class="cta" href="${EN}/">${esc(ogEn.siteName)}</a> <a class="cta" href="${EN}/?open=guide">${esc(strings.en.hubGuide)}</a></p>
+<p class="check"><a href="${EN}/learn">${esc(fill(E.allLessons, { n: nLessons }))}</a> · <a href="/" lang="th" hreflang="th">ภาษาไทย</a></p>
+</main>`,
+  }).replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">');
+  writeSeo('en/404.html', en404);
+  if (thaiLeak(en404)) warn('en/404.html contains Thai text outside Thai-tagged spans');
+}
 
 writeSeo('robots.txt', `# ${og.siteName} (Baan Rod Mai?): free home-preparedness tools (what to do, what to keep, a family plan) and a 60-second game.
 # Search engines and AI assistants are welcome to read and cite it.
@@ -1794,12 +1816,19 @@ fs.writeFileSync(path.join(PUB, 'js/version.js'), `// Generated by tools/build.m
 
 // ---------------------------------------------------------------- service worker
 const listFiles = (dir) => fs.readdirSync(path.join(PUB, dir)).filter((f) => !f.startsWith('.')).map((f) => `/${dir}/${f}`);
+// N18 (v1.15.0): the app shows a source's agency, title, link and date, never its note (what was read and quoted,
+// for reviewers, the build and docs/01). It loads this slim copy; content/sources.json stays whole, because it is
+// the file to edit and ภัยรอบบ้าน reads it. One source per line, so a diff stays readable.
+{
+  const slim = Object.entries(sources).map(([id, s]) => `${JSON.stringify(id)}:${JSON.stringify(Object.fromEntries(['agency', 'title', 'url', 'date', 'kind'].filter((k) => s[k] != null).map((k) => [k, s[k]])))}`);
+  fs.writeFileSync(path.join(PUB, 'content/sources-app.json'), `{"_readme":"Generated by tools/build.mjs from content/sources.json, without the notes. Do not edit.","sources":{\n${slim.join(',\n')}\n}}\n`);
+}
 const precache = [
   '/',
   '/en/',
   '/css/app.css',
   ...listFiles('js').filter((f) => f.endsWith('.js')),
-  ...listFiles('content').filter((f) => f.endsWith('.json') && f !== '/content/carousel.json'),
+  ...listFiles('content').filter((f) => f.endsWith('.json') && f !== '/content/carousel.json' && f !== '/content/sources.json'),
   '/art/sprites.svg',
   ...enabledRooms.map((r) => r.art),
   ...listFiles('fonts').filter((f) => f.endsWith('.woff2')),
@@ -1821,7 +1850,7 @@ fs.writeFileSync(path.join(PUB, 'sw.js'), swTemplate
 // ---------------------------------------------------------------- size budget
 // What the start screen needs before it is interactive (rooms load lazily).
 const initial = ['index.html', 'css/app.css', ...listFiles('js').map((f) => f.slice(1)),
-  ...['config', 'strings', 'items', 'rooms', 'sources', 'checklists', 'helplines'].map((f) => `content/${f}.json`),
+  ...['config', 'strings', 'items', 'rooms', 'sources-app', 'checklists', 'helplines'].map((f) => `content/${f}.json`),
   'fonts/kanit-thai-400.woff2', 'fonts/kanit-thai-600.woff2', 'fonts/kanit-latin-400.woff2', 'fonts/kanit-latin-600.woff2'];
 let raw = 0, gz = 0;
 for (const rel of initial) {

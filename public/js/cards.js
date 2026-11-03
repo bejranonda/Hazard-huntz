@@ -507,8 +507,17 @@ export function drawCalls(ctx, calls, { x, w, y, num, name }) {
     font(ctx, num);
     ctx.fillText(c.number, cx, y);
     ctx.fillStyle = '#F6E7D6';
-    font(ctx, name, 400);
-    wrapText(ctx, c.name, colW - 14).slice(0, 2).forEach((ln, k) => ctx.fillText(ln, cx, y + name * 1.3 + k * name * 1.1));
+    // Whom the number reaches is never cut (v1.15.0, visitor audit 5 A1: "ไฟดับ กทม. นนทบุรี สมุทรปราการ" lost
+    // its last province on the plan card): the type shrinks to fit two lines, and a third line is kept if needed.
+    let size = name;
+    let lines;
+    for (;;) {
+      font(ctx, size, 400);
+      lines = wrapText(ctx, c.name, colW - 14);
+      if (lines.length <= 2 || size <= Math.round(name * 0.75)) break;
+      size -= 1;
+    }
+    lines.forEach((ln, k) => ctx.fillText(ln, cx, y + name * 1.3 + k * size * 1.1));
   });
 }
 

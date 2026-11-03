@@ -53,7 +53,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N15 | [How ready is our house? A checker and a family plan card](#n15-how-ready-is-our-house-a-checker-and-a-family-plan-card) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.8.0); Thai review of its wording left (L5, L10) |
 | N16 | [v1.8.1: visitor audit fixes and integration](#n16-v181-visitor-audit-fixes-and-integration) | AI-ready | Done (19 Oct 2026, v1.8.1); the shortcuts on a real phone left (L6) |
 | N17 | [Tools first and a guide for every hazard](#n17-tools-first-and-a-guide-for-every-hazard) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.9.0); the Thai review of the four guides (L10), the language check (L5) and the phone checks (L6) left |
-| N18 | [Keep source notes out of what the game loads](#n18-keep-source-notes-out-of-what-the-game-loads) | AI-ready | Todo |
+| N18 | [Keep source notes out of what the game loads](#n18-keep-source-notes-out-of-what-the-game-loads) | AI-ready | Done (3 Nov 2026, v1.15.0): 304 → 274 KB |
 | N19 | [Visitor audit 2](#n19-visitor-audit-2) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.9.1); its leftovers done in v1.9.2 (N20), except the previews' helpline line (#68) and the phone checks (L6) |
 | N20 | [v1.9.2: answers, back button, card, security](#n20-v192-answers-back-button-card-security) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.9.2); the Thai read of the wrong answers (L5), the phone checks (L6, rows 61–63) and the Rich Results Test (L8) left |
 | N21 | [Calculators from the home check's idea (v1.10.0)](#n21-calculators-from-the-home-checks-idea-v1100) | AI-ready (+ Owner review) | Done (19 Oct 2026, v1.10.0); the Thai read (L5), the phone checks (L6, rows 64–66) and the review of the fridge hours and the dust tool (L10) left; its screens redone in plain words in v1.10.1 (N22) |
@@ -65,6 +65,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N27 | [Visitor audit 4 (v1.13.1)](#n27-visitor-audit-4-v1131) | AI-ready (+ Owner) | Done (21 Oct 2026, v1.13.1); the host's cookie (#93, Owner) and the leftovers (#94) left |
 | N28 | [Home today and home risk (proposed)](#n28-home-today-and-home-risk-proposed) | — | **Superseded (1 Nov 2026):** the sister app ภัยรอบบ้าน (Thai Risk, risk.autobahn.bot) does this; this app links it ([N30](#n30-fit-with-the-family-v1140)). The research stays as a record ([docs/08](08-open-data.md)) |
 | N29 | [A server that publishes files (proposed)](#n29-a-server-that-publishes-files-proposed) | — | **Superseded (1 Nov 2026):** live data is ภัยรอบบ้าน's; [docs/09](09-server.md) stays as a record for it |
+| N34 | [Visitor audit 5 and audit 3's leftovers (v1.15.0)](#n34-visitor-audit-5-and-audit-3s-leftovers-v1150) | AI-ready | Done (3 Nov 2026, v1.15.0); #103 holds what is left |
 | N33 | [Water off the hills, for ภัยรอบบ้าน (v1.14.3)](#n33-water-off-the-hills-for-ภัยรอบบ้าน-v1143) | AI-ready | Done (3 Nov 2026, v1.14.3); ภัยรอบบ้าน wires `flood.flash`; the line waits for DMR's own words (#99) |
 | N32 | [FloodWatch's review (v1.14.2)](#n32-floodwatchs-review-v1142) | AI-ready | Done (3 Nov 2026, v1.14.2); four ⚠️ parts wait for DDPM's own pages (#99), FloodWatch's closing notice is the owner's |
 | N31 | [Arriving from ภัยรอบบ้าน (v1.14.1)](#n31-arriving-from-ภัยรอบบ้าน-v1141) | AI-ready | Done (2 Nov 2026, v1.14.1); the phone row 91 is the owner's; FloodWatch answered the hand-back (N32) |
@@ -446,7 +447,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### N18. Keep source notes out of what the game loads
 
-- **Who:** AI-ready · **Status:** Todo · **Issue:** #62
+- **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.15.0): the build writes `content/sources-app.json` without the notes and the app loads it; `sources.json` stays whole (the file to edit; ภัยรอบบ้าน reads it); the start screen went from 304 to 274 KB compressed; every generated page unchanged ([F181](KNOWN_ISSUES.md#in-v1150-3-nov-2026)) · **Issue:** #62
 - **Why:** the game never shows a source's `note`, but it loads all of `sources.json`; the notes are about 14 KB of its 23.8 KB compressed since v1.9.0, most of the start screen's growth from 209 to 232 KB ([GUIDELINES rule 53](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)). v1.11.0's seven sources, each quoting its page for the reviewer, took `sources.json` from 25.2 to 30.5 KB compressed, about half of that release's 10 KB growth (264 KB); worth doing before the next source-heavy release.
 - **Steps:**
   1. Keep one file to edit by hand. Either the build writes a slim copy for the client (only `agency`, `title`, `url`, `date`, `kind`) and the full file moves out of `public/`, or the notes move to a second file beside it that the build, `npm run docs` and the tests read. Check every reader first: `content.js`, `kit.js` (agencies), `tools/build.mjs` (validation, the kit number check, `/learn`, the hazard pages, `llms.txt`, `--docs`), `tests/run.mjs` and `tests/smoke.mjs`.
@@ -648,6 +649,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
   - a unit test that holds the advice file ภัยรอบบ้าน reads, and smoke checks for the links, the pages and that nothing about the reader goes with them;
   - N28 and N29 superseded: "around my home" is ภัยรอบบ้าน's.
 - **Done when:** the owner has set the words (#98) and the family's palette (#101; the UV 11+ word is settled); a Thai reader has read the flood and UV lines (#99, #100, [L10](#l10-thai-review-of-the-dust-fire-and-power-cut-lessons) step 7c); ภัยรอบบ้าน shows the new lines and links `/flood#during` and `/uv` ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session); done in its v0.11.2, 2 Nov 2026); the phone test rows 88–90 are filled ([L6](#l6-real-phone-test-matrix)).
+
+### N34. Visitor audit 5 and audit 3's leftovers (v1.15.0)
+
+- **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.15.0) · **Issues:** fixed F181–F199; #62 closed; #83 mostly closed; new #103
+- **Why:** the owner, 3 Nov 2026: "Continue as you suggested … Continue all to finish", with the usual process (UI and UX, validation as visitors and cross-validation, frank notes, integration, every doc).
+- **How:** while N18 and #83's AI-ready items were built, an independent auditor walked the live v1.14.3 as its readers do (LINE's browser, 320, 360 and 390 px, Thai and English; 204 page loads, every tool sheet and guide); the lead re-checked each finding in the code before fixing it ([APPROACH §41](APPROACH_AND_METHOD.md#41-build-while-an-independent-auditor-walks-the-live-site-v1150)).
+- **What shipped:** the slim sources copy (274 KB); "‹ guide" from a tool opened in a guide; one short and one long name per tool, held by a test; one agency per source group on every page, news reports marked; an English 404; the plan form's order; the plan card's whole helpline labels; heat today's news-report note; `/uv`'s own preview; "open in browser" that keeps the guide; the after-the-flood reasons link; 44 px agency links; the Air4Thai row; no repeated "now" tool; British English; separators that stay with their link.
+- **Done when:** done; #103's items (one hand-back to ภัยรอบบ้าน, two copy changes, two input messages, dates) are next; the phone test of the "‹ guide" link and the plan card inside LINE is the owner's (row 92, [L6](#l6-real-phone-test-matrix)).
 
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 

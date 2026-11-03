@@ -382,6 +382,44 @@ test('the advice file ภัยรอบบ้าน reads keeps its shape and i
   }
 });
 
+test('the app loads the sources without their notes, and the copy matches (N18, v1.15.0)', () => {
+  const full = load('sources').sources;
+  const app = load('sources-app').sources;
+  assert.deepEqual(Object.keys(app).sort(), Object.keys(full).sort(), 'every source, no more');
+  for (const [id, s] of Object.entries(full)) {
+    for (const k of ['agency', 'title', 'url', 'date', 'kind']) assert.equal(app[id][k], s[k], `${id}.${k}`);
+    assert.equal(app[id].note, undefined, `${id}: no note in the app's copy`);
+  }
+  const contentJs = fs.readFileSync(new URL('../public/js/content.js', import.meta.url), 'utf8');
+  assert.match(contentJs, /'sources-app'/);
+  assert.doesNotMatch(contentJs, /'sources',/, 'the app no longer loads the full file');
+  // sources.json stays whole for ภัยรอบบ้าน and the build, but the service worker doesn't cache it for the app
+  assert.doesNotMatch(fs.readFileSync(new URL('../public/sw.js', import.meta.url), 'utf8'), /"\/content\/sources\.json"/);
+});
+
+test('each tool has one short and one long name, the same everywhere (visitor audit 3 B13, v1.15.0)', () => {
+  const S = load('strings');
+  const kit = load('kit');
+  const cfg = load('config');
+  const strip = (h) => h.replace(/<[^>]+>/g, '').replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim();
+  for (const lang of ['th', 'en']) {
+    const pre = lang === 'en' ? 'en/' : '';
+    const toolsPage = strip(fs.readFileSync(new URL(`../public/${pre}tools.html`, import.meta.url), 'utf8'));
+    for (const { id } of cfg.tools) {
+      // the short name: the hub's button, the list of all tools, a guide's and a result's tool buttons (toolName())
+      const short = S[lang][`hub${id[0].toUpperCase()}${id.slice(1)}`];
+      assert.ok(short, `${lang} ${id}: a short name`);
+      assert.ok(toolsPage.includes(short), `${lang} ${id}: /tools uses the short name "${short}"`);
+      // the long name: the tool's sheet title and its page's heading say the same. The plan card's sheet shows the
+      // card's own heading ("แผนครอบครัวของบ้านเรา"), which the reader fills in, so it is left out.
+      if (id === 'plan') continue;
+      const sheet = id === 'kit' ? kit.ui[lang].title : kit.ui[lang][`${id}Title`];
+      const h1 = strip(/<h1>([\s\S]*?)<\/h1>/.exec(fs.readFileSync(new URL(`../public/${pre}${id}.html`, import.meta.url), 'utf8'))[1]);
+      assert.equal(h1, sheet, `${lang} ${id}: the page's heading is the sheet's title`);
+    }
+  }
+});
+
 test('home check: amounts follow the household, special items follow the answers', () => {
   const kit = load('kit');
   const byId = (p, id) => p.items.find((x) => x.id === id);

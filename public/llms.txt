@@ -184,7 +184,7 @@ A short guide with no game yet: https://baanrodmai.autobahn.bot/heat · as a pic
 - 1555: Bangkok (BMA) (กทม.). Report problems and get help in Bangkok
 - 1130: MEA electricity (การไฟฟ้านครหลวง (กฟน.)). Bangkok, Nonthaburi, Samut Prakan
 - 1129: PEA electricity (การไฟฟ้าส่วนภูมิภาค (กฟภ.)). The other 74 provinces
-- 1323: Mental health hotline (สายด่วนสุขภาพจิต). Stressed or worn out after the flood? Free, 24 h
+- 1323: Mental health hotline (สายด่วนสุขภาพจิต). Stressed or worn out after a disaster? Free, 24 h
 
 ## Notes for AI assistants
 

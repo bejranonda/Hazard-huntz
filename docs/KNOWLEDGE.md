@@ -45,6 +45,7 @@ What building it taught us is in [LESSONS_LEARNED.md](LESSONS_LEARNED.md), and w
 35. [Open data for "around my home" (research, 21 Oct 2026)](#35-open-data-for-around-my-home-research-21-oct-2026)
 36. [With a server of our own (research, 21 Oct 2026)](#36-with-a-server-of-our-own-research-21-oct-2026)
 37. [The family: ภัยรอบบ้าน, FloodWatch and this app (v1.14.0)](#37-the-family-ภัยรอบบ้าน-floodwatch-and-this-app-v1140)
+38. [Lighter, and what the audits left (v1.15.0)](#38-lighter-and-what-the-audits-left-v1150)
 
 ---
 
@@ -262,7 +263,7 @@ Every file is in `public/content/`. The build validates all of them (section 6).
 ### Other files
 
 - **`rooms.json`:** `{id, order, enabled, art, name{th,en}, slots: [{id, x, y, tags[]}]}`. Slots must lie inside the 360×600 scene.
-- **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`.
+- **`sources.json`:** `{<id>: {agency, title, url, date?, kind, note?}}`. The file to edit; ภัยรอบบ้าน and the build read it. Since v1.15.0 (N18) the app loads **`sources-app.json`**, which the build writes from it without the notes (`agency`, `title`, `url`, `date`, `kind`; never edit it), and the service worker caches only that.
   - `kind` is one of: `official` (the agency's own site), `government` (a กรมประชาสัมพันธ์ repost), `secondary` (news quoting the agency), `academic` or `international` ([GUIDELINES §2.1](GUIDELINES.md#21-adding-or-changing-an-item)).
   - Totals (v1.11.0): 119 sources, of which 32 official, 9 government, 52 secondary, 3 academic and 23 international. The 7 added in v1.11.0 are for the fridge tool's food lists, medicine and breast milk (§33.3): FoodSafety.gov (`foodsafety-outage`), USDA FSIS (`fsis-outage`), the UK FSA (`uk-fsa-powercut`), the US FDA twice (`fda-insulin`, `fda-drugs-disaster`) and the US CDC (`cdc-emergency-feeding`), all international, and Siriraj Hospital's nursing leaflet on insulin (`siriraj-insulin`, academic).
   - Totals (v1.10.0): 112 sources, of which 32 official, 9 government, 52 secondary, 2 academic and 17 international. The 3 added in v1.10.0 are for dust today (§32.3): the PCD's notice in the Royal Gazette (`pcd-aqi-2566`, official), Thai PBS quoting the PCD Director-General (`pcd-aqi-thaipbs-2566`, secondary) and MGR Online quoting the DOH Deputy Director-General (`doh-aqi-2566`, secondary).
@@ -2688,3 +2689,38 @@ FloodWatch answered the hand-back on 2 Nov 2026 (forwarded by the owner; [docs/1
 - **The tide:** a high tide over a bank (ภัยรอบบ้าน's tidal gauges, เตรียมตัว "ล้นตลิ่งช่วงน้ำขึ้น") fits the เตรียมตัว line as it is; no tide-specific agency text was read [unverified].
 - **Not changed:** the first line of every level and the ids (ภัยรอบบ้าน's check reads them, now with their source ids).
 - **Undated sources** show their site's name in the source line ("bangkokbiznews.com"), not "·".
+
+## 38. Lighter, and what the audits left (v1.15.0)
+
+Built 3 Nov 2026 ([ROADMAP N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads), [N34](ROADMAP.md#n34-visitor-audit-5-and-audit-3s-leftovers-v1150)); fixes F181–F199.
+
+### 38.1 The slim sources copy (N18)
+
+- `tools/build.mjs` writes `public/content/sources-app.json` after validation: every source with `agency`, `title`, `url`, `date`, `kind`, one per line, and a `_readme` saying it is generated. `content.js` loads it in place of `sources.json`; the service worker's precache leaves `sources.json` out; the budget counts the slim copy.
+- **Measured:** `sources.json` 170,379 bytes (46.9 KB gzip) → the copy 70,201 bytes (15.6 KB gzip); the start screen 304 → 274 KB compressed (274 KB with v1.15.0's other changes). `git status` after the build: only `sw.js`, `content.js` and the new file changed, so no page moved.
+- **Held by** a unit test: the same ids, the same five fields, no `note`, the app loads `sources-app`, the service worker doesn't cache the full file.
+
+### 38.2 One way to show sources, everywhere
+
+`srcGroups()` in the build renders every source line on the pages (lessons, guides, tools, the shared flood and UV lines): an agency's name once, then a link per source labelled by year (by month, then day, when a year repeats within the group; by the site's name when undated), with news reports (`kind: secondary`) in their own group marked " (ข่าว)" / ", news report". The "· ⚠️" before a review note is inside the note's no-wrap span. Of 740 source lines on the pages, none repeats an agency within a group.
+
+### 38.3 Names, Back and the guide sheet
+
+- **One short and one long name per tool** (unit test): the short name is `strings → hub<Id>` (the hub, `/tools`, a guide's and a result's tool buttons); the long name is the sheet's title (`kit.json → ui.<id>Title`, the kit's `ui.title`), and each page's `<h1>` says the same. The plan card is the exception: its sheet shows the card's own heading. `/kit`'s page, title and preview took the sheet's "เช็กของจำเป็น: บ้านเราพร้อมแค่ไหน?".
+- **"‹ <the guide>"** on a tool opened from a guide: `openTool(…, guide)` tells `kit.js` (`setGuideReturn()`), and the link raises `brm:guide`, which reopens the guide. The phone's Back still closes the sheet, as from tool to tool (v1.13.0).
+- **The guide sheet** focuses its heading (`tabindex="-1" autofocus`); its "now" tool isn't repeated in the tool row; "อ่านเหตุผลและที่มาทีละข้อ" opens the hazard page at the mode's lessons (`/flood#return`); inside LINE, "เปิดในเบราว์เซอร์" opens `/checklist/<id>` (the result's: its own link).
+
+### 38.4 Cards, previews and pages
+
+- **`drawCalls()`** shrinks a helpline label (to 75 % at least) until it fits two lines, else draws a third: nothing about whom a number reaches is cut.
+- **`/uv`** has `og/uv.png` (+ `og/en/uv.png`, strings `og.uvLine1/2`, `uvPill`; `render.html` draws it with the heat look and ☀️) and the brand in its title; **`/kit`**'s preview re-drawn. `npm run images -- --only og/uv.png,og/en/uv.png` (and the kit's) rewrote `icons/icon.svg` with an empty group, which was restored, not committed.
+- **`en/404.html`**: Cloudflare Pages serves the nearest `404.html` up the path, so `/en/…` gets the English one [checked live after the deploy, §38.5].
+- **`/tools`**: the agency links are `a.tool-a` (44 px). The Air4Thai row reads "ค่าฝุ่นจากสถานีวัดของ คพ. (Air4Thai)" with 📡.
+- **Heat today:** `kit.json → hot.note` says once, on `/hot` and in the sheet, that the levels and advice come from news reports quoting the DOH and the BMA, because `hot.verify` is `partial` while every line is `verified` against those reports (#90).
+- **Content:** the plan form's order (meet, contact, help ×2, medicine, shelter); 1323 "หลังเกิดภัย"; "tinned", "first-aid", "U.S.".
+
+### 38.5 Checks
+
+- `npm test` **48**; `npm run smoke` with the guide → tool → "‹ guide" walk in Thai and English; the build clean; `npm run check:docs` passing.
+- Visitor audit 5's measurements are in the session's scratch notes; what it left is [#103](KNOWN_ISSUES.md#103-leftovers-of-visitor-audit-5).
+

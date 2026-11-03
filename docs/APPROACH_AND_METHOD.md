@@ -559,3 +559,14 @@ FloodWatch answered the hand-back with six points (2 Nov 2026). Each got one of 
 5. **Answer every part asked.** The tide got a written answer (the line fits, no new field) rather than silence.
 6. **Check that an insert landed where intended.** v1.14.2 appended KNOWLEDGE §37.7 at the end of the file because the heading it searched for didn't exist (`find()` returned −1); the text was right but a blank line was lost. Doc edits now assert that the place they look for exists.
 
+## 41. Build while an independent auditor walks the live site (v1.15.0)
+
+The owner asked to "continue all to finish". The AI-ready work was clear (N18, #83's leftovers); what the live app needed beyond it wasn't.
+
+1. **Start the auditor first, with only the brief.** It got the readers, the journeys, the viewports, LINE's user agent, what was already known (so it wouldn't re-report it), and the output shape; not the lead's guesses. It ran for about 35 minutes on the live v1.14.3 while the lead built on the repository.
+2. **Measure the cheap win before choosing its shape.** For N18, the slim copy's size was measured first (46.9 → 15.6 KB gzip), and every reader of `sources.json` listed; the copy is generated, so there is still one file to edit, and the sister app keeps the full file.
+3. **Re-check each finding in the code before fixing.** A18 (the same agency twice) was already fixed by that day's `srcGroups()`; another apparent repeat was two different groups (an agency's own notice and a news report about it, both 2023). A7's suggested target (`#cl-return`) was the list, not "the reasons", so the fix went to `#return`.
+4. **Fix the shared function, not the page.** Source lines, helpline labels, the top line and the review note each come from one helper; changing the helper fixed every page at once, and a test holds it.
+5. **What needs a person stays theirs.** Copy at a safety edge (the fridge's "4 hours"), an English reader's choices, the owner's decisions and the sister app's link went to #103 and the hand-back, not into this release.
+6. **When a tool is denied, do it the normal way.** One shell command that edited files was refused by a safety check that couldn't parse it (no removal was in it); the same edits were made with the file editor, nothing was worked around.
+

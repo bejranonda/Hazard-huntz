@@ -2501,8 +2501,8 @@
       "en": "While the water is rising: what to do first"
     },
     "intro": {
-      "th": "ทำตามประกาศและคำแนะนำของเจ้าหน้าที่ในพื้นที่ก่อนเสมอ ข้อเหล่านี้มาจากคำแนะนำของ ปภ. และกรมชลประทาน",
-      "en": "Always follow your local officials first. These lines come from DDPM's and the Royal Irrigation Department's advice."
+      "th": "ทำตามประกาศและคำแนะนำของเจ้าหน้าที่ในพื้นที่ก่อนเสมอ ข้อเหล่านี้มาจากประกาศและคำแนะนำของ ปภ. กรมชลประทาน และการไฟฟ้า",
+      "en": "Always follow your local officials first. These lines come from the notices and advice of DDPM, the Royal Irrigation Department and the electricity authorities."
     },
     "levelsTitle": {
       "th": "ภัยรอบบ้าน บอกระดับน้ำท่วมที่ตำบลของคุณ ทำสิ่งนี้ก่อน",
@@ -2520,6 +2520,9 @@
             "th": "คอยฟังประกาศเตือนจากทางราชการ และทำตามคำแนะนำ",
             "en": "Keep listening for official warnings, and do what they advise",
             "sources": [
+              "rid-news-28896",
+              "rid-news-28953",
+              "pakkret-plan-2564",
               "ddpm-levels-2568",
               "ddpm-overtop-2569",
               "rid-chaophraya-2569",
@@ -2553,6 +2556,8 @@
             "th": "น้ำอาจมาถึง ยกของและเครื่องใช้ไฟฟ้าขึ้นที่สูงไว้ก่อน",
             "en": "Water may reach you: move belongings and electrical appliances up high now",
             "sources": [
+              "rid-news-28880",
+              "pea-943",
               "ddpm-mea",
               "ddpm-levels-2568",
               "rid-release-2569"
@@ -2564,6 +2569,8 @@
             "th": "เตรียมพาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัย",
             "en": "Get ready to take children, older people and anyone bedridden somewhere safe",
             "sources": [
+              "rid-news-28597",
+              "ddpm-cbs-laplae-2569",
               "ddpm-levels-2567",
               "ddpm-alert-2568",
               "ddpm-rising-2569"
@@ -2584,6 +2591,8 @@
             "th": "พาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา",
             "en": "Take children, older people and anyone bedridden somewhere safe before the water comes",
             "sources": [
+              "rid-news-28597",
+              "ddpm-cbs-laplae-2569",
               "ddpm-levels-2567",
               "ddpm-overtop-2569",
               "ddpm-alert-2568",
@@ -2596,6 +2605,7 @@
             "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
             "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
             "sources": [
+              "pakkret-plan-2564",
               "ddpm-mea",
               "ddpm-levels-2567",
               "ddpm-alert-2568"
@@ -2608,60 +2618,40 @@
     ],
     "during": [
       {
-        "th": "ยกของ เครื่องใช้ไฟฟ้า เอกสารสำคัญ ขึ้นที่สูงทันที",
-        "en": "Move belongings, appliances and important documents up high straight away",
+        "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
+        "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
         "sources": [
-          "ddpm-rising-2569",
-          "ddpm-urgent-2569",
-          "ddpm-overtop-2569"
+          "pakkret-plan-2564",
+          "ddpm-levels-2567",
+          "ddpm-alert-2568",
+          "ddpm-mea"
         ],
         "verify": "verified",
-        "icon": "⬆️"
-      },
-      {
-        "th": "สับคัตเอาต์จุดที่น้ำอาจท่วมถึง ทำตอนตัวแห้งเท่านั้น",
-        "en": "Switch off the power for anywhere the water may reach, only while you are dry",
-        "sources": [
-          "ddpm-rising-2569",
-          "ddpm-mea",
-          "mea-2022",
-          "pea-943"
-        ],
-        "verify": "verified",
-        "icon": "⚡"
+        "icon": "🚨"
       },
       {
         "th": "พาเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อน",
         "en": "Take children, older people and anyone bedridden somewhere safe first",
         "sources": [
+          "rid-news-28597",
+          "ddpm-cbs-laplae-2569",
           "ddpm-levels-2567",
           "ddpm-overtop-2569",
-          "ddpm-rising-2569",
           "ddpm-noru"
         ],
         "verify": "verified",
         "icon": "🧓"
       },
       {
-        "th": "ย้ายรถและสัตว์เลี้ยงไปที่สูงหรือที่ปลอดภัย",
-        "en": "Move the car and pets to high ground or somewhere safe",
+        "th": "ถ้าต้องอพยพ ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล",
+        "en": "If you have to leave, take a safe route, not the way the water is flowing",
         "sources": [
-          "ddpm-urgent-2569",
-          "ddpm-south",
-          "rid-release-2569"
+          "ddpm-noru",
+          "ddpm-south"
         ],
-        "verify": "verified",
-        "icon": "🚗"
-      },
-      {
-        "th": "อยู่ห่างสายไฟและเสาไฟฟ้า",
-        "en": "Keep away from power lines and electricity poles",
-        "sources": [
-          "ddpm-south",
-          "ddpm-noru"
-        ],
-        "verify": "verified",
-        "icon": "🔌"
+        "verify": "partial",
+        "icon": "🧭",
+        "verifyNote": "No document of DDPM's own was found for this line (DDPM's site turned automated readers away on 3 Nov 2026); it rests on news reports quoting DDPM."
       },
       {
         "th": "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว",
@@ -2671,29 +2661,58 @@
           "ddpm-noru"
         ],
         "verify": "partial",
-        "verifyNote": "DDPM advises against crossing fast water above the knee and driving through deep floodwater; the app leaves the depth out (no wading depths) and so says it more strictly than DDPM.",
+        "verifyNote": "DDPM advises against crossing fast water above the knee and driving through deep floodwater; the app leaves the depth out (no wading depths) and so says it more strictly than DDPM. No document of DDPM's own was found for it (3 Nov 2026); it rests on news reports quoting DDPM.",
         "icon": "🚫"
       },
       {
-        "th": "ถ้าต้องอพยพ ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล",
-        "en": "If you have to leave, take a safe route, not the way the water is flowing",
+        "th": "อยู่ห่างสายไฟและเสาไฟฟ้า",
+        "en": "Keep away from power lines and electricity poles",
         "sources": [
-          "ddpm-noru",
-          "ddpm-south"
+          "ddpm-south",
+          "ddpm-noru"
         ],
-        "verify": "verified",
-        "icon": "🧭"
+        "verify": "partial",
+        "icon": "🔌",
+        "verifyNote": "No document of DDPM's own was found for this line (DDPM's site turned automated readers away on 3 Nov 2026); it rests on news reports quoting DDPM."
       },
       {
-        "th": "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที ต้องการคนช่วย โทร 1784",
-        "en": "If officials tell you to leave, go at once. Need help? Call 1784 (DDPM)",
+        "th": "ยกของ เครื่องใช้ไฟฟ้า เอกสารสำคัญ ขึ้นที่สูงทันที",
+        "en": "Move belongings, appliances and important documents up high straight away",
         "sources": [
-          "ddpm-mea",
-          "ddpm-levels-2567",
-          "ddpm-alert-2568"
+          "rid-news-28880",
+          "rid-news-28896",
+          "ddpm-cbs-laplae-2569",
+          "pea-943",
+          "ddpm-rising-2569"
         ],
         "verify": "verified",
-        "icon": "🚨"
+        "icon": "⬆️"
+      },
+      {
+        "th": "สับคัตเอาต์จุดที่น้ำอาจท่วมถึง ทำตอนตัวแห้งเท่านั้น",
+        "en": "Switch off the power for anywhere the water may reach, only while you are dry",
+        "sources": [
+          "pea-943",
+          "ddpm-rising-2569",
+          "ddpm-mea",
+          "mea-2022"
+        ],
+        "verify": "verified",
+        "icon": "⚡"
+      },
+      {
+        "th": "ย้ายรถและสัตว์เลี้ยงไปที่สูงหรือที่ปลอดภัย",
+        "en": "Move the car and pets to high ground or somewhere safe",
+        "sources": [
+          "rid-news-1310",
+          "ddpm-cbs-laplae-2569",
+          "rid-news-28597",
+          "ddpm-south",
+          "rid-release-2569"
+        ],
+        "verify": "partial",
+        "icon": "🚗",
+        "verifyNote": "The car is in RID's and DDPM's own notices (RID 2024, DDPM's phone alert 2026); pets only in news reports quoting DDPM and RID."
       }
     ]
   },

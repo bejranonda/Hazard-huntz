@@ -349,7 +349,9 @@ const keysEn = new Set(Object.keys(strings.en || {}));
 for (const k of keysTh) if (!keysEn.has(k)) warn(`strings.json: "${k}" has no English text`);
 
 const isPlaceholder = (u) => !u || /\[[A-Z_]+\]/.test(u);
-if (isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is still a placeholder (the forecast button stays hidden)');
+// An empty forecastAppUrl is a choice: FloodWatch has said it closes after its handover to ONWR, and then the
+// rivers' link goes with it (every FloodWatch button hides; ภัยรอบบ้าน's link stays). Only a [PLACEHOLDER] warns.
+if (config.forecastAppUrl && isPlaceholder(config.forecastAppUrl)) warn('config.json: forecastAppUrl is still a placeholder (the rivers\' link stays hidden)');
 // ภัยรอบบ้าน (Thai Risk): "what is happening now" at the reader's subdistrict (v1.14.0). Its English is at /en.
 if (!/^https:\/\/[^\s/]+\/$/.test(config.riskAppUrl || '')) err('config.json: riskAppUrl must be an https address ending in / (ภัยรอบบ้าน, the sister app for what is happening now)');
 const riskUrl = (lang) => (lang === 'en' ? `${config.riskAppUrl}en` : config.riskAppUrl);
@@ -991,14 +993,20 @@ const srcDates = (ids, lang) => {
 const kitSrcSpan = (xs, lang) => {
   const X = lang === 'en' ? E : S;
   const partial = xs.some((x) => x.verify !== 'verified');
+  // An agency's own document and a news report quoting it are told apart ("ปภ.: … · ปภ. (ข่าว): …"):
+  // news reports point to the agency's words, they aren't its words (FloodWatch's review, v1.14.2).
   const groups = new Map();
   for (const id of new Set(xs.flatMap((x) => x.sources || []))) {
     if (!sources[id]) continue;
-    const ag = sources[id].agency;
-    if (!groups.has(ag)) groups.set(ag, []);
-    groups.get(ag).push(id);
+    const key = `${sources[id].agency}\u0000${sources[id].kind === 'secondary' ? 'news' : ''}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(id);
   }
-  const parts = [...groups].map(([ag, ids]) => `${esc(lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag)}: ${srcDates(ids, lang).map((label, i) => `<a href="${esc(sources[ids[i]].url)}">${esc(label)}</a>`).join(', ')}`);
+  const parts = [...groups].map(([key, ids]) => {
+    const [ag, news] = key.split('\u0000');
+    const name = `${lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag}${news ? X.srcNews : ''}`;
+    return `${esc(name)}: ${srcDates(ids, lang).map((label, i) => `<a href="${esc(sources[ids[i]].url)}">${esc(label)}</a>`).join(', ')}`;
+  });
   return `<span class="src">${esc(X.sources)}: ${parts.join(' · ')}${partial ? ` · <span class="flag">⚠️ ${esc(X.partialNote)}</span>` : ''}</span>`;
 };
 const kitText = (x, lang) => `${esc(L2(x, lang))}${x.verify !== 'verified' ? ' ⚠️' : ''}`;

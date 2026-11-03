@@ -4,6 +4,27 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.14.2] — 2026-11-03
+
+**FloodWatch's review.** FloodWatch answered the hand-back (2 Nov 2026, forwarded by the owner): cite the agencies' own dated documents, put when to leave first, keep the addresses, and don't count on FloodWatch: it is being handed over to ONWR and its site closes after the project. No item, slot or house changed; no line's words changed, only the order of "during" and the sources. ([ROADMAP N32](docs/ROADMAP.md#n32-floodwatchs-review-v1142), [docs/10 §6](docs/10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session))
+
+### Changed
+
+- **"While the water is rising" says when to leave first:** "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที…", then people, the way out, fast water and power lines, then belongings, the power and the car. No line promises a dry house.
+- **The flood lines cite the agencies' own documents first:** RID's own news pages (28–30 Sep 2026, 26 Sep 2024), PEA's own page (29 May 2025), DDPM's own phone alert (Cell Broadcast, 20 Aug 2026, kept on the Internet Archive), the government's instruction to agencies on RID's site (24 Aug 2026) and Pak Kret municipality's plan quoting the national plan's five colours (2021). 7 new sources (167).
+- **News reports are marked** " (ข่าว)" / ", news report" in the source line, apart from the agency's own documents.
+- **Four parts with no agency original show ⚠️:** the safe route, fast-flowing water, power lines, and the pets (DDPM's own site turned every automated reader away).
+- **An empty `forecastAppUrl` means "no rivers' link"** (no warning; only a `[PLACEHOLDER]` warns), ready for when FloodWatch closes.
+
+### Added
+
+- **Tests:** the unit test holds the order of "during", that no line promises a dry house, that every flood line cites an agency's or a government's own document or shows ⚠️ with a note, and the addresses FloodWatch links (`/`, `/learn`, `/checklist/prepare`, `/checklist/return`). The smoke test's guide check works without FloodWatch: a copy with `forecastAppUrl` empty passed 212 of 212.
+- **A source addendum for ภัยรอบบ้าน** ([docs/10 §4](docs/10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)): the words and ids are unchanged; the sources behind each level's lines changed.
+
+### Fixed
+
+- F174–F177 ([KNOWN_ISSUES](docs/KNOWN_ISSUES.md#in-v1142-3-nov-2026)).
+
 ## [1.14.1] — 2026-11-02
 
 **Arriving from ภัยรอบบ้าน.** After ภัยรอบบ้าน v0.11.2 took the hand-back, every page it links into this app was opened as a visitor arriving from it (its 14 links and anchors, Thai and English, 320, 360 and 390 px, LINE's browser), and the bands and lines both apps use were cross-checked value by value. No advice, number, source, item or slot changed, so houses and challenge links are the same. ([ROADMAP N31](docs/ROADMAP.md#n31-arriving-from-ภัยรอบบ้าน-v1141))

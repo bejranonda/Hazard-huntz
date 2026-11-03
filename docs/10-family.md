@@ -8,11 +8,11 @@
 |---|---|---|
 | **บ้านรอดไหม** (this repository, Hazard-huntz) | **What to do.** Sourced guides, the home check, the family plan, the calculators, the game. No live data. | https://baanrodmai.autobahn.bot (English `/en/`) |
 | **ภัยรอบบ้าน · Thai Risk** | **What is happening** at the reader's subdistrict now and for 3 days, every hazard. Writes no advice of its own: its action lines are copied from this repository's `public/content/kit.json`, and its "what to do" links come here. | https://risk.autobahn.bot (English `/en`) |
-| **FloodWatch** | The rivers and canals: gauge levels against their banks. The owner has said it may close; ภัยรอบบ้าน keeps working without it. | https://flood.autobahn.bot |
+| **FloodWatch** | The rivers and canals: gauge levels against their banks. It is being handed over to ONWR, whose copy links none of the family, and its own site closes after the project (FloodWatch, 2 Nov 2026); ภัยรอบบ้าน keeps working without it. | https://flood.autobahn.bot |
 
 **In this app:**
 - The start screen, every guide, the result screen, the eight hazard pages and the dust, heat and mask pages link "📍 ดูภัยที่ตำบลของคุณตอนนี้" to ภัยรอบบ้าน in the reader's language (`config.json → riskAppUrl`). Nothing about the reader goes with the link (no place, no position, no event).
-- FloodWatch stays as the extra link for the rivers (`forecastAppUrl`, "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)"), after ภัยรอบบ้าน, never the only route.
+- FloodWatch stays as the extra link for the rivers (`forecastAppUrl`, "🌊 ระดับน้ำในแม่น้ำ คลอง (FloodWatch)"), after ภัยรอบบ้าน, never the only route. **When it closes,** set `forecastAppUrl` to `""`: every FloodWatch button hides and nothing else changes (tested in v1.14.2: no build warning, every unit and smoke check passes, no page links it; [KNOWN_ISSUES #102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)).
 - No line states a live condition: the hand-set rain switch is gone, and the gecko's lines are timeless ([KNOWN_ISSUES F164–F166](KNOWN_ISSUES.md#in-v1140-2-nov-2026)).
 
 ## 2. What ภัยรอบบ้าน reads from this app (the contract)
@@ -31,6 +31,8 @@
 
 **The pages ภัยรอบบ้าน links**, each also under `/en`: `/air`, `/flood` (and since v1.14.0 `/flood#during`, `/flood#levels`, `/flood#level-watch`, `#level-warn`, `#level-danger`), `/hot`, `/landslide`, `/mask`, `/pm25`, `/quake`, `/storm`, and since v1.14.0 `/uv` (anchors `#uv-low`, `#uv-protect`, `#uv-veryhigh`, `#uv-extreme`).
 
+**The pages FloodWatch links** (until it closes): `/`, `/learn`, `/checklist/prepare`, `/checklist/return`; held by the same unit test since v1.14.2. Keep them, and `#during`, where they are; if one ever moves, leave a redirect in `public/_redirects`.
+
 **Arriving here** (v1.14.1): every anchor lands at the top of the screen, and a level a link points at (`/uv#uv-<id>`, `/flood#level-<id>`) is drawn as a framed card. On `/flood` the parts run in time order, each with a jump chip: ก่อนน้ำมา (`#cl-prepare`) · น้ำกำลังมา (`#during`, then `#levels`) · หลังน้ำลด (`#cl-return`).
 
 **Cross-checked** (2 Nov 2026, against ภัยรอบบ้าน v0.11.2's tables, read as text and applied by the rule its `actionFor()` states): 12,017 PM2.5 values (0–120 µg/m³ by 0.01, and the half-way values at each edge), 4,001 heat-index values (20–60 °C by 0.01), 1,601 UV values (0–16 by 0.01) and the three flood ids give the same band and the same words, Thai and English, in both apps.
@@ -45,7 +47,7 @@
 
 - says "น้ำอาจมาถึง" (water may arrive), never "เมื่อแม่น้ำขึ้น"; names no river, canal or city (the build checks);
 - borrows DDPM's actions, not its orders: DDPM's warning levels 1–5 are warnings DDPM issues, while ภัยรอบบ้าน's level is computed from data, so เสี่ยงสูง says to leave **when officials tell you to**;
-- rests on DDPM or RID (Royal Irrigation Department) advice, read through news reports quoting them (the agencies' sites refused automated readers on 1–2 Nov 2026); no province's manual was found online.
+- rests, since v1.14.2, on the agencies' own documents where they could be found (FloodWatch's review: a news report points to the agency's words, it isn't the source): RID's own news pages (28 and 29 Sep 2026: "ยกสิ่งของ เครื่องใช้ไฟฟ้า และทรัพย์สินมีค่าขึ้นที่สูง", "ติดตามประกาศจากทางราชการอย่างใกล้ชิด"), PEA's own page (29 May 2025, the power), DDPM's own phone alert (Cell Broadcast, 20 Aug 2026, kept as screenshots on the Internet Archive) and a municipality's plan quoting the national plan's five colours (Pak Kret, 2021). DDPM's own site answered every automated reader with a bot check (3 Nov 2026). Three "during" lines (the safe route, fast-flowing water, power lines) and the pets in a fourth have no agency original yet, so they show ⚠️; a unit test holds the rule, and the page marks news reports "(ข่าว)".
 
 UV follows WHO: protection from 3, extra protection from 8, one message for 8 and above. ภัยรอบบ้าน's split of 8–10 (เตรียมตัว) and 11+ (เสี่ยงสูง) is its own; the lines for both are the same, plus one MOPH line said in an 11+ warning.
 
@@ -96,11 +98,23 @@ Please:
 5. TMD's UV values are clear-sky forecasts: say "เมื่อฟ้าโปร่ง" where the value is shown.
 ```
 
+**Addendum for ภัยรอบบ้าน (v1.14.2, 3 Nov 2026):** no line's words changed and no id moved, so `check:advice` still matches; but the **sources** behind every flood level's lines now start with the agencies' own documents. If ภัยรอบบ้าน shows or checks sources, add these ids from `content/sources.json`: `rid-news-28880`, `rid-news-28896`, `rid-news-28953`, `rid-news-28597`, `ddpm-cbs-laplae-2569`, `pakkret-plan-2564` (and `pea-943`, whose note now quotes PEA's page). Paste:
+
+```
+From บ้านรอดไหม v1.14.2 (3 Nov 2026): kit.json flood.levels[].all[] words and ids unchanged. Their sources now
+lead with the agencies' own documents (FloodWatch asked that news reports only point to them):
+watch  all[0] + rid-news-28896, rid-news-28953, pakkret-plan-2564
+warn   all[0] + rid-news-28880, pea-943
+danger all[0] + rid-news-28597, ddpm-cbs-laplae-2569
+Every id is in content/sources.json (title, url, date, kind, note). flood.during is reordered (when to leave
+first); /flood#during is where it was. The source line on /flood marks news reports "(ข่าว)".
+```
+
 ## 5. What ภัยรอบบ้าน or FloodWatch should check (frank)
 
 - **ภัยรอบบ้าน wrote one advice line of its own** (the UV line above), against its own rule, and only from a peak of 6, while WHO's threshold is 3. **Fixed in its v0.11.2** (2 Nov 2026): it shows this app's line at every level.
 - **ภัยรอบบ้าน's FloodWatch link carries the point** (`flood.autobahn.bot/#p=<lat>,<lon>`, rounded to 0.01°, about 1 km), built from the point for every place, a GPS fix included (its `assess.js`, read 2 Nov 2026). Its own rule U17 keeps coordinates off the screen except for a searched place, because screenshots travel in family groups; a link copied from the page travels the same way. The fragment isn't sent when FloodWatch's page loads, but that page then asks its `/api/point` with it (FloodWatch strips the query from its logs). Fine if intended; worth saying in ภัยรอบบ้าน's privacy text, or linking FloodWatch by station instead. **Unchanged in v0.11.2** (2 Nov 2026): its owner's call.
-- **FloodWatch** links here (its start screen, `/learn`, and the two checklists under every point, since 14 Oct 2026), but not to `/flood` or to "while the water is rising" (`/flood#during`), and not to ภัยรอบบ้าน at all. Corrected on 2 Nov 2026: v1.14.0 said it had no link back. The hand-back is §6 ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
+- **FloodWatch** links here (its start screen, `/learn`, and the two checklists under every point, since 14 Oct 2026), but not to `/flood` or to "while the water is rising" (`/flood#during`), and not to ภัยรอบบ้าน at all. Corrected on 2 Nov 2026: v1.14.0 said it had no link back. The hand-back is §6, and FloodWatch's answer is under it ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other)).
 
 ## 6. Hand-back to FloodWatch (paste into a FloodWatch session)
 
@@ -125,3 +139,13 @@ Please consider:
 Keep ONWR's copy (data-site="onwr") without them, as now. No position needs to go with any of these links.
 ```
 
+**FloodWatch's answer (2 Nov 2026, forwarded by the owner), and what this app did:**
+
+| FloodWatch said | Here |
+|---|---|
+| All five pages answer, and `/flood#during` exists with the right heading | Held by the unit test (v1.14.2): the four pages and `#during` |
+| It isn't changing its links now: it is preparing its handover to ONWR, ONWR's copy carries none of these links, and its own site closes after the project, so don't count on its traffic long-term | §6's list stays as a record, not a to-do; the rivers' link can go with one line ([KNOWN_ISSUES #102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)) |
+| Cite DDPM's and RID's own documents with dates for the eight "during" lines; news reports can point to them but shouldn't be the source | v1.14.2: RID's own pages, PEA's own page, DDPM's own phone alert and a municipality's plan quoting the national plan now lead; news reports are marked "(ข่าว)". Three lines and the pets have no agency original yet and show ⚠️ (DDPM's site turned every automated reader away); [KNOWN_ISSUES #99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) |
+| Keep `#during` and the old addresses stable; redirect if anything moves | Held by tests; [GUIDELINES rule 101](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit) |
+| In "during", put when to leave first, and never imply the house will stay dry | v1.14.2: "ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที…" first, people before belongings; no line promises a dry house (a unit test reads them) |
+| The natural place for a ภัยรอบบ้าน link is FloodWatch's closing notice, if the owner posts one (about an hour with checks) | The owner's decision ([HANDOFF](../HANDOFF.md)) |

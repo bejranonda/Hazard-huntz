@@ -2609,6 +2609,7 @@ Built 1–2 Nov 2026 from the owner's brief ([ROADMAP N30](ROADMAP.md#n30-fit-wi
 
 - **`during` (eight lines):** move belongings, appliances and documents up at once; switch off the power where the water may reach, only while dry; take children, older people and anyone bedridden somewhere safe first; move the car and pets; keep away from power lines and poles; don't walk or drive through fast-flowing floodwater ⚠️; leave by a safe route, not the way the water flows; leave at once when officials say, 1784.
 - **Sources:** DDPM's five warning levels (InfoQuest 24 Sep 2024: ระดับ 3 เตรียมพร้อม … เตรียมพร้อมอพยพกลุ่มเปราะบาง, ระดับ 4 ให้อพยพ … ขนย้ายสิ่งของขึ้นที่สูง, ระดับ 5 ต้องอพยพ; The Standard 21 Jun 2025: ระดับ 1 ติดตามข่าวสาร, ระดับ 2 เฝ้าระวังอย่างใกล้ชิด); DDPM's alerts of 2025–2026 (Krungthep Turakij, Thansettakij); RID on dam releases (Sep 2026); `ddpm-mea`, `ddpm-south`, `ddpm-noru`, `mea-2022`, `pea-943`. All news reports quoting the agency ([#99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid)).
+- **Since v1.14.2** the agencies' own documents lead (§37.7); the news reports above stay as pointers, marked "(ข่าว)" on the page.
 - **The mapping is ours:** ติดตามไว้ ≈ DDPM 1–2, เตรียมตัว ≈ 3, เสี่ยงสูง ≈ 4's actions without its order. DWR's flags (green follow news, yellow prepare, red move when told) agree.
 - **Left out:** wading depths ("เหนือเข่า"), electric-shock distances, "red flag = evacuate" (3, 4 and 5-colour schemes differ), "แจ้งกำนัน ผู้ใหญ่บ้าน" (Bangkok has none; 1784 instead), RID's 1460 (an owner's choice), place names and heights.
 - **Build checks:** ids exactly `watch`, `warn`, `danger`; a line per level; every line `line()`-checked (sources exist, `verify`, numbers in a source: "1784"); no river, canal or city named.
@@ -2654,3 +2655,25 @@ After ภัยรอบบ้าน v0.11.2 took the hand-back, every page it l
 - **Source labels:** `srcDates()` gives each link of an agency its year, the month too when a year repeats ("ต.ค. 2026, ก.ค. 2026, ส.ค. 2026"), the day if that still repeats.
 - **The cross-check** (scratch script, ภัยรอบบ้าน's `actions.js` read as text, never run): its PM, heat and UV tables, applied by the rule its `actionFor()` states (one decimal for PM2.5 and heat, a whole number for UV, then the first row whose `upto` the value doesn't pass), against `airLevel()` and `kit.json`'s `lo` / `hi`: 12,017 PM2.5, 4,001 heat-index and 1,601 UV values and the three flood ids, the same band and the same Thai and English line in every case.
 - **FloodWatch** (v0.98.0, seen live): links here since 14 Oct 2026 (its start screen, `/learn`, the two checklists under every point), not to `/flood#during` and not to ภัยรอบบ้าน; its hand-back is [docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session).
+### 37.7 FloodWatch's review: the agencies' own documents, leaving first, FloodWatch closing (v1.14.2)
+
+FloodWatch answered the hand-back on 2 Nov 2026 (forwarded by the owner; [docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)). Two researchers looked for DDPM's and RID's own documents on 3 Nov 2026; the lead re-read every quote used in the saved pages and images.
+
+| Source id | Whose words | Date | Read how | What it says (used for) |
+|---|---|---|---|---|
+| `rid-news-28880` | RID, its own news page | 28 Sep 2026 | in a browser (rid.go.th builds pages by script; no bot check) | "ติดตามระดับน้ำและประกาศจากหน่วยงานราชการอย่างใกล้ชิด พร้อมยกสิ่งของ เครื่องใช้ไฟฟ้า และทรัพย์สินมีค่าขึ้นที่สูง" (belongings and appliances up; เตรียมตัว) |
+| `rid-news-28896`, `rid-news-28877`, `rid-news-28953` | RID | 28–30 Sep 2026 | as above | "ยกสิ่งของขึ้นที่สูง", "ติดตามประกาศจากทางราชการอย่างใกล้ชิด" (ติดตามไว้, belongings up) |
+| `rid-news-1310` | RID | 26 Sep 2024 | as above | "นำยานพาหนะไปจอดในที่ปลอดภัย" (the car) |
+| `rid-news-28597` | the government's instruction to agencies, on RID's site | 24 Aug 2026 | as above | move patients, older and bedridden people out first; move vehicles (people first). Not advice to the public; cited without naming anyone. |
+| `pea-943` (note added) | PEA, its own page | 29 May 2025 | directly | appliances up high; cut the downstairs power before the water; never touch a switch wet (the power) |
+| `ddpm-cbs-laplae-2569` | DDPM's own phone alert (Cell Broadcast) | 20 Aug 2026 | two screenshots on the Internet Archive (uploaded by a third party) | "ให้ยกของขึ้นที่สูง เคลื่อนย้ายรถ เก็บทรัพย์สินมีค่าและเอกสารสำคัญ ระวังไฟฟ้าดูด ดูแลกลุ่มเปราะบาง" |
+| `pakkret-plan-2564` | Pak Kret municipality's plan, quoting the national plan's five colours | 2021 | directly (page 55 rendered) | สีส้ม "เจ้าหน้าที่กำลังควบคุมสถานการณ์ ให้อพยพไปยังสถานที่ปลอดภัย"; สีแดง "ต้องอพยพ"; DDPM 1784 (leave when told) |
+
+- **Not found (⚠️):** the safe route, fast-flowing water, power lines, and pets. DDPM's own site answered with a Cloudflare challenge (also its provincial subdomains, prd.go.th, thaigov.go.th); the Internet Archive was unreachable from the research host. What a person can open is listed in [#99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid).
+- **The rule, held by a unit test:** every flood line cites an agency's or a government's own document (`kind` other than `secondary`), or is `partial` with a `verifyNote`. On the page, `kitSrcSpan()` groups an agency's own documents apart from news reports, and marks the latter " (ข่าว)" / ", news report" (`strings.seo.srcNews`).
+- **The order of "during":** when to leave → people first → the way out → fast water → power lines → belongings up → the power → the car and pets. A unit test reads that the first line says when to leave, that people come before belongings, and that no line promises a dry house.
+- **A discrepancy noted, not used:** RID's own page calls its 30 Sep 2026 Chao Phraya warning "ฉบับที่ 7" (a step to 2,300 m³/s from 21.00); news reports call it "ฉบับที่ 6" (2,500 from noon). No line here uses either.
+- **FloodWatch closing:** an empty `forecastAppUrl` now means "no rivers' link" (only a `[PLACEHOLDER]` warns). Tested on a copy: build clean, `npm test` 46, `npm run smoke` 212, no page links FloodWatch ([#102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)).
+- **Weight:** the start screen 304 KB compressed (302 before: the new sources' notes; [N18](ROADMAP.md#n18-keep-source-notes-out-of-what-the-game-loads) would take them out of what the game loads).
+- **For ภัยรอบบ้าน:** words and ids unchanged; the sources behind each level's lines changed (addendum in [docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+

@@ -351,6 +351,24 @@ test('the advice file ภัยรอบบ้าน reads keeps its shape and i
     for (const pre of ['', 'en/']) assert.ok(fs.existsSync(new URL(`../public/${pre}${slug}.html`, import.meta.url)), `${pre}${slug}.html`);
   }
   assert.match(fs.readFileSync(new URL('../public/flood.html', import.meta.url), 'utf8'), /id="during"/);
+  // While the water rises (FloodWatch's review, 2 Nov 2026): when to leave comes first, people before belongings,
+  // and no line promises the house stays dry.
+  const d = kit.flood.during;
+  assert.match(d[0].th, /เจ้าหน้าที่ให้อพยพ/, 'the first "during" line says when to leave');
+  const at = (re) => d.findIndex((x) => re.test(x.th));
+  assert.ok(at(/^พาเด็ก/) >= 0 && at(/^พาเด็ก/) < at(/^ยกของ/) && at(/^พาเด็ก/) < at(/^ย้ายรถ/), 'people before belongings');
+  for (const x of d) assert.ok(!/กันน้ำเข้า|น้ำไม่เข้า|บ้านไม่ท่วม|stays? dry|keep (the )?water out/i.test(`${x.th} ${x.en}`), x.th);
+  // A news report points to the agency's words; it isn't the source (FloodWatch's review). Every flood line cites an
+  // agency's or a government's own document, or shows ⚠️ (partial) and says why.
+  const src = load('sources').sources;
+  for (const x of [...kit.flood.levels.flatMap((l) => l.all), ...d]) {
+    assert.ok(x.sources.every((id) => src[id]), x.th);
+    assert.ok(x.sources.some((id) => src[id].kind !== 'secondary') || (x.verify === 'partial' && x.verifyNote), `${x.th}: an agency's own document, or ⚠️ with a note`);
+  }
+  // The addresses FloodWatch links (its start screen, footer and the two checklists under every point) stay put.
+  for (const page of ['index.html', 'learn.html', 'checklist/prepare.html', 'checklist/return.html']) {
+    assert.ok(fs.existsSync(new URL(`../public/${page}`, import.meta.url)), page);
+  }
 });
 
 test('home check: amounts follow the household, special items follow the answers', () => {

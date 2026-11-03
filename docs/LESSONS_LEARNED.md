@@ -722,6 +722,12 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *Do this:* check each factual claim in a brief against the source before building on it, say which held and which didn't, and act on what the source says; the principle of the ask usually survives a wrong example.
 - *Encoded in:* [APPROACH §37](APPROACH_AND_METHOD.md#37-fitting-the-family-check-the-brief-then-source-what-the-sister-app-needs-v1140) step 1.
 
+**B22. "Unreadable" needs a second look: a script page isn't a refusal.**
+
+- *What happened:* in v1.14.0 rid.go.th was written off as "an empty script page", so RID's advice was cited through news reports. FloodWatch's review asked for the agencies' own documents; opened in a browser, rid.go.th's own news pages (28–30 Sep 2026) had every word needed. DDPM's site really did refuse (a Cloudflare challenge), and that was recorded, not worked around.
+- *Do this:* before citing a news report for an agency, open the agency's page the way a reader does (a browser, not only `curl`), name the kind of failure if it still fails, and show the reader which sources are the agency's own and which are news.
+- *Encoded in:* [GUIDELINES rule 103](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [APPROACH §39](APPROACH_AND_METHOD.md#39-a-sister-apps-review-act-on-the-content-record-the-rest-v1142).
+
 **C27. An end date fixes a forgotten switch, not a false one.**
 
 - *What happened:* v1.6.0 gave the rain switch an end date (C16), so "ฝนจะมาอีกระลอก" would stop by itself on 30 Nov. It was still false somewhere every day it was on: one switch for a whole country can't know where rain is coming, and the season told everyone "the water has gone" for half the year.

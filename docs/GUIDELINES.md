@@ -370,6 +370,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **A long page runs in time order** (before → during → after) with a jump chip for each part, within the first-screen rule at 320 × 460.
     - **Lines of a level are one bullet each;** no two links in one source line have the same label.
     - **Walk the sister app's own links** (from its live code) in both languages at 320, 360 and 390 px after any change it or this app makes to them, and cross-check shared bands value by value ([APPROACH §38](APPROACH_AND_METHOD.md#38-arriving-from-the-sister-app-walk-in-through-its-links-v1141)).
+103. **Shared advice cites the agency's own words; a news report only points to them.** FloodWatch's review (F174): the flood lines ภัยรอบบ้าน shows rested on news reports only. Since v1.14.2:
+    - **Every flood line** (`kit.json → flood`) cites an agency's or a government's own document (`kind` other than `secondary`), or is `partial` with a `verifyNote` saying what is missing; a unit test holds it. Apply the same to any new line a sister app will show.
+    - **On the page,** news reports are marked " (ข่าว)" / ", news report" beside the agency's own documents.
+    - **"During" says when to leave first,** people before belongings, and never promises a dry house.
+    - **A partner that may close** is a link that can go with one line, tested before it is needed (`forecastAppUrl`, [#102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)).
 
 ## 9. Working with AI assistants
 

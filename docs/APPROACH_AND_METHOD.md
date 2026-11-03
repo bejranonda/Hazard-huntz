@@ -538,3 +538,13 @@ After ภัยรอบบ้าน v0.11.2 shipped the hand-back, the owner as
 4. **Cross-check the numbers value by value, not edge by edge.** The sister app's tables were read as text (its code is not run here) and applied by the rule its own function states, against this app's functions, over every 0.01 step of each range plus the half-way values at each edge.
 5. **Read the third app too.** FloodWatch's live page showed links here that the docs said didn't exist (L9 "half done" since 12 Oct); the record was corrected and its own hand-back written ([docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)).
 
+## 39. A sister app's review: act on the content, record the rest (v1.14.2)
+
+FloodWatch answered the hand-back with six points (2 Nov 2026). Each got one of three outcomes: done here, recorded as the owner's, or recorded as FloodWatch's.
+
+1. **Raise the source standard where it was asked, and say where it can't be met.** Two researchers in parallel (DDPM, RID), each told what counts (the agency's own page, a government channel, a plan) and what doesn't (a news report, except as a pointer), to save every page read and to name each failure (403 challenge, script page, unreachable archive). The lead re-read the quotes used in the saved files and images. Where nothing was found, the line shows ⚠️ with a note, rather than a weaker source dressed up.
+2. **Look again at "unreadable".** v1.14.0 wrote rid.go.th off as "an empty script page"; opened in a browser, its own news pages had the words needed. A page built by script is not a refusal.
+3. **Show the difference to the reader.** News reports are marked "(ข่าว)" beside the agency's own documents, so a reader can tell which is which.
+4. **Prepare for the partner leaving.** FloodWatch said its site will close: the one-line change (`forecastAppUrl` to `""`) was tested on a copy of the repository before it is needed, with the build, unit and smoke tests.
+5. **Tell the app that copies the lines.** The words ภัยรอบบ้าน copies didn't change, but their sources did: a short addendum for its session ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
+

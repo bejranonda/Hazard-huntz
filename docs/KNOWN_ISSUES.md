@@ -96,9 +96,10 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 96 | [The PDPA and the traffic-data rule apply once a server keeps anything about a person](#96-the-pdpa-and-the-traffic-data-rule-apply-once-a-server-keeps-anything-about-a-person) | Owner (a Thai lawyer, before any per-person data) | **High if ignored** (fines of 1–5 M baht a breach) |
 | 97 | [Web Push can't reach readers inside LINE or Facebook](#97-web-push-cant-reach-readers-inside-line-or-facebook) | Platform limit | Medium (decides whether push is worth building) |
 | 98 | [The gecko's lines and the ภัยรอบบ้าน link are drafts in the owner's name](#98-the-geckos-lines-and-the-ภัยรอบบ้าน-link-are-drafts-in-the-owners-name) | Owner (the words) | Low |
-| 99 | [The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) | Owner (a Thai read; DDPM's own page) | **Medium (ภัยรอบบ้าน shows them)** |
+| 99 | [The flood lines for ภัยรอบบ้าน rest on news reports quoting DDPM and RID](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid) | Owner (a Thai read; DDPM's own page for four ⚠️ parts) | **Medium (ภัยรอบบ้าน shows them)**; since v1.14.2 most lines lead with the agencies' own documents |
 | 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (a Thai read) | Medium |
 | 101 | [The family's colours differ](#101-the-familys-colours-differ) | Owner (one decision) | Low |
+| 102 | [FloodWatch closes after its handover; the rivers' link goes with it](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) | Owner (one line, when it closes) | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -318,7 +319,10 @@ None says "the rainy season" for the whole country. A unit test fails if a gecko
 
 - **DDPM's levels are not ภัยรอบบ้าน's.** DDPM's 1–5 warning levels (InfoQuest, 24 Sep 2024; The Standard, 21 Jun 2025) are warnings DDPM issues; ภัยรอบบ้าน's level is computed from data. The lines borrow DDPM's actions and never its orders: เสี่ยงสูง says to leave "when officials tell you to".
 - **A colour is not the same everywhere:** DWR's flags have three colours, Rangsit's four, DDPM's levels five. No line says "red flag = evacuate".
-- **What would close it:** a Thai reader (ideally from DDPM) reads the eleven lines against DDPM's own page; then `verify` can stay or change ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
+- **Since v1.14.2 (FloodWatch's review: a news report points to the agency's words, it isn't the source):** the lines lead with the agencies' own documents where two researchers could find them on 3 Nov 2026: RID's own news pages (rid.go.th, 28–30 Sep 2026 and 26 Sep 2024: belongings and appliances up high, follow official notices, vehicles somewhere safe; read in a browser, since the site builds its pages by script), PEA's own page (29 May 2025: appliances up high, cut the downstairs power before the water, never touch a switch wet), DDPM's own phone alert (Cell Broadcast, 20 Aug 2026: "ให้ยกของขึ้นที่สูง เคลื่อนย้ายรถ เก็บทรัพย์สินมีค่าและเอกสารสำคัญ ระวังไฟฟ้าดูด ดูแลกลุ่มเปราะบาง", kept as two screenshots on the Internet Archive), the government's instruction to agencies published by RID (24 Aug 2026: move patients, older and bedridden people out first) and Pak Kret municipality's plan quoting the national plan's five colours (2021). The page marks news reports "(ข่าว)", and a unit test holds the rule.
+- **Still without an agency original, so ⚠️:** "ไปทางที่ปลอดภัย ไม่ไปตามทางน้ำไหล", "อย่าเดินลุยหรือขับรถผ่านน้ำท่วมที่ไหลเชี่ยว", "อยู่ห่างสายไฟและเสาไฟฟ้า", and the pets in "ย้ายรถและสัตว์เลี้ยง…". DDPM's own site (disaster.go.th and its provincial subdomains) answered every automated reader with a Cloudflare challenge; prd.go.th and thaigov.go.th the same; the Internet Archive couldn't be reached from the research host. Nothing was bypassed.
+- **For a person in Thailand (the quickest close):** open the national disaster plan 2564–2570 on disaster.go.th (the five levels), the Internet Archive's copy of disaster.go.th of 27 Sep 2026 (`/web/20260927100531/`), PRD's T-Alert page (prd.go.th …/id/39/iid/425692, archived 6 Aug 2026), PRD's August 2026 pages for Nan (iid 533309, 533361; DDPM's phone-alert advice), and PRD's iid 534015 ("หลีกเลี่ยงการเดินผ่านกระแสน้ำไหลเชี่ยว", reported) and 432703 (distance from poles, reported). A PRD page is a government channel here, so any of these that says a ⚠️ line can lift it.
+- **What would close it:** the four ⚠️ parts get an agency or government original (above), and a Thai reader (ideally from DDPM) reads the eleven lines; then `verify` can stay or change ([ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)).
 
 ### 100. The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours
 
@@ -337,6 +341,18 @@ None says "the rainy season" for the whole country. A unit test fails if a gecko
 - **Colours:** the two apps draw levels in different palettes; one palette for the family is the owner's open decision, so v1.14.0 changes no colour (the ภัยรอบบ้าน link uses the hub's existing teal).
 - **Levels:** ภัยรอบบ้าน's four words (ยังไม่น่าห่วง · ติดตามไว้ · เตรียมตัว · เสี่ยงสูง) label `kit.json → flood.levels` as they are; this app doesn't rename them, nor the agencies' band words.
 - **What would close it:** the owner picks a palette for the family ([docs/10](10-family.md)).
+
+
+### 102. FloodWatch closes after its handover; the rivers' link goes with it
+
+**Status:** Owner (one line, when it closes) · **Severity:** Low
+
+FloodWatch said on 2 Nov 2026 that it is preparing its handover to ONWR, that ONWR's copy carries none of the family's links, and that its own site closes after the project. This app links it as the rivers' link (`config.json → forecastAppUrl`): the start screen in the flood months, the flood guides, the result, the help sheet and `/flood`, always after ภัยรอบบ้าน.
+
+- **When it closes:** set `forecastAppUrl` to `""` and push. Tested on a copy in v1.14.2: the build gives no warning (only a `[PLACEHOLDER]` warns now), `npm test` passes, the smoke test passes (its guide check expects no FloodWatch button then), and no generated page links `flood.autobahn.bot`. ภัยรอบบ้าน's link stays everywhere.
+- **If ONWR's copy is public and you want it instead:** set its address, and change the label `forecastLong` ("…(FloodWatch)") in both languages.
+- **Traffic:** referrals from FloodWatch won't last; don't plan on them ([docs/05](05-metrics.md)).
+- **ภัยรอบบ้าน** also links FloodWatch for river detail; that is its own change.
 
 ---
 
@@ -1085,6 +1101,17 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.14.2 (3 Nov 2026)
+
+From FloodWatch's review of the hand-back (2 Nov 2026), forwarded by the owner ([docs/10 §6](10-family.md#6-hand-back-to-floodwatch-paste-into-a-floodwatch-session)).
+
+| # | Problem | Fix |
+|---|---|---|
+| F174 | **The flood lines ภัยรอบบ้าน shows, and the eight "during" lines, rested on news reports only** (FloodWatch: "news reports can point to them but shouldn't be the source") | The agencies' own documents lead where found (RID's pages, PEA's page, DDPM's phone alert, a municipality's plan quoting the national plan); news reports are marked "(ข่าว)" on the page; the four parts with no original show ⚠️ with a note; a unit test holds it ([#99](#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid)) |
+| F175 | **"During" led with belongings; when to leave came last** | When to leave first ("ถ้าเจ้าหน้าที่ให้อพยพ ออกทันที…"), then people, the way out, then belongings; no line promises a dry house (a unit test reads the order and the words) |
+| F176 | **The app wasn't ready for FloodWatch to close:** an empty `forecastAppUrl` drew a "placeholder" warning, and the smoke test required a FloodWatch button | Empty now means "no rivers' link": no warning, the guide check expects no button; a copy with it empty passed the build, 46 unit and 212 smoke checks, and linked FloodWatch nowhere ([#102](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)) |
+| F177 | **The addresses FloodWatch links** (`/`, `/learn`, `/checklist/prepare`, `/checklist/return`) **weren't held by a test** | Added to the unit test beside `/flood#during` |
 
 ### In v1.14.1 (2 Nov 2026)
 

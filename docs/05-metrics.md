@@ -309,7 +309,7 @@ No new event. Heat today, water, the tank, the emergency card, "I'm safe" and th
 
 - **Web Analytics** (page views) can be split by path: addresses starting with `/en/` are English, the rest are Thai. This works today.
 - **Game events** carry the language as `blob4` (`th` or `en`) from 13 Oct 2026 on; earlier rows have no `blob4`. Example: `SELECT blob4 AS lang, SUM(_sample_interval) AS n FROM baanrodmai_events WHERE blob1 = 'round_end' GROUP BY lang`. This query has not been run on real data yet ([KNOWN_ISSUES #12](KNOWN_ISSUES.md#12-analytics-sql-and-the-fail-open-default-are-unchecked-on-a-live-account)).
-- **Referrals** from `flood.autobahn.bot` (BKK FloodWatch, which has linked here since 14 Oct 2026) and from `risk.autobahn.bot` (ภัยรอบบ้าน) should appear in Web Analytics ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other), [docs/10](10-family.md)). Both open this app in a new tab; ภัยรอบบ้าน's links carry no place.
+- **Referrals** from `flood.autobahn.bot` (BKK FloodWatch, which has linked here since 14 Oct 2026, until it closes after its handover to ONWR: don't plan on them) and from `risk.autobahn.bot` (ภัยรอบบ้าน) should appear in Web Analytics ([ROADMAP L9](ROADMAP.md#l9-link-floodwatch-and-the-game-to-each-other), [docs/10](10-family.md)). Both open this app in a new tab; ภัยรอบบ้าน's links carry no place.
 
 ## How far a challenge travels (v1.3.0)
 

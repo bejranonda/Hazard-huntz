@@ -1010,7 +1010,7 @@
   },
   "seo": {
     "_readme": "ข้อความสำหรับหน้าสรุปความรู้ /learn, /llms.txt และข้อมูลโครงสร้าง (JSON-LD) ที่ tools/build.mjs สร้างให้ ไม่แสดงในเกม {n} = จำนวนข้อ updated = วันที่แก้เนื้อหาล่าสุด (YYYY-MM-DD) แก้เมื่อแก้ items.json",
-    "updated": "2026-11-02",
+    "updated": "2026-11-03",
     "th": {
       "learnTitle": "เตรียมบ้านให้รอดทุกภัย: {n} บทเรียน และต้องทำอะไรเมื่อเกิดภัย · บ้านรอดไหม?",
       "learnDesc": "สรุปทุกบทเรียนจากเกมบ้านรอดไหม? และคู่มือต้องทำอะไรเมื่อน้ำท่วม น้ำป่า พายุ แผ่นดินไหว ไฟไหม้ ไฟดับ อากาศร้อน และฝุ่น อ้างอิงคำแนะนำจากหน่วยงาน พร้อมที่มาและเบอร์ช่วยเหลือ",
@@ -1026,6 +1026,7 @@
       "why": "ทำไม",
       "sources": "ที่มา",
       "partialNote": "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน",
+      "srcNews": " (ข่าว)",
       "checklists": "เช็กลิสต์ส่งต่อ",
       "helplines": "เบอร์ช่วยเหลือ",
       "updated": "ปรับปรุงล่าสุด",
@@ -1198,6 +1199,7 @@
       "why": "Why",
       "sources": "Sources",
       "partialNote": "being reviewed with the agency",
+      "srcNews": ", news report",
       "checklists": "Checklists to share",
       "helplines": "Thai emergency helplines",
       "updated": "Last updated",
@@ -1211,7 +1213,7 @@
         "กปภ.": "Provincial Waterworks Authority (PWA)",
         "กฟน.": "Metropolitan Electricity Authority (MEA)",
         "กฟภ.": "Provincial Electricity Authority (PEA)",
-        "กรมการขนส่งทางบก": "Department of Land Transport (DLT)", "กรมชลประทาน": "Royal Irrigation Department (RID)",
+        "กรมการขนส่งทางบก": "Department of Land Transport (DLT)", "กรมชลประทาน": "Royal Irrigation Department (RID)", "เทศบาลนครปากเกร็ด": "Pak Kret City Municipality",
         "กรมควบคุมโรค": "Department of Disease Control (DDC)",
         "กรมควบคุมมลพิษ": "Pollution Control Department (PCD)",
         "กรมประชาสัมพันธ์": "Government Public Relations Department (PRD)",

@@ -62,7 +62,8 @@
       "title": "PEA แนะนำการใช้ไฟฟ้า ในกรณีที่มีน้ำท่วมหรือน้ำท่วมขัง",
       "url": "https://www.pea.co.th/news/corporate-news/943",
       "date": "2025-05-29",
-      "kind": "official"
+      "kind": "official",
+      "note": "PEA's own page, dated 29 พฤษภาคม 2568; read on 3 Nov 2026: \"ก่อนน้ำท่วมเข้าภายในบ้านหรือบริเวณบ้าน ให้รีบขนย้ายอุปกรณ์ไฟฟ้าและสิ่งของจำเป็นไว้ที่สูงหรือที่ปลอดภัยน้ำท่วมไม่ถึง\"; \"ขณะตัวเปียกหรือยืนแช่น้ำห้ามเปิดหรือปิดสวิตช์ไฟ\"; \"หากน้ำกำลังจะท่วมชั้นล่าง ให้ปลดสวิตช์ตัดกระแสไฟฟ้าเฉพาะชั้นล่าง\"; for a one-storey house \"ให้งดใช้ไฟฟ้าโดยเด็ดขาด\"."
     },
     "pea-1372": {
       "agency": "กฟภ.",
@@ -1152,6 +1153,70 @@
       "date": "2026-09-28",
       "kind": "secondary",
       "note": "Krungthep Turakij quoting RID on a dam release, read on 2 Nov 2026 (Bangkok): 'ประชาชนที่อาศัยริมแม่น้ำและพื้นที่ลุ่มต่ำ ขอให้ยกของขึ้นที่สูง … และติดตามการประกาศแจ้งเตือนสถานการณ์น้ำอย่างใกล้ชิด', asked even though the water was expected to stay within the banks, 'เพื่อให้ผู้ที่อาศัยอยู่ติดริมน้ำได้เตรียมความพร้อมล่วงหน้า'. RID's regional office 13 on another release (Thansettakij, 30 Sep 2026, https://www.thansettakij.com/general-news/670276): 'ติดตามสถานการณ์น้ำอย่างใกล้ชิด พร้อมเตรียมยกสิ่งของขึ้นที่สูง เคลื่อนย้ายยานพาหนะ สัตว์เลี้ยง และอุปกรณ์การเกษตรไปยังพื้นที่ปลอดภัย'."
+    },
+    "ddpm-cbs-laplae-2569": {
+      "agency": "ปภ.",
+      "title": "ปภ. ข้อความแจ้งเตือนทางโทรศัพท์ (Cell Broadcast) 20 ส.ค. 2569 06:42 น., อ.ลับแล: ให้ยกของขึ้นที่สูง เคลื่อนย้ายรถ เก็บทรัพย์สินมีค่าและเอกสารสำคัญ ระวังไฟฟ้าดูด ดูแลกลุ่มเปราะบาง",
+      "url": "https://archive.org/details/cell_broadcast_service_text_warning_Laplae_2026-08-20",
+      "date": "2026-08-20",
+      "kind": "government",
+      "note": "DDPM's own alert text (it ends \"DDPM\"), as two phone screenshots that a third party uploaded to the Internet Archive (\"from a LINE group\"). Read on 3 Nov 2026: \"ปภ.เตือนฝนตกหนัก 20-08-2026 06:42:50 ในพื้นที่ อ.ลับแล … ให้ยกของขึ้นที่สูง เคลื่อนย้ายรถ เก็บทรัพย์สินมีค่าและเอกสารสำคัญ ระวังไฟฟ้าดูด ดูแลกลุ่มเปราะบาง DDPM\". DDPM's own site (disaster.go.th) answered every automated reader with a bot check, so this is the nearest copy of DDPM's own words found."
+    },
+    "pakkret-plan-2564": {
+      "agency": "เทศบาลนครปากเกร็ด",
+      "title": "แผนปฏิบัติการในการป้องกันและบรรเทาสาธารณภัยของเทศบาลนครปากเกร็ด พ.ศ. 2564–2570 หน้า 55: สีของสถานการณ์ 5 ระดับ ตามแผนป้องกันและบรรเทาสาธารณภัยแห่งชาติ; สีส้ม เจ้าหน้าที่ให้อพยพไปยังสถานที่ปลอดภัย สีแดง ต้องอพยพ; ปภ. 1784",
+      "url": "https://pakkretcity.go.th/images/pdf/65/plan-fire64-70.pdf",
+      "date": "2021-11",
+      "kind": "government",
+      "note": "A local government's plan (data as of November 2021), which says it follows the national disaster plan for its five colours. Page 55, read on 3 Nov 2026 from the rendered page: สีแดง \"สถานการณ์อยู่ในภาวะอันตรายสูงสุด ให้อาศัยอยู่ในสถานที่ปลอดภัยหรือต้องอพยพไปยังสถานที่ปลอดภัย และปฏิบัติตามข้อสั่งการ\"; สีส้ม \"สถานการณ์อยู่ในภาวะเสี่ยงอันตรายสูง เจ้าหน้าที่กำลังควบคุมสถานการณ์ ให้อพยพไปยังสถานที่ปลอดภัย และปฏิบัติตามแนวทางที่กำหนด\"; สีเหลือง \"…ให้จัดเตรียมความพร้อมรับสถานการณ์ และปฏิบัติตามคำแนะนำ\"; สีน้ำเงิน \"ภาวะเฝ้าระวัง ให้ติดตามข้อมูลข่าวสารอย่างใกล้ชิด\"; สีเขียว \"ภาวะปกติ ให้ติดตามข้อมูลข่าวสารเป็นประจำ\". Its phone list (ภาคผนวก) gives DDPM 1784. Not DDPM's own document; the national plan itself wasn't read."
+    },
+    "rid-news-28880": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน (ข่าวเด่นชลประทาน, ระยอง): ติดตามระดับน้ำและประกาศจากหน่วยงานราชการอย่างใกล้ชิด พร้อมยกสิ่งของ เครื่องใช้ไฟฟ้า และทรัพย์สินมีค่าขึ้นที่สูง",
+      "url": "https://www.rid.go.th/th/rid_news/28880",
+      "date": "2026-09-28",
+      "kind": "official",
+      "note": "RID's own news page, dated 28 กันยายน 2569 on the page; read on 3 Nov 2026 in a browser (the site loads its articles by script; no bot check)."
+    },
+    "rid-news-28896": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน แจ้งเตือนระดับน้ำท้ายเขื่อนพระราม 6: เฝ้าระวังระดับน้ำและยกสิ่งของขึ้นที่สูง … ติดตามประกาศจากทางราชการอย่างใกล้ชิด",
+      "url": "https://www.rid.go.th/th/rid_news/28896",
+      "date": "2026-09-29",
+      "kind": "official",
+      "note": "RID's own news page, dated 29 กันยายน 2569; read on 3 Nov 2026: \"จึงขอให้ประชาชนในพื้นที่ลุ่มต่ำและชุมชนริมแม่น้ำป่าสัก … เฝ้าระวังระดับน้ำและยกสิ่งของขึ้นที่สูง ตลอดจนเตรียมพร้อมรับสถานการณ์ที่อาจเปลี่ยนแปลง ทั้งนี้ ขอให้ประชาชนติดตามประกาศจากทางราชการอย่างใกล้ชิด\"."
+    },
+    "rid-news-28877": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน แจ้งเตือน 5 จังหวัดท้ายเขื่อนแม่กลอง: ขอให้ยกสิ่งของและทรัพย์สินขึ้นไว้ในที่สูง เตรียมพร้อมรับสถานการณ์ และติดตามข่าวสารจากหน่วยงานราชการอย่างใกล้ชิด",
+      "url": "https://www.rid.go.th/th/rid_news/28877",
+      "date": "2026-09-28",
+      "kind": "official",
+      "note": "RID's own news page, dated 28 กันยายน 2569; read on 3 Nov 2026."
+    },
+    "rid-news-28953": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน บูรณาการรับมือน้ำ เฝ้าระวังพื้นที่เสี่ยงตลอด 24 ชั่วโมง: ติดตามประกาศจากทางราชการอย่างใกล้ชิด พร้อมยกสิ่งของขึ้นที่สูงและเตรียมพร้อมรับสถานการณ์",
+      "url": "https://www.rid.go.th/th/rid_news/28953",
+      "date": "2026-09-30",
+      "kind": "official",
+      "note": "RID's own news page, dated 30 กันยายน 2569; read on 3 Nov 2026."
+    },
+    "rid-news-1310": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน แจ้งเตือนพื้นที่ท้ายเขื่อนแม่งัด: เตรียมยกของขึ้นที่สูงและนำยานพาหนะไปจอดในที่ปลอดภัย พร้อมกับเฝ้าระวังสถานการณ์น้ำและติดตามการแจ้งเตือนจากหน่วยงานราชการอย่างใกล้ชิด",
+      "url": "https://www.rid.go.th/th/rid_news/1310",
+      "date": "2024-09-26",
+      "kind": "official",
+      "note": "RID's own news page, dated 26 กันยายน 2567; read on 3 Nov 2026. The only RID text found that tells the public where to take vehicles."
+    },
+    "rid-news-28597": {
+      "agency": "กรมชลประทาน",
+      "title": "กรมชลประทาน (ข่าวเด่นชลประทาน): ข้อสั่งการของรัฐบาลถึงทุกหน่วยงาน (น่าน, 23 ส.ค. 2569): ยกสิ่งของ เคลื่อนย้ายยานพาหนะ รวมถึงให้ความสำคัญกับการเคลื่อนย้ายผู้ป่วย ผู้สูงอายุ ผู้ป่วยติดเตียง และกลุ่มเปราะบางออกจากพื้นที่เสี่ยงโดยเร็ว",
+      "url": "https://www.rid.go.th/th/rid_news/28597",
+      "date": "2026-08-24",
+      "kind": "official",
+      "note": "Published on RID's own site (24 สิงหาคม 2569) as the government's instruction to agencies after a meeting on 23 Aug 2026: to warn people early so they can move belongings and vehicles, and to put moving patients, older people, the bedridden and other vulnerable people out of risk areas first. An instruction to officials, not advice addressed to the public. Read on 3 Nov 2026."
     },
     "who-uvi-guide-2002": {
       "agency": "องค์การอนามัยโลก (WHO)",

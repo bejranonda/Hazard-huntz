@@ -1443,7 +1443,9 @@ try {
         const r = document.querySelector('#cl-risk'); const f = document.querySelector('#cl-forecast');
         return { risk: r.getAttribute('href'), flood: f?.getAttribute('href') || null, order: f ? !!(r.compareDocumentPosition(f) & Node.DOCUMENT_POSITION_FOLLOWING) : null, h: r.getBoundingClientRect().height };
       });
-      check(`${lang}: a guide links ภัยรอบบ้าน first, then FloodWatch for the rivers`, g.risk === want && g.flood === CFG.forecastAppUrl && g.order === true && g.h >= 44, JSON.stringify(g));
+      // with no forecastAppUrl (FloodWatch closed) the rivers' button is simply gone
+      check(`${lang}: a guide links ภัยรอบบ้าน first, then FloodWatch for the rivers (if it is still set)`, g.risk === want && g.h >= 44
+        && (CFG.forecastAppUrl ? g.flood === CFG.forecastAppUrl && g.order === true : g.flood === null), JSON.stringify(g));
       const before = sent.length;
       const [popup] = await Promise.all([page.waitForEvent('popup', { timeout: 5000 }).catch(() => null), page.click('#cl-risk')]);
       await page.waitForTimeout(300);

@@ -932,6 +932,7 @@ try {
     await page.fill('#air-v', '๘๐');
     const thaiDigits = (await page.textContent('#air-out')).trim();
     check('dust: "abc" says type a number; "๘๐" (Thai digits) gives the level for 80 (v1.15.2)', notNum === KIT.ui.th.airNotNumber && thaiDigits.includes(A.levels[A.levels.length - 1].label.th.split(' · ')[0]), `${notNum} | ${thaiDigits.slice(0, 40)}`);
+    await page.click('.air-units .kit-flag:has(input[value="aqi"])'); // back to AQI, which the next checks expect kept
     const small = await smallControls(page);
     check('dust controls >= 44 px', !small.length, small.join(', '));
     await page.click('[data-t="copy"]');

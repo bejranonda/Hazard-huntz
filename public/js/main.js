@@ -596,7 +596,7 @@ function openChoices(p) {
     </div>
     <div class="choice-intro">
       <p class="sub"><b>${esc(t('whatToDo'))}</b></p>
-      <span class="paused-pill" aria-label="${esc(t('timePausedTag'))}">${esc(t('timePausedTag'))}</span>
+      <span class="paused-pill" role="note" aria-label="${esc(t('timePausedTag'))}"><span class="pp-full" aria-hidden="true">${esc(t('timePausedTag'))}</span><span class="pp-short" aria-hidden="true">${esc(t('timePausedShort'))}</span></span>
     </div>
     <div class="choices">
       ${choices.map((c, i) => `

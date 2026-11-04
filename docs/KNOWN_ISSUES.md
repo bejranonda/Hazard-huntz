@@ -68,10 +68,10 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 64 | [The alert must be cleared or renewed by hand](#64-the-alert-must-be-cleared-or-renewed-by-hand) | By design | — |
 | 65 | [Loose ends from the v1.9.0 sweep](#65-loose-ends-from-the-v190-sweep) | Fixed in v1.9.0 | Low |
 | 66 | [The right answer was usually the longest choice](#66-the-right-answer-was-usually-the-longest-choice) | Fixed in v1.9.2 (F83, F90); Owner: the Thai read of the new wrong answers | Low |
-| 68 | [Link previews are small at chat size](#68-link-previews-are-small-at-chat-size) | Open (partly fixed in v1.9.2, F87) | Low |
+| 68 | [Link previews are small at chat size](#68-link-previews-are-small-at-chat-size) | Fixed in v1.16.0 ([F214](#in-v1160-4-nov-2026)); the `/?open=…` previews stay by design (#52) | — |
 | 69 | [Kept Thai words are a hand-made list](#69-kept-thai-words-are-a-hand-made-list) | By design | Low |
 | 71 | [On a tablet the app is a narrow column](#71-on-a-tablet-the-app-is-a-narrow-column) | By design (v1.9.2) | — |
-| 73 | [English choice sheets still scroll on the smallest phones](#73-english-choice-sheets-still-scroll-on-the-smallest-phones) | Open | Low |
+| 73 | [English choice sheets still scroll on the smallest phones](#73-english-choice-sheets-still-scroll-on-the-smallest-phones) | Fixed in v1.16.0 ([F211](#in-v1160-4-nov-2026)) | — |
 | 74 | [The fridge hours rest on US guidance only](#74-the-fridge-hours-rest-on-us-guidance-only) | Owner (since v1.11.0 also the food lists, #79) | **Medium (review before posting `/fridge` widely)** |
 | 75 | [The dust colours are for the 24-hour average; apps often show hourly readings](#75-the-dust-colours-are-for-the-24-hour-average-apps-often-show-hourly-readings) | Owner (the note is by design) | Low |
 | 76 | [The PCD and the DOH advise differently at green, yellow and red](#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red) | By design (v1.10.0); Owner: the dust guide and dust today at orange (v1.11.0) | Low |
@@ -79,7 +79,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 78 | [A heat-index calculator is not built](#78-a-heat-index-calculator-is-not-built) | By design since v1.13.0 (heat today takes the announced level); a calculator still needs the owner | — |
 | 79 | [The fridge's food lists rest on US charts](#79-the-fridges-food-lists-rest-on-us-charts) | Owner | **Medium (review before posting `/fridge` widely)** |
 | 80 | [Insulin above 30 °C has no number](#80-insulin-above-30-c-has-no-number) | By design (v1.11.0); Owner: a pharmacist's read | Low |
-| 81 | [Larger text (ก+) covers the start screen and the sheets only, and sizes ignore the phone's text setting](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting) | Open | Low |
+| 81 | [Larger text (ก+) covers the start screen and the sheets only, and sizes ignore the phone's text setting](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting) | Fixed in v1.16.0 ([F212, F213](#in-v1160-4-nov-2026)); real phones [unverified] (#3) | — |
 | 82 | ["power: Bangkok area" stands for MEA's three provinces](#82-power-bangkok-area-stands-for-meas-three-provinces) | Owner (the English read) | Low |
 | 83 | [Leftovers of visitor audit 3](#83-leftovers-of-visitor-audit-3) | Open (AI-ready, two owner decisions) | Low |
 | 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner) | — |
@@ -130,6 +130,7 @@ What a headless test **cannot** show:
 - since v1.10.0 and v1.10.1: whether the fridge's count goes on after LINE is closed, now started by tapping a time ("3 ชม."), with the "⏱️ ไฟดับมาแล้ว …" line and "💡 ไฟมาแล้ว" (F93); whether an older relative reads the cards and the dust tool's colour-first screen without help; and whether the number box behind "รู้ตัวเลข?" opens and shows the number keyboard inside LINE (rows 64–65)
 - since v1.11.0 (rows 67–75): whether the fridge's food lists read clearly at 3 h and at 6 h on a real screen, and whether "💡 ไฟมาแล้ว" keeps the answer after LINE is closed; whether the "🕘 จำได้ว่าไฟดับตอนกี่โมง?" time box opens the phone's time picker inside LINE; the medicine and breast-milk ticks; whether "ก+" enlarges the start screen and the sheets inside LINE and on an iPhone (CSS `zoom`, [#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)); whether "📋 คัดลอกแผนเป็นข้อความ" and "🛒 คัดลอกรายการที่ยังขาด" put the text on the clipboard inside LINE; the named numbers on a guide and on its picture in a chat; dust today's at-risk lines with no ticks; and how long a Thai hazard page now is on a phone. The walk ran LINE's user agent in headless Chromium, which can't show any of these
 
+- **Since v1.16.0:** whether the phone's own text size reaches the page: Chrome's text scaling and Samsung Internet's text size on Android, LINE's in-app browser (its text zoom), and on iOS only Safari's "aA" page zoom (row 95); the app's sizes are in `rem` now, so a browser that uses its default size applies it ([#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)).
 - **First real-phone screenshots (3–4 Nov 2026):** the owner sent the start screen of v1.15.0 and of v1.15.1 and the home check, from an Android phone in Chrome (not inside LINE). They read as designed, apart from "บ้านเราพร้อม 0%" after a first look (F202) and one line break (F205), both fixed. This is not the matrix: no iPhone, no in-app browser, no sharing yet.
 
 **To do:** run the 75-row matrix in [06-test-checklist.md](06-test-checklist.md) on at least one cheap Android phone and one iPhone, inside LINE, Facebook and TikTok. Record the results in that file.
@@ -856,12 +857,13 @@ The v1.9.1 audit found the right answer strictly the longest choice in most sets
 
 ### 68. Link previews are small at chat size
 
-**Status:** Open (partly fixed in v1.9.2) · **Severity:** Low
+**Status:** Fixed in v1.16.0 ([F214](#in-v1160-4-nov-2026)); the `/?open=…` previews stay by design ([#52](#52-a-mode-link-previews-as-the-main-game)) · **Severity:** —
 
 At the 260 px a chat shows them, the 1200 × 630 previews' helpline line is about 6 px. `/?open=kit`, `/?open=plan` and `/?open=guide` still preview as the start screen ([#52](#52-a-mode-link-previews-as-the-main-game)): share `/kit`, `/plan` or a `/checklist/<id>`. Found in the v1.9.1 audit.
 
 - **Fixed in v1.9.2:** the four guides with no game drew the gecko with nothing on, so their pictures looked alike in a chat. Now the gecko wears a hard hat (landslide, earthquake), the rain hood (storm) or a sun hat (heat) ([F87](#in-v192-19-oct-2026), [KNOWLEDGE §31.4](KNOWLEDGE.md#314-a-prop-for-every-guide-picture)).
-- **Still open:** the helpline line, and the `/?open=…` previews (by design, [#52](#52-a-mode-link-previews-as-the-main-game)). Larger helplines would need a new preview layout and a re-render of every preview image, in both languages; check them at 260 px before and after.
+- **Fixed in v1.16.0 ([F214](#in-v1160-4-nov-2026)):** larger numbers wouldn't have been readable either (the line is about 8 px at 260 px however it is laid out), and they were the only phone numbers in the app shown without whom they reach. The guides' previews now say "ฟรี · ทุกข้อบอกที่มา" / "Free · every line names its source" (the two languages said different things before), and the guides' page description no longer lists six bare numbers; the numbers stay on the pages and the 1080 × 1920 pictures, with their names. A unit test fails if a preview string shows a helpline number.
+- **By design:** the `/?open=…` previews ([#52](#52-a-mode-link-previews-as-the-main-game)).
 
 ### 69. Kept Thai words are a hand-made list
 
@@ -885,7 +887,7 @@ At 768 × 1024 the start screen, the sheets and the round are a 480 px column wi
 
 ### 73. English choice sheets still scroll on the smallest phones
 
-**Status:** Open · **Severity:** Low
+**Status:** Fixed in v1.16.0 ([F211](#in-v1160-4-nov-2026)) · **Severity:** —
 
 Since v1.9.2 a choice's three answers fit without scrolling on phones up to 640 px tall in Thai ([F84](#in-v192-19-oct-2026)). English is longer: at 320 × 568, 20 of 82 English choice sheets still scroll, by up to 78 px; the worst is `p-meds`, whose right answer is 82 characters. On the live v1.9.1 it was 42 of 82, by up to 78 px. At 360 × 640 and 390 × 844 no sheet scrolls in either language. Measured with a scratch probe that filled the real sheet with every item's labels ([KNOWLEDGE §31.7](KNOWLEDGE.md#317-choice-sheets-on-short-screens)).
 
@@ -972,7 +974,7 @@ The insulin card (v1.11.0, [F96](#in-v1110-20-oct-2026)) says "✅ ยังใ�
 
 ### 81. Larger text (ก+) covers the start screen and the sheets only, and sizes ignore the phone's text setting
 
-**Status:** Open · **Severity:** Low
+**Status:** Fixed in v1.16.0 ([F212, F213](#in-v1160-4-nov-2026)): text sizes in `rem`, breakpoints in `em`; whether each phone's own setting reaches the page is **[unverified]** ([#3](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers), row 95) · **Severity:** —
 
 "ก+" ("A+" in English), next to EN and 🔊 since v1.11.0, sets CSS `zoom: 1.15` on the start screen and every sheet, kept on the device (`brm:big`) and counted as `big_text` (`on` / `off`). At 360 px the start screen then lays out as if the screen were 313 px wide; the walk at 320, 360, 390 and 768 px found no sideways scrolling and no control under 44 px with it on ([KNOWLEDGE §33.11](KNOWLEDGE.md#3311-the-start-screen-the-alerts-date-the-trust-line-and-ก)).
 
@@ -980,6 +982,8 @@ The insulin card (v1.11.0, [F96](#in-v1110-20-oct-2026)) says "✅ ยังใ�
 - **The phone's text-size setting is mostly ignored.** The app's text sizes are in `px`, so a larger system font (Android's font size, iOS's text size) changes little, and in-app browsers may ignore it anyway ([07-audience §8](07-audience.md#8-design-and-content-implications-in-priority-order)). The one study the research found (18 older Thai readers) had them read 18-point text faster than 14 or 16 point; v1.11.0's advice text is 15–16 px, about 17–18 px with ก+ ([F124](#in-v1110-20-oct-2026)).
 - **[unverified] on real phones:** CSS `zoom` inside LINE's in-app browser on Android and iOS, and on an older Android WebView (row 71 of [06-test-checklist](06-test-checklist.md)).
 - **What would fix it:** text sizes in `rem`, so the phone's setting applies, checked at 320 px with the largest system size; then extend ก+ to the result screen, or retire it. Watch how many visitors turn it on ([05-metrics](05-metrics.md#larger-text-and-the-real-readers-v1110)).
+- **Done in v1.16.0 ([F212, F213](#in-v1160-4-nov-2026)):** every text size in `app.css` is in `rem` and the pages' in `rem`/`em`, so a browser's own text size applies; the breakpoints are in `em`, so the compact layouts take over as text grows; the round's top bar, room tabs and room bubble stay in `px` (a fixed scene). Measured in headless Chromium with the default text at 100 %, 125 % and 150 % (`Page.setFontSizes`): no sideways scroll on any of the 64 pages at 320 px, the start screen's tiles go to one column, nothing clipped in the share sheet or the guide picker. At 100 % the 28 screens compared are the same pixel for pixel (anti-aliasing aside). ก+ stays, on top.
+- **Still [unverified]:** which phones pass their text setting to the page. Desktop browsers and Firefox use the default size (this change); Chrome on Android applies its own text scaling and LINE's Android browser its text zoom, which may scale any unit; iOS changes page text only through Safari's "aA" page zoom. Row 95 of the phone test says how to check.
 
 ### 82. "power: Bangkok area" stands for MEA's three provinces
 
@@ -1123,6 +1127,17 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.16.0 (4 Nov 2026)
+
+Three items the owner said to continue with (#73, #81, #68), each measured with a probe before and after.
+
+| # | Problem | Fix |
+|---|---|---|
+| F211 | **20 of 82 English choice sheets scrolled at 320 × 568** (#73), by up to 75 px (`p-meds`); 18 of them fitted once "⏸️ Time paused — take your time" stopped taking a line of its own (about 30 px) | Under 22.4 em wide (359 px at the default text size), English shows "⏸️ Time paused" (`timePausedShort`, the full line stays the label read aloud); on 320 px phones under 40 em tall the letter box is 28 px and the answer's padding and the margins smaller, so its text gets about 12 px more width. The text keeps its 17 px. 0 of 82 sheets scroll in either language at 320 × 568, 320 × 640, 360 × 640 and 390 × 844, measured with a probe that opens each item's real sheet after its animation. Smoke check "the longest English choice sheet (p-meds) fits at 320 x 568" |
+| F212 | **Text sizes ignored the browser's text setting** (#81): 170 sizes in `px` | 174 font sizes in `app.css` are in `rem` (`17px` → `1.0625rem`), the two `line-height`s in `px` are `1.5rem`, the pages' `body` is `1.0625rem`, and the eight width and height breakpoints are in `em`; the round's top bar, room tabs and room bubble keep `px`. Unit test "text follows the phone"; smoke check "text at 150 %" |
+| F213 | **The ⚠️ note could not wrap** (`.flag{white-space:nowrap}`): it pushed `/flood` 1 px sideways at 320 px with normal text, and 75–130 px with larger text; a source shown by its site name ("multimedia.anamai.moph.go.th") did the same | The note wraps after "· ⚠️" (kept together); a source link's label may break inside itself when it must (`overflow-wrap:anywhere`). 64 pages × 3 text sizes at 320 px: none scrolls sideways |
+| F214 | **The guides' previews showed "เบอร์ช่วยเหลือ 1784 · 199 · 1669"** (#68), about 8 px tall at chat size and the only numbers in the app without whom they reach; their English twin said "Free · from official safety advice", and the guides' page description listed six bare numbers | "ฟรี · ทุกข้อบอกที่มา" / "Free · every line names its source" on the 18 guide previews (re-rendered), and a description without numbers in both languages. Unit test "link previews show no helpline number without whom it reaches" |
 
 ### In v1.15.2 (4 Nov 2026)
 

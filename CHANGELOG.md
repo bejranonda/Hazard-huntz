@@ -4,6 +4,25 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.16.0] — 2026-11-04
+
+**Text that follows the phone, sheets that fit, previews without bare numbers.** Three items the owner said to continue with: English choice sheets that scrolled on the smallest phones (#73), text sizes that ignored the browser's setting (#81), and the guides' previews (#68). No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F211–F214](docs/KNOWN_ISSUES.md#in-v1160-4-nov-2026), [ROADMAP N37](docs/ROADMAP.md#n37-text-that-follows-the-phone-v1160))
+
+### Changed
+
+- **Text sizes are in `rem`** (174 in `app.css`, and the pages' body), and the breakpoints in `em`: a browser's own text size now applies, and the compact layouts take over as text grows. The round's top bar, room tabs and room bubble keep their `px` sizes, since the room is a fixed scene. At the normal size nothing moves (28 screens compared pixel for pixel).
+- **The start screen's tiles** go to one column when the screen is narrow for its text size, so their names stay whole.
+- **The guides' previews** say "ฟรี · ทุกข้อบอกที่มา" / "Free · every line names its source" (the Thai showed "เบอร์ช่วยเหลือ 1784 · 199 · 1669", about 8 px in a chat and without whom the numbers reach; the English said something else); their page description lists no bare numbers. 18 previews re-rendered.
+
+### Fixed
+
+- **English choice sheets** fit without scrolling at 320 × 568 (20 of 82 scrolled, by up to 75 px): "⏸️ Time paused" in short on the narrowest screens, and a smaller letter box there. The text keeps its size. 0 of 82 in either language at four screen sizes.
+- **The ⚠️ note** wraps: as one unbreakable phrase it pushed `/flood` 1 px sideways at 320 px, and up to 130 px with larger text; a source named by its site ("multimedia.anamai.moph.go.th") may break too.
+
+### Docs
+
+- KNOWN_ISSUES F211–F214 (#68, #73, #81 closed; #3 gains the text-size check), GUIDELINES rule 107, ROADMAP N37 and the AI-ready list, KNOWLEDGE §41, APPROACH §44, LESSONS C29 and D31, test checklist row 95, HANDOFF, README, AGENTS.
+
 ## [1.15.2] — 2026-11-04
 
 **What visitor audit 5 left, and the owner's phone.** The AI-ready leftovers of #103 and two line breaks, one seen on the owner's Android phone. No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F205–F210](docs/KNOWN_ISSUES.md#in-v1152-4-nov-2026), [ROADMAP N36](docs/ROADMAP.md#n36-what-visitor-audit-5-left-v1152))

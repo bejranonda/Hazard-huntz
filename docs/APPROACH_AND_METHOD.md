@@ -589,3 +589,11 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 3. **Look at each fix where a reader meets it:** LINE's browser at 320 px, Thai and English, plus the widths where it changes (360, 393, 412). Two new breaks appeared only there ("คัดลอกคำ / ชวน", "ขึ้น / ไป"), both closed with `keepTogether`.
 4. **Write probe output to absolute paths.** A screenshot script run from the repository wrote its pictures there, and the next look read older copies (LESSONS E8, a third time); `git status --short` before staging caught it.
 5. **Say what stays unverified:** the dust box's AQI limit of 500 is a typo guard, not a fact about Thai AQI.
+
+## 44. Reproduce the recorded number first, then prove "no change" (v1.16.0)
+
+1. **Reproduce before fixing.** The probe for #73 had to show the issue's own 20 of 82 before any change; its first runs said 82 of 82 (it measured during the sheet's slide-in) and then 2 of 82 (its heading and pill weren't the real ones). Only the third, matching run was trusted.
+2. **Find the shared cause.** 18 of the 20 sheets were the same 30 px: a reassuring pill taking a line of its own. A short form on the narrowest screens fixed them all; the last two needed 12 px more width for the answer's text, not smaller text.
+3. **For a sweeping change, prove "nothing moved".** Converting 174 sizes to `rem` should change nothing at the normal setting. 28 screenshots were taken before and after and compared pixel by pixel; differences were inspected, and one shown to vary between two runs of the same code.
+4. **Then test the new setting everywhere it reaches.** 125 % and 150 % on all 64 pages and the app's screens found a layout bug that had been live at 1 px for weeks (the ⚠️ note) and the tiles' clipping; both were fixed before release, and the round was deliberately kept in `px`.
+5. **Name what the browser can't show.** How each phone passes its text setting to a page is not something headless Chromium can prove; it is in KNOWN_ISSUES #3 and row 95, not claimed.

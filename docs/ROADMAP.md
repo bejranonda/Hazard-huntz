@@ -68,6 +68,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N34 | [Visitor audit 5 and audit 3's leftovers (v1.15.0)](#n34-visitor-audit-5-and-audit-3s-leftovers-v1150) | AI-ready | Done (3 Nov 2026, v1.15.0); #103 holds what is left |
 | N35 | [The Thai read of the shared lines (v1.15.1)](#n35-the-thai-read-of-the-shared-lines-v1151) | AI-ready (the owner's go-ahead) | Done (4 Nov 2026, v1.15.1); ภัยรอบบ้าน's copy waits for the hand-back |
 | N36 | [What visitor audit 5 left (v1.15.2)](#n36-what-visitor-audit-5-left-v1152) | AI-ready | Done (4 Nov 2026, v1.15.2); only A5, ภัยรอบบ้าน's link, is left in #103 |
+| N37 | [Text that follows the phone (v1.16.0)](#n37-text-that-follows-the-phone-v1160) | AI-ready | Done (4 Nov 2026, v1.16.0); #68, #73 and #81 closed; real phones in row 95 |
 | N33 | [Water off the hills, for ภัยรอบบ้าน (v1.14.3)](#n33-water-off-the-hills-for-ภัยรอบบ้าน-v1143) | AI-ready | Done (3 Nov 2026, v1.14.3); ภัยรอบบ้าน wires `flood.flash`; the line waits for DMR's own words (#99) |
 | N32 | [FloodWatch's review (v1.14.2)](#n32-floodwatchs-review-v1142) | AI-ready | Done (3 Nov 2026, v1.14.2); four ⚠️ parts wait for DDPM's own pages (#99), FloodWatch's closing notice is the owner's |
 | N31 | [Arriving from ภัยรอบบ้าน (v1.14.1)](#n31-arriving-from-ภัยรอบบ้าน-v1141) | AI-ready | Done (2 Nov 2026, v1.14.1); the phone row 91 is the owner's; FloodWatch answered the hand-back (N32) |
@@ -673,6 +674,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Who:** AI-ready ("Continue as you suggested", 4 Nov 2026) · **Status:** Done (4 Nov 2026, v1.15.2) · **Issues:** fixed F205–F210; #103 down to A5
 - **What:** #103's AI-ready items: A8 (two copy buttons alike), A13 (°C on heat today's buttons), A14 (the dust box with "abc", "๘๐" or 1000), the pages' ISO date (also #83 B16); and two breaks: "ที่เว็บ" on the owner's phone and a comma starting a source line at 320 px.
 - **Done when:** the build, `npm test` (49) and the smoke test on three dates pass; each fix is looked at in LINE's browser at 320 px in Thai and English; the pages are live; row 94 of the phone test is filled ([L6](#l6-real-phone-test-matrix)).
+
+### N37. Text that follows the phone (v1.16.0)
+
+- **Who:** AI-ready ("Continue as you suggested", 4 Nov 2026) · **Status:** Done (4 Nov 2026, v1.16.0) · **Issues:** fixed F211–F214; #68, #73, #81 closed
+- **What:** English choice sheets that scrolled at 320 × 568 (#73, N20's leftover), text sizes in `px` that ignored the browser's setting (#81, N23's leftover), and the guides' previews with bare numbers at 8 px (#68).
+- **How:** a probe for each, run before the change to reproduce the recorded number (20 of 82 sheets), then after; "no change at the normal size" proven by comparing 28 screenshots pixel for pixel; the new setting tested at 125 % and 150 % on all 64 pages.
+- **Done when:** the build, `npm test` (51) and the smoke test on three dates pass; the pages are live; row 95 of the phone test is filled ([L6](#l6-real-phone-test-matrix)).
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 
 - **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.14.3) · **Issues:** fixed F178–F180; #99 updated

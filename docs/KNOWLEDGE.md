@@ -2768,3 +2768,32 @@ Records: [KNOWN_ISSUES F205–F210](KNOWN_ISSUES.md#in-v1152-4-nov-2026), [GUIDE
 - **Heat today's buttons:** `hotBtnRange` "{lo}–{hi} °C", `hotBtnTop` "{lo} °C ขึ้นไป" / "{lo} °C and above"; a no-break space joins each number to "°C" in code.
 - **Dates on the pages:** `updatedOn(lang)` in the build: `<time datetime="2026-11-04">4 พ.ย. 69</time>` (Thai, the app's short Buddhist year) or "4 Nov 2026"; the sitemap's `lastmod` and `llms.txt` stay ISO.
 - **Kept together since v1.15.1–v1.15.2:** "ที่เว็บ", "คำชวน", "ขึ้นไป" (`config.json → keepTogether`, now 247 words).
+
+## 41. Text that follows the phone (v1.16.0)
+
+Records: [KNOWN_ISSUES F211–F214](KNOWN_ISSUES.md#in-v1160-4-nov-2026), [GUIDELINES rule 107](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [ROADMAP N37](ROADMAP.md#n37-text-that-follows-the-phone-v1160).
+
+### 41.1 Units
+
+- **`app.css`:** every `font-size` in `rem` (1rem = 16 px at the normal setting, so `17px` is `1.0625rem`), the two `line-height`s in `px` now `1.5rem`, and every width and height breakpoint in `em` (a media query's `em` is the browser's default text size, so `max-width: 22.4375em` is 359 px at 100 % and 538 px at 150 %). The round's `.hud`, `.gauge`, `.hud-score`, `.tab`, `.tab .count` and `.bubble-game` keep `px`: the room is a fixed scene, and at 150 % its tabs ran off a 320 px screen.
+- **The pages** (`build.mjs`): `body{font:1.0625rem/1.65 …}`, everything else already in `em`. `.flag` wraps (`white-space:normal`, with "· ⚠️" kept together), and `.src a` may break inside a long site name.
+- **The start screen's tiles:** one column under 19.99 em (never at 320 px with normal text; under 400 px at 125 %, 480 px at 150 %).
+- **ก+** (`html.big`, `zoom: 1.15`) stays, on top of whatever size the browser gives.
+
+### 41.2 How it was measured
+
+- **Choice sheets:** a scratch probe opened every item's real sheet (the app's `openSheet()` and sprite, the real heading, pill and letters, a fresh sheet per item), finished its animation, then compared `scrollHeight` with `clientHeight`. It first reported 82 of 82 sheets scrolling, because it measured mid-animation ([LESSONS D31](LESSONS_LEARNED.md#d-testing-and-verification)); fixed, it reproduced the recorded 20 of 82 before any change.
+
+| Screen | Before (Thai / English) | After |
+|---|---|---|
+| 320 × 568 | 0 / 20 of 82 (worst +75 px) | 0 / 0 |
+| 320 × 640 | — | 0 / 0 |
+| 360 × 640 | 0 / 0 | 0 / 0 |
+| 390 × 844 | 0 / 0 | 0 / 0 |
+
+- **Text sizes:** headless Chromium's `Page.setFontSizes` (16, 20 and 24 px standard) on 28 screens (start, home check, fridge, dust today, the guide picker, `/flood`, `/tools`, in Thai and English at 320 and 390 px), all 64 generated pages at 320 px, a round, the result and the share sheet. At 16 px the 28 screens matched the old build pixel for pixel, except faint anti-aliasing on three buttons and one screen that differs between two runs of the same code. At 20 and 24 px: no sideways scroll, no new control under 44 px.
+- **Previews:** at 260 px (a chat's width) the old helpline line was about 6–8 px tall, unreadable however it was laid out.
+
+### 41.3 What real phones do [unverified]
+
+Desktop browsers and Firefox apply the reader's default text size to `rem`. Chrome on Android has its own text scaling, and Android's WebView (LINE's in-app browser) a text zoom; both may scale every size, whatever its unit. On iOS, a web page's text changes only with Safari's "aA" page zoom, and only system-font text follows Dynamic Type. So the change helps where a browser uses its default size, and changes nothing elsewhere at the normal setting; row 95 of the phone test checks each.

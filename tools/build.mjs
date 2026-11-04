@@ -1026,7 +1026,7 @@ const srcGroups = (ids, lang) => {
 const kitSrcSpan = (xs, lang) => {
   const X = lang === 'en' ? E : S;
   const partial = xs.some((x) => x.verify !== 'verified');
-  return `<span class="src">${esc(X.sources)}: ${srcGroups(xs.flatMap((x) => x.sources || []), lang)}${partial ? ` <span class="flag">· ⚠️ ${esc(X.partialNote)}</span>` : ''}</span>`;
+  return `<span class="src">${esc(X.sources)}: ${srcGroups(xs.flatMap((x) => x.sources || []), lang)}${partial ? ` <span class="flag"><span class="nw">· ⚠️</span> ${esc(X.partialNote)}</span>` : ''}</span>`;
 };
 const kitText = (x, lang) => `${esc(L2(x, lang))}${x.verify !== 'verified' ? ' ⚠️' : ''}`;
 // A level's lines, one bullet each: run together with <br>, the English lines read as one paragraph
@@ -1069,7 +1069,7 @@ const lessonHtml = (it) => {
 <p class="tip">${T(it.tip)} ${En(it.tip)}</p>
 ${it.why ? `<p><b>${esc(S.why)}:</b> ${T(it.why)}</p>` : ''}
 ${wet ? `<p><b>${esc(S.ifWet)}:</b> ${T(wet.label)} ${En(wet.label)}${it.wet.tip ? ` · ${T(it.wet.tip)}` : ''}</p>` : ''}
-<p class="src">${esc(S.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])])}${it.verify === 'partial' ? ` <span class="flag">· ⚠️ ${esc(S.partialNote)}</span>` : ''}</p>
+<p class="src">${esc(S.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])])}${it.verify === 'partial' ? ` <span class="flag"><span class="nw">· ⚠️</span> ${esc(S.partialNote)}</span>` : ''}</p>
 </article>`;
 };
 const lessonsBy = Object.fromEntries(MODE_IDS.map((id) => [id, lessons(id)]));
@@ -1096,17 +1096,17 @@ const learnLd = {
   citation: usedSources.map((id) => sources[id].url),
 };
 // One template for every plain page (/learn, the hazard pages, both languages).
-const SEO_CSS = `body{margin:0;background:#FFF4E3;color:#2b2118;font:17px/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
+const SEO_CSS = `body{margin:0;background:#FFF4E3;color:#2b2118;font:1.0625rem/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
 main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
 .nw{white-space:nowrap}p,li,h1,h2,h3{text-wrap:pretty}
 h1{font-size:1.6em;line-height:1.3;margin:.3em 0}h2{margin-top:2em;border-bottom:3px solid #f2c48d}
 h3{margin:0 0 .2em;font-size:1.1em}article{background:#fff;border-radius:14px;padding:14px 16px;margin:14px 0}
 article p{margin:.35em 0}.en{display:block;color:#6b5a4a;font-size:.86em}h3 .en{display:inline;margin-left:.3em}
 .room{color:#8a6d4f;font-size:.85em;margin:0}.tip{background:#fff4e3;border-radius:10px;padding:6px 10px}
-.src{font-size:.85em;color:#6b5a4a}.flag{white-space:nowrap}a{color:#9a4a00}.dot{display:inline-block;width:.9em;height:.9em;border-radius:50%;border:1px solid #3a2a1f;vertical-align:-.1em}
+.src{font-size:.85em;color:#6b5a4a}.flag{white-space:normal}a{color:#9a4a00}.dot{display:inline-block;width:.9em;height:.9em;border-radius:50%;border:1px solid #3a2a1f;vertical-align:-.1em}
 .cta{display:inline-block;background:#FFC83D;color:#3E2A1E;box-shadow:0 4px 0 rgba(62,42,30,.22);font-weight:600;text-decoration:none;border-radius:999px;padding:12px 24px;min-height:44px;box-sizing:border-box}
 .src a,.help a{display:inline-block;min-height:44px;line-height:44px}
-.src a,.help a{min-width:44px;text-align:center}
+.src a,.help a{min-width:44px;max-width:100%;overflow-wrap:anywhere;text-align:center}
 .tix{background:#fff;border-radius:14px;padding:8px 14px;margin:10px 0}.tix p{margin:.2em 0}.tix ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .tix li{margin:0}.tix a{display:inline-block;min-height:44px;padding:9px 12px;line-height:1.4;border:2px solid #f2c48d;border-radius:999px;text-decoration:none;font-size:.92em;box-sizing:border-box}li{margin:.3em 0}footer{margin-top:2em;font-size:.9em;color:#6b5a4a}
 .top a,.check a,a.tool-a{display:inline-block;min-height:44px;padding:10px 0;line-height:1.5;box-sizing:border-box}.play{display:flex;flex-wrap:wrap;gap:10px}.tix a[aria-current]{background:#f2c48d;color:#3E2A1E}
@@ -1168,7 +1168,7 @@ const phaseGroups = (list) => {
 };
 // A guide can name its phases (heat: "if someone is ill from the heat", not "after").
 const phaseName = (list, p, lang) => list.phaseNames?.[p]?.[lang] || strings[lang][`phase${capM(p)}`];
-const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(c.sources, lang)}${c.verify === 'partial' ? ` <span class="flag">· ⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>` : '');
+const clSrc = (c, lang) => (c.sources?.length ? `<br><span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(c.sources, lang)}${c.verify === 'partial' ? ` <span class="flag"><span class="nw">· ⚠️</span> ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>` : '');
 // title = false (a hazard page that is its guide): the H1 says it, so the phases are the headings.
 const checklistsTh = (ids, level = 3, title = true) => ids.filter((m) => checklists[m]).map((m) => {
   let n = 0;
@@ -1266,7 +1266,7 @@ const enLesson = (it) => {
 <p class="tip">${esc(it.tip.en)}</p>
 ${it.why?.en ? `<p><b>${esc(E.why)}:</b> ${esc(it.why.en)}</p>` : ''}
 ${wet ? `<p><b>${esc(E.ifWet)}:</b> ${esc(wet.label.en)}${it.wet.tip?.en ? ` · ${esc(it.wet.tip.en)}` : ''}</p>` : ''}
-<p class="src">${esc(E.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])], 'en')}${it.verify === 'partial' ? ` <span class="flag">· ⚠️ ${esc(E.partialNote)}</span>` : ''}</p>
+<p class="src">${esc(E.sources)}: ${srcLinks([...(it.sources || []), ...(it.wet?.sources || [])], 'en')}${it.verify === 'partial' ? ` <span class="flag"><span class="nw">· ⚠️</span> ${esc(E.partialNote)}</span>` : ''}</p>
 </article>`;
 };
 const sectionsEn = (ids) => ids.map((id) => `<h2 id="${id}">${esc(E[`section${capM(id)}`])}</h2>
@@ -1456,7 +1456,7 @@ ${hazardChips(lang)}
       : q.days != null ? fill(X.kitDays, { days: q.days }) : '';
     return [r, x.for ? fill(X.kitIf, { who: flagLabel(x.for, lang) }) : ''].filter(Boolean).join(' · ');
   };
-  const src = (x, lang) => `<span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(x.sources, lang)}${x.verify !== 'verified' ? ` <span class="flag">· ⚠️ ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>`;
+  const src = (x, lang) => `<span class="src">${esc((lang === 'en' ? E : S).sources)}: ${srcLinks(x.sources, lang)}${x.verify !== 'verified' ? ` <span class="flag"><span class="nw">· ⚠️</span> ${esc((lang === 'en' ? E : S).partialNote)}</span>` : ''}</span>`;
   // The fridge (v1.10.0): each part with how long it keeps, then what holds however long;
   // since v1.11.0 food by food (what to throw out, what to keep) under the fridge and the freezer.
   const F = kitFile.fridge;

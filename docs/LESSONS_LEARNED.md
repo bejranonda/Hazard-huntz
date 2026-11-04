@@ -770,3 +770,15 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* v1.15.1 lengthened the ภัยรอบบ้าน link's line ("น้ำ" → "น้ำท่วม", "ร้อน" → "อากาศร้อน"). The reworded `/flood` and `/uv` lines were looked at on a phone-sized screen, but this one wasn't, and on the owner's Android phone it wrapped inside "ที่เว็บ" ("…ทุกตำบล ที่ / เว็บ ภัยรอบบ้าน"). The smoke test passed: it checks words that must never break, not every phrase.
 - *Do this:* after rewording any Thai line, read where it breaks at 320, 360, 393 and 412 px (a short script that reads each character's line top does it in seconds), and add a phrase that splits badly to `keepTogether`.
 - *Encoded in:* `config.json → keepTogether` ("ที่เว็บ"), [GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**C29. A phrase that can't wrap is a layout bug waiting for a smaller screen.**
+
+- *What happened:* the pages' ⚠️ note was `white-space: nowrap` so that "· ⚠️" wouldn't start a line. The whole sentence then couldn't wrap: `/flood` scrolled 1 px sideways at 320 px for weeks (seen, and called "pre-existing"), and 75–130 px once the text was larger.
+- *Do this:* keep together only a word or a symbol pair ("· ⚠️", `keepTogether`), never a phrase; when a screen scrolls sideways by even 1 px, find the element before moving on.
+- *Encoded in:* [GUIDELINES rule 107](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), the unit test "text follows the phone".
+
+**D31. A probe that measures during an animation measures the animation.**
+
+- *What happened:* the first choice-sheet probe reported every sheet as scrolling by 0 px: it measured while the sheet was still sliding in. The next run, with a made-up heading, said 2 of 82. Only the run with the real heading and pill, after the animation, matched the recorded 20 of 82.
+- *Do this:* finish animations (`getAnimations().forEach(a => a.finish())`) before measuring, build the probe from the app's own pieces, and trust it only once it reproduces a number already recorded.
+- *Encoded in:* [APPROACH §44](APPROACH_AND_METHOD.md#44-reproduce-the-recorded-number-first-then-prove-no-change-v1160), the smoke check on `p-meds`.

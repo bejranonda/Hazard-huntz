@@ -915,6 +915,32 @@ test('structured data: one publisher, and each start page describes the app in i
   }
 });
 
+test('text follows the phone: sizes in rem, breakpoints in em, the round alone in px (v1.16.0, #81)', () => {
+  const css = fs.readFileSync(path.join(ROOT, 'public/css/app.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  // every rule whose font-size is in px must belong to the round's fixed scene
+  const px = [...css.matchAll(/([^{}]+)\{[^{}]*font-size:[^;}]*\dpx/g)].map((m) => m[1].trim());
+  const round = /^(\.hud|\.gauge|\.tab\b|\.tab \.count|\.bubble-game|\.hud-btn|\.hud-score)/;
+  assert.deepEqual(px.filter((sel) => !sel.split(',').every((x) => round.test(x.trim()))), [], 'font sizes in px outside the round');
+  assert.ok(px.length >= 5, 'the round keeps its own px sizes');
+  const mq = [...css.matchAll(/@media[^{]*(?:width|height):\s*\d+(?:\.\d+)?px/g)].map((m) => m[0]);
+  assert.deepEqual(mq, [], 'a breakpoint in px does not follow the text size');
+  assert.ok(!/line-height:\s*\d+(?:\.\d+)?px/.test(css), 'a line height in px overlaps larger text');
+  const build = fs.readFileSync(path.join(ROOT, 'tools/build.mjs'), 'utf8');
+  assert.ok(build.includes('font:1.0625rem/1.65') && !/font:\d+px/.test(build), 'the pages size their text from rem');
+  assert.ok(build.includes('.flag{white-space:normal}'), 'the ⚠️ note wraps (it pushed pages sideways)');
+});
+
+test('link previews show no helpline number without whom it reaches (v1.16.0, #68)', () => {
+  const S = load('strings');
+  const numbers = load('helplines').helplines.map((h) => h.number);
+  for (const block of ['og', 'ogEn']) {
+    for (const [k, v] of Object.entries(S[block])) {
+      if (typeof v !== 'string') continue;
+      for (const n of numbers) assert.ok(!new RegExp(`(^|\\D)${n}(\\D|$)`).test(v), `strings.${block}.${k} shows ${n} on a preview, where its name can't be read`);
+    }
+  }
+});
+
 test('the right answer is not given away by its length (KNOWN_ISSUES #66)', () => {
   // Before v1.9.2 it was the longest in 71 of 82 choice sets (Thai). Now the wrong answers say
   // the reason a real person would give, so length tells nothing either way:

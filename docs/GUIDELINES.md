@@ -392,6 +392,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **Two buttons on one sheet never share a label:** the card's own text first, by its name ("คัดลอกแผนเป็นข้อความ"); the invitation under its own heading ("คัดลอกคำชวน").
     - **In a list of links, each separator stays with the link before it** (`srcGroups()`): an inline-block link lets a line break on either side of it.
     - **Pages date themselves like the app** (`formatHouseDate()`), with ISO kept in `<time datetime>`, the sitemap and `llms.txt`.
+107. **Text follows the reader's setting; nothing stops a line from wrapping.** Text sizes in `px`, breakpoints in `px` and a no-wrap ⚠️ note let 20 English sheets scroll, ignored the browser's text size and pushed pages sideways (F211–F213). Since v1.16.0:
+    - **Font sizes are in `rem`** (and the pages' in `rem`/`em`); **breakpoints are in `em`**, so the compact layout takes over when the text is large for the screen; line heights are unitless or `rem`. Only the round's fixed scene (top bar, room tabs, room bubble) keeps `px`. A unit test holds all three.
+    - **Never `white-space: nowrap` on a phrase,** only on a word or a symbol pair (`keepTogether`, "· ⚠️"); a link that may be long can break inside itself (`overflow-wrap: anywhere`).
+    - **Check a layout change at 100 %, 125 % and 150 % text** at 320 px (`Page.setFontSizes` in headless Chromium): no sideways scroll, nothing clipped; and prove "no change at the normal size" by comparing screenshots, not by eye.
+    - **A preview shows no phone number,** since at chat size it can't say whom the number reaches; the numbers belong on the page and the pictures, with their names (a unit test reads every `og`/`ogEn` string).
 
 ## 9. Working with AI assistants
 

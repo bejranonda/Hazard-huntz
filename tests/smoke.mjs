@@ -1529,6 +1529,47 @@ try {
     check('every hazard page links ภัยรอบบ้าน in its own language', pages.every(([, th, en]) => th.includes(`href="${RISK}"`) && en.includes(`href="${RISK}en"`)), pages.filter(([, th, en]) => !(th.includes(`href="${RISK}"`) && en.includes(`href="${RISK}en"`))).map(([s]) => s).join(','));
   }
 
+  // v1.16.0 (#73): the longest English choice sheet (p-meds) fits at 320 × 568, the pill in its short form.
+  {
+    const { ctx, page } = await newPage({ width: 320, height: 568, locale: 'en-GB' });
+    await page.goto(`${BASE}/en/?debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => window.__brm?.content?.()?.items?.length);
+    const r = await page.evaluate(async () => {
+      const ui = await import('/js/ui.js');
+      const { spriteIcon } = await import('/js/icons.js');
+      const C = window.__brm.content();
+      const it = C.items.find((x) => x.id === 'p-meds');
+      const S = C.strings.en;
+      ui.openSheet(`<div class="item-head">${spriteIcon(it.sprite)}<div><h2 id="sheet-title">${it.name.en}</h2><p class="sub">${it.context.en}</p></div></div>
+        <div class="choice-intro"><p class="sub"><b>${S.whatToDo}</b></p><span class="paused-pill"><span class="pp-full">${S.timePausedTag}</span><span class="pp-short">${S.timePausedShort}</span></span></div>
+        <div class="choices">${it.choices.map((c, i) => `<button class="choice" type="button"><span class="ico">${[...S.choiceLetters][i]}</span><span>${c.label.en}</span></button>`).join('')}</div>`, { dismissible: true });
+      const sheet = document.querySelector('#sheet');
+      sheet.getAnimations({ subtree: true }).forEach((a) => a.finish());
+      await new Promise((res) => setTimeout(res, 80));
+      const pill = document.querySelector('.paused-pill');
+      return { scroll: sheet.scrollHeight - sheet.clientHeight, short: getComputedStyle(pill.querySelector('.pp-short')).display !== 'none' && getComputedStyle(pill.querySelector('.pp-full')).display === 'none', label: pill.getAttribute('aria-label') };
+    });
+    check('the longest English choice sheet (p-meds) fits at 320 x 568, its pill short ("Time paused") (v1.16.0)', r.scroll <= 1 && r.short, JSON.stringify(r));
+    await ctx.close();
+  }
+
+  // v1.16.0 (#81): with the phone's text at 150 % the start screen and a page don't scroll sideways,
+  // the start tiles go to one column, and the round's tabs keep their size.
+  {
+    const { ctx, page } = await newPage({ width: 320, height: 640 });
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send('Page.setFontSizes', { fontSizes: { standard: 24, fixed: 20 } });
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    const start = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, cols: getComputedStyle(document.querySelector('.hub')).gridTemplateColumns.split(' ').length, root: getComputedStyle(document.documentElement).fontSize }));
+    await page.goto(`${BASE}/flood`, { waitUntil: 'networkidle' });
+    const flood = await page.evaluate(() => document.documentElement.scrollWidth);
+    check('text at 150 %: no sideways scroll on the start screen or /flood at 320 px, the start tiles in one column (v1.16.0)', start.root === '24px' && start.sw <= 320 && start.cols === 1 && flood <= 320, JSON.stringify({ ...start, flood }));
+    await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+    const tabPx = await page.evaluate(() => { const d = document.createElement('div'); d.innerHTML = '<div class="tabs"><button class="tab">x</button></div>'; document.body.append(d); return getComputedStyle(d.querySelector('.tab')).fontSize; });
+    check('text at 150 %: the round\'s room tabs keep their px size (14–15 px), the room is a fixed scene (v1.16.0)', parseFloat(tabPx) <= 15, tabPx);
+    await ctx.close();
+  }
+
   check('analytics beacons received', beacons > 0, String(beacons));
 } finally {
   await browser.close();

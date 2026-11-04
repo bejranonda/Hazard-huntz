@@ -400,7 +400,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
 108. **Paper can't be updated, so what is printed must stay true and lead back.** Since v1.17.0 (the print pack, F215):
     - **A QR code is drawn at build time** (`qrcode-generator`, a dev dependency), never by a package on the phone; every code is decoded by an independent decoder in `npm test` and must read back its exact address.
     - **A code leads to a static page that opens without the app** and shows each line's source (the hazard page), never to a tool's state or a `?` link. Since codes are on paper, **a hazard slug never changes** (rule 5's "never change a slug" now has paper behind it); if a page must move, it keeps a redirect for good.
-    - **A printed page carries its date, the helplines with whom they reach, its sources and the disclaimer**, and fits one A4 page (a smoke check measures the tallest guide).
+    - **A printed page carries its date, the helplines with whom they reach, its sources and the disclaimer**, and fits one A4 page (a smoke check prints the pack to A4 PDF and counts one page per guide; measure at the paper's width, not a phone's).
     - **Check a printed artefact as paper:** print it to PDF, count the pages, look at them, and decode the codes from the PDF's pixels.
 
 ## 9. Working with AI assistants

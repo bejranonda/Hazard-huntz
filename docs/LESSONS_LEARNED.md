@@ -788,3 +788,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the first QR test was `async` (it imported the decoder). `tests/run.mjs` calls each test without `await`, so the test was counted as passed before it ran; a failure would only have surfaced as a stray unhandled rejection.
 - *Do this:* keep unit tests synchronous (`createRequire` for a CommonJS package), or make the runner await; and prove a new test can fail by breaking its input once (here, twenty runs removed from a code).
 - *Encoded in:* the QR test in `tests/run.mjs`, [APPROACH §45](APPROACH_AND_METHOD.md#45-check-a-printed-artefact-as-paper-v1170).
+
+**D33. Measure paper at the paper's width, and wait for what the code now waits for.**
+
+- *What happened:* the first smoke run of v1.17.0 failed twice on every date. The new print-pack check measured each guide's height with print styles on but in the test's 390 px window, where lines wrap twice as often (328–385 mm "tall", while the real A4 PDF had one guide per page). And an older check counted `window.print()` calls straight after the tap, but since v1.17.0 the print waits for the QR image, so it counted 0.
+- *Do this:* check printed output by printing it (`page.pdf()` on A4, count the pages), not by measuring a phone-sized layout; when code is made to wait on purpose, make its test wait for the same thing, never loosen the expectation.
+- *Encoded in:* `tests/smoke.mjs` (the print pack check counts PDF pages; the guide print check waits for the call), [GUIDELINES rule 108](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).

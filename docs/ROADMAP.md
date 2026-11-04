@@ -687,7 +687,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** AI-ready ("Continue all your suggestions to finish", 4 Nov 2026) · **Status:** Done (4 Nov 2026, v1.17.0) · **Issues:** F215; #84's print pack, P5b's codes on printed checklists
 - **What:** `/print` and `/en/print` (nine guides, one per A4 page, with the date, helplines and whom they reach, sources and a QR code), and the same code on a guide printed from the app.
-- **How it was checked:** each of the 18 codes decoded by an independent decoder from the file and again from the printed PDF at 150 dpi; nine pages per language, each under the A4 height; the app's print waits for the code; 66 pages at 100/125/150 % text without sideways scroll.
+- **How it was checked:** each of the 18 codes decoded by an independent decoder from the file and again from the printed PDF at 150 dpi; printed to A4 PDF, nine pages per language; the app's print waits for the code; 66 pages at 100/125/150 % text without sideways scroll.
 - **Not done:** a code on the 1080 × 1920 guide pictures and the result card (P5b's other half): a code on a picture forwarded in a chat is scanned rarely, since it is on the phone that would scan it.
 - **Done when:** the checks above pass, the pages are live, and row 96 (a real printer, a real phone scanning the paper) is filled ([L6](#l6-real-phone-test-matrix)).
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)

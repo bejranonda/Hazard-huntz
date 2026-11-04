@@ -1221,6 +1221,8 @@ try {
     await page.click('[data-guide="quake"]');
     await page.waitForSelector('#cl-print');
     await page.click('#cl-print');
+    // since v1.17.0 the print waits for the guide's QR code to load before the dialog opens
+    await page.waitForFunction(() => window.__printed >= 1, null, { timeout: 5000 }).catch(() => {});
     await page.emulateMedia({ media: 'print' });
     const pr = await page.evaluate(() => ({
       printed: window.__printed, items: document.querySelectorAll('#print-area li').length, flagged: [...document.querySelectorAll('#print-area li small')].length,
@@ -1576,17 +1578,17 @@ try {
     const pages = {};
     for (const pre of ['', '/en']) {
       await page.goto(`${BASE}${pre}/print`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => document.fonts.ready);
       await page.emulateMedia({ media: 'print' });
-      pages[pre || 'th'] = await page.evaluate(() => {
-        const mm = 96 / 25.4;
-        const pp = [...document.querySelectorAll('.pp')];
-        return { n: pp.length, qr: document.querySelectorAll('.pp-qr svg').length, tallest: Math.round(Math.max(...pp.map((x) => x.getBoundingClientRect().height)) / mm), hidden: getComputedStyle(document.querySelector('.no-print')).display === 'none' };
-      });
+      const info = await page.evaluate(() => ({ n: document.querySelectorAll('.pp').length, qr: document.querySelectorAll('.pp-qr svg').length, hidden: getComputedStyle(document.querySelector('.no-print')).display === 'none' }));
+      // printed as paper (A4, the page's own margins): one guide per page means exactly as many pages as guides
+      const pdf = await page.pdf({ format: 'A4', preferCSSPageSize: true, printBackground: true });
+      pages[pre || 'th'] = { ...info, pages: (pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length };
       await page.emulateMedia({ media: 'screen' });
     }
     const n = CFG.guides.length;
-    check('print pack (/print, /en/print): one guide per A4 page, each with its QR code, every guide under the page height (v1.17.0)',
-      Object.values(pages).every((x) => x.n === n && x.qr === n && x.tallest <= 273 && x.hidden), JSON.stringify(pages));
+    check('print pack (/print, /en/print): printed to A4, one page per guide, each with its QR code (v1.17.0)',
+      Object.values(pages).every((x) => x.n === n && x.qr === n && x.pages === n && x.hidden), JSON.stringify(pages));
     await page.addInitScript(() => { window.__printed = []; window.print = () => { const img = document.querySelector('#print-area .p-qr'); window.__printed.push({ src: img?.getAttribute('src'), loaded: !!(img && img.complete && img.naturalWidth > 0) }); }; });
     await page.goto(`${BASE}/?open=guide`, { waitUntil: 'networkidle' });
     await page.click('.guide-tile >> nth=0');

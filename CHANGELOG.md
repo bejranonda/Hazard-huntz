@@ -16,7 +16,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ### Docs
 
-- KNOWN_ISSUES F215 (#84 and #3 updated), GUIDELINES rule 108, ROADMAP N38 and P5b, KNOWLEDGE §42, APPROACH §45, LESSONS D32, the launch kit's print pack section, deploy notes (the two dev dependencies), test checklist row 96, HANDOFF, README, AGENTS (and its stale "what next" list).
+- KNOWN_ISSUES F215 (#84 and #3 updated), GUIDELINES rule 108, ROADMAP N38 and P5b, KNOWLEDGE §42, APPROACH §45, LESSONS D32 and D33, the launch kit's print pack section, deploy notes (the two dev dependencies), test checklist row 96, HANDOFF, README, AGENTS (and its stale "what next" list).
 
 ## [1.16.0] — 2026-11-04
 

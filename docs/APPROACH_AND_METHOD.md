@@ -581,3 +581,11 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 5. **Test the edges the words describe:** a smoke check taps "4 ชม." and reads "ครบ 4 ชม.แล้ว"; the start screen tile is read before and after one tick.
 6. **Say what the read is.** It is the app's read at the owner's request, recorded as such; a DDPM officer's or a health agency's read stays welcome, and the ⚠️ parts stay until an agency original is opened by hand.
 7. **Read the owner's screenshots as test results.** After the release the owner sent two phone screenshots. Each visible line was read as a first-time visitor would, the one odd break ("ที่ / เว็บ") was measured at four widths against the live site and the fix, and the result was written into the test checklist (row 93) and KNOWN_ISSUES #3, saying what the photos didn't cover.
+
+## 43. Close an audit's leftovers in one pass, each looked at where it happens (v1.15.2)
+
+1. **Take the list as written** (#103), and re-read each item in the live code before changing it: A14's "says nothing" was three cases with one cause (every no-answer showed the empty-state hint).
+2. **Fix the shared piece:** one number reader for three tools, one share sheet for three cards, one source-line function for every page.
+3. **Look at each fix where a reader meets it:** LINE's browser at 320 px, Thai and English, plus the widths where it changes (360, 393, 412). Two new breaks appeared only there ("คัดลอกคำ / ชวน", "ขึ้น / ไป"), both closed with `keepTogether`.
+4. **Write probe output to absolute paths.** A screenshot script run from the repository wrote its pictures there, and the next look read older copies (LESSONS E8, a third time); `git status --short` before staging caught it.
+5. **Say what stays unverified:** the dust box's AQI limit of 500 is a typo guard, not a fact about Thai AQI.

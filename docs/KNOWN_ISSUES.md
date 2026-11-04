@@ -100,7 +100,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 100 | [The UV lines rest on WHO and on news reports quoting Thai agencies; the Thai is ours](#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours) | Owner (optional: a health agency's read; the Thai read was done in v1.15.1) | Low |
 | 101 | [The family's colours differ](#101-the-familys-colours-differ) | Deferred by the owner ("No need now", 4 Nov 2026) | Low |
 | 102 | [FloodWatch closes after its handover; the rivers' link goes with it](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) | Owner (one line, when it closes) | Low |
-| 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Open (AI-ready); A11 fixed in v1.15.1 | Low |
+| 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Open: only A5, ภัยรอบบ้าน's link (the hand-back); the rest fixed in v1.15.1–v1.15.2 | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -365,16 +365,16 @@ FloodWatch said on 2 Nov 2026 that it is preparing its handover to ONWR, that ON
 
 ### 103. Leftovers of visitor audit 5
 
-**Status:** Open (AI-ready, except where marked) · **Severity:** Low
+**Status:** Open: only A5, which is ภัยรอบบ้าน's change; A8, A11, A13, A14 and the dates fixed in v1.15.1–v1.15.2 · **Severity:** Low
 
 Visitor audit 5 (3 Nov 2026, the live v1.14.3; [ROADMAP N34](ROADMAP.md#n34-visitor-audit-5-and-audit-3s-leftovers-v1150)) found 17 new things; v1.15.0 fixed 13 ([F188–F199](#in-v1150-3-nov-2026)) and A18 with B23. Left:
 
 - **A5, for ภัยรอบบ้าน:** its "ก่อนน้ำมา ทำอย่างไร" links `/flood#prepare`, the reasons for each step, far down the page; the 10 short steps are `/flood#cl-prepare` near the top. In the hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)); both anchors stay.
-- **A8:** on the plan and info cards' share sheets, "คัดลอกข้อความ" (the invitation) sits beside "คัดลอกแผนเป็นข้อความ" (the plan); add a heading over the invitation row and put the plan's copy first.
+- ~~**A8:** on the plan and info cards' share sheets, "คัดลอกข้อความ" (the invitation) sits beside "คัดลอกแผนเป็นข้อความ" (the plan)~~ Fixed in v1.15.2 ([F206](#in-v1152-4-nov-2026)).
 - ~~**A11:** the fridge's share row shows before any time is tapped; choosing "4 ชม." reads "เกิน 4 ชม.แล้ว"~~ Fixed in v1.15.1 ([F200, F201](#in-v1151-4-nov-2026)).
-- **A13:** heat today's level buttons have no °C, while its answers say "33.0–41.9 °C".
-- **A14:** the dust number box says nothing for "abc", an AQI of 1000 or Thai digits ("๘๐").
-- **Dates (also #83 B16):** the pages' "ปรับปรุงล่าสุด: 2026-11-03" is ISO; the app's cards use another format.
+- ~~**A13:** heat today's level buttons have no °C~~ Fixed in v1.15.2 ([F207](#in-v1152-4-nov-2026)).
+- ~~**A14:** the dust number box says nothing for "abc", an AQI of 1000 or Thai digits ("๘๐")~~ Fixed in v1.15.2 ([F208](#in-v1152-4-nov-2026)). Kept: the box's limits (PM2.5 999, AQI 500, `kit.json → air.units[].max`) are typo guards from v1.10.0; whether a Thai AQI can go above 500 is **[unverified]**, and a reader above it is told to check the number or tap a colour, which always works.
+- ~~**Dates (also #83 B16):** the pages' "ปรับปรุงล่าสุด: 2026-11-03" is ISO~~ Fixed in v1.15.2 ([F209](#in-v1152-4-nov-2026)); the sitemap and `llms.txt` keep ISO, which is for machines.
 
 ---
 
@@ -1124,12 +1124,17 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 
 ## Fixed
 
-### After v1.15.1 (4 Nov 2026, unreleased)
+### In v1.15.2 (4 Nov 2026)
 
-From the owner's two screenshots of the live v1.15.1 on an Android phone in Chrome (4 Nov 2026): the start screen and the home check.
+F205 from the owner's two screenshots of the live v1.15.1 on an Android phone in Chrome (4 Nov 2026): the start screen and the home check. F206–F210 are visitor audit 5's AI-ready leftovers (#103) and one break seen in the 320 px check of v1.15.1.
 
 | # | Problem | Fix |
 |---|---|---|
+| F206 | **Two copy buttons on a card's share sheet with nothing to tell them apart** (#103 A8): "คัดลอกข้อความ" (the invitation) beside "คัดลอกแผนเป็นข้อความ" (the plan) on the plan and emergency-card sheets, and "🛒 คัดลอกรายการที่ยังขาด" on the home check's | The card's own text comes first, as a full-width button under the hint; then "ชวนบ้านอื่นมาทำด้วย" / "Invite other homes to make theirs" over the share buttons, whose copy says "คัดลอกคำชวน" / "Copy the invitation". "คำชวน" is kept together. Smoke check "plan card: "copy the plan" comes before the share buttons" |
+| F207 | **Heat today's level buttons had no unit** (#103 A13), while its answer says "ดัชนีความร้อน 33.0–41.9 °C" | Each button says "33.0–41.9 °C" or "52.0 °C ขึ้นไป"; each number keeps its °C, so at 320 px a range wraps after its dash, and "ขึ้นไป" is kept together. Smoke check "heat today: every level button carries °C" |
+| F208 | **The dust number box said nothing useful for "abc", Thai digits ("๘๐") or a number above its limit** (#103 A14): each showed the usual "แตะสีด้านบน…" | `readNumber()` in `kitplan.js` reads Thai digits and both commas ("1,500", "37,5"), for dust today, water and the tank; `airCheck()` says why a reading gives no answer: "พิมพ์เป็นตัวเลข เช่น 45…", or "ตัวเลขเกินที่ช่องนี้รับได้ (999)…". Unit test; smoke check "dust: "abc" says type a number; "๘๐" gives the level for 80" |
+| F209 | **The pages dated themselves in ISO** ("ปรับปรุงล่าสุด: 2026-11-03", #103 and #83 B16) while the app's cards say "4 พ.ย. 69" | The build formats the date with the app's own `formatHouseDate()`: "4 พ.ย. 69" / "4 Nov 2026"; `<time datetime>` keeps ISO. Smoke check (with F210) |
+| F210 | **A source link's comma could start a line** (", 2022" under a `/flood` line at 320 px): the links are 44 px inline blocks, and a line may break on either side of one | `srcGroups()` keeps each comma inside a no-wrap span with the link before it. Smoke check "pages: no source link leaves its comma to start a line" |
 | F205 | **The ภัยรอบบ้าน link's line broke inside "ที่เว็บ"** ("…ทุกตำบล ที่ / เว็บ ภัยรอบบ้าน") on phones under 393 px wide: v1.15.1's longer wording ("น้ำท่วม", "อากาศร้อน") made it wrap, and Thai line breaking split the phrase | "ที่เว็บ" added to `config.json → keepTogether`: measured in headless Chromium at 320 and 360 px it now breaks "…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน", and stays on one line at 393 and 412 px |
 
 Also confirmed on the phone: the supplies tile says "ตามจำนวนคนในบ้าน" after a first look (F202), and the version reads v1.15.1. Inside the home check, "พร้อมแล้ว 0% (มี 0 จาก 11 อย่าง)" before any tick is progress beside the list and stays ([GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).

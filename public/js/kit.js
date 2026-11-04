@@ -11,7 +11,7 @@ import {
   canNativeShare, nativeShare, shareChannel, copyText, canDownload, downloadBlob, imageSrc, openExternal, lineShareUrl,
 } from './share.js';
 import { track } from './analytics.js';
-import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airAdvice, maskAdvice, hotAdvice, waterDays, tankDose, bagList, safeMessage } from './kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airAdvice, airCheck, readNumber, maskAdvice, hotAdvice, waterDays, tankDose, bagList, safeMessage } from './kitplan.js';
 import { modeLink } from './modes.js';
 
 let K = null;
@@ -55,7 +55,8 @@ function openSheet(html, opts) {
 const telChips = (numbers) => numbers.map((n) => content().helplines.find((h) => h.number === n)).filter(Boolean).map((h) => `<a class="tel-chip" href="tel:${esc(h.number)}" data-help="${esc(h.number)}"><b>${esc(h.number)}</b><small>${esc(L(h.short))}</small></a>`).join('');
 const bindTel = (mode) => { for (const a of $$('.tel-chip[data-help]', $('#sheet'))) a.addEventListener('click', () => track('help_click', { label: a.dataset.help, mode })); };
 // A number typed by hand: "1,500" is fifteen hundred; "1,5" and "1.5" are one and a half.
-const typedNumber = (x) => { const v = String(x).replace(/\s/g, ''); return Number(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v) ? v.replace(/,/g, '') : v.replace(',', '.')) || 0; };
+// Thai digits ("๘๐") read as numbers too (v1.15.2).
+const typedNumber = (x) => readNumber(x) || 0;
 // A name that starts a button reads in lower case inside an English sentence.
 const midSentence = (x) => (getLang() === 'en' ? x.replace(/^\p{Lu}(?!\p{Lu})/u, (c) => c.toLowerCase()) : x);
 // /kit and /plan are pages with their own link preview (a sample card) that open the tool.
@@ -546,7 +547,11 @@ export async function openAir(from = 'start', colour = null) {
     const box = $('#air-out');
     for (const c of $$('input[name="air-colour"]', $('#sheet'))) c.checked = r?.level.id === c.value;
     if (!r) {
-      box.innerHTML = `<p class="air-none">${esc(u('airNone'))}</p>`;
+      // A typed number that gives no level says why (v1.15.2, #103 A14); nothing typed: the usual hint.
+      const why = s.colour ? 'ok' : airCheck(A, { unit: s.unit, value: s.value });
+      const unit = A.units.find((x) => x.id === s.unit) || A.units[0];
+      const msg = why === 'nan' ? u('airNotNumber') : why === 'over' ? u('airTooHigh', { max: unit.max }) : u('airNone');
+      box.innerHTML = `<p class="air-none">${esc(msg)}</p>`;
       box.removeAttribute('style');
       return;
     }
@@ -775,7 +780,7 @@ export async function openHot(from = 'start') {
     <h2 id="sheet-title" tabindex="-1" autofocus>🌡️ ${esc(u('hotTitle'))}</h2>
     <p class="sub">${esc(u('hotIntro'))}</p>
     <p class="kit-q" id="hot-q">${esc(u('hotQ'))}</p>
-    <div class="hot-levels" role="radiogroup" aria-labelledby="hot-q">${H.levels.map((l) => `<button class="air-colour hot-level" type="button" role="radio" aria-checked="false" data-v="${esc(l.id)}"><span class="air-dot" style="background:${esc(l.colour)}"></span><span>${esc(L(l.label))}</span><small>${esc(l.hi ? `${l.lo}–${l.hi}` : `${l.lo}+`)}</small></button>`).join('')}</div>
+    <div class="hot-levels" role="radiogroup" aria-labelledby="hot-q">${H.levels.map((l) => `<button class="air-colour hot-level" type="button" role="radio" aria-checked="false" data-v="${esc(l.id)}"><span class="air-dot" style="background:${esc(l.colour)}"></span><span>${esc(L(l.label))}</span><small>${esc((l.hi ? u('hotBtnRange', { lo: l.lo, hi: l.hi }) : u('hotBtnTop', { lo: l.lo })).replace(/ °C/g, '\u00a0°C'))}</small></button>`).join('')}</div>
     ${tmd ? `<a class="btn secondary small air-check" href="${esc(tmd.url)}" target="_blank" rel="noopener">${esc(u('hotCheck'))}</a>` : ''}
     <div class="air-out" id="hot-out" aria-live="polite"></div>
     <details class="mk-card hot-aid" id="hot-aid"><summary>${esc(u('hotSigns'))} · ${esc(u('hotAid'))}</summary>
@@ -1172,14 +1177,14 @@ async function shareImage({ canvas, title, text, url, filename, event, value = 0
   openSheet(`
     <h2 id="sheet-title">${esc(title)}</h2>
     <p class="save-hint pic-hint">${esc(u('picHint'))}</p>
+    ${copy ? `<button class="btn secondary" type="button" data-k="copylist">${esc(copy.label)}</button><p class="kit-q share-invite">${esc(u('shareInviteHead'))}</p>` : ''}
     <div class="share-grid">
       ${canNativeShare() ? `<button class="share-btn" data-k="native"><span class="ico ico-native">⇪</span>${esc(t('shareNative'))}</button>` : ''}
       <button class="share-btn" data-k="line"><span class="ico ico-line">L</span>${esc(t('shareLine'))}</button>
       <button class="share-btn" data-k="facebook"><span class="ico ico-fb">f</span>${esc(t('shareFb'))}</button>
-      <button class="share-btn" data-k="copy"><span class="ico ico-copy">⧉</span>${esc(t('shareCopy'))}</button>
+      <button class="share-btn" data-k="copy"><span class="ico ico-copy">⧉</span>${esc(copy ? u('shareCopyInvite') : t('shareCopy'))}</button>
       ${saveOk ? `<button class="share-btn" data-k="save"><span class="ico ico-save">↓</span>${esc(t('shareSave'))}</button>` : ''}
     </div>
-    ${copy ? `<button class="btn secondary small" type="button" data-k="copylist">${esc(copy.label)}</button>` : ''}
     <img class="card-preview share-preview" id="kit-img" alt="${esc(title)}">
     <div class="btn-row">
       <button class="btn secondary small" type="button" id="kit-back">${esc(backLabel)}</button>

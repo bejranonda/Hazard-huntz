@@ -2757,3 +2757,14 @@ The owner sent two screenshots of the live v1.15.1 from an Android phone in Chro
 - **Kept on purpose:** inside the check, "พร้อมแล้ว 0% (มี 0 จาก 11 อย่าง)" before any tick: it is progress beside the list, not a verdict on another screen ([GUIDELINES rule 105](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 - **Fixed:** the ภัยรอบบ้าน link's line broke inside "ที่เว็บ" below 393 px; "ที่เว็บ" is in `keepTogether` (F205). Measured in headless Chromium: 320 and 360 px break "…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน", 393 and 412 px keep one line.
 - **Not covered by the photos:** the fridge, sharing, LINE's browser and an iPhone ([KNOWN_ISSUES #3](KNOWN_ISSUES.md#3-not-yet-tested-on-real-phones-or-real-in-app-browsers), test checklist row 93).
+
+## 40. What visitor audit 5 left (v1.15.2)
+
+Records: [KNOWN_ISSUES F205–F210](KNOWN_ISSUES.md#in-v1152-4-nov-2026), [GUIDELINES rule 106](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [ROADMAP N36](ROADMAP.md#n36-what-visitor-audit-5-left-v1152).
+
+- **`readNumber(x)`** (`kitplan.js`): drops spaces, reads Thai digits (๐–๙), takes "1,500" as fifteen hundred and "1,5" / "1.5" as one and a half; `NaN` when it isn't a number. Used by dust today (`airLevel`, `airCheck`), water (`waterDays`, the litres typed) and the tank (`typedNumber` in `kit.js`). The pills keep `type="number"` boxes, where phones offer only Western digits.
+- **`airCheck(cfg, { unit, value })`**: `'empty'`, `'nan'` (not a number, or below 0), `'over'` (above `air.units[].max`: PM2.5 999, AQI 500, typo guards since v1.10.0) or `'ok'`. The sheet says `airNotNumber` or `airTooHigh` for the first two; the colours always work. Whether a Thai AQI can go above 500 is **[unverified]**.
+- **The share sheet for a card** (`shareImage()` in `kit.js`, used by the home check, the plan and the emergency card): the card's own text button (`copy.label`) under the hint, then `shareInviteHead` over the grid, whose copy button reads `shareCopyInvite` when a card's own text exists, else `shareCopy`.
+- **Heat today's buttons:** `hotBtnRange` "{lo}–{hi} °C", `hotBtnTop` "{lo} °C ขึ้นไป" / "{lo} °C and above"; a no-break space joins each number to "°C" in code.
+- **Dates on the pages:** `updatedOn(lang)` in the build: `<time datetime="2026-11-04">4 พ.ย. 69</time>` (Thai, the app's short Buddhist year) or "4 Nov 2026"; the sitemap's `lastmod` and `llms.txt` stay ISO.
+- **Kept together since v1.15.1–v1.15.2:** "ที่เว็บ", "คำชวน", "ขึ้นไป" (`config.json → keepTogether`, now 247 words).

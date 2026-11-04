@@ -11,6 +11,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { setModes, recommend, modeLink, activeAlert } from '../public/js/modes.js';
+import { formatHouseDate } from '../public/js/util.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
@@ -800,6 +801,9 @@ try {
     const smallP = await smallControls(page);
     await page.click('#plan-make');
     await page.waitForFunction(() => document.querySelector('#kit-img')?.naturalWidth === 1080, null, { timeout: 15000 });
+    // v1.15.2 (#103 A8): the plan's own text comes first; the grid's copy button says it copies the invitation.
+    const order = await page.evaluate(() => { const list = document.querySelector('[data-k="copylist"]'); const grid = document.querySelector('.share-grid'); return { first: !!(list && grid && (list.compareDocumentPosition(grid) & Node.DOCUMENT_POSITION_FOLLOWING)), copy: document.querySelector('[data-k="copy"]').textContent.trim() }; });
+    check('plan card: "copy the plan" comes before the share buttons, whose copy says "คัดลอกคำชวน" (v1.15.2)', order.first && order.copy.endsWith(KIT.ui.th.shareCopyInvite), JSON.stringify(order));
     await page.click('[data-k="copy"]');
     check('plan card controls >= 44 px; the card renders', !smallP.length, smallP.join(', '));
     const backLabel = (await page.textContent('#kit-back')).trim();
@@ -921,6 +925,13 @@ try {
     o = await out();
     const twice = await page.$$eval('#air-out .air-list li', (lis) => { const t = lis.map((li) => li.firstChild.textContent.trim()); return t.length - new Set(t).size; });
     check('dust: picking yellow clears the number; the at-risk lines show without ticking anyone, and no line is given twice (v1.11.0)', o.text.includes(A.levels[2].label.th) && (await page.inputValue('#air-v')) === '' && o.text.includes(KIT.ui.th.airAlso) && o.lists === 2 && !twice, o.text.slice(0, 160));
+    // v1.15.2 (#103 A14): a typed number that gives no answer says why; Thai digits read as numbers.
+    await page.click('.air-units .kit-flag:has(input[value="pm"])'); // the number box is still open from above
+    await page.fill('#air-v', 'abc');
+    const notNum = (await page.textContent('#air-out')).trim();
+    await page.fill('#air-v', '๘๐');
+    const thaiDigits = (await page.textContent('#air-out')).trim();
+    check('dust: "abc" says type a number; "๘๐" (Thai digits) gives the level for 80 (v1.15.2)', notNum === KIT.ui.th.airNotNumber && thaiDigits.includes(A.levels[A.levels.length - 1].label.th.split(' · ')[0]), `${notNum} | ${thaiDigits.slice(0, 40)}`);
     const small = await smallControls(page);
     check('dust controls >= 44 px', !small.length, small.join(', '));
     await page.click('[data-t="copy"]');
@@ -1043,6 +1054,8 @@ try {
     await page.click('.hot-level[data-v="danger"]');
     const hot = await page.evaluate(() => ({ text: document.querySelector('#hot-out').innerText, aid: document.querySelector('#hot-aid').open }));
     check('heat today: nothing before a tap; "danger" shows what everyone and the people at risk do (their heading once), and opens the heatstroke signs and first aid', before.share && before.text.includes(KIT.ui.th.hotPick.replace('👆 ', '')) && hot.text.includes(KIT.hot.levels[2].all[0].th) && hot.text.includes('42.0–51.9') && hot.aid && hot.text.split(KIT.ui.th.hotRisk).length === 2, JSON.stringify(hot).slice(0, 160));
+    const units = await page.$$eval('.hot-level small', (xs) => xs.map((x) => x.textContent));
+    check('heat today: every level button carries °C, as the answer does (v1.15.2)', units.length === KIT.hot.levels.length && units.every((x) => x.includes('°C')), units.join(' | '));
     let small = await smallControls(page);
     check('heat today controls >= 44 px', !small.length, small.join(', '));
     await page.waitForFunction(() => history.state?.brm);
@@ -1497,6 +1510,10 @@ try {
     const srcDup = [flTh, flEn, uvTh, uvEn].flatMap((h) => [...h.matchAll(/<span class="src">([\s\S]*?)<\/span><\/li>/g)].map((m) => m[1]))
       .flatMap((s) => s.split(' · ').map((g) => [...g.matchAll(/<a [^>]*>([^<]*)<\/a>/g)].map((m) => m[1]))).filter((xs) => new Set(xs).size !== xs.length);
     check('the sources under the flood and UV lines: each link of an agency has its own label', srcDup.length === 0, JSON.stringify(srcDup.slice(0, 3)));
+    // v1.15.2: a link's comma stays with it (", 2022" could start a line), and the date reads like the app's ("4 พ.ย. 69").
+    const day = STR.seo.updated.replace(/-/g, '');
+    check('pages: no source link leaves its comma to start a line, and the updated date reads like the cards (v1.15.2)',
+      [flTh, flEn, uvTh, uvEn].every((h) => !/<\/a>,\s*<a/.test(h)) && flTh.includes(`<time datetime="${STR.seo.updated}">${formatHouseDate(day, 'th')}</time>`) && flEn.includes(`<time datetime="${STR.seo.updated}">${formatHouseDate(day, 'en')}</time>`), '');
     // Arriving from ภัยรอบบ้าน at a level (its UV card links /uv#uv-<id>): the level is at the top and marked
     for (const lang of ['th', 'en']) {
       const ctx = await browser.newContext({ viewport: { width: 320, height: 568 }, userAgent: UA.line, locale: lang === 'th' ? 'th-TH' : 'en-GB' });

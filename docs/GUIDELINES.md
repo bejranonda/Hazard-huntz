@@ -386,6 +386,12 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **Outside a tool** (the start screen, a tile, a card someone else sees), a score shows only once the reader has answered something. Inside the tool, the count beside the list ("พร้อมแล้ว 0% (มี 0 จาก 11 อย่าง)") is progress and stays.
     - **A Thai read starts from the sources' notes:** prefer the agency's own phrase, change only what reads unclear, and leave a line a sister app shows (a level's first line) alone unless it is wrong; every changed shared line goes into the hand-back ([docs/10 §4](10-family.md#4-hand-back-to-ภัยรอบบ้าน-paste-into-a-thai-risk-session)).
     - **A reworded Thai line moves its break:** measure it at 320, 360, 393 and 412 px after the change, and keep a phrase that splits badly together (`keepTogether`, rule 68), as "ที่เว็บ" in v1.15.1.
+106. **Typed numbers, units and link lists read the way people write.** Visitor audit 5 found a dust box that said nothing for "๘๐", heat buttons without °C, two copy buttons that looked the same and a comma starting a line (F206–F210). Since v1.15.2:
+    - **A typed number goes through `readNumber()`** (`kitplan.js`): Thai digits, "1,500" and "37,5". A box that can't answer says why ("type a number", "more than this box takes"), never the empty-state hint.
+    - **A button that stands for a range shows its unit,** as the answer does, and a number keeps its unit on one line (`\u00a0` between them in the code, never inside Thai text).
+    - **Two buttons on one sheet never share a label:** the card's own text first, by its name ("คัดลอกแผนเป็นข้อความ"); the invitation under its own heading ("คัดลอกคำชวน").
+    - **In a list of links, each separator stays with the link before it** (`srcGroups()`): an inline-block link lets a line break on either side of it.
+    - **Pages date themselves like the app** (`formatHouseDate()`), with ISO kept in `<time datetime>`, the sitemap and `llms.txt`.
 
 ## 9. Working with AI assistants
 

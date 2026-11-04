@@ -4,14 +4,23 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.15.2] — 2026-11-04
+
+**What visitor audit 5 left, and the owner's phone.** The AI-ready leftovers of #103 and two line breaks, one seen on the owner's Android phone. No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F205–F210](docs/KNOWN_ISSUES.md#in-v1152-4-nov-2026), [ROADMAP N36](docs/ROADMAP.md#n36-what-visitor-audit-5-left-v1152))
+
 ### Fixed
 
-- **The ภัยรอบบ้าน link's line** no longer breaks inside "ที่เว็บ" on phones under 393 px wide ("…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน"; `keepTogether`), seen on the owner's Android phone ([F205](docs/KNOWN_ISSUES.md#after-v1151-4-nov-2026-unreleased)).
+- **The ภัยรอบบ้าน link's line** no longer breaks inside "ที่เว็บ" on phones under 393 px wide ("…ทุกตำบล / ที่เว็บ ภัยรอบบ้าน"; `keepTogether`), seen on the owner's Android phone (F205).
+- **A card's share sheet** (the plan, the emergency card, the home check) puts the card's own text first ("📋 คัดลอกแผนเป็นข้อความ"), then "ชวนบ้านอื่นมาทำด้วย" over the share buttons, whose copy now says "คัดลอกคำชวน" (A8, F206).
+- **Heat today's level buttons** carry °C, as the answer does ("33.0–41.9 °C", "52.0 °C ขึ้นไป") (A13, F207).
+- **Typed numbers** read Thai digits ("๘๐") and both commas, in dust today, water and the tank; the dust box says why a number gives no answer ("พิมพ์เป็นตัวเลข เช่น 45…", "ตัวเลขเกินที่ช่องนี้รับได้ (999)…") (A14, F208).
+- **The pages' date** reads like the app's cards ("ปรับปรุงล่าสุด: 4 พ.ย. 69", "4 Nov 2026"), not ISO (F209).
+- **A source link's comma** stays on the line with its link (", 2022" had started a line at 320 px) (F210).
 
 ### Docs
 
 - **The owner's phone screenshots** (Android, Chrome, v1.15.0 and v1.15.1) recorded: the start screen and the home check read as designed; the tile's "0%" fix confirmed (KNOWN_ISSUES #3, test checklist row 93).
-- GUIDELINES rule 105 (words true at their edge, no score before an answer, a Thai read from the agency's words, measure a reworded line's break); LESSONS C28; KNOWLEDGE §39.1; APPROACH §42 step 7; HANDOFF, README, AGENTS.
+- GUIDELINES rules 105 (words true at their edge, no score before an answer, a Thai read from the agency's words, measure a reworded line's break) and 106 (typed numbers, units on buttons, link lists); LESSONS C28 and E8 (again); KNOWLEDGE §39.1 and §40; APPROACH §42 step 7 and §43; ROADMAP N36; test checklist row 94; HANDOFF, README, AGENTS.
 
 ## [1.15.1] — 2026-11-04
 

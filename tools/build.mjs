@@ -14,6 +14,7 @@ import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { setModes, recommend, modeLink } from '../public/js/modes.js';
+import { formatHouseDate } from '../public/js/util.js';
 import { carouselSets, carouselHash } from './carousel.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -807,6 +808,8 @@ const write = (rel, html) => {
 // index.html keeps its own title; only its OG block is refreshed
 const seo = strings.seo;
 const seoUpdated = seo.updated;
+// The pages say the date the way the app's cards do ("4 พ.ย. 69", "4 Nov 2026"); <time> keeps ISO (v1.15.2, #103).
+const updatedOn = (lang) => `<time datetime="${seoUpdated}">${formatHouseDate(seoUpdated.replace(/-/g, ''), lang)}</time>`;
 const gameDesc = indexHtml.match(/<meta name="description" content="([^"]*)">/)?.[1] || og.defaultDesc;
 // Structured data: lets search engines and AI assistants recognise the game as
 // one entity (Thai + English names, free, web-based, about floods).
@@ -1014,7 +1017,10 @@ const srcGroups = (ids, lang) => {
   return [...groups].map(([key, gIds]) => {
     const [ag, news] = key.split('\u0000');
     const name = `${lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag}${news ? X.srcNews : ''}`;
-    return `${esc(name)}: ${srcDates(gIds, lang).map((label, i) => `<a href="${esc(sources[gIds[i]].url)}">${esc(label)}</a>`).join(', ')}`;
+    // Each link keeps its comma: the links are 44 px inline blocks, and a break may fall on
+    // either side of one, so ", 2022" could start a line (the owner's 320 px view, v1.15.2).
+    const links = srcDates(gIds, lang).map((label, i) => `<a href="${esc(sources[gIds[i]].url)}">${esc(label)}</a>`);
+    return `${esc(name)}: ${links.map((a, i) => (i < links.length - 1 ? `<span class="nw">${a},</span>` : a)).join(' ')}`;
   }).join(' · ');
 };
 const kitSrcSpan = (xs, lang) => {
@@ -1232,7 +1238,7 @@ writeSeo('learn.html', seoPage({
 <p>${esc(S.learnIntro)}</p>
 <p class="en" lang="en">${esc(E.learnIntro)}</p>
 <p><a class="cta" href="/">${esc(S.playCta)}</a></p>
-<p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<p class="src">${esc(S.updated)}: ${updatedOn('th')}</p>
 ${hazardChips('th')}
 ${topicIndex('th')}
 ${sectionsTh(MODE_IDS)}
@@ -1282,7 +1288,7 @@ const learnEnHtml = seoPage({
 <p>${esc(E.learnIntro)}</p>
 <p class="tip">${esc(E.intlNote)}</p>
 <p><a class="cta" href="${EN}/">${esc(E.playCta)}</a></p>
-<p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<p class="src">${esc(E.updated)}: ${updatedOn('en')}</p>
 ${hazardChips('en')}
 ${topicIndex('en')}
 ${sectionsEn(MODE_IDS)}
@@ -1340,14 +1346,14 @@ ${riskLine('th')}
 ${checkLinks('th', h.modes)}
 ${toolLinks('th', h)}
 ${agencyLinks('th', h)}
-<p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<p class="src">${esc(S.updated)}: ${updatedOn('th')}</p>
 ${sectionsTh(h.modes)}` : `${checklistsTh(lists, 2, false)}
 ${picture('th')}
 <p>${esc(S[`hazard${H}Intro`])}</p>
 ${riskLine('th')}
 ${toolLinks('th', h)}
 ${agencyLinks('th', h)}
-<p class="src">${esc(S.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
+<p class="src">${esc(S.updated)}: ${updatedOn('th')}</p>`}
 <h2 id="helplines">${esc(S.helplines)}</h2>
 ${helplineHtml}
 ${playLinks('th', h.modes)}
@@ -1376,7 +1382,7 @@ ${riskLine('en')}
 ${checkLinks('en', h.modes)}
 ${toolLinks('en', h)}
 ${agencyLinks('en', h)}
-<p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<p class="src">${esc(E.updated)}: ${updatedOn('en')}</p>
 ${sectionsEn(h.modes)}` : `${checklistsEn(lists, 2, false)}
 ${picture('en')}
 <p>${esc(E[`hazard${H}Intro`])}</p>
@@ -1384,7 +1390,7 @@ ${picture('en')}
 ${riskLine('en')}
 ${toolLinks('en', h)}
 ${agencyLinks('en', h)}
-<p class="src">${esc(E.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>`}
+<p class="src">${esc(E.updated)}: ${updatedOn('en')}</p>`}
 <h2 id="helplines">${esc(E.helplines)}</h2>
 ${helplineEn}
 ${playLinks('en', h.modes)}
@@ -1423,7 +1429,7 @@ ${(U.notes || []).length ? `<ul>\n${U.notes.map((x) => `<li>${kitText(x, lang)}<
 ${U.link ? `<p class="check"><a href="${esc(U.link.url)}" rel="noopener">${esc(U.link.icon || '')} ${esc(L2(U.link.label, lang))}</a></p>` : ''}
 ${heat ? `<p class="check"><a href="${pre}/${heat.slug}">📋 ${esc(L2(checklists.heat.title, lang))}</a></p>` : ''}
 <p class="check"><a href="${pre}/hot">${esc(strings[lang].hubHot)}</a></p>
-<p class="src">${esc(X.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<p class="src">${esc(X.updated)}: ${updatedOn(lang)}</p>
 <h2 id="helplines">${esc(X.helplines)}</h2>
 ${lang === 'en' ? helplineEn : helplineHtml}
 ${hazardChips(lang)}
@@ -1585,7 +1591,7 @@ ${rows}
 </ol>
 <p class="play"><a class="cta" href="${pre}/?open=${tool}">${esc(X[`${tool}PageCta`])}</a></p>
 <p class="check"><a href="${pre}/${nextTool[tool]}">${esc(strings[lang][`hub${capM(nextTool[tool])}`])}</a></p>
-<p class="src">${esc(X.updated)}: <time datetime="${seoUpdated}">${seoUpdated}</time></p>
+<p class="src">${esc(X.updated)}: ${updatedOn(lang)}</p>
 <h2 id="helplines">${esc(X.helplines)}</h2>
 ${lang === 'en' ? helplineEn : helplineHtml}
 ${hazardChips(lang)}

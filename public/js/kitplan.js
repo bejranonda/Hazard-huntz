@@ -86,13 +86,30 @@ export function medDays({ left, perDay, target }) {
 // people at risk and people with a long-term illness should do (content/kit.json
 // → air). unit: 'pm' (µg/m³, one decimal, rounded half up as the notice says) or
 // 'aqi' (Thailand's); colour: a level id picked instead of a number.
+// A number typed by hand (v1.15.2): spaces dropped, Thai digits ("๘๐") read as 80,
+// "1,500" is fifteen hundred, "1,5" and "1.5" are one and a half. NaN if it isn't a number.
+const THAI_DIGITS = '๐๑๒๓๔๕๖๗๘๙';
+export function readNumber(x) {
+  if (typeof x === 'number') return x;
+  const v = String(x ?? '').replace(/\s/g, '').replace(/[๐-๙]/g, (d) => String(THAI_DIGITS.indexOf(d)));
+  if (v === '') return NaN;
+  return Number(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v) ? v.replace(/,/g, '') : v.replace(',', '.'));
+}
+
+// Why a typed reading gives no level: 'empty', 'nan' (not a number, or below 0),
+// 'over' (above the box's limit, kit.json → air.units[].max) or 'ok' (v1.15.2, #103 A14).
+export function airCheck(cfg, { unit = 'pm', value = null } = {}) {
+  const u = cfg.units.find((x) => x.id === unit);
+  if (!u || value == null || String(value).trim() === '') return 'empty';
+  const n = readNumber(value);
+  if (!Number.isFinite(n) || n < 0) return 'nan';
+  return n > u.max ? 'over' : 'ok';
+}
+
 export function airLevel(cfg, { unit = 'pm', value = null, colour = null } = {}) {
   if (colour) return cfg.levels.find((l) => l.id === colour) || null;
-  const u = cfg.units.find((x) => x.id === unit);
-  const raw = typeof value === 'string' ? value.trim().replace(',', '.') : value;
-  if (!u || raw === '' || raw == null) return null;
-  const n = Number(raw);
-  if (!Number.isFinite(n) || n < 0 || n > u.max) return null;
+  if (airCheck(cfg, { unit, value }) !== 'ok') return null;
+  const n = readNumber(value);
   const v = unit === 'pm' ? Math.round(n * 10 + 1e-9) / 10 : Math.round(n);
   return cfg.levels.find((l) => l[unit] == null || v <= l[unit]) || null;
 }
@@ -176,7 +193,7 @@ export function hotAdvice(H, id) {
 // days at the full amount, and how much more makes the target.
 export function waterDays(W, { counts = {}, other = 0, people = 1, per = 3, target = 3 } = {}) {
   const ml = W.sizes.reduce((sum, s) => sum + Math.max(0, Math.floor(Number(counts[s.id]) || 0)) * s.ml, 0);
-  const extra = Math.max(0, Number(String(other).replace(',', '.')) || 0);
+  const extra = Math.max(0, readNumber(other) || 0);
   const litres = Math.round((ml / 1000 + extra) * 10) / 10;
   const n = Math.max(1, Math.round(Number(people) || 1));
   const perDay = per * n;

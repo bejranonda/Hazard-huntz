@@ -12,7 +12,7 @@ import { Run } from '../public/js/run.js';
 import { guessLang, langPath, pathLang, isBot } from '../public/js/content.js';
 import { setModes, setGuides, propFor, modeList, codeOf, idOfCode, seasonalMode, mk, switchOn, recommend, modeLink, activeAlert } from '../public/js/modes.js';
 import { bookPool, correctIds, mergeLearned, topicProgress, completedTopics } from '../public/js/collection.js';
-import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice, maskAdvice, hotAdvice, waterDays, tankDose, bagList, safeMessage } from '../public/js/kitplan.js';
+import { kitPlan, kitScore, kitMissing, fridgePlan, fridgeFoods, medDays, airLevel, airAdvice, airCheck, readNumber, maskAdvice, hotAdvice, waterDays, tankDose, bagList, safeMessage } from '../public/js/kitplan.js';
 import { wrapText } from '../public/js/cards.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -724,6 +724,21 @@ test('medicine: days the pills last and how many more make the home check\'s tar
   assert.equal(medDays({ left: 5, perDay: 0, target }), null);
   assert.equal(medDays({ left: -1, perDay: 1, target }), null);
   assert.equal(medDays({ left: 'abc', perDay: 1, target }), null);
+});
+
+test('a number typed by hand: Thai digits, commas, and why dust today gives no answer (v1.15.2)', () => {
+  assert.equal(readNumber('๘๐'), 80, 'Thai digits read as numbers');
+  assert.equal(readNumber(' 37,5 '), 37.5, '"37,5" is thirty-seven and a half');
+  assert.equal(readNumber('1,500'), 1500, '"1,500" is fifteen hundred');
+  assert.ok(Number.isNaN(readNumber('abc')) && Number.isNaN(readNumber('')), 'not a number');
+  const A = load('kit').air;
+  assert.equal(airCheck(A, { unit: 'pm', value: '' }), 'empty');
+  assert.equal(airCheck(A, { unit: 'pm', value: 'abc' }), 'nan');
+  assert.equal(airCheck(A, { unit: 'pm', value: '-5' }), 'nan', 'below 0 is not a reading');
+  assert.equal(airCheck(A, { unit: 'aqi', value: '1000' }), 'over');
+  assert.equal(airCheck(A, { unit: 'pm', value: '๘๐' }), 'ok');
+  assert.equal(airLevel(A, { unit: 'pm', value: '๘๐' }).id, airLevel(A, { unit: 'pm', value: '80' }).id, 'Thai digits give the same level');
+  for (const [lang, ui] of Object.entries(load('kit').ui)) for (const k of ['airNotNumber', 'airTooHigh', 'hotBtnRange', 'hotBtnTop', 'shareInviteHead', 'shareCopyInvite']) assert.ok(ui[k], `kit.json ui.${lang}.${k}`);
 });
 
 test('dust today: the PCD bands to the decimal, AQI too, and who gets which lines (v1.10.0)', () => {

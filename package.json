@@ -25,7 +25,9 @@
     "deploy": "node tools/build.mjs && npx wrangler@latest pages deploy public --project-name=baanrodmai"
   },
   "devDependencies": {
-    "playwright-core": "^1.56.1"
+    "jsqr": "1.4.0",
+    "playwright-core": "^1.56.1",
+    "qrcode-generator": "1.4.4"
   },
   "engines": {
     "node": ">=18"

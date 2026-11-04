@@ -1570,6 +1570,34 @@ try {
     await ctx.close();
   }
 
+  // v1.17.0: the print pack, one guide per A4 page with its QR code; the app's own printed guide waits for its code.
+  {
+    const { ctx, page } = await newPage({ width: 390, height: 800 });
+    const pages = {};
+    for (const pre of ['', '/en']) {
+      await page.goto(`${BASE}${pre}/print`, { waitUntil: 'networkidle' });
+      await page.emulateMedia({ media: 'print' });
+      pages[pre || 'th'] = await page.evaluate(() => {
+        const mm = 96 / 25.4;
+        const pp = [...document.querySelectorAll('.pp')];
+        return { n: pp.length, qr: document.querySelectorAll('.pp-qr svg').length, tallest: Math.round(Math.max(...pp.map((x) => x.getBoundingClientRect().height)) / mm), hidden: getComputedStyle(document.querySelector('.no-print')).display === 'none' };
+      });
+      await page.emulateMedia({ media: 'screen' });
+    }
+    const n = CFG.guides.length;
+    check('print pack (/print, /en/print): one guide per A4 page, each with its QR code, every guide under the page height (v1.17.0)',
+      Object.values(pages).every((x) => x.n === n && x.qr === n && x.tallest <= 273 && x.hidden), JSON.stringify(pages));
+    await page.addInitScript(() => { window.__printed = []; window.print = () => { const img = document.querySelector('#print-area .p-qr'); window.__printed.push({ src: img?.getAttribute('src'), loaded: !!(img && img.complete && img.naturalWidth > 0) }); }; });
+    await page.goto(`${BASE}/?open=guide`, { waitUntil: 'networkidle' });
+    await page.click('.guide-tile >> nth=0');
+    await page.waitForSelector('#cl-print');
+    await page.click('#cl-print');
+    await page.waitForFunction(() => window.__printed?.length > 0, null, { timeout: 5000 });
+    const pr = await page.evaluate(() => window.__printed[0]);
+    check('a guide printed from the app carries its QR code, loaded before the print dialog opens (v1.17.0)', /^\/qr\/checklist-[a-z]+\.svg$/.test(pr.src || '') && pr.loaded, JSON.stringify(pr));
+    await ctx.close();
+  }
+
   check('analytics beacons received', beacons > 0, String(beacons));
 } finally {
   await browser.close();

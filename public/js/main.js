@@ -1190,6 +1190,9 @@ async function openChecklist(mode, from = '') {
     track('print', { mode, label: 'guide' });
     printList({
       brand: `${t('logoA')}${t('logoB')}`,
+      // the guide's QR code, to its page in this language (v1.17.0)
+      qr: `/qr/${pre ? 'en/' : ''}checklist-${mode}.svg`,
+      qrAlt: t('printScan'),
       title: L(list.title),
       sections: sections.map((sec) => ({ head: sec.head, items: sec.items.map((it) => ({ text: L(it), note: it.verify === 'partial' ? t('partialItem') : '' })) })),
       foot: [

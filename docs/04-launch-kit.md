@@ -377,6 +377,14 @@ These are Thai drafts for the owner's language check ([ROADMAP L5](ROADMAP.md#l5
 
 Rules for these posts: as above; no photos of real damage or of people hurt; "I'm safe" asks people to send it to the family themselves, never to post where they are in public.
 
+### The print pack for health volunteers and village heads (v1.17.0)
+
+`https://baanrodmai.autobahn.bot/print` (and `/en/print`): the nine guides on A4, one per page, each with a QR code to its page. Open it in Chrome or Safari (not inside LINE), tap "🖨️ พิมพ์ทั้ง 9 หน้า", or choose pages in the print window. Suggested message to an อสม. group:
+
+> ชุดคู่มือ "ต้องทำอะไร เมื่อเกิดภัย" 9 เรื่อง พิมพ์ A4 หน้าละเรื่อง ติดบอร์ดหมู่บ้านหรือแจกบ้านที่มีผู้สูงอายุได้เลยครับ ทุกหน้ามีเบอร์ช่วยเหลือ ที่มา และคิวอาร์โค้ดไปอ่านฉบับเต็ม 👉 https://baanrodmai.autobahn.bot/print (เปิดในเบราว์เซอร์ก่อนกดพิมพ์)
+
+Before handing out a batch, print one page and scan its code with a phone (row 96 of the test checklist).
+
 ### When something happens: the 5-minute playbook
 
 Hazards don't keep to a calendar: a quake abroad, a storm warning, a heatwave or a flash flood can be the topic of the day without notice. Every hazard has a "what to do" guide, a picture and a page, so the answer takes minutes, not a release ([KNOWLEDGE §29](KNOWLEDGE.md#29-tools-first-a-guide-for-every-hazard-v190)).

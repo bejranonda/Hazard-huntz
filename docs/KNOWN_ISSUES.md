@@ -82,7 +82,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 81 | [Larger text (ก+) covers the start screen and the sheets only, and sizes ignore the phone's text setting](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting) | Fixed in v1.16.0 ([F212, F213](#in-v1160-4-nov-2026)); real phones [unverified] (#3) | — |
 | 82 | ["power: Bangkok area" stands for MEA's three provinces](#82-power-bangkok-area-stands-for-meas-three-provinces) | Owner (the English read) | Low |
 | 83 | [Leftovers of visitor audit 3](#83-leftovers-of-visitor-audit-3) | Open (AI-ready, two owner decisions) | Low |
-| 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner) | — |
+| 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner); the print pack built in v1.17.0 ([F215](#in-v1170-4-nov-2026)), text in `rem` in v1.16.0 | — |
 | 86 | [Air4Thai's server sends the wrong certificate chain](#86-air4thais-server-sends-the-wrong-certificate-chain) | Owner (phone test; tell the PCD) | Medium |
 | 87 | [The mask tool's lines for children, pregnancy and heart or lung disease need a doctor's read](#87-the-mask-tools-lines-for-children-pregnancy-and-heart-or-lung-disease-need-a-doctors-read) | Owner | **Medium (review before posting `/mask` widely)** |
 | 88 | [Agency links can move; they are checked by hand, monthly](#88-agency-links-can-move-they-are-checked-by-hand-monthly) | By design; Owner: run `npm run links` monthly | Low |
@@ -130,6 +130,7 @@ What a headless test **cannot** show:
 - since v1.10.0 and v1.10.1: whether the fridge's count goes on after LINE is closed, now started by tapping a time ("3 ชม."), with the "⏱️ ไฟดับมาแล้ว …" line and "💡 ไฟมาแล้ว" (F93); whether an older relative reads the cards and the dust tool's colour-first screen without help; and whether the number box behind "รู้ตัวเลข?" opens and shows the number keyboard inside LINE (rows 64–65)
 - since v1.11.0 (rows 67–75): whether the fridge's food lists read clearly at 3 h and at 6 h on a real screen, and whether "💡 ไฟมาแล้ว" keeps the answer after LINE is closed; whether the "🕘 จำได้ว่าไฟดับตอนกี่โมง?" time box opens the phone's time picker inside LINE; the medicine and breast-milk ticks; whether "ก+" enlarges the start screen and the sheets inside LINE and on an iPhone (CSS `zoom`, [#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)); whether "📋 คัดลอกแผนเป็นข้อความ" and "🛒 คัดลอกรายการที่ยังขาด" put the text on the clipboard inside LINE; the named numbers on a guide and on its picture in a chat; dust today's at-risk lines with no ticks; and how long a Thai hazard page now is on a phone. The walk ran LINE's user agent in headless Chromium, which can't show any of these
 
+- **Since v1.17.0:** whether "🖨️ พิมพ์ทั้ง 9 หน้า" prints from a phone (Chrome and Safari; inside LINE the page says to open the browser first), and whether a phone's camera and LINE's own QR scanner read the printed codes (row 96).
 - **Since v1.16.0:** whether the phone's own text size reaches the page: Chrome's text scaling and Samsung Internet's text size on Android, LINE's in-app browser (its text zoom), and on iOS only Safari's "aA" page zoom (row 95); the app's sizes are in `rem` now, so a browser that uses its default size applies it ([#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)).
 - **First real-phone screenshots (3–4 Nov 2026):** the owner sent the start screen of v1.15.0 and of v1.15.1 and the home check, from an Android phone in Chrome (not inside LINE). They read as designed, apart from "บ้านเราพร้อม 0%" after a first look (F202) and one line break (F205), both fixed. This is not the matrix: no iPhone, no in-app browser, no sharing yet.
 
@@ -1019,10 +1020,11 @@ Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent prepa
 
 The audience research of 20 Oct 2026 ([07-audience.md](07-audience.md)) found that the person who forwards the app is often not the one who needs it, that older people forward pictures and dislike links, that about a third of people over 60 aren't online, and that most links open inside LINE's or Facebook's browser. v1.11.0 built the trust line and the ก+ button from it ([F118](#in-v1110-20-oct-2026), [#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)). Not built:
 
-- **A print pack for อสม. and village heads:** A4, one guide per page, with a QR code, the date and the sources (ties in with [ROADMAP P5b](ROADMAP.md#p5-share-loop-ideas-not-built-yet)).
+- ~~**A print pack for อสม. and village heads:** A4, one guide per page, with a QR code, the date and the sources~~ Built in v1.17.0: `/print` and `/en/print` ([F215](#in-v1170-4-nov-2026)).
+- **The sources a printed page lists** are agencies only; the QR code leads to the page with each line's own source.
 - **Burmese pictures of the top three guides** (before the water, after the water, house fire), with a native translator, then Khmer and Lao ([ROADMAP P4](ROADMAP.md#p4-more-languages)).
 - **A looped Thai font for body text** (Sarabun or Noto Sans Thai Looped, subset), tested with real older readers before any change; watch the 500 KB budget.
-- **Text sizes in `rem`** ([#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)).
+- ~~**Text sizes in `rem`**~~ Done in v1.16.0 ([#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)).
 - **A second household in the home check** ("บ้านพ่อแม่"), so the organiser can size water and medicine for the parents' home and send that card; nothing leaves the phone.
 - **A regional posting calendar** in [04-launch-kit](04-launch-kit.md#5-relaunch-every-rainy-season) (a TODO row is there): the South's floods in November, while Bangkok gets dust.
 - **A `?src=` channel code and an in-app-browser bucket** on `view`, counting channel types, never people. **The owner decides:** both are new data, and the guidelines say no user agent is stored ([05-metrics](05-metrics.md#larger-text-and-the-real-readers-v1110)).
@@ -1127,6 +1129,12 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.17.0 (4 Nov 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F215 | **No way to put the guides on paper with a way back to them** (#84, ROADMAP P5b): a printed guide named its address in words only, and the nine guides could only be printed one by one from the app | `/print` and `/en/print`: the nine guides, one per A4 page (the screen's header hidden in print), each with the date, its helplines and whom they reach, its sources and a QR code. The codes are drawn at build time (`qrcode-generator`, a dev dependency; nothing new runs on the phone) into `/qr/`, and lead to the guide's hazard page, which opens without the app and gives each line its source (`/flood#cl-prepare`, `/landslide`). The app's own printed guide carries its code too, and waits up to 2 s for it to load. A game guide's sources line lists the agencies behind its mode's lessons (its lines have none of their own). Unit test: every code decoded by an independent decoder (`jsqr`) reads back the exact address; checked again from the printed PDF at 150 dpi (18 of 18). Smoke checks: nine pages each under the A4 height; the printed guide's code loaded before the dialog |
 
 ### In v1.16.0 (4 Nov 2026)
 

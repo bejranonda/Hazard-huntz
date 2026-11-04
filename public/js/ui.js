@@ -166,7 +166,9 @@ export function setLoading(on) {
 export const canPrint = () => typeof window.print === 'function' && !inAppBrowser();
 
 // d: { title, sub, sections: [{ head, items: [{ text, note }] }], foot: [lines] }
-export function printList(d) {
+// d.qr (v1.17.0): a guide's QR code (/qr/…svg, drawn by the build), top right; the print
+// waits until it has loaded (at most 2 s), or the paper would come out without it.
+export async function printList(d) {
   let el = document.getElementById('print-area');
   if (!el) {
     el = document.createElement('div');
@@ -174,11 +176,14 @@ export function printList(d) {
     document.body.append(el);
   }
   el.innerHTML = `
+    ${d.qr ? `<img class="p-qr" src="${esc(d.qr)}" alt="${esc(d.qrAlt || '')}" width="120" height="120">` : ''}
     <p class="p-brand">${esc(d.brand || '')}</p>
     <h1>${esc(d.title)}</h1>
     ${d.sub ? `<p class="p-sub">${esc(d.sub)}</p>` : ''}
     ${d.sections.map((s) => `${s.head ? `<h2>${esc(s.head)}</h2>` : ''}
     <ul>${s.items.map((it) => `<li><span class="p-box" aria-hidden="true"></span><span>${esc(it.text)}${it.note ? `<small>${esc(it.note)}</small>` : ''}</span></li>`).join('')}</ul>`).join('')}
     ${(d.foot || []).map((line) => `<p class="p-foot">${esc(line)}</p>`).join('')}`;
+  const img = el.querySelector('.p-qr');
+  if (img) await Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 2000))]);
   window.print();
 }

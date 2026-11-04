@@ -1065,6 +1065,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
   #print-area .p-box { flex: 0 0 5mm; height: 5mm; margin-top: 1mm; border: 0.5mm solid #000; border-radius: 1mm; }
   #print-area small { display: block; color: #555; font-size: 9.5pt; }
   #print-area .p-foot { margin: 3mm 0 0; font-size: 10pt; color: #333; }
+  #print-area .p-qr { float: right; width: 32mm; height: 32mm; margin: 0 0 2mm 4mm; }
 }
 
 /* larger text (v1.11.0, the ก+ button): the start screen and the sheets at 115 %; the

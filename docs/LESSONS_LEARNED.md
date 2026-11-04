@@ -782,3 +782,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the first choice-sheet probe reported every sheet as scrolling by 0 px: it measured while the sheet was still sliding in. The next run, with a made-up heading, said 2 of 82. Only the run with the real heading and pill, after the animation, matched the recorded 20 of 82.
 - *Do this:* finish animations (`getAnimations().forEach(a => a.finish())`) before measuring, build the probe from the app's own pieces, and trust it only once it reproduces a number already recorded.
 - *Encoded in:* [APPROACH §44](APPROACH_AND_METHOD.md#44-reproduce-the-recorded-number-first-then-prove-no-change-v1160), the smoke check on `p-meds`.
+
+**D32. A test runner that doesn't wait for async tests passes them unread.**
+
+- *What happened:* the first QR test was `async` (it imported the decoder). `tests/run.mjs` calls each test without `await`, so the test was counted as passed before it ran; a failure would only have surfaced as a stray unhandled rejection.
+- *Do this:* keep unit tests synchronous (`createRequire` for a CommonJS package), or make the runner await; and prove a new test can fail by breaking its input once (here, twenty runs removed from a code).
+- *Encoded in:* the QR test in `tests/run.mjs`, [APPROACH §45](APPROACH_AND_METHOD.md#45-check-a-printed-artefact-as-paper-v1170).

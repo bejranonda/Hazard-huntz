@@ -1,6 +1,7 @@
 // Unit tests for the game rules (no browser needed): node tests/run.mjs
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateHouse, playableRooms, MIN_HIT } from '../public/js/house.js';
@@ -938,6 +939,39 @@ test('link previews show no helpline number without whom it reaches (v1.16.0, #6
       if (typeof v !== 'string') continue;
       for (const n of numbers) assert.ok(!new RegExp(`(^|\\D)${n}(\\D|$)`).test(v), `strings.${block}.${k} shows ${n} on a preview, where its name can't be read`);
     }
+  }
+});
+
+test('every QR code in the print pack reads back its guide\'s exact address (v1.17.0)', () => {
+  const jsQR = createRequire(import.meta.url)('jsqr');
+  const C = load('config');
+  const site = C.siteUrl.replace(/\/$/, '');
+  const guides = C.guides.map((g) => g.id);
+  for (const lang of ['th', 'en']) {
+    for (const id of guides) {
+      const svg = fs.readFileSync(path.join(ROOT, `public/qr/${lang === 'en' ? 'en/' : ''}checklist-${id}.svg`), 'utf8');
+      // draw the file's own runs into pixels (4 px a module), then let an independent decoder read it
+      const n = Number(svg.match(/viewBox="0 0 (\d+) /)[1]);
+      const px = 4, w = n * px;
+      const data = new Uint8ClampedArray(w * w * 4).fill(255);
+      for (const [, x, y, len] of svg.matchAll(/M(\d+) (\d+)h(\d+)v1h-\d+z/g)) {
+        for (let dy = 0; dy < px; dy++) for (let dx = 0; dx < Number(len) * px; dx++) {
+          const i = ((Number(y) * px + dy) * w + Number(x) * px + dx) * 4;
+          data[i] = data[i + 1] = data[i + 2] = 0;
+        }
+      }
+      const code = jsQR(data, w, w);
+      // the guide's hazard page: a game guide's list on it, else the page that is the guide
+      const g = C.guides.find((x) => x.id === id);
+      const want = `${site}${lang === 'en' ? '/en' : ''}/${C.hazards[g.hazard].slug}${C.modes.some((m) => m.id === id) ? `#cl-${id}` : ''}`;
+      assert.equal(code?.data, want, `qr ${lang} ${id}`);
+    }
+  }
+  for (const lang of ['th', 'en']) {
+    const html = fs.readFileSync(path.join(ROOT, `public/${lang === 'en' ? 'en/' : ''}print.html`), 'utf8');
+    assert.equal((html.match(/<section class="pp"/g) || []).length, guides.length, `${lang} print pack: one page per guide`);
+    assert.equal((html.match(/<svg /g) || []).length, guides.length, `${lang} print pack: one QR code per guide`);
+    assert.ok(html.includes('noindex') && html.includes('@page{size:A4'), `${lang} print pack: noindex, A4`);
   }
 });
 

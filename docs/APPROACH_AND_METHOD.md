@@ -597,3 +597,11 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 3. **For a sweeping change, prove "nothing moved".** Converting 174 sizes to `rem` should change nothing at the normal setting. 28 screenshots were taken before and after and compared pixel by pixel; differences were inspected, and one shown to vary between two runs of the same code.
 4. **Then test the new setting everywhere it reaches.** 125 % and 150 % on all 64 pages and the app's screens found a layout bug that had been live at 1 px for weeks (the ⚠️ note) and the tiles' clipping; both were fixed before release, and the round was deliberately kept in `px`.
 5. **Name what the browser can't show.** How each phone passes its text setting to a page is not something headless Chromium can prove; it is in KNOWN_ISSUES #3 and row 95, not claimed.
+
+## 45. Check a printed artefact as paper (v1.17.0)
+
+1. **Pick the paper reader's task first:** a volunteer prints nine pages and pins or hands them out; a reader scans a code to get the sources. Every design choice served that: one guide per page, large type, the code leading to a page that opens without the app.
+2. **Generate, then decode independently.** The build draws the codes with one library; the tests decode them with another. A sabotaged copy (twenty runs removed) was used once to prove the test fails.
+3. **Print to PDF and look.** The first PDF had an empty sources line on every game guide and used half the page at 12 pt; both were visible only on the printed page, not in the HTML.
+4. **Decode from the paper's pixels.** The PDF was rendered at 150 dpi and every code decoded from the image, in page order, so a code can't sit on the wrong guide.
+5. **Say what only a real printer and phone can show** (row 96), and don't claim it.

@@ -99,7 +99,7 @@ From now on:
 ## Option B: Wrangler direct upload (from your computer)
 
 ```bash
-npm install                                   # playwright-core, only for images/tests
+npm install                                   # dev only: playwright-core (images/tests), qrcode-generator (the print pack's QR codes, v1.17.0), jsqr (decodes them in npm test)
 npx wrangler@latest login
 npx wrangler@latest pages project create baanrodmai --production-branch=main
 SITE_URL=https://baanrodmai.pages.dev node tools/build.mjs

@@ -69,6 +69,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | N35 | [The Thai read of the shared lines (v1.15.1)](#n35-the-thai-read-of-the-shared-lines-v1151) | AI-ready (the owner's go-ahead) | Done (4 Nov 2026, v1.15.1); ภัยรอบบ้าน's copy waits for the hand-back |
 | N36 | [What visitor audit 5 left (v1.15.2)](#n36-what-visitor-audit-5-left-v1152) | AI-ready | Done (4 Nov 2026, v1.15.2); only A5, ภัยรอบบ้าน's link, is left in #103 |
 | N37 | [Text that follows the phone (v1.16.0)](#n37-text-that-follows-the-phone-v1160) | AI-ready | Done (4 Nov 2026, v1.16.0); #68, #73 and #81 closed; real phones in row 95 |
+| N38 | [A print pack with QR codes (v1.17.0)](#n38-a-print-pack-with-qr-codes-v1170) | AI-ready | Done (4 Nov 2026, v1.17.0); a real printer and a real scan in row 96 |
 | N33 | [Water off the hills, for ภัยรอบบ้าน (v1.14.3)](#n33-water-off-the-hills-for-ภัยรอบบ้าน-v1143) | AI-ready | Done (3 Nov 2026, v1.14.3); ภัยรอบบ้าน wires `flood.flash`; the line waits for DMR's own words (#99) |
 | N32 | [FloodWatch's review (v1.14.2)](#n32-floodwatchs-review-v1142) | AI-ready | Done (3 Nov 2026, v1.14.2); four ⚠️ parts wait for DDPM's own pages (#99), FloodWatch's closing notice is the owner's |
 | N31 | [Arriving from ภัยรอบบ้าน (v1.14.1)](#n31-arriving-from-ภัยรอบบ้าน-v1141) | AI-ready | Done (2 Nov 2026, v1.14.1); the phone row 91 is the owner's; FloodWatch answered the hand-back (N32) |
@@ -681,6 +682,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **What:** English choice sheets that scrolled at 320 × 568 (#73, N20's leftover), text sizes in `px` that ignored the browser's setting (#81, N23's leftover), and the guides' previews with bare numbers at 8 px (#68).
 - **How:** a probe for each, run before the change to reproduce the recorded number (20 of 82 sheets), then after; "no change at the normal size" proven by comparing 28 screenshots pixel for pixel; the new setting tested at 125 % and 150 % on all 64 pages.
 - **Done when:** the build, `npm test` (51) and the smoke test on three dates pass; the pages are live; row 95 of the phone test is filled ([L6](#l6-real-phone-test-matrix)).
+
+### N38. A print pack with QR codes (v1.17.0)
+
+- **Who:** AI-ready ("Continue all your suggestions to finish", 4 Nov 2026) · **Status:** Done (4 Nov 2026, v1.17.0) · **Issues:** F215; #84's print pack, P5b's codes on printed checklists
+- **What:** `/print` and `/en/print` (nine guides, one per A4 page, with the date, helplines and whom they reach, sources and a QR code), and the same code on a guide printed from the app.
+- **How it was checked:** each of the 18 codes decoded by an independent decoder from the file and again from the printed PDF at 150 dpi; nine pages per language, each under the A4 height; the app's print waits for the code; 66 pages at 100/125/150 % text without sideways scroll.
+- **Not done:** a code on the 1080 × 1920 guide pictures and the result card (P5b's other half): a code on a picture forwarded in a chat is scanned rarely, since it is on the phone that would scan it.
+- **Done when:** the checks above pass, the pages are live, and row 96 (a real printer, a real phone scanning the paper) is filled ([L6](#l6-real-phone-test-matrix)).
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 
 - **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.14.3) · **Issues:** fixed F178–F180; #99 updated
@@ -739,7 +748,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 - **Who:** AI-ready (P5a–c) / Owner + AI (P5d) · **Status:** Todo (optional)
 - **P5a. Weekly house** ("บ้านแห่งสัปดาห์"): a house key per ISO week, a third start button for the week, its own streak. It gives family groups one house to compare all week.
-- **P5b. QR code on the card and the checklists:** for people who print the checklist or forward only the picture. It needs a small hand-written QR encoder (no runtime packages); check the 500 KB budget first.
+- **P5b. QR code on the card and the checklists:** for people who print the checklist or forward only the picture. **Half done in v1.17.0 ([N38](#n38-a-print-pack-with-qr-codes-v1170)):** printed guides and the print pack carry codes, drawn at build time (no runtime package, no weight on the start screen); the card and the guide pictures don't yet.
 - **P5c. Family round-up:** the share text of a challenge chain could list every score it has seen (`?s=8,6,9` in the link). Keep it to scores only, no names, and cap the list.
 - **P5d. Crowd stats on the page** ("7 in 10 players turned the breaker off"): needs aggregate numbers from Analytics Engine published as a static JSON by the owner, never per-player data.
 - **P5e. Themed practice house:** a random house built only from one topic (for example "🦠 health week"). It needs the topic in the house key so challenge links rebuild the same house; until then the featured card sends players to `/learn` and the book.

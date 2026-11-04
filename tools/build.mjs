@@ -13,6 +13,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { setModes, recommend, modeLink } from '../public/js/modes.js';
 import { formatHouseDate } from '../public/js/util.js';
 import { carouselSets, carouselHash } from './carousel.mjs';
@@ -1639,6 +1640,7 @@ ${group('home')}
 ${group('now')}
 </ul>
 <p class="check"><a href="${pre}/?open=guide">${esc(`📋 ${strings[lang].hubGuide}`)}</a></p>
+<p class="check"><a href="${pre}/print">${esc(X.printNav)}</a></p>
 ${alerts}
 <h2 id="links">${esc(X.toolsPageLinks)}</h2>
 <ul>
@@ -1721,6 +1723,139 @@ for (const b of document.querySelectorAll('[data-copy]')) b.addEventListener('cl
 `;
   fs.writeFileSync(path.join(PUB, 'posts.html'), postsHtml);
   postsInfo = `posts.html: ${sets.length} carousel sets, ${sets.reduce((a, x) => a + x.pages.length, 0)} images${missing.length ? ` (${missing.length} missing)` : ''}${carouselPartial.length ? `; lessons under review: ${carouselPartial.join(', ')}` : ''}`;
+}
+
+// /print and /en/print (v1.17.0, KNOWN_ISSUES #84, ROADMAP P5b): the nine guides for paper, one per
+// A4 page, for a village notice board, to hand out, or for someone who doesn't use a phone. Each page
+// has the date, the guide's helplines with whom they reach, its sources and a QR code to its page.
+// The QR codes are drawn here (qrcode-generator, a dev dependency, so nothing runs on the phone) and
+// written to /qr/ for the app's own print; without the package the committed files are used.
+let printInfo = '';
+{
+  let qrcode = null;
+  try { qrcode = createRequire(import.meta.url)('qrcode-generator'); } catch { /* not installed */ }
+  // One <path> of horizontal runs, 4 modules of quiet zone, black on white (scanners need the contrast).
+  const qrSvg = (url) => {
+    const q = qrcode(0, 'M');
+    q.addData(url);
+    q.make();
+    const n = q.getModuleCount();
+    const m = 4;
+    let d = '';
+    for (let r = 0; r < n; r++) {
+      for (let c = 0; c < n; c++) {
+        if (!q.isDark(r, c)) continue;
+        let e = c;
+        while (e + 1 < n && q.isDark(r, e + 1)) e++;
+        d += `M${c + m} ${r + m}h${e - c + 1}v1h-${e - c + 1}z`;
+        c = e;
+      }
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n + 2 * m} ${n + 2 * m}" shape-rendering="crispEdges"><title>${esc(url)}</title><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+  };
+  fs.mkdirSync(path.join(PUB, 'qr/en'), { recursive: true });
+  // A code leads to the guide's hazard page, which opens without the app and gives each line its
+  // sources: a game guide's list on it (/flood#cl-prepare), else the page that is the guide (/landslide).
+  const MODE_IDS = config.modes.map((m) => m.id);
+  const guidePath = (id, lang) => {
+    const g = GUIDES.find((x) => x.id === id);
+    const slug = config.hazards[g.hazard].slug;
+    return `${lang === 'en' ? EN : ''}/${slug}${MODE_IDS.includes(id) ? `#cl-${id}` : ''}`;
+  };
+  const qrFor = (id, lang) => {
+    const rel = `qr/${lang === 'en' ? 'en/' : ''}checklist-${id}.svg`;
+    const url = `${SITE}${guidePath(id, lang)}`;
+    if (qrcode) {
+      const svg = qrSvg(url);
+      fs.writeFileSync(path.join(PUB, rel), `${svg}\n`);
+      return svg;
+    }
+    if (fs.existsSync(path.join(PUB, rel))) return fs.readFileSync(path.join(PUB, rel), 'utf8').trim();
+    warn(`${rel} is missing and qrcode-generator isn't installed (npm install): the print pack has no QR code`);
+    return '';
+  };
+  if (!qrcode) warn('qrcode-generator is not installed: the print pack keeps the committed QR codes (npm install)');
+  // Agencies once, a news report marked, as on the pages.
+  const printAgencies = (ids, lang) => [...new Set(ids.filter((id) => sources[id]).map((id) => {
+    const ag = sources[id].agency;
+    const name = lang === 'en' ? (seo.en.agencies?.[ag] || ag) : ag;
+    return `${name}${sources[id].kind === 'secondary' ? (lang === 'en' ? E : S).srcNews : ''}`;
+  }))].join(' · ');
+  for (const lang of LANGS) {
+    const X = lang === 'en' ? E : S;
+    const pre = lang === 'en' ? EN : '';
+    const host = SITE.replace(/^https?:\/\//, '');
+    const sections = GUIDES.filter((g) => checklists[g.id]).map((g) => {
+      const list = checklists[g.id];
+      // a game guide's lines carry no sources of their own: its mode's lessons do
+      const ids = MODE_IDS.includes(g.id) ? itemsFile.items.filter((it) => it.mode === g.id).flatMap((it) => [...(it.sources || []), ...(it.wet?.sources || [])]) : list.items.flatMap((c) => c.sources || []);
+      const partial = list.items.some((c) => c.verify === 'partial');
+      const groups = phaseGroups(list).map((gr) => `${gr.p ? `<h3>${esc(phaseName(list, gr.p, lang))}</h3>\n` : ''}<ul>${gr.items.map((c) => `<li><span class="box" aria-hidden="true"></span><span>${esc(c[lang])}${c.verify === 'partial' ? ' ⚠️' : ''}</span></li>`).join('')}</ul>`).join('\n');
+      const calls = callsOf(g.id).map((x) => `<b>${x.number}</b> ${esc(L2(x.short, lang))}`).join(' · ');
+      return `<section class="pp" id="pp-${g.id}">
+<p class="pp-head"><b>${esc((lang === 'en' ? ogEn : og).siteName)}</b> · ${esc(X.updated)}: ${updatedOn(lang)}</p>
+<h2>${esc(g.icon)} ${esc(list.title[lang])}</h2>
+${groups}
+<div class="pp-foot">
+<div class="pp-info">
+<p class="pp-calls">☎️ <b>${esc(strings[lang].clHelpLabel)}:</b> ${calls}</p>
+<p class="pp-src">${esc(X.sources)}: ${esc(printAgencies(ids, lang))}${partial ? ` · ⚠️ ${esc(X.partialNote)}` : ''}</p>
+<p class="pp-src">${esc(strings[lang].disclaimer)}</p>
+</div>
+<figure class="pp-qr">${qrFor(g.id, lang)}<figcaption>${esc(X.printScan)}<br>${esc(`${host}${guidePath(g.id, lang).replace(/#.*$/, '')}`)}</figcaption></figure>
+</div>
+</section>`;
+    }).join('\n');
+    const other = lang === 'en' ? '<a href="/print" lang="th">ภาษาไทย</a>' : '<a href="/en/print" lang="en">English</a>';
+    const html = `<!doctype html>
+<html lang="${lang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FFF4E3">
+<title>${esc(X.printPageTitle)}</title>
+<meta name="description" content="${esc(X.printPageDesc)}">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<style>
+${SEO_CSS}
+.pp{background:#fff;border:2px solid #f2c48d;border-radius:14px;padding:12px 14px;margin:16px 0}
+.pp h2{margin:4px 0 2px;font-size:1.3em}.pp h3{margin:10px 0 0;font-size:1em;color:#6b5a4a}
+.pp ul{list-style:none;margin:4px 0;padding:0}.pp li{display:flex;gap:8px;margin:4px 0}
+.pp .box{flex:0 0 14px;height:14px;margin-top:.35em;border:2px solid #2b2118;border-radius:3px}
+.pp-head{margin:0;font-size:.85em;color:#6b5a4a}
+.pp-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px dashed #d9c3a5}
+.pp-info{flex:1 1 200px}.pp-info p{margin:2px 0;font-size:.85em}
+.pp-qr{flex:0 0 auto;margin:0 auto;text-align:center}.pp-qr svg{display:block;width:132px;height:132px;margin:0 auto}
+.pp-qr figcaption{max-width:180px;font-size:.72em;color:#6b5a4a;overflow-wrap:anywhere}
+button.cta{border:0;font:inherit;font-weight:600;cursor:pointer}
+@media print{@page{size:A4;margin:12mm}html,body{background:#fff}body{font-size:15pt;line-height:1.45}
+.no-print{display:none!important}main{max-width:none;margin:0;padding:0}
+.pp{border:0;border-radius:0;margin:0;padding:0;break-after:page;page-break-after:always}.pp:last-of-type{break-after:auto;page-break-after:auto}
+.pp h2{font-size:24pt}.pp h3{font-size:15pt;margin-top:4mm}.pp li{margin:2mm 0;break-inside:avoid}.pp .box{flex-basis:5mm;height:5mm;border-width:1.5px}
+.pp-head,.pp-info p{font-size:11pt}.pp-foot{margin-top:6mm;padding-top:4mm}
+.pp-qr svg{width:40mm;height:40mm}.pp-qr figcaption{max-width:80mm;font-size:10pt}.src a,.top{display:none}}
+</style>
+</head>
+<body>
+<main>
+<div class="no-print">
+<p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/tools">${esc(X.toolsPageH1)}</a><span class="nw"> · ${other}</span></p>
+<h1>${esc(X.printH1)}</h1>
+<p>${esc(X.printIntro)}</p>
+<p class="play"><button class="cta" type="button" id="pp-print">${esc(X.printBtn)}</button></p>
+<p class="src">${esc(X.printInLine)}</p>
+<p class="check">${GUIDES.filter((g) => checklists[g.id]).map((g) => `<a href="#pp-${g.id}">${esc(g.icon)} ${esc(strings[lang][`guide${capM(g.id)}`])}</a>`).join(' · ')}</p>
+</div>
+${sections}
+</main>
+<script>document.getElementById('pp-print').addEventListener('click', () => window.print());</script>
+</body>
+</html>
+`;
+    write(`${lang === 'en' ? 'en/' : ''}print.html`, html);
+  }
+  printInfo = `print.html, en/print.html: ${GUIDES.length} guides, ${qrcode ? 'QR codes drawn' : 'committed QR codes'}`;
 }
 
 // robots.txt: everyone, including AI search and AI assistants, may read the
@@ -1949,6 +2084,7 @@ function finish() {
     console.log(`pages     ${written.length} link-preview pages`);
     console.log(`seo       ${seoFiles.join(', ')} (${nLessons} lessons on /learn)`);
     console.log(`posts     ${postsInfo}`);
+    console.log(`print     ${printInfo}`);
     console.log(`sw.js     version ${version}, ${precache.length} files precached`);
     console.log(`budget    start screen ${(gz / 1024).toFixed(0)} KB, first game screen ${(gameStart / 1024).toFixed(0)} KB (compressed; limit 500 KB)`);
   }

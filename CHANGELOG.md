@@ -4,6 +4,20 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.17.0] — 2026-11-04
+
+**A print pack for paper, with QR codes.** For a village notice board, a health volunteer's (อสม.) hand-outs, or a relative who doesn't use a phone (the audience research: about a third of people over 60 aren't online). No advice, number or source changed; no item or slot. ([KNOWN_ISSUES F215](docs/KNOWN_ISSUES.md#in-v1170-4-nov-2026), [ROADMAP N38](docs/ROADMAP.md#n38-a-print-pack-with-qr-codes-v1170))
+
+### Added
+
+- **`/print` and `/en/print`:** the nine "what to do" guides, one per A4 page, at 15 pt, each with a box to tick per line, the date, its helplines and whom they reach, its sources and a QR code to its page. "🖨️ พิมพ์ทั้ง 9 หน้า" prints them; the page says to open the browser first inside LINE. Linked from `/tools`. Not for search (`noindex`).
+- **A QR code on every printed guide:** the app's "🖨️ พิมพ์เก็บไว้" puts the guide's code top right, and waits for it before the print dialog opens.
+- **`/qr/`:** 18 small SVG codes (Thai and English), drawn by the build with `qrcode-generator` (a dev dependency, nothing new on the phone). Each leads to the guide's hazard page, which opens without the app and shows each line's source.
+
+### Docs
+
+- KNOWN_ISSUES F215 (#84 and #3 updated), GUIDELINES rule 108, ROADMAP N38 and P5b, KNOWLEDGE §42, APPROACH §45, LESSONS D32, the launch kit's print pack section, deploy notes (the two dev dependencies), test checklist row 96, HANDOFF, README, AGENTS (and its stale "what next" list).
+
 ## [1.16.0] — 2026-11-04
 
 **Text that follows the phone, sheets that fit, previews without bare numbers.** Three items the owner said to continue with: English choice sheets that scrolled on the smallest phones (#73), text sizes that ignored the browser's setting (#81), and the guides' previews (#68). No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F211–F214](docs/KNOWN_ISSUES.md#in-v1160-4-nov-2026), [ROADMAP N37](docs/ROADMAP.md#n37-text-that-follows-the-phone-v1160))

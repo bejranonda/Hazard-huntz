@@ -407,6 +407,12 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **The start screen, the plan's reminder, the water and the bag describe บ้านเรา only.** A screen for the other home hides the buttons that would open them, rather than half-following it.
     - **Every line that names the home is worded by household** (`hs()`), with a twin in both languages that has the same placeholders; a unit test reads the source for those lines.
     - **The copy is still the person's own data:** on the device only, no event carries it, and switching sends only an anonymous `kit_open` with the label `parents` ([rule 56](#8-rules-that-come-from-bugs-we-already-hit)).
+110. **A row of buttons has somewhere to go when its words grow.** Since v1.18.1 (visitor audit 6, F217–F218):
+    - **A row halves its columns when it gets narrow, measured in `em`:** `grid-template-columns: repeat(auto-fill, minmax(clamp(narrow, calc((W - 100%) * 999), wide), 1fr))` gives the narrow track while the row is wider than `W`, else the wide one. In `em`, so the browser's text size and ก+ both move it; no media query (those can't see ก+). Two-button rows go to one column under 14em, heat's four levels to 2 × 2 under 16em, dust's five colours to 3 + 2 under 14em. Keep the layout the same at 100 %.
+    - **A form box fills its width** (`width: 100%; min-width: 0`): an `<input>` keeps a minimum width of its own otherwise.
+    - **Measure the sheets, not only the pages,** at 125 % and 150 % text and 320 px: every element's right edge against the screen. A sheet scrolls inside itself, so a page's `scrollWidth` can't see it.
+    - **A number keeps its unit** (a no-break space: "1.5 ลิตร", "3 คน", "°C").
+    - **What is printed beside a QR code is the address the code opens,** anchor included; a guide-wide note is its own line, never the tail of a sources line.
 
 ## 9. Working with AI assistants
 

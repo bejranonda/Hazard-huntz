@@ -1160,7 +1160,7 @@ async function openChecklist(mode, from = '') {
       <img class="card-preview card-thumb" id="cl-img" alt="${esc(L(list.title))}">
       <p class="save-hint" id="cl-hint" hidden>💡 ${esc(t('saveHint'))}</p>
     </div>
-    ${inAppBrowser() === 'line' ? `<a class="link" href="${esc(lineExternalUrl(`${pre}/checklist/${mode}`))}">${esc(t('openExternal'))}</a>` : ''}
+    ${inAppBrowser() === 'line' ? `<a class="link" href="${esc(lineExternalUrl(`${pre}/checklist/${mode}`))}">${esc(t('openExternalGuide'))}</a>` : ''}
     ${canPrint() ? `<button class="btn secondary small" type="button" id="cl-print">${esc(t('printBtn'))}</button>` : ''}
     <div class="btn-row">
       <button class="btn secondary small" type="button" id="cl-back">${esc(t('guideBack'))}</button>
@@ -1198,7 +1198,8 @@ async function openChecklist(mode, from = '') {
       foot: [
         agencies.length ? `${t('source')}: ${agencies.join(' · ')}` : '',
         `${t('clHelpLabel')}: ${guideCalls(mode).map((h) => `${h.number} ${L(h.short)}`).join(' · ')}`,
-        t('printNote', { url: `${siteUrl().replace(/^https?:\/\//, '')}${pre}/checklist/${mode}`, date: formatHouseDate(bangkokDateKey(), getLang()) }),
+        // the address the QR code opens, so a reader who types it lands on the same list (visitor audit 6)
+        t('printNote', { url: `${siteUrl().replace(/^https?:\/\//, '')}${hz ? `${pre}/${hz.slug}${modeIds().includes(mode) ? `#cl-${mode}` : ''}` : `${pre}/checklist/${mode}`}`, date: formatHouseDate(bangkokDateKey(), getLang()) }),
         t('disclaimer'),
       ].filter(Boolean),
     });

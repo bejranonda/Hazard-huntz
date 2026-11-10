@@ -761,12 +761,14 @@ export async function openTools(from = 'start') {
   const row = (x) => `<button class="hub-btn tl-row" type="button" data-tool="${esc(x.id)}"><span class="hub-ico" aria-hidden="true">${esc(x.icon)}</span><span class="hub-text"><b>${esc(name(x.id))}</b><small>${esc(t(`hub${x.id[0].toUpperCase()}${x.id.slice(1)}Sub`))}</small></span><span class="hub-go" aria-hidden="true">›</span></button>`;
   const links = K.links.list;
   const checked = links.map((x) => x.checked).sort()[0];
-  const date = new Date(`${checked}T12:00:00+07:00`).toLocaleDateString(getLang() === 'en' ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Bangkok' });
+  // the same date format as the cards and the pages ("10 พ.ย. 69", "10 Nov 2026"; visitor audit 6)
+  const date = formatHouseDate(checked.replace(/-/g, ''), getLang());
   openSheet(`
     <h2 id="sheet-title" tabindex="-1" autofocus>🧰 ${esc(u('toolsTitle'))}</h2>
     <p class="sub">${esc(u('toolsIntro'))}</p>
     <p class="tel-row tl-calls"><span>☎️ <span class="lbl">${esc(t('telFree'))}</span></span>${telChips(['1784', '199', '1669'])}</p>
     <button class="hub-btn hub-main tl-row" type="button" data-guides="1"><span class="hub-ico" aria-hidden="true">📋</span><span class="hub-text"><b>${esc(t('hubGuide'))}</b><small>${esc(t('hubGuideSub'))}</small></span><span class="hub-go" aria-hidden="true">›</span></button>
+    <a class="hub-btn tl-row tl-print" href="${getLang() === 'en' ? '/en' : ''}/print" data-link="print"><span class="hub-ico" aria-hidden="true">🖨️</span><span class="hub-text"><b>${esc(u('toolsPrint'))}</b><small>${esc(u('toolsPrintSub'))}</small></span><span class="hub-go" aria-hidden="true">›</span></a>
     <h3>${esc(u('toolsHome'))}</h3>
     <div class="tl-list">${tools.filter((x) => x.group === 'home').map(row).join('')}</div>
     <h3>${esc(u('toolsNow'))}</h3>

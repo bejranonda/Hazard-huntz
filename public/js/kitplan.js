@@ -96,12 +96,21 @@ export function readNumber(x) {
   return Number(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v) ? v.replace(/,/g, '') : v.replace(',', '.'));
 }
 
+// A reading copied with the box's own unit ("45 มคก./ลบ.ม.", "45 µg/m³"; "AQI 80" in the AQI box) is
+// still the number (visitor audit 6). The other box's unit is not: "AQI 80" in the PM2.5 box is a
+// different scale, so it still says "type a number".
+const AIR_UNIT = {
+  pm: /\s*(?:มคก\.?(?:\s*\/\s*ลบ\.?\s*ม\.?)?|ไมโครกรัม(?:ต่อ|\/)?(?:ลูกบาศก์เมตร|ลบ\.?\s*ม\.?)?|[µμu]g\s*\/\s*m(?:3|³)?)\s*$/i,
+  aqi: /^\s*aqi\s*|\s*aqi\s*$/gi,
+};
+export const airNumber = (x, unit = 'pm') => readNumber(String(x ?? '').replace(AIR_UNIT[unit] || /$^/, ''));
+
 // Why a typed reading gives no level: 'empty', 'nan' (not a number, or below 0),
 // 'over' (above the box's limit, kit.json → air.units[].max) or 'ok' (v1.15.2, #103 A14).
 export function airCheck(cfg, { unit = 'pm', value = null } = {}) {
   const u = cfg.units.find((x) => x.id === unit);
   if (!u || value == null || String(value).trim() === '') return 'empty';
-  const n = readNumber(value);
+  const n = airNumber(value, unit);
   if (!Number.isFinite(n) || n < 0) return 'nan';
   return n > u.max ? 'over' : 'ok';
 }
@@ -109,7 +118,7 @@ export function airCheck(cfg, { unit = 'pm', value = null } = {}) {
 export function airLevel(cfg, { unit = 'pm', value = null, colour = null } = {}) {
   if (colour) return cfg.levels.find((l) => l.id === colour) || null;
   if (airCheck(cfg, { unit, value }) !== 'ok') return null;
-  const n = readNumber(value);
+  const n = airNumber(value, unit);
   const v = unit === 'pm' ? Math.round(n * 10 + 1e-9) / 10 : Math.round(n);
   return cfg.levels.find((l) => l[unit] == null || v <= l[unit]) || null;
 }

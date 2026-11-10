@@ -4,6 +4,26 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.18.1] — 2026-11-10
+
+**What visitor audit 6 found.** An independent auditor walked the live v1.17.1 in LINE's Android browser, at three text sizes, in both languages. No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F217–F222](docs/KNOWN_ISSUES.md#in-v1181-10-nov-2026), [ROADMAP N40](docs/ROADMAP.md#n40-visitor-audit-6-v1181))
+
+### Fixed
+
+- **With the phone's text large, heat today's worst level ("อันตรายมาก 52.0 °C ขึ้นไป") and dust today's red ran off the right edge.** Rows of buttons now halve their columns when they get narrow: heat 2 × 2, dust 3 + 2, two-button rows and the mask tiles one under the other. At normal text nothing moved.
+- **The family plan's and the emergency card's boxes, the water rows and a guide's English tool button** ran off the side at 150 % text; they fit now.
+- **The print pack** is in the "all tools" sheet ("🖨️ ชุดพิมพ์แจก 9 เรื่อง"); inside LINE, `/print` offers "🌐 เปิดในเบราว์เซอร์ เพื่อพิมพ์" (one tap to the phone's browser) instead of a print button LINE can't use, and a guide's open-in-browser link says it is for printing too.
+- **Printed addresses** are the ones the QR codes open (`/flood#cl-return`, `/landslide`); the app's printed code says "สแกนอ่านฉบับเต็มและที่มา" under it.
+- **Thai words no longer break in the middle:** แบต, ออกกำลัง, ภูมิแพ้, เช็ก. Numbers keep their units ("1.5 ลิตร", "3 คน").
+- **One wording for a line under review:** "ข้อนี้ยังรอตรวจทานกับหน่วยงาน" everywhere (it was four); on paper the list's note is its own line, no longer read as being about the last source. The 5 power-cut carousel images that show it were re-rendered.
+- **Dust today reads "45 มคก."** (and "45 µg/m³", "AQI 80" in the AQI box); an AQI typed in the PM2.5 box still asks for a number, since it is another scale.
+- **Smaller:** the tools sheet's date like the cards' ("10 พ.ย. 69"); the plan reminder says "ว่าใครจะเป็นคนดูแล" (pets included); `/en/uv`'s title ends like the others.
+- **Carousel images:** a lesson's "why" may take a fourth line when the page has room, so flood pages 5 and 9 are whole again; text that still can't fit ends in "…", and `npm run images` names it (flood page 7, #104).
+
+### Docs
+
+- KNOWN_ISSUES F217–F222 and #104 (what is left), GUIDELINES rule 110, ROADMAP N40, KNOWLEDGE §45, APPROACH §48, LESSONS C30 and D34, metrics (`link_click` with `print`), test checklist row 98, HANDOFF, README, AGENTS.
+
 ## [1.18.0] — 2026-11-10
 
 **A second home in the supplies check: the parents' home.** For the grown-up child who organises supplies for older parents in another home (the audience research). No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F216](docs/KNOWN_ISSUES.md#in-v1180-10-nov-2026), [ROADMAP N39](docs/ROADMAP.md#n39-a-second-household-in-the-home-check-v1180))

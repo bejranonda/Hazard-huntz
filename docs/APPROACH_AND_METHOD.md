@@ -620,3 +620,10 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 3. **Word every line that names the thing through one helper** (`hs()`), and let a unit test find those lines in the source and require a twin for each, with the same placeholders and never the first copy's name.
 4. **Hide what would mix the two** (here the plan, water and bag buttons on the parents' list) rather than make them half-follow.
 5. **Test the separation, not only the new screen:** the smoke check seeds the first copy, works the second, then reads both keys and the start screen to prove the first is untouched.
+
+## 48. Measure every surface a global change reaches (v1.18.1)
+
+1. **Name the surfaces** a change applies to: for text size, the pages, the sheets, the round, the cards, print. v1.16.0 measured the pages; the sheets were where it broke (LESSONS D34).
+2. **Probe each one at each size and width,** and record the worst element, not a yes/no: "heat +54 px button.hot-level" says what to fix. Keep the probe in the scratchpad; put the few checks that matter in the smoke test.
+3. **Choose thresholds from the measurements,** in the unit the reader controls (`em`), and keep the default layout unchanged.
+4. **Run the probe again after the fix** and compare counts (here 18 cases off the side → 0), then look at screenshots at 100 % (nothing moved) and 150 % (it wraps the way a reader expects).

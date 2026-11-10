@@ -27,12 +27,23 @@ function balanced(ctx, text, maxW) {
   return wrapText(ctx, text, hi);
 }
 
+// Text that still doesn't fit at its smallest size is cut, and says so: its last line ends in "…"
+// and the cut is listed (window.__cut), so `npm run images` can name it (visitor audit 6 found a
+// lesson's "why" stopping mid-sentence on a carousel page, with nothing to show it went on).
 function wrapFit(ctx, text, maxW, size, min, maxLines, weight = 600) {
   let s = size;
   for (;;) {
     font(ctx, s, weight);
     const lines = wrapText(ctx, text, maxW);
-    if (lines.length <= maxLines || s <= min) return { size: s, lines: (lines.length <= maxLines ? balanced(ctx, text, maxW) : lines).slice(0, maxLines) };
+    if (lines.length <= maxLines) return { size: s, lines: balanced(ctx, text, maxW).slice(0, maxLines) };
+    if (s <= min) {
+      const kept = lines.slice(0, maxLines);
+      let last = kept[maxLines - 1].trimEnd();
+      while (last && ctx.measureText(`${last}…`).width > maxW) last = last.slice(0, -1).trimEnd();
+      kept[maxLines - 1] = `${last}…`;
+      (globalThis.__cut ||= []).push(text.slice(0, 60));
+      return { size: s, lines: kept };
+    }
     s -= 2;
   }
 }
@@ -121,15 +132,21 @@ export function drawCarouselPage(canvas, d, assets) {
     ctx.fillStyle = INK;
     act.lines.forEach((ln, i) => ctx.fillText(ln, 100, y + 96 + act.size + i * act.size * 1.3 - act.size * 0.25));
     y += boxH + 30;
-    // why, in one or two lines
-    const why = wrapFit(ctx, `${d.whyLabel}: ${plainText(d.why)}`, W - 160, 34, 28, 3, 400);
+    // why, in up to three lines; a fourth at the smallest size when the sources and the ⚠️ note still
+    // fit above the waves (v1.18.1: three lessons' "why" was cut mid-sentence), else it ends in "…"
+    const whyText = `${d.whyLabel}: ${plainText(d.why)}`;
+    font(ctx, 28, 400);
+    const src = wrapText(ctx, `${d.sourceLabel}: ${d.source}`, W - 160).slice(0, 2);
+    const lastY = (n) => y + n * 28 * 1.35 + 24 + 28 + (src.length - 1) * 38 + (d.flag ? 38 : 0);
+    // the source line is pinned at 1150 at most, so up to 10 px over is still clear of the waves
+    const four = wrapText(ctx, whyText, W - 160).length > 3 && lastY(4) <= 1160;
+    const why = four ? wrapFit(ctx, whyText, W - 160, 28, 28, 4, 400) : wrapFit(ctx, whyText, W - 160, 34, 28, 3, 400);
     ctx.fillStyle = INK2;
     why.lines.forEach((ln, i) => ctx.fillText(ln, 80, y + why.size + i * why.size * 1.35));
     y += why.lines.length * why.size * 1.35 + 24;
     // the source, so the post can be checked
     font(ctx, 28, 400);
     ctx.fillStyle = INK2;
-    const src = wrapText(ctx, `${d.sourceLabel}: ${d.source}`, W - 160).slice(0, 2);
     src.forEach((ln, i) => ctx.fillText(ln, 80, Math.min(y + 28 + i * 38, 1150)));
     if (d.flag) {
       ctx.fillStyle = WARN;

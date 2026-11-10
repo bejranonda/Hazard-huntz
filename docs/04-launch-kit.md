@@ -132,7 +132,7 @@ Each hazard has a ready-made set of images: a cover, one page per lesson, the ch
 | Early December, then every 2–3 weeks while Air4Thai shows orange or red | `pm25` | Pin it to the page for the season |
 | A rain warning, or the week before the monsoon (May) | `flood` | Pair with the FloodWatch link |
 | March–April, or after a house fire in the news | `fire` | Keep it about prevention; no photos of real fires |
-| Any time of year: a planned power cut in the area, a storm warning, or a quiet week (v1.7.0) | `ready` | 5 of its 8 lessons are still under review (⚠️) and their pages say "ข้อนี้อยู่ระหว่างตรวจทานกับหน่วยงาน"; the caption says some advice is international. Post it as it is, or wait for the Thai review ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)) |
+| Any time of year: a planned power cut in the area, a storm warning, or a quiet week (v1.7.0) | `ready` | 5 of its 8 lessons are still under review (⚠️) and their pages say "ข้อนี้ยังรอตรวจทานกับหน่วยงาน"; the caption says some advice is international. Post it as it is, or wait for the Thai review ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)) |
 
 Rules: post the images as they are (the sources are printed on them); don't crop off the page numbers or the address; if a lesson's text changes, wait for the re-rendered set ([KNOWN_ISSUES #54](KNOWN_ISSUES.md#54-carousel-images-are-committed-and-thai-only)).
 

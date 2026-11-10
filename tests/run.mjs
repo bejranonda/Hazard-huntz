@@ -766,6 +766,13 @@ test('a number typed by hand: Thai digits, commas, and why dust today gives no a
   assert.equal(airCheck(A, { unit: 'aqi', value: '1000' }), 'over');
   assert.equal(airCheck(A, { unit: 'pm', value: '๘๐' }), 'ok');
   assert.equal(airLevel(A, { unit: 'pm', value: '๘๐' }).id, airLevel(A, { unit: 'pm', value: '80' }).id, 'Thai digits give the same level');
+  // v1.18.1 (visitor audit 6): a reading copied with the box's own unit is still the number; the other box's is not
+  for (const v of ['45 มคก.', '45 มคก./ลบ.ม.', '45มคก', '45 µg/m³', '45 ug/m3', '45 ไมโครกรัมต่อลูกบาศก์เมตร']) assert.equal(airLevel(A, { unit: 'pm', value: v })?.id, airLevel(A, { unit: 'pm', value: '45' }).id, v);
+  assert.equal(airLevel(A, { unit: 'aqi', value: 'AQI 80' })?.id, airLevel(A, { unit: 'aqi', value: '80' }).id, 'AQI 80 in the AQI box');
+  assert.equal(airCheck(A, { unit: 'pm', value: 'AQI 80' }), 'nan', 'an AQI is not a PM2.5 reading');
+  assert.equal(airCheck(A, { unit: 'aqi', value: '80 มคก.' }), 'nan', 'a PM2.5 reading is not an AQI');
+  assert.equal(airCheck(A, { unit: 'pm', value: '45 abc' }), 'nan');
+  assert.equal(airCheck(A, { unit: 'pm', value: 'มคก.' }), 'nan', 'a unit alone');
   for (const [lang, ui] of Object.entries(load('kit').ui)) for (const k of ['airNotNumber', 'airTooHigh', 'hotBtnRange', 'hotBtnTop', 'shareInviteHead', 'shareCopyInvite']) assert.ok(ui[k], `kit.json ui.${lang}.${k}`);
 });
 

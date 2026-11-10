@@ -51,6 +51,9 @@ try {
   await page.waitForFunction(() => window.ready === true);
   await page.evaluate(() => document.fonts.ready);
   const images = await page.evaluate((s) => window.renderAll(s), site);
+  // text cut to fit (its last line ends in "…"): shorten it, or the image says less than the page
+  const cut = await page.evaluate(() => globalThis.__cut || []);
+  for (const c of [...new Set(cut)]) console.warn(`warning: cut to fit, ends in "…": ${c}…`);
   // --only <path>: keep every other image as it is (re-encoding them changes
   // their bytes, which would make unrelated diffs).
   // Several paths at once: --only og/kit,og/en/kit

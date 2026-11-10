@@ -106,7 +106,10 @@ a { color: var(--sky-dark); }
 .btn.secondary { background: var(--paper); border: 2px solid var(--line); box-shadow: 0 3px 0 var(--line); font-size: 1.0625rem; }
 .btn.blue { background: var(--sky); color: #fff; box-shadow: 0 4px 0 var(--sky-dark); }
 .btn.small { min-height: 46px; font-size: 1rem; padding: 8px 14px; }
-.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* Two buttons side by side, one under the other once the row is under 14em (v1.18.1, visitor audit 6):
+   clamp(narrow, (W - 100%) * 999, wide) picks the narrow track while the row is wider than W. W is in em,
+   so the browser's text size and ก+ both move it. The same pattern holds the rows below. */
+.btn-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(calc(50% - 6px), calc((14em - 100%) * 999), 100%), 1fr)); gap: 10px; }
 .link { background: none; border: 0; padding: 10px 6px; min-height: 44px; color: var(--ink-2); text-decoration: underline; cursor: pointer; font-size: 0.875rem; }
 a.link { display: inline-block; box-sizing: border-box; line-height: 1.5rem; }
 :focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
@@ -938,11 +941,11 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .fr-share { margin: 12px 0 4px; }
 .share-grid-text { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }
 /* dust today (v1.10.0): the reading or a colour → the PCD's level and what each group does */
-.air-units { grid-template-columns: 1fr 1fr; }
+.air-units { grid-template-columns: repeat(auto-fill, minmax(clamp(calc(50% - 6px), calc((14em - 100%) * 999), 100%), 1fr)); }
 .air-value { margin-top: 10px; }
 .air-value input { max-width: 180px; }
 .air-num { margin-top: 10px; }
-.air-colours { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.air-colours { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(calc(20% - 6px), calc((14em - 100%) * 999), calc(33.34% - 6px)), 1fr)); gap: 6px; }
 .air-check { margin: 10px 0 0; }
 .air-also { margin: -4px 0 2px; color: var(--ink-2); font-size: 0.9375rem; }
 .air-colour { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 64px; padding: 6px 2px; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); font-size: 0.9375rem; font-weight: 600; cursor: pointer; }
@@ -981,7 +984,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .plan-label { font-weight: 600; }
 .plan-kit p { margin: 0; }
 .plan-kit p + p { margin-top: 6px; }
-.plan-field input { min-height: 48px; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 1rem; background: #fff; color: var(--ink); }
+.plan-field input { width: 100%; min-width: 0; min-height: 48px; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 1rem; background: #fff; color: var(--ink); }
 .plan-field input:focus { border-color: var(--ink); outline: none; }
 .plan-field small { color: var(--ink-2); font-size: 0.9375rem; }
 #kit-share, #kit-plan, #kit-close, #plan-make, #plan-back, #plan-close, #kit-go { margin-top: 10px; }
@@ -993,6 +996,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 @media (max-width: 19.99em) { .hub { grid-template-columns: 1fr; } }
 .hub-btn { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 56px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 3px 0 var(--line); }
 .hub-btn:active { transform: translateY(2px); box-shadow: none; }
+a.hub-btn { text-decoration: none; }
 .hub-main { grid-column: 1 / -1; min-height: 64px; border-color: var(--ink); background: var(--sun); box-shadow: var(--press); }
 .hub-ico { flex: 0 0 auto; font-size: 1.625rem; line-height: 1; }
 .hub-text { display: flex; flex-direction: column; min-width: 0; }
@@ -1067,7 +1071,9 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
   #print-area .p-box { flex: 0 0 5mm; height: 5mm; margin-top: 1mm; border: 0.5mm solid #000; border-radius: 1mm; }
   #print-area small { display: block; color: #555; font-size: 9.5pt; }
   #print-area .p-foot { margin: 3mm 0 0; font-size: 10pt; color: #333; }
-  #print-area .p-qr { float: right; width: 32mm; height: 32mm; margin: 0 0 2mm 4mm; }
+  #print-area .p-qr { float: right; width: 32mm; margin: 0 0 2mm 4mm; text-align: center; }
+  #print-area .p-qr img { display: block; width: 32mm; height: 32mm; }
+  #print-area .p-qr figcaption { font-size: 8pt; line-height: 1.25; }
 }
 
 /* larger text (v1.11.0, the ก+ button): the start screen and the sheets at 115 %; the
@@ -1080,7 +1086,7 @@ html.big #screen-start, html.big .sheet { zoom: 1.15; }
 .hub-all { grid-column: 1 / -1; min-height: 52px; border-color: #BFE0DD; background: #EAF6F5; }
 .hub-all .hub-text { flex: 1; }
 .hub-all .hub-text b { font-size: 1rem; }
-.mk-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mk-opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(calc(50% - 6px), calc((14em - 100%) * 999), 100%), 1fr)); gap: 8px; }
 .mk-why .mk-opt:last-child:nth-child(odd), .mk-one { grid-template-columns: 1fr; }
 .mk-why .mk-opt:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .mk-opt { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 56px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); font: inherit; font-size: 1rem; font-weight: 600; line-height: 1.3; text-align: left; cursor: pointer; }
@@ -1128,15 +1134,15 @@ html.big #screen-start, html.big .sheet { zoom: 1.15; }
 .tl-steps { margin: 2px 0 6px; padding-left: 22px; }
 .tl-steps li { margin: 2px 0; font-size: 0.9375rem; }
 /* v1.13.0: heat today, water, the tank, the emergency card, "I'm safe", the bag */
-.hot-levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.hot-levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(calc(25% - 6px), calc((16em - 100%) * 999), calc(50% - 6px)), 1fr)); gap: 6px; }
 .hot-level { font: inherit; font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
 .hot-level small { color: var(--ink-2); font-size: 0.75rem; font-weight: 400; }
 .hot-level.is-on { border-color: var(--ink); background: var(--sun); }
 .hot-aid { margin-top: 12px; }
 .wt-sizes { display: grid; gap: 6px; }
-.wt-size { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 4px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); }
-.wt-name { flex: 1; min-width: 0; font-size: 0.9375rem; font-weight: 600; line-height: 1.3; }
-.wt-step { display: flex; align-items: center; gap: 4px; }
+.wt-size { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 52px; padding: 4px 8px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); }
+.wt-name { flex: 1 1 4em; min-width: 0; font-size: 0.9375rem; font-weight: 600; line-height: 1.3; }
+.wt-step { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 .wt-step output { min-width: 2ch; font-size: 1.125rem; font-weight: 700; text-align: center; }
 .wt-other { margin-top: 8px; }
 .wt-other input { max-width: 160px; }

@@ -35,7 +35,7 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | `tool_open` (v1.10.0) | A calculator opened: the fridge in a power cut or dust today; since v1.12.0 the mask tool and the all-tools page | `fridge` / `air` / `mask` / `tools` | `start` (the hub's tile) / `link` (`/?open=fridge` or `/?open=air`, from a post, a page, `/learn`, `llms.txt` or the app's shortcut) / `result` (after a power-cut or dust round; since v1.11.0 from the "เตรียมบ้านต่อ" row) / `guide` (a guide's "เตรียมบ้านต่อ", and since v1.11.0 the power-cut guide's "🥛 ไฟดับอยู่ตอนนี้?") | – |
 | `tool_share` (v1.10.0) | A channel tapped under "📤 ส่งให้คนที่บ้าน" in a calculator | `fridge` / `air` | `native` / `line` / `copy` | – |
 | `big_text` (v1.11.0) | "ก+" / "A+" tapped (larger text on the start screen and the sheets) | – | `on` / `off` (the state after the tap) | – |
-| `link_click` (v1.12.0) | An agency link tapped (the all-tools page or a guide), or the emergency-alert steps opened | the guide's id, when tapped in a guide | the link's id (`linealert`, `tmdwarn`, `thaiwater`, `relief`…; `kit.json → links`) or `alerts` | – |
+| `link_click` (v1.12.0) | An agency link tapped (the all-tools page or a guide), or the emergency-alert steps opened | the guide's id, when tapped in a guide | the link's id (`linealert`, `tmdwarn`, `thaiwater`, `relief`…; `kit.json → links`), `alerts`, or since v1.18.1 `print` (the tools sheet's "🖨️ ชุดพิมพ์แจก 9 เรื่อง") | – |
 
 ## The numbers you asked for
 

@@ -769,7 +769,7 @@ try {
       meds: !!document.querySelector('.kit-row input[data-id="meds"]'),
       baby: !!document.querySelector('.kit-row input[data-id="baby"]'),
     }));
-    check('home check: 4 people → 36 litres of water; daily medicine listed, baby items not', /^36 /.test(list.water || '') && list.meds && !list.baby, JSON.stringify(list));
+    check('home check: 4 people → 36 litres of water; daily medicine listed, baby items not', /^36\s/.test(list.water || '') && list.meds && !list.baby, JSON.stringify(list));
     await page.click('.kit-row:has(input[data-id="water"])');
     const kept = await page.evaluate(() => JSON.parse(localStorage.getItem('brm:kit')));
     check('home check: answers and ticks are kept on the device', kept.people === 4 && kept.have.includes('water') && kept.flags.includes('meds'), JSON.stringify(kept));
@@ -852,7 +852,7 @@ try {
       chip: document.querySelector('#kit-chip').textContent.trim(), wide: document.documentElement.scrollWidth > innerWidth,
     }));
     check('second household: 2 people → 18 litres, kept in brm:kit2; "บ้านเรา" (4 people, its ticks) and the start tile are untouched; no plan, water or bag buttons for the parents',
-      two.house.startsWith(KIT.ui.th.parentsHousehold.replace('{n}', 2)) && /^18 /.test(two.water || '') && !two.own && two.kit2.people === 2 && two.kit2.flags.includes('elder') && two.kit2.have.includes('torch')
+      two.house.startsWith(KIT.ui.th.parentsHousehold.replace('{n}', 2)) && /^18\s/.test(two.water || '') && !two.own && two.kit2.people === 2 && two.kit2.flags.includes('elder') && two.kit2.have.includes('torch')
       && two.kit.people === 4 && two.kit.have.join() === 'water' && two.chip === chip0 && !two.wide, JSON.stringify(two));
     const smallL = await smallControls(page);
     check('second household: controls >= 44 px at 320 px (questions and list)', !smallQ.length && !smallL.length, [...smallQ, ...smallL].join(', '));
@@ -1628,6 +1628,27 @@ try {
     await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
     const tabPx = await page.evaluate(() => { const d = document.createElement('div'); d.innerHTML = '<div class="tabs"><button class="tab">x</button></div>'; document.body.append(d); return getComputedStyle(d.querySelector('.tab')).fontSize; });
     check('text at 150 %: the round\'s room tabs keep their px size (14–15 px), the room is a fixed scene (v1.16.0)', parseFloat(tabPx) <= 15, tabPx);
+    // v1.18.1 (visitor audit 6 H1, M1): the sheets too. Heat's worst level and dust's red ran off the
+    // side; the plan's and the card's boxes, the water rows, the mask tiles and a guide's tool buttons too.
+    const offSide = [];
+    for (const pre of ['', '/en']) {
+      for (const o of ['hot', 'air', 'plan', 'info', 'water', 'mask', 'checklist-fire']) {
+        await page.goto(`${BASE}${pre}/?open=${o}`, { waitUntil: 'networkidle' });
+        await page.waitForSelector('#sheet h2');
+        const r = await page.evaluate(() => {
+          let over = 0, who = '';
+          for (const e of document.querySelectorAll('#sheet *')) {
+            const rc = e.getBoundingClientRect();
+            if (rc.width > 1 && rc.right - innerWidth > over) { over = Math.round(rc.right - innerWidth); who = `${e.tagName.toLowerCase()}.${[...e.classList].join('.')}`; }
+          }
+          return { over, who, cols: [...document.querySelectorAll('.hot-levels, .air-colours')].map((x) => getComputedStyle(x).gridTemplateColumns.split(' ').length) };
+        });
+        if (r.over > 0) offSide.push(`${pre || 'th'} ${o}: +${r.over} ${r.who}`);
+        if (o === 'hot' && r.cols[0] !== 2) offSide.push(`${pre || 'th'} hot: ${r.cols[0]} columns, not 2×2`);
+        if (o === 'air' && r.cols[0] !== 3) offSide.push(`${pre || 'th'} air: ${r.cols[0]} colour columns, not 3 + 2`);
+      }
+    }
+    check('text at 150 %: no tool sheet runs off the side at 320 px; heat\'s levels go 2×2 and dust\'s colours 3 + 2 (v1.18.1)', !offSide.length, offSide.join(' | '));
     await ctx.close();
   }
 
@@ -1648,7 +1669,7 @@ try {
     const n = CFG.guides.length;
     check('print pack (/print, /en/print): printed to A4, one page per guide, each with its QR code (v1.17.0)',
       Object.values(pages).every((x) => x.n === n && x.qr === n && x.pages === n && x.hidden), JSON.stringify(pages));
-    await page.addInitScript(() => { window.__printed = []; window.print = () => { const img = document.querySelector('#print-area .p-qr'); window.__printed.push({ src: img?.getAttribute('src'), loaded: !!(img && img.complete && img.naturalWidth > 0) }); }; });
+    await page.addInitScript(() => { window.__printed = []; window.print = () => { const img = document.querySelector('#print-area .p-qr img'); window.__printed.push({ src: img?.getAttribute('src'), loaded: !!(img && img.complete && img.naturalWidth > 0), cap: document.querySelector('#print-area .p-qr figcaption')?.textContent, foot: [...document.querySelectorAll('#print-area .p-foot')].map((x) => x.textContent).join(' | ') }); }; });
     await page.goto(`${BASE}/?open=guide`, { waitUntil: 'networkidle' });
     await page.click('.guide-tile >> nth=0');
     await page.waitForSelector('#cl-print');
@@ -1656,6 +1677,21 @@ try {
     await page.waitForFunction(() => window.__printed?.length > 0, null, { timeout: 5000 });
     const pr = await page.evaluate(() => window.__printed[0]);
     check('a guide printed from the app carries its QR code, loaded before the print dialog opens (v1.17.0)', /^\/qr\/checklist-[a-z]+\.svg$/.test(pr.src || '') && pr.loaded, JSON.stringify(pr));
+    // v1.18.1 (visitor audit 6): the code says what it is for, and the printed address is the one it opens
+    const prId = /checklist-([a-z]+)\.svg/.exec(pr.src || '')?.[1];
+    const prG = CFG.guides.find((g) => g.id === prId);
+    const prPath = prG ? `/${CFG.hazards[prG.hazard].slug}${CFG.modes.some((m) => m.id === prId) ? `#cl-${prId}` : ''}` : '?';
+    check('the printed guide: "scan" under its code, and the address it prints is the one the code opens (v1.18.1)', pr.cap === STR.th.printScan && (pr.foot || '').includes(`${new URL(CFG.siteUrl).host}${prPath} `), `${prPath} | ${pr.cap} | ${pr.foot}`);
+    // /print inside LINE: LINE can't print, so one tap opens it in the phone's browser
+    const line = await newPage({ width: 360, height: 640, ua: UA.line });
+    await line.page.goto(`${BASE}/print`, { waitUntil: 'networkidle' });
+    const inLine = await line.page.evaluate(() => ({ print: document.querySelector('#pp-print').offsetParent !== null, open: document.querySelector('#pp-browser').offsetParent !== null, href: document.querySelector('#pp-browser').getAttribute('href'), caps: [...document.querySelectorAll('.pp-qr figcaption')].map((f) => f.textContent).filter((x) => x.includes('#cl-')).length }));
+    await page.goto(`${BASE}/print`, { waitUntil: 'networkidle' });
+    const outLine = await page.evaluate(() => ({ print: document.querySelector('#pp-print').offsetParent !== null, open: document.querySelector('#pp-browser').offsetParent !== null }));
+    const gameGuides = CFG.guides.filter((g) => CFG.modes.some((m) => m.id === g.id)).length;
+    check('/print inside LINE offers "open in your browser to print" instead of a print button LINE can\'t use; a code\'s caption gives its full address (v1.18.1)',
+      !inLine.print && inLine.open && inLine.href === '?openExternalBrowser=1' && outLine.print && !outLine.open && inLine.caps === gameGuides, JSON.stringify({ inLine, outLine, gameGuides }));
+    await line.ctx.close();
     await ctx.close();
   }
 

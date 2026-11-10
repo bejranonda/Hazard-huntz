@@ -698,6 +698,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Not done:** a third place, or a plan card for the parents' home (the plan is "แผนครอบครัวของบ้านเรา"; a second plan waits for someone to ask).
 - **Done when:** the checks pass, it is live, and row 97 (both homes kept inside LINE) is filled ([L6](#l6-real-phone-test-matrix)).
 
+### N40. Visitor audit 6 (v1.18.1)
+
+- **Who:** AI-ready ("Anything else to improve, please continue", 10 Nov 2026) · **Status:** Done (10 Nov 2026, v1.18.1) · **Issues:** F217–F222; leftovers in #104
+- **What:** an independent auditor walked the live v1.17.1 in LINE's Android browser (69 pages and 24 sheets at 100/125/150 % text, a round in every mode, the print pack from PDF with its codes decoded). Fixed: rows that ran off the side at large text (heat's worst level, dust's red, the plan's boxes, water, masks, a guide's button), the print pack in the tools sheet and from LINE, four Thai mid-word breaks, printed addresses that differed from their codes, one review-note wording, the tools sheet's date, a dust reading with its unit, the plan reminder's wording for pets, `/en/uv`'s title; and three carousel images that cut their "why" mid-sentence ([KNOWLEDGE §45](KNOWLEDGE.md#45-visitor-audit-6-v1181)).
+- **How it was checked:** a probe of 13 sheets × 2 languages × 2 widths × 3 text sizes (18 sheet and size cases off the side before, none after); smoke checks for 7 sheets at 150 %, the printed guide's caption and address, and `/print` with LINE's user agent; unit tests for a reading with its unit; the re-rendered carousel looked at.
+- **Not done:** #104 (English choice sheets at 125 %, "go-bag" in 10 lessons, the gas lesson's carousel "why").
+- **Done when:** the checks pass, it is live, and row 98 (the print pack from LINE, heat today at the phone's largest text) is filled ([L6](#l6-real-phone-test-matrix)).
+
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 
 - **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.14.3) · **Issues:** fixed F178–F180; #99 updated

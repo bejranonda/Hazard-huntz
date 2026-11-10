@@ -806,3 +806,15 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* on 10 Nov 2026 a `node -e '…'` command that inserted the parents' home strings into `kit.json` (Thai and English with apostrophes, written as `'` inside a single-quoted shell string) was refused by the session's safety check: it couldn't be sure how the shell would read the command, so it couldn't rule out a hidden removal. Nothing ran.
 - *Do this:* write such an edit as a small script in the session scratchpad (`Write`, then `node /…/scratchpad/x.cjs`), with absolute paths, and run that. The script is easy to read before running, and has no shell quoting to misread. This is not a way around a refusal of the action itself: if the action is refused, stop and tell the owner ([AGENTS §7](../AGENTS.md#7-environment-notes)).
 - *Encoded in:* this entry; the scripts for v1.18.0's docs and strings were written this way.
+
+**D34. A size check that covers the pages must cover the sheets too.**
+
+- *What happened:* v1.16.0 made text follow the phone's setting and added a smoke check at 150 %: the start screen and `/flood` didn't scroll sideways, and every page passed. Visitor audit 6 opened the sheets at the same sizes and found seven running off the side: heat today's worst level 54 px off a 320 px screen, dust today's English "Red" entirely off, the plan's boxes 20 px. A row of four buttons that fits at 100 % has no way to wrap.
+- *Do this:* when a change applies everywhere (text size, a font, a breakpoint), list every surface it reaches (pages, sheets, the round, print) and measure each one; for a row of buttons, ask what happens when each button's longest word grows by half. Measure every element's right edge, not only the page's `scrollWidth`: a sheet scrolls inside itself.
+- *Encoded in:* the smoke check "no tool sheet runs off the side at 320 px" (7 sheets, both languages), [GUIDELINES rule 110](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**C30. A regular expression written inside a template literal loses its backslashes.**
+
+- *What happened:* the build writes `/print`'s inline script inside a JavaScript template literal. The LINE check was written as `/\bLine\//i`, and the template literal turned `\b` into a backspace character, so the generated page tested for a backspace and threw. The new smoke check (LINE's user agent sees "open in your browser") failed on the first run, before anything shipped.
+- *Do this:* in code that generates code, avoid escapes (here `navigator.userAgent.includes(' Line/')`), or double them, and test the generated page's behaviour, not only the generator's source.
+- *Encoded in:* `tools/build.mjs` (the print page's script), the smoke check for `/print` inside LINE.

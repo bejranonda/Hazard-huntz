@@ -1412,7 +1412,8 @@ if (kitFile.uv) {
     const pre = lang === 'en' ? EN : '';
     const url = `${SITE}${pre}/uv`;
     // with the brand, like every other page (visitor audit 5 A3, v1.15.0)
-    const title = `${L2(U.title, lang)} · ${(lang === 'en' ? ogEn : og).siteName}`;
+    // the brand, as every other page ends its title ("· Baan Rod Mai?", visitor audit 6)
+    const title = `${L2(U.title, lang)} · ${strings[lang].logoA}${strings[lang].logoB}`;
     const heat = HAZARDS.heat;
     const html = seoPage({
       lang, title, desc: L2(U.desc, lang), url, thPath: '/uv', enPath: `${EN}/uv`,
@@ -1799,10 +1800,11 @@ ${groups}
 <div class="pp-foot">
 <div class="pp-info">
 <p class="pp-calls">☎️ <b>${esc(strings[lang].clHelpLabel)}:</b> ${calls}</p>
-<p class="pp-src">${esc(X.sources)}: ${esc(printAgencies(ids, lang))}${partial ? ` · ⚠️ ${esc(X.partialNote)}` : ''}</p>
+<p class="pp-src">${esc(X.sources)}: ${esc(printAgencies(ids, lang))}</p>
+${partial ? `<p class="pp-src">${esc(strings[lang].guidePartial)}</p>` : ''}
 <p class="pp-src">${esc(strings[lang].disclaimer)}</p>
 </div>
-<figure class="pp-qr">${qrFor(g.id, lang)}<figcaption>${esc(X.printScan)}<br>${esc(`${host}${guidePath(g.id, lang).replace(/#.*$/, '')}`)}</figcaption></figure>
+<figure class="pp-qr">${qrFor(g.id, lang)}<figcaption>${esc(X.printScan)}<br>${esc(`${host}${guidePath(g.id, lang)}`)}</figcaption></figure>
 </div>
 </section>`;
     }).join('\n');
@@ -1829,6 +1831,7 @@ ${SEO_CSS}
 .pp-qr{flex:0 0 auto;margin:0 auto;text-align:center}.pp-qr svg{display:block;width:132px;height:132px;margin:0 auto}
 .pp-qr figcaption{max-width:180px;font-size:.72em;color:#6b5a4a;overflow-wrap:anywhere}
 button.cta{border:0;font:inherit;font-weight:600;cursor:pointer}
+[hidden]{display:none!important}
 @media print{@page{size:A4;margin:12mm}html,body{background:#fff}body{font-size:15pt;line-height:1.45}
 .no-print{display:none!important}main{max-width:none;margin:0;padding:0}
 .pp{border:0;border-radius:0;margin:0;padding:0;break-after:page;page-break-after:always}.pp:last-of-type{break-after:auto;page-break-after:auto}
@@ -1843,13 +1846,14 @@ button.cta{border:0;font:inherit;font-weight:600;cursor:pointer}
 <p class="top"><a href="${pre}/">${esc((lang === 'en' ? ogEn : og).siteName)}</a> · <a href="${pre}/tools">${esc(X.toolsPageH1)}</a><span class="nw"> · ${other}</span></p>
 <h1>${esc(X.printH1)}</h1>
 <p>${esc(X.printIntro)}</p>
-<p class="play"><button class="cta" type="button" id="pp-print">${esc(X.printBtn)}</button></p>
+<p class="play"><button class="cta" type="button" id="pp-print">${esc(X.printBtn)}</button><a class="cta" id="pp-browser" href="?openExternalBrowser=1" hidden>${esc(X.printOpenBrowser)}</a></p>
 <p class="src">${esc(X.printInLine)}</p>
 <p class="check">${GUIDES.filter((g) => checklists[g.id]).map((g) => `<a href="#pp-${g.id}">${esc(g.icon)} ${esc(strings[lang][`guide${capM(g.id)}`])}</a>`).join(' · ')}</p>
 </div>
 ${sections}
 </main>
-<script>document.getElementById('pp-print').addEventListener('click', () => window.print());</script>
+<script>document.getElementById('pp-print').addEventListener('click', () => window.print());
+if (navigator.userAgent.includes(' Line/')) { document.getElementById('pp-print').hidden = true; document.getElementById('pp-browser').hidden = false; }</script>
 </body>
 </html>
 `;

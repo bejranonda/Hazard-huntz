@@ -3011,8 +3011,8 @@
         "ml": 600,
         "icon": "🥤",
         "label": {
-          "th": "ขวดเล็ก 600 มล.",
-          "en": "Small bottle, 600 ml"
+          "th": "ขวดเล็ก 600\u00a0มล.",
+          "en": "Small bottle, 600\u00a0ml"
         }
       },
       {
@@ -3020,8 +3020,8 @@
         "ml": 1500,
         "icon": "🥤",
         "label": {
-          "th": "ขวดใหญ่ 1.5 ลิตร",
-          "en": "Large bottle, 1.5 litres"
+          "th": "ขวดใหญ่ 1.5\u00a0ลิตร",
+          "en": "Large bottle, 1.5\u00a0litres"
         }
       },
       {
@@ -3029,7 +3029,7 @@
         "ml": 6000,
         "icon": "💧",
         "label": {
-          "th": "แกลลอน 6 ลิตร",
+          "th": "แกลลอน 6\u00a0ลิตร",
           "en": "6-litre jug"
         }
       },
@@ -3038,7 +3038,7 @@
         "ml": 18900,
         "icon": "🚰",
         "label": {
-          "th": "ถังน้ำดื่ม 18.9 ลิตร",
+          "th": "ถังน้ำดื่ม 18.9\u00a0ลิตร",
           "en": "18.9-litre water-cooler bottle"
         }
       }
@@ -3763,11 +3763,11 @@
       "ready": "พร้อมแล้ว {pct}%",
       "count": "มี {have} จาก {total} อย่าง",
       "tickHint": "ติ๊กของที่บ้านมีแล้ว",
-      "qtyPerPersonDay": "{total} {unit} ({per} {unit} × {people} คน × {days} วัน)",
-      "qtyPerPerson": "{total} {unit} (คนละ {per})",
-      "qtyDaysPeople": "พอ {days} วัน สำหรับ {people} คน",
-      "qtyDays": "พออย่างน้อย {days} วัน",
-      "partial": "⚠️ ข้อนี้อยู่ระหว่างตรวจทาน",
+      "qtyPerPersonDay": "{total}\u00a0{unit} ({per}\u00a0{unit} × {people}\u00a0คน × {days}\u00a0วัน)",
+      "qtyPerPerson": "{total}\u00a0{unit} (คนละ {per})",
+      "qtyDaysPeople": "พอ {days}\u00a0วัน สำหรับ {people}\u00a0คน",
+      "qtyDays": "พออย่างน้อย {days}\u00a0วัน",
+      "partial": "⚠️ ข้อนี้ยังรอตรวจทานกับหน่วยงาน",
       "source": "ที่มา",
       "share": "📤 แชร์ผลของบ้านเรา",
       "plan": "📝 ทำแผนครอบครัว",
@@ -3783,7 +3783,7 @@
       "last": "เช็กล่าสุด {date}",
       "planTitle": "แผนครอบครัวของบ้านเรา",
       "planIntro": "กรอกเท่าที่รู้ แล้วสร้างการ์ดเก็บไว้ในมือถือทุกคน",
-      "planFromKit": "จากเช็กของจำเป็น บ้านนี้ {who} เขียนไว้ในช่อง \"ใครช่วยใคร\" ว่าใครดูแลแต่ละคน",
+      "planFromKit": "จากเช็กของจำเป็น บ้านนี้ {who} เขียนไว้ในช่อง \"ใครช่วยใคร\" ว่าใครจะเป็นคนดูแล",
       "planFromKitMeds": "💊 มีคนกินยาประจำ ใส่ชื่อยาไว้ในช่อง \"ยาและของจำเป็น\"",
       "planPrivacy": "ข้อความอยู่ในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน อย่าใส่เลขบัตรประชาชนหรือข้อมูลส่วนตัวเกินจำเป็น",
       "planMake": "สร้างการ์ดแผนครอบครัว",
@@ -3916,6 +3916,8 @@
       "toolsIntro": "ฟรี ไม่ต้องสมัคร แตะใช้ได้เลย",
       "toolsHome": "เตรียมไว้ก่อน",
       "toolsNow": "ใช้ตอนเกิดเหตุ",
+      "toolsPrint": "ชุดพิมพ์แจก 9 เรื่อง",
+      "toolsPrintSub": "กระดาษ A4 หน้าละเรื่อง มีคิวอาร์โค้ด ติดบอร์ดหรือให้ผู้สูงอายุ",
       "toolsLinks": "เว็บและบัญชี LINE ของหน่วยงานรัฐ",
       "toolsLinksNote": "ลิงก์ไปที่หน่วยงานโดยตรง ตรวจว่าใช้ได้ล่าสุด {date} บัญชี LINE กดแล้วเพิ่มเพื่อนได้เลย",
       "toolsLine": "LINE",
@@ -4039,11 +4041,11 @@
       "ready": "{pct}% ready",
       "count": "{have} of {total} things",
       "tickHint": "Tick what you already have",
-      "qtyPerPersonDay": "{total} {unit} ({per} {unit} × {people} people × {days} days)",
+      "qtyPerPersonDay": "{total}\u00a0{unit} ({per}\u00a0{unit} × {people}\u00a0people × {days}\u00a0days)",
       "qtyPerPerson": "{total} (one each)",
-      "qtyDaysPeople": "Enough for {days} days for {people} people",
+      "qtyDaysPeople": "Enough for {days}\u00a0days for {people}\u00a0people",
       "qtyDays": "At least {days} days' worth",
-      "partial": "⚠️ Still being reviewed",
+      "partial": "⚠️ Still being reviewed with the agency",
       "source": "Source",
       "share": "📤 Share our result",
       "plan": "📝 Make our family plan",
@@ -4192,6 +4194,8 @@
       "toolsIntro": "Free, no sign-up: tap and use",
       "toolsHome": "Get ready",
       "toolsNow": "When it happens",
+      "toolsPrint": "Print pack: 9 guides",
+      "toolsPrintSub": "One A4 page each, with a QR code, for a notice board or older relatives",
       "toolsLinks": "Government websites and LINE accounts",
       "toolsLinksNote": "These go straight to the agencies; last checked {date}. A LINE account opens in LINE, ready to add",
       "toolsLine": "LINE",

@@ -794,3 +794,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the first smoke run of v1.17.0 failed twice on every date. The new print-pack check measured each guide's height with print styles on but in the test's 390 px window, where lines wrap twice as often (328–385 mm "tall", while the real A4 PDF had one guide per page). And an older check counted `window.print()` calls straight after the tap, but since v1.17.0 the print waits for the QR image, so it counted 0.
 - *Do this:* check printed output by printing it (`page.pdf()` on A4, count the pages), not by measuring a phone-sized layout; when code is made to wait on purpose, make its test wait for the same thing, never loosen the expectation.
 - *Encoded in:* `tests/smoke.mjs` (the print pack check counts PDF pages; the guide print check waits for the call), [GUIDELINES rule 108](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**E13. When a rule changes, search the docs for the practice it replaced.**
+
+- *What happened:* v1.14.0 made "this app states no live conditions" a rule (GUIDELINES rule 100), but the launch kit still ended its seasonal section with "set `forecastStatusUrl` and the recommended mode will follow live rain warnings", eight days later and with FloodWatch, the app it meant, closing.
+- *Do this:* when a rule retires a practice, grep the docs for that practice's names (here `forecastStatusUrl`, "rain warning", "live") and rewrite or remove every place that still recommends it, in the same commit.
+- *Encoded in:* [04-launch-kit §5](04-launch-kit.md#5-relaunch-every-rainy-season), [KNOWLEDGE §43](KNOWLEDGE.md#43-the-plan-remembers-who-needs-help-the-family-checked-from-live-code-v1171).

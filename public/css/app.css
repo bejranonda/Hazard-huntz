@@ -979,6 +979,8 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .plan-form { display: grid; gap: 12px; margin: 8px 0 14px; }
 .plan-field { display: grid; gap: 4px; }
 .plan-label { font-weight: 600; }
+.plan-kit p { margin: 0; }
+.plan-kit p + p { margin-top: 6px; }
 .plan-field input { min-height: 48px; padding: 8px 12px; border: 2px solid var(--line); border-radius: 12px; font: inherit; font-size: 1rem; background: #fff; color: var(--ink); }
 .plan-field input:focus { border-color: var(--ink); outline: none; }
 .plan-field small { color: var(--ink-2); font-size: 0.9375rem; }

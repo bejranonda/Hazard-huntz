@@ -231,10 +231,20 @@ export async function openPlan(from = 'start', again = false) {
   pendingBack = from;
   if (!again) track('plan_open', { label: from });
   const p = store.get('plan', null) || {};
+  // Who the supplies check knows about (v1.17.1, ROADMAP P10d): a reminder to name who looks
+  // after each of them. Read from this phone only; nothing is filled in for the reader.
+  const kit = store.get('kit', null);
+  const flags = K.flags.filter((f) => kit?.answered && (kit.flags || []).includes(f.id));
+  const who = flags.filter((f) => f.id !== 'meds').map((f) => `${f.icon} ${midSentence(L(f.label))}`).join(' · ');
+  const meds = flags.some((f) => f.id === 'meds');
+  const fromKit = who || meds
+    ? `<div class="save-hint plan-kit">${who ? `<p>${esc(u('planFromKit', { who }))}</p>` : ''}${meds ? `<p>${esc(u('planFromKitMeds'))}</p>` : ''}</div>`
+    : '';
   openSheet(`
     <h2 id="sheet-title">📝 ${esc(u('planTitle'))}</h2>
     <p class="sub">${esc(u('planIntro'))}</p>
     <p class="kit-privacy">🔒 ${esc(u('planPrivacy'))}</p>
+    ${fromKit}
     <div class="plan-form">${K.plan.map((f) => `
       <label class="plan-field"><span class="plan-label">${esc(f.icon)} ${esc(L(f.label))}</span>
         <input type="text" name="${esc(f.id)}" maxlength="${f.max}" value="${esc(p[f.id] || '')}" placeholder="${esc(L(f.placeholder))}" autocomplete="off">

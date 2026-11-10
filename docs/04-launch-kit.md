@@ -555,9 +555,28 @@ The game is evergreen: content is in JSON, dates are generic and the daily house
 | **August–October (central and north peak)** | Prepare default during warnings; Return as water recedes (same switch as this year). |
 | **November–December (southern monsoon)** | A push to southern pages and provinces. PEA 1129 covers the south, so put it first in posts. Link `/?mode=prepare` (or `/flood`), and ภัยรอบบ้าน for what is happening there now: the season calendar has no southern floods (and since v1.14.0 there is no rain switch), so from December the plain `/` recommends dust ([KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)). |
 | **Off-season** | The checklist pages stay up and are useful year-round. Share the yearly "what Thais learned" stats. |
-| **TODO (v1.11.0): a regional posting calendar** | One table of which guide to post where and when, by region: the South's floods in November–December, the North in August–September, the Central region and Bangkok's edges in September–October (the audience research's flood months), and the app's own season calendar for dust (December–March) and fire (April), so that southern pages get the flood guide while Bangkok gets dust ([07-audience §8](07-audience.md#8-design-and-content-implications-in-priority-order), [KNOWN_ISSUES #84](KNOWN_ISSUES.md#84-ideas-from-the-audience-research-not-built-yet)). Not written yet. |
+| **A regional posting calendar** | Written in v1.17.1: [below](#a-regional-posting-calendar-v1171). |
 
-When your forecast app is ready, set `forecastStatusUrl` and the recommended mode will follow live rain warnings with no manual switching.
+Don't wire this app to live conditions: since v1.14.0 what is happening now is ภัยรอบบ้าน's ([GUIDELINES rule 100](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)), and `forecastStatusUrl` stays `null` (FloodWatch, the app it was for, closes after its handover, [KNOWN_ISSUES #102](KNOWN_ISSUES.md#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it)). Link ภัยรอบบ้าน in the post instead.
+
+### A regional posting calendar (v1.17.1)
+
+The months are when past seasons hit, from the audience research's sources ([07-audience §8, point 9](07-audience.md#8-design-and-content-implications-in-priority-order): S30, S31, S33, S41, S42, S43), not a forecast. Beside every post, link ภัยรอบบ้าน (https://risk.autobahn.bot) for what is happening at the reader's subdistrict now. The start screen's own calendar is national and editorial (`config.json → modes[].months`: ก่อนน้ำมา May–November, dust December–March, fire April; [KNOWN_ISSUES #47](KNOWN_ISSUES.md#47-the-season-calendar-is-editorial)), so a regional post links its page directly.
+
+| Months | Where | What to post | Link | Number to put first (helplines.json) |
+|---|---|---|---|---|
+| **November–December** | The South (Nov 2025: 9 provinces, 986,018 households, S30) | Before the water, then after it as it recedes; the fridge in a power cut | `/flood`, `/fridge`; `/print` for health volunteers | 1784 ปภ., 1129 PEA (outside the MEA area) |
+| **December–February** | Bangkok (S41) | Dust today, then which mask for whom | `/pm25`, `/air`, `/mask` | 1669 for an emergency |
+| **February–April** | The North (S42) | Dust and smoke | `/pm25`, `/air`, `/mask` | 1669 for an emergency |
+| **March–May**, peak April | Everywhere, the Northeast most (S43) | Heat: the level announced and the signs of heatstroke | `/heat`, `/hot` | 1669 |
+| **April** | Everywhere (the app's calendar) | House fire | `/fire` | 199 |
+| **May** | Everywhere, before the rains | Get the house ready; the supplies check and the plan | `/flood`, `/kit`, `/plan` | 1784 |
+| **August–September** | The North and Northeast (S33) | Water off the hills and landslides | `/landslide`, `/flood` | 1784 |
+| **September–October** | The Central region and Bangkok's edges (S31) | Before the water, then after it | `/flood` | 1784, 1130 MEA (Bangkok, Nonthaburi, Samut Prakan) |
+| **Any time** | Everywhere | A power cut, the supplies check, the family plan, the print pack | `/ready`, `/kit`, `/plan`, `/print` | 1129 or 1130 for a power cut |
+
+- **One region, one guide:** in November a southern page gets `/flood` while a Bangkok page gets `/pm25` from December; don't post the plain `/` to the South in December, which recommends dust.
+- **A new hazard in the news** goes before the calendar ([ROADMAP S2](ROADMAP.md#s2-when-something-is-in-the-news-the-alert-and-the-guide-posts)).
 
 ## 6. Launch-day checklist
 

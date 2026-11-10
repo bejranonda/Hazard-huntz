@@ -796,6 +796,9 @@ try {
     await page.click('#kit-back');
     await page.click('#kit-plan');
     await page.waitForSelector('#plan-make');
+    // v1.17.1 (P10d): the plan form names whom the supplies check knows about (here: daily medicine)
+    const fromKit = await page.evaluate(() => document.querySelector('.plan-kit')?.textContent || '');
+    check('plan form: after the supplies check, it reminds who needs looking after (daily medicine here) (v1.17.1)', fromKit.includes(KIT.ui.th.planFromKitMeds) && !fromKit.includes(KIT.ui.th.planFromKit.split('{who}')[0].trim()), fromKit);
     await page.fill('input[name="meet"]', 'PRIVATE-MEETING-PLACE');
     await page.fill('input[name="contact"]', 'PRIVATE 081-234-5678');
     const smallP = await smallControls(page);

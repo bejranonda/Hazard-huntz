@@ -605,3 +605,10 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 3. **Print to PDF and look.** The first PDF had an empty sources line on every game guide and used half the page at 12 pt; both were visible only on the printed page, not in the HTML.
 4. **Decode from the paper's pixels.** The PDF was rendered at 150 dpi and every code decoded from the image, in page order, so a code can't sit on the wrong guide.
 5. **Say what only a real printer and phone can show** (row 96), and don't claim it.
+
+## 46. Check a sister app's adoption from its live code (v1.17.1)
+
+1. **Read what is public, as a visitor's browser does:** the sister app's page, then the scripts it loads and the modules they import (here `assess.js`, `actions.js`), with an honest client; no login, no private repository.
+2. **Search for exact strings,** old and new: each hand-back changed specific words and anchors, so "ระหว่าง…" versus "เมื่อ…", `#prepare` versus `#cl-prepare` and "น้ำห้วยขุ่นข้น" versus "น้ำในลำห้วยขุ่นข้น" say which version it runs.
+3. **Record the version and the date** ("v0.12.12, 10 Nov 2026") with what matched and what differs, and close what it closes here (#103's A5).
+4. **Leave its choices to it:** a cosmetic difference (a link label) is noted, not chased.

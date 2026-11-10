@@ -4,6 +4,21 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.17.1] — 2026-11-10
+
+**The family plan remembers who needs help, and a posting calendar by region.** No advice, number or source changed; no item or slot. ([ROADMAP P10d](docs/ROADMAP.md#p10-more-calculators))
+
+### Added
+
+- **The family plan form** reminds who the supplies check said is at home: "จากเช็กของจำเป็น บ้านนี้ 👶 มีเด็กเล็ก · 🧓 มีผู้สูงอายุ หรือผู้ป่วยติดเตียง · 🐾 มีสัตว์เลี้ยง เขียนไว้ในช่อง "ใครช่วยใคร" ว่าใครดูแลแต่ละคน", and for daily medicine a line pointing to the medicine field. Read on the phone only; nothing is filled in or sent (P10d).
+
+### Docs
+
+- **A regional posting calendar** in the launch kit ([04-launch-kit](docs/04-launch-kit.md#a-regional-posting-calendar-v1171)): which page to post where and when, from the sourced seasons (the South in November–December, Bangkok's dust December–February, the North's February–April, heat March–May, the North and Northeast's flash floods August–September, the Central region September–October), with the helpline to put first.
+- **The launch kit no longer says to wire `forecastStatusUrl`** to live rain warnings: since v1.14.0 that is ภัยรอบบ้าน's.
+- **ภัยรอบบ้าน v0.12.12 took every hand-back** (read from its live code, 10 Nov 2026): `/flood#cl-prepare`, the flash-flood line in v1.15.1's words, `/landslide#landslide-during`. KNOWN_ISSUES #103 closed; docs/10 §4.
+- KNOWN_ISSUES #84, ROADMAP P10, KNOWLEDGE §43, APPROACH §46, LESSONS E13, HANDOFF, README, AGENTS.
+
 ## [1.17.0] — 2026-11-04
 
 **A print pack for paper, with QR codes.** For a village notice board, a health volunteer's (อสม.) hand-outs, or a relative who doesn't use a phone (the audience research: about a third of people over 60 aren't online). No advice, number or source changed; no item or slot. ([KNOWN_ISSUES F215](docs/KNOWN_ISSUES.md#in-v1170-4-nov-2026), [ROADMAP N38](docs/ROADMAP.md#n38-a-print-pack-with-qr-codes-v1170))

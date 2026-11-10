@@ -141,6 +141,8 @@ From บ้านรอดไหม v1.15.0 (3 Nov 2026): for "ก่อนน�
 Both anchors stay. /uv has its own link preview now. Nothing in kit.json changed.
 ```
 
+**Adopted by ภัยรอบบ้าน v0.12.12** (read from its live code on 10 Nov 2026: `js/assess.js`, `js/actions.js`): it links `/flood#cl-prepare` for "ก่อนน้ำมา ทำอย่างไร" (the v1.15.0 note), shows `flood.flash` with v1.15.1's wording ("ถ้าน้ำในลำห้วยขุ่นข้น") when HII's flash-flood list set เตรียมตัว and then links `/landslide#landslide-during` (B28), its level lines match every `all[0]` here, and it carries the v1.14.2 source ids (`rid-news-28880`, `pea-943`, `ddpm-cbs-laplae-2569`, `pakkret-plan-2564`, `rid-news-28597`). One cosmetic difference: its link to `/flood#during` is labelled "ระหว่างน้ำกำลังมา ทำอะไรก่อน", our old heading; the heading now reads "เมื่อน้ำกำลังมา ทำอะไรก่อน". The anchor is the same, so nothing breaks; matching it is its choice.
+
 **The Thai read (v1.15.1, 4 Nov 2026).** The owner asked for the Thai read of the shared lines to be finished ([KNOWN_ISSUES #99](KNOWN_ISSUES.md#99-the-flood-lines-for-ภัยรอบบ้าน-rest-on-news-reports-quoting-ddpm-and-rid), [#100](KNOWN_ISSUES.md#100-the-uv-lines-rest-on-who-and-on-news-reports-quoting-thai-agencies-the-thai-is-ours)). **No level's first line changed** (`flood.levels[].all[0]`, `uv.levels[].all[0]`), nor an id, a number, a source id, `verify` or an anchor; the lines below did, with the same advice. ภัยรอบบ้าน's `check:advice` compares every line, so it reports these until its copies are updated. The flash line here replaces the one in the B28 note above. Paste:
 
 ```

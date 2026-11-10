@@ -402,6 +402,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **A code leads to a static page that opens without the app** and shows each line's source (the hazard page), never to a tool's state or a `?` link. Since codes are on paper, **a hazard slug never changes** (rule 5's "never change a slug" now has paper behind it); if a page must move, it keeps a redirect for good.
     - **A printed page carries its date, the helplines with whom they reach, its sources and the disclaimer**, and fits one A4 page (a smoke check prints the pack to A4 PDF and counts one page per guide; measure at the paper's width, not a phone's).
     - **Check a printed artefact as paper:** print it to PDF, count the pages, look at them, and decode the codes from the PDF's pixels.
+109. **A second copy of what a person keeps on the phone never leaks into the first.** Since v1.18.0 (the parents' home, F216):
+    - **One key per copy** (`brm:kit`, `brm:kit2`), read and written through one function; a reader that must stay with the person's own home says so in code (`saved('home')`).
+    - **The start screen, the plan's reminder, the water and the bag describe บ้านเรา only.** A screen for the other home hides the buttons that would open them, rather than half-following it.
+    - **Every line that names the home is worded by household** (`hs()`), with a twin in both languages that has the same placeholders; a unit test reads the source for those lines.
+    - **The copy is still the person's own data:** on the device only, no event carries it, and switching sends only an anonymous `kit_open` with the label `parents` ([rule 56](#8-rules-that-come-from-bugs-we-already-hit)).
 
 ## 9. Working with AI assistants
 

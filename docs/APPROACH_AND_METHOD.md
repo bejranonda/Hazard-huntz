@@ -612,3 +612,11 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 2. **Search for exact strings,** old and new: each hand-back changed specific words and anchors, so "ระหว่าง…" versus "เมื่อ…", `#prepare` versus `#cl-prepare` and "น้ำห้วยขุ่นข้น" versus "น้ำในลำห้วยขุ่นข้น" say which version it runs.
 3. **Record the version and the date** ("v0.12.12, 10 Nov 2026") with what matched and what differs, and close what it closes here (#103's A5).
 4. **Leave its choices to it:** a cosmetic difference (a link label) is noted, not chased.
+
+## 47. Add a second copy of something without letting it leak (v1.18.0)
+
+1. **List every reader of the stored thing first** (`grep` for the key, here `brm:kit` and `saved()`): the start screen's score, the plan's reminder, the water, the bag. Decide for each whether it follows the copy in view or stays with the first; here all of them stay with บ้านเรา.
+2. **Give the copy its own key** (`brm:kit2`) and route every read and write through one function (`kitKey()`, `saved(h)`), so a reader that must stay with the first says so in code (`saved('home')`).
+3. **Word every line that names the thing through one helper** (`hs()`), and let a unit test find those lines in the source and require a twin for each, with the same placeholders and never the first copy's name.
+4. **Hide what would mix the two** (here the plan, water and bag buttons on the parents' list) rather than make them half-follow.
+5. **Test the separation, not only the new screen:** the smoke check seeds the first copy, works the second, then reads both keys and the start screen to prove the first is untouched.

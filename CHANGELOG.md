@@ -4,6 +4,22 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.18.0] — 2026-11-10
+
+**A second home in the supplies check: the parents' home.** For the grown-up child who organises supplies for older parents in another home (the audience research). No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F216](docs/KNOWN_ISSUES.md#in-v1180-10-nov-2026), [ROADMAP N39](docs/ROADMAP.md#n39-a-second-household-in-the-home-check-v1180))
+
+### Added
+
+- **"🏠 บ้านเรา / 🏡 บ้านพ่อแม่"** at the top of เช็กของจำเป็น. The parents' home has its own two questions ("บ้านพ่อแม่มีกี่คน?"), list with amounts, score, print and card ("บ้านพ่อแม่พร้อมแค่ไหน?"), and its own "what we still need" text. It is kept on the phone in `brm:kit2`, apart from บ้านเรา. Every way in opens บ้านเรา; the start screen's score, the family plan's reminder, the water and the bag stay with บ้านเรา, and the parents' list doesn't offer them. `/kit` says the parents' home can be checked too.
+
+### Changed
+
+- **Agency links checked again** (`npm run links`, 10 Nov 2026): 11 of 13 answered and show the new date. Air4Thai (503, its certificate chain, #86) and PEA's planned cuts (its firewall's bot block) answered as on 21 Oct; their dates stay until someone opens them on a phone (#88).
+
+### Docs
+
+- KNOWN_ISSUES F216 (#84, #88), GUIDELINES rule 109, ROADMAP N39, KNOWLEDGE §44 (and the storage table), APPROACH §47, LESSONS E14, game design's home check table, metrics (`kit_open` with the label `parents`), test checklist row 97, HANDOFF, README, AGENTS.
+
 ## [1.17.1] — 2026-11-10
 
 **The family plan remembers who needs help, and a posting calendar by region.** No advice, number or source changed; no item or slot. ([ROADMAP P10d](docs/ROADMAP.md#p10-more-calculators))

@@ -9,7 +9,7 @@
 // iOS in-app browsers (LINE, Facebook...) don't run service workers; the
 // game simply works online there.
 
-const VERSION = 'c142db0f24';
+const VERSION = '4b34202278';
 const PRECACHE = [
   "/",
   "/en/",

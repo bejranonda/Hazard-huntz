@@ -28,7 +28,7 @@ Two privacy-safe sources, with **no cookies and no personal data**:
 | (none) | The ภัยรอบบ้าน link (v1.14.0) | — | — | — |
 | `lang` | Language toggled | – | `th` / `en` | – |
 | `learn_open` | `/learn` opened from the featured card or the safety book (v1.4.0), or a hazard page from a guide's "📖" (v1.9.0) | – | the topic (e.g. `health`), `book`, or the guide's id (e.g. `quake`) | – |
-| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) / `fridge` (the fridge tool's "🎒 เช็กของจำเป็นสำหรับไฟดับ", v1.10.0) | – |
+| `kit_open` | The home check opened (v1.8.0) | – | `start` (the quick button; since v1.9.0 the hub's "🎒 เช็กของจำเป็น") / `result` (a result screen: the power cut, and since v1.8.1 Prepare and Return too) / `link` (`/?open=kit`, also from `/ready`, and since v1.8.1 `/flood`, `/learn`, `llms.txt` and the app's shortcut) / `plan` (back from the plan form) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) / `fridge` (the fridge tool's "🎒 เช็กของจำเป็นสำหรับไฟดับ", v1.10.0) / `parents` (a tap on "🏡 บ้านพ่อแม่" inside the check, v1.18.0: not a new arrival) | – |
 | `kit_share` | A channel tapped in the home check's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` / `copylist` ("🛒 คัดลอกรายการที่ยังขาด", v1.11.0) | the score, 0–100 (%) |
 | `plan_open` | The plan form opened (v1.8.1) | – | `start` (the hub's "📝 แผนครอบครัว", v1.9.0) / `link` (`/?open=plan`, from a post, a hazard page, `/kit` or `/plan`, `/learn`, `llms.txt` or the app's shortcut) / `kit` (from the home check's list) / `guide` (a guide's "เตรียมบ้านต่อ", v1.9.1) | – |
 | `plan_share` | A channel tapped in the plan card's share sheet (v1.8.0) | – | `native` / `line` / `facebook` / `copy` / `save` / `copylist` ("📋 คัดลอกแผนเป็นข้อความ", v1.11.0) | 0 |
@@ -175,7 +175,7 @@ WHERE blob1 = 'kit_share' AND timestamp > NOW() - INTERVAL '30' DAY
 GROUP BY week ORDER BY week
 ```
 
-Share rate of the check = `kit_share` ÷ `kit_open`; from the results = the `result` row of `kit_open` ÷ `round_end` for `prepare`, `return` and `stock` together (since v1.8.1; before, `stock` only). Plan cards made per plan form opened ≈ `plan_share` ÷ `plan_open`, both counted per action, not per household. **[unverified]** on real data; no players yet.
+Share rate of the check = `kit_share` ÷ `kit_open` without the `parents` row (since v1.18.0 that row counts switches to the parents' home inside an open check; it is also the number to read for whether the second household is used); from the results = the `result` row of `kit_open` ÷ `round_end` for `prepare`, `return` and `stock` together (since v1.8.1; before, `stock` only). Plan cards made per plan form opened ≈ `plan_share` ÷ `plan_open`, both counted per action, not per household. **[unverified]** on real data; no players yet.
 
 ## Tools first (v1.9.0)
 

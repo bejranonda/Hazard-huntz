@@ -800,3 +800,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* v1.14.0 made "this app states no live conditions" a rule (GUIDELINES rule 100), but the launch kit still ended its seasonal section with "set `forecastStatusUrl` and the recommended mode will follow live rain warnings", eight days later and with FloodWatch, the app it meant, closing.
 - *Do this:* when a rule retires a practice, grep the docs for that practice's names (here `forecastStatusUrl`, "rain warning", "live") and rewrite or remove every place that still recommends it, in the same commit.
 - *Encoded in:* [04-launch-kit §5](04-launch-kit.md#5-relaunch-every-rainy-season), [KNOWLEDGE §43](KNOWLEDGE.md#43-the-plan-remembers-who-needs-help-the-family-checked-from-live-code-v1171).
+
+**E14. Put an edit with tricky quoting in a script file, not a one-line shell command.**
+
+- *What happened:* on 10 Nov 2026 a `node -e '…'` command that inserted the parents' home strings into `kit.json` (Thai and English with apostrophes, written as `'` inside a single-quoted shell string) was refused by the session's safety check: it couldn't be sure how the shell would read the command, so it couldn't rule out a hidden removal. Nothing ran.
+- *Do this:* write such an edit as a small script in the session scratchpad (`Write`, then `node /…/scratchpad/x.cjs`), with absolute paths, and run that. The script is easy to read before running, and has no shell quoting to misread. This is not a way around a refusal of the action itself: if the action is refused, stop and tell the owner ([AGENTS §7](../AGENTS.md#7-environment-notes)).
+- *Encoded in:* this entry; the scripts for v1.18.0's docs and strings were written this way.

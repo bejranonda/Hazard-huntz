@@ -823,6 +823,62 @@ try {
     await ctx.close();
   }
 
+  // 11a. A second household (v1.18.0, audience research): the parents' home, checked by the child
+  // who organises it, kept apart on the device; the start tile, the water, the bag and the plan
+  // stay with "บ้านเรา".
+  {
+    const { ctx, page } = await newPage({ width: 320, height: 568 });
+    await page.addInitScript(() => { if (!sessionStorage.getItem('seeded')) { sessionStorage.setItem('seeded', '1'); localStorage.setItem('brm:kit', JSON.stringify({ people: 4, flags: [], have: ['water'], answered: true, pct: 8 })); } });
+    await page.goto(`${BASE}/?open=kit&debug=1`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.kit-row');
+    const chip0 = (await page.textContent('#kit-chip')).trim();
+    const pressed = () => page.$$eval('[data-house]', (bs) => bs.map((b) => `${b.dataset.house}:${b.getAttribute('aria-pressed')}`).join());
+    const opened = await pressed();
+    await page.click('[data-house="parents"]');
+    await page.waitForSelector('#kit-go');
+    const q = await page.evaluate(() => ({ h: document.querySelector('#sheet-title').textContent, people: document.querySelector('#kit-people-label').textContent, note: document.querySelector('.kit-privacy').textContent }));
+    check('second household: the check opens on "บ้านเรา"; "บ้านพ่อแม่" asks its own questions (v1.18.0)',
+      opened === 'home:true,parents:false' && q.h.includes(KIT.ui.th.parentsTitle) && q.people === KIT.ui.th.parentsPeople && q.note.includes(KIT.ui.th.houseNote), `${opened} | ${JSON.stringify(q)}`);
+    const smallQ = await smallControls(page);
+    for (let i = 0; i < 4; i++) await page.click('#kit-minus'); // 3 → 1 → clamped
+    await page.click('#kit-plus'); // 2 people
+    await page.click('.kit-flag:has(input[value="elder"])');
+    await page.click('#kit-go');
+    await page.waitForSelector('.kit-row');
+    await page.click('.kit-row:has(input[data-id="torch"])');
+    const two = await page.evaluate(() => ({
+      house: document.querySelector('.kit-house').textContent, water: document.querySelector('.kit-row input[data-id="water"]')?.closest('.kit-row').querySelector('.kit-qty')?.textContent,
+      own: !!document.querySelector('#kit-plan, #kit-water, #kit-bag'), kit: JSON.parse(localStorage.getItem('brm:kit')), kit2: JSON.parse(localStorage.getItem('brm:kit2')),
+      chip: document.querySelector('#kit-chip').textContent.trim(), wide: document.documentElement.scrollWidth > innerWidth,
+    }));
+    check('second household: 2 people → 18 litres, kept in brm:kit2; "บ้านเรา" (4 people, its ticks) and the start tile are untouched; no plan, water or bag buttons for the parents',
+      two.house.startsWith(KIT.ui.th.parentsHousehold.replace('{n}', 2)) && /^18 /.test(two.water || '') && !two.own && two.kit2.people === 2 && two.kit2.flags.includes('elder') && two.kit2.have.includes('torch')
+      && two.kit.people === 4 && two.kit.have.join() === 'water' && two.chip === chip0 && !two.wide, JSON.stringify(two));
+    const smallL = await smallControls(page);
+    check('second household: controls >= 44 px at 320 px (questions and list)', !smallQ.length && !smallL.length, [...smallQ, ...smallL].join(', '));
+    await page.click('#kit-share');
+    await page.waitForFunction(() => document.querySelector('#kit-img')?.naturalWidth === 1080, null, { timeout: 15000 });
+    const copied = await page.evaluate(async () => { let got = ''; navigator.clipboard.writeText = async (x) => { got = x; }; document.querySelector('[data-k="copylist"]')?.click(); await new Promise((r) => setTimeout(r, 300)); return got; });
+    check('second household: the card renders; "what we still need" is headed for the parents\' home', copied.startsWith(KIT.ui.th.parentsKitCopyHead.replace('{n}', 2)), copied.split('\n')[0]);
+    await page.click('#kit-back');
+    await page.waitForSelector('.kit-row');
+    const back = await pressed();
+    await page.click('[data-house="home"]');
+    await page.waitForSelector('.kit-row');
+    const home = (await page.textContent('.kit-house')).trim();
+    check('second household: back from the card stays on the parents\' home; "บ้านเรา" is one tap away with its own list',
+      back === 'home:false,parents:true' && home.startsWith(KIT.ui.th.household.replace('{n}', 4)), `${back} | ${home}`);
+    // English, the smallest phone: the two buttons fit and say which home.
+    const en = await newPage({ width: 320, height: 568 });
+    await en.page.goto(`${BASE}/en/?open=kit&debug=1`, { waitUntil: 'networkidle' });
+    await en.page.waitForSelector('[data-house]');
+    const enSeg = await en.page.evaluate(() => ({ labels: [...document.querySelectorAll('[data-house]')].map((b) => b.textContent.trim()), wide: document.documentElement.scrollWidth > innerWidth, tall: Math.max(...[...document.querySelectorAll('[data-house]')].map((b) => b.getBoundingClientRect().height)) }));
+    check('second household (English): "Our home" and "Parents\' home" fit at 320 px', enSeg.labels.join() === `${KIT.ui.en.houseHome},${KIT.ui.en.houseParents}` && !enSeg.wide && enSeg.tall < 60, JSON.stringify(enSeg));
+    check('no page errors (second household)', !page.errors.length && !en.page.errors.length, [...page.errors, ...en.page.errors].join(' | '));
+    await en.ctx.close();
+    await ctx.close();
+  }
+
   // 11b. The fridge in a power cut (v1.10.0; one tap since v1.10.1; food by food
   // since v1.11.0): tap how long the power has been off, then one card per part,
   // the foods to throw out and to keep; the time stays on the device.

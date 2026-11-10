@@ -1960,7 +1960,7 @@
         "by": "ปภ.",
         "url": "https://line.me/R/ti/p/@linealert",
         "kind": "line",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "prepare",
           "landslide",
@@ -1979,7 +1979,7 @@
         "by": "กรมอุตุนิยมวิทยา",
         "url": "https://www.tmd.go.th/warning-and-events/warning-storm",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "prepare",
           "landslide",
@@ -1997,7 +1997,7 @@
         "by": "สสน.",
         "url": "https://www.thaiwater.net/water/wl",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "prepare",
           "landslide"
@@ -2013,7 +2013,7 @@
         "by": "สทอภ. (GISTDA)",
         "url": "https://disaster.gistda.or.th/flood",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "prepare",
           "return"
@@ -2044,7 +2044,7 @@
         "by": "สทอภ. (GISTDA)",
         "url": "https://pm25.gistda.or.th/",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "dust"
         ]
@@ -2059,7 +2059,7 @@
         "by": "กรมอุตุนิยมวิทยา",
         "url": "https://earthquake.tmd.go.th/",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "quake"
         ]
@@ -2074,7 +2074,7 @@
         "by": "กฟน.",
         "url": "https://www.mea.or.th/public-relations/power-outage-notifications/power-outage-maintainence-announcement",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "stock"
         ]
@@ -2104,7 +2104,7 @@
         "by": "ปภ.",
         "url": "https://line.me/R/ti/p/@1784ddpm",
         "kind": "line",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "prepare",
           "return",
@@ -2123,7 +2123,7 @@
         "by": "ปภ.",
         "url": "https://relief.disaster.go.th/",
         "kind": "web",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "return"
         ],
@@ -2154,7 +2154,7 @@
         "by": "คปภ.",
         "url": "https://line.me/R/ti/p/@oicconnect",
         "kind": "line",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": [
           "return"
         ]
@@ -2169,7 +2169,7 @@
         "by": "ศูนย์ต่อต้านข่าวปลอม",
         "url": "https://line.me/R/ti/p/@antifakenewscenter",
         "kind": "line",
-        "checked": "2026-10-20",
+        "checked": "2026-11-10",
         "guides": []
       }
     ]
@@ -3877,6 +3877,19 @@
       "cardMissingN": "ยังขาด {n} อย่าง เช่น",
       "kitCopy": "🛒 คัดลอกรายการที่ยังขาด",
       "kitCopyHead": "ของที่บ้านเรายังขาด (บ้านเรา {n} คน)",
+      "houseWhich": "เช็กให้บ้านไหน?",
+      "houseHome": "🏠 บ้านเรา",
+      "houseParents": "🏡 บ้านพ่อแม่",
+      "houseNote": "บ้านพ่อแม่แยกจากบ้านเรา คำตอบอยู่ในเครื่องนี้เท่านั้น",
+      "parentsTitle": "เช็กของจำเป็น: บ้านพ่อแม่พร้อมแค่ไหน?",
+      "parentsIntro": "ตอบ 2 ข้อแทนพ่อแม่ แล้วดูว่าบ้านพ่อแม่ควรมีอะไรบ้าง ถ้าน้ำท่วม ไฟดับ หรือต้องอยู่ในบ้าน 3 วัน",
+      "parentsPeople": "บ้านพ่อแม่มีกี่คน?",
+      "parentsShow": "ดูรายการของบ้านพ่อแม่",
+      "parentsHousehold": "บ้านพ่อแม่ {n} คน",
+      "parentsShare": "📤 แชร์ผลของบ้านพ่อแม่",
+      "parentsCardTitle": "บ้านพ่อแม่พร้อมแค่ไหน?",
+      "parentsShareText": "บ้านพ่อแม่พร้อมแล้ว {pct}% ถ้าน้ำท่วมหรือไฟดับ 3 วัน 🎒 แล้วบ้านคุณล่ะ? เช็กฟรี 1 นาที 👉 {url} #บ้านรอดไหม",
+      "parentsKitCopyHead": "ของที่บ้านพ่อแม่ยังขาด (บ้านพ่อแม่ {n} คน)",
       "planCopy": "📋 คัดลอกแผนเป็นข้อความ",
       "maskTitle": "ใส่หน้ากากไหม แบบไหน?",
       "maskIntro": "แตะทีละข้อ แล้วดูว่าต้องใส่ไหม ใส่แบบไหน",
@@ -4140,6 +4153,19 @@
       "cardMissingN": "Still missing {n}, including",
       "kitCopy": "🛒 Copy what we still need",
       "kitCopyHead": "What our home still needs ({n} people)",
+      "houseWhich": "Which home?",
+      "houseHome": "🏠 Our home",
+      "houseParents": "🏡 Parents' home",
+      "houseNote": "Your parents' home is kept apart from yours; the answers stay on this device",
+      "parentsTitle": "Check your supplies: how ready is our parents' home?",
+      "parentsIntro": "Answer 2 questions for your parents and see what their home needs for a flood, a power cut or 3 days indoors",
+      "parentsPeople": "How many people live at your parents' home?",
+      "parentsShow": "Show their list",
+      "parentsHousehold": "{n} people at your parents' home",
+      "parentsShare": "📤 Share their result",
+      "parentsCardTitle": "How ready is our parents' home?",
+      "parentsShareText": "Our parents' home is {pct}% ready for 3 days of flood or power cut 🎒 How about yours? Free 1-minute check 👉 {url} #BaanRodMai",
+      "parentsKitCopyHead": "What our parents' home still needs ({n} people)",
       "planCopy": "📋 Copy the plan as text",
       "maskTitle": "Do I need a mask, and which one?",
       "maskIntro": "Tap one answer at a time to see whether to wear one, and which kind",

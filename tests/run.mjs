@@ -421,6 +421,33 @@ test('each tool has one short and one long name, the same everywhere (visitor au
   }
 });
 
+test('the parents\' home has its own words wherever the home check names the home (v1.18.0)', () => {
+  const kit = load('kit');
+  const src = fs.readFileSync(new URL('../public/js/kit.js', import.meta.url), 'utf8');
+  // every line the sheet words by household (hs('…')) has a parents' twin, with the same placeholders
+  const keys = [...new Set([...src.matchAll(/\bhs\('(\w+)'/g)].map((m) => m[1]))];
+  assert.ok(keys.length >= 8, `${keys.length} household lines`);
+  const holes = (x) => [...x.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort().join();
+  for (const lang of ['th', 'en']) {
+    const U = kit.ui[lang];
+    for (const k of ['houseWhich', 'houseHome', 'houseParents', 'houseNote']) assert.ok(U[k], `${lang} ${k}`);
+    for (const k of keys) {
+      const p = U[`parents${k[0].toUpperCase()}${k.slice(1)}`];
+      assert.ok(p && U[k], `${lang} ${k}: a parents' twin`);
+      assert.equal(holes(p), holes(U[k]), `${lang} ${k}: the same placeholders`);
+      // the twin names the parents' home and never "our home"
+      if (lang === 'th') assert.ok(p.includes('พ่อแม่') && !p.includes('บ้านเรา'), `th ${k}: ${p}`);
+      else assert.ok(/parents'/.test(p) || /\btheir\b/.test(p), `en ${k}: ${p}`);
+      if (lang === 'en') assert.ok(!/our home|\bours\b/i.test(p), `en ${k}: ${p}`);
+    }
+  }
+  // the start screen's score and the plan card's reminder read "บ้านเรา" only
+  const main = fs.readFileSync(new URL('../public/js/main.js', import.meta.url), 'utf8');
+  assert.ok(!/kit2/.test(main), 'the start screen never reads the parents\' home');
+  assert.match(src, /const kitKey = \(h = house\) => \(h === 'parents' \? 'kit2' : 'kit'\)/);
+  assert.match(src, /const k = saved\('home'\);/, 'the water and the bag use "บ้านเรา"');
+});
+
 test('home check: amounts follow the household, special items follow the answers', () => {
   const kit = load('kit');
   const byId = (p, id) => p.items.find((x) => x.id === id);

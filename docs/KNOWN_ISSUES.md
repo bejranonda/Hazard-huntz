@@ -82,7 +82,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 81 | [Larger text (ก+) covers the start screen and the sheets only, and sizes ignore the phone's text setting](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting) | Fixed in v1.16.0 ([F212, F213](#in-v1160-4-nov-2026)); real phones [unverified] (#3) | — |
 | 82 | ["power: Bangkok area" stands for MEA's three provinces](#82-power-bangkok-area-stands-for-meas-three-provinces) | Owner (the English read) | Low |
 | 83 | [Leftovers of visitor audit 3](#83-leftovers-of-visitor-audit-3) | Open (AI-ready, two owner decisions) | Low |
-| 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner); the print pack built in v1.17.0 ([F215](#in-v1170-4-nov-2026)), text in `rem` in v1.16.0 | — |
+| 84 | [Ideas from the audience research not built yet](#84-ideas-from-the-audience-research-not-built-yet) | Not built (some need the owner); the print pack built in v1.17.0 ([F215](#in-v1170-4-nov-2026)), text in `rem` in v1.16.0, the second household in v1.18.0 ([F216](#in-v1180-10-nov-2026)) | — |
 | 86 | [Air4Thai's server sends the wrong certificate chain](#86-air4thais-server-sends-the-wrong-certificate-chain) | Owner (phone test; tell the PCD) | Medium |
 | 87 | [The mask tool's lines for children, pregnancy and heart or lung disease need a doctor's read](#87-the-mask-tools-lines-for-children-pregnancy-and-heart-or-lung-disease-need-a-doctors-read) | Owner | **Medium (review before posting `/mask` widely)** |
 | 88 | [Agency links can move; they are checked by hand, monthly](#88-agency-links-can-move-they-are-checked-by-hand-monthly) | By design; Owner: run `npm run links` monthly | Low |
@@ -1025,7 +1025,7 @@ The audience research of 20 Oct 2026 ([07-audience.md](07-audience.md)) found th
 - **Burmese pictures of the top three guides** (before the water, after the water, house fire), with a native translator, then Khmer and Lao ([ROADMAP P4](ROADMAP.md#p4-more-languages)).
 - **A looped Thai font for body text** (Sarabun or Noto Sans Thai Looped, subset), tested with real older readers before any change; watch the 500 KB budget.
 - ~~**Text sizes in `rem`**~~ Done in v1.16.0 ([#81](#81-larger-text-ก-covers-the-start-screen-and-the-sheets-only-and-sizes-ignore-the-phones-text-setting)).
-- **A second household in the home check** ("บ้านพ่อแม่"), so the organiser can size water and medicine for the parents' home and send that card; nothing leaves the phone.
+- ~~**A second household in the home check** ("บ้านพ่อแม่"), so the organiser can size water and medicine for the parents' home and send that card; nothing leaves the phone.~~ Built in v1.18.0: "🏠 บ้านเรา / 🏡 บ้านพ่อแม่" ([F216](#in-v1180-10-nov-2026)).
 - ~~**A regional posting calendar**~~ Written in v1.17.1: [04-launch-kit](04-launch-kit.md#a-regional-posting-calendar-v1171), from the sourced seasons (S30–S43).
 - **A `?src=` channel code and an in-app-browser bucket** on `view`, counting channel types, never people. **The owner decides:** both are new data, and the guidelines say no user agent is stored ([05-metrics](05-metrics.md#larger-text-and-the-real-readers-v1110)).
 - **The real-phone pass on Android 10–11** inside LINE and Facebook: about 12 % of Thai Android traffic runs Android 11 or older ([06-test-checklist](06-test-checklist.md), [#3](#3-not-yet-tested-on-real-phones-or-real-in-app-browsers)).
@@ -1059,7 +1059,7 @@ The mask tool (v1.12.0) gives when from the PCD's notice and which kind from the
 
 Since v1.12.0 the all-tools page, the guides and the hazard pages link 13 agency pages (`kit.json → links`), each with the date it was checked. Government sites move pages, and some open on a special page first, so the links go to deep pages, never a home page (the build refuses the TMD's, RID's, the OIC's and the DOH's home pages), and LINE accounts by their exact id.
 
-- **`npm run links`** opens each one and says ok, ERR or BLK (a bot check). On 21 Oct 2026: 11 of 13 answered; Air4Thai gave 503 to Node ([#86](#86-air4thais-server-sends-the-wrong-certificate-chain)), and PEA's planned-cuts page answered with its firewall's "Unauthorized Request Blocked", as it did to the researcher's headless browser. Neither is proof that the page is gone: open them on a phone.
+- **`npm run links`** opens each one and says ok, ERR or BLK (a bot check). On 21 Oct and again on 10 Nov 2026: 11 of 13 answered (their `checked` dates moved to 10 Nov); Air4Thai gave 503 to Node ([#86](#86-air4thais-server-sends-the-wrong-certificate-chain)), and PEA's planned-cuts page answered with its firewall's "Unauthorized Request Blocked", as it did to the researcher's headless browser. Neither is proof that the page is gone: open them on a phone.
 - **The build warns** when a link's `checked` date is over 120 days old.
 - **Look-alikes:** a Play Store search for "Thai Disaster Alert" shows foreign apps first, and DDPM's older "DPM Alert" is stale; the app names THAI DISASTER ALERT in the alert steps but doesn't link a store page (the two stores need two links, and LINE's browser may not leave for a store).
 
@@ -1129,6 +1129,12 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.18.0 (10 Nov 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F216 | **The home check described one home only** (#84): the grown-up child who organises supplies for older parents in another home could size only their own, or had to overwrite their answers to check the parents' | "🏠 บ้านเรา / 🏡 บ้านพ่อแม่" under the sheet's title: the parents' home has its own two questions, list, score, print and card ("บ้านพ่อแม่พร้อมแค่ไหน?"), kept in `brm:kit2`. Every way in opens บ้านเรา; the start screen's score, the plan's reminder, the water and the bag stay with it, and the parents' list hides their buttons. Unit test: every line that names the home has a parents' twin with the same placeholders. Smoke section 11a: 7 checks at 320 × 568 ([KNOWLEDGE §44](KNOWLEDGE.md#44-a-second-household-the-parents-home-v1180)) |
 
 ### In v1.17.0 (4 Nov 2026)
 

@@ -690,6 +690,14 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **How it was checked:** each of the 18 codes decoded by an independent decoder from the file and again from the printed PDF at 150 dpi; printed to A4 PDF, nine pages per language; the app's print waits for the code; 66 pages at 100/125/150 % text without sideways scroll.
 - **Not done:** a code on the 1080 × 1920 guide pictures and the result card (P5b's other half): a code on a picture forwarded in a chat is scanned rarely, since it is on the phone that would scan it.
 - **Done when:** the checks above pass, the pages are live, and row 96 (a real printer, a real phone scanning the paper) is filled ([L6](#l6-real-phone-test-matrix)).
+### N39. A second household in the home check (v1.18.0)
+
+- **Who:** AI-ready ("Anything else to improve, please continue", 10 Nov 2026) · **Status:** Done (10 Nov 2026, v1.18.0) · **Issues:** F216; #84's second household
+- **What:** "🏠 บ้านเรา / 🏡 บ้านพ่อแม่" at the top of เช็กของจำเป็น: the parents' home has its own answers, ticks, score, list, print and card, kept in `brm:kit2`; the start screen, the plan's reminder, the water and the bag stay with บ้านเรา ([KNOWLEDGE §44](KNOWLEDGE.md#44-a-second-household-the-parents-home-v1180)).
+- **How it was checked:** a unit test that every line naming the home has a parents' twin; smoke section 11a (7 checks at 320 × 568, Thai and English); screenshots of the Thai list and card and the English switch at 100 % and 150 % text.
+- **Not done:** a third place, or a plan card for the parents' home (the plan is "แผนครอบครัวของบ้านเรา"; a second plan waits for someone to ask).
+- **Done when:** the checks pass, it is live, and row 97 (both homes kept inside LINE) is filled ([L6](#l6-real-phone-test-matrix)).
+
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 
 - **Who:** AI-ready · **Status:** Done (3 Nov 2026, v1.14.3) · **Issues:** fixed F178–F180; #99 updated

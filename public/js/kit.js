@@ -1,6 +1,6 @@
 // "How ready is our house?" (/?open=kit) and the family plan card
 // (/?open=plan). Loaded only when one of them opens. Answers, ticks and the
-// plan's text stay on this device (localStorage brm:kit, brm:plan); only
+// plan's text stay on this device (localStorage brm:kit, brm:kit2 for the parents' home, brm:plan); only
 // anonymous counts are sent (kit_open, kit_share, plan_share), never the text.
 
 import { $, $$, esc, store, bangkokDateKey, formatHouseDate } from './util.js';
@@ -63,9 +63,28 @@ const midSentence = (x) => (getLang() === 'en' ? x.replace(/^\p{Lu}(?!\p{Lu})/u,
 const pageUrl = (tool) => `${siteUrl()}${getLang() === 'en' ? '/en' : ''}/${tool}`;
 const agencies = (ids = []) => [...new Set(ids.map((id) => content().sources[id]?.agency).filter(Boolean))].map(agencyName).join(' · ');
 
-function saved() {
-  const s = store.get('kit', null);
+// A second household (v1.18.0, audience research): the parents' home, checked by the child who
+// organises it, kept apart on this device (brm:kit2). The start screen's score, the plan card's
+// reminder, the water and the bag stay with "บ้านเรา" (brm:kit).
+let house = 'home';
+const kitKey = (h = house) => (h === 'parents' ? 'kit2' : 'kit');
+const hs = (k, v) => u(house === 'parents' ? `parents${k[0].toUpperCase()}${k.slice(1)}` : k, v);
+function saved(h = house) {
+  const s = store.get(kitKey(h), null);
   return s && typeof s === 'object' ? s : null;
+}
+const houseSeg = () => `<div class="seg kit-houses" role="group" aria-label="${esc(u('houseWhich'))}">${['home', 'parents'].map((h) => `<button type="button" data-house="${h}" aria-pressed="${h === house}">${esc(u(h === 'home' ? 'houseHome' : 'houseParents'))}</button>`).join('')}</div>`;
+function bindHouse() {
+  for (const b of $$('[data-house]', $('#sheet'))) {
+    b.addEventListener('click', () => {
+      if (b.dataset.house === house) return;
+      house = b.dataset.house;
+      if (house === 'parents') track('kit_open', { label: 'parents' });
+      const s = saved();
+      if (s?.answered) showList(s);
+      else showQuestions(s || { people: K.people.default, flags: [], have: [] });
+    });
+  }
 }
 
 let kitReturn = null;
@@ -73,6 +92,8 @@ export async function openKit(from = 'start', mode = '') {
   await loadKit();
   pendingBack = from;
   track('kit_open', { label: from, mode });
+  // Every way in opens "บ้านเรา"; the parents' home is one tap away at the top.
+  house = 'home';
   const s = saved();
   // From the bag ("change answers" / "answer 2 questions"): the questions, then back to the bag.
   kitReturn = from === 'bag' ? () => openBag('kitedit') : null;
@@ -83,9 +104,10 @@ export async function openKit(from = 'start', mode = '') {
 function showQuestions(s) {
   let n = s.people || K.people.default;
   openSheet(`
-    <h2 id="sheet-title">🎒 ${esc(u('title'))}</h2>
-    <p class="sub">${esc(u('intro'))}</p>
-    <p class="kit-q" id="kit-people-label">${esc(u('people'))}</p>
+    <h2 id="sheet-title">🎒 ${esc(hs('title'))}</h2>
+    ${kitReturn ? '' : houseSeg()}
+    <p class="sub">${esc(hs('intro'))}</p>
+    <p class="kit-q" id="kit-people-label">${esc(hs('people'))}</p>
     <div class="stepper" role="group" aria-labelledby="kit-people-label">
       <button class="step-btn" type="button" id="kit-minus" aria-label="${esc(u('less'))}">−</button>
       <output id="kit-n" aria-live="polite">${n}</output>
@@ -93,9 +115,10 @@ function showQuestions(s) {
     </div>
     <p class="kit-q">${esc(u('who'))}</p>
     <div class="kit-flags">${K.flags.map((f) => `<label class="kit-flag"><input type="checkbox" value="${esc(f.id)}"${(s.flags || []).includes(f.id) ? ' checked' : ''}><span>${esc(f.icon)} ${esc(L(f.label))}</span></label>`).join('')}</div>
-    <p class="kit-privacy">🔒 ${esc(u('privacy'))}</p>
-    <button class="btn" type="button" id="kit-go">${esc(u('show'))}</button>
-    <button class="btn secondary small" type="button" id="kit-close">${esc(u('close'))}</button>`, { label: u('title') });
+    <p class="kit-privacy">🔒 ${esc(u(house === 'parents' ? 'houseNote' : 'privacy'))}</p>
+    <button class="btn" type="button" id="kit-go">${esc(hs('show'))}</button>
+    <button class="btn secondary small" type="button" id="kit-close">${esc(u('close'))}</button>`, { label: hs('title') });
+  bindHouse();
   const paint = () => { $('#kit-n').textContent = n; };
   $('#kit-minus').addEventListener('click', () => { n = Math.max(K.people.min, n - 1); paint(); });
   $('#kit-plus').addEventListener('click', () => { n = Math.min(K.people.max, n + 1); paint(); });
@@ -121,11 +144,12 @@ function qtyText(x) {
 function persist(s, plan) {
   const sc = kitScore(plan, s.have);
   const keep = { people: s.people, flags: s.flags, have: s.have.filter((id) => plan.items.some((x) => x.id === id)), answered: true, pct: sc.pct, date: bangkokDateKey() };
-  store.set('kit', keep);
+  store.set(kitKey(), keep);
   // The start screen's button shows the new score at once, not after a reload;
   // nothing ticked yet keeps its plain line, not "พร้อม 0%" for a first look.
+  // It is "บ้านเรา"'s score: the parents' home never changes it.
   const chip = document.getElementById('kit-chip');
-  if (chip) chip.textContent = sc.pct > 0 ? t('hubKitScore', { pct: sc.pct }) : t('hubKitSub');
+  if (chip && house === 'home') chip.textContent = sc.pct > 0 ? t('hubKitScore', { pct: sc.pct }) : t('hubKitSub');
   return { keep, sc };
 }
 
@@ -135,9 +159,11 @@ function showList(s) {
   const meds = plan.items.find((x) => x.id === 'meds' && x.item.qty?.days);
   s = { ...s, people: plan.people, have: s.have || [] };
   persist(s, plan);
+  const own = house === 'home';
   openSheet(`
-    <h2 id="sheet-title">🎒 ${esc(u('title'))}</h2>
-    <p class="kit-house">${esc(u('household', { n: plan.people }))} · <button class="link" type="button" id="kit-edit">${esc(u('edit'))}</button></p>
+    <h2 id="sheet-title">🎒 ${esc(hs('title'))}</h2>
+    ${houseSeg()}
+    <p class="kit-house">${esc(hs('household', { n: plan.people }))} · <button class="link" type="button" id="kit-edit">${esc(u('edit'))}</button></p>
     <div class="kit-meter" aria-hidden="true"><span id="kit-bar"></span></div>
     <p class="kit-score"><b id="kit-pct"></b> <span id="kit-count"></span></p>
     <p class="sub">${esc(u('tickHint'))}</p>
@@ -157,11 +183,12 @@ function showList(s) {
       </div>
       <p class="calc-out" id="med-out" aria-live="polite">${esc(u('medHint', { target: meds.item.qty.days }))}</p>
     </details>` : ''}
-    <button class="btn" type="button" id="kit-share">${esc(u('share'))}</button>
-    <div class="btn-row mk-next"><button class="btn secondary small" type="button" id="kit-water">💧 ${esc(u('waterTitle'))}</button><button class="btn secondary small" type="button" id="kit-bag">🧳 ${esc(u('bagTitle'))}</button></div>
-    <button class="btn secondary" type="button" id="kit-plan">${esc(u('plan'))}</button>
+    <button class="btn" type="button" id="kit-share">${esc(hs('share'))}</button>
+    ${own ? `<div class="btn-row mk-next"><button class="btn secondary small" type="button" id="kit-water">💧 ${esc(u('waterTitle'))}</button><button class="btn secondary small" type="button" id="kit-bag">🧳 ${esc(u('bagTitle'))}</button></div>
+    <button class="btn secondary" type="button" id="kit-plan">${esc(u('plan'))}</button>` : ''}
     ${canPrint() ? `<button class="btn secondary small" type="button" id="kit-print">${esc(t('printBtn'))}</button>` : ''}
-    <button class="btn secondary small" type="button" id="kit-close">${esc(u('close'))}</button>`, { label: u('title') });
+    <button class="btn secondary small" type="button" id="kit-close">${esc(u('close'))}</button>`, { label: hs('title') });
+  bindHouse();
   const paint = () => {
     const sc = kitScore(plan, s.have);
     $('#kit-pct').textContent = u('ready', { pct: sc.pct });
@@ -193,16 +220,16 @@ function showList(s) {
     track('print', { label: 'kit' });
     printList({
       brand: `${t('logoA')}${t('logoB')}`,
-      title: u('title'),
-      sub: u('household', { n: plan.people }),
+      title: hs('title'),
+      sub: hs('household', { n: plan.people }),
       sections: [{ head: '', items: plan.items.map((x) => ({ text: `${L(x.item.label)}${qtyText(x) ? `: ${qtyText(x)}` : ''}`, note: `${u('source')}: ${agencies(x.item.sources)}${x.item.verify !== 'verified' ? ` · ${u('partial')}` : ''}` })) }],
       foot: [t('printNote', { url: pageUrl('kit').replace(/^https?:\/\//, ''), date: formatHouseDate(bangkokDateKey(), getLang()) }), t('disclaimer')],
     });
   });
   $('#kit-close').addEventListener('click', () => closeSheet());
-  $('#kit-plan').addEventListener('click', () => openPlan('kit'));
-  $('#kit-water').addEventListener('click', () => openWater('kit'));
-  $('#kit-bag').addEventListener('click', () => openBag('kit'));
+  $('#kit-plan')?.addEventListener('click', () => openPlan('kit'));
+  $('#kit-water')?.addEventListener('click', () => openWater('kit'));
+  $('#kit-bag')?.addEventListener('click', () => openBag('kit'));
   $('#kit-share').addEventListener('click', async () => {
     const sc = kitScore(plan, s.have);
     const allMissing = kitMissing(plan, s.have, Infinity);
@@ -210,15 +237,15 @@ function showList(s) {
     assets = assets || await loadCardAssets();
     const canvas = document.createElement('canvas');
     drawKitCard(canvas, {
-      logo: [t('logoA'), t('logoB')], title: u('cardTitle'), pct: sc.pct, count: u('cardCount', { have: sc.have, total: sc.total }),
+      logo: [t('logoA'), t('logoB')], title: hs('cardTitle'), pct: sc.pct, count: u('cardCount', { have: sc.have, total: sc.total }),
       missingLabel: allMissing.length > 3 ? u('cardMissingN', { n: allMissing.length }) : u('cardMissing'), missing, allSet: u('cardAllSet'), cta: u('cardCta'), url: pageUrl('kit'), footer: t('cardFooter'),
     }, assets);
     const url = pageUrl('kit');
     shareImage({
-      canvas, title: u('shareTitle'), text: u('shareText', { pct: sc.pct, url }), url, filename: 'baanrodmai-kit.png',
+      canvas, title: u('shareTitle'), text: hs('shareText', { pct: sc.pct, url }), url, filename: own ? 'baanrodmai-kit.png' : 'baanrodmai-kit-parents.png',
       event: 'kit_share', value: sc.pct, back: () => showList(s), backLabel: u('back'),
       // "What we still need": the missing rows with their amounts, for the shopping trip.
-      copy: allMissing.length ? { label: u('kitCopy'), text: () => [u('kitCopyHead', { n: plan.people }), ...allMissing.map((x) => `• ${L(x.item.label)}${qtyText(x) ? `: ${midSentence(qtyText(x))}` : ''}`), pageUrl('kit')].join('\n') } : null,
+      copy: allMissing.length ? { label: u('kitCopy'), text: () => [hs('kitCopyHead', { n: plan.people }), ...allMissing.map((x) => `• ${L(x.item.label)}${qtyText(x) ? `: ${midSentence(qtyText(x))}` : ''}`), pageUrl('kit')].join('\n') } : null,
     });
   });
 }
@@ -773,7 +800,7 @@ const guideBtn = (id, label) => `<button class="btn secondary small" type="butto
 const bindGuideBtns = () => { for (const b of $$('[data-guide-open]', $('#sheet'))) b.addEventListener('click', () => document.dispatchEvent(new CustomEvent('brm:guide', { detail: b.dataset.guideOpen }))); };
 // The household, as the home check knows it (people and who), for the water and the bag.
 const household = () => {
-  const k = saved();
+  const k = saved('home');
   return { people: k?.people || K.people.default, flags: k?.flags || [], known: !!k?.answered };
 };
 

@@ -703,8 +703,16 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Who:** AI-ready ("Anything else to improve, please continue", 10 Nov 2026) · **Status:** Done (10 Nov 2026, v1.18.1) · **Issues:** F217–F222; leftovers in #104
 - **What:** an independent auditor walked the live v1.17.1 in LINE's Android browser (69 pages and 24 sheets at 100/125/150 % text, a round in every mode, the print pack from PDF with its codes decoded). Fixed: rows that ran off the side at large text (heat's worst level, dust's red, the plan's boxes, water, masks, a guide's button), the print pack in the tools sheet and from LINE, four Thai mid-word breaks, printed addresses that differed from their codes, one review-note wording, the tools sheet's date, a dust reading with its unit, the plan reminder's wording for pets, `/en/uv`'s title; and three carousel images that cut their "why" mid-sentence ([KNOWLEDGE §45](KNOWLEDGE.md#45-visitor-audit-6-v1181)).
 - **How it was checked:** a probe of 13 sheets × 2 languages × 2 widths × 3 text sizes (18 sheet and size cases off the side before, none after); smoke checks for 7 sheets at 150 %, the printed guide's caption and address, and `/print` with LINE's user agent; unit tests for a reading with its unit; the re-rendered carousel looked at.
-- **Not done:** #104 (English choice sheets at 125 %, "go-bag" in 10 lessons, the gas lesson's carousel "why").
+- **Not done then:** #104 (English choice sheets at 125 %, "go-bag" in the lessons, the gas lesson's carousel "why"): done in v1.18.2 ([N41](#n41-what-visitor-audit-6-left-v1182)).
 - **Done when:** the checks pass, it is live, and row 98 (the print pack from LINE, heat today at the phone's largest text) is filled ([L6](#l6-real-phone-test-matrix)).
+
+### N41. What visitor audit 6 left (v1.18.2)
+
+- **Who:** AI-ready ("Continue as you suggested", 11 Nov 2026) · **Status:** Done (11 Nov 2026, v1.18.2) · **Issues:** F223–F225; #104 mostly closed
+- **What:** a round's answers fit at 125 % text on the smallest phone (the sheet takes the screen, the picture gives way, the text keeps its size); "emergency bag" is the one English name; the gas lesson's "why" fits its picture.
+- **How it was checked:** all 82 choice sheets measured in both languages at 100/125/150 % on 320 × 568 and 360 × 640, before and after; screenshots at 125 % and 150 %; a smoke check at 125 %; a unit test for the name; the re-rendered picture looked at.
+- **Not done:** 150 % text on a 320 px phone still scrolls (three answers at 24 px don't fit; by design, #104).
+- **Done when:** the checks pass and it is live; row 99 on a real phone ([L6](#l6-real-phone-test-matrix)).
 
 ### N33. Water off the hills, for ภัยรอบบ้าน (v1.14.3)
 

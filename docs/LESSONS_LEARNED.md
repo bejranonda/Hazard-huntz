@@ -818,3 +818,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the build writes `/print`'s inline script inside a JavaScript template literal. The LINE check was written as `/\bLine\//i`, and the template literal turned `\b` into a backspace character, so the generated page tested for a backspace and threw. The new smoke check (LINE's user agent sees "open in your browser") failed on the first run, before anything shipped.
 - *Do this:* in code that generates code, avoid escapes (here `navigator.userAgent.includes(' Line/')`), or double them, and test the generated page's behaviour, not only the generator's source.
 - *Encoded in:* `tools/build.mjs` (the print page's script), the smoke check for `/print` inside LINE.
+
+**A13. A reader who asks for bigger text has told you what matters; don't answer by shrinking it.**
+
+- *What happened:* at 125 % text the round's three answers ran below a 320 × 568 screen (53 of 82 English sheets). The quick fix was a smaller answer size at that width, which undoes the reader's own setting. Making room instead (the sheet takes the screen, the item's picture gives way, tighter gaps) took 53 down to 3 with the text at the size chosen.
+- *Do this:* when large text overflows, remove what the reader needs least before touching what they asked for; if it still overflows, show that there is more and record the numbers.
+- *Encoded in:* [GUIDELINES rule 111](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), the smoke check at 125 %.

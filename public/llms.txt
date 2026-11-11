@@ -18,7 +18,7 @@
 - What is happening now at a subdistrict (warnings, rain, rivers, dust, heat) is the sister app ภัยรอบบ้าน (Thai Risk): https://risk.autobahn.bot/ · https://risk.autobahn.bot/en; this app says what to do
 - All tools on one page, with links to the Thai agencies' own websites and LINE accounts (LINE ALERT, TMD warnings, river levels, flood and dust maps, planned power cuts, help after a disaster): https://baanrodmai.autobahn.bot/tools
 - Most advice comes from Thai government agencies, and the helplines are Thai. Some lessons rest on international guidance (WHO, the US CDC, FEMA, Tokyo Metropolitan Government) and are marked. Outside Thailand, people should follow their local authorities and emergency number.
-- Last content update: 2026-11-04
+- Last content update: 2026-11-11
 
 ## Before the flood (ก่อนน้ำมา: เตรียมบ้านให้ทัน)
 
@@ -27,16 +27,16 @@
 - **Plan for the pets** (แผนพาน้องหมาน้องแมว): Pack a carrier or leash, a name-tag collar and food, and take them with you. เตรียมกรง สายจูง ปลอกคอป้ายชื่อ อาหารสัตว์ไว้ แล้วพาน้องไปด้วยตอนอพยพ [https://baanrodmai.autobahn.bot/learn#p-petkit]
 - **The nearest shelter** (ศูนย์พักพิงใกล้บ้าน): Note the shelter and the official route, and tell everyone at home. รู้ไว้ก่อนว่าศูนย์พักพิงใกล้บ้านอยู่ไหน และไปเส้นทางไหนที่เจ้าหน้าที่แนะนำ [https://baanrodmai.autobahn.bot/learn#p-poster]
 - **Street drain out front** (ตะแกรงท่อระบายน้ำหน้าบ้าน): Clear the rubbish off the grate so rain can drain. เก็บขยะที่อุดตะแกรงท่อหน้าบ้าน ให้น้ำฝนไหลได้สะดวก ลดน้ำท่วมขัง [https://baanrodmai.autobahn.bot/learn#p-gutter]
-- **Important documents** (เอกสารสำคัญ): Seal them in a waterproof bag and keep it with the go-bag. เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที [https://baanrodmai.autobahn.bot/learn#p-docs]
+- **Important documents** (เอกสารสำคัญ): Seal them in a waterproof bag and keep it with the emergency bag. เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที [https://baanrodmai.autobahn.bot/learn#p-docs]
 - **Main breaker** (เบรกเกอร์ไฟหลัก): Switch off the downstairs breaker now, while you're dry and on dry ground. ปลดเบรกเกอร์ก่อนน้ำเข้าบ้าน ทำตอนตัวแห้ง ยืนบนพื้นแห้งเท่านั้น [https://baanrodmai.autobahn.bot/learn#p-breaker]
 - **TV and appliances** (ทีวีและเครื่องใช้ไฟฟ้า): Unplug it and carry it upstairs or somewhere high. เครื่องใช้ไฟฟ้า ของมีค่า ถอดปลั๊กแล้วยกขึ้นที่สูงหรือชั้นบนก่อนน้ำเข้าบ้าน [https://baanrodmai.autobahn.bot/learn#p-tv]
 - **Phone and power bank** (มือถือและพาวเวอร์แบงก์): Charge both to full and save emergency numbers. ชาร์จมือถือกับพาวเวอร์แบงก์ให้เต็ม เซฟเบอร์ 1784 กับ 1669 ไว้ในเครื่อง [https://baanrodmai.autobahn.bot/learn#p-phone]
-- **Torch and spare batteries** (ไฟฉายและถ่านสำรอง): Pack the torch and spare batteries in the go-bag. ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย [https://baanrodmai.autobahn.bot/learn#p-torch]
+- **Torch and spare batteries** (ไฟฉายและถ่านสำรอง): Pack the torch and spare batteries in the emergency bag. ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย [https://baanrodmai.autobahn.bot/learn#p-torch]
 - **Grandma's care plan** (แผนดูแลคุณยาย): Move grandma somewhere safe early, with her medicine and aids. พาผู้สูงอายุ ผู้ป่วยติดเตียง ไปที่ปลอดภัยก่อนน้ำมา พร้อมยาและอุปกรณ์ [https://baanrodmai.autobahn.bot/learn#p-plan]
 - **Water and dry food** (น้ำดื่มและอาหารแห้ง): Stock water and dry food for at least 3 days, stored up high. สำรองน้ำดื่มกับอาหารแห้งให้พออย่างน้อย 3 วัน เก็บในภาชนะปิดสนิทที่สูง [https://baanrodmai.autobahn.bot/learn#p-waterfood]
 - **LPG cylinder** (ถังแก๊สหุงต้ม): Close the valve tight and tie the cylinder to something sturdy up high. ปิดวาล์วถังแก๊สให้สนิท แล้วผูกยึดถังไว้กับที่มั่นคงในที่สูง กันล้มกันลอย [https://baanrodmai.autobahn.bot/learn#p-lpg]
 - **Medicines and first-aid kit** (ยาประจำตัวและชุดปฐมพยาบาล): Get at least 7 days of regular medicine; pack it waterproof with the first-aid kit. เตรียมยาประจำตัวพออย่างน้อย 7 วัน ใส่ถุงกันน้ำรวมกับชุดปฐมพยาบาล [https://baanrodmai.autobahn.bot/learn#p-meds]
-- **Emergency numbers** (เบอร์โทรฉุกเฉิน): Save them in everyone's phone and keep a paper copy in the go-bag. เซฟเบอร์ 1784 1669 และเบอร์การไฟฟ้าไว้ในมือถือทุกเครื่อง จดใส่กระดาษอีกชุด [https://baanrodmai.autobahn.bot/learn#p-numbers]
+- **Emergency numbers** (เบอร์โทรฉุกเฉิน): Save them in everyone's phone and keep a paper copy in the emergency bag. เซฟเบอร์ 1784 1669 และเบอร์การไฟฟ้าไว้ในมือถือทุกเครื่อง จดใส่กระดาษอีกชุด [https://baanrodmai.autobahn.bot/learn#p-numbers]
 - **Chemicals under the sink** (สารเคมีใต้ซิงก์): Cap them tightly and move them up high, away from food. ยาฆ่าแมลง น้ำยาเคมี ปิดฝาให้แน่น ยกขึ้นที่สูงพ้นน้ำ เก็บให้ห่างอาหาร [https://baanrodmai.autobahn.bot/learn#p-chem]
 - **Kitchen floor drain** (ท่อระบายน้ำที่พื้นครัว): Plug it with a sandbag or a water-filled bag to stop backflow. อุดท่อระบายน้ำที่พื้นด้วยถุงทราย กันน้ำเสียดันย้อนเข้าบ้าน น้ำลดแล้วค่อยเปิด [https://baanrodmai.autobahn.bot/learn#p-drain]
 - **Downstairs toilet** (โถส้วมชั้นล่าง): Press a plastic-wrapped sandbag into the bowl and close the lid. วางถุงทรายห่อพลาสติกกดในโถส้วมชั้นล่าง กันน้ำเสียดันย้อนขึ้นมาในบ้าน [https://baanrodmai.autobahn.bot/learn#p-toilet]

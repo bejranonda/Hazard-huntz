@@ -4,6 +4,20 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.18.2] — 2026-11-11
+
+**What visitor audit 6 left.** No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F223–F225](docs/KNOWN_ISSUES.md#in-v1182-11-nov-2026), [ROADMAP N41](docs/ROADMAP.md#n41-what-visitor-audit-6-left-v1182))
+
+### Fixed
+
+- **A round's three answers fit with the text at 125 %** on the smallest phone: the sheet takes the whole screen, the item's picture gives way to the title, and the answers sit closer, at the size the reader chose. On 320 × 568, English sheets that scrolled went from 53 of 82 to 3, Thai from 5 to 0. At 150 % on that phone they still scroll (three answers at 24 px don't fit); recorded in #104.
+- **One English name for the bag:** "emergency bag" in the lessons, the flood guide and the topic name ("go-bag" is gone). Two English wrong answers gained a few words so the right answer isn't the longest.
+- **The gas-leak lesson's "ทำไม"** says the same in fewer words and fits its carousel picture (flood page 7, re-rendered).
+
+### Docs
+
+- KNOWN_ISSUES F223–F225 (#104 mostly closed, #83's B9 closed), GUIDELINES rule 111, ROADMAP N41, KNOWLEDGE §46, APPROACH §49, LESSONS A13, test checklist row 99, HANDOFF, README, AGENTS.
+
 ## [1.18.1] — 2026-11-10
 
 **What visitor audit 6 found.** An independent auditor walked the live v1.17.1 in LINE's Android browser, at three text sizes, in both languages. No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F217–F222](docs/KNOWN_ISSUES.md#in-v1181-10-nov-2026), [ROADMAP N40](docs/ROADMAP.md#n40-visitor-audit-6-v1181))

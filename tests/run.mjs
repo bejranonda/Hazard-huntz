@@ -448,6 +448,14 @@ test('the parents\' home has its own words wherever the home check names the hom
   assert.match(src, /const k = saved\('home'\);/, 'the water and the bag use "บ้านเรา"');
 });
 
+test('the emergency bag has one English name: no "go-bag" in what readers see (v1.18.2)', () => {
+  for (const f of ['items', 'checklists', 'strings', 'kit', 'carousel']) {
+    const hits = JSON.stringify(load(f)).match(/[^"]{0,30}go[- ]bag[^"]{0,30}/gi) || [];
+    assert.deepEqual(hits, [], `${f}.json`);
+  }
+  assert.equal(load('strings').en.hubBag, 'Emergency bag');
+});
+
 test('home check: amounts follow the household, special items follow the answers', () => {
   const kit = load('kit');
   const byId = (p, id) => p.items.find((x) => x.id === id);

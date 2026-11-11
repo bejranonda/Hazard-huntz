@@ -413,6 +413,11 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - **Measure the sheets, not only the pages,** at 125 % and 150 % text and 320 px: every element's right edge against the screen. A sheet scrolls inside itself, so a page's `scrollWidth` can't see it.
     - **A number keeps its unit** (a no-break space: "1.5 ลิตร", "3 คน", "°C").
     - **What is printed beside a QR code is the address the code opens,** anchor included; a guide-wide note is its own line, never the tail of a sources line.
+111. **When large text doesn't fit, give it room; never take the size back.** Since v1.18.2 (F223):
+    - A reader who set 125 % or 150 % text keeps it. Make room first: let the sheet take the screen, drop decoration the reader has already seen (the item's picture), tighten gaps and line height, keep 44 px.
+    - Use a width in `em` for it (`max-width: 18.4em` is 320 px at 125 %), so the browser's setting triggers it and 100 % is untouched.
+    - If it still can't fit (150 % on 320 px), let it scroll with the next thing visibly cut at the edge, and write down the count instead of calling it fixed.
+    - **One English name per thing:** the bag is the "emergency bag" (never "go-bag"); a unit test reads the content files.
 
 ## 9. Working with AI assistants
 

@@ -1612,6 +1612,34 @@ try {
     });
     check('the longest English choice sheet (p-meds) fits at 320 x 568, its pill short ("Time paused") (v1.16.0)', r.scroll <= 1 && r.short, JSON.stringify(r));
     await ctx.close();
+    // v1.18.2 (#104): with the text at 125 % the three answers still fit, at the size the reader chose:
+    // the sheet may take the whole screen and the item's picture leaves the title its width.
+    const big = {};
+    for (const [lang, pre, id] of [['th', '', 'p-petkit'], ['en', '/en', 'p-plan']]) {
+      const c2 = await newPage({ width: 320, height: 568, locale: lang === 'en' ? 'en-GB' : 'th-TH' });
+      const cdp = await c2.ctx.newCDPSession(c2.page);
+      await cdp.send('Page.setFontSizes', { fontSizes: { standard: 20, fixed: 16 } });
+      await c2.page.goto(`${BASE}${pre}/?debug=1`, { waitUntil: 'networkidle' });
+      await c2.page.waitForFunction(() => window.__brm?.content?.()?.items?.length);
+      big[lang] = await c2.page.evaluate(async ([lang, id]) => {
+        const ui = await import('/js/ui.js');
+        const { spriteIcon } = await import('/js/icons.js');
+        const C = window.__brm.content();
+        const it = C.items.find((x) => x.id === id);
+        const S = C.strings[lang];
+        ui.openSheet(`<div class="item-head">${spriteIcon(it.sprite)}<div><h2 id="sheet-title">${it.name[lang]}</h2><p class="sub">${it.context[lang]}</p></div></div>
+          <div class="choice-intro"><p class="sub"><b>${S.whatToDo}</b></p><span class="paused-pill"><span class="pp-full">${S.timePausedTag}</span><span class="pp-short">${S.timePausedShort}</span></span></div>
+          <div class="choices">${it.choices.map((c, i) => `<button class="choice" type="button"><span class="ico">${[...S.choiceLetters][i]}</span><span>${c.label[lang]}</span></button>`).join('')}</div>`, { dismissible: true });
+        const sheet = document.querySelector('#sheet');
+        sheet.getAnimations({ subtree: true }).forEach((a) => { try { a.finish(); } catch { /* endless */ } });
+        await new Promise((res) => setTimeout(res, 80));
+        const btns = [...document.querySelectorAll('.choice')];
+        return { scroll: sheet.scrollHeight - sheet.clientHeight, font: getComputedStyle(btns[0]).fontSize, small: btns.filter((x) => x.getBoundingClientRect().height < 44).length, x: document.querySelector('#sheet-x')?.getBoundingClientRect().top >= 0 };
+      }, [lang, id]);
+      await c2.ctx.close();
+    }
+    check('text at 125 %: a long choice sheet shows its three answers at 320 x 568, Thai and English, at 20 px or more (v1.18.2)',
+      Object.values(big).every((x) => x.scroll <= 1 && parseFloat(x.font) >= 20 && !x.small && x.x), JSON.stringify(big));
   }
 
   // v1.16.0 (#81): with the phone's text at 150 % the start screen and a page don't scroll sideways,

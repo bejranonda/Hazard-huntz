@@ -7,11 +7,11 @@
       "name": { "th": "เอกสารสำคัญ", "en": "Important documents" },
       "context": { "th": "บัตรประชาชน ทะเบียนบ้าน โฉนด วางรวมกันอยู่ตรงนี้", "en": "ID card, house registration and land deed are all lying here" },
       "choices": [
-        { "kind": "pack", "correct": true, "label": { "th": "ใส่ถุงกันน้ำ แล้วเก็บรวมกับกระเป๋าฉุกเฉิน", "en": "Seal them in a waterproof bag and keep it with the go-bag" } },
-        { "kind": "up", "label": { "th": "วางไว้บนตู้สูงๆ ไม่ต้องห่อ น้ำคงขึ้นไม่ถึง", "en": "Put them unwrapped on a tall cabinet; water won't reach up there" }, "feedback": { "th": "ที่สูงช่วยได้ แต่ถ้าต้องอพยพกะทันหัน เอกสารจะไม่ได้ติดตัวไปด้วย ใส่ถุงกันน้ำแล้วเก็บรวมกับกระเป๋าฉุกเฉินชัวร์กว่า", "en": "Height helps, but if you have to leave in a hurry they stay behind. Seal them and keep them in the go-bag." } },
+        { "kind": "pack", "correct": true, "label": { "th": "ใส่ถุงกันน้ำ แล้วเก็บรวมกับกระเป๋าฉุกเฉิน", "en": "Seal them in a waterproof bag and keep it with the emergency bag" } },
+        { "kind": "up", "label": { "th": "วางไว้บนตู้สูงๆ ไม่ต้องห่อ น้ำคงขึ้นไม่ถึง", "en": "Put them unwrapped on a tall cabinet; water won't reach up there" }, "feedback": { "th": "ที่สูงช่วยได้ แต่ถ้าต้องอพยพกะทันหัน เอกสารจะไม่ได้ติดตัวไปด้วย ใส่ถุงกันน้ำแล้วเก็บรวมกับกระเป๋าฉุกเฉินชัวร์กว่า", "en": "Height helps, but if you have to leave in a hurry they stay behind. Seal them and keep them in the emergency bag." } },
         { "kind": "leave", "label": { "th": "ปล่อยไว้ในลิ้นชักเหมือนเดิม เสียก็ไปขอทำใหม่ได้", "en": "Leave them in the drawer as usual; if they're ruined, get new ones" }, "feedback": { "th": "ทำใหม่ได้ก็จริง แต่ยุ่งยากและเสียเวลามาก ตอนอพยพหรือขอความช่วยเหลือก็ต้องใช้ ห่อกันน้ำไว้ก่อนดีกว่า", "en": "You can replace them, but it's slow and painful, and you'll need them to get help. Waterproof them now." } }
       ],
-      "tip": { "th": "เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที", "en": "Seal key documents in a waterproof bag and keep them in your go-bag." },
+      "tip": { "th": "เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน หยิบติดตัวได้ทันที", "en": "Seal key documents in a waterproof bag and keep them in your emergency bag." },
       "why": { "th": "ปภ. แนะให้เก็บเอกสารสำคัญไว้ในถุงพลาสติกหรือซองกันน้ำ และใส่ไว้ในถุงยังชีพ ถ้าต้องอพยพ เอกสารเหล่านี้ใช้ยืนยันตัวตนและติดต่อขอความช่วยเหลือได้ทันที", "en": "DDPM advises keeping important documents in plastic or waterproof pouches inside the emergency bag. If you evacuate, they prove who you are and help you get assistance." },
       "sources": ["ddpm-noru", "ddpm-6kit", "ddpm-amarin"], "verify": "verified", "topic": "home"
     },
@@ -74,13 +74,13 @@
       "id": "p-torch", "mode": "prepare", "room": "living",
       "sprite": "torch", "doneAnim": "lift", "size": [52, 30], "slots": ["table", "seat", "floor"],
       "name": { "th": "ไฟฉายและถ่านสำรอง", "en": "Torch and spare batteries" },
-      "context": { "th": "ไฟฉายกับถ่านวางอยู่ ยังไม่ได้ใส่กระเป๋าฉุกเฉิน", "en": "The torch and batteries aren't in the go-bag yet" },
+      "context": { "th": "ไฟฉายกับถ่านวางอยู่ ยังไม่ได้ใส่กระเป๋าฉุกเฉิน", "en": "The torch and batteries aren't in the emergency bag yet" },
       "choices": [
-        { "kind": "pack", "correct": true, "label": { "th": "ใส่ไฟฉายกับถ่านสำรองลงกระเป๋าฉุกเฉิน", "en": "Pack the torch and spare batteries in the go-bag" } },
+        { "kind": "pack", "correct": true, "label": { "th": "ใส่ไฟฉายกับถ่านสำรองลงกระเป๋าฉุกเฉิน", "en": "Pack the torch and spare batteries in the emergency bag" } },
         { "kind": "leave", "label": { "th": "ไม่ต้อง ใช้ไฟฉายมือถือ ถือติดมืออยู่แล้ว", "en": "No need, use the phone's light; it's always in hand" }, "feedback": { "th": "ไฟฉายมือถือกินแบตมาก ควรเก็บแบตไว้โทรขอความช่วยเหลือ ไฟฉายกับถ่านสำรองใช้ได้นานกว่า", "en": "The phone light drains the battery you need for calls. A real torch with spares lasts longer." } },
-        { "kind": "leave", "label": { "th": "ไว้ในลิ้นชักเหมือนเดิม ไฟดับค่อยไปหา", "en": "Leave it in its drawer; find it when the lights go out" }, "feedback": { "th": "ไฟดับมืดๆ จะหาของยากมาก เก็บรวมไว้ในกระเป๋าฉุกเฉินหยิบง่ายกว่า", "en": "Finding things in the dark is hard. Keep it in the go-bag." } }
+        { "kind": "leave", "label": { "th": "ไว้ในลิ้นชักเหมือนเดิม ไฟดับค่อยไปหา", "en": "Leave it in its drawer; you'll find it when the lights go out" }, "feedback": { "th": "ไฟดับมืดๆ จะหาของยากมาก เก็บรวมไว้ในกระเป๋าฉุกเฉินหยิบง่ายกว่า", "en": "Finding things in the dark is hard. Keep it in the emergency bag." } }
       ],
-      "tip": { "th": "ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย", "en": "Keep a torch and spare batteries in the go-bag, ready for a power cut." },
+      "tip": { "th": "ไฟฉายกับถ่านสำรองต้องอยู่ในกระเป๋าฉุกเฉิน ไฟดับเมื่อไรหยิบได้เลย", "en": "Keep a torch and spare batteries in the emergency bag, ready for a power cut." },
       "why": { "th": "ไฟฉายพร้อมถ่านสำรองเป็นหนึ่งใน 6 สิ่งจำเป็นในถุงยังชีพที่ ปภ. แนะนำ ใช้ส่องทางตอนไฟดับ และช่วยเก็บแบตมือถือไว้โทรขอความช่วยเหลือ", "en": "A torch with spare batteries is one of DDPM's six emergency-bag essentials. It lights the way in a power cut and saves your phone battery for calls." },
       "sources": ["ddpm-6kit", "ddpm-amarin"], "verify": "verified", "topic": "plan"
     },
@@ -206,7 +206,7 @@
       "choices": [
         { "kind": "pack", "correct": true, "label": { "th": "เตรียมยาประจำตัวให้พออย่างน้อย 7 วัน ใส่ถุงกันน้ำพร้อมชุดปฐมพยาบาล", "en": "Get at least 7 days of regular medicine; pack it waterproof with the first-aid kit" } },
         { "kind": "leave", "label": { "th": "ยายังเหลืออีกตั้งหลายเม็ด หมดแล้วค่อยไปซื้อที่ร้านยาใกล้บ้าน", "en": "There are still plenty of pills left; buy more at the pharmacy when they run out" }, "feedback": { "th": "ช่วงน้ำท่วม ร้านยาและโรงพยาบาลอาจไปลำบาก เตรียมยาประจำตัวให้พอไว้ก่อน", "en": "Pharmacies and hospitals can be hard to reach in a flood. Get enough medicine now." } },
-        { "kind": "leave", "label": { "th": "วางไว้บนโต๊ะให้เห็นชัดๆ ไม่ลืมหรอก จะไปเมื่อไหร่ค่อยหยิบ", "en": "Leave them out on the table where you'll see them, and grab them when you go" }, "feedback": { "th": "ตอนวุ่นๆ อาจลืมหยิบ ใส่ถุงกันน้ำรวมกับกระเป๋าฉุกเฉินไว้เลย จะได้ติดตัวไปด้วย", "en": "In the rush you may forget. Pack them waterproof in the go-bag now." } }
+        { "kind": "leave", "label": { "th": "วางไว้บนโต๊ะให้เห็นชัดๆ ไม่ลืมหรอก จะไปเมื่อไหร่ค่อยหยิบ", "en": "Leave them out on the table where you'll see them, and grab them when you go" }, "feedback": { "th": "ตอนวุ่นๆ อาจลืมหยิบ ใส่ถุงกันน้ำรวมกับกระเป๋าฉุกเฉินไว้เลย จะได้ติดตัวไปด้วย", "en": "In the rush you may forget. Pack them waterproof in the emergency bag now." } }
       ],
       "tip": { "th": "เตรียมยาประจำตัวพออย่างน้อย 7 วัน ใส่ถุงกันน้ำรวมกับชุดปฐมพยาบาล", "en": "Pack at least 7 days of regular medicine, waterproofed, with a first-aid kit." },
       "why": { "th": "ชุดปฐมพยาบาลและยารักษาโรคประจำตัวเป็นหนึ่งใน 6 สิ่งจำเป็นในถุงยังชีพของ ปภ. กระทรวงสาธารณสุขแนะให้ผู้มีโรคประจำตัวเตรียมยาไว้อย่างน้อย 7 วัน", "en": "A first-aid kit and regular medicines are among DDPM's six emergency-bag essentials. The Ministry of Public Health advises people with chronic conditions to keep at least 7 days of medicine." },
@@ -219,8 +219,8 @@
       "name": { "th": "เบอร์โทรฉุกเฉิน", "en": "Emergency numbers" },
       "context": { "th": "จดไว้บนตู้เย็น แต่ยังไม่มีใครเซฟในมือถือ", "en": "Written on the fridge, but nobody has saved them" },
       "choices": [
-        { "kind": "pack", "correct": true, "label": { "th": "เซฟเบอร์ในมือถือทุกคน และจดใส่กระดาษเก็บในกระเป๋าฉุกเฉิน", "en": "Save them in everyone's phone and keep a paper copy in the go-bag" } },
-        { "kind": "leave", "label": { "th": "ไม่ต้องเซฟให้รกเครื่อง ถึงเวลาค่อยเสิร์ชเอา แป๊บเดียวก็เจอ", "en": "No need to clutter the phone; search when it happens, it takes seconds" }, "feedback": { "th": "ตอนฉุกเฉินเน็ตอาจหลุด แบตอาจน้อย มีเบอร์ไว้ในเครื่องและบนกระดาษ โทรได้ทันที", "en": "In an emergency the internet may drop and battery may be low. Have the numbers ready." } },
+        { "kind": "pack", "correct": true, "label": { "th": "เซฟเบอร์ในมือถือทุกคน และจดใส่กระดาษเก็บในกระเป๋าฉุกเฉิน", "en": "Save them in everyone's phone and keep a paper copy in the emergency bag" } },
+        { "kind": "leave", "label": { "th": "ไม่ต้องเซฟให้รกเครื่อง ถึงเวลาค่อยเสิร์ชเอา แป๊บเดียวก็เจอ", "en": "No need to clutter the phones; search online when it happens, it takes seconds" }, "feedback": { "th": "ตอนฉุกเฉินเน็ตอาจหลุด แบตอาจน้อย มีเบอร์ไว้ในเครื่องและบนกระดาษ โทรได้ทันที", "en": "In an emergency the internet may drop and battery may be low. Have the numbers ready." } },
         { "kind": "pack", "label": { "th": "เซฟไว้ในมือถือแม่เครื่องเดียวพอ ยังไงแม่ก็เป็นคนโทรอยู่แล้ว", "en": "Save them in Mum's phone only; she's the one who'd call anyway" }, "feedback": { "th": "ถ้าเครื่องนั้นแบตหมดหรือเปียกน้ำ จะไม่มีใครรู้เบอร์เลย เซฟให้ทุกคนและจดใส่กระดาษด้วย", "en": "If that phone dies or gets wet, nobody has the numbers. Save them for everyone, plus paper." } }
       ],
       "tip": { "th": "เซฟเบอร์ 1784 1669 และเบอร์การไฟฟ้าไว้ในมือถือทุกเครื่อง จดใส่กระดาษอีกชุด", "en": "Save 1784, 1669 and your electricity hotline on every phone, plus on paper." },
@@ -540,7 +540,7 @@
         { "kind": "leave", "label": { "th": "เปิดพัดลมแรงๆ ช่วยไล่แก๊สออกไป กลิ่นจะได้จางเร็วๆ", "en": "Put a fan on full to blow the gas out and clear the smell faster" }, "feedback": { "th": "พัดลมเป็นอุปกรณ์ไฟฟ้า เปิดแล้วอาจเกิดประกายไฟ ปภ. ห้ามใช้พัดลมไล่แก๊ส ให้เปิดประตูหน้าต่างแทน", "en": "A fan is electrical and can spark. DDPM says never use one on a gas leak; open doors and windows instead." } }
       ],
       "tip": { "th": "ได้กลิ่นแก๊ส ห้ามกดสวิตช์ ห้ามจุดไฟ เปิดหน้าต่าง ปิดวาล์ว แล้วออกไปโทรแจ้ง", "en": "Smell gas? No switches or flames. Open windows, shut the valve, leave and call." },
-      "why": { "th": "ปภ. แนะว่าเมื่อแก๊สรั่ว ให้ปิดวาล์วถังแก๊สและเตา เปิดประตูหน้าต่างทุกบาน ห้ามเปิด–ปิดอุปกรณ์ไฟฟ้าทุกชนิดหรือทำอะไรที่เกิดประกายไฟ และห้ามใช้พัดลมไล่แก๊ส กรมควบคุมโรคย้ำว่าตอนกลับเข้าบ้านหลังน้ำลดให้ใช้ไฟฉายแบบใช้ถ่าน เพราะน้ำท่วมอาจพาแก๊สหรือน้ำมันมาด้วย ออกไปให้พ้นบริเวณก่อนแล้วค่อยโทรขอความช่วยเหลือ", "en": "DDPM says if gas leaks, close the cylinder and stove valves, open every door and window, don't switch any electrical device on or off or make sparks, and never use a fan. The Department of Disease Control adds: use a battery torch when re-entering, as floodwater can carry gas or fuel. Get clear of the area before you call for help." },
+      "why": { "th": "ปภ. แนะว่าเมื่อแก๊สรั่ว ให้ปิดวาล์วถังแก๊สและเตา เปิดประตูหน้าต่างทุกบาน ห้ามเปิด–ปิดอุปกรณ์ไฟฟ้าทุกชนิดหรือทำอะไรที่เกิดประกายไฟ และห้ามใช้พัดลมไล่แก๊ส กรมควบคุมโรคย้ำว่าตอนกลับเข้าบ้านหลังน้ำลดให้ใช้ไฟฉายแบบใช้ถ่าน เพราะน้ำท่วมอาจพาแก๊สหรือน้ำมันมาด้วย ออกให้พ้นบริเวณก่อน แล้วค่อยโทรแจ้ง", "en": "DDPM says if gas leaks, close the cylinder and stove valves, open every door and window, don't switch any electrical device on or off or make sparks, and never use a fan. The Department of Disease Control adds: use a battery torch when re-entering, as floodwater can carry gas or fuel. Get clear of the area before you call for help." },
       "sources": ["ddpm-gas", "ddc-manual"], "verify": "verified", "topic": "power",
       "verifyNote": "DDPM wording via a Thai PBS report (2022); DOEB pages were unreachable. Fire/rescue 199 is cited only by news, so it is not used in game copy."
     },

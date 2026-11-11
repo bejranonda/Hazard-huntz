@@ -2844,3 +2844,21 @@ Records: [KNOWN_ISSUES F217–F222](KNOWN_ISSUES.md#in-v1181-10-nov-2026), [#104
 - **Dust today's box** (`airNumber(x, unit)` in `kitplan.js`): the PM2.5 box drops a trailing "มคก.", "มคก./ลบ.ม.", "ไมโครกรัมต่อลูกบาศก์เมตร", "µg/m³" or "ug/m3"; the AQI box drops "AQI" before or after. The other box's unit is not dropped: "AQI 80" in the PM2.5 box would be read as 80 µg/m³, red instead of yellow.
 - **The carousel's "why"** (`tools/carousel-draw.mjs`): up to three lines from 34 px down to 28 px; a fourth at 28 px when the sources and the ⚠️ note still end by 1160 px (the source line is pinned at 1150 at most); else the last line ends in "…", and `npm run images` prints "cut to fit" for it. On 10 Nov: `p-plan` (flood 5) now whole on four lines, the food lesson (flood 9) too; `r-gas` (flood 7, 302 letters) ends "…ค่อยโทรขอความ…" (#104).
 - **keepTogether:** 251 words (แบต, ออกกำลัง, ภูมิแพ้, เช็ก added; the longer แบตสำรอง, ออกกำลังกาย and เช็กลิสต์ were already there, and matching is longest first).
+
+## 46. What visitor audit 6 left (v1.18.2)
+
+Records: [KNOWN_ISSUES F223–F225](KNOWN_ISSUES.md#in-v1182-11-nov-2026), [#104](KNOWN_ISSUES.md#104-leftovers-of-visitor-audit-6), [GUIDELINES rule 111](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [ROADMAP N41](ROADMAP.md#n41-what-visitor-audit-6-left-v1182).
+
+- **Choice sheets, measured** (all 82: 81 items and the wet variants, each built as the round builds it; sheets that scroll / worst overflow):
+
+  | | Thai before | Thai after | English before | English after |
+  |---|---|---|---|---|
+  | 100 %, 320 × 568 | 0 | 0 | 0 | 0 |
+  | 125 %, 320 × 568 | 5 / 28 px | 0 | 53 / 133 px | 3 / 38 px |
+  | 125 %, 360 × 640 | 0 | 0 | 0 | 0 |
+  | 150 %, 320 × 568 | 67 / 204 px | 25 / 72 px | 82 / 306 px | 68 / 187 px |
+  | 150 %, 360 × 640 | 12 / 41 px | 0 | 60 / 167 px | 5 / 62 px |
+
+- **The rule** (`app.css`, `@media (max-width: 18.4em)`): `#sheet { max-height: 100% }` (88 % normally, 94 % on short screens), the item's picture hidden, `.choices` gap 6 px, `.choice` padding 6 × 8 px and line height 1.2. The selectors carry `#sheet` so they win over the short-screen block that comes later in the file. It applies to every sheet at that width, so a long tool sheet gets the whole screen too. ก+ zooms the sheets by 1.15 (`html.big .sheet { zoom: 1.15 }`), which a media query can't see, so ก+ alone doesn't trigger it; a round's sheets with ก+ on were not measured.
+- **"emergency bag":** `items.json` (p-docs, p-torch, p-meds' feedback, p-numbers), `checklists.json` (the flood guide's line 1) and `strings.json → en.topic_plan`. p-torch's and p-numbers' right answers became the longest by a letter or two, so one wrong answer of each gained a few words ("you'll find it…", "search online…") with the same mistake. `seo.updated` is 11 Nov 2026.
+- **The gas lesson** (`r-gas`): only the Thai "why" changed, by wording; its English, its answers, its tip and its sources are the same. No "UPDATE:" post is due: nothing a reader was told to do changed.

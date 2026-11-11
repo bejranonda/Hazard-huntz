@@ -848,6 +848,18 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
   .choice .ico { flex-basis: 28px; height: 28px; font-size: 1rem; border-radius: 8px; }
   .item-head, .choice-intro { margin-bottom: 4px; }
 }
+/* Large text on a small phone (under 18.4em wide: 320 px at 125 %, 360 px at 125 %+; v1.18.2, #104): the
+   three answers get the room, at the size the reader chose. The sheet may take the whole screen, the item's
+   picture (already seen in the room) leaves the title its full width, and the lines sit a little closer. */
+@media (max-width: 18.4em) {
+  #sheet { max-height: 100%; }
+  .item-head { margin-bottom: 2px; }
+  #sheet .item-head svg { display: none; }
+  .item-head .sub { margin-bottom: 4px; }
+  .choice-intro { margin-bottom: 2px; }
+  .choices { gap: 6px; }
+  #sheet .choice { gap: 6px; padding: 6px 8px; line-height: 1.2; }
+}
 
 /* very short screens (iPhone SE 1st gen, 320x460): the room arrows stay, the tabs go, so the house is bigger */
 @media (max-height: 32.5em) {

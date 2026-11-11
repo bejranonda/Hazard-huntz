@@ -101,7 +101,7 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 101 | [The family's colours differ](#101-the-familys-colours-differ) | Deferred by the owner ("No need now", 4 Nov 2026) | Low |
 | 102 | [FloodWatch closes after its handover; the rivers' link goes with it](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) | Owner (one line, when it closes) | Low |
 | 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Closed: A5 by ภัยรอบบ้าน (its v0.12.12, seen 10 Nov 2026), the rest in v1.15.1–v1.15.2 | — |
-| 104 | [Leftovers of visitor audit 6](#104-leftovers-of-visitor-audit-6) | Open: English choice sheets at 125 % text, "go-bag" in 10 lessons, one carousel "why" ending in "…" | Low |
+| 104 | [Leftovers of visitor audit 6](#104-leftovers-of-visitor-audit-6) | Mostly closed in v1.18.2 ([F223–F225](#in-v1182-11-nov-2026)); left: choice sheets at 150 % text on a 320 px phone, two cosmetic wraps | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -385,13 +385,14 @@ Visitor audit 5 (3 Nov 2026, the live v1.14.3; [ROADMAP N34](ROADMAP.md#n34-visi
 
 ### 104. Leftovers of visitor audit 6
 
-**Status:** Open · **Severity:** Low
+**Status:** Mostly closed in v1.18.2; what is left is by design or cosmetic · **Severity:** Low
 
 Visitor audit 6 (10 Nov 2026, the live v1.17.1, LINE's Android browser, 69 pages and 24 sheets at 100/125/150 % text, a round in every mode, the print pack decoded from PDF) found two high and four medium problems, fixed in v1.18.1 ([F217–F222](#in-v1181-10-nov-2026)). Left:
 
-- **English choice sheets at 125 % text:** at 320 × 568, 23 of 39 measured sheets scroll (by up to 86 px), the third answer below the fold; Thai fits (2 of 38 by 3 px), and none scroll at 100 % in either language. The time is paused while a sheet is open, so a reader who scrolls loses nothing, but has to know to scroll. A fix needs a smaller answer size or tighter padding at that size, checked against rule 54's 44 px.
-- **"go-bag" in English:** the flood guide, the print pack and about 10 lessons say "go-bag"; the tool is "Emergency bag" (Thai uses กระเป๋าฉุกเฉิน for both). Rewording the lessons' answers changes their lengths, which rule 75 guards, so it waits for a pass over those answers as a set.
-- **One carousel image ends its "why" in "…":** the gas leak (`r-gas`, flood set page 7), 302 Thai letters, doesn't fit in four lines; only "ช่วยเหลือ" is missing, and the page it links has it whole. `npm run images` names any text cut to fit. A shorter "why" for that lesson would close it.
+- ~~**English choice sheets at 125 % text**~~ Done in v1.18.2 ([F223](#in-v1182-11-nov-2026)). Measured over all 82 sheets (the audit saw 39): English at 125 % on 320 × 568 went from 53 scrolling to 3 (by up to 38 px), Thai from 5 to 0; on 360 × 640 none scroll at 125 %.
+- **Left, by design: 150 % text on a 320 px phone.** Three answers at 24 px don't fit a 568 px screen: 25 of 82 Thai sheets and 68 of 82 English ones scroll (on 360 × 640: 0 and 5). The text stays the size the reader chose; the third answer shows cut at the bottom edge with the sheet's shadow, and the time is paused while a sheet is open.
+- ~~**"go-bag" in English**~~ Done in v1.18.2 ([F224](#in-v1182-11-nov-2026)): "emergency bag" in the 4 lessons, the flood guide's line and the topic name; a unit test keeps "go-bag" out.
+- ~~**One carousel image ends its "why" in "…"**~~ Done in v1.18.2 ([F225](#in-v1182-11-nov-2026)): the gas lesson's Thai "why" ends "ออกให้พ้นบริเวณก่อน แล้วค่อยโทรแจ้ง" (290 letters), and flood page 7 shows it whole.
 - **At 150 % text:** the fridge's "เพิ่งดับ" button wraps to two lines (its row 95 px against 56 px for the others); on the supplies list the checkbox and icon columns take about a third of a 320 px screen, so "กรม / ประชาสัมพันธ์" splits at its compound. Cosmetic.
 - **Not checked:** the result and share cards (`cards.js`) also keep at most two lines in places (`lines.slice(0, 2)`); no cut text was seen there, but nothing names one if it happens.
 
@@ -1014,7 +1015,7 @@ Since v1.11.0 every number on a guide carries a short name under it (`helplines.
 Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent preparing at the weekend, an English reader and a consistency check) reported 57 findings between its two auditors (28 and 29); v1.11.0 fixed most of them, in the 30 rows F96–F125 ([In v1.11.0](#in-v1110-20-oct-2026)). These are left, with their audit ids ([ROADMAP N23](ROADMAP.md#n23-food-by-food-and-the-app-for-its-real-readers-v1110)):
 
 - **The home check per hazard** (B5, B10): add-ons from the guides' own sources (N95 masks for dust, a fire extinguisher, rubber boots and gloves and sandbags for a flood, closed shoes after a quake), and a "not needed here" answer for the medical-device and cold-medicine rows. `/kit`'s title still says "รับมือทุกภัย" while its list is for a flood, a power cut or 3 days indoors. **The owner decides** which add-ons.
-- **"กระเป๋าฉุกเฉิน" (go-bag)** (B9): the flood guide's line 1 ("เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน") and the topic "🎒 plans & go-bag" use the word, and the app never says what goes in one. The plan card no longer does ([F113](#in-v1110-20-oct-2026)). Define it (ROADMAP P10c, a go-bag per person) or reword.
+- **"กระเป๋าฉุกเฉิน" (go-bag)** (B9): the flood guide's line 1 ("เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน") and the topic "🎒 plans & go-bag" use the word, and the app never says what goes in one. The plan card no longer does ([F113](#in-v1110-20-oct-2026)). Define it (ROADMAP P10c, a go-bag per person) or reword. **Since v1.13.0 the bag tool (`/bag`) says what goes in one, and since v1.18.2 the English says "emergency bag" everywhere ([F224](#in-v1182-11-nov-2026)): closed.**
 - **Back from a tool opened inside a guide** (B12, A24) goes to the start screen, not back to the guide.
 - **One short and one long name per tool, checked by a test** (B13): the audit's naming table listed each tool's names across the hub, the guides, the results and the pages; v1.11.0 fixed the dust guide's button ([F105](#in-v1110-20-oct-2026)), but no test holds every tool to one short and one long name yet.
 - **Units and dates** (B16, the rest; the Thai µg/m³ was fixed, [F104](#in-v1110-20-oct-2026)): "ชม." and "ชั่วโมง" side by side; "60 วิ" in the texts while the Return round runs 50 s and the dust, fire and power-cut rounds 55 s; three date formats.
@@ -1142,6 +1143,14 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.18.2 (11 Nov 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F223 | **With the text at 125 %, a round's answers ran below the screen on the smallest phone** (#104): on 320 × 568, 53 of 82 English choice sheets scrolled (by up to 133 px) and 5 Thai ones, the third answer out of sight | Under 18.4em of width (320 px at 125 % text, 360 px at 125 % and more) the sheet may take the whole screen, the item's picture (already seen in the room) leaves the title its full width, and the answers sit closer (6 px gaps, line height 1.2). The answers keep the reader's size (20 px at 125 %) and stay 44 px or more. After: English 3 of 82 scroll, Thai 0; nothing changes at 100 %. Smoke check at 125 % in both languages |
+| F224 | **Two English names for one bag** (#104, #83's B9): 4 lessons, the flood guide's first line and a topic said "go-bag"; the tool is "Emergency bag" | "emergency bag" everywhere in English. Two wrong answers gained a few words so the right one isn't the longest (rule 75); no Thai changed. Unit test: no "go-bag" in the content files |
+| F225 | **The gas lesson's "why" didn't fit its carousel picture** (#104): flood page 7 ended "…ค่อยโทรขอความ…" | The Thai "why" says the same in 12 fewer letters ("ออกไปให้พ้นบริเวณก่อนแล้วค่อยโทรขอความช่วยเหลือ" → "ออกให้พ้นบริเวณก่อน แล้วค่อยโทรแจ้ง", the words of its own answer); the picture was re-rendered and `npm run images` reports no cut text. No advice changed |
 
 ### In v1.18.1 (10 Nov 2026)
 

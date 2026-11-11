@@ -627,3 +627,10 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 2. **Probe each one at each size and width,** and record the worst element, not a yes/no: "heat +54 px button.hot-level" says what to fix. Keep the probe in the scratchpad; put the few checks that matter in the smoke test.
 3. **Choose thresholds from the measurements,** in the unit the reader controls (`em`), and keep the default layout unchanged.
 4. **Run the probe again after the fix** and compare counts (here 18 cases off the side → 0), then look at screenshots at 100 % (nothing moved) and 150 % (it wraps the way a reader expects).
+
+## 49. Measure the whole set before and after, and say what still doesn't fit (v1.18.2)
+
+1. **Measure every member, not a sample:** the audit saw 39 choice sheets in the houses of one day; the probe built all 82 the way the round does, per language, text size and phone.
+2. **Keep the table** (before and after, count and worst case): it shows what the change bought (English at 125 %: 53 → 3) and what it didn't (150 % on 320 px).
+3. **Fix by making room, in an order:** the container's height, decoration, gaps, line height; never the reader's text size ([GUIDELINES rule 111](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
+4. **Write the remainder down as a limit,** with its numbers and why it stays, instead of closing the issue.

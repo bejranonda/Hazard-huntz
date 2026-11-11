@@ -824,3 +824,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* at 125 % text the round's three answers ran below a 320 × 568 screen (53 of 82 English sheets). The quick fix was a smaller answer size at that width, which undoes the reader's own setting. Making room instead (the sheet takes the screen, the item's picture gives way, tighter gaps) took 53 down to 3 with the text at the size chosen.
 - *Do this:* when large text overflows, remove what the reader needs least before touching what they asked for; if it still overflows, show that there is more and record the numbers.
 - *Encoded in:* [GUIDELINES rule 111](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), the smoke check at 125 %.
+
+**D35. Write the check from the claim, not from one example that looks good.**
+
+- *What happened:* v1.18.2's claim was "at 125 % text, English choice sheets that scroll went from 53 of 82 to 3". The first smoke check for it opened one long English sheet and required it not to scroll; that sheet was one of the 3, and the check failed on all three dates. The push was waiting for the smoke runs, so nothing shipped.
+- *Do this:* when the result is a count over a set, the check builds the set and asserts the count and the worst case (Thai 0; English at most 3, under 40 px). And keep holding the push for the full smoke run, even when the stop hook asks for it.
+- *Encoded in:* the smoke check "every choice sheet at 320 x 568 keeps 20 px answers…", [APPROACH §49](APPROACH_AND_METHOD.md#49-measure-the-whole-set-before-and-after-and-say-what-still-doesnt-fit-v1182).

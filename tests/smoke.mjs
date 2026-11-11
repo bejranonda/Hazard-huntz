@@ -1612,34 +1612,46 @@ try {
     });
     check('the longest English choice sheet (p-meds) fits at 320 x 568, its pill short ("Time paused") (v1.16.0)', r.scroll <= 1 && r.short, JSON.stringify(r));
     await ctx.close();
-    // v1.18.2 (#104): with the text at 125 % the three answers still fit, at the size the reader chose:
-    // the sheet may take the whole screen and the item's picture leaves the title its width.
+    // v1.18.2 (#104): with the text at 125 % the three answers fit on the smallest phone, at the size the
+    // reader chose: the sheet may take the whole screen and the item's picture leaves the title its width.
+    // Every choice sheet is built as the round builds it: none scrolls in Thai, at most 3 of 82 in English
+    // (the longest, by under 40 px; it was 53, by up to 133 px).
     const big = {};
-    for (const [lang, pre, id] of [['th', '', 'p-petkit'], ['en', '/en', 'p-plan']]) {
+    for (const [lang, pre] of [['th', ''], ['en', '/en']]) {
       const c2 = await newPage({ width: 320, height: 568, locale: lang === 'en' ? 'en-GB' : 'th-TH' });
       const cdp = await c2.ctx.newCDPSession(c2.page);
       await cdp.send('Page.setFontSizes', { fontSizes: { standard: 20, fixed: 16 } });
       await c2.page.goto(`${BASE}${pre}/?debug=1`, { waitUntil: 'networkidle' });
       await c2.page.waitForFunction(() => window.__brm?.content?.()?.items?.length);
-      big[lang] = await c2.page.evaluate(async ([lang, id]) => {
+      big[lang] = await c2.page.evaluate(async (lang) => {
         const ui = await import('/js/ui.js');
         const { spriteIcon } = await import('/js/icons.js');
         const C = window.__brm.content();
-        const it = C.items.find((x) => x.id === id);
         const S = C.strings[lang];
-        ui.openSheet(`<div class="item-head">${spriteIcon(it.sprite)}<div><h2 id="sheet-title">${it.name[lang]}</h2><p class="sub">${it.context[lang]}</p></div></div>
-          <div class="choice-intro"><p class="sub"><b>${S.whatToDo}</b></p><span class="paused-pill"><span class="pp-full">${S.timePausedTag}</span><span class="pp-short">${S.timePausedShort}</span></span></div>
-          <div class="choices">${it.choices.map((c, i) => `<button class="choice" type="button"><span class="ico">${[...S.choiceLetters][i]}</span><span>${c.label[lang]}</span></button>`).join('')}</div>`, { dismissible: true });
-        const sheet = document.querySelector('#sheet');
-        sheet.getAnimations({ subtree: true }).forEach((a) => { try { a.finish(); } catch { /* endless */ } });
-        await new Promise((res) => setTimeout(res, 80));
-        const btns = [...document.querySelectorAll('.choice')];
-        return { scroll: sheet.scrollHeight - sheet.clientHeight, font: getComputedStyle(btns[0]).fontSize, small: btns.filter((x) => x.getBoundingClientRect().height < 44).length, x: document.querySelector('#sheet-x')?.getBoundingClientRect().top >= 0 };
-      }, [lang, id]);
+        const out = { n: 0, scroll: [], worst: 0, font: 99, small: 0, x: true };
+        const all = C.items.flatMap((it) => [it, ...(it.wet ? [{ ...it, ...it.wet, id: `${it.id}/wet` }] : [])]).filter((it) => it.choices);
+        for (const it of all) {
+          ui.openSheet(`<div class="item-head">${spriteIcon(it.sprite)}<div><h2 id="sheet-title">${it.name[lang]}</h2><p class="sub">${(it.context || {})[lang] || ''}</p></div></div>
+            <div class="choice-intro"><p class="sub"><b>${S.whatToDo}</b></p><span class="paused-pill"><span class="pp-full">${S.timePausedTag}</span><span class="pp-short">${S.timePausedShort}</span></span></div>
+            <div class="choices">${it.choices.map((c, i) => `<button class="choice" type="button"><span class="ico">${[...S.choiceLetters][i]}</span><span>${c.label[lang]}</span></button>`).join('')}</div>`, { dismissible: true });
+          const sheet = document.querySelector('#sheet');
+          sheet.getAnimations({ subtree: true }).forEach((a) => { try { a.finish(); } catch { /* endless */ } });
+          await new Promise((res) => setTimeout(res, 40));
+          const btns = [...document.querySelectorAll('.choice')];
+          const over = sheet.scrollHeight - sheet.clientHeight;
+          out.n += 1;
+          if (over > 1) out.scroll.push(`${it.id}:${over}`);
+          out.worst = Math.max(out.worst, over);
+          out.font = Math.min(out.font, parseFloat(getComputedStyle(btns[0]).fontSize));
+          out.small += btns.filter((x) => x.getBoundingClientRect().height < 44).length;
+          out.x = out.x && document.querySelector('#sheet-x')?.getBoundingClientRect().top >= 0;
+        }
+        return out;
+      }, lang);
       await c2.ctx.close();
     }
-    check('text at 125 %: a long choice sheet shows its three answers at 320 x 568, Thai and English, at 20 px or more (v1.18.2)',
-      Object.values(big).every((x) => x.scroll <= 1 && parseFloat(x.font) >= 20 && !x.small && x.x), JSON.stringify(big));
+    check('text at 125 %: every choice sheet at 320 x 568 keeps 20 px answers; none scrolls in Thai, at most 3 in English by under 40 px (v1.18.2)',
+      big.th.n >= 80 && !big.th.scroll.length && big.en.scroll.length <= 3 && big.en.worst < 40 && Object.values(big).every((x) => x.font >= 20 && !x.small && x.x), JSON.stringify(big));
   }
 
   // v1.16.0 (#81): with the phone's text at 150 % the start screen and a page don't scroll sideways,

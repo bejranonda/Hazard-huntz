@@ -16,7 +16,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ### Docs
 
-- KNOWN_ISSUES F223–F225 (#104 mostly closed, #83's B9 closed), GUIDELINES rule 111, ROADMAP N41, KNOWLEDGE §46, APPROACH §49, LESSONS A13, test checklist row 99, HANDOFF, README, AGENTS.
+- KNOWN_ISSUES F223–F225 (#104 mostly closed, #83's B9 closed), GUIDELINES rule 111, ROADMAP N41, KNOWLEDGE §46, APPROACH §49, LESSONS A13 and D35, test checklist row 99, HANDOFF, README, AGENTS.
 
 ## [1.18.1] — 2026-11-10
 

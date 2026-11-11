@@ -4,6 +4,10 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+### Changed
+
+- **CI's Chromium install can no longer hang the run:** each try gets 4 minutes, up to three tries. On 11 Nov 2026 the download hung for 10 minutes and the browser job failed before any test ran (v1.18.2's checks had passed locally on all three dates). No app change. ([KNOWN_ISSUES F226](docs/KNOWN_ISSUES.md#in-v1182-11-nov-2026))
+
 ## [1.18.2] — 2026-11-11
 
 **What visitor audit 6 left.** No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F223–F225](docs/KNOWN_ISSUES.md#in-v1182-11-nov-2026), [ROADMAP N41](docs/ROADMAP.md#n41-what-visitor-audit-6-left-v1182))

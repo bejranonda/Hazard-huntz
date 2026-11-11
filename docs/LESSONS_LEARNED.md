@@ -830,3 +830,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* v1.18.2's claim was "at 125 % text, English choice sheets that scroll went from 53 of 82 to 3". The first smoke check for it opened one long English sheet and required it not to scroll; that sheet was one of the 3, and the check failed on all three dates. The push was waiting for the smoke runs, so nothing shipped.
 - *Do this:* when the result is a count over a set, the check builds the set and asserts the count and the worst case (Thai 0; English at most 3, under 40 px). And keep holding the push for the full smoke run, even when the stop hook asks for it.
 - *Encoded in:* the smoke check "every choice sheet at 320 x 568 keeps 20 px answers…", [APPROACH §49](APPROACH_AND_METHOD.md#49-measure-the-whole-set-before-and-after-and-say-what-still-doesnt-fit-v1182).
+
+**E15. A CI step that downloads needs a time limit and a retry; a red run from it is not the code's.**
+
+- *What happened:* on 11 Nov 2026 CI's Chromium download hung for 10 minutes and failed the browser job before any test ran, after the same checks had passed locally on all three dates. The session couldn't re-run it (403), and an empty commit to kick CI is not allowed.
+- *Do this:* read which step failed before anything else (here: install, not smoke). Give every network step a `timeout` and a few tries, and let a real fix (here that hardening) be the push that re-runs CI.
+- *Encoded in:* `.github/workflows/ci.yml` ("Install Chromium for the pinned Playwright"), [KNOWN_ISSUES F226](KNOWN_ISSUES.md#in-v1182-11-nov-2026).

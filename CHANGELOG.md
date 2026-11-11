@@ -6,7 +6,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ### Changed
 
-- **CI's browser job no longer depends on Ubuntu's package mirrors:** on 11 Nov 2026 they failed to resolve, and the Chromium install (with `--with-deps`) failed the job before any test ran, twice. The browser now comes from Playwright's host with retries; the system packages (only fonts: the runner already has Chromium's libraries) are a separate step that may fail without failing the run. A first fix that retried the whole install made it worse: a stopped try left `apt` holding its lock. No app change. ([KNOWN_ISSUES F226](docs/KNOWN_ISSUES.md#in-v1182-11-nov-2026))
+- **CI's browser job no longer depends on Ubuntu's package mirrors:** on 11 Nov 2026 they failed to resolve, and the Chromium install (with `--with-deps`) failed the job before any test ran, twice. The browser now comes from Playwright's host with retries; the system packages (only fonts: the runner already has Chromium's libraries) are a separate step that may fail without failing the run. A first fix that retried the whole install made it worse: a stopped try left `apt` holding its lock. The hazard pages' layout checks need the Thai system font (Loma) from that step, so CI now warns when it is missing. No app change. ([KNOWN_ISSUES F226](docs/KNOWN_ISSUES.md#in-v1182-11-nov-2026))
 
 ## [1.18.2] — 2026-11-11
 

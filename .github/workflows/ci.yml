@@ -58,5 +58,13 @@ jobs:
         continue-on-error: true
         timeout-minutes: 6
         run: timeout -k 15 300 npx playwright@1.63.0 install-deps chromium
+      # The hazard pages don't load Kanit; their Thai falls back to the system's font, Loma
+      # (fonts-tlwg-loma-otf, from the step above). Without it Thai lays out differently and two
+      # layout checks fail for that reason alone (run 62, 11 Nov 2026), so say so first.
+      - name: Thai fallback font (Loma) present
+        run: |
+          if ! fc-list | grep -q 'Loma'; then
+            echo "::warning title=No Thai font::Loma is missing (Ubuntu's mirrors unreachable?), so the layout checks of the hazard pages may fail for that reason alone"
+          fi
       - run: node tools/build.mjs
       - run: npm run smoke

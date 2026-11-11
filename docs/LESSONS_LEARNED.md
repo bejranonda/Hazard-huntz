@@ -833,6 +833,6 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 
 **E15. A CI step that downloads needs a time limit and a retry; a red run from it is not the code's.**
 
-- *What happened:* on 11 Nov 2026 CI's Chromium download hung for 10 minutes and failed the browser job before any test ran, after the same checks had passed locally on all three dates. The session couldn't re-run it (403), and an empty commit to kick CI is not allowed.
-- *Do this:* read which step failed before anything else (here: install, not smoke). Give every network step a `timeout` and a few tries, and let a real fix (here that hardening) be the push that re-runs CI.
+- *What happened:* on 11 Nov 2026 CI's Chromium install failed the browser job before any test ran, after the same checks had passed locally on all three dates. The session couldn't re-run it (403), and an empty commit to kick CI is not allowed. The first fix retried the whole install without reading the log (it wasn't available yet); the next run's log showed the real cause, Ubuntu's mirrors not resolving, and that the retry made it worse: `timeout` stopped `npx`, its `apt-get` kept the lock, and the next try failed on that lock.
+- *Do this:* read the failing step's log before fixing it; if it isn't available, wait for it rather than guess. Separate what the run needs (the browser) from what is nice to have (fonts), make the second best-effort, kill whole process groups (`timeout -k`), and never retry a package manager blindly. Let a real fix be the push that re-runs CI.
 - *Encoded in:* `.github/workflows/ci.yml` ("Install Chromium for the pinned Playwright"), [KNOWN_ISSUES F226](KNOWN_ISSUES.md#in-v1182-11-nov-2026).

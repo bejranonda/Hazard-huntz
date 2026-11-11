@@ -41,16 +41,22 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
-      # On 11 Nov 2026 this download hung for 10 minutes and the job failed before any test ran.
-      # Each try gets 4 minutes; up to three tries, so one slow mirror doesn't fail the run.
+      # The browser comes from Playwright's own host, with retries. The system packages come from
+      # Ubuntu's mirrors, which failed to resolve on 11 Nov 2026 (runs 60 and 61): the runner already
+      # has every library Chromium needs, so that step only adds fonts and may fail without failing
+      # the run. Never wrap the apt step in a retry: a killed try leaves apt holding its lock.
       - name: Install Chromium for the pinned Playwright
-        timeout-minutes: 14
+        timeout-minutes: 12
         run: |
           for i in 1 2 3; do
-            if timeout 240 npx playwright@1.63.0 install --with-deps chromium; then exit 0; fi
-            echo "Chromium install try $i failed or took over 4 minutes; trying again"
+            if timeout -k 10 180 npx playwright@1.63.0 install chromium; then exit 0; fi
+            echo "Chromium download try $i failed or took over 3 minutes; trying again"
             sleep 10
           done
           exit 1
+      - name: System packages for Chromium (fonts; best effort)
+        continue-on-error: true
+        timeout-minutes: 6
+        run: timeout -k 15 300 npx playwright@1.63.0 install-deps chromium
       - run: node tools/build.mjs
       - run: npm run smoke

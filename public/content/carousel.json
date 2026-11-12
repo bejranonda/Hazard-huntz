@@ -69,6 +69,9 @@
     "captionOutage": "ไฟดับทั้งคืน หรือ 3 วัน บ้านเราอยู่ได้ไหม? 🔦\n{n} อย่างที่ควรเตรียม ตั้งแต่น้ำดื่ม ของตุน ตู้เย็น จนถึงเครื่องปั่นไฟ สรุปจากคำแนะนำของหน่วยงาน (บางข้อจากต่างประเทศ มีป้ายบอกไว้) ปัดดูทีละรูป แล้วส่งต่อให้คนที่บ้าน\n\nอ่านครบทุกข้อ พร้อมที่มา: {url}\nลองเล่นเกม 60 วิ ฟรี: {play}\n\n#บ้านรอดไหม #ไฟดับ #ของตุน",
     "guidesTitle": "รูป \"ต้องทำอะไร\" ทุกภัย (โพสต์ได้ทันทีเมื่อมีข่าว)",
     "guidesIntro": "ภัยไหนกำลังเป็นข่าว กดค้างที่รูปของเรื่องนั้นเพื่อบันทึก แล้วคัดลอกข้อความไปโพสต์ ลิงก์ในข้อความเปิดเรื่องนั้นในแอปได้เลย ถ้าจะให้ขึ้นบนหน้าแรกด้วย ตั้ง alert ใน config.json",
+    "toolsTitle": "รูปเครื่องมือ (โพสต์คู่กับลิงก์)",
+    "toolsIntro": "เครื่องมือละรูป กดค้างที่รูปเพื่อบันทึก แล้วคัดลอกข้อความไปโพสต์ ลิงก์ในข้อความเปิดเครื่องมือนั้นในแอป ใช้ได้ทุกเมื่อ เช่น ช่วงฝุ่นโพสต์ \"ฝุ่นวันนี้\" ช่วงไฟดับโพสต์ \"ตู้เย็น\"",
+    "toolCaption": "{icon} {title}\n{desc}\n👉 {url}\n#บ้านรอดไหม",
     "guideCaption": "{title} 📋\nอ่านจบใน 1 นาที แล้วส่งต่อให้คนที่บ้าน ทุกข้อบอกที่มา\n👉 {url}\n#บ้านรอดไหม #เตรียมพร้อมรับมือภัยพิบัติ"
   },
   "en": {
@@ -98,6 +101,9 @@
     "captionOutage": "A night, or three days, without power: will the house cope? 🔦\n{n} things to get ready, from drinking water and stock to the fridge and generators, from agency guidance (some international, marked as such). Swipe through, then pass it on.\n\nEvery lesson with its source: {url}\nPlay the free 60-second game: {play}\n\n#BaanRodMai #PowerCut",
     "guidesTitle": "\"What to do\" pictures for every hazard (post at once when one is in the news)",
     "guidesIntro": "Whatever is in the news: press and hold its picture to save it, then copy the text to post. The link opens that guide in the app. To put it on the start screen too, set alert in config.json.",
+    "toolsTitle": "Tool pictures (post with the link)",
+    "toolsIntro": "One picture per tool: press and hold to save it, then copy the text to post. The link opens that tool in the app. Use them any time, for example \"dust today\" in the dust season, \"the fridge\" during power cuts.",
+    "toolCaption": "{icon} {title}\n{desc}\n👉 {url}\n#BaanRodMai",
     "guideCaption": "{title} 📋\nA minute to read; send it to family. Every line has its source.\n👉 {url}\n#BaanRodMai"
   }
 }

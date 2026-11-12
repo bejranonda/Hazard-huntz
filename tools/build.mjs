@@ -248,7 +248,7 @@ for (const [h, v] of Object.entries(HAZARDS)) {
   if (car.length) for (const l of LANGS) for (const k of [`cover${capM(h)}Title`, `cover${capM(h)}Sub`, `caption${capM(h)}`]) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
 }
 for (const h of Object.keys(carousel?.sets || {})) if (!HAZARDS[h]) err(`carousel.json: sets.${h} is not a hazard in config.json`);
-for (const l of LANGS) for (const k of ['swipe', 'doLabel', 'whyLabel', 'sourceLabel', 'ctaTitle', 'ctaSub', 'helpLabel', 'postsTitle', 'postsIntro', 'postsCopy', 'postsCopied', 'postsImages']) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
+for (const l of LANGS) for (const k of ['swipe', 'doLabel', 'whyLabel', 'sourceLabel', 'ctaTitle', 'ctaSub', 'helpLabel', 'postsTitle', 'postsIntro', 'postsCopy', 'postsCopied', 'postsImages', 'toolsTitle', 'toolsIntro', 'toolCaption']) if (!carousel?.[l]?.[k]) err(`carousel.json: ${l}.${k} is missing`);
 
 // A game mode's checklist sums up its sourced lessons. A guide with no game yet
 // (quake, heat, storm, landslide) has no lessons behind it, so every line
@@ -310,6 +310,9 @@ if (ALERT.guide != null) {
   else if (ALERT.until < TODAY) warn(`config.json: alert.until (${ALERT.until}) has passed, so the alert is off; clear it or give a new end date`);
   // v1.14.0: a hand-set alert says something is happening, so it names the agency's notice it rests on.
   if (!/^https:\/\/\S+$/.test(ALERT.source || '')) err('config.json: alert.source must be the https link of the agency notice the alert rests on');
+  // v1.18.4 (#83 A8): the card says who issued it, and where if the notice names an area.
+  if (!LANGS.every((l) => typeof ALERT.by?.[l] === 'string' && ALERT.by[l].trim())) err('config.json: alert.by must name the agency in both languages, e.g. { "th": "ปภ.", "en": "DDPM" }');
+  if (ALERT.area != null && !LANGS.every((l) => typeof ALERT.area?.[l] === 'string' && ALERT.area[l].trim())) err('config.json: alert.area, when set, must name the area in both languages');
 }
 // Thai words that never break across lines (util.js → keepWords). Short, Thai
 // only: a long glued run could stop a narrow line from breaking at all.
@@ -857,7 +860,9 @@ const alertHtml = (S) => {
   // v1.11.0: it says until when ("ช่วงนี้ถึง 25 ต.ค.: …"), in the Bangkok calendar.
   const until = new Date(`${ALERT.until}T12:00:00+07:00`).toLocaleDateString(S === strings.en ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', timeZone: 'Asia/Bangkok' });
   const text = fill(S.alertCard, { name: S[`guide${capM(ALERT.guide)}`], until });
-  return `<div class="alert-card" id="alert-card"><button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(g.icon || '📢')}</span><span>${esc(text)}</span><span aria-hidden="true">›</span></button></div>`;
+  const lang = S === strings.en ? 'en' : 'th';
+  const by = fill(ALERT.area ? S.alertByArea : S.alertBy, { by: ALERT.by?.[lang] || '', area: ALERT.area?.[lang] || '' });
+  return `<div class="alert-card" id="alert-card"><button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(g.icon || '📢')}</span><span>${esc(text)}<small class="alert-by">${esc(by)}</small></span><span aria-hidden="true">›</span></button></div>`;
 };
 if (!ALERT_RE.test(indexHtml)) err('index.html: the #alert-card element is missing');
 indexHtml = indexHtml.replace(ALERT_RE, alertHtml(strings.th));
@@ -1692,7 +1697,7 @@ let postsInfo = '';
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
 <style>
 ${SEO_CSS}
-.imgs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.imgs img{display:block;width:100%;height:auto;border-radius:10px;background:#fff}
+.imgs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.imgs img{display:block;width:100%;height:auto;border-radius:10px;background:#fff}.imgs.one{grid-template-columns:1fr}
 textarea{display:block;width:100%;min-height:220px;box-sizing:border-box;font:inherit;font-size:.95em;padding:10px;border:2px solid #f2c48d;border-radius:12px;background:#fff;color:inherit}
 button.cta{border:0;font:inherit;font-weight:600;cursor:pointer;margin-top:10px}
 </style>
@@ -1716,6 +1721,14 @@ ${GUIDES.map((g) => `<h3>${esc(g.icon)} ${esc(strings.th[`guide${capM(g.id)}`])}
 <div class="imgs"><img src="/share/checklist-${g.id}.png" width="1080" height="1920" loading="lazy" alt="${esc(checklists[g.id].title.th)}"></div>
 <textarea readonly id="cap-guide-${g.id}" aria-label="${esc(K.postsCopy)}">${esc(fill(K.guideCaption, { title: checklists[g.id].title.th, url: `${SITE}/checklist/${g.id}` }))}</textarea>
 <button class="cta" type="button" data-copy="cap-guide-${g.id}">${esc(K.postsCopy)}</button>`).join('\n')}
+</section>
+<section id="tools">
+<h2>${esc(K.toolsTitle)}</h2>
+<p>${esc(K.toolsIntro)}</p>
+${(config.tools || []).map((x) => `<h3>${esc(x.icon)} ${esc(S[x.id + 'PageH1'])}</h3>
+<div class="imgs one"><img src="/og/${x.id}.png" width="1200" height="630" loading="lazy" alt="${esc(S[x.id + 'PageH1'])}"></div>
+<textarea readonly id="cap-tool-${x.id}" aria-label="${esc(K.postsCopy)}">${esc(fill(K.toolCaption, { icon: x.icon, title: S[x.id + 'PageH1'], desc: S[x.id + 'PageDesc'], url: `${SITE}/${x.id}` }))}</textarea>
+<button class="cta" type="button" data-copy="cap-tool-${x.id}">${esc(K.postsCopy)}</button>`).join('\n')}
 </section>
 <footer><p>${esc(strings.th.disclaimer)}</p></footer>
 </main>

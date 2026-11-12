@@ -243,10 +243,12 @@ function renderStart() {
 
   // The owner's alert (config.alert, until its end date): that guide, first; it says until when.
   const alertUntil = (cfg) => new Date(`${cfg.alert.until}T12:00:00+07:00`).toLocaleDateString(getLang() === 'en' ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', timeZone: 'Asia/Bangkok' });
+  // v1.18.4 (#83 A8): who issued it, and where if the notice names an area
+  const alertBy = (cfg) => { const a = cfg.alert || {}; const l = getLang() === 'en' ? 'en' : 'th'; return a.by?.[l] ? `<small class="alert-by">${esc(t(a.area?.[l] ? 'alertByArea' : 'alertBy', { by: a.by[l], area: a.area?.[l] || '' }))}</small>` : ''; };
   const alertId = activeAlert(content().config, today);
   const alertEl = $('#alert-card');
   if (alertId && content().checklists[alertId] && !state.challenge) {
-    alertEl.innerHTML = `<button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(guideOf(alertId)?.icon || '📢')}</span><span>${esc(t('alertCard', { name: t(mk('guide', alertId)), until: alertUntil(content().config) }))}</span><span aria-hidden="true">›</span></button>`;
+    alertEl.innerHTML = `<button class="alert-btn" type="button" id="alert-open"><span aria-hidden="true">${esc(guideOf(alertId)?.icon || '📢')}</span><span>${esc(t('alertCard', { name: t(mk('guide', alertId)), until: alertUntil(content().config) }))}${alertBy(content().config)}</span><span aria-hidden="true">›</span></button>`;
     alertEl.hidden = false;
     $('#alert-open').addEventListener('click', () => openChecklist(alertId, 'alert'));
   } else alertEl.hidden = true;

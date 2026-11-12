@@ -37,7 +37,7 @@ Every tap teaches one real action with its source. Most come from Thai agencies 
 <img src="public/share/sample-result-prepare.png" width="200" alt="Result card">
 </p>
 
-> **Status (12 Nov 2026): v1.18.3, live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
+> **Status (12 Nov 2026): v1.18.4, live at [https://baanrodmai.autobahn.bot](https://baanrodmai.autobahn.bot), not yet launched.**
 >
 > - The code is finished and every automated check passes: 55 rule tests and 238 headless-browser checks, plus CI on every push. v1.9.0 made the app tools first, with a sourced guide for every hazard, four of them for hazards the game doesn't cover; v1.9.1 fixed what a second visitor audit of the live site found, and v1.9.2 what it left (wrong answers that gave the right one away, the back button inside a round, the result card at chat size) and added security headers. v1.10.0 added three calculators: the fridge in a power cut, dust today and the pills; v1.10.1 put them in plain words after the owner couldn't read the fridge tool. v1.11.0 made the fridge answer food by food, fixed a medicine line that could have made someone throw away insulin, and revised the whole app after a third visitor audit, read as an older relative in LINE, and research into who receives it ([docs/07-audience.md](docs/07-audience.md)). v1.11.1 stopped dust today from putting a mask on a baby; v1.12.0 added the mask tool and all the tools on one page with the agencies' own pages; v1.13.0 six more tools, and v1.13.1 fixed what a fourth visitor audit found in them.
 > - **Thai and English**, each with its own pages, link previews and search signals ([international version](#thai-and-english)).

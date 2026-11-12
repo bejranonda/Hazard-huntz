@@ -706,6 +706,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Not done then:** #104 (English choice sheets at 125 %, "go-bag" in the lessons, the gas lesson's carousel "why"): done in v1.18.2 ([N41](#n41-what-visitor-audit-6-left-v1182)).
 - **Done when:** the checks pass, it is live, and row 98 (the print pack from LINE, heat today at the phone's largest text) is filled ([L6](#l6-real-phone-test-matrix)).
 
+### N43. Visitor audit 3's last leftovers (v1.18.4)
+
+- **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 12 Nov 2026) · **Status:** Done (12 Nov 2026, v1.18.4) · **Issues:** F229–F230; #83 B16 by design
+- **What:** the alert card names who issued it and where (`alert.by`, `alert.area`); `/posts` has a picture and a caption per tool; the hours and seconds wording recorded as a rule; the launch kit's alert example fixed.
+- **Left on #83:** the owner's decisions only (the home check per hazard; the dust guide at orange).
+- **Done when:** the checks pass, it is live, and row 101 (the next real alert, on a phone) is filled.
+
 ### N42. The pages look like the app (v1.18.3)
 
 - **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 12 Nov 2026) · **Status:** Done (12 Nov 2026, v1.18.3) · **Issues:** F227–F228; closes F226's font half

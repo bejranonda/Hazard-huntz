@@ -92,7 +92,7 @@ The calculators (v1.10.0):
 From now on:
 
 - **Editing content** (fixing a tip, switching the default mode): edit the JSON in `public/content/` on GitHub and commit. Cloudflare rebuilds and publishes in about a minute.
-- **Putting a guide on the start screen (v1.9.0):** set `"alert": { "guide": "<id>", "until": "YYYY-MM-DD", "source": "https://…" }` (see above; `source` is the agency notice, required since v1.14.0), and clear it after.
+- **Putting a guide on the start screen (v1.9.0):** set `"alert": { "guide": "<id>", "until": "YYYY-MM-DD", "source": "https://…", "by": { "th": "…", "en": "…" } }` (see above; `source` is the agency notice, required since v1.14.0; `by` names the agency, required since v1.18.4; `area` is optional), and clear it after.
 - **The recommended mode** follows `modes[].months` by itself (v1.14.0: no rain switch). `featuredTopic` still takes an end date, `featuredTopicUntil`. The build's `start` line shows what the start screen recommends today, and it warns about a date that has passed.
 - **Rollback:** Pages → Deployments → pick an earlier one → *Rollback*.
 

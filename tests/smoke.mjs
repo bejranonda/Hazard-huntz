@@ -730,9 +730,13 @@ try {
     const posts = await (await fetch(`${BASE}/posts`)).text();
     const imgs = [...posts.matchAll(/<img src="\/(share\/carousel\/[^"]+)"/g)].map((m) => m[1]);
     const guideImgs = [...posts.matchAll(/<img src="\/(share\/checklist-[^"]+)"/g)].map((m) => m[1]);
+    // v1.18.4 (#83 B28): one picture per tool, its own link preview, with a caption that links the tool
+    const toolImgs = [...posts.matchAll(/<img src="\/(og\/[a-z]+\.png)"/g)].map((m) => m[1]);
+    const toolCaps = CFG.tools.filter((x) => new RegExp(`id="cap-tool-${x.id}"[^>]*>[^<]*/${x.id}\\n`).test(posts)).length;
     const wantImgs = hz.reduce((a, h) => a + (CAROUSEL.sets[h.id]?.length ? CAROUSEL.sets[h.id].length + h.modes.length + 2 : 0), 0);
-    check(`/posts lists all ${wantImgs} carousel images and the ${CFG.guides.length} guide pictures, each one exists, with a caption each; noindex and not in the sitemap`,
-      imgs.length === wantImgs && imgs.every((f) => fs.existsSync(path.join(PUB, f))) && (posts.match(/<textarea /g) || []).length === hz.filter((h) => CAROUSEL.sets[h.id]?.length).length + CFG.guides.length
+    check(`/posts lists all ${wantImgs} carousel images, the ${CFG.guides.length} guide pictures and the ${CFG.tools.length} tool pictures (v1.18.4), each one exists, with a caption each; noindex and not in the sitemap`,
+      imgs.length === wantImgs && imgs.every((f) => fs.existsSync(path.join(PUB, f))) && (posts.match(/<textarea /g) || []).length === hz.filter((h) => CAROUSEL.sets[h.id]?.length).length + CFG.guides.length + CFG.tools.length
+      && toolImgs.length === CFG.tools.length && toolImgs.every((f) => fs.existsSync(path.join(PUB, f))) && toolCaps === CFG.tools.length
       && guideImgs.length === CFG.guides.length && guideImgs.every((f) => fs.existsSync(path.join(PUB, f)))
       && posts.includes('<meta name="robots" content="noindex, nofollow">') && !sitemap.includes('/posts'), `${imgs.length} images`);
     await page.goto(`${BASE}/posts`, { waitUntil: 'networkidle' });
@@ -1311,18 +1315,21 @@ try {
     await page.route(/\/content\/config\.json/, async (r) => {
       const res = await r.fetch();
       const j = await res.json();
-      j.alert = { guide: 'storm', until: '2099-12-31' };
+      j.alert = { guide: 'storm', until: '2099-12-31', source: 'https://example.org/notice', by: { th: 'กรมอุตุนิยมวิทยา', en: 'TMD' }, area: { th: 'ภาคใต้', en: 'the South' } };
       await r.fulfill({ response: res, json: j });
     });
     await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
     // the page before was English, and the language choice is remembered
     const card = await page.textContent('#alert-card');
     const forced = card.includes(STR.th.guideStorm) || card.includes(STR.en.guideStorm);
+    // v1.18.4 (#83 A8): who issued it and where
+    const byLine = await page.textContent('#alert-card .alert-by');
+    const byOk = [STR.th.alertByArea.replace('{by}', 'กรมอุตุนิยมวิทยา').replace('{area}', 'ภาคใต้'), STR.en.alertByArea.replace('{by}', 'TMD').replace('{area}', 'the South')].includes(byLine?.trim());
     await page.click('#alert-open');
     await page.waitForSelector('#cl-back');
     const title = await page.textContent('#sheet-title');
     const opened = [CHECKLISTS.storm.title.th, CHECKLISTS.storm.title.en].some((x) => x && title.includes(x));
-    check('an alert set to "storm" shows its card, and the card opens the storm guide', forced && opened, `${forced} ${opened}`);
+    check('an alert set to "storm" shows its card with who issued it and where (v1.18.4), and the card opens the storm guide', forced && byOk && opened, `${forced} ${byLine} ${opened}`);
     await page.unroute(/\/content\/config\.json/);
     await page.goto(`${BASE}/c/p8?h=20261018`, { waitUntil: 'networkidle' });
     await page.waitForSelector('#btn-accept');

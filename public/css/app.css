@@ -1021,6 +1021,7 @@ a.hub-btn { text-decoration: none; }
 .alert-card { align-self: stretch; margin: 4px 0 2px; }
 .alert-btn { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 8px 12px; border: 2px solid var(--warn); border-radius: 14px; background: var(--warn-bg); color: var(--ink); font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
 .alert-btn > span:nth-child(2) { flex: 1; }
+.alert-by { display: block; margin-top: 2px; color: var(--ink-2); font-size: 0.8125rem; font-weight: 400; }
 .has-challenge .hub, .has-challenge .game-label, .has-challenge .alert-card, .has-challenge .risk-link { display: none; }
 /* ภัยรอบบ้าน (v1.14.0): what is happening now lives in the sister app; the hub's teal, no new colour */
 .risk-link { display: flex; align-self: stretch; align-items: center; gap: 8px; min-height: 52px; margin: 8px 0 0; padding: 8px 12px; border: 2px solid #BFE0DD; border-radius: 14px; background: #EAF6F5; color: var(--ink); text-align: left; text-decoration: none; box-shadow: 0 3px 0 var(--line); }

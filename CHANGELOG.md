@@ -4,6 +4,21 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.18.4] — 2026-11-12
+
+**Visitor audit 3's last AI-ready leftovers.** No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F229–F230](docs/KNOWN_ISSUES.md#in-v1184-12-nov-2026))
+
+### Added
+
+- **The alert card says who issued it**, and where when the notice names an area: under its sentence, "ตามประกาศของ ปภ. · ภาคใต้" / "Announced by DDPM · the South". `config.json → alert` takes `by` (required, both languages) and `area` (optional); the build stops on an alert without `by`. No alert is on today.
+- **`/posts` has a picture for each of the 11 tools:** its link preview, with a caption to copy (the tool's name, its page's description and its link), for posting a tool when it fits the week (dust today in the dust season, the fridge in a power cut).
+
+### Docs
+
+- **The launch kit's alert example** lacked `source` (required since v1.14.0), so a build from it would have failed; it now has `source`, `by` and `area`.
+- **Hours and seconds, by design:** "ชม." on buttons, labels, tips and checklist lines (which have a length limit), "ชั่วโมง" in sentences; "60 วิ" in the tagline is the longest round (50–60 s). Recorded in GUIDELINES rule 113; #83's B16 closed.
+- KNOWN_ISSUES F229–F230 (#83 down to the owner's decisions), GUIDELINES rules 63 and 113, ROADMAP N43, KNOWLEDGE §48, the launch kit, deploy notes, test checklist row 101, HANDOFF, README, AGENTS.
+
 ## [1.18.3] — 2026-11-12
 
 **The pages look like the app.** No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F227–F228](docs/KNOWN_ISSUES.md#in-v1183-12-nov-2026))

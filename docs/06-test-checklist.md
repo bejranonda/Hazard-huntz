@@ -146,6 +146,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 98 | v1.18.1: inside LINE, open https://baanrodmai.autobahn.bot/print: is the yellow button "🌐 เปิดในเบราว์เซอร์ เพื่อพิมพ์", and does it open the page in Chrome (or Safari) with the print button? Open เครื่องมือทั้งหมด: is "🖨️ ชุดพิมพ์แจก 9 เรื่อง" there? With the phone's text at its largest, open ร้อนวันนี้ and ฝุ่นวันนี้: are all four heat levels and all five colours on the screen, nothing cut off at the right? |  |  |  |  |  |  |  |  |
 | 99 | v1.18.2, larger text in a round: set the phone's text one or two steps larger, start a round and tap an item: are all three answers (ก ข ค) on the screen without scrolling, in the larger size? At the largest size, is it clear there is a third answer below? |  |  |  |  |  |  |  |  |
 | 100 | v1.18.3: open https://baanrodmai.autobahn.bot/flood from a LINE chat: is the text in the same rounded font as the app (Kanit), not the phone's usual font? Open /landslide: does line 2 say "THAI DISASTER ALERT"? |  |  |  |  |  |  |  |  |
+| 101 | v1.18.4: the next time an alert is on, open the start screen inside LINE: does the card say under its sentence who issued it ("ตามประกาศของ ปภ.") and, if set, where? Open /posts on the phone: can you save a tool's picture by pressing on it and copy its text? |  |  |  |  |  |  |  |  |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 

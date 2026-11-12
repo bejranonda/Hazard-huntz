@@ -843,7 +843,7 @@ The start screen now puts the alert card and the three tools above the game. Mea
 
 **Status:** By design (v1.9.0)
 
-`config.json → alert: { guide, until }` puts one guide at the top of the start screen and first in the picker. It is set by the owner, never from the news: on 19 Oct 2026, `landslide` until `2026-10-25`, for ปภ.'s warning of heavy rain, flash floods and mudslides on 18–25 Oct (reported by Thairath on 18 Oct 2026).
+`config.json → alert: { guide, until, source, by, area }` puts one guide at the top of the start screen and first in the picker (`source` since v1.14.0, `by` and the optional `area` since v1.18.4, shown as "ตามประกาศของ ปภ. · ภาคใต้"). It is set by the owner, never from the news: on 19 Oct 2026, `landslide` until `2026-10-25`, for ปภ.'s warning of heavy rain, flash floods and mudslides on 18–25 Oct (reported by Thairath on 18 Oct 2026).
 
 - **It ends by itself.** `activeAlert()` shows it while today's Bangkok date is on or before `until`, that day included, and never without an end date; the build stops on a date that isn't real.
 - **After the date, it stays in the file.** The card is gone, but the build warns ("alert.until … has passed, so the alert is off; clear it or give a new end date") on every build until the owner sets `"alert": { "guide": null, "until": null }` or a new date. On 26 Oct 2026 the warning appears.
@@ -1010,7 +1010,7 @@ Since v1.11.0 every number on a guide carries a short name under it (`helplines.
 
 ### 83. Leftovers of visitor audit 3
 
-**Status:** Open, mostly fixed in v1.15.0 (B12, B13, B23, B24, B29 and "U.S."; [F182–F187](#in-v1150-3-nov-2026)); B9 was answered by `/bag` in v1.13.0 (five guides link it, the flood "before" guide included); B17 is by design (below). Left: the units and dates, `/posts` pictures for the tools, the alert's issuer, and the owner's two decisions · **Severity:** Low
+**Status:** Open only for the owner's decisions (the home check per hazard, B5/B10; the dust guide at orange, B8). Fixed in v1.15.0 (B12, B13, B23, B24, B29 and "U.S."; [F182–F187](#in-v1150-3-nov-2026)) and v1.18.4 (B28, A8; [F229–F230](#in-v1184-12-nov-2026)); B9 answered by `/bag` (v1.13.0) and "emergency bag" (v1.18.2); B16 and B17 by design (below) · **Severity:** Low
 
 Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent preparing at the weekend, an English reader and a consistency check) reported 57 findings between its two auditors (28 and 29); v1.11.0 fixed most of them, in the 30 rows F96–F125 ([In v1.11.0](#in-v1110-20-oct-2026)). These are left, with their audit ids ([ROADMAP N23](ROADMAP.md#n23-food-by-food-and-the-app-for-its-real-readers-v1110)):
 
@@ -1018,13 +1018,13 @@ Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent prepa
 - **"กระเป๋าฉุกเฉิน" (go-bag)** (B9): the flood guide's line 1 ("เอกสารสำคัญใส่ถุงกันน้ำ เก็บรวมกับกระเป๋าฉุกเฉิน") and the topic "🎒 plans & go-bag" use the word, and the app never says what goes in one. The plan card no longer does ([F113](#in-v1110-20-oct-2026)). Define it (ROADMAP P10c, a go-bag per person) or reword. **Since v1.13.0 the bag tool (`/bag`) says what goes in one, and since v1.18.2 the English says "emergency bag" everywhere ([F224](#in-v1182-11-nov-2026)): closed.**
 - **Back from a tool opened inside a guide** (B12, A24) goes to the start screen, not back to the guide.
 - **One short and one long name per tool, checked by a test** (B13): the audit's naming table listed each tool's names across the hub, the guides, the results and the pages; v1.11.0 fixed the dust guide's button ([F105](#in-v1110-20-oct-2026)), but no test holds every tool to one short and one long name yet.
-- **Units and dates** (B16, the rest; the Thai µg/m³ was fixed, [F104](#in-v1110-20-oct-2026)): "ชม." and "ชั่วโมง" side by side; "60 วิ" in the texts while the Return round runs 50 s and the dust, fire and power-cut rounds 55 s; three date formats.
+- ~~**Units and dates** (B16, the rest)~~ **By design (v1.18.4):** "ชม." stands only on buttons, labels, tips and checklist lines, which have a length limit (tips at most 80 letters), and "ชั่วโมง" in sentences, the usual Thai split; "60 วิ" in the tagline is the longest round (prepare 60 s; return 50 s; dust, fire and power cut 55 s), so it never overstates; the pages' dates were made like the cards' in v1.15.2 ([F209](#in-v1152-4-nov-2026)). Changing "60 วิ" would touch the tagline, the titles and nine pictures: the owner's call ([GUIDELINES rule 113](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 - **The lesson count** (B17): the pages count 81 lessons, the app 79 (two wait for rooms that aren't open). **By design (v1.15.0):** the app's 📖 book counts what the game can show (79); the pages list every lesson (81).
 - **The same agency twice in a source line** (B23).
 - **An English 404 page** (B24): `/en/no-such-page` gets the one bilingual 404 page.
-- **`/posts` has no pictures for the tools** (B28).
+- ~~**`/posts` has no pictures for the tools** (B28)~~ Done in v1.18.4 ([F230](#in-v1184-12-nov-2026)).
 - **The plan form's order** (B29): it starts with the shelter field.
-- **The alert says until when, not who issued it or where** (A8): `config.json → alert` has no field for either yet.
+- ~~**The alert says until when, not who issued it or where** (A8)~~ Done in v1.18.4 ([F229](#in-v1184-12-nov-2026)).
 - **"U.S." and "US" both** appear in the English agency names (`seo.en.agencies`: "U.S. Food and Drug Administration (FDA)" beside "US National Weather Service (NWS)"); pick one with the English reader.
 - **The dust guide and dust today at orange** (B8): the owner decides, [#76](#76-the-pcd-and-the-doh-advise-differently-at-green-yellow-and-red).
 
@@ -1143,6 +1143,13 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.18.4 (12 Nov 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F229 | **The alert card said until when, not who issued it or where** (#83 A8): a reader couldn't tell an agency's warning from the app's own opinion | `config.json → alert` takes `by` ({ th, en }, required with a guide; the build stops without it) and `area` (optional). The card keeps its sentence and adds a line under it: "ตามประกาศของ {by}" or "ตามประกาศของ {by} · {area}" (`strings → alertBy`, `alertByArea`), in the page the build writes and in the app. Checked: the build refuses an alert without `by`; the smoke test forces an alert with an issuer and an area and reads the line; screenshots at 320 px in both languages (the card 95 px tall) |
+| F230 | **`/posts` had no pictures for the tools** (#83 B28): only the carousel sets and the guide pictures | A "รูปเครื่องมือ" section: the 11 tools in `config.json → tools` order, each with its link preview (`og/<id>.png`, 1200 × 630) and a caption to copy (`carousel.json → toolCaption`: icon, the page's heading, the page's description, the link). The build requires the new words in both languages; the smoke check counts 11 pictures that exist and 11 captions that link their tool |
 
 ### In v1.18.3 (12 Nov 2026)
 

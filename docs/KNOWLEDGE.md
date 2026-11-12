@@ -1355,7 +1355,7 @@ Researched in parallel on 18–19 Oct 2026, one hazard per researcher with the s
 | # | Phase | Line (th / en) | Sources | |
 |---|---|---|---|---|
 | 1 | before | ดูว่าบ้านติดเขาหรือลำห้วยที่เสี่ยงดินถล่มไหม / Check if your home is by a slope or stream at risk | `dmr-riskvillage-2565`, `dwr-ews-2569` | ⚠️ DMR describes a risk village (2022) but no text read says "check your own home" |
-| 2 | before | ติดตามคำเตือนในแอป THA DISASTER ALERT / Follow warnings on the THA DISASTER ALERT app | `ddpm-app-2569`, `dmr-signs-2568`, `dwr-ews-2569` | ✅ |
+| 2 | before | ติดตามคำเตือนในแอป THAI DISASTER ALERT / Follow warnings on the THAI DISASTER ALERT app (spelled THA until v1.18.3, as in the Naewna report) | `ddpm-app-2569`, `dmr-signs-2568`, `dwr-ews-2569` | ✅ |
 | 3 | before | รู้สัญญาณเตือนหมู่บ้าน และจุดปลอดภัยที่นัดไว้ / Know your village's warning signal and agreed safe spot | `dmr-riskvillage-2565` | ✅ |
 | 4 | before | วางแผนเส้นทางอพยพไปจุดปลอดภัยไว้ก่อน / Plan your evacuation route to the safe spot in advance | `dwr-ews-2569` | ✅ |
 | 5 | before | เตรียมแผนดูแลเด็ก ผู้สูงอายุ ผู้ป่วยติดเตียง / Plan how you'll help children, older and bedridden people | `ddpm-mhs-2569`, `ddpm-nan-2568` | ✅ |
@@ -1425,7 +1425,7 @@ In the heat guide "after" means once someone is unwell; on the page and in the s
 | `dwr-ews-2569` | กรมทรัพยากรน้ำ | secondary, Bangkok Biz News | — (2026) | the green / yellow / red warning levels: follow news, plan the evacuation route, move when told | landslide #1, #2, #4 |
 | `ddpm-mhs-2569` | ปภ. | secondary, Bangkok Biz News | — (Sep 2026) | a plan for vulnerable household members | landslide #5 |
 | `ddpm-nan-2568` | ปภ. | secondary, Thansettakij | 2025-06-27 | look after young children, older and bedridden people | landslide #5 |
-| `ddpm-app-2569` | ปภ. | secondary, Naewna | 2026-05-28 | the THA DISASTER ALERT app; follow official instructions; risk sites closed | landslide #2, #10 |
+| `ddpm-app-2569` | ปภ. | secondary, Naewna | 2026-05-28 | the THAI DISASTER ALERT app (Naewna wrote "THA"); follow official instructions; risk sites closed | landslide #2, #10 |
 | `readygov-landslide` | Ready.gov (FEMA) | international | — | cracking ground; never cross flowing water or mud; stay away from the slide | landslide #8, #9, #10 |
 | `ddpm-storm6` | ปภ. | secondary, Bangkok Biz News | — | follow forecasts; a sturdy house; shut doors and windows; trim trees; off rooftops and open ground; no devices in lightning | storm #1, #2, #4–#8 |
 | `ddpm-storm-home` | ปภ. | secondary, Bangkok Biz News | — | store what the wind can blow; sturdy doors, windows, roof; trim weak branches | storm #2, #3, #4 |
@@ -2862,3 +2862,13 @@ Records: [KNOWN_ISSUES F223–F225](KNOWN_ISSUES.md#in-v1182-11-nov-2026), [#104
 - **The rule** (`app.css`, `@media (max-width: 18.4em)`): `#sheet { max-height: 100% }` (88 % normally, 94 % on short screens), the item's picture hidden, `.choices` gap 6 px, `.choice` padding 6 × 8 px and line height 1.2. The selectors carry `#sheet` so they win over the short-screen block that comes later in the file. It applies to every sheet at that width, so a long tool sheet gets the whole screen too. ก+ zooms the sheets by 1.15 (`html.big .sheet { zoom: 1.15 }`), which a media query can't see, so ก+ alone doesn't trigger it; a round's sheets with ก+ on were not measured.
 - **"emergency bag":** `items.json` (p-docs, p-torch, p-meds' feedback, p-numbers), `checklists.json` (the flood guide's line 1) and `strings.json → en.topic_plan`. p-torch's and p-numbers' right answers became the longest by a letter or two, so one wrong answer of each gained a few words ("you'll find it…", "search online…") with the same mistake. `seo.updated` is 11 Nov 2026.
 - **The gas lesson** (`r-gas`): only the Thai "why" changed, by wording; its English, its answers, its tip and its sources are the same. No "UPDATE:" post is due: nothing a reader was told to do changed.
+
+## 47. The pages load the app's font (v1.18.3)
+
+Records: [KNOWN_ISSUES F227–F228](KNOWN_ISSUES.md#in-v1183-12-nov-2026), [GUIDELINES rule 112](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [ROADMAP N42](ROADMAP.md#n42-the-pages-look-like-the-app-v1183).
+
+- **The pages** that `tools/build.mjs` writes from `SEO_CSS` (the hazard pages, the tool pages, `/learn`, `/uv`, `/print`, `/posts` and both 404s, each in two languages) begin their CSS with `FONT_FACES`, the four `@font-face` rules read from `public/css/app.css` (Kanit 400 and 600, a Thai and a Latin subset each, by `unicode-range`). The plain-page template preloads `/fonts/kanit-thai-400.woff2` (`crossorigin`, as in `index.html`); `/print` and `/posts` have their own head and don't preload.
+- **Weight:** the four files are 11.7–13.8 KB each (about 50 KB in all), served with `Cache-Control: immutable` and precached by the service worker, so a reader who has opened the app has them. A browser downloads only the subsets a page uses.
+- **What changed on screen:** Kanit sets Thai a little tighter than the fallbacks, so pages are shorter (`/flood` 4 %, `/landslide` 4 %, `/tools` 6 % at 360 px). The print pack is still one A4 page per guide (9 per language).
+- **Why it matters for tests:** before, those pages' Thai fell back to the machine's font: Loma locally and on CI (from Ubuntu's `fonts-tlwg-loma-otf`), something else on a phone. When Ubuntu's mirrors failed (F226), CI had no Thai font and two layout checks failed. With the font hidden (`FONTCONFIG_FILE` with a `<rejectfont>` for `/usr/share/fonts/opentype/tlwg/*`), the full smoke run now passes 238 of 238.
+- **THAI DISASTER ALERT:** DDPM's app; `ddpm-app-2569` (Naewna) wrote "THA"; Khaosod English, Thairath English and the store listing write THAI (the source's note, read 20 Oct 2026). The landslide guide's line 2 and its picture now say THAI; the all-tools page always did.

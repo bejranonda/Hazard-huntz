@@ -706,6 +706,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Not done then:** #104 (English choice sheets at 125 %, "go-bag" in the lessons, the gas lesson's carousel "why"): done in v1.18.2 ([N41](#n41-what-visitor-audit-6-left-v1182)).
 - **Done when:** the checks pass, it is live, and row 98 (the print pack from LINE, heat today at the phone's largest text) is filled ([L6](#l6-real-phone-test-matrix)).
 
+### N42. The pages look like the app (v1.18.3)
+
+- **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 12 Nov 2026) · **Status:** Done (12 Nov 2026, v1.18.3) · **Issues:** F227–F228; closes F226's font half
+- **What:** every plain page loads the app's Kanit (the build copies app.css's rules); the landslide guide spells THAI DISASTER ALERT.
+- **How it was checked:** page heights and the print pack's A4 pages before and after; screenshots; the full smoke run with the Thai system font hidden (238 of 238) and on the three dates; unit tests for both.
+- **Done when:** the checks pass, it is live, CI is green again, and row 100 is filled ([L6](#l6-real-phone-test-matrix)).
+
 ### N41. What visitor audit 6 left (v1.18.2)
 
 - **Who:** AI-ready ("Continue as you suggested", 11 Nov 2026) · **Status:** Done (11 Nov 2026, v1.18.2) · **Issues:** F223–F225; #104 mostly closed

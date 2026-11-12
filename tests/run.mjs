@@ -456,6 +456,18 @@ test('the emergency bag has one English name: no "go-bag" in what readers see (v
   assert.equal(load('strings').en.hubBag, 'Emergency bag');
 });
 
+test('the plain pages load the app\'s Kanit, from app.css; DDPM\'s app has one spelling (v1.18.3)', () => {
+  const css = fs.readFileSync(new URL('../public/css/app.css', import.meta.url), 'utf8').match(/@font-face \{[^}]*\}/g);
+  assert.equal(css.length, 4);
+  for (const page of ['flood.html', 'en/flood.html', 'landslide.html', 'tools.html', 'learn.html', 'print.html', 'posts.html', '404.html']) {
+    const html = fs.readFileSync(new URL(`../public/${page}`, import.meta.url), 'utf8');
+    for (const f of css) assert.ok(html.includes(f), `${page}: ${f.slice(0, 60)}`);
+    for (const m of html.matchAll(/url\((\/fonts\/[^)]+)\)/g)) assert.ok(fs.existsSync(new URL(`../public${m[1]}`, import.meta.url)), m[1]);
+  }
+  // Naewna wrote "THA DISASTER ALERT"; the app, its store listing and two English papers say THAI (sources.json → ddpm-app-2569)
+  for (const f of ['checklists', 'kit', 'items', 'strings']) assert.ok(!/\bTHA DISASTER/.test(JSON.stringify(load(f))), `${f}.json`);
+});
+
 test('home check: amounts follow the household, special items follow the answers', () => {
   const kit = load('kit');
   const byId = (p, id) => p.items.find((x) => x.id === id);

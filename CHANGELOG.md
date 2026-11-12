@@ -4,9 +4,22 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.18.3] — 2026-11-12
+
+**The pages look like the app.** No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F227–F228](docs/KNOWN_ISSUES.md#in-v1183-12-nov-2026))
+
 ### Changed
 
+- **Every plain page (the hazard pages, the tools' pages, `/learn`, `/print`, `/posts`, the 404) now loads the app's own font, Kanit.** They named it but never loaded it, so a reader who came from search, a QR code or ภัยรอบบ้าน saw the phone's Thai font, unlike the app. The same four files the app already ships and caches (about 50 KB, shared); the regular Thai face is preloaded. Pages come out a little shorter (`/flood` 4 % at 360 px); the print pack is still one A4 page per guide.
 - **CI's browser job no longer depends on Ubuntu's package mirrors:** on 11 Nov 2026 they failed to resolve, and the Chromium install (with `--with-deps`) failed the job before any test ran, twice. The browser now comes from Playwright's host with retries; the system packages (only fonts: the runner already has Chromium's libraries) are a separate step that may fail without failing the run. A first fix that retried the whole install made it worse: a stopped try left `apt` holding its lock. The hazard pages' layout checks need the Thai system font (Loma) from that step, so CI now warns when it is missing. No app change. ([KNOWN_ISSUES F226](docs/KNOWN_ISSUES.md#in-v1182-11-nov-2026))
+
+### Fixed
+
+- **The landslide guide's line 2 named DDPM's app "THA DISASTER ALERT"** (as the news report it rests on spelled it); it is THAI DISASTER ALERT, as on the all-tools page and the app's store listing. The guide's picture was re-rendered. A name, not advice: no "UPDATE:" post.
+
+### Docs
+
+- KNOWN_ISSUES F226 (closed by F227), F227–F228, GUIDELINES rule 112, ROADMAP N42, KNOWLEDGE §47, APPROACH §50, LESSONS D36, test checklist row 100, HANDOFF, README, AGENTS.
 
 ## [1.18.2] — 2026-11-11
 

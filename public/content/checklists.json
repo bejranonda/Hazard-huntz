@@ -361,8 +361,8 @@
       {
         "icon": "📲",
         "phase": "before",
-        "th": "ติดตามคำเตือนในแอป THA DISASTER ALERT",
-        "en": "Follow warnings on the THA DISASTER ALERT app",
+        "th": "ติดตามคำเตือนในแอป THAI DISASTER ALERT",
+        "en": "Follow warnings on the THAI DISASTER ALERT app",
         "sources": [
           "ddpm-app-2569",
           "dmr-signs-2568",

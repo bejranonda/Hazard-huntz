@@ -634,3 +634,10 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 2. **Keep the table** (before and after, count and worst case): it shows what the change bought (English at 125 %: 53 → 3) and what it didn't (150 % on 320 px).
 3. **Fix by making room, in an order:** the container's height, decoration, gaps, line height; never the reader's text size ([GUIDELINES rule 111](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
 4. **Write the remainder down as a limit,** with its numbers and why it stays, instead of closing the issue.
+
+## 50. Prove a test doesn't depend on the machine by taking the thing away (v1.18.3)
+
+1. **When CI and a laptop disagree, list what differs** (here: a Thai system font only one of them had) before touching the test.
+2. **Fix the dependency in the product if the product has it too:** the pages relied on whatever Thai font the phone has, so they now load the app's own.
+3. **Reproduce the bad machine locally and run the full suite on it:** a fontconfig file that rejects the font (`FONTCONFIG_FILE=…`) stood in for the outage; 238 of 238 passed.
+4. **Look at what the change moved** (page heights, the A4 page count, screenshots), since a font change moves everything a little.

@@ -1096,8 +1096,14 @@ const learnLd = {
   author: PUBLISHER, publisher: PUBLISHER,
   citation: usedSources.map((id) => sources[id].url),
 };
+// The app's own Kanit, from app.css (one source): the pages a reader reaches from search, a QR code or
+// ภัยรอบบ้าน look like the app, and their layout no longer depends on the phone's (or the test
+// machine's) Thai font (v1.18.3). The same four files the app ships and caches.
+const FONT_FACES = (fs.readFileSync(path.join(PUB, 'css/app.css'), 'utf8').match(/@font-face \{[^}]*\}/g) || []);
+if (FONT_FACES.length !== 4) err(`app.css: expected 4 Kanit @font-face rules for the pages, found ${FONT_FACES.length}`);
 // One template for every plain page (/learn, the hazard pages, both languages).
-const SEO_CSS = `body{margin:0;background:#FFF4E3;color:#2b2118;font:1.0625rem/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
+const SEO_CSS = `${FONT_FACES.join('\n')}
+body{margin:0;background:#FFF4E3;color:#2b2118;font:1.0625rem/1.65 Kanit,"Noto Sans Thai",Tahoma,sans-serif}
 main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
 .nw{white-space:nowrap}p,li,h1,h2,h3{text-wrap:pretty}
 h1{font-size:1.6em;line-height:1.3;margin:.3em 0}h2{margin-top:2em;border-bottom:3px solid #f2c48d}
@@ -1144,6 +1150,7 @@ ${alt(thPath, enPath).map(([hl, href]) => `<link rel="alternate" hreflang="${hl}
 <meta property="og:url" content="${url}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/kanit-thai-400.woff2" as="font" type="font/woff2" crossorigin>
 ${ld ? jsonLd(ld) : ''}
 <style>
 ${SEO_CSS}

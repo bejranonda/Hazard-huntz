@@ -418,6 +418,10 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - Use a width in `em` for it (`max-width: 18.4em` is 320 px at 125 %), so the browser's setting triggers it and 100 % is untouched.
     - If it still can't fit (150 % on 320 px), let it scroll with the next thing visibly cut at the edge, and write down the count instead of calling it fixed.
     - **One English name per thing:** the bag is the "emergency bag" (never "go-bag"); a unit test reads the content files.
+112. **A page that names a font loads it.** Since v1.18.3 (F227):
+    - Every generated page gets app.css's `@font-face` rules (the build copies them; never a second copy by hand) and preloads the Thai regular face, as `index.html` does.
+    - A layout check must not depend on what the test machine happens to have installed. To prove it, hide the font and run the checks: `FONTCONFIG_FILE` pointing at a config with a `<rejectfont>` for it.
+    - Product names are spelled as their owner spells them (THAI DISASTER ALERT), even where a source's news report doesn't; record the report's spelling in the source's `note`.
 
 ## 9. Working with AI assistants
 

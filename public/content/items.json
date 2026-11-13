@@ -1,5 +1,5 @@
 {
-  "_readme": "แก้ข้อความได้เลย: name = ชื่อสิ่งของ, context = บรรยายสถานการณ์, choices = ตัวเลือก (correct: true คือคำตอบที่ถูก), tip = เคล็ดลับไม่เกิน 80 ตัวอักษร, why = คำอธิบายเมื่อกด 'ทำไม?', sources = รหัสใน sources.json. ห้องที่เล่นได้กำหนดใน rooms.json. kind = ประเภทการกระทำ (ใช้เลือกไอคอน): up pack off leave place call gear check toss boil move clear",
+  "_readme": "แก้ข้อความได้เลย: name = ชื่อสิ่งของ, context = บรรยายสถานการณ์, choices = ตัวเลือก (correct: true คือคำตอบที่ถูก), tip = เคล็ดลับไม่เกิน 80 ตัวอักษร, why = คำอธิบายเมื่อกด 'ทำไม?', sources = รหัสใน sources.json. ห้องที่เล่นได้กำหนดใน rooms.json. from = วันเริ่มใช้ (YYYY-MM-DD ไม่ใส่ก็ได้) บ้านรายวันก่อนวันนั้นจะไม่มีข้อนี้ เพิ่มบทเรียนได้ทุกเวลาโดยบ้านของวันนี้ไม่เปลี่ยน, kind = ประเภทการกระทำ (ใช้เลือกไอคอน): up pack off leave place call gear check toss boil move clear",
   "items": [
     {
       "id": "p-docs", "mode": "prepare", "room": "living", "critical": true,
@@ -512,7 +512,7 @@
         { "kind": "leave", "label": { "th": "นอนพักรอดูอาการสักอาทิตย์ คงแค่ไข้หวัด", "en": "Rest and wait a week; it's probably just a cold" }, "feedback": { "th": "โรคฉี่หนูอันตรายถ้ารักษาช้า มีไข้สูงหลังลุยน้ำ ควรรีบพบแพทย์ทันที", "en": "Leptospirosis is dangerous when treated late. A high fever after wading means see a doctor now." } }
       ],
       "tip": { "th": "ไข้สูง ปวดน่อง หลังลุยน้ำ รีบไปหาหมอ บอกว่าลุยน้ำมา อย่าซื้อยากินเอง", "en": "Fever and sore calves after wading? See a doctor; don't self-medicate." },
-      "why": { "th": "กรมควบคุมโรคระบุว่าโรคฉี่หนูมีระยะฟักตัว 2–30 วัน ส่วนใหญ่ราว 1–2 สัปดาห์ อาการคือไข้สูงเฉียบพลัน ปวดศีรษะ ปวดกล้ามเนื้อโดยเฉพาะน่อง และตาแดง ห้ามซื้อยากินเอง ให้รีบพบแพทย์และแจ้งประวัติการลุยน้ำ ส่วนไข้เลือดออก ห้ามใช้ยาแก้ปวดกลุ่ม NSAIDs เช่น แอสไพริน ไอบูโพรเฟน", "en": "The Department of Disease Control says leptospirosis shows up 2–30 days after exposure, usually 1–2 weeks: sudden high fever, headache, muscle pain especially in the calves, red eyes. Don't self-medicate; see a doctor and mention wading. With dengue, NSAIDs like aspirin and ibuprofen must be avoided." },
+      "why": { "th": "กรมควบคุมโรคระบุว่าโรคฉี่หนูมีระยะฟักตัว 2–30 วัน ส่วนใหญ่ราว 1–2 สัปดาห์ อาการคือไข้สูงเฉียบพลัน ปวดศีรษะ ปวดกล้ามเนื้อโดยเฉพาะน่อง และตาแดง ห้ามซื้อยากินเอง ให้รีบพบแพทย์และแจ้งประวัติการลุยน้ำ โรคเมลิออยโดสิส (ไข้ดิน) ก็ติดจากดินและน้ำได้ ถ้ามีไข้สูง ไอ หายใจเหนื่อย หรือแผลติดเชื้อหลังลุยน้ำหรือสัมผัสโคลน ไม่ควรซื้อยากินเอง รีบพบแพทย์และแจ้งประวัติการสัมผัส ส่วนไข้เลือดออก ห้ามใช้ยาแก้ปวดกลุ่ม NSAIDs เช่น แอสไพริน ไอบูโพรเฟน", "en": "The Department of Disease Control says leptospirosis shows up 2–30 days after exposure, usually 1–2 weeks: sudden high fever, headache, muscle pain especially in the calves, red eyes. Don't self-medicate; see a doctor and mention wading. Melioidosis (\"soil fever\") also comes from soil and water: with a high fever, a cough, breathlessness or an infected wound after wading or touching mud, see a doctor and say so. With dengue, NSAIDs like aspirin and ibuprofen must be avoided." },
       "sources": ["ddc-lepto", "ddc-59806", "ddc-dengue", "ddc-6groups-2569"], "verify": "verified", "topic": "health"
     },
     {
@@ -528,6 +528,20 @@
       "tip": { "th": "ตาแดงหลังน้ำท่วม ล้างมือบ่อย ไม่ขยี้ตา ไม่ใช้ผ้าเช็ดตัวร่วมกัน", "en": "Red eyes after a flood? Wash hands often, don't rub, don't share towels." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าโรคตาอักเสบเป็น 1 ใน 6 กลุ่มโรคที่มากับน้ำท่วม ให้ล้างมือบ่อยๆ ไม่ขยี้ตา และไม่ใช้ผ้าเช็ดตัวหรือของใช้ส่วนตัวร่วมกับผู้อื่น", "en": "The Department of Disease Control lists eye infections (conjunctivitis) among six disease groups that come with floods. Wash hands often, don't rub your eyes, and don't share towels or personal items." },
       "sources": ["ddc-6groups-2569"], "verify": "verified", "topic": "health"
+    },
+    {
+      "id": "r-cough", "mode": "return", "room": "living", "from": "2026-11-14",
+      "sprite": "tissues", "doneAnim": "none", "size": [50, 40], "slots": ["table", "seat"],
+      "name": {"th": "พ่อไอจามแต่ยังนั่งใกล้ทุกคน", "en": "Dad's cough at the dinner table"},
+      "context": {"th": "พ่อไอ จาม มีน้ำมูกมาสองวัน แต่ยังนั่งกินข้าวใกล้ลูกเล็กกับยาย", "en": "A cough and sneezes for two days, yet he eats next to the baby and Grandma"},
+      "choices": [
+        { "kind": "gear", "correct": true, "label": {"th": "ใส่หน้ากากอนามัย ล้างมือบ่อย เลี่ยงอยู่ใกล้คนอื่นจนกว่าจะหาย", "en": "Wear a mask, wash hands often and keep away from others until better"} },
+        { "kind": "leave", "label": {"th": "แค่หวัดธรรมดา นั่งกินด้วยกันได้ เดี๋ยวสองสามวันก็หายเอง", "en": "It's only a cold; eating together is fine, it'll pass in a few days"}, "feedback": {"th": "กรมควบคุมโรคแนะว่าถ้าป่วยให้เลี่ยงใกล้ชิดผู้อื่น และสวมหน้ากากอนามัยเมื่อไอจาม", "en": "The DDC says if you are ill, keep away from others and wear a mask when you cough or sneeze."} },
+        { "kind": "place", "label": {"th": "ใช้มือป้องปากตอนไอ แล้วตักข้าวให้ทุกคนต่อตามปกติ", "en": "Cover the cough with a hand, then carry on serving everyone rice"}, "feedback": {"th": "กรมควบคุมโรคแนะให้ปิดปากและจมูกเมื่อไอจาม และหมั่นล้างมือด้วยน้ำและสบู่เป็นประจำ", "en": "The DDC says cover your mouth and nose when you cough or sneeze, and wash hands with soap and water often."} }
+      ],
+      "tip": {"th": "ไอจามหลังน้ำท่วม ใส่หน้ากาก ล้างมือบ่อย เลี่ยงใกล้ชิดคนอื่น", "en": "Coughing after a flood? Wear a mask, wash hands often, keep away from others."},
+      "why": {"th": "กรมควบคุมโรคเตือนว่าโรคระบบทางเดินหายใจเป็น 1 ใน 6 กลุ่มโรคที่มากับน้ำท่วม และแนะ \"ปิด ล้าง เลี่ยง หยุด\": ปิดปากและจมูกเมื่อไอจาม หมั่นล้างมือด้วยน้ำและสบู่ เลี่ยงคลุกคลีกับผู้ป่วย และถ้าป่วยให้เลี่ยงใกล้ชิดผู้อื่น สวมหน้ากากอนามัยเมื่อต้องออกจากบ้าน และรีบไปพบแพทย์ โดยเฉพาะกลุ่มเสี่ยง", "en": "The Department of Disease Control lists respiratory infections among six disease groups that come with floods, and advises 'cover, wash, avoid, stop': cover your mouth and nose when you cough or sneeze, wash hands with soap and water often, avoid close contact with people who are ill, and if you are ill, keep away from others, wear a mask when you go out and see a doctor soon, especially if you are in an at-risk group."},
+      "sources": ["ddc-6groups-2569", "ddc-resp-2569"], "verify": "verified", "topic": "health"
     },
     {
       "id": "r-gas", "mode": "return", "room": "kitchen",

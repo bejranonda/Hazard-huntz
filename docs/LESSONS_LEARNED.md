@@ -842,3 +842,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the hazard pages named Kanit but never loaded it, so their Thai used the system's font. The layout checks were tuned on machines with Loma; when Ubuntu's mirrors failed and CI had no Thai font, two of them failed (F226). The product had the same flaw: on phones those pages looked unlike the app.
 - *Do this:* when a check fails only on one machine, ask what the page takes from the machine, and make the page bring it (F227). Then prove it by taking it away: run the suite with the font hidden.
 - *Encoded in:* [GUIDELINES rule 112](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), the unit test that every plain page carries the four `@font-face` rules.
+
+**D37. When a check covers one example, it can't see the new one.**
+
+- *What happened:* v1.16.0 checked one English choice sheet (the longest then, p-meds) at normal text; v1.18.2 checked every sheet, but only at 125 %. The new lesson's English heading made its sheet scroll by 42 px at 100 %, and no smoke check would have seen it; a scratch probe of every sheet at every size did.
+- *Do this:* a check that holds a property for a set measures the whole set at every size it claims, including the default one; when you add to the set, the check covers the addition without anyone remembering to.
+- *Encoded in:* the smoke check "text at 100 %: no choice sheet scrolls at 320 x 568" (every sheet, both languages), [GUIDELINES rule 114](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).

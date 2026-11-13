@@ -706,6 +706,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Not done then:** #104 (English choice sheets at 125 %, "go-bag" in the lessons, the gas lesson's carousel "why"): done in v1.18.2 ([N41](#n41-what-visitor-audit-6-left-v1182)).
 - **Done when:** the checks pass, it is live, and row 98 (the print pack from LINE, heat today at the phone's largest text) is filled ([L6](#l6-real-phone-test-matrix)).
 
+### N44. Breathing infections, and lessons with a start date (v1.18.5)
+
+- **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 13 Nov 2026; P6, suggested on 12 Nov) · **Status:** Done (13 Nov 2026, v1.18.5) · **Issues:** F231–F232; #24's advice
+- **What:** `r-cough` (respiratory infections after a flood, from 14 Nov 2026); `r-fever` names melioidosis; `items.json → from` so a new lesson changes no daily house before its date.
+- **How it was checked:** the unit test of houses before the date (identical, and red with the check removed); `npm run probe` 0 %; every choice sheet at 100 % and 125 % text in both languages; screenshots; smoke on three dates (18 Oct before the start date, 5 Dec and 10 Apr after).
+- **Done when:** the checks pass, it is live, and row 102 (the lesson in a round from 14 Nov) is filled.
+
 ### N43. Visitor audit 3's last leftovers (v1.18.4)
 
 - **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 12 Nov 2026) · **Status:** Done (12 Nov 2026, v1.18.4) · **Issues:** F229–F230; #83 B16 by design
@@ -794,7 +801,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### P6. More lessons for the remaining disease groups
 
-- **Who:** Owner + AI · **Status:** Todo (optional)
+- **Who:** Owner + AI · **Status:** Done (13 Nov 2026, v1.18.5): respiratory in `r-cough`, melioidosis named in `r-fever`, skin already in `r-mudfeet` ([N44](#n44-breathing-infections-and-lessons-with-a-start-date-v1185))
 - **Why:** the DDC's six groups (27 Sep 2026) are now covered except **skin infections** (keep skin clean and dry, avoid walking barefoot; partly in `r-mudfeet`) and **respiratory infections** (hygiene, a mask when coughing or sneezing). Melioidosis (southern provinces) is not covered either.
 - **Steps:** find an agency source (or the DDC page itself), draw a sprite, pick a slot, run `npm run probe`, and keep each tip under 80 characters in both languages.
 - **Done when:** each new lesson has a source, a topic, a smoke-checked tip card, and the probe still reports 0%.

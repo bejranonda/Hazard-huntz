@@ -1623,11 +1623,14 @@ try {
     // reader chose: the sheet may take the whole screen and the item's picture leaves the title its width.
     // Every choice sheet is built as the round builds it: none scrolls in Thai, at most 3 of 82 in English
     // (the longest, by under 40 px; it was 53, by up to 133 px).
-    const big = {};
-    for (const [lang, pre] of [['th', ''], ['en', '/en']]) {
+    // v1.18.5: and at 100 % none scrolls in either language (a new lesson's long English heading did, by 42 px;
+    // only p-meds was checked at that size before).
+    const sized = { 16: {}, 20: {} };
+    for (const px of [16, 20]) for (const [lang, pre] of [['th', ''], ['en', '/en']]) {
+      const big = sized[px];
       const c2 = await newPage({ width: 320, height: 568, locale: lang === 'en' ? 'en-GB' : 'th-TH' });
       const cdp = await c2.ctx.newCDPSession(c2.page);
-      await cdp.send('Page.setFontSizes', { fontSizes: { standard: 20, fixed: 16 } });
+      await cdp.send('Page.setFontSizes', { fontSizes: { standard: px, fixed: px === 16 ? 13 : 16 } });
       await c2.page.goto(`${BASE}${pre}/?debug=1`, { waitUntil: 'networkidle' });
       await c2.page.waitForFunction(() => window.__brm?.content?.()?.items?.length);
       big[lang] = await c2.page.evaluate(async (lang) => {
@@ -1657,8 +1660,11 @@ try {
       }, lang);
       await c2.ctx.close();
     }
+    const big = sized[20];
     check('text at 125 %: every choice sheet at 320 x 568 keeps 20 px answers; none scrolls in Thai, at most 3 in English by under 40 px (v1.18.2)',
       big.th.n >= 80 && !big.th.scroll.length && big.en.scroll.length <= 3 && big.en.worst < 40 && Object.values(big).every((x) => x.font >= 20 && !x.small && x.x), JSON.stringify(big));
+    check('text at 100 %: no choice sheet scrolls at 320 x 568, Thai or English, every answer 44 px or more (v1.18.5)',
+      sized[16].th.n >= 80 && !sized[16].th.scroll.length && !sized[16].en.scroll.length && Object.values(sized[16]).every((x) => !x.small && x.x), JSON.stringify(sized[16]));
   }
 
   // v1.16.0 (#81): with the phone's text at 150 % the start screen and a page don't scroll sideways,

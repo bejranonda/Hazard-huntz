@@ -641,3 +641,10 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 2. **Fix the dependency in the product if the product has it too:** the pages relied on whatever Thai font the phone has, so they now load the app's own.
 3. **Reproduce the bad machine locally and run the full suite on it:** a fontconfig file that rejects the font (`FONTCONFIG_FILE=…`) stood in for the outage; 238 of 238 passed.
 4. **Look at what the change moved** (page heights, the A4 page count, screenshots), since a font change moves everything a little.
+
+## 51. Ship a lesson at any hour: make the change invisible before its date (v1.18.5)
+
+1. **Find what the change disturbs:** a new lesson changes the pool every house is drawn from, so every day's house and every challenge link changes.
+2. **Make the old state reproducible exactly,** not approximately: with `from`, the pool before the date is the same list as before, so the same random draws give the same house.
+3. **Prove "identical" by comparison,** not by reasoning: build each day's house with and without the lesson and compare every target and slot; then remove the guard and watch the test fail.
+4. **Check the new lesson like any other:** the tap-overlap probe, every choice sheet at 100 % and 125 % text, screenshots in both languages, the length rules for wrong answers.

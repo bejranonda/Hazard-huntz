@@ -80,7 +80,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 32 | iOS "Reduce Motion" / Android "Remove animations": no bouncing, still playable | | | | | | | | |
 | 33 | Open `/en/`: the header and start screen are English ("Baan Rod Mai?"), the version chip shows, and the language button switches to Thai and back | | | | | | | | |
 | 34 | Share an English result: the card shows "Baan Rod Mai?"; the link is `/en/c/…`; LINE or Facebook shows the English preview | | | | | | | | |
-| 35 | Open `/en/learn`: English headings, 81 lessons, hotlines marked as Thai | | | | | | | | |
+| 35 | Open `/en/learn`: English headings, 82 lessons (81 before v1.18.5), hotlines marked as Thai | | | | | | | | |
 | 36 | Play a friend's challenge link, then tap "ส่งกลับไปท้าเพื่อน": the text names both scores, the card is attached, and the link opens the same house | | | | | | | | |
 | 37 | Forward only the result **picture** to a chat: the printed link on it opens the same house | | | | | | | | |
 | 38 | Safety book: the start-screen count goes up after a round; the sheet scrolls and closes; the count survives closing the app | | | | | | | | |
@@ -147,6 +147,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 99 | v1.18.2, larger text in a round: set the phone's text one or two steps larger, start a round and tap an item: are all three answers (ก ข ค) on the screen without scrolling, in the larger size? At the largest size, is it clear there is a third answer below? |  |  |  |  |  |  |  |  |
 | 100 | v1.18.3: open https://baanrodmai.autobahn.bot/flood from a LINE chat: is the text in the same rounded font as the app (Kanit), not the phone's usual font? Open /landslide: does line 2 say "THAI DISASTER ALERT"? |  |  |  |  |  |  |  |  |
 | 101 | v1.18.4: the next time an alert is on, open the start screen inside LINE: does the card say under its sentence who issued it ("ตามประกาศของ ปภ.") and, if set, where? Open /posts on the phone: can you save a tool's picture by pressing on it and copy its text? |  |  |  |  |  |  |  |  |
+| 102 | v1.18.5, from 14 Nov 2026: play หลังน้ำลด a few times (or a random house): does "พ่อไอจามแต่ยังนั่งใกล้ทุกคน" (the tissue box in the living room) come up, and do its three answers fit the screen? Does the book (📖) count it after you get it right? |  |  |  |  |  |  |  |  |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 

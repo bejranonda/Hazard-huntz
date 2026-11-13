@@ -60,6 +60,24 @@ test('same daily key builds the same house; different keys differ', () => {
   assert.notEqual(sig(h1), sig(h3));
 });
 
+test('a lesson with a start date leaves every daily house before it exactly as it was (v1.18.5)', () => {
+  const sig = (h) => h.targets.concat(h.decoys).map((p) => `${p.pid}@${p.slot}`).join(',');
+  const dated = C.items.filter((i) => i.from);
+  assert.ok(dated.length, 'at least one lesson has a start date');
+  for (const item of dated) {
+    const from = item.from.replace(/-/g, '');
+    const without = { ...C, items: C.items.filter((i) => i !== item) };
+    const before = days.filter((d) => d < from);
+    // the houses people played, and the challenge links they sent, before the start date
+    for (const d of before) assert.equal(sig(generateHouse(C, item.mode, d)), sig(generateHouse(without, item.mode, d)), `${item.id}: ${d} changed`);
+    // and from that date the lesson can come up
+    const after = Array.from({ length: 120 }, (_, k) => new Date(Date.UTC(+from.slice(0, 4), +from.slice(4, 6) - 1, +from.slice(6, 8) + k)).toISOString().slice(0, 10).replace(/-/g, ''));
+    assert.ok(after.some((d) => generateHouse(C, item.mode, d).targets.some((p) => p.ref.id === item.id)), `${item.id}: never in a house in the 120 days from ${item.from}`);
+    // the safety book counts it from that date only
+    assert.ok(!bookPool(C, before.at(-1) || '20260101')[item.mode].includes(item) && bookPool(C, from)[item.mode].includes(item), `${item.id}: the book's count`);
+  }
+});
+
 for (const mode of C.config.modes.map((m) => m.id)) {
   test(`${mode}: a year of daily houses all follow the round rules`, () => {
     const seen = new Set();

@@ -4,6 +4,29 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.18.5] — 2026-11-13
+
+**Breathing infections after a flood, and lessons that can ship at any hour.** One new lesson and one longer explanation; no other advice, number or source changed. Today's houses and every older daily challenge link are unchanged (see below). ([KNOWN_ISSUES F231–F232](docs/KNOWN_ISSUES.md#in-v1185-13-nov-2026), [ROADMAP P6](docs/ROADMAP.md#p6-more-lessons-for-the-remaining-disease-groups))
+
+### Added
+
+- **A lesson for respiratory infections after a flood** (หลังน้ำลด, the living room): "พ่อไอจามแต่ยังนั่งใกล้ทุกคน" / "Dad's cough at the dinner table". The right answer: wear a mask, wash hands often, keep away from others until better; the "why" gives the DDC's "ปิด ล้าง เลี่ยง หยุด". Sources: the DDC's six disease groups after floods (27 Sep 2026) and its respiratory advice (13 Aug 2026), both as quoted in the news. It comes into the game on 14 Nov 2026; `/learn` and `/flood` show it now.
+- **Lessons can have a start date** (`items.json → from`): a lesson stays out of every daily house before that Bangkok date, so adding one no longer changes today's house or any older daily challenge link, and no longer has to ship around midnight. The safety book counts it from that date. A random house still changes, as before.
+
+### Changed
+
+- **The fever-after-wading lesson** (`r-fever`) names melioidosis ("ไข้ดิน"): it comes from soil and water too, and with a high fever, a cough, breathlessness or an infected wound after wading, see a doctor and say so (the DDC's notice of 24 Aug 2026, now read on its own page and recorded). Added, not corrected: no "UPDATE:" post.
+- **Skin infections** (the sixth of the DDC's groups) were already covered by `r-mudfeet` (boots, then wash with soap and dry off), so no lesson was added for them.
+
+### Tests
+
+- **Every choice sheet at normal text** is now measured too (it was one): none scrolls at 320 × 568 in either language. The new lesson's first English heading scrolled by 42 px and was shortened.
+- **Daily houses before a start date** are compared with houses built without the lesson: all 44 days from 1 Oct to 13 Nov 2026 are identical, and the lesson comes up after it.
+
+### Docs
+
+- KNOWN_ISSUES F231–F232 (#24's advice), GUIDELINES rules 114 and §1's "ship at night", ROADMAP P6 and N44, KNOWLEDGE §49, APPROACH §51, LESSONS D37, safety table (`docs/01`, 82 lessons), test checklist row 102, HANDOFF, README, AGENTS.
+
 ## [1.18.4] — 2026-11-12
 
 **Visitor audit 3's last AI-ready leftovers.** No advice, number or source changed; no item or slot, so houses and challenge links are the same. ([KNOWN_ISSUES F229–F230](docs/KNOWN_ISSUES.md#in-v1184-12-nov-2026))

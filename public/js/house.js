@@ -11,6 +11,12 @@ const byOrder = (a, b) => (a.order ?? 0) - (b.order ?? 0);
 // 64 units keeps every tap target at or above the 44 px minimum.
 export const MIN_HIT = 64;
 
+// A lesson with a start date ("from": "YYYY-MM-DD", v1.18.5) stays out of every daily house before
+// that Bangkok date, so adding it leaves today's house and every older daily challenge link exactly
+// as they were; it can ship at any hour, not only around midnight. A random house (key "r…") has no
+// date and changes whenever the lessons do, as before.
+export const notYet = (item, houseKey) => !!item.from && /^\d{8}$/.test(String(houseKey)) && String(houseKey) < item.from.replace(/-/g, '');
+
 export function playableRooms(content) {
   return content.rooms.filter((r) => r.enabled && r.art).sort(byOrder);
 }
@@ -24,7 +30,7 @@ export function generateHouse(content, mode, houseKey, opts = {}) {
   const rng = makeRng(`${mode}|${houseKey}|v${content.config.houseVersion ?? 1}`);
 
   const exclude = opts.exclude || new Set();
-  const pool = content.items.filter((i) => i.mode === mode && roomIds.has(i.room) && !i.disabled && !exclude.has(i.id));
+  const pool = content.items.filter((i) => i.mode === mode && roomIds.has(i.room) && !i.disabled && !exclude.has(i.id) && !notYet(i, houseKey));
   const decoyPool = content.decoys.filter((d) => d.mode === mode && roomIds.has(d.room) && !d.disabled);
 
   const free = new Map(rooms.map((r) => [r.id, r.slots.map((s) => s.id)]));

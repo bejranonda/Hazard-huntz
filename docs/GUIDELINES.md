@@ -80,7 +80,7 @@ These come from the original brief. A change that breaks one of them is not fini
   - After the deploy, post a correction that starts with **"UPDATE:"** on every channel where the game was shared.
   - Say what changed and why.
 - **Update the source dates.** If the guidance changed, also update the "ตรวจสอบเมื่อ" date in the About sheet. It is currently in `main.js`; see [KNOWN_ISSUES #5](KNOWN_ISSUES.md#fixed).
-- **Ship structural edits at night.** Adding, removing or disabling items, or changing slots, reshuffles today's house. Ship such edits around midnight Bangkok time ([KNOWN_ISSUES #24](KNOWN_ISSUES.md#24-some-content-edits-reshuffle-todays-house-and-old-challenge-links)).
+- **Ship structural edits at night, or give a new lesson a start date.** Adding, removing or disabling items, or changing slots, reshuffles today's house. A new lesson with `"from": "<tomorrow>"` (v1.18.5, rule 114) changes no daily house before that date and can ship at any hour; other structural edits ship around midnight Bangkok time ([KNOWN_ISSUES #24](KNOWN_ISSUES.md#24-some-content-edits-reshuffle-todays-house-and-old-challenge-links)).
 
 ### 2.5 Seasonal review (April–May, before the rains)
 
@@ -423,6 +423,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - A layout check must not depend on what the test machine happens to have installed. To prove it, hide the font and run the checks: `FONTCONFIG_FILE` pointing at a config with a `<rejectfont>` for it.
     - Product names are spelled as their owner spells them (THAI DISASTER ALERT), even where a source's news report doesn't; record the report's spelling in the source's `note`.
 113. **Hours and seconds are written one way per place.** Since v1.18.4 (#83 B16, by design): "ชม." only on buttons, labels, tips and checklist lines (length-limited), "ชั่วโมง" in sentences; the English follows the same split ("{n} h", "Power out {h} h" on labels; "hours" in sentences). "60 วิ" / "60-second" names the game by its longest round (50–60 s); don't write a number of seconds a round doesn't reach.
+114. **A new lesson gets a start date.** Since v1.18.5 (F231): `"from": "YYYY-MM-DD"`, normally the next Bangkok day. It keeps today's house and every older daily challenge link unchanged (`notYet()` in `house.js`; the safety book counts it from that date); a unit test compares the houses before the date with and without it. Its text shows on `/learn` and the hazard page at once, which is fine: the game picks it up at midnight. Measure its choice sheet at 100 % and 125 % text in both languages (the smoke test does, for every sheet).
 
 ## 9. Working with AI assistants
 

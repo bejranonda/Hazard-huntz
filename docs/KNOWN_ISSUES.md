@@ -501,7 +501,7 @@ After such a deploy:
 - today's daily house changes for anyone who loads the new content
 - a challenge link shared before the change rebuilds a different house
 
-**Advice:** ship structural content changes around midnight Bangkok time, and bump `houseVersion` only at a seasonal relaunch.
+**Advice:** give a new lesson a start date (`"from": "<tomorrow, Bangkok>"`, since v1.18.5, [F231](#in-v1185-13-nov-2026)): it stays out of every daily house before that date, so today's house and every older daily challenge link stay as they were, and it can ship at any hour. A random house (key `r…`) still changes. Other structural changes (removing or disabling an item, changing slots, sizes or rooms) still reshuffle: ship those around midnight Bangkok time, and bump `houseVersion` only at a seasonal relaunch.
 
 ### 25. The daily house rolls over at midnight Bangkok time for everyone
 
@@ -1019,7 +1019,7 @@ Visitor audit 3 (20 Oct 2026, v1.11.0: an older relative in LINE, a parent prepa
 - **Back from a tool opened inside a guide** (B12, A24) goes to the start screen, not back to the guide.
 - **One short and one long name per tool, checked by a test** (B13): the audit's naming table listed each tool's names across the hub, the guides, the results and the pages; v1.11.0 fixed the dust guide's button ([F105](#in-v1110-20-oct-2026)), but no test holds every tool to one short and one long name yet.
 - ~~**Units and dates** (B16, the rest)~~ **By design (v1.18.4):** "ชม." stands only on buttons, labels, tips and checklist lines, which have a length limit (tips at most 80 letters), and "ชั่วโมง" in sentences, the usual Thai split; "60 วิ" in the tagline is the longest round (prepare 60 s; return 50 s; dust, fire and power cut 55 s), so it never overstates; the pages' dates were made like the cards' in v1.15.2 ([F209](#in-v1152-4-nov-2026)). Changing "60 วิ" would touch the tagline, the titles and nine pictures: the owner's call ([GUIDELINES rule 113](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit)).
-- **The lesson count** (B17): the pages count 81 lessons, the app 79 (two wait for rooms that aren't open). **By design (v1.15.0):** the app's 📖 book counts what the game can show (79); the pages list every lesson (81).
+- **The lesson count** (B17): the pages count 82 lessons, the app 80 (two wait for rooms that aren't open; 81 and 79 before v1.18.5's r-cough, which the book counts from 14 Nov 2026). **By design (v1.15.0):** the app's 📖 book counts what the game can show (79); the pages list every lesson (81).
 - **The same agency twice in a source line** (B23).
 - **An English 404 page** (B24): `/en/no-such-page` gets the one bilingual 404 page.
 - ~~**`/posts` has no pictures for the tools** (B28)~~ Done in v1.18.4 ([F230](#in-v1184-12-nov-2026)).
@@ -1143,6 +1143,13 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.18.5 (13 Nov 2026)
+
+| # | Problem | Fix |
+|---|---|---|
+| F231 | **Adding a lesson changed today's house and every daily challenge link already sent** (#24): the pool of lessons is part of the house's seed, so a new one reshuffled every day's house, and the only answer was to ship around midnight | `items.json → from` (a Bangkok date): `notYet()` in `house.js` keeps the lesson out of a daily house whose date is before it, and `bookPool(content, today)` out of the safety book's count. The build checks the date is real. Unit test: the 44 daily houses of 1 Oct–13 Nov 2026, with and without `r-cough`, are identical in every target and slot; it fails if the check is removed (the house of 1 Oct changes). The lesson comes up within 120 days of its date; `npm run probe` 0 % overlaps over 3,650 houses |
+| F232 | **Two of the DDC's disease groups after floods had no lesson** (ROADMAP P6): respiratory infections not at all, and melioidosis named nowhere; skin infections were covered by `r-mudfeet` | `r-cough` (หลังน้ำลด, the living room, from 14 Nov 2026), from `ddc-6groups-2569` and `ddc-resp-2569` (read word for word on 20 Oct 2026), `verified`. `r-fever`'s "why" now names melioidosis, from `ddc-59806`, which had no note: the DDC's page was read on 13 Nov 2026 and its prevention and the Director-General's "see a doctor" line recorded word for word. Every choice sheet now also measured at 100 % text (none scrolls) |
 
 ### In v1.18.4 (12 Nov 2026)
 

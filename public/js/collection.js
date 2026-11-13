@@ -2,16 +2,16 @@
 // Pure functions (unit-tested in Node); progress.js stores only item ids, on
 // this device, like the best scores and the streak.
 
-import { playableRooms } from './house.js';
+import { playableRooms, notYet } from './house.js';
 import { modeIds } from './modes.js';
 
 // Every target a player can meet today, per mode (rooms that are drawn, items
-// that are switched on). Rooms that aren't drawn yet don't count.
-export function bookPool(content) {
+// that are switched on, and started: a lesson's "from" date, v1.18.5). Rooms that aren't drawn yet don't count.
+export function bookPool(content, today = null) {
   const rooms = new Set(playableRooms(content).map((r) => r.id));
   const pool = Object.fromEntries(modeIds().map((id) => [id, []]));
   for (const it of content.items) {
-    if (!it.disabled && rooms.has(it.room) && pool[it.mode]) pool[it.mode].push(it);
+    if (!it.disabled && rooms.has(it.room) && pool[it.mode] && !notYet(it, today)) pool[it.mode].push(it);
   }
   return pool;
 }

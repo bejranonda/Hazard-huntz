@@ -146,7 +146,7 @@ const brandName = () => `${t('logoA')}${t('logoB')}`.trim();
 
 function bookCounts() {
   const C = content();
-  const pool = bookPool(C);
+  const pool = bookPool(C, bangkokDateKey());
   const all = Object.values(pool).flat();
   const have = new Set(learnedIds());
   const topics = topicProgress(pool, have, C.config.topics || []);
@@ -816,7 +816,7 @@ async function showResult(result) {
   track('round_end', { mode, label: run.kind, value: result.score10 });
 
   // Safety book: lessons answered correctly for the first time.
-  const pool = bookPool(C);
+  const pool = bookPool(C, bangkokDateKey());
   const valid = new Set(Object.values(pool).flat().map((it) => it.id));
   const before = bookCounts().topics;
   const added = addLearned(correctIds(state.house.targets, result.records), valid);

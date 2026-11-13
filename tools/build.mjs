@@ -153,6 +153,8 @@ for (const [flag, until] of [['featuredTopic', 'featuredTopicUntil']]) {
   else if (config[flag] && u == null) warn(`config.json: ${flag} is on with no ${until}, so it stays on until someone turns it off`);
   else if (config[flag] && u < TODAY) warn(`config.json: ${until} (${u}) has passed, so ${flag} is off; turn it off or give a new end date`);
 }
+// v1.18.5: a lesson's start date (house.js → notYet) is a real Bangkok date.
+for (const it of itemsFile.items) if (it.from != null && !realDay(it.from)) err(`items.json ${it.id}: from must be a real date YYYY-MM-DD (found ${JSON.stringify(it.from)})`);
 for (const d of itemsFile.decoys) {
   thing(d, `items.json decoy ${d.id}`, 'decoy');
   text(d.note, `items.json decoy ${d.id} note`);

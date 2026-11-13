@@ -336,28 +336,39 @@
       "จุดเสี่ยงยังเยอะ แต่ตอนนี้เรารู้แล้ว ลองอีกรอบ!"
     ],
     "modeStock": "ไฟดับ",
+    "modeHeat": "ร้อนจัด",
     "modeStockDesc": "เตรียมของตุน รับมือไฟดับทั้งคืน",
+    "modeHeatDesc": "ดูแลกันในวันร้อนจัด รู้ทันฮีทสโตรก",
     "heroStock": "ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม? มาเช็กกัน!",
+    "heroHeat": "วันร้อนจัด บ้านเราดูแลกันพร้อมไหม? มาเช็กกัน!",
     "challengeStock": "เพื่อนเตรียมบ้านรับไฟดับได้",
+    "challengeHeat": "เพื่อนดูแลบ้านสู้ร้อนได้",
     "howtoTitleStock": "ไฟดับแล้ว! เช็กบ้านและของตุน",
+    "howtoTitleHeat": "ร้อนจัด! ดูแลคนในบ้านให้ปลอดภัย",
     "howtoStock": [
       "แตะของที่ต้องจัดการเมื่อไฟดับ และของที่ควรตุนไว้ในบ้าน",
       "เลือกวิธีที่ถูก: ปิด ถอดปลั๊ก ย้าย ทิ้ง หรือเตรียมไว้",
       "บ้านค่อยๆ มืดลง นาฬิกาบอกว่าไฟดับมากี่ชั่วโมงแล้ว ของสดในตู้เย็นเสียก่อนอย่างอื่น",
       "นาฬิกาหยุดตอนอ่านตัวเลือก แต่บ้านมืดลงระหว่างที่มองหา แตะของที่ไม่ต้องทำอะไรเสียเวลา {d} วิ 💡"
     ],
+    "howtoHeat": ["แตะจุดที่ทำให้คนในบ้านเสี่ยงจากความร้อน", "เลือกวิธีที่ถูก: ย้าย เลื่อน ดื่มน้ำ เช็ก หรือโทรขอความช่วยเหลือ", "อากาศร้อนขึ้นเรื่อยๆ ดูสีมาตรวัด เหลือง ส้ม แดง", "นาฬิกาหยุดตอนอ่านตัวเลือก แต่อากาศร้อนขึ้นระหว่างที่มองหา แตะของที่ไม่เสี่ยงเสียเวลา {d} วิ 💡"],
     "geckoStartStock": [
       "ไฟดับแล้ว! ดูตู้เย็นก่อนเลย",
       "มืดแล้ว ไฟฉายอยู่ไหนนะ"
     ],
+    "geckoStartHeat": ["ร้อนแบบนี้ จิบน้ำบ่อยๆ นะ", "ดูแลผู้สูงวัยกับเด็กเล็กก่อนเลย"],
     "resultStock": "บ้านพร้อมรับไฟดับ {score}/10",
+    "resultHeat": "บ้านสู้ร้อน {score}/10",
     "shareTextStock": "บ้านพร้อมรับไฟดับ {score}/10 🔦 ({house})\nได้ฉายา “{rank}”{streak}\n{grid}\nส่งต่อด้วยความห่วงใย ให้ทุกบ้านพร้อมเมื่อไฟดับ 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
+    "shareTextHeat": "บ้านสู้ร้อน {score}/10 🌡️ ({house})\nได้ฉายา “{rank}”{streak}\n{grid}\nส่งต่อด้วยความห่วงใย ให้ทุกคนในบ้านผ่านวันร้อนจัดไปได้ 💙\nลองเล่นบ้านหลังเดียวกัน แล้วส่งต่อให้คนที่บ้านนะ 👉 {url}\n#บ้านรอดไหม",
     "checklistTabStock": "พร้อมรับไฟดับ",
+    "checklistTabHeat": "ดูแลกันวันร้อนจัด",
     "rankStock": [
       "มือใหม่หัดตุนของ",
       "ผู้จัดการคลังบ้าน",
       "บ้านนี้พร้อมทุกไฟดับ"
     ],
+    "rankHeat": ["มือใหม่หัดสู้ร้อน", "ผู้พิทักษ์กระติกน้ำ", "บ้านนี้ผ่านร้อนได้สบาย"],
     "stFloodedStock": "เสียก่อน",
     "floodedToastStock": "{name} เสียแล้ว ไฟดับนานเกินไป ไว้ดูสรุปท้ายเกมนะ",
     "geckoFloodStock": [
@@ -370,15 +381,19 @@
     "cheerPerfectStock": [
       "บ้านรอด! ไฟดับทั้งคืนก็อยู่สบาย ของพร้อมครบ 💙"
     ],
+    "cheerPerfectHeat": ["บ้านรอด! ร้อนแค่ไหนก็ดูแลกันได้ครบทุกคน 💙"],
     "cheerHighStock": [
       "บ้านรอด! ไฟดับก็ไม่หวั่น อีกนิดเดียวพร้อมครบ"
     ],
+    "cheerHighHeat": ["บ้านรอด! อีกนิดเดียวก็ดูแลกันได้ครบ"],
     "cheerMidStock": [
       "บ้านพอไหว แต่ยังขาดของจำเป็นอยู่ ลองอีกรอบนะ"
     ],
+    "cheerMidHeat": ["ยังมีคนในบ้านเสี่ยงอยู่ ลองดูจุดที่พลาดอีกรอบนะ"],
     "cheerLowStock": [
       "คืนนี้ลำบากหน่อย แต่ตอนนี้รู้แล้วว่าต้องตุนอะไร"
     ],
+    "cheerLowHeat": ["วันนี้ร้อนหนักหน่อย แต่ตอนนี้รู้แล้วว่าต้องดูแลกันยังไง"],
     "comboText": "🔥 ถูก {n} ข้อติด!",
     "bookTitle": "สมุดบ้านรอด",
     "bookChip": "📖 รู้แล้ว {n}/{total} เรื่อง",
@@ -396,6 +411,7 @@
     "topic_plan": "🎒 แผนและของจำเป็น",
     "topic_air": "😷 ฝุ่นและควัน",
     "topic_fire": "🔥 ไฟไหม้",
+    "topic_heat": "🌡️ ความร้อน",
     "featuredLabel": "📰 เรื่องที่ควรรู้ช่วงนี้",
     "featuredRead": "📄 อ่านครบ {total} ข้อ",
     "featuredBook": "📖 สมุด {n}/{total}",
@@ -808,28 +824,39 @@
       "Lots of risks left, but now you know. Try again!"
     ],
     "modeStock": "Power cut",
+    "modeHeat": "Extreme heat",
     "modeStockDesc": "Stock up for a night without power",
+    "modeHeatDesc": "Look after each other on very hot days",
     "heroStock": "A night without power: will the house cope? Let's check!",
+    "heroHeat": "A scorching day: is everyone at home looked after? Let's check!",
     "challengeStock": "Your friend got ready for a power cut",
+    "challengeHeat": "Your friend kept the family safe in the heat",
     "howtoTitleStock": "Lights out! Check the house and its stock",
+    "howtoTitleHeat": "Scorching! Keep everyone at home safe",
     "howtoStock": [
       "Tap what needs sorting when the power goes, and what to keep in stock",
       "Pick the right move: close, unplug, move, throw out or get ready",
       "The house gets darker and the clock shows the hours without power. Fresh food in the fridge goes first",
       "The clock stops while you read, but the house gets darker while you look. Tapping something that needs nothing costs {d} seconds 💡"
     ],
+    "howtoHeat": ["Tap whatever puts your family at risk in the heat", "Pick the right move: move, reschedule, drink, check or call for help", "The heat keeps rising. Watch the gauge: yellow, orange, red", "The clock stops while you read, but the heat rises while you look. Tapping something safe costs {d} seconds 💡"],
     "geckoStartStock": [
       "Power's out! Check the fridge first",
       "It's getting dark. Where's the torch?"
     ],
+    "geckoStartHeat": ["In this heat, sip water often", "Older people and little ones first"],
     "resultStock": "Power-cut ready: {score}/10",
+    "resultHeat": "Heat check: {score}/10",
     "shareTextStock": "Power-cut ready: {score}/10 🔦 ({house})\nTitle: “{rank}”{streak}\n{grid}\nSharing with care, so every home is ready when the lights go out 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai",
+    "shareTextHeat": "Heat check: {score}/10 🌡️ ({house})\nTitle: “{rank}”{streak}\n{grid}\nSharing with care, so everyone at home gets through the hottest days 💙\nPlay the same house and pass it on to your family 👉 {url}\n#BaanRodMai",
     "checklistTabStock": "Power-cut ready",
+    "checklistTabHeat": "Safe in the heat",
     "rankStock": [
       "Rookie Stocker",
       "Home Store Manager",
       "Ready for Any Power Cut"
     ],
+    "rankHeat": ["Rookie Heat-Beater", "Keeper of the Water Jug", "Cool-Headed Home"],
     "stFloodedStock": "Went bad first",
     "floodedToastStock": "{name} went bad: the power was out too long. See the summary at the end.",
     "geckoFloodStock": [
@@ -842,15 +869,19 @@
     "cheerPerfectStock": [
       "The house makes it! A night without power, all covered 💙"
     ],
+    "cheerPerfectHeat": ["The house makes it! Everyone kept safe in the heat 💙"],
     "cheerHighStock": [
       "The house copes! Nearly everything is ready"
     ],
+    "cheerHighHeat": ["The house copes! Nearly everyone is looked after"],
     "cheerMidStock": [
       "Getting by, but a few things are missing. One more go?"
     ],
+    "cheerMidHeat": ["Someone at home is still at risk. Find the ones you missed"],
     "cheerLowStock": [
       "A rough night, but now you know what to keep in stock"
     ],
+    "cheerLowHeat": ["A tough, hot day, but now you know how to keep everyone safe"],
     "comboText": "🔥 {n} in a row!",
     "bookTitle": "Safety book",
     "bookChip": "📖 {n}/{total} learned",
@@ -868,6 +899,7 @@
     "topic_plan": "🎒 Plans & emergency bag",
     "topic_air": "😷 Dust and smoke",
     "topic_fire": "🔥 Fire safety",
+    "topic_heat": "🌡️ Heat",
     "featuredLabel": "📰 Worth knowing right now",
     "featuredRead": "📄 Read all {total}",
     "featuredBook": "📖 Book {n}/{total}",
@@ -968,8 +1000,11 @@
     "checklistTitleDust": "ห้องปลอดฝุ่น 10 ข้อ ส่งต่อให้คนที่บ้าน",
     "checklistTitleFire": "บ้านปลอดภัยจากไฟ 10 ข้อ ส่งต่อให้คนที่บ้าน",
     "challengeTitleStock": "เพื่อนเตรียมบ้านรับไฟดับได้ {score}/10 🔦 ท้าคุณเล่นบ้านหลังเดียวกัน",
+    "challengeTitleHeat": "เพื่อนดูแลบ้านสู้ร้อนได้ {score}/10 🌡️ ท้าคุณเล่นบ้านหลังเดียวกัน",
     "challengeDescStock": "เกม 60 วิ ไฟดับทั้งคืน บ้านเราพร้อมไหม? บ้านเดียวกันเป๊ะ คุณจะได้กี่คะแนน?",
+    "challengeDescHeat": "เกม 60 วิ วันร้อนจัด คนในบ้านปลอดภัยไหม? บ้านเดียวกันเป๊ะ คุณจะได้กี่คะแนน?",
     "challengeLineStock": "เพื่อนเตรียมบ้านรับไฟดับได้",
+    "challengeLineHeat": "เพื่อนดูแลบ้านสู้ร้อนได้",
     "checklistTitleStock": "ไฟดับ 3 วัน บ้านเราพร้อม 10 ข้อ ส่งต่อให้คนที่บ้าน",
     "checklistDesc": "เช็กลิสต์สำหรับครอบครัว จากคำแนะนำหน่วยงานรัฐ ทุกข้อบอกที่มา พร้อมเบอร์ช่วยเหลือโทรฟรี",
     "checklistLine2": "ฟรี · ทุกข้อบอกที่มา",
@@ -1023,12 +1058,12 @@
   },
   "seo": {
     "_readme": "ข้อความสำหรับหน้าสรุปความรู้ /learn, /llms.txt และข้อมูลโครงสร้าง (JSON-LD) ที่ tools/build.mjs สร้างให้ ไม่แสดงในเกม {n} = จำนวนข้อ updated = วันที่แก้เนื้อหาล่าสุด (YYYY-MM-DD) แก้เมื่อแก้ items.json",
-    "updated": "2026-11-13",
+    "updated": "2026-11-14",
     "th": {
       "learnTitle": "เตรียมบ้านให้รอดทุกภัย: {n} บทเรียน และต้องทำอะไรเมื่อเกิดภัย · บ้านรอดไหม?",
       "learnDesc": "สรุปทุกบทเรียนจากเกมบ้านรอดไหม? และคู่มือต้องทำอะไรเมื่อน้ำท่วม น้ำป่า พายุ แผ่นดินไหว ไฟไหม้ ไฟดับ อากาศร้อน และฝุ่น อ้างอิงคำแนะนำจากหน่วยงาน พร้อมที่มาและเบอร์ช่วยเหลือ",
       "learnH1": "ดูแลบ้านให้รอดทุกภัย: บทเรียนจากเกม และต้องทำอะไรเมื่อเกิดภัย",
-      "learnIntro": "สรุปทุกข้อที่สอนในเกมบ้านรอดไหม? (น้ำท่วม ฝุ่น ไฟไหม้ ไฟดับ) และคู่มือสั้น \"ต้องทำอะไร\" ของทุกภัย รวมน้ำป่า ดินถล่ม พายุ แผ่นดินไหว และอากาศร้อนจัด แต่ละข้อบอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน อ่านแล้วส่งต่อให้คนที่บ้าน",
+      "learnIntro": "สรุปทุกข้อที่สอนในเกมบ้านรอดไหม? (น้ำท่วม ฝุ่น ไฟไหม้ ไฟดับ อากาศร้อนจัด) และคู่มือสั้น \"ต้องทำอะไร\" ของทุกภัย รวมน้ำป่า ดินถล่ม พายุ และแผ่นดินไหว แต่ละข้อบอกว่าควรทำอะไร เพราะอะไร และมาจากหน่วยงานไหน อ่านแล้วส่งต่อให้คนที่บ้าน",
       "playCta": "เล่นเกม 60 วิ ฟรี",
       "sectionPrepare": "ก่อนน้ำมา: เตรียมบ้านให้ทัน",
       "sectionReturn": "หลังน้ำลด: หาจุดอันตรายก่อนกลับเข้าบ้าน",
@@ -1066,6 +1101,7 @@
       "hazardFireH1": "ไฟไหม้ในบ้าน: ป้องกันไฟ และรู้วิธีหนีควัน",
       "hazardFireIntro": "เริ่มจากเช็กลิสต์ 10 ข้อ ทำบ้านให้ปลอดภัยจากไฟ ส่งต่อให้คนที่บ้านได้ ด้านล่างเป็นเหตุผลและที่มาของทุกข้อ และมีเกม 60 วิ ให้ลองฝึก",
       "sectionStock": "ไฟดับและของตุน: บ้านอยู่ได้ไหมเมื่อไม่มีไฟ",
+      "sectionHeat": "อากาศร้อนจัด: ดูแลคนในบ้าน รู้ทันฮีทสโตรก",
       "hazardOutageNav": "🔦 ไฟดับ ของตุน",
       "hazardOutageTitle": "เตรียมบ้านรับไฟดับ ของที่ควรมี เช็กลิสต์พร้อมที่มา · บ้านรอดไหม?",
       "hazardOutageDesc": "น้ำดื่มกี่ลิตร ของในตู้เย็นอยู่ได้นานแค่ไหน ไฟฉาย วิทยุ พาวเวอร์แบงก์ ยาที่ต้องแช่เย็น และเครื่องปั่นไฟ อ้างอิงคำแนะนำจากหน่วยงาน พร้อมเช็กลิสต์",
@@ -1094,7 +1130,7 @@
       "hazardHeatTitle": "อากาศร้อนจัด ดูแลกันได้ {n} ข้อ · บ้านรอดไหม?",
       "hazardHeatDesc": "ใครเสี่ยงโรคลมร้อน ดูแลผู้สูงวัยและเด็กอย่างไร อาการแบบไหนต้องโทร 1669 อ้างอิงคำแนะนำจากหน่วยงาน",
       "hazardHeatH1": "อากาศร้อนจัด: ดูแลคนในบ้านอย่างไรไม่ให้เป็นโรคลมร้อน",
-      "hazardHeatIntro": "คำแนะนำสั้นๆ 10 ข้อ ก่อน ระหว่างวันที่ร้อนจัด และเมื่อมีคนไม่สบาย ทุกข้อบอกที่มา ยังไม่มีเกมเรื่องนี้ อ่านแล้วส่งต่อเป็นรูปให้คนที่บ้านได้",
+      "hazardHeatIntro": "เริ่มจากเช็กลิสต์ 10 ข้อ ก่อน ระหว่างวันที่ร้อนจัด และเมื่อมีคนไม่สบาย ส่งต่อให้คนที่บ้านได้ ด้านล่างเป็นเหตุผลและที่มาของทุกข้อ และมีเกม 60 วิ ให้ลองฝึก",
       "guideHeading": "ต้องทำอะไร",
       "guidePicture": "📲 ส่งต่อเป็นรูป: {title}",
       "kitPerPersonDay": "{per} {unit} ต่อคน ต่อวัน × {days} วัน",
@@ -1206,14 +1242,14 @@
       "manifestShort": "บ้านรอดไหม?"
     },
     "en": {
-      "learnIntro": "Every lesson from the Baan Rod Mai? game (floods, PM2.5 dust, house fire and power cuts) and the short \"what to do\" guides for every hazard, including flash floods, storms, earthquakes and extreme heat, each with its source.",
+      "learnIntro": "Every lesson from the Baan Rod Mai? game (floods, PM2.5 dust, house fire, power cuts and extreme heat) and the short \"what to do\" guides for every hazard, including flash floods, storms and earthquakes, each with its source.",
       "sectionPrepare": "Before the flood",
       "sectionReturn": "After the water recedes",
       "sectionDust": "PM2.5 dust and smoke",
       "sectionFire": "House fire",
       "doThis": "Do this",
       "ifWet": "If water is already inside",
-      "llmsSummary": "Baan Rod Mai? (\"Will the house survive?\") is a free Thai home-preparedness app for phones, with an English toggle. It is a tool first: short \"what to do\" guides for nine situations (a flood coming, after a flood, flash floods and landslides, storms and lightning, earthquakes, house fire, power cuts, extreme heat, PM2.5 dust), a supplies check sized to the household and an emergency bag list, a family plan card and an emergency info card (medicines, allergies, contacts), a ready-made \"I'm safe\" message for LINE or SMS, and calculators that work out what to do from the household's answers (food in the fridge in a power cut, from US agencies' charts; what today's PM2.5 colour means for everyone and for people at risk, from the Pollution Control Department's 2023 bands; which mask for dust, smoke, a flood clean-up or illness, never for a child under 2; what the announced heat-index level means, from the Bangkok Metropolitan Administration and the Department of Health; how many days the drinking water lasts; how much chlorine a flooded water tank needs, from the Metropolitan Waterworks Authority and the Department of Disease Control; how many days daily medicine lasts), with links to the agencies' own pages (LINE ALERT, warnings, river levels, planned power cuts, relief) and how to turn on emergency alerts; the owner can put one guide on top of the start screen while it is in the news. A 60-second game is the optional way to learn it: five modes (\"Before the flood\", \"After the water recedes\", \"PM2.5 dust\", \"House fire\", \"Power cut\") where players tap the risks in an illustrated house and pick the safe action. Every correct action and every guide line is linked to its source: most come from Thai government agencies (often as quoted in Thai news), some from international guidance only (US CDC, Ready.gov, WHO, Tokyo Metropolitan Government), marked as under review. No sign-up, no cookies, no personal data; what people answer or type in the tools stays on their device.",
+      "llmsSummary": "Baan Rod Mai? (\"Will the house survive?\") is a free Thai home-preparedness app for phones, with an English toggle. It is a tool first: short \"what to do\" guides for nine situations (a flood coming, after a flood, flash floods and landslides, storms and lightning, earthquakes, house fire, power cuts, extreme heat, PM2.5 dust), a supplies check sized to the household and an emergency bag list, a family plan card and an emergency info card (medicines, allergies, contacts), a ready-made \"I'm safe\" message for LINE or SMS, and calculators that work out what to do from the household's answers (food in the fridge in a power cut, from US agencies' charts; what today's PM2.5 colour means for everyone and for people at risk, from the Pollution Control Department's 2023 bands; which mask for dust, smoke, a flood clean-up or illness, never for a child under 2; what the announced heat-index level means, from the Bangkok Metropolitan Administration and the Department of Health; how many days the drinking water lasts; how much chlorine a flooded water tank needs, from the Metropolitan Waterworks Authority and the Department of Disease Control; how many days daily medicine lasts), with links to the agencies' own pages (LINE ALERT, warnings, river levels, planned power cuts, relief) and how to turn on emergency alerts; the owner can put one guide on top of the start screen while it is in the news. A 60-second game is the optional way to learn it: six modes (\"Before the flood\", \"After the water recedes\", \"PM2.5 dust\", \"House fire\", \"Power cut\", \"Extreme heat\") where players tap the risks in an illustrated house and pick the safe action. Every correct action and every guide line is linked to its source: most come from Thai government agencies (often as quoted in Thai news), some from international guidance only (US CDC, Ready.gov, WHO, Tokyo Metropolitan Government), marked as under review. No sign-up, no cookies, no personal data; what people answer or type in the tools stays on their device.",
       "learnTitle": "Ready for any disaster at home: {n} lessons and what to do · Baan Rod Mai?",
       "learnDesc": "Every lesson from the Baan Rod Mai? game, and what to do in a flood, flash flood, storm, earthquake, fire, power cut, heatwave or PM2.5 dust, each with its source and the reason why.",
       "learnH1": "Keeping the home safe in any disaster: the game's lessons, and what to do",
@@ -1299,6 +1335,7 @@
       "hazardFireH1": "House fire: prevent it, and know how to escape the smoke",
       "hazardFireIntro": "The 10-step checklist for a fire-safe home comes first, to pass on to your family. Below it is the reason and the source for every step, and a 60-second game to practise.",
       "sectionStock": "Power cuts and home stock",
+      "sectionHeat": "Extreme heat",
       "hazardOutageNav": "🔦 Power cuts & stock",
       "hazardOutageTitle": "Ready for a power cut: what to keep at home, a checklist with sources · Baan Rod Mai?",
       "hazardOutageDesc": "How much water to store, how long fridge food lasts, torches, radios, power banks, cold medicine and generators. From agency guidance, with a checklist.",
@@ -1327,7 +1364,7 @@
       "hazardHeatTitle": "Extreme heat: {n} ways to look after each other · Baan Rod Mai?",
       "hazardHeatDesc": "Who is at risk of heatstroke, looking after elders and children, and the signs that mean call 1669. From agency guidance.",
       "hazardHeatH1": "Extreme heat: keeping everyone at home safe from heatstroke",
-      "hazardHeatIntro": "Ten short steps for before and during very hot days, and for when someone falls ill, each with its source. There is no game on this yet: read it, then send it to family as a picture.",
+      "hazardHeatIntro": "The 10-step checklist for before and during very hot days, and for when someone falls ill, comes first, to pass on to your family. Below it is the reason and the source for every step, and a 60-second game to practise.",
       "guideHeading": "What to do",
       "guidePicture": "📲 Send it as a picture: {title}",
       "kitPerPersonDay": "{per} {unit} per person per day × {days} days",
@@ -1463,8 +1500,11 @@
     "checklistTitleDust": "PM2.5 dust: 10 things to do at home",
     "checklistTitleFire": "House fire: 10 things to do at home",
     "challengeTitleStock": "My friend got the house ready for a power cut: {score}/10 🔦 Can you beat it?",
+    "challengeTitleHeat": "My friend kept the family safe in the heat: {score}/10 🌡️ Can you beat it?",
     "challengeDescStock": "A 60-second game: a night without power. Is the house ready? The exact same house. Your score?",
+    "challengeDescHeat": "A 60-second game: a scorching day. Is everyone at home safe? The exact same house. Your score?",
     "challengeLineStock": "My friend's power-cut check",
+    "challengeLineHeat": "My friend's heat check",
     "checklistTitleStock": "Power cut: 10 things to have at home",
     "checklistDesc": "A family checklist from government agency advice, every line with its source, and free helplines. Outside Thailand, follow your local authorities.",
     "checklistLine2": "Free · every line names its source",

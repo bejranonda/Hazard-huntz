@@ -21,6 +21,7 @@ const DEFAULTS = [
   { id: 'dust', hazard: 'dust', code: 'd', threat: 'haze', prop: 'mask', emoji: '😷', months: [12, 1, 2, 3], topic: 'air', link: 'https://air4thai.pcd.go.th/webV3/' },
   { id: 'fire', hazard: 'fire', code: 'f', threat: 'smoke', prop: 'firehat', emoji: '🔥', months: [4], topic: 'fire' },
   { id: 'stock', hazard: 'outage', code: 's', threat: 'dark', prop: 'torch', emoji: '🔦', months: [], topic: 'food' },
+  { id: 'heat', hazard: 'heat', code: 'h', threat: 'haze', prop: 'sunhat', emoji: '🌡️', months: [], topic: 'heat' },
 ];
 
 let MODES = DEFAULTS;

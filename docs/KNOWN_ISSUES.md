@@ -102,6 +102,8 @@ The planned fixes are scheduled as task cards in [ROADMAP.md](ROADMAP.md) (L-car
 | 102 | [FloodWatch closes after its handover; the rivers' link goes with it](#102-floodwatch-closes-after-its-handover-the-rivers-link-goes-with-it) | Owner (one line, when it closes) | Low |
 | 103 | [Leftovers of visitor audit 5](#103-leftovers-of-visitor-audit-5) | Closed: A5 by ภัยรอบบ้าน (its v0.12.12, seen 10 Nov 2026), the rest in v1.15.1–v1.15.2 | — |
 | 104 | [Leftovers of visitor audit 6](#104-leftovers-of-visitor-audit-6) | Mostly closed in v1.18.2 ([F223–F225](#in-v1182-11-nov-2026)); left: choice sheets at 150 % text on a 320 px phone, two cosmetic wraps | Low |
+| 105 | [The heat lessons rest on news reports quoting the agencies](#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies) | Owner (part of L10's review) | **Medium (review before the hot season's posts)** |
+| 106 | [The heat mode is never the start screen's choice](#106-the-heat-mode-is-never-the-start-screens-choice) | Owner (a decision; by design until then) | Low |
 
 Fixed issues are listed [at the end](#fixed); #67, #70 and #72 were fixed in v1.9.2 ([F85, F86, F89](#in-v192-19-oct-2026)). v1.10.0 fixed one bug found in its own testing, never live ([F92](#in-v1100-19-oct-2026)). v1.10.1 fixed two that the owner reported from the live v1.10.0: the fridge tool was hard to understand, and its times read a minute off ([F93, F94](#in-v1101-19-oct-2026)), and one found while checking them: nine buttons left one alone on a wider screen ([F95](#in-v1101-19-oct-2026)). v1.11.0 fixed 30 findings of visitor audit 3, an older relative in LINE and a parent preparing at the weekend, among them the only blocker of both audits, the fridge tool telling people to throw away cold medicine such as insulin ([F96–F125](#in-v1110-20-oct-2026)), and two of its own found before release ([F126, F127](#in-v1110-20-oct-2026)), and one found while documenting it: the game's cold-medicine lesson still told players to discard cold medicine after a day, as the tool had ([F128](#in-v1110-20-oct-2026)); what the audit left is [#83](#83-leftovers-of-visitor-audit-3). v1.11.1 fixed one found by the mask research: dust today told the parents of a baby to put a mask on it ([F129](#in-v1111-20-oct-2026)). v1.13.0 fixed one found by its own visitor walk, live since v1.8.0: the English tools said "1 people" ([F130](#in-v1130-21-oct-2026)). v1.13.1 fixed 33 findings of visitor audit 4, an older relative in LINE and an English reader checking consistency, among them four majors: the emergency card's English names ran under the gecko, the tank dropped decimals ("1.5" became 15 litres), installing from `/en/` gave a Thai app, and the privacy text promised no cookies while the host sets one ([F131–F163](#in-v1131-21-oct-2026), [#93](#93-cloudflares-bot-detection-sets-a-cookie)); what it left is [#94](#94-leftovers-of-visitor-audit-4). v1.14.0 fitted the app to the owner's other two apps and fixed six things found on the way: a start screen that said rain was coming from a hand-set switch, a season that told the whole country the water had gone, FloodWatch as the only route to "now", an expired alert, `/uv` 404 and no "during" on `/flood` ([F164–F169](#in-v1140-2-nov-2026)); what it left is #98–#101. (#85 was used for F128 while v1.11.0 was documented, so the next open issue is #86.)
 
@@ -380,6 +382,29 @@ Visitor audit 5 (3 Nov 2026, the live v1.14.3; [ROADMAP N34](ROADMAP.md#n34-visi
 - ~~**Dates (also #83 B16):** the pages' "ปรับปรุงล่าสุด: 2026-11-03" is ISO~~ Fixed in v1.15.2 ([F209](#in-v1152-4-nov-2026)); the sitemap and `llms.txt` keep ISO, which is for machines.
 
 ---
+
+### 105. The heat lessons rest on news reports quoting the agencies
+
+**Status:** Owner (part of [ROADMAP L10](ROADMAP.md#l10-thai-review-of-the-dust-fire-and-power-cut-lessons)) · **Severity:** Medium: review before the hot season's posts
+
+The heat mode's 10 lessons (v1.19.0) teach only what the heat guide's sources already back (v1.9.0, rule 62 of [GUIDELINES §10 step 0](GUIDELINES.md#10-adding-a-hazard-mode)), and those sources are news reports quoting the agencies, read word for word on 18 and 20 Oct 2026; no agency page could be read by a tool. All 10 are `verified`, like the guide's lines they repeat:
+
+- **The DDC** (`ddc-heatstroke-2568`, Thansettakij, and the same statement on PPTV, `ddc-heatstroke-pptv-2568`): the car in the sun (`h-car`, "within 10–20 minutes"), clothes (`h-clothes`, `h-noon`), alcohol (`h-beer`), water and electrolytes (`h-cramp`, `h-play`), and heatstroke first aid (`h-stroke`).
+- **The DOH** (`doh-heatstroke-2566`, `doh-elders-water-2565`, `doh-heat-illness-2569`): morning and evening for outdoor activity (`h-noon`, `h-play`), water by the bedside without waiting for thirst (`h-water`), the fan set away and oscillating (`h-fan`), a hat, an umbrella and water for an older person who must go out (`h-clothes`), the heatstroke signs (`h-stroke`), heat cramps (`h-cramp`).
+- **The DMS** (`dms-heatstroke-2566`): early in heatstroke a person can still sweat, in `h-stroke`'s "why" (rule 115).
+- **The BMA and the TMD** (`bma-heatindex-2569`, `tmd-heatindex-posttoday-2567`): follow heat warnings and what the heat index is (`h-index`).
+- **International, as cross-checks only:** WHO, Ready.gov, the CDC.
+- **Left out because the sources disagree:** windows by day (the DOH: open them for air; WHO and Ready.gov: shut them and block the sun), fans in extreme heat (WHO: not above 40 °C; the CDC: not above 90 °F; the DOH gives no limit), how much water (the DOH's 8 glasses against WHO's figure), core temperatures, and pets in cars (no Thai source).
+- **What would close it:** a person opens the DDC's and the DOH's own pages and confirms the lines; a doctor reads `h-stroke` (its first aid leaves out "lie them flat", in the DDC's list, to keep the card whole).
+
+### 106. The heat mode is never the start screen's choice
+
+**Status:** Owner (a decision; by design until then) · **Severity:** Low
+
+The heat mode has `months: []`, like the power cut, so the season never puts it first. The start screen takes the first mode in registry order whose months include the month: December–March dust, April fire, May–November flood preparation. Giving heat `[3, 4, 5]` (ROADMAP P7's first idea) would change nothing, because dust, fire and flood preparation come first in the list. Players reach it by its button on the start screen, `/?mode=heat`, the ▶ on `/heat` and in the heat guide, and the heat carousel's link.
+
+- **The ready way to feature it:** when the TMD or the DOH announces extreme heat, set `config.json → alert` to `{ "guide": "heat", "until": …, "source": …, "by": … }`: the card leads with the heat guide, which now offers the game.
+- **To make it the season's choice in April:** give fire's April to heat (fire then has no months, like the power cut) or put heat before fire in the registry with `[4]`. Either moves the start screen's big card and its two season tiles (hot and water) in April; the smoke test's 10 Apr 2027 run would then expect heat. It is the owner's call which hazard April leads with.
 
 ## Platform limits
 
@@ -1143,6 +1168,16 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 ---
 
 ## Fixed
+
+### In v1.19.0 (14 Nov 2026)
+
+All three were found in the mode's own testing and never went live.
+
+| # | Problem | Fix |
+|---|---|---|
+| F233 | **The heat round's warm glare didn't show:** the haze layer reached 0.5 opacity at a fill opacity of 0.55, about 0.2 orange, which no one would notice in a screenshot at 17 seconds left; the layer's state said it was on | Keyframes as dust's (0.06 → 0.64) and a stronger fill (`#FF8A2A`, 0.7), no specks; the room is clearly warm late in the round and every item stays readable (screenshots at 320 px, early and late) |
+| F234 | **The first draft of `h-stroke` taught "no sweat" as the sign of heatstroke,** in its tip and its feedback, the same reading #90 records for the guide; and the carousel card cut its "why" exactly where the DMS caveat began | The tip names "very hot, confused or drowsy"; the "why" gives the DOH's signs, then the DMS's "early on a person can still sweat", then the DDC's first aid, and fits the card whole; `dms-heatstroke-2566` added to its sources; the scenario no longer names sweating ("ตัวร้อนจัด ซึม พูดจาสับสน"). Rule 115 |
+| F235 | **Four English heat sheets scrolled at 320 × 568** (by 14–42 px at 100 % text, 21–51 px at 125 %), caught by the smoke check of every sheet: lengthening wrong answers for rule 75 made the sheets taller, and at 125 % the three older English sheets already used the allowance | Shorter English contexts and names (`h-car`, `h-stroke`, `h-index`, `h-clothes`, `h-beer`), `h-index`'s name says "tomorrow" in both languages like its context, and `h-stroke`'s right answer reworded with every action kept ("Call 1669, move him into shade, loosen his clothes, cool him with a wet cloth"). Measured: all 20 heat sheets fit in both languages at 100 % and 125 % |
 
 ### In v1.18.5 (13 Nov 2026)
 

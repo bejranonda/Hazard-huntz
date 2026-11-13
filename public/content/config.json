@@ -69,6 +69,16 @@
       "emoji": "🔦",
       "months": [],
       "topic": "food"
+    },
+    {
+      "id": "heat",
+      "hazard": "heat",
+      "code": "h",
+      "threat": "haze",
+      "prop": "sunhat",
+      "emoji": "🌡️",
+      "months": [],
+      "topic": "heat"
     }
   ],
   "topics": [
@@ -79,7 +89,8 @@
     "home",
     "plan",
     "air",
-    "fire"
+    "fire",
+    "heat"
   ],
   "featuredTopic": "health",
   "featuredTopicUntil": "2026-11-15",
@@ -234,6 +245,10 @@
       ],
       "stock": [
         "fridge",
+        "water"
+      ],
+      "heat": [
+        "hot",
         "water"
       ]
     }
@@ -600,7 +615,7 @@
     "บ้านรอดไหม"
   ],
   "siteUrl": "https://baanrodmai.autobahn.bot",
-  "version": "1.18.5",
+  "version": "1.19.0",
   "houseVersion": 1,
   "round": {
     "targetsMin": 5,
@@ -706,6 +721,27 @@
         [
           1,
           0.66
+        ]
+      ]
+    },
+    "heat": {
+      "seconds": 55,
+      "haze": [
+        [
+          0,
+          0.06
+        ],
+        [
+          0.3,
+          0.28
+        ],
+        [
+          0.7,
+          0.5
+        ],
+        [
+          1,
+          0.64
         ]
       ]
     }

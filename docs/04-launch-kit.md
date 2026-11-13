@@ -133,6 +133,7 @@ Each hazard has a ready-made set of images: a cover, one page per lesson, the ch
 | A rain warning, or the week before the monsoon (May) | `flood` | Pair with the FloodWatch link |
 | March–April, or after a house fire in the news | `fire` | Keep it about prevention; no photos of real fires |
 | Any time of year: a planned power cut in the area, a storm warning, or a quiet week (v1.7.0) | `ready` | 5 of its 8 lessons are still under review (⚠️) and their pages say "ข้อนี้ยังรอตรวจทานกับหน่วยงาน"; the caption says some advice is international. Post it as it is, or wait for the Thai review ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)) |
+| March–May, or when the TMD or the DOH warns of extreme heat (v1.19.0) | `heat` | Pair with heat today (`/hot`); the lessons rest on news reports quoting the agencies until a person reads the agencies' pages ([KNOWN_ISSUES #105](KNOWN_ISSUES.md#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies)) |
 
 Rules: post the images as they are (the sources are printed on them); don't crop off the page numbers or the address; if a lesson's text changes, wait for the re-rendered set ([KNOWN_ISSUES #54](KNOWN_ISSUES.md#54-carousel-images-are-committed-and-thai-only)).
 
@@ -211,6 +212,35 @@ Links for power-cut posts:
 > ลองเล่นเกม 60 วิได้ที่ 👉 https://baanrodmai.autobahn.bot/?mode=stock
 
 Rules for these posts: no photos of real blackouts, storms or damage; no blame on the electricity authorities or anyone else for a power cut; keep it about getting ready, not about how bad a cut could be.
+
+### Extreme heat (v1.19.0, March–May or a heat warning)
+
+The heat mode (ร้อนจัด) is never the start screen's choice by itself ([KNOWN_ISSUES #106](KNOWN_ISSUES.md#106-the-heat-mode-is-never-the-start-screens-choice)), so posts and the alert are how people find it. Good moments: the first heat-index warning of the year from the TMD or the DOH, a long weekend outdoors in April, or school holidays.
+
+- **To read,** link `/heat` (`/en/heat`): the 10-line checklist, ▶ play, and the 10 lessons with their sources. With an announced level, link heat today (`/hot`) first.
+- **To play,** link `/?mode=heat`; it opens with heat today and water as the two season tiles.
+- **When an agency warns,** set the alert to the heat guide (`config.json → alert`, with `until`, `source` and `by`): the start screen's card leads to the guide, which now offers the game.
+- Also the `heat` carousel set from `/posts`, `/checklist/heat` and a `/c/h…` challenge.
+
+> วันร้อนจัด บ้านเราดูแลกันพร้อมไหม? 🌡️
+>
+> เล่น "บ้านรอดไหม?" โหมดร้อนจัด เกม 55 วินาที
+> ✅ ห้ามทิ้งเด็กหรือใครไว้ในรถที่จอดกลางแดด แม้แค่แป๊บเดียว
+> ✅ วางน้ำใกล้ผู้สูงวัย ชวนจิบบ่อยๆ ไม่ต้องรอให้หิวน้ำ
+> ✅ วันที่ร้อนจัด งดเหล้าเบียร์ ดื่มน้ำสะอาดบ่อยๆ แทน
+> ✅ ตัวร้อนจัด สับสน หรือซึม รีบโทร 1669 พาเข้าที่ร่ม เช็ดตัวเย็นๆ
+> อ้างอิงคำแนะนำจาก กรมควบคุมโรค กรมอนามัย และกรมการแพทย์ (ผ่านข่าวที่อ้างหน่วยงาน)
+>
+> อ่านครบทุกข้อ 👉 https://baanrodmai.autobahn.bot/heat
+> ลองเล่นโหมดร้อนจัด 👉 https://baanrodmai.autobahn.bot/?mode=heat
+> #บ้านรอดไหม #อากาศร้อน #ฮีทสโตรก
+
+**LINE family groups** (attach `public/share/checklist-heat.png`):
+
+> ส่งต่อด้วยความห่วงใย 💛 อากาศร้อนจัด ดูแลกันได้ 10 ข้อ โดยเฉพาะผู้สูงวัยและเด็กเล็ก
+> ลองเล่นเกม 60 วิได้ที่ 👉 https://baanrodmai.autobahn.bot/?mode=heat
+
+Rules for these posts: the lines above are the lessons' own tips, word for word; no photos of people collapsed in the heat or of hospitals; no death counts (one source's headline has one, `ddc-heatstroke-pptv-2568`); never a minute countdown or a temperature for "today", which is ภัยรอบบ้าน's to say.
 
 ### The home check and the plan card (v1.8.0, any time of year)
 

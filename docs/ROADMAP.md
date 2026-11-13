@@ -80,7 +80,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 | P4 | [More languages](#p4-more-languages) | Owner + AI | Todo (optional) |
 | P5 | [Share-loop ideas not built yet](#p5-share-loop-ideas-not-built-yet) | AI-ready / Owner + AI | Todo (optional) |
 | P6 | [More lessons for the remaining disease groups](#p6-more-lessons-for-the-remaining-disease-groups) | Owner + AI | Todo (optional) |
-| P7 | [Heat and summer storms](#p7-heat-and-summer-storms) | AI-ready (research) + Owner review | Guides done (v1.9.0); game modes Todo |
+| P7 | [Heat and summer storms](#p7-heat-and-summer-storms) | AI-ready (research) + Owner review | Guides done (v1.9.0); the heat game mode done (v1.19.0, [N45](#n45-a-game-mode-for-extreme-heat-v1190)); a storm mode Todo |
 | P8 | [Earthquake and tsunami](#p8-earthquake-and-tsunami) | AI-ready (research) + Owner review | Guide done (v1.9.0, the tsunami line ⚠️); game mode Todo |
 | P9 | [A safety calendar: one hazard week at a time](#p9-a-safety-calendar-one-hazard-week-at-a-time) | Owner + AI | Todo |
 | P10 | [More calculators](#p10-more-calculators) | AI-ready (+ Owner review) | Mostly done (v1.12.0 the mask tool; v1.13.0 heat today by the announced level, water you have, tank chlorine, the emergency card, "I'm safe" and the bag); left: the heat formula (needs the TMD's page), water for a sick person, the plan card filled from the home check |
@@ -190,7 +190,7 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### L10. Thai review of the dust, fire and power-cut lessons
 
-- **Who:** Owner + AI · **Status:** Todo (the power-cut lessons were added in v1.7.0, the home check and plan card in v1.8.0, the four guides with no game in v1.9.0, the calculators in v1.10.0, the fridge food by food, medicine and breast milk in v1.11.0, the mask lines in v1.11.1–v1.12.0, six more tools in v1.13.0) · **Issues:** #45, #46, #55, #57, #60, #74, #75, #76, #78, #79, #80, #87, #90, #91, #92; F128
+- **Who:** Owner + AI · **Status:** Todo (the heat mode's 10 lessons in v1.19.0, [#105](KNOWN_ISSUES.md#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies); the power-cut lessons were added in v1.7.0, the home check and plan card in v1.8.0, the four guides with no game in v1.9.0, the calculators in v1.10.0, the fridge food by food, medicine and breast milk in v1.11.0, the mask lines in v1.11.1–v1.12.0, six more tools in v1.13.0) · **Issues:** #45, #46, #55, #57, #60, #74, #75, #76, #78, #79, #80, #87, #90, #91, #92; F128
 - **Why:** the 25 dust and fire lessons (v1.5.0) quote the Department of Health, DDPM and MEA through news reports, because the agency sites refuse automated access. A person should read the agency pages themselves before the dust season (December). The 13 power-cut lessons (v1.7.0) go further: 10 are ⚠️, and 7 of those rest on international guidance only (the US CDC, Ready.gov, the US Fire Administration). Their `verifyNote` points here.
 - **Steps:**
   1. An assistant prints the dust, fire and power-cut rows of [01-safety-content.md](01-safety-content.md) with their source links as a review sheet.
@@ -706,6 +706,13 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 - **Not done then:** #104 (English choice sheets at 125 %, "go-bag" in the lessons, the gas lesson's carousel "why"): done in v1.18.2 ([N41](#n41-what-visitor-audit-6-left-v1182)).
 - **Done when:** the checks pass, it is live, and row 98 (the print pack from LINE, heat today at the phone's largest text) is filled ([L6](#l6-real-phone-test-matrix)).
 
+### N45. A game mode for extreme heat (v1.19.0)
+
+- **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 13 Nov 2026; P7, suggested on 13 Nov) · **Status:** Done (14 Nov 2026, v1.19.0) · **Issues:** #105, #106, F233–F235
+- **What:** the sixth mode, ร้อนจัด / Extreme heat (`heat`, code `h`, the `haze` threat as a warm glare, the gecko in its sun hat): 10 lessons (the car in the sun, chores at noon, children's football, Grandma's water, the fan, heatstroke and 1669, the heat index, clothes, beer, cramps) and 5 decoys, every line from the heat guide's sources; two new sprites (`beer`, `waterjug`); strings, previews `og/h0–h10` in both languages, challenge pages `/c/h*`, a carousel set of 8 for `/posts`; the start screen's small cards in two rows (3 + 2). The heat guide becomes the mode's checklist, unchanged, with the lessons under it on `/heat`.
+- **How it was checked:** the build and 57 unit tests (+1: a year of heat houses); `npm run probe` 0 % over 4,380 houses; the five older modes' houses identical before and after over 800 days (4,000 houses); every heat house over two years has 5–7 lessons and 3–4 decoys, as the round rules say; smoke on three dates; screenshots of the start screen, the how-to, the room early and late, a choice sheet and the carousel in both languages at 320 and 390 px; every lesson's claims read against its sources' notes.
+- **Done when:** the checks pass, it is live, row 103 (a heat round inside LINE) is filled, and a person has reviewed the lessons (#105, with L10).
+
 ### N44. Breathing infections, and lessons with a start date (v1.18.5)
 
 - **Who:** AI-ready ("Continue as you suggested, continue yourself to finish", 13 Nov 2026; P6, suggested on 12 Nov) · **Status:** Done (13 Nov 2026, v1.18.5) · **Issues:** F231–F232; #24's advice
@@ -808,9 +815,9 @@ What to do next, as task cards. Each card says who can do it, why it matters, th
 
 ### P7. Heat and summer storms
 
-- **Who:** AI-ready (research and build) + Owner (review) · **Status:** The guides are done (v1.9.0): อากาศร้อนจัด (`heat`, 10 ✅) and พายุ ลมแรง ฟ้าผ่า (`storm`, 9 ✅, 1 ⚠️), with the pages `/heat` and `/storm` ([N17](#n17-tools-first-and-a-guide-for-every-hazard), [KNOWLEDGE §29.3](KNOWLEDGE.md#293-the-four-new-guides-and-their-sources)). The game modes are Todo.
+- **Who:** AI-ready (research and build) + Owner (review) · **Status:** The guides are done (v1.9.0): อากาศร้อนจัด (`heat`, 10 ✅) and พายุ ลมแรง ฟ้าผ่า (`storm`, 9 ✅, 1 ⚠️), with the pages `/heat` and `/storm` ([N17](#n17-tools-first-and-a-guide-for-every-hazard), [KNOWLEDGE §29.3](KNOWLEDGE.md#293-the-four-new-guides-and-their-sources)). The game modes are Todo. **The heat game mode is done (14 Nov 2026, v1.19.0, [N45](#n45-a-game-mode-for-extreme-heat-v1190)):** 10 lessons from the guide's sources, the warm-glare threat, never the season's choice until the owner decides ([KNOWN_ISSUES #106](KNOWN_ISSUES.md#106-the-heat-mode-is-never-the-start-screens-choice)). A storm mode is Todo.
 - **A game mode now starts from its guide:** its lessons can only teach what the guide's sources back. Two candidates below were researched for v1.9.0 and **left out**: unplugging in lightning (ปภ. says unplug, the US NWS says don't) and tying down roof sheets (no source found); don't add them as lessons without a source that settles it ([KNOWLEDGE §29.4](KNOWLEDGE.md#294-what-was-left-out-and-why)).
-- **Season:** March–May (`months: [3, 4, 5]`), next to fire. Reserve code `h` for heat.
+- **Season:** March–May was the idea; heat shipped with `months: []` because the first mode in the registry whose months include the month leads, so `[3, 4, 5]` would change nothing (#106). Code `h` is heat's; a storm mode needs a new letter.
 - **Why:** heat illness and summer storms (พายุฤดูร้อน: wind, hail, lightning) hit in the same dry months as fire, and DDPM and the DOH publish advice every year.
 - **Candidate lessons** (each needs its own source): water for elders and children, never leave a child or pet in a parked car (v1.9.0 found no Thai source for pets), tie down loose roof sheets and signs (no source found in v1.9.0), stay away from big trees and billboards in a storm, unplug in lightning (sources disagree), call 1669 for heatstroke.
 - **Sources to try:** DDPM summer-storm advice (via PRD or news), DOH heat advice, TMD warnings (1182), WHO heat-health guidance (international). Since v1.9.0, 21 of them are in `sources.json` with notes (`ddpm-storm6`, `ddc-heatstroke-2568`, `who-heat` and others).

@@ -316,7 +316,12 @@ test('the start screen recommends a mode, a topic and says why', () => {
   // A ?mode= link wins and brings its own topic first; unknown ids are ignored.
   assert.deepEqual(r('20261018', { want: 'Dust' }), { mode: 'dust', topic: 'air', why: 'link' });
   assert.deepEqual(r('20261018', { want: 'return' }), { mode: 'return', topic: 'health', why: 'link' });
-  assert.deepEqual(r('20261018', { want: 'heat' }), r('20261018'));
+  // A guide with no game is not a mode: its id falls back to the season (heat had none until v1.19.0).
+  const noGame = C.config.guides.map((g) => g.id).filter((id) => !C.config.modes.some((m) => m.id === id));
+  assert.ok(noGame.length, 'a guide with no game to test with');
+  for (const id of noGame) assert.deepEqual(r('20261018', { want: id }), r('20261018'), id);
+  assert.deepEqual(r('20261018', { want: 'nope' }), r('20261018'));
+  assert.deepEqual(r('20261018', { want: 'heat' }), { mode: 'heat', topic: 'heat', why: 'link' });
   // "Check before you go": dust → Air4Thai, flood modes → the river app, fire → none.
   assert.match(modeLink(cfg, 'dust'), /air4thai/);
   assert.equal(modeLink(cfg, 'prepare'), 'https://flood.example/');

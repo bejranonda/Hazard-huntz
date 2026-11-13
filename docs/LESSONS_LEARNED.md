@@ -848,3 +848,21 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* v1.16.0 checked one English choice sheet (the longest then, p-meds) at normal text; v1.18.2 checked every sheet, but only at 125 %. The new lesson's English heading made its sheet scroll by 42 px at 100 %, and no smoke check would have seen it; a scratch probe of every sheet at every size did.
 - *Do this:* a check that holds a property for a set measures the whole set at every size it claims, including the default one; when you add to the set, the check covers the addition without anyone remembering to.
 - *Encoded in:* the smoke check "text at 100 %: no choice sheet scrolls at 320 x 568" (every sheet, both languages), [GUIDELINES rule 114](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit).
+
+**B26. The tip is what people repeat; one person's symptom must not become everyone's test.**
+
+- *What happened:* the heat mode's first draft of `h-stroke` described an uncle who was very hot, not sweating and confused, and its tip turned that into the rule: "ตัวร้อนจัด เหงื่อไม่ออก สับสน รีบโทร 1669". The DMS says early heatstroke can still come with sweat, and #90 had already recorded the same trap in the guide. The carousel then cut the "why" exactly where the caveat began.
+- *Do this:* read the tip and the "why" as the sentence someone will forward; name only the signs the sources share and say where they differ; search KNOWN_ISSUES for the topic before writing; look at the carousel card, which keeps four lines.
+- *Encoded in:* [GUIDELINES rule 115](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES F234](KNOWN_ISSUES.md#in-v1190-14-nov-2026).
+
+**D38. A layer that is on is not a layer anyone can see.**
+
+- *What happened:* the heat round's warm glare was wired correctly (the group's opacity rose with the clock), but at 0.5 × 0.55 it was about 0.2 orange: a screenshot at 17 seconds left looked like the start of the round.
+- *Do this:* judge a visual effect from a screenshot late in the round, next to the mode it borrows from (dust peaks at about 0.54), not from the attribute that says it is on.
+- *Encoded in:* [KNOWN_ISSUES F233](KNOWN_ISSUES.md#in-v1190-14-nov-2026), [APPROACH §52](APPROACH_AND_METHOD.md#52-turn-a-guide-into-a-game-mode-without-new-advice-v1190).
+
+**D39. A test that uses a real name as "unknown" breaks the day the name becomes real.**
+
+- *What happened:* the recommend test proved that unknown ids are ignored with `want: 'heat'`, a guide with no game; the heat mode made it fail.
+- *Do this:* derive the "unknown" cases from the data (every guide that has no mode), and keep one id that can never exist.
+- *Encoded in:* `tests/run.mjs → "the start screen recommends a mode, a topic and says why"`.

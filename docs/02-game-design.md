@@ -2,7 +2,7 @@
 
 > **A 60-second house, two moments of truth.** Before the flood you race the rising water to save what matters. After the flood you spot what can still hurt you. Every tap teaches one real action with its source, almost always a Thai agency, and every result is built to be forwarded to the family LINE group.
 >
-> Since v1.5.0 the same house also faces PM2.5 dust and house fire, and since v1.7.0 a night without power (ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม?): five modes in all.
+> Since v1.5.0 the same house also faces PM2.5 dust and house fire, since v1.7.0 a night without power (ไฟดับทั้งคืน บ้านเราอยู่ได้ไหม?), and since v1.19.0 a scorching day (วันร้อนจัด บ้านเราดูแลกันพร้อมไหม?): six modes in all.
 >
 > Since v1.8.0 two tools outside the round turn the lessons into the family's own: **บ้านเราพร้อมแค่ไหน?** (a home-kit check) and **แผนบ้านรอดของบ้านเรา** (a family plan card).
 >
@@ -113,6 +113,20 @@
 | Sources | 3 lessons ✅ (Thai agencies, cross-checked with Ready.gov); 10 ⚠️, most on international guidance only (US CDC, Ready.gov, US Fire Administration). The lesson says so ([KNOWN_ISSUES #55](KNOWN_ISSUES.md#55-the-power-cut-lessons-rest-largely-on-international-guidance)). |
 | Guardrail | No fear about the dark: the room stays readable, the gecko stays cheerful, and nothing about injuries. Food and medicine advice is general and names its source. |
 
+
+## Mode 6: ร้อนจัด (Extreme heat, v1.19.0)
+
+**The story:** "วันร้อนจัด บ้านเราดูแลกันพร้อมไหม?" (A scorching day: is everyone at home looked after?). Built from the heat guide (v1.9.0): every lesson teaches a line its sources already back ([KNOWLEDGE §50](KNOWLEDGE.md#50-a-game-mode-for-extreme-heat-v1190)). Never the season's default ([KNOWN_ISSUES #106](KNOWN_ISSUES.md#106-the-heat-mode-is-never-the-start-screens-choice)); played from its card, `/?mode=heat`, `/heat`, the heat guide's ▶ or a post.
+
+| Element | Rule |
+|---|---|
+| Timer | 55 s. A warm orange glare grows over the rooms (the dust haze recoloured, no specks; 0.06 → 0.64 of a 0.7 fill). Nothing is lost to it; the clock is the pressure. |
+| Gauge | Yellow → amber → orange → red → deep red (`data-aqi` 0–4): a game clock, not a heat-index reading. |
+| Hazards | Front: a baby asleep in the car in the sun, sweeping the yard at noon, football at 2 pm. Living room: Grandma who barely drinks, the fan at Grandpa's face all night, an uncle very hot and confused (1669), nobody has checked the heat warning, a thick black top for the noon market. Kitchen: a cold beer to cool off, cramp after the roof. |
+| Decoys | A potted plant, a wall clock, books, a closed rice bin, dishes in the sink. |
+| Gecko | Wears its sun hat. "ร้อนแบบนี้ จิบน้ำบ่อยๆ นะ" / "ดูแลผู้สูงวัยกับเด็กเล็กก่อนเลย" |
+| Sources | All 10 ✅, from the DDC, the DOH, the DMS, the BMA and the TMD through news reports quoting them, cross-checked with WHO, Ready.gov and the CDC ([KNOWN_ISSUES #105](KNOWN_ISSUES.md#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies)). No lesson on windows, fans above a temperature or water amounts: the sources disagree. |
+| Guardrail | No one collapsed on screen and no death counts; the heatstroke lesson is about what to do (call 1669, shade, cool cloths), and its tip never makes "no sweat" the test (rule 115). |
 
 ## Outside the round: the home check and the plan card (v1.8.0)
 
@@ -269,13 +283,13 @@
 ## Mode selection
 
 - Since v1.9.0 the mode cards sit below the hub and "🎮 หรือเล่นเกม 60 วิ จำง่ายกว่าอ่าน"; on 320 × 460 and 360 × 640 the recommended card is below the first screen, by design ([KNOWN_ISSUES #61](KNOWN_ISSUES.md#61-the-game-card-is-below-the-first-screen-on-small-phones)).
-- One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in one row, four of them since v1.7.0. Their names shrink with the screen (`clamp(12px, 3.9vw, 16px)`), so every Thai name stays on one line at 320 px; English names wrap to two lines. The gecko's line, prop and the featured topic change to match.
+- One button per mode, built from the registry (`config.json → modes`). The recommended one is a big card on top with a "แนะนำช่วงนี้" badge; the others are compact cards (icon over name) in one row, four of them since v1.7.0, and since v1.19.0 five in two rows (3 + 2). Their names shrink with the screen (`clamp(12px, 3.9vw, 16px)`), so every Thai name stays on one line at 320 px; English names wrap to two lines. The gecko's line, prop and the featured topic change to match.
 - **What is recommended** comes from one pure function, `recommend()` in `modes.js` (v1.6.0; [KNOWLEDGE §25.2](KNOWLEDGE.md#252-what-the-start-screen-recommends)), in this order:
   1. a `?mode=` link (`/?mode=dust`): that mode, with its own topic featured
   2. a live rain warning from a forecast app (`forecastStatusUrl`, not set): Prepare. The hand-set switch `rainWarningActive` was removed in v1.14.0: whether rain is coming where the reader lives is ภัยรอบบ้าน's to say, and the start screen links it.
-  3. the mode in season (`modes[].months`, Bangkok month): ก่อนน้ำมา May–November (counted since v1.14.0), dust December–March, fire April. The power cut and หลังน้ำลด have no months, so they are never picked here: the app never tells the whole country "the water has gone".
+  3. the mode in season (`modes[].months`, Bangkok month): ก่อนน้ำมา May–November (counted since v1.14.0), dust December–March, fire April. The power cut, heat (v1.19.0) and หลังน้ำลด have no months, so they are never picked here: the app never tells the whole country "the water has gone".
   4. otherwise Return (no month is left without a mode today)
-- **`?mode=` links** are for posts and campaigns. Only the five mode ids count (`prepare`, `return`, `dust`, `fire`, `stock`, any letter case); `/?mode=heat` is ignored, a friend's challenge link wins over it, and it never starts a round by itself. Visitors from abroad get `/en/?mode=…`.
+- **`?mode=` links** are for posts and campaigns. Only the six mode ids count (`prepare`, `return`, `dust`, `fire`, `stock`, `heat`, any letter case); a guide with no game (`/?mode=quake`) is ignored, a friend's challenge link wins over it, and it never starts a round by itself. Visitors from abroad get `/en/?mode=…`.
 - **The forecast app** can answer through `forecastStatusUrl` with `{ "rainWarning": true|false }` within 1.5 s; if the call fails, the season decides.
 - **The hazard pages** (`/flood`, `/pm25`, `/fire`, v1.6.0, and `/ready`, v1.7.0) are another way in: plain pages that since v1.9.1 open with the checklist and the free helplines, then a ▶ button to `/?mode=<id>` and the hazard's lessons.
 

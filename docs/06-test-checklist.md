@@ -148,6 +148,7 @@ Mark ✅ / ❌ / n/a. "In-app" means: open the link from a chat or post inside t
 | 100 | v1.18.3: open https://baanrodmai.autobahn.bot/flood from a LINE chat: is the text in the same rounded font as the app (Kanit), not the phone's usual font? Open /landslide: does line 2 say "THAI DISASTER ALERT"? |  |  |  |  |  |  |  |  |
 | 101 | v1.18.4: the next time an alert is on, open the start screen inside LINE: does the card say under its sentence who issued it ("ตามประกาศของ ปภ.") and, if set, where? Open /posts on the phone: can you save a tool's picture by pressing on it and copy its text? |  |  |  |  |  |  |  |  |
 | 102 | v1.18.5, from 14 Nov 2026: play หลังน้ำลด a few times (or a random house): does "พ่อไอจามแต่ยังนั่งใกล้ทุกคน" (the tissue box in the living room) come up, and do its three answers fit the screen? Does the book (📖) count it after you get it right? |  |  |  |  |  |  |  |  |
+| 103 | v1.19.0: open https://baanrodmai.autobahn.bot/?mode=heat from a LINE chat: does the start screen show six game buttons (one big, five small in two rows) with ร้อนจัด 🌡️ as the big one? Play a round: does the room turn warm orange towards the end while every item stays readable? Tap the uncle who is very hot: do the three answers fit the screen, and does the "why" say that early on a person can still sweat? Share the result: does the preview show the heat card? |  |  |  |  |  |  |  |  |
 
 ¹ iOS in-app browsers (LINE, Facebook, TikTok) don't allow service workers, so offline play there isn't possible. The game works normally online.
 

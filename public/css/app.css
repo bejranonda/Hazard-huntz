@@ -197,6 +197,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .mode-btn.mode-dust { background: #E9E2D8; }
 .mode-btn.mode-fire { background: #FFDCCB; }
 .mode-btn.mode-stock { background: #DCE1F5; }
+.mode-btn.mode-heat { background: #FFE7CC; }
 .mode-btn.is-default { order: -1; padding-right: 64px; }
 /* A play mark so the big card reads as "tap to play", not as a label. */
 .mode-btn.is-default::after { content: '▶'; position: absolute; right: 14px; top: 50%; width: 40px; height: 40px; margin-top: -20px; border-radius: 50%; background: var(--sun); box-shadow: 0 3px 0 var(--ink); display: flex; align-items: center; justify-content: center; padding-left: 3px; font-size: 1.0625rem; line-height: 1; color: var(--ink); }
@@ -350,6 +351,12 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .is-dust .gauge[data-aqi="2"] .gauge-fill { background: #F2D22E; }
 .is-dust .gauge[data-aqi="3"] .gauge-fill { background: #F59B3A; }
 .is-dust .gauge[data-aqi="4"] .gauge-fill { background: #E5533D; }
+/* Extreme heat: the clock warms from yellow to deep red (a game clock, not a heat-index reading) */
+.is-heat .gauge-fill { background: #F2D22E; transition: background-color .4s; }
+.is-heat .gauge[data-aqi="1"] .gauge-fill { background: #F5B83A; }
+.is-heat .gauge[data-aqi="2"] .gauge-fill { background: #F59B3A; }
+.is-heat .gauge[data-aqi="3"] .gauge-fill { background: #E5533D; }
+.is-heat .gauge[data-aqi="4"] .gauge-fill { background: #B8302A; }
 .gauge-label {
   position: absolute;
   inset: 0;
@@ -470,7 +477,7 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 /* SVG items */
 .is-prepare .mud, .is-prepare .sky-sun { display: none; }
 .is-return .sky-rain { display: none; }
-.is-dust .mud, .is-dust .sky-rain, .is-fire .mud, .is-fire .sky-rain, .is-stock .mud, .is-stock .sky-rain { display: none; }
+.is-dust .mud, .is-dust .sky-rain, .is-fire .mud, .is-fire .sky-rain, .is-stock .mud, .is-stock .sky-rain, .is-heat .mud, .is-heat .sky-rain { display: none; }
 .is-dust .sky-sun { filter: sepia(.55) saturate(.7) brightness(.92); }
 .item { cursor: pointer; }
 .item .hit { fill: transparent; }
@@ -512,6 +519,9 @@ p, li, h1, h2, h3, small, .bubble { text-wrap: pretty; }
 .smoke-edge { fill: #7A716A; fill-opacity: .55; }
 .haze-body { fill: #A8957A; fill-opacity: .85; }
 .haze-speck { fill: #6E5D49; fill-opacity: .7; }
+/* Extreme heat: the same layer as a warm glare, no dust specks */
+.is-heat .haze-body { fill: #FF8A2A; fill-opacity: .7; }
+.is-heat .haze-speck { display: none; }
 /* Power cut: a deep blue dim, heavier at the edges; items stay readable. */
 .dark-body { fill: #141A33; fill-opacity: .85; }
 .dark-edge { stroke: #0B0F22; stroke-opacity: .55; }

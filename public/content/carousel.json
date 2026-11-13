@@ -40,7 +40,8 @@
       "s-powerbank",
       "s-candle",
       "s-generator"
-    ]
+    ],
+    "heat": ["h-car", "h-water", "h-noon", "h-clothes", "h-beer", "h-fan", "h-index", "h-stroke"]
   },
   "th": {
     "swipe": "ปัดดูทีละข้อ →",
@@ -67,6 +68,9 @@
     "coverOutageTitle": "ไฟดับ 3 วัน: {n} อย่างที่บ้านควรมี",
     "coverOutageSub": "น้ำ อาหาร ไฟฉาย และของในตู้เย็น จากคำแนะนำของหน่วยงาน",
     "captionOutage": "ไฟดับทั้งคืน หรือ 3 วัน บ้านเราอยู่ได้ไหม? 🔦\n{n} อย่างที่ควรเตรียม ตั้งแต่น้ำดื่ม ของตุน ตู้เย็น จนถึงเครื่องปั่นไฟ สรุปจากคำแนะนำของหน่วยงาน (บางข้อจากต่างประเทศ มีป้ายบอกไว้) ปัดดูทีละรูป แล้วส่งต่อให้คนที่บ้าน\n\nอ่านครบทุกข้อ พร้อมที่มา: {url}\nลองเล่นเกม 60 วิ ฟรี: {play}\n\n#บ้านรอดไหม #ไฟดับ #ของตุน",
+    "coverHeatTitle": "อากาศร้อนจัด: {n} เรื่องที่บ้านเราต้องดูแลกัน",
+    "coverHeatSub": "รู้ทันฮีทสโตรก ดูแลผู้สูงวัยและเด็ก จากคำแนะนำของหน่วยงาน",
+    "captionHeat": "วันร้อนจัด ดูแลคนในบ้านให้ปลอดภัย 🌡️\n{n} เรื่องที่ควรรู้ ตั้งแต่น้ำดื่มของผู้สูงวัย เด็กในรถ จนถึงอาการฮีทสโตรกที่ต้องรีบโทร 1669 สรุปจากคำแนะนำของหน่วยงาน ปัดดูทีละรูป แล้วส่งต่อให้คนที่บ้าน\n\nอ่านครบทุกข้อ พร้อมที่มา: {url}\nลองเล่นเกม 60 วิ ฟรี: {play}\n\n#บ้านรอดไหม #อากาศร้อน #ฮีทสโตรก",
     "guidesTitle": "รูป \"ต้องทำอะไร\" ทุกภัย (โพสต์ได้ทันทีเมื่อมีข่าว)",
     "guidesIntro": "ภัยไหนกำลังเป็นข่าว กดค้างที่รูปของเรื่องนั้นเพื่อบันทึก แล้วคัดลอกข้อความไปโพสต์ ลิงก์ในข้อความเปิดเรื่องนั้นในแอปได้เลย ถ้าจะให้ขึ้นบนหน้าแรกด้วย ตั้ง alert ใน config.json",
     "toolsTitle": "รูปเครื่องมือ (โพสต์คู่กับลิงก์)",
@@ -99,6 +103,9 @@
     "coverOutageTitle": "A 3-day power cut: {n} things to have at home",
     "coverOutageSub": "Water, food, light and the fridge, from agency guidance",
     "captionOutage": "A night, or three days, without power: will the house cope? 🔦\n{n} things to get ready, from drinking water and stock to the fridge and generators, from agency guidance (some international, marked as such). Swipe through, then pass it on.\n\nEvery lesson with its source: {url}\nPlay the free 60-second game: {play}\n\n#BaanRodMai #PowerCut",
+    "coverHeatTitle": "Extreme heat: {n} ways to look after each other",
+    "coverHeatSub": "Know heatstroke, look after elders and children, from agency guidance",
+    "captionHeat": "A scorching day: keep everyone at home safe 🌡️\n{n} things to know, from water for older people and children in cars to the heatstroke signs that mean calling 1669, from agency guidance. Swipe through, then pass it on.\n\nEvery lesson with its source: {url}\nPlay the free 60-second game: {play}\n\n#BaanRodMai #ExtremeHeat",
     "guidesTitle": "\"What to do\" pictures for every hazard (post at once when one is in the news)",
     "guidesIntro": "Whatever is in the news: press and hold its picture to save it, then copy the text to post. The link opens that guide in the app. To put it on the start screen too, set alert in config.json.",
     "toolsTitle": "Tool pictures (post with the link)",

@@ -648,3 +648,13 @@ The owner asked to "suggest, then validate and make it finish" the Thai read of 
 2. **Make the old state reproducible exactly,** not approximately: with `from`, the pool before the date is the same list as before, so the same random draws give the same house.
 3. **Prove "identical" by comparison,** not by reasoning: build each day's house with and without the lesson and compare every target and slot; then remove the guard and watch the test fail.
 4. **Check the new lesson like any other:** the tap-overlap probe, every choice sheet at 100 % and 125 % text, screenshots in both languages, the length rules for wrong answers.
+
+## 52. Turn a guide into a game mode without new advice (v1.19.0)
+
+1. **Start from the guide's sources, not from ideas:** read every note the guide cites, list what each one says, and write a lesson only where a note backs the right answer and each wrong answer's feedback. What the sources disagree on (windows, fans, water amounts) stays out.
+2. **Read the lesson as a reader would repeat it:** the tip and the "why" travel further than the scenario, so a sign that is true of one person must not become the test for everyone (rule 115). Check the open issues for the same topic first (#90 had already found the sweating sign).
+3. **Prove the rest of the game didn't move:** build every older mode's house for 800 days before and after and compare every lesson and slot; run the tap probe over the new mode's houses too.
+4. **Look at the threat, don't trust its state:** a layer at 0.2 opacity is "on" and invisible; compare a late-round screenshot with the mode it borrows from.
+5. **Look at every picture that cuts text:** the carousel keeps four lines of the "why", so the caveat goes before the details.
+6. **Run the sheet check after the length test:** rule 75 (wrong answers as long as the right one) and rule 111 (the sheet fits at large text) pull against each other; when both bind, shorten the context and the name, not an answer.
+7. **Leave the season to the owner** when it means choosing between hazards: ship the mode reachable by its button, its link and the alert, and write down the options (#106).

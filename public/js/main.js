@@ -162,7 +162,9 @@ const learnUrl = (hash = '') => `${getLang() === 'en' ? '/en' : ''}/learn${hash}
 function renderModes() {
   const list = modeList();
   const box = $('#modes');
-  box.style.setProperty('--cols', Math.min(4, Math.max(1, list.length - 1)));
+  // The compact cards in at most two even rows: 4 → 4, 5 → 3 + 2 (v1.19.0, six modes).
+  const small = Math.max(1, list.length - 1);
+  box.style.setProperty('--cols', small <= 4 ? small : Math.ceil(small / 2));
   box.innerHTML = list.map((m) => `
       <button class="mode-btn mode-${esc(m.id)}" type="button" data-mode="${esc(m.id)}">
         <span class="mode-icon" aria-hidden="true">${esc(m.icon || m.emoji || '')}</span>

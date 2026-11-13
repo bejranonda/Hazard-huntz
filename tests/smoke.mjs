@@ -641,9 +641,15 @@ try {
     await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
     await page.waitForTimeout(400);
     check('a link visit is counted as view · fire · link', events.some((e) => e[0] === 'view' && e[1] === 'fire' && e[2] === 'link'), JSON.stringify(events.filter((e) => e[0] === 'view').slice(-3)));
+    // A guide with no game is not a mode (heat was one until v1.19.0): taken from the config, not named.
+    const noGame = CFG.guides.find((g) => !CFG.modes.some((m) => m.id === g.id)).id;
+    await page.goto(`${BASE}/?mode=${noGame}&debug=1`, { waitUntil: 'networkidle' });
+    st = await startOf(page);
+    check(`/?mode=${noGame} (a guide with no game) is ignored`, st.mode === START.mode && st.why !== 'link', JSON.stringify(st));
     await page.goto(`${BASE}/?mode=heat&debug=1`, { waitUntil: 'networkidle' });
     st = await startOf(page);
-    check('/?mode=heat (not a mode) is ignored', st.mode === START.mode && st.why !== 'link', JSON.stringify(st));
+    check('/?mode=heat: heat is the big card, its topic is featured, no round starts (v1.19.0)',
+      st.mode === 'heat' && st.why === 'link' && st.feat === '/learn#t-heat' && !st.playing && st.screen === 'screen-start', JSON.stringify(st));
     await page.goto(`${BASE}/c/d7?h=20261016&mode=fire&debug=1`, { waitUntil: 'networkidle' });
     st = await startOf(page);
     check('a friend\'s challenge beats ?mode=', (await page.isVisible('#btn-accept')) && st.why !== 'link', JSON.stringify(st));

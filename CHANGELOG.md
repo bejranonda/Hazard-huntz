@@ -4,6 +4,39 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [Unreleased]
 
+## [1.19.0] — 2026-11-14
+
+**A game mode for extreme heat.** The sixth mode, ร้อนจัด / Extreme heat, teaches only what the heat guide's sources already back; no other lesson, advice, number or source changed, and every older mode's daily house and challenge link is the same. ([ROADMAP N45](docs/ROADMAP.md#n45-a-game-mode-for-extreme-heat-v1190), [P7](docs/ROADMAP.md#p7-heat-and-summer-storms), [KNOWN_ISSUES #105–#106, F233–F235](docs/KNOWN_ISSUES.md#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies))
+
+### Added
+
+- **The heat mode** (`heat`, code `h`): 10 lessons and 5 decoys in the three rooms. The lessons: the baby asleep in a car in the sun, chores at noon, children's football at 2 pm, Grandma who barely drinks, the fan at Grandpa's face all night, an uncle very hot and confused (call 1669), not knowing today's heat warning, a thick black top for the noon market, a cold beer to cool off, and cramp after fixing the roof. Every right answer and every wrong answer's feedback rests on a note already in `sources.json` (the DDC, the DOH, the DMS, the BMA and the TMD through news reports quoting them; WHO, Ready.gov and the CDC as cross-checks), all `verified`. Left out where the sources disagree: windows by day, fans above a temperature, water amounts.
+- **The round:** 55 seconds; the room fills with a warm orange glare (the dust haze, recoloured, without specks) and the clock's bar runs yellow to deep red. The gecko wears its sun hat.
+- **Two sprites:** a pair of beer bottles and a water jug with a glass.
+- **Pictures and pages:** previews `og/h0–h10.png` in Thai and English, challenge pages `/c/h0–h10`, and a carousel set of 8 lessons on `/posts` (`share/carousel/heat/`). `/heat` now has ▶ play and the 10 lessons under its checklist; `/learn` lists 92 lessons.
+- **Posts:** a heat block in the launch kit (posting times, the play link, a draft in the lessons' own words) and a carousel row.
+
+### Changed
+
+- **The start screen's game buttons:** the big card and five small ones in two rows (3 + 2), instead of one row of four.
+- **What describes the game** names the heat mode (rule 59): `/learn`'s intro in both languages, `llms.txt`'s summary ("six modes"), and the heat page's intro, which no longer says there is no game.
+- **The heat guide** is now also the mode's checklist, word for word: `/checklist/heat` and its picture are unchanged; the print pack's code for it points at `/heat#cl-heat`, like every mode's.
+
+### Not changed, on purpose
+
+- **Heat is never the season's choice** (`months: []`): the first mode in registry order whose months include the month leads, so dust, fire and flood preparation keep their months. The owner decides whether April should lead with heat ([#106](docs/KNOWN_ISSUES.md#106-the-heat-mode-is-never-the-start-screens-choice)); until then, the alert card and `/?mode=heat` feature it.
+- **The guide's line "ตัวร้อนจัด เหงื่อไม่ออก สับสน รีบโทร 1669"** stays until the reviewer decides (#90); the new lesson's tip and "why" don't make "no sweat" the test (rule 115).
+
+### Tests
+
+- `npm test` 57 (+1: a year of heat houses follow the round rules); the recommend test now derives the guides with no game from the config instead of naming `heat`.
+- `npm run probe` 0 % overlaps over 4,380 houses (six modes × two years). The five older modes' houses compared before and after over 800 days: 4,000 identical.
+- `npm run smoke` 241 on each of 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (+2: a full heat round, as for every mode; `/?mode=heat` opens heat as the big card; the "not a mode" check now takes a guide with no game from the config). Its every-sheet check caught four English heat sheets scrolling at 320 × 568 after the wrong answers were lengthened: the contexts and names were shortened (F235).
+
+### Docs
+
+- KNOWN_ISSUES #105, #106, F233–F235; GUIDELINES rule 115 and §10 (six modes, codes, a guide-first checklist, the season order); ROADMAP N45, P7, L10; KNOWLEDGE §50; APPROACH §52; LESSONS B26, D38, D39; safety table (`docs/01`, 92 lessons); test checklist row 103; launch kit; HANDOFF, README, AGENTS.
+
 ## [1.18.5] — 2026-11-13
 
 **Breathing infections after a flood, and lessons that can ship at any hour.** One new lesson and one longer explanation; no other advice, number or source changed. Today's houses and every older daily challenge link are unchanged (see below). ([KNOWN_ISSUES F231–F232](docs/KNOWN_ISSUES.md#in-v1185-13-nov-2026), [ROADMAP P6](docs/ROADMAP.md#p6-more-lessons-for-the-remaining-disease-groups))

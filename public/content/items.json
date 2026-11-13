@@ -1179,6 +1179,146 @@
       "tip": { "th": "เครื่องปั่นไฟตั้งนอกบ้านในที่โล่งเท่านั้น ห่างประตูและหน้าต่าง", "en": "Run a generator only outdoors in the open, away from doors and windows." },
       "why": { "th": "กรมควบคุมโรคเตือนว่าไม่ควรใช้เครื่องปั่นไฟในที่อับอากาศ เพราะเกิดก๊าซพิษ และ Ready.gov แนะให้ตั้งเครื่องนอกบ้าน ห่างหน้าต่าง ประตู และโรงรถที่ติดบ้านอย่างน้อย 20 ฟุต (ราว 6 เมตร) คาร์บอนมอนอกไซด์ไม่มีสี ไม่มีกลิ่น", "en": "Thailand's Department of Disease Control warns against running generators in enclosed spaces because of toxic gas, and Ready.gov says to run them outdoors at least 20 feet (about 6 m) from windows, doors and attached garages. Carbon monoxide has no colour or smell." },
       "sources": ["ddc-manual", "readygov-outage"], "verify": "verified", "topic": "power"
+    },
+    {
+      "id": "h-car", "mode": "heat", "room": "front",
+      "sprite": "car", "doneAnim": "none", "size": [156, 82], "slots": ["car"],
+      "name": {"th": "ลูกหลับอยู่ในรถ", "en": "The baby's asleep in the car"},
+      "context": {"th": "จอดรถกลางแดดแวะซื้อของ ลูกเพิ่งหลับอยู่เบาะหลัง", "en": "Parked in the sun for a quick errand; the baby's asleep in the back"},
+      "choices": [
+        { "kind": "move", "correct": true, "label": {"th": "อุ้มลูกลงไปด้วย ไม่ทิ้งใครไว้ในรถแม้แป๊บเดียว", "en": "Take the baby with you; never leave anyone in the car, even briefly"} },
+        { "kind": "leave", "label": {"th": "แง้มกระจกไว้นิดหน่อย ไปแค่ห้านาทีเดี๋ยวก็กลับมา", "en": "Leave a window open a crack; you'll only be five minutes"}, "feedback": {"th": "กรมควบคุมโรคย้ำห้ามทิ้งใครไว้ในรถที่จอดกลางแดด โดยเฉพาะเด็กเล็ก รถที่ไม่เปิดแอร์ร้อนขึ้นเร็วมาก", "en": "The DDC says never leave anyone in a car parked in the sun, above all young children; a car without air conditioning heats up very fast."} },
+        { "kind": "place", "label": {"th": "ติดเครื่องเปิดแอร์ทิ้งไว้ แล้วล็อกรถให้ลูกนอนต่อ", "en": "Leave the engine and air conditioning running and lock the car"}, "feedback": {"th": "องค์การอนามัยโลกย้ำห้ามทิ้งเด็กไว้ในรถที่จอดอยู่ไม่ว่านานแค่ไหน กรมอนามัยก็เตือนไม่ให้ทิ้งเด็กไว้ลำพังในรถที่จอดกลางแจ้ง", "en": "WHO says never leave children in a parked vehicle for any amount of time, and the DOH warns against leaving children alone in a car parked in the open."} }
+      ],
+      "tip": {"th": "ห้ามทิ้งเด็กหรือใครไว้ในรถที่จอดกลางแดด แม้แค่แป๊บเดียว", "en": "Never leave a child, or anyone, in a car parked in the sun, even briefly."},
+      "why": {"th": "กรมควบคุมโรคเตือนว่ารถที่จอดกลางแดดโดยไม่เปิดแอร์ร้อนขึ้นเร็วมาก ภายใน 10–20 นาที ห้ามทิ้งใครไว้ในรถ โดยเฉพาะเด็กเล็ก กรมอนามัยและองค์การอนามัยโลกก็ย้ำเช่นเดียวกัน", "en": "The Department of Disease Control warns that a car parked in the sun without air conditioning heats up very fast, within 10–20 minutes: never leave anyone in it, above all young children. The Department of Health and WHO say the same."},
+      "sources": ["ddc-heatstroke-2568", "ddc-heatstroke-pptv-2568", "doh-heatstroke-2566", "who-heat"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-noon", "mode": "heat", "room": "front",
+      "sprite": "broom", "doneAnim": "none", "size": [46, 72], "slots": ["floor"],
+      "name": {"th": "จะกวาดลานบ้านตอนเที่ยง", "en": "Sweeping the yard at noon"},
+      "context": {"th": "แดดจัดตอนเที่ยง พ่อจะออกไปกวาดลานบ้านกับตัดกิ่งไม้ให้เสร็จ", "en": "The midday sun is fierce, and Dad wants to sweep the yard and trim the branches now"},
+      "choices": [
+        { "kind": "move", "correct": true, "label": {"th": "เลื่อนไปทำตอนเช้าหรือเย็น ตอนนี้พักในที่ร่มก่อน", "en": "Leave it for the morning or evening; rest in the shade for now"} },
+        { "kind": "leave", "label": {"th": "ทำให้เสร็จรวดเดียวเลย จะได้ไม่ต้องออกไปตากแดดหลายรอบ", "en": "Get it all done in one go, so you only go out once"}, "feedback": {"th": "กรมอนามัยแนะให้ทำกิจกรรมกลางแจ้งช่วงเช้าและเย็น กรมควบคุมโรคแนะเลี่ยงอยู่กลางแดดจัดนานๆ", "en": "The DOH says do outdoor activity in the morning and evening, and the DDC says avoid long spells in strong sun."} },
+        { "kind": "gear", "label": {"th": "ใส่เสื้อแขนยาวสีดำผ้าหนาๆ กันแดด แล้วทำต่อ", "en": "Put on a thick black long-sleeved shirt against the sun and carry on"}, "feedback": {"th": "กรมควบคุมโรคแนะเสื้อผ้าสีอ่อน ไม่รัด ระบายความร้อนได้ดี และเลี่ยงสีเข้ม", "en": "The DDC says wear light colours, not tight, that let heat out, and avoid dark colours."} }
+      ],
+      "tip": {"th": "แดดจัดตอนเที่ยง เลื่อนงานกลางแจ้งไปทำตอนเช้าหรือเย็น", "en": "Fierce midday sun? Move outdoor work to the morning or evening."},
+      "why": {"th": "กรมอนามัยแนะให้เลือกทำกิจกรรมในที่ร่มหรือที่อากาศถ่ายเท และทำกิจกรรมกลางแจ้งช่วงเช้าและเย็น กรมควบคุมโรคแนะเลี่ยงอยู่กลางแดดจัดนานๆ ส่วนกทม. แนะให้ลดกิจกรรมกลางแจ้งช่วงกลางวันเมื่อดัชนีความร้อนถึงระดับเตือนภัย", "en": "The Department of Health says choose activities indoors or in the shade with good airflow, and do outdoor activity in the morning and evening. The DDC says avoid long spells in strong sun, and Bangkok's environment department says cut outdoor activity in the middle of the day once the heat index reaches the warning level."},
+      "sources": ["doh-heatstroke-2566", "ddc-heatstroke-2568", "bma-heatindex-2569", "who-heat"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-play", "mode": "heat", "room": "front",
+      "sprite": "ball", "doneAnim": "none", "size": [40, 40], "slots": ["floor"],
+      "name": {"th": "เด็กๆ จะเตะบอลกลางแดดบ่าย", "en": "Football in the afternoon sun"},
+      "context": {"th": "บ่ายสองแดดเปรี้ยง ลูกกับเพื่อนจะออกไปเตะบอลที่ลานหน้าบ้าน", "en": "It's two in the afternoon and blazing; the kids want to play football out front"},
+      "choices": [
+        { "kind": "move", "correct": true, "label": {"th": "ให้เล่นตอนเย็นแดดอ่อน พกน้ำไปจิบบ่อยๆ", "en": "Let them play in the cooler evening, with water to sip often"} },
+        { "kind": "leave", "label": {"th": "เด็กแข็งแรง ร้อนแค่ไหนก็เล่นได้ ไม่เป็นไรหรอก", "en": "Kids are tough; they can play in any heat"}, "feedback": {"th": "กรมควบคุมโรคระบุว่าเด็กเป็นกลุ่มเสี่ยงจากอากาศร้อน กรมอนามัยแนะให้ทำกิจกรรมกลางแจ้งช่วงเช้าและเย็น", "en": "The DDC lists children among those most at risk from heat, and the DOH says do outdoor activity in the morning and evening."} },
+        { "kind": "place", "label": {"th": "ให้เล่นไปก่อน หิวน้ำเมื่อไหร่ค่อยกลับมาดื่ม", "en": "Let them play; they can come back for a drink when they're thirsty"}, "feedback": {"th": "กรมควบคุมโรคแนะให้ดื่มน้ำสะอาดบ่อยๆ ในวันที่อากาศร้อน", "en": "The DDC says drink clean water often on hot days."} }
+      ],
+      "tip": {"th": "เด็กเล่นกลางแจ้ง ให้เล่นตอนเช้าหรือเย็น พกน้ำไปจิบบ่อยๆ", "en": "Kids playing outside? Morning or evening, with water to sip often."},
+      "why": {"th": "กรมควบคุมโรคระบุว่าเด็กเป็นกลุ่มเสี่ยงจากอากาศร้อน แนะให้ดื่มน้ำสะอาดบ่อยๆ และเลี่ยงอยู่กลางแดดนานๆ กรมอนามัยแนะให้ทำกิจกรรมกลางแจ้งช่วงเช้าและเย็น และระบุว่าเด็กต้องได้รับการดูแลเป็นพิเศษ", "en": "The Department of Disease Control lists children among those most at risk from heat, and says drink clean water often and avoid long spells in the sun. The Department of Health says do outdoor activity in the morning and evening, and that children need special care."},
+      "sources": ["ddc-heatstroke-2568", "doh-heatstroke-2566", "who-heat"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-water", "mode": "heat", "room": "living",
+      "sprite": "waterjug", "doneAnim": "none", "size": [54, 46], "slots": ["table", "seat"],
+      "name": {"th": "ยายไม่ค่อยดื่มน้ำ", "en": "Grandma barely drinks"},
+      "context": {"th": "อากาศร้อนจัด ยายบอกว่ายังไม่หิวน้ำ ทั้งวันเลยแทบไม่ได้ดื่ม", "en": "It's very hot, and Grandma says she isn't thirsty, so she's hardly drunk all day"},
+      "choices": [
+        { "kind": "place", "correct": true, "label": {"th": "วางน้ำไว้ใกล้ตัวยาย ชวนจิบบ่อยๆ ไม่ต้องรอให้หิวน้ำ", "en": "Put water within her reach and get her to sip often, without waiting for thirst"} },
+        { "kind": "leave", "label": {"th": "ยายไม่หิวก็ไม่ต้องดื่ม เดี๋ยวต้องลุกเข้าห้องน้ำบ่อย", "en": "If she isn't thirsty she needn't drink; it saves trips to the toilet"}, "feedback": {"th": "กรมอนามัยแนะให้ผู้ดูแลชวนผู้สูงอายุดื่มน้ำสม่ำเสมอ โดยไม่ต้องรอให้กระหาย", "en": "The DOH says carers should get older people drinking regularly, without waiting for thirst."} },
+        { "kind": "clear", "label": {"th": "ชงกาแฟเย็นหวานๆ ให้แทนน้ำเปล่า เพราะยายชอบ", "en": "Make her a sweet iced coffee instead of water; she likes it"}, "feedback": {"th": "กรมอนามัยแนะให้ผู้สูงอายุเลี่ยงชา กาแฟ เหล้า และเครื่องดื่มหวาน ให้ดื่มน้ำสะอาด", "en": "The DOH says older people should avoid tea, coffee, alcohol and sugary drinks, and drink clean water."} }
+      ],
+      "tip": {"th": "วางน้ำใกล้ผู้สูงวัย ชวนจิบบ่อยๆ ไม่ต้องรอให้หิวน้ำ", "en": "Keep water by older people and get them sipping before they feel thirsty."},
+      "why": {"th": "กรมอนามัยแนะให้ผู้ดูแลเตรียมน้ำสะอาดไว้ใกล้ผู้สูงอายุ เช่น แก้วน้ำข้างเตียง ใช้แก้วมีหูจับหรือหลอด และชวนดื่มสม่ำเสมอโดยไม่ต้องรอให้กระหาย เลี่ยงชา กาแฟ เหล้า และเครื่องดื่มหวาน ส่วนผู้มีโรคประจำตัวให้ดื่มตามที่แพทย์แนะนำ", "en": "The Department of Health says carers should keep clean water by older people, such as a glass on the bedside table, use a cup with a handle or a straw, and get them drinking regularly without waiting for thirst; avoid tea, coffee, alcohol and sugary drinks. People with a chronic illness drink the amount their doctor advises."},
+      "sources": ["doh-elders-water-2565", "ddc-heatstroke-2568", "bma-heatindex-2569"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-fan", "mode": "heat", "room": "living",
+      "sprite": "fandust-done", "doneAnim": "none", "size": [46, 64], "slots": ["floor"],
+      "name": {"th": "พัดลมจ่อหน้าตาทั้งคืน", "en": "The fan blows right at Grandpa all night"},
+      "context": {"th": "อากาศร้อนอบอ้าว ตาเปิดพัดลมแรงสุดจ่อหน้าไว้ใกล้ๆ ทั้งคืน", "en": "It's hot and stuffy; Grandpa has the fan on full, right at his face, all night"},
+      "choices": [
+        { "kind": "move", "correct": true, "label": {"th": "ตั้งพัดลมให้ห่างตัว ให้ส่ายไปมา ไม่จ่อตัวตาตรงๆ", "en": "Set the fan back from him, on oscillate, not blowing straight at him"} },
+        { "kind": "leave", "label": {"th": "ยิ่งจ่อใกล้ยิ่งเย็นสบาย เปิดแรงสุดไว้แบบนี้ดีแล้ว", "en": "The closer and stronger, the cooler; leave it as it is"}, "feedback": {"th": "กรมอนามัยแนะให้ตั้งพัดลมห่างตัว ให้ส่ายไปมา ไม่เป่าจ่อตัวผู้สูงอายุโดยตรง", "en": "The DOH says set the fan away from the body, oscillating, not blowing straight at an older person."} },
+        { "kind": "off", "label": {"th": "ปิดพัดลม ปิดห้องให้มิด แล้วห่มผ้าหนาๆ นอนแทน", "en": "Switch the fan off, shut the room tight and sleep under a thick blanket"}, "feedback": {"th": "กรมควบคุมโรคแนะให้เลี่ยงที่ร้อนอบอ้าว อากาศไม่ถ่ายเท ในช่วงอากาศร้อน", "en": "The DDC says avoid hot, stuffy places with no airflow in hot weather."} }
+      ],
+      "tip": {"th": "เปิดพัดลมให้ผู้สูงวัย ตั้งห่างตัว ให้ส่ายไปมา อย่าจ่อตรงๆ", "en": "Fan for an older person? Set it back, on oscillate, never straight at them."},
+      "why": {"th": "กรมอนามัยแนะให้ผู้สูงอายุอยู่ในบ้านหรืออาคารที่มีเครื่องปรับอากาศ ถ้าไม่มี ให้ใช้พัดลมโดยตั้งให้ห่างตัว ส่ายไปมา ไม่เป่าจ่อตัวโดยตรง และให้อากาศถ่ายเท กรมควบคุมโรคแนะให้เลี่ยงที่ร้อนอบอ้าว อากาศไม่ถ่ายเท", "en": "The Department of Health says older people are best in a home or building with air conditioning; without it, use a fan set away from the body, oscillating, not blowing straight at them, and keep the air moving. The DDC says avoid hot, stuffy places with no airflow."},
+      "sources": ["doh-elders-water-2565", "ddc-heatstroke-2568"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-stroke", "mode": "heat", "room": "living",
+      "sprite": "thermo", "doneAnim": "none", "size": [46, 46], "slots": ["table"],
+      "name": {"th": "ลุงตัวร้อนจัด พูดจาสับสน", "en": "Uncle: very hot and confused"},
+      "context": {"th": "ลุงเพิ่งเข้ามาจากตากแดดทั้งบ่าย ตัวร้อนจัด ซึม พูดจาสับสน", "en": "In from an afternoon in the sun, Uncle is very hot, drowsy and muddled"},
+      "choices": [
+        { "kind": "call", "correct": true, "label": {"th": "รีบโทร 1669 พาเข้าที่ร่ม คลายเสื้อ เช็ดตัวด้วยผ้าชุบน้ำเย็น", "en": "Call 1669, move him into shade, loosen his clothes, cool him with a wet cloth"} },
+        { "kind": "leave", "label": {"th": "ให้นอนพักในห้องคนเดียวก่อน เดี๋ยวก็ดีขึ้นเอง", "en": "Let him lie down alone in his room for a while; it'll pass on its own"}, "feedback": {"th": "ตัวร้อนจัดและสับสน คือสัญญาณฮีทสโตรกที่กรมอนามัยเตือนให้สังเกต ต้องรีบช่วยและโทร 1669", "en": "A very hot body and confusion are heatstroke signs the DOH warns about. Help at once and call 1669."} },
+        { "kind": "check", "label": {"th": "รอพรุ่งนี้เช้าค่อยขับรถพาไปหาหมอ วันนี้พักก่อน", "en": "Let him rest today and drive him to the doctor first thing tomorrow"}, "feedback": {"th": "กรมควบคุมโรคแนะให้รีบนำส่งโรงพยาบาลหรือโทร 1669 ทันที ไม่ควรรอ", "en": "The DDC says rush them to hospital or call 1669 at once; don't wait."} }
+      ],
+      "tip": {"th": "ตัวร้อนจัด สับสน หรือซึม รีบโทร 1669 พาเข้าที่ร่ม เช็ดตัวเย็นๆ", "en": "Very hot, confused or drowsy? Call 1669, get them into shade, cool them down."},
+      "why": {"th": "กรมอนามัยเตือนให้สังเกตอาการฮีทสโตรก เช่น ตัวร้อนจัด สับสน ผิวแดง ไม่มีเหงื่อ ส่วนกรมการแพทย์ระบุว่าช่วงแรกยังมีเหงื่อออกได้ กรมควบคุมโรคแนะให้พาเข้าที่ร่ม คลายเสื้อผ้า เช็ดตัว คอ รักแร้ และศีรษะด้วยผ้าชุบน้ำเย็นร่วมกับพัดลม ถ้าหมดสติให้นอนตะแคง แล้วรีบส่งโรงพยาบาลหรือโทร 1669", "en": "The Department of Health says watch for heatstroke: a very hot body, confusion, red skin, no sweating; the Department of Medical Services adds that early on a person can still sweat. The Department of Disease Control says move them into shade, loosen their clothes, wipe the body, neck, armpits and head with a cloth soaked in cool water, with a fan; if they are unconscious, lay them on their side; then rush them to hospital or call 1669."},
+      "sources": ["ddc-heatstroke-2568", "ddc-heatstroke-pptv-2568", "doh-heatstroke-2566", "dms-heatstroke-2566", "doh-heat-illness-2569", "readygov-heat"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-index", "mode": "heat", "room": "living",
+      "sprite": "aqiphone", "doneAnim": "none", "size": [40, 52], "slots": ["table", "seat"],
+      "name": {"th": "ไม่รู้ว่าพรุ่งนี้จะร้อนระดับไหน", "en": "No idea how hot tomorrow will be"},
+      "context": {"th": "พรุ่งนี้ทั้งบ้านจะไปงานกลางแจ้งทั้งวัน แต่ยังไม่มีใครดูข่าวอากาศ", "en": "Out all day at an open-air event tomorrow, and no one's checked the weather"},
+      "choices": [
+        { "kind": "check", "correct": true, "label": {"th": "ดูประกาศดัชนีความร้อนก่อน แล้ววางแผนเลี่ยงช่วงที่ร้อนที่สุด", "en": "Check the heat index warning first, then plan around the hottest hours"} },
+        { "kind": "leave", "label": {"th": "ไม่ต้องดูหรอก หน้าร้อนก็ร้อนเหมือนกันทุกวัน ไปตามแผนเดิมเลย", "en": "No need to check; summer's hot every day, so stick to the plan"}, "feedback": {"th": "กทม. แนะให้ติดตามข่าวเตือนภัยความร้อน และปรับกิจกรรมตามระดับดัชนีความร้อน", "en": "Bangkok's environment department says follow heat warnings and adjust what you do to the heat-index level."} },
+        { "kind": "place", "label": {"th": "ดูแค่อุณหภูมิในแอปมือถือก็พอแล้ว ไม่ต้องดูค่าอื่นให้วุ่นวาย", "en": "The temperature on your phone's weather app is all you need"}, "feedback": {"th": "ดัชนีความร้อนคิดจากทั้งอุณหภูมิและความชื้น คือความร้อนที่ร่างกายรู้สึก กรมอุตุนิยมวิทยาเป็นผู้ประกาศ", "en": "The heat index combines temperature and humidity: the heat your body feels. The Thai Meteorological Department publishes it."} }
+      ],
+      "tip": {"th": "ก่อนออกกลางแจ้ง ดูประกาศดัชนีความร้อน แล้วเลี่ยงช่วงที่ร้อนที่สุด", "en": "Going out? Check the heat index warning and avoid the hottest hours."},
+      "why": {"th": "ดัชนีความร้อนคืออุณหภูมิที่ร่างกายรู้สึกจากทั้งอุณหภูมิอากาศและความชื้น กรมอุตุนิยมวิทยาเป็นผู้ประกาศ กทม. แนะให้ติดตามข่าวเตือนภัยความร้อน ระดับเตือนภัยให้ลดกิจกรรมกลางแจ้งช่วงกลางวัน และระดับอันตรายมากให้งดกิจกรรมกลางแจ้ง", "en": "The heat index is the temperature the body feels from both air temperature and humidity, and the Thai Meteorological Department publishes it. Bangkok's environment department says follow heat warnings; at the warning level cut outdoor activity in the middle of the day, and at extreme danger stop it altogether."},
+      "sources": ["tmd-heatindex-posttoday-2567", "bma-heatindex-2569"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-clothes", "mode": "heat", "room": "living",
+      "sprite": "laundry", "doneAnim": "none", "size": [74, 58], "slots": ["floor-big"],
+      "name": {"th": "เสื้อแขนยาวสีดำตัวหนา", "en": "A thick black top"},
+      "context": {"th": "ยายจะใส่เสื้อแขนยาวสีดำผ้าหนาๆ ออกไปตลาดตอนเที่ยง ไม่พกอะไรไปเลย", "en": "Grandma's off to the noon market in it, taking nothing with her"},
+      "choices": [
+        { "kind": "gear", "correct": true, "label": {"th": "เปลี่ยนเป็นเสื้อสีอ่อนหลวมๆ ใส่หมวก กางร่ม และพกน้ำไปด้วย", "en": "Change into something light and loose; take a hat, an umbrella and water"} },
+        { "kind": "leave", "label": {"th": "สีดำกันแดดได้ดีกว่าสีอ่อน ใส่ตัวนี้ไปตลาดได้เลย", "en": "Black keeps the sun off better than light colours; that top's fine"}, "feedback": {"th": "กรมควบคุมโรคแนะเสื้อผ้าสีอ่อน ไม่รัด ระบายความร้อนได้ดี และเลี่ยงสีเข้ม", "en": "The DDC says wear light colours, not tight, that let heat out, and avoid dark colours."} },
+        { "kind": "place", "label": {"th": "ตลาดอยู่ใกล้แค่นี้ ไม่ต้องพกน้ำหรือร่มไปหรอก", "en": "The market's close by; no need for water or an umbrella"}, "feedback": {"th": "กรมอนามัยแนะว่าถ้าผู้สูงอายุจำเป็นต้องออกไปตอนร้อนจัด ให้ใส่หมวก กางร่ม และพกน้ำไปด้วย", "en": "The DOH says if older people must go out in extreme heat, take a hat, an umbrella and water."} }
+      ],
+      "tip": {"th": "ออกไปตอนร้อนจัด ใส่เสื้อสีอ่อนหลวมๆ ใส่หมวก กางร่ม พกน้ำ", "en": "Out in the heat? Light, loose clothes, a hat, an umbrella and water."},
+      "why": {"th": "กรมควบคุมโรคแนะให้ใส่เสื้อผ้าที่ระบายความร้อนได้ดี สีอ่อน ไม่รัด และเลี่ยงสีเข้ม กรมอนามัยแนะให้ผู้สูงอายุเลี่ยงออกนอกบ้านช่วงร้อนจัด ถ้าจำเป็นให้ใส่หมวก เสื้อแขนยาวสีอ่อน กางเกงหลวม กางร่ม และพกน้ำ", "en": "The Department of Disease Control says wear clothes that let heat out, light colours, not tight, and avoid dark colours. The Department of Health says older people should avoid going out in extreme heat; if they must, a hat, light-coloured long sleeves, loose trousers, an umbrella and water."},
+      "sources": ["ddc-heatstroke-2568", "ddc-heatstroke-pptv-2568", "doh-elders-water-2565", "readygov-heat"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-beer", "mode": "heat", "room": "kitchen",
+      "sprite": "beer", "doneAnim": "none", "size": [44, 44], "slots": ["counter-sm", "counter"],
+      "name": {"th": "เบียร์เย็นๆ แก้ร้อน", "en": "An ice-cold beer for the heat"},
+      "context": {"th": "บ่ายนี้ร้อนจัด น้าจะเปิดเบียร์ดื่มแก้ร้อน ก่อนออกไปทำสวนต่อ", "en": "A scorching afternoon: your uncle wants a beer before more gardening"},
+      "choices": [
+        { "kind": "clear", "correct": true, "label": {"th": "ดื่มน้ำสะอาดแทน งดเหล้าเบียร์ในวันที่ร้อนจัด", "en": "Drink clean water instead; no alcohol on very hot days"} },
+        { "kind": "leave", "label": {"th": "ดื่มเบียร์เย็นๆ สักขวด ช่วยให้สดชื่นคลายร้อน", "en": "One cold beer will freshen him up and cool him down"}, "feedback": {"th": "กรมควบคุมโรคแนะให้เลี่ยงเครื่องดื่มแอลกอฮอล์ในช่วงอากาศร้อน", "en": "The DDC says avoid alcohol in hot weather."} },
+        { "kind": "place", "label": {"th": "ดื่มเบียร์ได้ แค่ดื่มน้ำเปล่าตามสักแก้วก็พอ", "en": "A beer is fine, as long as he has a glass of water after it"}, "feedback": {"th": "กรมควบคุมโรคแนะให้เลี่ยงเหล้าเบียร์ในวันที่ร้อน และดื่มน้ำสะอาดบ่อยๆ แทน", "en": "The DDC says avoid alcohol on hot days and drink clean water often instead."} }
+      ],
+      "tip": {"th": "วันที่ร้อนจัด งดเหล้าเบียร์ ดื่มน้ำสะอาดบ่อยๆ แทน", "en": "On very hot days, skip alcohol; sip clean water often instead."},
+      "why": {"th": "กรมควบคุมโรคแนะให้เลี่ยงเครื่องดื่มแอลกอฮอล์ ดื่มน้ำสะอาดบ่อยๆ และดื่มเกลือแร่ถ้าเหงื่อออกมาก กรมอนามัยก็แนะให้ผู้สูงอายุเลี่ยงเหล้า ชา กาแฟ และเครื่องดื่มหวานในช่วงอากาศร้อน", "en": "The Department of Disease Control says avoid alcohol, drink clean water often, and an electrolyte drink if you sweat a lot. The Department of Health also says older people should avoid alcohol, tea, coffee and sugary drinks in hot weather."},
+      "sources": ["ddc-heatstroke-2568", "ddc-heatstroke-pptv-2568", "doh-elders-water-2565", "cdc-heat-about"], "verify": "verified", "topic": "heat"
+    },
+    {
+      "id": "h-cramp", "mode": "heat", "room": "kitchen",
+      "sprite": "ors", "doneAnim": "none", "size": [46, 46], "slots": ["counter", "floor"],
+      "name": {"th": "ตะคริวหลังซ่อมหลังคากลางแดด", "en": "Cramp after fixing the roof in the sun"},
+      "context": {"th": "พ่อซ่อมหลังคามาครึ่งวัน เหงื่อออกมาก เริ่มเป็นตะคริวที่น่อง", "en": "Dad's spent half the day on the roof, sweating hard, and now has cramp in his calves"},
+      "choices": [
+        { "kind": "place", "correct": true, "label": {"th": "พักในที่ร่ม จิบน้ำสะอาดหรือน้ำเกลือแร่", "en": "Rest in the shade and sip clean water or an electrolyte drink"} },
+        { "kind": "leave", "label": {"th": "ทนอีกนิด ขึ้นไปทำให้เสร็จก่อนแล้วค่อยพักทีเดียว", "en": "Push through, finish the roof, then rest"}, "feedback": {"th": "กรมควบคุมโรคแนะเลี่ยงอยู่กลางแดดนานๆ เอกสารกรมอนามัยแนะให้ผู้เป็นตะคริวจากความร้อนดื่มน้ำสะอาดหรือเกลือแร่", "en": "The DDC says avoid long spells in the sun, and the DOH's material says heat cramps call for clean water or an electrolyte drink."} },
+        { "kind": "clear", "label": {"th": "ดื่มกาแฟเย็นให้ตาสว่าง แล้วขึ้นไปทำต่อ", "en": "Have an iced coffee to perk himself up, then get back up on the roof"}, "feedback": {"th": "กรมควบคุมโรคแนะให้ดื่มน้ำสะอาดบ่อยๆ และดื่มเกลือแร่ถ้าเหงื่อออกมาก", "en": "The DDC says drink clean water often, and an electrolyte drink if you're sweating a lot."} }
+      ],
+      "tip": {"th": "เหงื่อออกมากหรือเป็นตะคริว พักในที่ร่ม จิบน้ำหรือเกลือแร่", "en": "Sweating hard or cramping? Rest in the shade; sip water or electrolytes."},
+      "why": {"th": "กรมควบคุมโรคแนะให้ดื่มน้ำสะอาดบ่อยๆ ดื่มเกลือแร่ถ้าเหงื่อออกมาก และเลี่ยงอยู่กลางแดดจัดนานๆ เอกสารของกรมอนามัยระบุว่าตะคริวจากความร้อนให้ดื่มน้ำสะอาดหรือเกลือแร่ ส่วนเพลียแดดให้พักในที่เย็นและคลายเสื้อผ้า", "en": "The Department of Disease Control says drink clean water often, an electrolyte drink if you sweat a lot, and avoid long spells in strong sun. The Department of Health's material says heat cramps call for clean water or an electrolyte drink, and heat exhaustion for rest in a cool place with loosened clothing."},
+      "sources": ["ddc-heatstroke-2568", "doh-heat-illness-2569"], "verify": "verified", "topic": "heat"
     }
   ],
   "decoys": [
@@ -1211,6 +1351,11 @@
     { "id": "d-clock-s", "mode": "stock", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": { "th": "นาฬิกาแขวน", "en": "Wall clock" }, "note": { "th": "นาฬิกาใส่ถ่าน ไฟดับก็ยังเดิน ไม่ต้องทำอะไร", "en": "A battery clock keeps going in a power cut. Nothing to do." } },
     { "id": "d-books-s", "mode": "stock", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": { "th": "หนังสือบนชั้น", "en": "Books on the shelf" }, "note": { "th": "หนังสือไม่เกี่ยวกับไฟดับ อ่านฆ่าเวลาได้ด้วย", "en": "Books have nothing to do with the power cut. Good for passing the time." } },
     { "id": "d-plant-s", "mode": "stock", "room": "front", "sprite": "plant", "size": [42, 54], "slots": ["pot"], "name": { "th": "กระถางต้นไม้", "en": "Potted plant" }, "note": { "th": "ต้นไม้ไม่ต้องใช้ไฟ ปล่อยไว้แบบนี้ได้เลย", "en": "Plants don't need power. Leave it be." } },
-    { "id": "d-dishes-s", "mode": "stock", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["sink"], "name": { "th": "จานในอ่าง", "en": "Dishes in the sink" }, "note": { "th": "จานล้างทีหลังได้ ไปดูจุดอื่นก่อน", "en": "The dishes can wait. Check the rest first." } }
+    { "id": "d-dishes-s", "mode": "stock", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["sink"], "name": { "th": "จานในอ่าง", "en": "Dishes in the sink" }, "note": { "th": "จานล้างทีหลังได้ ไปดูจุดอื่นก่อน", "en": "The dishes can wait. Check the rest first." } },
+    { "id": "d-plant-h", "mode": "heat", "room": "front", "sprite": "plant", "size": [42, 54], "slots": ["pot"], "name": {"th": "กระถางต้นไม้", "en": "Potted plant"}, "note": {"th": "ต้นไม้รดน้ำแล้ว ปล่อยไว้แบบนี้ได้เลย", "en": "A watered plant. Leave it be."} },
+    { "id": "d-clock-h", "mode": "heat", "room": "living", "sprite": "clock", "size": [38, 38], "slots": ["wall-high"], "name": {"th": "นาฬิกาแขวน", "en": "Wall clock"}, "note": {"th": "นาฬิกาไม่เกี่ยวกับความร้อน ไปดูจุดอื่นต่อ", "en": "The clock has nothing to do with the heat. Look elsewhere."} },
+    { "id": "d-books-h", "mode": "heat", "room": "living", "sprite": "books", "size": [62, 34], "slots": ["high"], "name": {"th": "หนังสือบนชั้น", "en": "Books on a shelf"}, "note": {"th": "หนังสืออยู่บนชั้น ไม่ต้องทำอะไร", "en": "Books on a shelf. Nothing to do."} },
+    { "id": "d-ricebox-h", "mode": "heat", "room": "kitchen", "sprite": "ricebox", "size": [48, 42], "slots": ["high"], "name": {"th": "ถังข้าวสาร", "en": "Rice bin"}, "note": {"th": "ถังข้าวสารปิดฝา อยู่บนชั้น ไม่ต้องทำอะไร", "en": "A closed rice bin on the shelf. Nothing to do."} },
+    { "id": "d-dishes-h", "mode": "heat", "room": "kitchen", "sprite": "dishes", "size": [60, 30], "slots": ["sink"], "name": {"th": "จานในอ่าง", "en": "Dishes in the sink"}, "note": {"th": "จานล้างทีหลังได้ ไปดูจุดอื่นก่อน", "en": "The dishes can wait. Check the rest first."} }
   ]
 }

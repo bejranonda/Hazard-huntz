@@ -1184,7 +1184,7 @@
       "id": "h-car", "mode": "heat", "room": "front",
       "sprite": "car", "doneAnim": "none", "size": [156, 82], "slots": ["car"],
       "name": {"th": "ลูกหลับอยู่ในรถ", "en": "The baby's asleep in the car"},
-      "context": {"th": "จอดรถกลางแดดแวะซื้อของ ลูกเพิ่งหลับอยู่เบาะหลัง", "en": "Parked in the sun for a quick errand; the baby's asleep in the back"},
+      "context": {"th": "จอดรถกลางแดดแวะซื้อของ ลูกเพิ่งหลับอยู่เบาะหลัง", "en": "Parked in the sun for a quick errand"},
       "choices": [
         { "kind": "move", "correct": true, "label": {"th": "อุ้มลูกลงไปด้วย ไม่ทิ้งใครไว้ในรถแม้แป๊บเดียว", "en": "Take the baby with you; never leave anyone in the car, even briefly"} },
         { "kind": "leave", "label": {"th": "แง้มกระจกไว้นิดหน่อย ไปแค่ห้านาทีเดี๋ยวก็กลับมา", "en": "Leave a window open a crack; you'll only be five minutes"}, "feedback": {"th": "กรมควบคุมโรคย้ำห้ามทิ้งใครไว้ในรถที่จอดกลางแดด โดยเฉพาะเด็กเล็ก รถที่ไม่เปิดแอร์ร้อนขึ้นเร็วมาก", "en": "The DDC says never leave anyone in a car parked in the sun, above all young children; a car without air conditioning heats up very fast."} },
@@ -1198,7 +1198,7 @@
       "id": "h-noon", "mode": "heat", "room": "front",
       "sprite": "broom", "doneAnim": "none", "size": [46, 72], "slots": ["floor"],
       "name": {"th": "จะกวาดลานบ้านตอนเที่ยง", "en": "Sweeping the yard at noon"},
-      "context": {"th": "แดดจัดตอนเที่ยง พ่อจะออกไปกวาดลานบ้านกับตัดกิ่งไม้ให้เสร็จ", "en": "The midday sun is fierce, and Dad wants to sweep the yard and trim the branches now"},
+      "context": {"th": "แดดจัดตอนเที่ยง พ่อจะออกไปกวาดลานบ้านกับตัดกิ่งไม้ให้เสร็จ", "en": "Fierce midday sun, and Dad wants it all done now"},
       "choices": [
         { "kind": "move", "correct": true, "label": {"th": "เลื่อนไปทำตอนเช้าหรือเย็น ตอนนี้พักในที่ร่มก่อน", "en": "Leave it for the morning or evening; rest in the shade for now"} },
         { "kind": "leave", "label": {"th": "ทำให้เสร็จรวดเดียวเลย จะได้ไม่ต้องออกไปตากแดดหลายรอบ", "en": "Get it all done in one go, so you only go out once"}, "feedback": {"th": "กรมอนามัยแนะให้ทำกิจกรรมกลางแจ้งช่วงเช้าและเย็น กรมควบคุมโรคแนะเลี่ยงอยู่กลางแดดจัดนานๆ", "en": "The DOH says do outdoor activity in the morning and evening, and the DDC says avoid long spells in strong sun."} },
@@ -1226,7 +1226,7 @@
       "id": "h-water", "mode": "heat", "room": "living",
       "sprite": "waterjug", "doneAnim": "none", "size": [54, 46], "slots": ["table", "seat"],
       "name": {"th": "ยายไม่ค่อยดื่มน้ำ", "en": "Grandma barely drinks"},
-      "context": {"th": "อากาศร้อนจัด ยายบอกว่ายังไม่หิวน้ำ ทั้งวันเลยแทบไม่ได้ดื่ม", "en": "It's very hot, and Grandma says she isn't thirsty, so she's hardly drunk all day"},
+      "context": {"th": "อากาศร้อนจัด ยายบอกว่ายังไม่หิวน้ำ ทั้งวันเลยแทบไม่ได้ดื่ม", "en": "She says she isn't thirsty, so why drink?"},
       "choices": [
         { "kind": "place", "correct": true, "label": {"th": "วางน้ำไว้ใกล้ตัวยาย ชวนจิบบ่อยๆ ไม่ต้องรอให้หิวน้ำ", "en": "Put water within her reach and get her to sip often, without waiting for thirst"} },
         { "kind": "leave", "label": {"th": "ยายไม่หิวก็ไม่ต้องดื่ม เดี๋ยวต้องลุกเข้าห้องน้ำบ่อย", "en": "If she isn't thirsty she needn't drink; it saves trips to the toilet"}, "feedback": {"th": "กรมอนามัยแนะให้ผู้ดูแลชวนผู้สูงอายุดื่มน้ำสม่ำเสมอ โดยไม่ต้องรอให้กระหาย", "en": "The DOH says carers should get older people drinking regularly, without waiting for thirst."} },
@@ -1239,8 +1239,8 @@
     {
       "id": "h-fan", "mode": "heat", "room": "living",
       "sprite": "fandust-done", "doneAnim": "none", "size": [46, 64], "slots": ["floor"],
-      "name": {"th": "พัดลมจ่อหน้าตาทั้งคืน", "en": "The fan blows right at Grandpa all night"},
-      "context": {"th": "อากาศร้อนอบอ้าว ตาเปิดพัดลมแรงสุดจ่อหน้าไว้ใกล้ๆ ทั้งคืน", "en": "It's hot and stuffy; Grandpa has the fan on full, right at his face, all night"},
+      "name": {"th": "พัดลมจ่อหน้าตาทั้งคืน", "en": "The fan at Grandpa's face"},
+      "context": {"th": "อากาศร้อนอบอ้าว ตาเปิดพัดลมแรงสุดจ่อหน้าไว้ใกล้ๆ ทั้งคืน", "en": "Hot and stuffy, so he has it on full, close up, all night"},
       "choices": [
         { "kind": "move", "correct": true, "label": {"th": "ตั้งพัดลมให้ห่างตัว ให้ส่ายไปมา ไม่จ่อตัวตาตรงๆ", "en": "Set the fan back from him, on oscillate, not blowing straight at him"} },
         { "kind": "leave", "label": {"th": "ยิ่งจ่อใกล้ยิ่งเย็นสบาย เปิดแรงสุดไว้แบบนี้ดีแล้ว", "en": "The closer and stronger, the cooler; leave it as it is"}, "feedback": {"th": "กรมอนามัยแนะให้ตั้งพัดลมห่างตัว ให้ส่ายไปมา ไม่เป่าจ่อตัวผู้สูงอายุโดยตรง", "en": "The DOH says set the fan away from the body, oscillating, not blowing straight at an older person."} },
@@ -1254,7 +1254,7 @@
       "id": "h-stroke", "mode": "heat", "room": "living",
       "sprite": "thermo", "doneAnim": "none", "size": [46, 46], "slots": ["table"],
       "name": {"th": "ลุงตัวร้อนจัด พูดจาสับสน", "en": "Uncle: very hot and confused"},
-      "context": {"th": "ลุงเพิ่งเข้ามาจากตากแดดทั้งบ่าย ตัวร้อนจัด ซึม พูดจาสับสน", "en": "In from an afternoon in the sun, Uncle is very hot, drowsy and muddled"},
+      "context": {"th": "ลุงเพิ่งเข้ามาจากตากแดดทั้งบ่าย ตัวร้อนจัด ซึม พูดจาสับสน", "en": "Back from a sunny afternoon, and drowsy too"},
       "choices": [
         { "kind": "call", "correct": true, "label": {"th": "รีบโทร 1669 พาเข้าที่ร่ม คลายเสื้อ เช็ดตัวด้วยผ้าชุบน้ำเย็น", "en": "Call 1669, move him into shade, loosen his clothes, cool him with a wet cloth"} },
         { "kind": "leave", "label": {"th": "ให้นอนพักในห้องคนเดียวก่อน เดี๋ยวก็ดีขึ้นเอง", "en": "Let him lie down alone in his room for a while; it'll pass on its own"}, "feedback": {"th": "ตัวร้อนจัดและสับสน คือสัญญาณฮีทสโตรกที่กรมอนามัยเตือนให้สังเกต ต้องรีบช่วยและโทร 1669", "en": "A very hot body and confusion are heatstroke signs the DOH warns about. Help at once and call 1669."} },
@@ -1268,7 +1268,7 @@
       "id": "h-index", "mode": "heat", "room": "living",
       "sprite": "aqiphone", "doneAnim": "none", "size": [40, 52], "slots": ["table", "seat"],
       "name": {"th": "ไม่รู้ว่าพรุ่งนี้จะร้อนระดับไหน", "en": "No idea how hot tomorrow will be"},
-      "context": {"th": "พรุ่งนี้ทั้งบ้านจะไปงานกลางแจ้งทั้งวัน แต่ยังไม่มีใครดูข่าวอากาศ", "en": "Out all day at an open-air event tomorrow, and no one's checked the weather"},
+      "context": {"th": "พรุ่งนี้ทั้งบ้านจะไปงานกลางแจ้งทั้งวัน แต่ยังไม่มีใครดูข่าวอากาศ", "en": "A day out in the open air, and no one's checked"},
       "choices": [
         { "kind": "check", "correct": true, "label": {"th": "ดูประกาศดัชนีความร้อนก่อน แล้ววางแผนเลี่ยงช่วงที่ร้อนที่สุด", "en": "Check the heat index warning first, then plan around the hottest hours"} },
         { "kind": "leave", "label": {"th": "ไม่ต้องดูหรอก หน้าร้อนก็ร้อนเหมือนกันทุกวัน ไปตามแผนเดิมเลย", "en": "No need to check; summer's hot every day, so stick to the plan"}, "feedback": {"th": "กทม. แนะให้ติดตามข่าวเตือนภัยความร้อน และปรับกิจกรรมตามระดับดัชนีความร้อน", "en": "Bangkok's environment department says follow heat warnings and adjust what you do to the heat-index level."} },
@@ -1282,7 +1282,7 @@
       "id": "h-clothes", "mode": "heat", "room": "living",
       "sprite": "laundry", "doneAnim": "none", "size": [74, 58], "slots": ["floor-big"],
       "name": {"th": "เสื้อแขนยาวสีดำตัวหนา", "en": "A thick black top"},
-      "context": {"th": "ยายจะใส่เสื้อแขนยาวสีดำผ้าหนาๆ ออกไปตลาดตอนเที่ยง ไม่พกอะไรไปเลย", "en": "Grandma's off to the noon market in it, taking nothing with her"},
+      "context": {"th": "ยายจะใส่เสื้อแขนยาวสีดำผ้าหนาๆ ออกไปตลาดตอนเที่ยง ไม่พกอะไรไปเลย", "en": "Grandma's off to the noon market in it, empty-handed"},
       "choices": [
         { "kind": "gear", "correct": true, "label": {"th": "เปลี่ยนเป็นเสื้อสีอ่อนหลวมๆ ใส่หมวก กางร่ม และพกน้ำไปด้วย", "en": "Change into something light and loose; take a hat, an umbrella and water"} },
         { "kind": "leave", "label": {"th": "สีดำกันแดดได้ดีกว่าสีอ่อน ใส่ตัวนี้ไปตลาดได้เลย", "en": "Black keeps the sun off better than light colours; that top's fine"}, "feedback": {"th": "กรมควบคุมโรคแนะเสื้อผ้าสีอ่อน ไม่รัด ระบายความร้อนได้ดี และเลี่ยงสีเข้ม", "en": "The DDC says wear light colours, not tight, that let heat out, and avoid dark colours."} },
@@ -1296,7 +1296,7 @@
       "id": "h-beer", "mode": "heat", "room": "kitchen",
       "sprite": "beer", "doneAnim": "none", "size": [44, 44], "slots": ["counter-sm", "counter"],
       "name": {"th": "เบียร์เย็นๆ แก้ร้อน", "en": "An ice-cold beer for the heat"},
-      "context": {"th": "บ่ายนี้ร้อนจัด น้าจะเปิดเบียร์ดื่มแก้ร้อน ก่อนออกไปทำสวนต่อ", "en": "A scorching afternoon: your uncle wants a beer before more gardening"},
+      "context": {"th": "บ่ายนี้ร้อนจัด น้าจะเปิดเบียร์ดื่มแก้ร้อน ก่อนออกไปทำสวนต่อ", "en": "Your uncle wants one before more gardening"},
       "choices": [
         { "kind": "clear", "correct": true, "label": {"th": "ดื่มน้ำสะอาดแทน งดเหล้าเบียร์ในวันที่ร้อนจัด", "en": "Drink clean water instead; no alcohol on very hot days"} },
         { "kind": "leave", "label": {"th": "ดื่มเบียร์เย็นๆ สักขวด ช่วยให้สดชื่นคลายร้อน", "en": "One cold beer will freshen him up and cool him down"}, "feedback": {"th": "กรมควบคุมโรคแนะให้เลี่ยงเครื่องดื่มแอลกอฮอล์ในช่วงอากาศร้อน", "en": "The DDC says avoid alcohol in hot weather."} },

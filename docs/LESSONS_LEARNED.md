@@ -866,3 +866,9 @@ These are the lessons. The rules themselves live in [GUIDELINES.md](GUIDELINES.m
 - *What happened:* the recommend test proved that unknown ids are ignored with `want: 'heat'`, a guide with no game; the heat mode made it fail.
 - *Do this:* derive the "unknown" cases from the data (every guide that has no mode), and keep one id that can never exist.
 - *Encoded in:* `tests/run.mjs → "the start screen recommends a mode, a topic and says why"`.
+
+**D40. "It fits" on one machine is "it fits by 7 px", and another machine wraps one more line.**
+
+- *What happened:* the heat mode's English sheets passed every check here, then CI's smoke run found `h-stroke` scrolling by 17 px at 125 % text. Measured properly, most heat sheets had 4–13 px of room; CI's Chromium had wrapped one line more.
+- *Do this:* measure the room a layout has left, not only whether it overflows, and leave at least a line of it on anything new near a limit.
+- *Encoded in:* [GUIDELINES rule 111](GUIDELINES.md#8-rules-that-come-from-bugs-we-already-hit), [KNOWN_ISSUES F236](KNOWN_ISSUES.md#in-v1190-14-nov-2026).

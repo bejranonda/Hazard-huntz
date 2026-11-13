@@ -6,7 +6,7 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 
 ## [1.19.0] — 2026-11-14
 
-**A game mode for extreme heat.** The sixth mode, ร้อนจัด / Extreme heat, teaches only what the heat guide's sources already back; no other lesson, advice, number or source changed, and every older mode's daily house and challenge link is the same. ([ROADMAP N45](docs/ROADMAP.md#n45-a-game-mode-for-extreme-heat-v1190), [P7](docs/ROADMAP.md#p7-heat-and-summer-storms), [KNOWN_ISSUES #105–#106, F233–F235](docs/KNOWN_ISSUES.md#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies))
+**A game mode for extreme heat.** The sixth mode, ร้อนจัด / Extreme heat, teaches only what the heat guide's sources already back; no other lesson, advice, number or source changed, and every older mode's daily house and challenge link is the same. ([ROADMAP N45](docs/ROADMAP.md#n45-a-game-mode-for-extreme-heat-v1190), [P7](docs/ROADMAP.md#p7-heat-and-summer-storms), [KNOWN_ISSUES #105–#106, F233–F236](docs/KNOWN_ISSUES.md#105-the-heat-lessons-rest-on-news-reports-quoting-the-agencies))
 
 ### Added
 
@@ -32,10 +32,11 @@ This project uses [semantic versioning](https://semver.org/). Each release is ta
 - `npm test` 57 (+1: a year of heat houses follow the round rules); the recommend test now derives the guides with no game from the config instead of naming `heat`.
 - `npm run probe` 0 % overlaps over 4,380 houses (six modes × two years). The five older modes' houses compared before and after over 800 days: 4,000 identical.
 - `npm run smoke` 241 on each of 18 Oct 2026, 5 Dec 2026 and 10 Apr 2027 (+2: a full heat round, as for every mode; `/?mode=heat` opens heat as the big card; the "not a mode" check now takes a guide with no game from the config). Its every-sheet check caught four English heat sheets scrolling at 320 × 568 after the wrong answers were lengthened: the contexts and names were shortened (F235).
+- **After the first push,** CI's smoke run (240 of 241) found `h-stroke`'s English sheet scrolling by 17 px at 125 % text on GitHub's runner, where it fitted here by 7 px. Every English heat sheet now keeps at least a line of room (shorter contexts for eight lessons; no answer changed) (F236).
 
 ### Docs
 
-- KNOWN_ISSUES #105, #106, F233–F235; GUIDELINES rule 115 and §10 (six modes, codes, a guide-first checklist, the season order); ROADMAP N45, P7, L10; KNOWLEDGE §50; APPROACH §52; LESSONS B26, D38, D39; safety table (`docs/01`, 92 lessons); test checklist row 103; launch kit; HANDOFF, README, AGENTS.
+- KNOWN_ISSUES #105, #106, F233–F236; GUIDELINES rule 115 and §10 (six modes, codes, a guide-first checklist, the season order); ROADMAP N45, P7, L10; KNOWLEDGE §50; APPROACH §52; LESSONS B26, D38, D39, D40; safety table (`docs/01`, 92 lessons); test checklist row 103; launch kit; HANDOFF, README, AGENTS.
 
 ## [1.18.5] — 2026-11-13
 

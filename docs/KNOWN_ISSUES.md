@@ -1171,13 +1171,14 @@ Visitor audit 4 (21 Oct 2026) found, and a headless check confirmed, that the fi
 
 ### In v1.19.0 (14 Nov 2026)
 
-All three were found in the mode's own testing and never went live.
+F233–F235 were found in the mode's own testing and never went live; F236 was live for about 20 minutes.
 
 | # | Problem | Fix |
 |---|---|---|
 | F233 | **The heat round's warm glare didn't show:** the haze layer reached 0.5 opacity at a fill opacity of 0.55, about 0.2 orange, which no one would notice in a screenshot at 17 seconds left; the layer's state said it was on | Keyframes as dust's (0.06 → 0.64) and a stronger fill (`#FF8A2A`, 0.7), no specks; the room is clearly warm late in the round and every item stays readable (screenshots at 320 px, early and late) |
 | F234 | **The first draft of `h-stroke` taught "no sweat" as the sign of heatstroke,** in its tip and its feedback, the same reading #90 records for the guide; and the carousel card cut its "why" exactly where the DMS caveat began | The tip names "very hot, confused or drowsy"; the "why" gives the DOH's signs, then the DMS's "early on a person can still sweat", then the DDC's first aid, and fits the card whole; `dms-heatstroke-2566` added to its sources; the scenario no longer names sweating ("ตัวร้อนจัด ซึม พูดจาสับสน"). Rule 115 |
 | F235 | **Four English heat sheets scrolled at 320 × 568** (by 14–42 px at 100 % text, 21–51 px at 125 %), caught by the smoke check of every sheet: lengthening wrong answers for rule 75 made the sheets taller, and at 125 % the three older English sheets already used the allowance | Shorter English contexts and names (`h-car`, `h-stroke`, `h-index`, `h-clothes`, `h-beer`), `h-index`'s name says "tomorrow" in both languages like its context, and `h-stroke`'s right answer reworded with every action kept ("Call 1669, move him into shade, loosen his clothes, cool him with a wet cloth"). Measured: all 20 heat sheets fit in both languages at 100 % and 125 % |
+| F236 | **CI's smoke run failed on the first v1.19.0 push:** at 125 % text `h-stroke`'s English sheet scrolled by 17 px on GitHub's runner, a fourth English sheet over the allowance of three, though it fitted here by 7 px; CI's Chromium wraps one line more | Every English heat sheet now keeps at least a line of room (31–102 px, measured as the sheet's tallest height minus its content, at 100 % and 125 %): shorter English contexts for eight lessons, no answer or advice changed. Rule 111 now asks a new sheet for that line of room, and the scratch probe that measures it is described in [APPROACH §52](APPROACH_AND_METHOD.md#52-turn-a-guide-into-a-game-mode-without-new-advice-v1190) |
 
 ### In v1.18.5 (13 Nov 2026)
 

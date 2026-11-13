@@ -417,6 +417,7 @@ Each rule encodes a mistake that was made once. Details are under *Fixed* in [KN
     - A reader who set 125 % or 150 % text keeps it. Make room first: let the sheet take the screen, drop decoration the reader has already seen (the item's picture), tighten gaps and line height, keep 44 px.
     - Use a width in `em` for it (`max-width: 18.4em` is 320 px at 125 %), so the browser's setting triggers it and 100 % is untouched.
     - If it still can't fit (150 % on 320 px), let it scroll with the next thing visibly cut at the edge, and write down the count instead of calling it fixed.
+    - Since v1.19.0 (F236), a new choice sheet keeps at least a line of room (about 30 px) at 320 × 568 and 125 % text, measured as room left, not just as no overflow: CI's Chromium wraps one line more than the cloud machine's.
     - **One English name per thing:** the bag is the "emergency bag" (never "go-bag"); a unit test reads the content files.
 112. **A page that names a font loads it.** Since v1.18.3 (F227):
     - Every generated page gets app.css's `@font-face` rules (the build copies them; never a second copy by hand) and preloads the Thai regular face, as `index.html` does.
